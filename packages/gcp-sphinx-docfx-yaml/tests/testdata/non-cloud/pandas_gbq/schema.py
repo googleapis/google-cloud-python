@@ -6,7 +6,6 @@
 
 import copy
 
-
 # API may return data types as legacy SQL, so maintain a mapping of aliases
 # from standard SQL to legacy data types.
 _TYPE_ALIASES = {

@@ -20,6 +20,7 @@ This module is used to add extra supported nodes to sphinx.
 
 from docutils import nodes
 
+
 class remarks(nodes.paragraph, nodes.Element):
     """A docutils node for 'remarks' messages."""
 

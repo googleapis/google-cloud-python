@@ -18,10 +18,10 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.pubsub_v1.types import pubsub
@@ -51,7 +51,7 @@ class ListTopicsPager:
         request: pubsub.ListTopicsRequest,
         response: pubsub.ListTopicsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -113,7 +113,7 @@ class ListTopicsAsyncPager:
         request: pubsub.ListTopicsRequest,
         response: pubsub.ListTopicsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 
@@ -179,7 +179,7 @@ class ListTopicSubscriptionsPager:
         request: pubsub.ListTopicSubscriptionsRequest,
         response: pubsub.ListTopicSubscriptionsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -241,7 +241,7 @@ class ListTopicSubscriptionsAsyncPager:
         request: pubsub.ListTopicSubscriptionsRequest,
         response: pubsub.ListTopicSubscriptionsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 
@@ -307,7 +307,7 @@ class ListTopicSnapshotsPager:
         request: pubsub.ListTopicSnapshotsRequest,
         response: pubsub.ListTopicSnapshotsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -369,7 +369,7 @@ class ListTopicSnapshotsAsyncPager:
         request: pubsub.ListTopicSnapshotsRequest,
         response: pubsub.ListTopicSnapshotsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 

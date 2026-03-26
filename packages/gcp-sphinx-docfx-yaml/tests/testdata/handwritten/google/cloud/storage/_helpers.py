@@ -18,17 +18,18 @@ These are *not* part of the API.
 """
 
 import base64
-from hashlib import md5
 import os
+from hashlib import md5
 from urllib.parse import urlsplit
 from uuid import uuid4
 
 from google import resumable_media
 from google.auth import environment_vars
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
-
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+)
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 """Environment variable defining host for Storage emulator."""

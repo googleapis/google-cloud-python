@@ -18,10 +18,10 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.pubsub_v1.types import pubsub
@@ -51,7 +51,7 @@ class ListSubscriptionsPager:
         request: pubsub.ListSubscriptionsRequest,
         response: pubsub.ListSubscriptionsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -113,7 +113,7 @@ class ListSubscriptionsAsyncPager:
         request: pubsub.ListSubscriptionsRequest,
         response: pubsub.ListSubscriptionsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 
@@ -179,7 +179,7 @@ class ListSnapshotsPager:
         request: pubsub.ListSnapshotsRequest,
         response: pubsub.ListSnapshotsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -241,7 +241,7 @@ class ListSnapshotsAsyncPager:
         request: pubsub.ListSnapshotsRequest,
         response: pubsub.ListSnapshotsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 

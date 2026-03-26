@@ -13,44 +13,45 @@
 # limitations under the License.
 
 import codecs
+
 import setuptools
 
-name = 'gcp-sphinx-docfx-yaml'
-description = 'Sphinx Python Domain to DocFX YAML Generator'
-version = '3.2.4'
+name = "gcp-sphinx-docfx-yaml"
+description = "Sphinx Python Domain to DocFX YAML Generator"
+version = "3.2.4"
 dependencies = [
-    'black',
-    'gcp-docuploader',
-    'PyYAML',
-    'recommonmark',
-    'sphinxcontrib-applehelp==1.0.4',
-    'sphinxcontrib-devhelp==1.0.2',
-    'sphinxcontrib-htmlhelp==2.0.1',
-    'sphinxcontrib-qthelp==1.0.3',
-    'sphinxcontrib-serializinghtml==1.1.5',
-    'sphinx==4.5.0',
-    'sphinx-markdown-builder==0.5.5',
-    'sphinxcontrib.napoleon',
-    'unidecode',
-    'wheel>=0.24.0'
+    "black",
+    "gcp-docuploader",
+    "PyYAML",
+    "recommonmark",
+    "sphinxcontrib-applehelp==1.0.4",
+    "sphinxcontrib-devhelp==1.0.2",
+    "sphinxcontrib-htmlhelp==2.0.1",
+    "sphinxcontrib-qthelp==1.0.3",
+    "sphinxcontrib-serializinghtml==1.1.5",
+    "sphinx==4.5.0",
+    "sphinx-markdown-builder==0.5.5",
+    "sphinxcontrib.napoleon",
+    "unidecode",
+    "wheel>=0.24.0",
 ]
 
-packages = setuptools.find_packages('.', exclude=['tests'])
+packages = setuptools.find_packages(".", exclude=["tests"])
 
 extra_setup = dict(
-setup_requires=['pytest-runner'],
-tests_require=['pytest', 'mock'],
+    setup_requires=["pytest-runner"],
+    tests_require=["pytest", "mock"],
 )
 
 setuptools.setup(
     name=name,
     version=version,
     description=description,
-    author='Google LLC',
-    author_email='dandhlee@google.com',
-    license='Apache 2.0',
-    url='https://github.com/googleapis/google-cloud-python/tree/main/packages/gcp-sphinx-docfx-yaml',
-    package_dir={'': '.'},
+    author="Google LLC",
+    author_email="dandhlee@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/gcp-sphinx-docfx-yaml",
+    package_dir={"": "."},
     packages=packages,
     install_requires=dependencies,
     python_requires=">=3.8",
@@ -59,5 +60,5 @@ setuptools.setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    **extra_setup
+    **extra_setup,
 )

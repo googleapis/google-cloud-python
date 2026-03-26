@@ -15,11 +15,12 @@
 #
 import proto  # type: ignore
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.pubsub_v1.types import schema as gp_schema
-
 
 __protobuf__ = proto.module(
     package="google.pubsub.v1",
@@ -716,6 +717,7 @@ class Subscription(proto.Message):
 
     class State(proto.Enum):
         r"""Possible states for a subscription."""
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RESOURCE_ERROR = 2
@@ -1040,6 +1042,7 @@ class BigQueryConfig(proto.Message):
 
     class State(proto.Enum):
         r"""Possible states for a BigQuery subscription."""
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2

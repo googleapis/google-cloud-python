@@ -13,9 +13,9 @@ import pandas
 import pyarrow.lib
 from google.cloud import bigquery
 
+import pandas_gbq.schema
 from pandas_gbq import exceptions
 from pandas_gbq.features import FEATURES
-import pandas_gbq.schema
 
 
 def encode_chunk(dataframe):

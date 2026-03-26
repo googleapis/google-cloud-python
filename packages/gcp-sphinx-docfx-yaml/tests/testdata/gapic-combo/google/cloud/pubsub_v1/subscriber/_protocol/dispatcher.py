@@ -12,28 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import functools
 import itertools
 import logging
 import math
-import time
 import threading
+import time
 import typing
-from typing import List, Optional, Sequence, Union
 import warnings
-from google.api_core.retry import exponential_sleep_generator
+from typing import List, Optional, Sequence, Union
 
-from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
-from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.api_core.retry import exponential_sleep_generator
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads, requests
 from google.cloud.pubsub_v1.subscriber.exceptions import (
     AcknowledgeStatus,
 )
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import queue
+
     from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
         StreamingPullManager,
     )
@@ -286,9 +285,9 @@ class Dispatcher(object):
                 ack_ids=[req.ack_id for req in requests_to_retry],
                 ack_reqs_dict=ack_reqs_dict,
             )
-            assert (
-                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
-            ), "Too many requests to be retried."
+            assert len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE, (
+                "Too many requests to be retried."
+            )
             # Remove the completed messages from lease management.
             self.drop(requests_completed)
 
@@ -347,9 +346,9 @@ class Dispatcher(object):
                 ),
                 ack_reqs_dict=ack_reqs_dict,
             )
-            assert (
-                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
-            ), "Too many requests to be retried."
+            assert len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE, (
+                "Too many requests to be retried."
+            )
 
             # Retry on a separate thread so the dispatcher thread isn't blocked
             # by sleeps.

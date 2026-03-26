@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
 import os
 import re
+from collections import OrderedDict
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -26,9 +27,9 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import timeout as timeouts  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 try:
@@ -36,15 +37,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import grpc
+
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import duration_pb2  # type: ignore
 from google.pubsub_v1.services.publisher import pagers
-from google.pubsub_v1.types import pubsub
-from google.pubsub_v1.types import TimeoutType
+from google.pubsub_v1.types import TimeoutType, pubsub
 
-import grpc
-from .transports.base import PublisherTransport, DEFAULT_CLIENT_INFO
+from .transports.base import DEFAULT_CLIENT_INFO, PublisherTransport
 from .transports.grpc import PublisherGrpcTransport
 from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
 
@@ -449,8 +452,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = transport
         else:

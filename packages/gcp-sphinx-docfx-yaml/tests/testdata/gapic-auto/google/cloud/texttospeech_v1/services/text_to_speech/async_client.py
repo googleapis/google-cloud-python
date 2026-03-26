@@ -13,18 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
 import re
+from collections import OrderedDict
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 
+import pkg_resources
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -82,7 +82,9 @@ class TextToSpeechAsyncClient:
         Returns:
             TextToSpeechAsyncClient: The constructed client.
         """
-        return TextToSpeechClient.from_service_account_info.__func__(TextToSpeechAsyncClient, info, *args, **kwargs)  # type: ignore
+        return TextToSpeechClient.from_service_account_info.__func__(
+            TextToSpeechAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -98,7 +100,9 @@ class TextToSpeechAsyncClient:
         Returns:
             TextToSpeechAsyncClient: The constructed client.
         """
-        return TextToSpeechClient.from_service_account_file.__func__(TextToSpeechAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return TextToSpeechClient.from_service_account_file.__func__(
+            TextToSpeechAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

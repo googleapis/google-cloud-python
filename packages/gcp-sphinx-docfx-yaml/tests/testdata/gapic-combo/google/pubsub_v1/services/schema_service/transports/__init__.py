@@ -20,7 +20,6 @@ from .base import SchemaServiceTransport
 from .grpc import SchemaServiceGrpcTransport
 from .grpc_asyncio import SchemaServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SchemaServiceTransport]]
 _transport_registry["grpc"] = SchemaServiceGrpcTransport

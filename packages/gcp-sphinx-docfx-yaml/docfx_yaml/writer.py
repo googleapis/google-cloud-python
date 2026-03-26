@@ -32,38 +32,36 @@ import sys
 import textwrap
 from itertools import groupby
 
-
-
 from docutils import nodes, writers
+from docutils.nodes import Node, Text, TextElement
 from docutils.utils import column_width
-from docutils.nodes import TextElement, Text, Node
-
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.locale import admonitionlabels
 
 from .nodes import remarks
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
+class bcolors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
 class TextWrapper(textwrap.TextWrapper):
     """Custom subclass that uses a different word separator regex."""
 
     wordsep_re = re.compile(
-        r'(\s+|'                                  # any whitespace
-        r'(?<=\s)(?::[a-z-]+:)?`\S+|'             # interpreted text start
-        r'[^\s\w]*\w+[a-zA-Z]-(?=\w+[a-zA-Z])|'   # hyphenated words
-        r'(?<=[\w\!\"\'\&\.\,\?])-{2,}(?=\w))')   # em-dash
+        r"(\s+|"  # any whitespace
+        r"(?<=\s)(?::[a-z-]+:)?`\S+|"  # interpreted text start
+        r"[^\s\w]*\w+[a-zA-Z]-(?=\w+[a-zA-Z])|"  # hyphenated words
+        r"(?<=[\w\!\"\'\&\.\,\?])-{2,}(?=\w))"
+    )  # em-dash
 
     def _wrap_chunks(self, chunks: list[str]) -> list[str]:
         """Wraps chunks of text into lines.
@@ -77,7 +75,7 @@ class TextWrapper(textwrap.TextWrapper):
         Returns:
             list: A list of strings representing the wrapped lines.
         """
-        drop_whitespace = getattr(self, 'drop_whitespace', True)  # py25 compat
+        drop_whitespace = getattr(self, "drop_whitespace", True)  # py25 compat
         lines = []
         if self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
@@ -95,7 +93,7 @@ class TextWrapper(textwrap.TextWrapper):
 
             width = self.width - column_width(indent)
 
-            if drop_whitespace and chunks[-1].strip() == '' and lines:
+            if drop_whitespace and chunks[-1].strip() == "" and lines:
                 del chunks[-1]
 
             while chunks:
@@ -111,11 +109,11 @@ class TextWrapper(textwrap.TextWrapper):
             if chunks and column_width(chunks[-1]) > width:
                 self._handle_long_word(chunks, cur_line, cur_len, width)
 
-            if drop_whitespace and cur_line and cur_line[-1].strip() == '':
+            if drop_whitespace and cur_line and cur_line[-1].strip() == "":
                 del cur_line[-1]
 
             if cur_line:
-                lines.append(indent + ''.join(cur_line))
+                lines.append(indent + "".join(cur_line))
 
         return lines
 
@@ -135,8 +133,8 @@ class TextWrapper(textwrap.TextWrapper):
         for i, c in enumerate(word):
             total += column_width(c)
             if total > space_left:
-                return word[:i-1], word[i-1:]
-        return word, ''
+                return word[: i - 1], word[i - 1 :]
+        return word, ""
 
     def _split(self, text: str) -> list[str]:
         """Splits text into chunks.
@@ -150,13 +148,15 @@ class TextWrapper(textwrap.TextWrapper):
         Returns:
             list: A list of strings representing the chunks.
         """
+
         def split(t):
             return textwrap.TextWrapper._split(self, t)
+
         chunks = []
         for chunk in split(text):
             for w, g in groupby(chunk, column_width):
                 if w == 1:
-                    chunks.extend(split(''.join(g)))
+                    chunks.extend(split("".join(g)))
                 else:
                     chunks.extend(list(g))
         return chunks
@@ -209,8 +209,9 @@ class MarkdownWriter(writers.Writer):
     written in yaml files (summaries), it is distinct from the
     markdown outputter which process the whole documentation.
     """
-    supported = ('text',)
-    settings_spec = ('No options here.', '', ())
+
+    supported = ("text",)
+    settings_spec = ("No options here.", "", ())
     settings_defaults = {}
 
     output = None
@@ -246,12 +247,12 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.builder = builder
 
         newlines = builder.config.text_newlines
-        if newlines == 'windows':
-            self.nl = '\r\n'
-        elif newlines == 'native':
+        if newlines == "windows":
+            self.nl = "\r\n"
+        elif newlines == "native":
             self.nl = os.linesep
         else:
-            self.nl = '\n'
+            self.nl = "\n"
         self.sectionchars = builder.config.text_sectionchars
         self.states = [[]]
         self.stateindent = [0]
@@ -267,15 +268,15 @@ class MarkdownTranslator(nodes.NodeVisitor):
         Args:
             node (Node): The node to resolve references in.
         """
-        if node.tagname == 'reference':
+        if node.tagname == "reference":
             ref_string = MarkdownTranslator._resolve_reference(node)
-            
+
             if not node.parent is None:
                 for i, n in enumerate(node.parent):
-                    if n is node: # Replace the reference node.
+                    if n is node:  # Replace the reference node.
                         node.parent.children[i] = Text(ref_string)
                         break
-            else: # If reference node has no parent, replace it's content.
+            else:  # If reference node has no parent, replace it's content.
                 node.clear()
                 node.children.append(Text(ref_string))
         else:
@@ -307,7 +308,9 @@ class MarkdownTranslator(nodes.NodeVisitor):
         indent = self.stateindent.pop()
         return content, maxindent, indent
 
-    def end_state(self, wrap: bool = False, end: list[str] = [''], first: str = None) -> None:
+    def end_state(
+        self, wrap: bool = False, end: list[str] = [""], first: str = None
+    ) -> None:
         """Ends the current state."""
         content, maxindent, indent = self.clear_last_state()
         result = []
@@ -317,12 +320,13 @@ class MarkdownTranslator(nodes.NodeVisitor):
             if not toformat:
                 return
             if wrap:
-                res = my_wrap(''.join(toformat), width=MAXWIDTH-maxindent)
+                res = my_wrap("".join(toformat), width=MAXWIDTH - maxindent)
             else:
-                res = ''.join(toformat).splitlines()
+                res = "".join(toformat).splitlines()
             if end:
                 res += end
             result.append((indent, res))
+
         for itemindent, item in content:
             if itemindent == -1:
                 toformat.append(item)
@@ -335,7 +339,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
             itemindent, item = result[0]
             result_rest, result = result[1:], []
             if item:
-                toformat = [first + ' '.join(item)]
+                toformat = [first + " ".join(item)]
                 do_format()  # re-create `result` from `toformat`
                 _dummy, new_item = result[0]
                 result.insert(0, (itemindent - indent, [new_item[0]]))
@@ -348,9 +352,11 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def depart_document(self, node: Node) -> None:
         self.end_state()
-        self.body = self.nl.join(line and (' '*indent + line)
-                                 for indent, lines in self.states[0]
-                                 for line in lines)
+        self.body = self.nl.join(
+            line and (" " * indent + line)
+            for indent, lines in self.states[0]
+            for line in lines
+        )
         # XXX header/footer?
 
     def visit_highlightlang(self, node: Node) -> None:
@@ -375,10 +381,10 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def visit_rubric(self, node: Node) -> None:
         self.new_state(0)
-        self.add_text('-[ ')
+        self.add_text("-[ ")
 
     def depart_rubric(self, node: Node) -> None:
-        self.add_text(' ]-')
+        self.add_text(" ]-")
         self.end_state()
 
     def visit_compound(self, node: Node) -> None:
@@ -396,11 +402,10 @@ class MarkdownTranslator(nodes.NodeVisitor):
     def visit_title(self, node: Node) -> None:
         depth = -1
         element = node.parent
-        while (element is not None):
+        while element is not None:
             depth += 1
             element = element.parent
-        self.add_text(self.nl * 2 + (depth * '#') + ' ')
-
+        self.add_text(self.nl * 2 + (depth * "#") + " ")
 
     def depart_title(self, node: Node) -> None:
         pass
@@ -412,7 +417,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_attribution(self, node: Node) -> None:
-        self.add_text('-- ')
+        self.add_text("-- ")
 
     def depart_attribution(self, node: Node) -> None:
         pass
@@ -449,31 +454,31 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_desc_returns(self, node: Node) -> None:
-        self.add_text(' -> ')
+        self.add_text(" -> ")
 
     def depart_desc_returns(self, node: Node) -> None:
         pass
 
     def visit_desc_parameterlist(self, node: Node) -> None:
-        self.add_text('(')
+        self.add_text("(")
         self.first_param = 1
 
     def depart_desc_parameterlist(self, node: Node) -> None:
-        self.add_text(')')
+        self.add_text(")")
 
     def visit_desc_parameter(self, node: Node) -> None:
         if not self.first_param:
-            self.add_text(', ')
+            self.add_text(", ")
         else:
             self.first_param = 0
         self.add_text(node.astext())
         raise nodes.SkipNode
 
     def visit_desc_optional(self, node: Node) -> None:
-        self.add_text('[')
+        self.add_text("[")
 
     def depart_desc_optional(self, node: Node) -> None:
-        self.add_text(']')
+        self.add_text("]")
 
     def visit_desc_annotation(self, node: Node) -> None:
         pass
@@ -504,15 +509,15 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.new_state()
         names = []
         for production in node:
-            names.append(production['tokenname'])
+            names.append(production["tokenname"])
         maxlen = max(len(name) for name in names)
         lastname = None
         for production in node:
-            if production['tokenname']:
-                self.add_text(production['tokenname'].ljust(maxlen) + ' ::=')
-                lastname = production['tokenname']
+            if production["tokenname"]:
+                self.add_text(production["tokenname"].ljust(maxlen) + " ::=")
+                lastname = production["tokenname"]
             elif lastname is not None:
-                self.add_text('%s    ' % (' '*len(lastname)))
+                self.add_text("%s    " % (" " * len(lastname)))
             self.add_text(production.astext() + self.nl)
         self.end_state(wrap=False)
         raise nodes.SkipNode
@@ -522,17 +527,17 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.new_state(len(self._footnote) + 3)
 
     def depart_footnote(self, node: Node) -> None:
-        self.end_state(first='[%s] ' % self._footnote)
+        self.end_state(first="[%s] " % self._footnote)
 
     def visit_citation(self, node: Node) -> None:
         if len(node) and isinstance(node[0], nodes.label):
             self._citlabel = node[0].astext()
         else:
-            self._citlabel = ''
+            self._citlabel = ""
         self.new_state(len(self._citlabel) + 3)
 
     def depart_citation(self, node: Node) -> None:
-        self.end_state(first='[%s] ' % self._citlabel)
+        self.end_state(first="[%s] " % self._citlabel)
 
     def visit_label(self, node: Node) -> None:
         raise nodes.SkipNode
@@ -561,13 +566,13 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self._firstoption = True
 
     def depart_option_group(self, node: Node) -> None:
-        self.add_text('     ')
+        self.add_text("     ")
 
     def visit_option(self, node: Node) -> None:
         if self._firstoption:
             self._firstoption = False
         else:
-            self.add_text(', ')
+            self.add_text(", ")
 
     def depart_option(self, node: Node) -> None:
         pass
@@ -579,7 +584,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_argument(self, node: Node) -> None:
-        self.add_text(node['delimiter'])
+        self.add_text(node["delimiter"])
 
     def depart_option_argument(self, node: Node) -> None:
         pass
@@ -594,7 +599,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_colspec(self, node: Node) -> None:
-        self.table[0].append(node['colwidth'])
+        self.table[0].append(node["colwidth"])
         raise nodes.SkipNode
 
     def visit_tgroup(self, node: Node) -> None:
@@ -610,7 +615,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_tbody(self, node: Node) -> None:
-        self.table.append('sep')
+        self.table.append("sep")
 
     def depart_tbody(self, node: Node) -> None:
         pass
@@ -622,9 +627,10 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_entry(self, node: Node) -> None:
-        if 'morerows' in node or 'morecols' in node:
-            raise NotImplementedError('Column or row spanning cells are '
-                                      'not implemented.')
+        if "morerows" in node or "morecols" in node:
+            raise NotImplementedError(
+                "Column or row spanning cells are not implemented."
+            )
         self.new_state(0)
 
     def depart_entry(self, node: Node) -> None:
@@ -634,7 +640,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node: Node) -> None:
         if self.table:
-            raise NotImplementedError('Nested tables are not supported.')
+            raise NotImplementedError("Nested tables are not supported.")
         self.new_state(0)
         self.table = [[]]
         self
@@ -645,7 +651,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         colwidths = self.table[0]
         realwidths = colwidths[:]
         separator = 0
-        self.add_text(f'<!-- {node.tagname} -->')
+        self.add_text(f"<!-- {node.tagname} -->")
         # self.add_text(f'<!-- {json.dumps(self.table)} -->')
 
         # don't allow paragraphs in table cells for now
@@ -697,29 +703,32 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def visit_acks(self, node: Node) -> None:
         self.new_state(0)
-        self.add_text(', '.join(n.astext() for n in node.children[0].children) +
-                      '.')
+        self.add_text(", ".join(n.astext() for n in node.children[0].children) + ".")
         self.end_state()
         raise nodes.SkipNode
 
     def visit_image(self, node: Node) -> None:
         try:
-            image_name = '/'.join(node.attributes['uri'].split('/')[node.attributes['uri'].split('/').index('_static')-1:])
+            image_name = "/".join(
+                node.attributes["uri"].split("/")[
+                    node.attributes["uri"].split("/").index("_static") - 1 :
+                ]
+            )
         except ValueError as e:
             print(f"Image not found where expected {node.attributes['uri']}")
             raise nodes.SkipNode
-        image_name = ''.join(image_name.split())
+        image_name = "".join(image_name.split())
         self.new_state(0)
-        if 'alt' in node.attributes:
-            self.add_text(f'![{node["alt"]}]({image_name})' + self.nl)
-        self.add_text(f'![image]({image_name})' + self.nl)
+        if "alt" in node.attributes:
+            self.add_text(f"![{node['alt']}]({image_name})" + self.nl)
+        self.add_text(f"![image]({image_name})" + self.nl)
         self.end_state(False)
         raise nodes.SkipNode
 
     def visit_transition(self, node: Node) -> None:
         indent = sum(self.stateindent)
         self.new_state(0)
-        self.add_text('=' * (MAXWIDTH - indent))
+        self.add_text("=" * (MAXWIDTH - indent))
         self.end_state()
         raise nodes.SkipNode
 
@@ -730,7 +739,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.list_counter.pop()
 
     def visit_enumerated_list(self, node: Node) -> None:
-        self.list_counter.append(node.get('start', 1) - 1)
+        self.list_counter.append(node.get("start", 1) - 1)
 
     def depart_enumerated_list(self, node: Node) -> None:
         self.list_counter.pop()
@@ -755,11 +764,11 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def depart_list_item(self, node: Node) -> None:
         if self.list_counter[-1] == -1:
-            self.end_state(first='* ')
+            self.end_state(first="* ")
         elif self.list_counter[-1] == -2:
             pass
         else:
-            self.end_state(first='%s. ' % self.list_counter[-1])
+            self.end_state(first="%s. " % self.list_counter[-1])
 
     def visit_definition_list_item(self, node: Node) -> None:
         self._classifier_count_in_li = len(node.traverse(nodes.classifier))
@@ -775,11 +784,11 @@ class MarkdownTranslator(nodes.NodeVisitor):
             self.end_state(end=None)
 
     def visit_termsep(self, node: Node) -> None:
-        self.add_text(', ')
+        self.add_text(", ")
         raise nodes.SkipNode
 
     def visit_classifier(self, node: Node) -> None:
-        self.add_text(' : ')
+        self.add_text(" : ")
 
     def depart_classifier(self, node: Node) -> None:
         self._classifier_count_in_li -= 1
@@ -808,7 +817,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.new_state(0)
 
     def depart_field_name(self, node: Node) -> None:
-        self.add_text(':')
+        self.add_text(":")
         self.end_state(end=None)
 
     def visit_field_body(self, node: Node) -> None:
@@ -849,37 +858,39 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def _make_depart_admonition(name: str):
         def depart_admonition(self, node: Node) -> None:
-            self.end_state(first=admonitionlabels[name] + ': ')
+            self.end_state(first=admonitionlabels[name] + ": ")
+
         return depart_admonition
 
     def _make_depart_alert_box(name: str):
         def depart_alert_box(self, node: Node) -> None:
             self.clear_last_state()
             MarkdownTranslator.resolve_reference_in_node(node)
-            lines = node.astext().split('\n')
-            quoteLines = [f'> {line}\n>' for line in lines]
-            mdStr = '\n> [!{0}]\n{1}'.format(name, '\n'.join(quoteLines))
+            lines = node.astext().split("\n")
+            quoteLines = [f"> {line}\n>" for line in lines]
+            mdStr = "\n> [!{0}]\n{1}".format(name, "\n".join(quoteLines))
             self.add_text(mdStr)
+
         return depart_alert_box
 
     visit_attention = _visit_admonition
-    depart_attention = _make_depart_admonition('attention')
+    depart_attention = _make_depart_admonition("attention")
     visit_caution = _visit_admonition
-    depart_caution = _make_depart_alert_box('CAUTION')
+    depart_caution = _make_depart_alert_box("CAUTION")
     visit_danger = _visit_admonition
-    depart_danger = _make_depart_admonition('danger')
+    depart_danger = _make_depart_admonition("danger")
     visit_error = _visit_admonition
-    depart_error = _make_depart_admonition('error')
+    depart_error = _make_depart_admonition("error")
     visit_hint = _visit_admonition
-    depart_hint = _make_depart_admonition('hint')
+    depart_hint = _make_depart_admonition("hint")
     visit_important = _visit_admonition
-    depart_important = _make_depart_alert_box('IMPORTANT')
+    depart_important = _make_depart_alert_box("IMPORTANT")
     visit_note = _visit_admonition
-    depart_note = _make_depart_alert_box('NOTE')
+    depart_note = _make_depart_alert_box("NOTE")
     visit_tip = _visit_admonition
-    depart_tip = _make_depart_alert_box('TIP')
+    depart_tip = _make_depart_alert_box("TIP")
     visit_warning = _visit_admonition
-    depart_warning = _make_depart_alert_box('WARNING')
+    depart_warning = _make_depart_alert_box("WARNING")
     visit_seealso = _visit_admonition
 
     def depart_seealso(self, node: Node) -> None:
@@ -898,48 +909,52 @@ class MarkdownTranslator(nodes.NodeVisitor):
             include_highlight = None
             include_caption = None
             path = self.builder.confdir
-            relative_path = node.attributes['source'][len(path)+1:]
+            relative_path = node.attributes["source"][len(path) + 1 :]
 
+            if "language" in node.attributes:
+                include_language = node.attributes["language"]
 
-            if 'language' in node.attributes:
-                    include_language = node.attributes['language']
+            if "language" in node.attributes:
+                include_language = node.attributes["language"]
 
-            if 'language' in node.attributes:
-                    include_language = node.attributes['language']
+            if "caption" in node.attributes:
+                include_caption = node.attributes["caption"]
 
-            if 'caption' in node.attributes:
-                    include_caption = node.attributes['caption']
+            include_language = (
+                ("-" + include_language) if (include_language is not None) else ""
+            )
+            include_caption = (
+                ('"' + include_caption + '"') if (include_caption is not None) else ""
+            )
 
-            include_language = (('-' + include_language) if (include_language is not None) else '')
-            include_caption = (('"' + include_caption + '"') if (include_caption is not None) else '')
-
-            self.add_text(f'<!--[!code{include_language}[Main]({relative_path} {include_caption})]-->')
+            self.add_text(
+                f"<!--[!code{include_language}[Main]({relative_path} {include_caption})]-->"
+            )
         except KeyError as e:
             pass
         except ValueError as e:
             pass
 
         self.new_state(0)
-        self.add_text(f'<!-- {node.tagname} {json.dumps(node.attributes)} -->')
+        self.add_text(f"<!-- {node.tagname} {json.dumps(node.attributes)} -->")
         self.end_state(wrap=False)
 
-        if 'language' in node.attributes:
-            self.add_text(f'````{node.attributes["language"]}')
+        if "language" in node.attributes:
+            self.add_text(f"````{node.attributes['language']}")
         else:
-            self.add_text('````')
+            self.add_text("````")
         self.new_state()
 
-
     def depart_literal_block(self, node: Node) -> None:
-        self.add_text(self.nl + '````')
+        self.add_text(self.nl + "````")
         self.end_state(wrap=False)
 
     def visit_doctest_block(self, node: Node) -> None:
-        self.add_text(self.nl + '```')
+        self.add_text(self.nl + "```")
         self.new_state(0)
 
     def depart_doctest_block(self, node: Node) -> None:
-        self.add_text(self.nl + '```')
+        self.add_text(self.nl + "```")
         self.end_state(wrap=False)
 
     def visit_line_block(self, node: Node) -> None:
@@ -950,13 +965,13 @@ class MarkdownTranslator(nodes.NodeVisitor):
         self.lineblocklevel -= 1
         self.end_state(wrap=False, end=None)
         if not self.lineblocklevel:
-            self.add_text('\n')
+            self.add_text("\n")
 
     def visit_line(self, node: Node) -> None:
         pass
 
     def depart_line(self, node: Node) -> None:
-        self.add_text('\n')
+        self.add_text("\n")
 
     def visit_block_quote(self, node: Node) -> None:
         self.new_state()
@@ -971,19 +986,21 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_paragraph(self, node: Node) -> None:
-        if not isinstance(node.parent, nodes.Admonition) or \
-           isinstance(node.parent, addnodes.seealso):
+        if not isinstance(node.parent, nodes.Admonition) or isinstance(
+            node.parent, addnodes.seealso
+        ):
             self.new_state(0)
 
     def depart_paragraph(self, node: Node) -> None:
-        if not isinstance(node.parent, nodes.Admonition) or \
-           isinstance(node.parent, addnodes.seealso):
+        if not isinstance(node.parent, nodes.Admonition) or isinstance(
+            node.parent, addnodes.seealso
+        ):
             self.end_state()
 
     def visit_target(self, node: Node) -> None:
-        if node.hasattr('refid'):
+        if node.hasattr("refid"):
             self.new_state(0)
-            self.add_text(f'<a name={node.attributes["refid"]}></a>')
+            self.add_text(f"<a name={node.attributes['refid']}></a>")
             self.end_state()
         raise nodes.SkipNode
 
@@ -997,8 +1014,8 @@ class MarkdownTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_pending_xref(self, node: Node) -> None:
-        if 'refdomain' in node.attributes and node.attributes['refdomain'] == 'py':
-            self.add_text(f'<xref:{node.attributes["reftarget"]}>')
+        if "refdomain" in node.attributes and node.attributes["refdomain"] == "py":
+            self.add_text(f"<xref:{node.attributes['reftarget']}>")
         raise nodes.SkipNode
 
     def depart_pending_xref(self, node: Node) -> None:
@@ -1009,11 +1026,14 @@ class MarkdownTranslator(nodes.NodeVisitor):
         ref_string = None
         raw_ref_tilde_template = ":class:`~{0}`"
         raw_ref_template = ":class:`{0}`"
-        if 'refid' in node.attributes:
-            ref_string = f'<xref:{node.attributes["refid"]}>'
-        elif 'refuri' in node.attributes:
-            if 'http' in node.attributes['refuri'] or node.attributes['refuri'][0] == '/':
-                ref_string = f'[{node.astext()}]({node.attributes["refuri"]})'
+        if "refid" in node.attributes:
+            ref_string = f"<xref:{node.attributes['refid']}>"
+        elif "refuri" in node.attributes:
+            if (
+                "http" in node.attributes["refuri"]
+                or node.attributes["refuri"][0] == "/"
+            ):
+                ref_string = f"[{node.astext()}]({node.attributes['refuri']})"
             else:
                 # only use id in class and func refuri if its id exists
                 # otherwise, remove '.html#' in refuri
@@ -1021,21 +1041,31 @@ class MarkdownTranslator(nodes.NodeVisitor):
                 # case 0 - [module]#[class-uid] (go to if block to use class-uid instead)
                 # case 1 - [module]#module-[module] (go to else block to remove '.html#' in refuri)
                 # case 2 - [class]# (go to else block to remove path and '.html#' in refuri)
-                uri_fields = node.attributes['refuri'].split('#')
-                if len(uri_fields) > 1 and uri_fields[1] and not uri_fields[1].startswith('module'):
-                    node.attributes['refuri'] = uri_fields[1]
+                uri_fields = node.attributes["refuri"].split("#")
+                if (
+                    len(uri_fields) > 1
+                    and uri_fields[1]
+                    and not uri_fields[1].startswith("module")
+                ):
+                    node.attributes["refuri"] = uri_fields[1]
                 else:
-                    fname = os.path.split(node.attributes['refuri'])[-1]
-                    pos = fname.find('.html')
+                    fname = os.path.split(node.attributes["refuri"])[-1]
+                    pos = fname.find(".html")
                     if pos != -1:
-                        node.attributes['refuri'] = fname[0: pos]
-                
-                if node.parent.rawsource == raw_ref_tilde_template.format(node.attributes['refuri']) or node.parent.rawsource == raw_ref_template.format(node.attributes['refuri']) or node.parent.tagname == 'document':
-                    ref_string = node.attributes['refuri']
+                        node.attributes["refuri"] = fname[0:pos]
+
+                if (
+                    node.parent.rawsource
+                    == raw_ref_tilde_template.format(node.attributes["refuri"])
+                    or node.parent.rawsource
+                    == raw_ref_template.format(node.attributes["refuri"])
+                    or node.parent.tagname == "document"
+                ):
+                    ref_string = node.attributes["refuri"]
                 else:
-                    ref_string = cls.xref_template.format(node.attributes['refuri'])
+                    ref_string = cls.xref_template.format(node.attributes["refuri"])
         else:
-            ref_string = f'{node.tagname}<!-- {json.dumps(node.attributes)} -->'
+            ref_string = f"{node.tagname}<!-- {json.dumps(node.attributes)} -->"
 
         return ref_string
 
@@ -1048,7 +1078,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_number_reference(self, node: Node) -> None:
-        text = nodes.Text(node.get('title', '#'))
+        text = nodes.Text(node.get("title", "#"))
         self.visit_Text(text)
         raise nodes.SkipNode
 
@@ -1059,66 +1089,66 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_emphasis(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def depart_emphasis(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def visit_literal_emphasis(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def depart_literal_emphasis(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def visit_strong(self, node: Node) -> None:
-        self.add_text('**')
+        self.add_text("**")
 
     def depart_strong(self, node: Node) -> None:
-        self.add_text('**')
+        self.add_text("**")
 
     def visit_literal_strong(self, node: Node) -> None:
-        self.add_text('**')
+        self.add_text("**")
 
     def depart_literal_strong(self, node: Node) -> None:
-        self.add_text('**')
+        self.add_text("**")
 
     def visit_abbreviation(self, node: Node) -> None:
-        self.add_text('')
+        self.add_text("")
 
     def depart_abbreviation(self, node: Node) -> None:
-        if node.hasattr('explanation'):
-            self.add_text(' (%s)' % node['explanation'])
+        if node.hasattr("explanation"):
+            self.add_text(" (%s)" % node["explanation"])
 
     def visit_title_reference(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def depart_title_reference(self, node: Node) -> None:
-        self.add_text('*')
+        self.add_text("*")
 
     def visit_literal(self, node: Node) -> None:
-        self.add_text('`')
+        self.add_text("`")
 
     def depart_literal(self, node: Node) -> None:
-        self.add_text('`')
+        self.add_text("`")
 
     def visit_subscript(self, node: Node) -> None:
-        self.add_text('_')
+        self.add_text("_")
 
     def depart_subscript(self, node: Node) -> None:
         pass
 
     def visit_superscript(self, node: Node) -> None:
-        self.add_text('^')
+        self.add_text("^")
 
     def depart_superscript(self, node: Node) -> None:
         pass
 
     def visit_footnote_reference(self, node: Node) -> None:
-        self.add_text('[%s]' % node.astext())
+        self.add_text("[%s]" % node.astext())
         raise nodes.SkipNode
 
     def visit_citation_reference(self, node: Node) -> None:
-        self.add_text('[%s]' % node.astext())
+        self.add_text("[%s]" % node.astext())
         raise nodes.SkipNode
 
     def visit_Text(self, node: Text) -> None:
@@ -1134,12 +1164,12 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_inline(self, node: Node) -> None:
-        if 'xref' in node['classes'] or 'term' in node['classes']:
-            self.add_text('*')
+        if "xref" in node["classes"] or "term" in node["classes"]:
+            self.add_text("*")
 
     def depart_inline(self, node: Node) -> None:
-        if 'xref' in node['classes'] or 'term' in node['classes']:
-            self.add_text('*')
+        if "xref" in node["classes"] or "term" in node["classes"]:
+            self.add_text("*")
 
     def visit_container(self, node: Node) -> None:
         pass
@@ -1148,13 +1178,17 @@ class MarkdownTranslator(nodes.NodeVisitor):
         pass
 
     def visit_problematic(self, node: Node) -> None:
-        self.add_text('>>')
+        self.add_text(">>")
 
     def depart_problematic(self, node: Node) -> None:
-        self.add_text('<<')
+        self.add_text("<<")
 
     def visit_system_message(self, node: Node) -> None:
-        print(bcolors.WARNING + "System message warnings: %s" % node.astext() + bcolors.ENDC)
+        print(
+            bcolors.WARNING
+            + "System message warnings: %s" % node.astext()
+            + bcolors.ENDC
+        )
         raise nodes.SkipNode
 
     def visit_comment(self, node: Node) -> None:
@@ -1165,23 +1199,26 @@ class MarkdownTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_raw(self, node: Node) -> None:
-        if 'text' in node.get('format', '').split():
+        if "text" in node.get("format", "").split():
             self.new_state(0)
             self.add_text(node.astext())
-            self.end_state(wrap = False)
+            self.end_state(wrap=False)
         raise nodes.SkipNode
 
     def visit_math(self, node: Node) -> None:
-        self.builder.warn('using "math" markup without a Sphinx math extension '
-                          'active, please use one of the math extensions '
-                          'described at http://sphinx-doc.org/ext/math.html',
-                          (self.builder.env.docname, node.line))
+        self.builder.warn(
+            'using "math" markup without a Sphinx math extension '
+            "active, please use one of the math extensions "
+            "described at http://sphinx-doc.org/ext/math.html",
+            (self.builder.env.docname, node.line),
+        )
         raise nodes.SkipNode
 
     visit_math_block = visit_math
 
     def visit_substitution_reference(self, node: Node) -> None:
         pass
+
     def depart_substitution_reference(self, node: Node) -> None:
         pass
 
@@ -1190,4 +1227,4 @@ class MarkdownTranslator(nodes.NodeVisitor):
     depart_remarks = remarks.depart_remarks
 
     def unknown_visit(self, node: Node) -> None:
-        raise NotImplementedError('Unknown node: ' + node.__class__.__name__)
+        raise NotImplementedError("Unknown node: " + node.__class__.__name__)

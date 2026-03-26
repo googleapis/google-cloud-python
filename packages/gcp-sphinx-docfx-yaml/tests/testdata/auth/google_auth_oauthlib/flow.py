@@ -48,25 +48,25 @@ Here's an example of using :class:`InstalledAppFlow`::
     https://developers.google.com/identity/protocols/oauth2
 
 """
-from base64 import urlsafe_b64encode
+
 import hashlib
 import json
 import logging
+from base64 import urlsafe_b64encode
 
 try:
     from secrets import SystemRandom
 except ImportError:  # pragma: NO COVER
     from random import SystemRandom
-from string import ascii_letters, digits
 import webbrowser
 import wsgiref.simple_server
 import wsgiref.util
+from string import ascii_letters, digits
 
 import google.auth.transport.requests
 import google.oauth2.credentials
 
 import google_auth_oauthlib.helpers
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -378,7 +378,7 @@ class InstalledAppFlow(Flow):
         open_browser=True,
         redirect_uri_trailing_slash=True,
         timeout_seconds=None,
-        **kwargs
+        **kwargs,
     ):
         """Run the flow using the server strategy.
 

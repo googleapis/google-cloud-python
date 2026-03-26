@@ -19,16 +19,16 @@ import json
 import math
 import time
 import typing
-from typing import Optional, Callable
+from typing import Callable, Optional
 
-from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
-
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import datetime
     import queue
+
     from google.cloud.pubsub_v1 import types
     from google.protobuf.internal import containers
 

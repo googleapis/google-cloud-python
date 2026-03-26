@@ -24,7 +24,6 @@ from google.api_core import exceptions as api_exceptions
 from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
 
-
 _RETRYABLE_TYPES = (
     api_exceptions.TooManyRequests,  # 429
     api_exceptions.InternalServerError,  # 500

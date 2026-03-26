@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import grpc  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import grpc  # type: ignore
-
 from google.cloud.texttospeech_v1.types import cloud_tts
 
 from .base import DEFAULT_CLIENT_INFO, TextToSpeechTransport

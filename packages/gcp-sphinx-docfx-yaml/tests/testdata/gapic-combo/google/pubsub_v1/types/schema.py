@@ -15,7 +15,6 @@
 #
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.pubsub.v1",
     manifest={
@@ -39,6 +38,7 @@ class SchemaView(proto.Enum):
     r"""View of Schema object fields to be returned by GetSchema and
     ListSchemas.
     """
+
     SCHEMA_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -46,6 +46,7 @@ class SchemaView(proto.Enum):
 
 class Encoding(proto.Enum):
     r"""Possible encoding types for messages."""
+
     ENCODING_UNSPECIFIED = 0
     JSON = 1
     BINARY = 2
@@ -68,6 +69,7 @@ class Schema(proto.Message):
 
     class Type(proto.Enum):
         r"""Possible schema definition types."""
+
         TYPE_UNSPECIFIED = 0
         PROTOCOL_BUFFER = 1
         AVRO = 2

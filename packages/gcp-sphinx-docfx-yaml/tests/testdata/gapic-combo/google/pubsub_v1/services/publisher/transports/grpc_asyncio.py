@@ -16,19 +16,20 @@
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import empty_pb2  # type: ignore
 from google.pubsub_v1.types import pubsub
-from .base import PublisherTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, PublisherTransport
 from .grpc import PublisherGrpcTransport
 
 

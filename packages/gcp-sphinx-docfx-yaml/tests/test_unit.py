@@ -1,19 +1,17 @@
+import unittest
+
+from parameterized import parameterized
+from yaml import Loader, load
+
 from docfx_yaml import extension
 
-import unittest
-from parameterized import parameterized
-
-from yaml import load, Loader
 
 class TestGenerate(unittest.TestCase):
     def test_finds_unique_name(self):
-
         entries = {}
 
         # Disambiguate with unique entries.
-        schema_v1_entry = (
-            "google.cloud.aiplatform.v1.schema.predict.instance_v1.types"
-        )
+        schema_v1_entry = "google.cloud.aiplatform.v1.schema.predict.instance_v1.types"
         schema_v1beta2_entry = (
             "google.cloud.aiplatform.v1beta2.schema.predict.instance_v1.types"
         )
@@ -24,16 +22,13 @@ class TestGenerate(unittest.TestCase):
                 else:
                     entries[word] += 1
 
-        unique_v1_name = extension.find_unique_name(
-            schema_v1_entry.split("."), entries
-        )
+        unique_v1_name = extension.find_unique_name(schema_v1_entry.split("."), entries)
         unique_v1beta2_name = extension.find_unique_name(
             schema_v1beta2_entry.split("."), entries
         )
 
         self.assertEqual("v1.types", ".".join(unique_v1_name))
         self.assertEqual("v1beta2.types", ".".join(unique_v1beta2_name))
-
 
     test_entries = [
         [
@@ -61,6 +56,7 @@ class TestGenerate(unittest.TestCase):
             {},
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_disambiguates_toc_name(
         self,
@@ -73,9 +69,7 @@ class TestGenerate(unittest.TestCase):
         with open(expected_filename, "r") as expected_yaml_file:
             expected_yaml = load(expected_yaml_file, Loader=Loader)
 
-        disambiguated_names = extension.disambiguate_toc_name(
-            test_yaml
-        )
+        disambiguated_names = extension.disambiguate_toc_name(test_yaml)
 
         self.assertEqual(expected_yaml, test_yaml)
         self.assertEqual(expected_disambiguated_names, disambiguated_names)
@@ -173,12 +167,13 @@ Args:
         See <xref uid="google.cloud.requests.Session.request">request()</xref> documentation for details.
             """,
             [
-              "google.cloud.requests.Session",
-              "google.cloud.requests.tuple",
-              "google.cloud.requests.Session.request",
+                "google.cloud.requests.Session",
+                "google.cloud.requests.tuple",
+                "google.cloud.requests.Session.request",
             ],
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_resolves_references_in_summary(
         self,
@@ -188,25 +183,20 @@ Args:
     ):
         xrefs_to_check = []
         # Resolve over different regular expressions for different types of reference patterns.
-        content_to_resolve, xrefs = (
-            extension._resolve_reference_in_module_summary(
-                extension.REF_PATTERN,
-                test_docstring.split("\n"),
-            )
+        content_to_resolve, xrefs = extension._resolve_reference_in_module_summary(
+            extension.REF_PATTERN,
+            test_docstring.split("\n"),
         )
         xrefs_to_check.extend(xrefs)
 
-        resolved_content, xrefs = (
-            extension._resolve_reference_in_module_summary(
-                extension.REF_PATTERN_LAST,
-                content_to_resolve,
-            )
+        resolved_content, xrefs = extension._resolve_reference_in_module_summary(
+            extension.REF_PATTERN_LAST,
+            content_to_resolve,
         )
         xrefs_to_check.extend(xrefs)
 
         self.assertEqual(resolved_content, expected_content.split("\n"))
         self.assertCountEqual(xrefs_to_check, expected_xrefs)
-
 
     test_entries = [
         [
@@ -225,6 +215,7 @@ The <xref uid="google.cloud.kms.v1.KeyRing.name">name</xref> of the <xref uid="g
             ],
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_resolves_square_bracket_references(
         self,
@@ -232,16 +223,13 @@ The <xref uid="google.cloud.kms.v1.KeyRing.name">name</xref> of the <xref uid="g
         expected_summary,
         expected_xrefs,
     ):
-        resolved_summary, xrefs = (
-            extension._resolve_reference_in_module_summary(
-                extension.REF_PATTERN_BRACKETS,
-                summary.split("\n"),
-            )
+        resolved_summary, xrefs = extension._resolve_reference_in_module_summary(
+            extension.REF_PATTERN_BRACKETS,
+            summary.split("\n"),
         )
 
         self.assertEqual(resolved_summary, expected_summary.split("\n"))
         self.assertCountEqual(xrefs, expected_xrefs)
-
 
     def test_raises_error_for_invalid_references(self):
         with self.assertRaises(ValueError):
@@ -249,7 +237,6 @@ The <xref uid="google.cloud.kms.v1.KeyRing.name">name</xref> of the <xref uid="g
                 ".*",
                 "not a valid ref line".split("\n"),
             )
-
 
     test_entries = [
         [
@@ -278,14 +265,18 @@ Raises:
                         "description": "simple description for `arg2`.",
                     },
                 },
-                "returns": [{
-                    "var_type": "str",
-                    "description": "simple description for return value.",
-                }],
-                "exceptions": [{
-                    "var_type": "AttributeError",
-                    "description": "if `condition x`.",
-                }],
+                "returns": [
+                    {
+                        "var_type": "str",
+                        "description": "simple description for return value.",
+                    }
+                ],
+                "exceptions": [
+                    {
+                        "var_type": "AttributeError",
+                        "description": "if `condition x`.",
+                    }
+                ],
             },
         ],
         [
@@ -315,16 +306,19 @@ Simple test for docstring.
                         "description": "simple description for `arg2`.",
                     },
                 },
-                "returns": [{
-                    "var_type": "str",
-                    "description": "simple description for return value.",
-                }],
-                "exceptions": [{
-                    "var_type": "AttributeError",
-                    "description": "if `condition x`.",
-                }],
+                "returns": [
+                    {
+                        "var_type": "str",
+                        "description": "simple description for return value.",
+                    }
+                ],
+                "exceptions": [
+                    {
+                        "var_type": "AttributeError",
+                        "description": "if `condition x`.",
+                    }
+                ],
             },
-
         ],
         [
             # Tests summary for docstring tokens and not custom fields
@@ -348,7 +342,7 @@ It could return :param: with :returns as well.
                 "variables": {},
                 "returns": [],
                 "exceptions": [],
-            }
+            },
         ],
         [
             # Tests summary with xrefs
@@ -369,7 +363,7 @@ Simple test for docstring.
             {
                 "variables": {
                     "arg1": {
-                        "var_type": "<xref uid=\"google.spanner_v1.type.Type\">Type</xref>",
+                        "var_type": '<xref uid="google.spanner_v1.type.Type">Type</xref>',
                         "description": "simple description.",
                     },
                     "arg2": {
@@ -377,14 +371,18 @@ Simple test for docstring.
                         "description": "simple description for `arg2`.",
                     },
                 },
-                "returns": [{
-                    "var_type": "<xref uid=\"Pair\">Pair</xref>",
-                    "description": "simple description for return value.",
-                }],
-                "exceptions": [{
-                    "var_type": "<xref uid=\"SpannerException\">SpannerException</xref>",
-                    "description": "if `condition x`.",
-                }],
+                "returns": [
+                    {
+                        "var_type": '<xref uid="Pair">Pair</xref>',
+                        "description": "simple description for return value.",
+                    }
+                ],
+                "exceptions": [
+                    {
+                        "var_type": '<xref uid="SpannerException">SpannerException</xref>',
+                        "description": "if `condition x`.",
+                    }
+                ],
             },
         ],
         [
@@ -412,30 +410,27 @@ Raises:
                         "description": "simple description for `arg2`.",
                     },
                 },
-                "returns": [{
-                    "var_type": "str",
-                    "description": "simple description for return value.",
-                }],
-                "exceptions": [{
-                    "var_type": "AttributeError",
-                    "description": "if `condition x`.",
-                }],
+                "returns": [
+                    {
+                        "var_type": "str",
+                        "description": "simple description for return value.",
+                    }
+                ],
+                "exceptions": [
+                    {
+                        "var_type": "AttributeError",
+                        "description": "if `condition x`.",
+                    }
+                ],
             },
-
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_extracts_docstring_info(
-        self,
-        summary,
-        expected_top_summary,
-        expected_summary_info
+        self, summary, expected_top_summary, expected_summary_info
     ):
-        summary_info = {
-            "variables": {},
-            "returns": [],
-            "exceptions": []
-        }
+        summary_info = {"variables": {}, "returns": [], "exceptions": []}
 
         top_summary = extension._extract_docstring_info(
             summary_info,
@@ -445,7 +440,6 @@ Raises:
 
         self.assertEqual(top_summary, expected_top_summary)
         self.assertDictEqual(summary_info, expected_summary_info)
-
 
     test_entries = [
         [
@@ -468,6 +462,7 @@ Raises:
             "Malformed docstring",
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_raises_error_extracting_malformed_docstring(
         self,
@@ -478,13 +473,13 @@ Raises:
         with self.assertRaises(error_type):
             extension._extract_docstring_info({}, summary, error_string)
 
-
     test_entries = [
         [
             "google.cloud.spanner_v1beta2.services.admin_database_v1.types",
             "google.cloud.spanner_v1beta2",
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_finds_package_group(
         self,
@@ -495,13 +490,13 @@ Raises:
 
         self.assertEqual(package_group, expected_package_group)
 
-
     test_entries = [
         [
             "google.cloud.spanner_v1beta2",
             "Spanner V1beta2",
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_finds_pretty_package_name(
         self,
@@ -512,113 +507,125 @@ Raises:
 
         self.assertEqual(package_name, expected_package_name)
 
-
     test_entries = [
         [
             # toc_yaml entry
-            [{
-              "name":"database_admin",
-              "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
-              "items":[
-                  {
-                    "name":"Overview",
-                    "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
-                    "uid":"google.cloud.spanner_admin_database_v1.services.database_admin"
-                  },
-                  {
-                    "name":"ListBackupOperationsAsyncPager",
-                    "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
-                    "uid":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager"
-                  }
-              ]
-            },
-            {
-              "name":"spanner_admin_database_v1.types",
-              "uidname":"google.cloud.spanner_admin_database_v1.types",
-              "items":[
-                  {
-                    "name":"Overview",
-                    "uidname":"google.cloud.spanner_admin_database_v1.types",
-                    "uid":"google.cloud.spanner_admin_database_v1.types"
-                  },
-                  {
-                    "name":"BackupInfo",
-                    "uidname":"google.cloud.spanner_admin_database_v1.types.BackupInfo",
-                    "uid":"google.cloud.spanner_admin_database_v1.types.BackupInfo"
-                  }
-              ]
-            },
-            {
-              "name":"pool",
-              "uidname":"google.cloud.spanner_v1.pool",
-              "items":[
-                  {
-                    "name":"Overview",
-                    "uidname":"google.cloud.spanner_v1.pool",
-                    "uid":"google.cloud.spanner_v1.pool"
-                  },
-                  {
-                    "name":"AbstractSessionPool",
-                    "uidname":"google.cloud.spanner_v1.pool.AbstractSessionPool",
-                    "uid":"google.cloud.spanner_v1.pool.AbstractSessionPool"
-                  }
-              ]
-            }],
+            [
+                {
+                    "name": "database_admin",
+                    "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                    "items": [
+                        {
+                            "name": "Overview",
+                            "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                            "uid": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                        },
+                        {
+                            "name": "ListBackupOperationsAsyncPager",
+                            "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                            "uid": "google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                        },
+                    ],
+                },
+                {
+                    "name": "spanner_admin_database_v1.types",
+                    "uidname": "google.cloud.spanner_admin_database_v1.types",
+                    "items": [
+                        {
+                            "name": "Overview",
+                            "uidname": "google.cloud.spanner_admin_database_v1.types",
+                            "uid": "google.cloud.spanner_admin_database_v1.types",
+                        },
+                        {
+                            "name": "BackupInfo",
+                            "uidname": "google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                            "uid": "google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                        },
+                    ],
+                },
+                {
+                    "name": "pool",
+                    "uidname": "google.cloud.spanner_v1.pool",
+                    "items": [
+                        {
+                            "name": "Overview",
+                            "uidname": "google.cloud.spanner_v1.pool",
+                            "uid": "google.cloud.spanner_v1.pool",
+                        },
+                        {
+                            "name": "AbstractSessionPool",
+                            "uidname": "google.cloud.spanner_v1.pool.AbstractSessionPool",
+                            "uid": "google.cloud.spanner_v1.pool.AbstractSessionPool",
+                        },
+                    ],
+                },
+            ],
             # expected_toc_yaml entry
             [
                 {
                     "name": "Spanner Admin Database V1",
-                    "uidname":"google.cloud.spanner_admin_database_v1",
-                    "items": [{
-                        "name":"database_admin",
-                        "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
-                        "items": [{
-                            "name":"Overview",
-                            "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
-                            "uid":"google.cloud.spanner_admin_database_v1.services.database_admin"
+                    "uidname": "google.cloud.spanner_admin_database_v1",
+                    "items": [
+                        {
+                            "name": "database_admin",
+                            "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                            "items": [
+                                {
+                                    "name": "Overview",
+                                    "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                                    "uid": "google.cloud.spanner_admin_database_v1.services.database_admin",
+                                },
+                                {
+                                    "name": "ListBackupOperationsAsyncPager",
+                                    "uidname": "google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                                    "uid": "google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                                },
+                            ],
                         },
                         {
-                            "name":"ListBackupOperationsAsyncPager",
-                            "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
-                            "uid":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
-                        }],
-                    },
-                    {
-                        "name":"spanner_admin_database_v1.types",
-                        "uidname":"google.cloud.spanner_admin_database_v1.types",
-                        "items": [{
-                            "name":"Overview",
-                            "uidname":"google.cloud.spanner_admin_database_v1.types",
-                            "uid":"google.cloud.spanner_admin_database_v1.types",
+                            "name": "spanner_admin_database_v1.types",
+                            "uidname": "google.cloud.spanner_admin_database_v1.types",
+                            "items": [
+                                {
+                                    "name": "Overview",
+                                    "uidname": "google.cloud.spanner_admin_database_v1.types",
+                                    "uid": "google.cloud.spanner_admin_database_v1.types",
+                                },
+                                {
+                                    "name": "BackupInfo",
+                                    "uidname": "google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                                    "uid": "google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                                },
+                            ],
                         },
-                        {
-                            "name":"BackupInfo",
-                            "uidname":"google.cloud.spanner_admin_database_v1.types.BackupInfo",
-                            "uid":"google.cloud.spanner_admin_database_v1.types.BackupInfo",
-                        }],
-                    }],
+                    ],
                 },
                 {
                     "name": "Spanner V1",
-                    "uidname":"google.cloud.spanner_v1",
-                    "items": [{
-                        "name":"pool",
-                        "uidname":"google.cloud.spanner_v1.pool",
-                        "items": [{
-                            "name":"Overview",
-                            "uidname":"google.cloud.spanner_v1.pool",
-                            "uid":"google.cloud.spanner_v1.pool"
-                        },
+                    "uidname": "google.cloud.spanner_v1",
+                    "items": [
                         {
-                            "name":"AbstractSessionPool",
-                            "uidname":"google.cloud.spanner_v1.pool.AbstractSessionPool",
-                            "uid":"google.cloud.spanner_v1.pool.AbstractSessionPool",
-                        }],
-                    }],
+                            "name": "pool",
+                            "uidname": "google.cloud.spanner_v1.pool",
+                            "items": [
+                                {
+                                    "name": "Overview",
+                                    "uidname": "google.cloud.spanner_v1.pool",
+                                    "uid": "google.cloud.spanner_v1.pool",
+                                },
+                                {
+                                    "name": "AbstractSessionPool",
+                                    "uidname": "google.cloud.spanner_v1.pool.AbstractSessionPool",
+                                    "uid": "google.cloud.spanner_v1.pool.AbstractSessionPool",
+                                },
+                            ],
+                        }
+                    ],
                 },
             ],
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_groups_by_package(
         self,
@@ -629,11 +636,10 @@ Raises:
 
         self.assertCountEqual(toc_yaml, expected_toc_yaml)
 
-
     test_entries = [
         [
-            (\
-"""
+            (
+                """
 
 
 .. code-block:: python
@@ -661,8 +667,8 @@ You can also pass a mapping object.
 \n        })
 """
             ),
-            (\
-"""```python
+            (
+                """```python
 from google.api_core.client_options import ClientOptions
 
 from google.cloud.vision_v1 import ImageAnnotatorClient
@@ -701,16 +707,16 @@ client = ImageAnnotatorClient(
         ],
         [
             # Check that nothing changes for literalincludes.
-            (\
-"""
+            (
+                """
 .. literalinclude::
     note that these are not supported yet, so they will be ignored for now.
 
 And any other documentation that the source code would have could go here.
 """
             ),
-            (\
-"""
+            (
+                """
 .. literalinclude::
     note that these are not supported yet, so they will be ignored for now.
 
@@ -721,8 +727,8 @@ And any other documentation that the source code would have could go here.
         ],
         [
             # Tests notices are processed properly.
-            (\
-"""
+            (
+                """
 .. note::
 \n    this is a note.
 
@@ -735,8 +741,8 @@ And any other documentation that the source code would have could go here.
 \n    hyphenated term notice.
 """
             ),
-            (\
-"""<aside class="note">
+            (
+                """<aside class="note">
 <b>Note:</b>
 this is a note.
 </aside>
@@ -751,24 +757,22 @@ hyphenated term notice.
             ),
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_parses_docstring_summary(
         self,
         summary,
         expected_summary,
     ):
-        parsed_summary, attributes, enums = (
-            extension._parse_docstring_summary(summary)
-        )
+        parsed_summary, attributes, enums = extension._parse_docstring_summary(summary)
         self.assertEqual(parsed_summary, expected_summary)
         self.assertEqual(attributes, [])
         self.assertEqual(enums, [])
 
-
     test_entries = [
         [
-            (\
-"""
+            (
+                """
 
 
 .. code:: python
@@ -781,8 +785,8 @@ hyphenated term notice.
             ValueError,
         ],
         [
-            (\
-"""
+            (
+                """
 .. warning::
 this is not a properly formatted warning.
 """
@@ -790,8 +794,8 @@ this is not a properly formatted warning.
             ValueError,
         ],
         [
-            (\
-"""
+            (
+                """
 Values:
 BAD_FORMATTING (-1): this is not properly formatted enum.
 """
@@ -799,20 +803,16 @@ BAD_FORMATTING (-1): this is not properly formatted enum.
             ValueError,
         ],
     ]
+
     @parameterized.expand(test_entries)
-    def test_raises_error_parsing_malformed_docstring(
-        self,
-        summary,
-        error_type
-    ):
+    def test_raises_error_parsing_malformed_docstring(self, summary, error_type):
         with self.assertRaises(error_type):
             extension._parse_docstring_summary(summary)
 
-
     test_entries = [
         [
-            (\
-"""
+            (
+                """
 
 
 .. attribute:: simple name
@@ -822,17 +822,19 @@ BAD_FORMATTING (-1): this is not properly formatted enum.
 \n:type: str
 """
             ),
-            [{
-                "id": "simple name",
-                "description": "simple description",
-                "var_type": "str",
-            }],
+            [
+                {
+                    "id": "simple name",
+                    "description": "simple description",
+                    "var_type": "str",
+                }
+            ],
             [],
         ],
         [
             # Tests for multiple attributes.
-            (\
-"""
+            (
+                """
 
 
 .. attribute:: simple name
@@ -849,22 +851,24 @@ BAD_FORMATTING (-1): this is not properly formatted enum.
 \n:type: google.cloud.bigquery_logging_v1.types.TableInsertRequest
 """
             ),
-            [{
-                "id": "simple name",
-                "description": "simple description",
-                "var_type": "str",
-            },
-            {
-                "id": "table_insert_request",
-                "description": "Table insert request.",
-                "var_type": "google.cloud.bigquery_logging_v1.types.TableInsertRequest",
-            }],
+            [
+                {
+                    "id": "simple name",
+                    "description": "simple description",
+                    "var_type": "str",
+                },
+                {
+                    "id": "table_insert_request",
+                    "description": "Table insert request.",
+                    "var_type": "google.cloud.bigquery_logging_v1.types.TableInsertRequest",
+                },
+            ],
             [],
         ],
         [
             # Tests only attributes in valid format are parsed.
-            (\
-"""
+            (
+                """
 
 
 .. attribute:: table_insert_request
@@ -881,17 +885,19 @@ BAD_FORMATTING (-1): this is not properly formatted enum.
 \n:type: str
 """
             ),
-            [{
-                "id": "proper name",
-                "description": "proper description.",
-                "var_type": "str",
-            }],
+            [
+                {
+                    "id": "proper name",
+                    "description": "proper description.",
+                    "var_type": "str",
+                }
+            ],
             [],
         ],
         [
             # Tests enums are parsed.
-            (\
-"""
+            (
+                """
 Values:
     EMPLOYMENT_TYPE_UNSPECIFIED (0):
         The default value if the employment type isn't specified.
@@ -908,8 +914,7 @@ Values:
                 {
                     "id": "EMPLOYMENT_TYPE_UNSPECIFIED",
                     "description": (
-                        "The default value if the employment type isn't"
-                        " specified."
+                        "The default value if the employment type isn't specified."
                     ),
                 },
                 {
@@ -927,10 +932,10 @@ Values:
                         " time job, typically less than 40 hours a week."
                     ),
                 },
-
             ],
         ],
     ]
+
     @parameterized.expand(test_entries)
     def test_parses_docstring_summary_for_attributes_and_enums(
         self,
@@ -943,15 +948,10 @@ Values:
         self.assertCountEqual(attributes, expected_attributes)
         self.assertCountEqual(enums, expected_enums)
 
-        for attribute, expected_attribute in zip(
-            attributes, expected_attributes
-        ):
+        for attribute, expected_attribute in zip(attributes, expected_attributes):
             self.assertDictEqual(attribute, expected_attribute)
-        for enum, expected_enum in zip(
-            enums, expected_enums
-        ):
+        for enum, expected_enum in zip(enums, expected_enums):
             self.assertDictEqual(enum, expected_enum)
-
 
     def test_merges_markdown_and_package_toc(self):
         known_uids = {
@@ -974,19 +974,20 @@ Values:
                 {"name": "Batches", "href": "batch.md"},
                 {"name": "Constants", "href": "constants.md"},
                 {"name": "Storage Client", "href": "client.md"},
-                {"name": "Blobs / Objects", "href": "blobs.md"}
+                {"name": "Blobs / Objects", "href": "blobs.md"},
             ],
             "acl": [
                 {"name": "ACL", "href": "acl.md"},
-                {"name": "ACL guide", "href": "acl_guide.md"}
+                {"name": "ACL guide", "href": "acl_guide.md"},
             ],
             "/": [
                 {"name": "Overview", "href": "index.md"},
-                {"name": "Changelog", "href": "changelog.md"}
+                {"name": "Changelog", "href": "changelog.md"},
             ],
         }
         pkg_toc_yaml = [
-            {"name": "Storage",
+            {
+                "name": "Storage",
                 "items": [
                     {
                         "name": "acl",
@@ -1068,7 +1069,8 @@ Values:
                         "items": [
                             {
                                 "name": "Overview",
-                                "uid": "google.cloud.storage.notification"},
+                                "uid": "google.cloud.storage.notification",
+                            },
                         ],
                     },
                     {
@@ -1082,7 +1084,7 @@ Values:
                         ],
                     },
                 ],
-             },
+            },
         ]
 
         added_pages, merged_pkg_toc_yaml = extension.merge_markdown_and_package_toc(
@@ -1092,24 +1094,80 @@ Values:
         expected_merged_pkg_toc_yaml = [
             {"name": "Overview", "href": "index.md"},
             {"name": "Changelog", "href": "changelog.md"},
-            {"name": "Storage",
+            {
+                "name": "Storage",
                 "items": [
                     {"name": "Blobs / Objects", "href": "blobs.md"},
-                    {"name": "acl", "uid": "google.cloud.storage.acl", "items": [
-                        {"name": "ACL guide", "href": "acl_guide.md"},
-                        {"name": "Overview", "uid": "google.cloud.storage.acl"},
-                    ]},
-                    {"name": "batch", "uid": "google.cloud.storage.batch", "items": [{"name": "Overview", "uid": "google.cloud.storage.batch"}]},
-                    {"name": "blob", "uid": "google.cloud.storage.blob", "items": [{"name": "Overview", "uid": "google.cloud.storage.blob"}]},
-                    {"name": "bucket", "uid": "google.cloud.storage.bucket", "items": [{"name": "Overview", "uid": "google.cloud.storage.bucket"}]},
-                    {"name": "client", "uid": "google.cloud.storage.client", "items": [{"name": "Overview", "uid": "google.cloud.storage.client"}]},
+                    {
+                        "name": "acl",
+                        "uid": "google.cloud.storage.acl",
+                        "items": [
+                            {"name": "ACL guide", "href": "acl_guide.md"},
+                            {"name": "Overview", "uid": "google.cloud.storage.acl"},
+                        ],
+                    },
+                    {
+                        "name": "batch",
+                        "uid": "google.cloud.storage.batch",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.batch"}
+                        ],
+                    },
+                    {
+                        "name": "blob",
+                        "uid": "google.cloud.storage.blob",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.blob"}
+                        ],
+                    },
+                    {
+                        "name": "bucket",
+                        "uid": "google.cloud.storage.bucket",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.bucket"}
+                        ],
+                    },
+                    {
+                        "name": "client",
+                        "uid": "google.cloud.storage.client",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.client"}
+                        ],
+                    },
                     {"name": "constants", "uid": "google.cloud.storage.constants"},
-                    {"name": "fileio", "uid": "google.cloud.storage.fileio", "items": [{"name": "Overview", "uid": "google.cloud.storage.fileio"}]},
-                    {"name": "hmac_key", "uid": "google.cloud.storage.hmac_key", "items": [{"name": "Overview", "uid": "google.cloud.storage.hmac_key"}]},
-                    {"name": "notification", "uid": "google.cloud.storage.notification", "items": [{"name": "Overview", "uid": "google.cloud.storage.notification"}]},
-                    {"name": "retry", "uid": "google.cloud.storage.retry", "items": [{"name": "Overview", "uid": "google.cloud.storage.retry"}]},
-                ]
-             },
+                    {
+                        "name": "fileio",
+                        "uid": "google.cloud.storage.fileio",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.fileio"}
+                        ],
+                    },
+                    {
+                        "name": "hmac_key",
+                        "uid": "google.cloud.storage.hmac_key",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.hmac_key"}
+                        ],
+                    },
+                    {
+                        "name": "notification",
+                        "uid": "google.cloud.storage.notification",
+                        "items": [
+                            {
+                                "name": "Overview",
+                                "uid": "google.cloud.storage.notification",
+                            }
+                        ],
+                    },
+                    {
+                        "name": "retry",
+                        "uid": "google.cloud.storage.retry",
+                        "items": [
+                            {"name": "Overview", "uid": "google.cloud.storage.retry"}
+                        ],
+                    },
+                ],
+            },
         ]
         self.assertSetEqual(
             added_pages,
@@ -1118,99 +1176,118 @@ Values:
                 "changelog.md",
                 "blobs.md",
                 "acl_guide.md",
-            }
+            },
         )
-        self.assertListEqual(
-            merged_pkg_toc_yaml,
-            [
-                {"name": "Overview", "href": "index.md"},
-                {"name": "Changelog", "href": "changelog.md"},
-                {"name": "Storage",
-                    "items": [
-                        {"name": "Blobs / Objects", "href": "blobs.md"},
-                        {
-                            "name": "acl",
-                            "uid": "google.cloud.storage.acl",
-                            "items": [
-                                {"name": "ACL guide", "href": "acl_guide.md"},
-                                {
-                                    "name": "Overview",
-                                    "uid": "google.cloud.storage.acl",
-                                },
-                            ],
-                        },
-                        {
-                            "name": "batch",
-                            "uid": "google.cloud.storage.batch",
-                            "items": [{
-                                "name": "Overview",
+        (
+            self.assertListEqual(
+                merged_pkg_toc_yaml,
+                [
+                    {"name": "Overview", "href": "index.md"},
+                    {"name": "Changelog", "href": "changelog.md"},
+                    {
+                        "name": "Storage",
+                        "items": [
+                            {"name": "Blobs / Objects", "href": "blobs.md"},
+                            {
+                                "name": "acl",
+                                "uid": "google.cloud.storage.acl",
+                                "items": [
+                                    {"name": "ACL guide", "href": "acl_guide.md"},
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.acl",
+                                    },
+                                ],
+                            },
+                            {
+                                "name": "batch",
                                 "uid": "google.cloud.storage.batch",
-                            }],
-                        },
-                        {
-                            "name": "blob",
-                            "uid": "google.cloud.storage.blob",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.batch",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "blob",
                                 "uid": "google.cloud.storage.blob",
-                            }],
-                        },
-                        {
-                            "name": "bucket",
-                            "uid": "google.cloud.storage.bucket",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.blob",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "bucket",
                                 "uid": "google.cloud.storage.bucket",
-                            }],
-                        },
-                        {
-                            "name": "client",
-                            "uid": "google.cloud.storage.client",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.bucket",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "client",
                                 "uid": "google.cloud.storage.client",
-                            }],
-                        },
-                        {
-                            "name": "constants",
-                            "uid": "google.cloud.storage.constants",
-                        },
-                        {
-                            "name": "fileio",
-                            "uid": "google.cloud.storage.fileio",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.client",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "constants",
+                                "uid": "google.cloud.storage.constants",
+                            },
+                            {
+                                "name": "fileio",
                                 "uid": "google.cloud.storage.fileio",
-                            }],
-                        },
-                        {
-                            "name": "hmac_key",
-                            "uid": "google.cloud.storage.hmac_key",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.fileio",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "hmac_key",
                                 "uid": "google.cloud.storage.hmac_key",
-                            }],
-                        },
-                        {
-                            "name": "notification",
-                            "uid": "google.cloud.storage.notification",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.hmac_key",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "notification",
                                 "uid": "google.cloud.storage.notification",
-                            }],
-                        },
-                        {
-                            "name": "retry",
-                            "uid": "google.cloud.storage.retry",
-                            "items": [{
-                                "name": "Overview",
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.notification",
+                                    }
+                                ],
+                            },
+                            {
+                                "name": "retry",
                                 "uid": "google.cloud.storage.retry",
-                            }],
-                        },
-                    ],
-                },
-            ],
-        ),
+                                "items": [
+                                    {
+                                        "name": "Overview",
+                                        "uid": "google.cloud.storage.retry",
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            ),
+        )
 
 
 if __name__ == "__main__":

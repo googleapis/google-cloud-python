@@ -73,9 +73,9 @@ class MessagesOnHold(object):
                 if pending_queue is None:
                     # Create empty queue to indicate a message with the
                     # ordering key is in flight.
-                    self._pending_ordered_messages[
-                        msg.ordering_key
-                    ] = collections.deque()
+                    self._pending_ordered_messages[msg.ordering_key] = (
+                        collections.deque()
+                    )
                     self._size = self._size - 1
                     return msg
                 else:
@@ -118,9 +118,9 @@ class MessagesOnHold(object):
                 The callback to call to schedule a message to be sent to the user.
         """
         for key in ordering_keys:
-            assert (
-                self._pending_ordered_messages.get(key) is not None
-            ), "A message queue should exist for every ordered message in flight."
+            assert self._pending_ordered_messages.get(key) is not None, (
+                "A message queue should exist for every ordered message in flight."
+            )
             next_msg = self._get_next_for_ordering_key(key)
             if next_msg:
                 # Schedule the next message because the previous was dropped.
@@ -158,9 +158,9 @@ class MessagesOnHold(object):
             ordering_key: The ordering key to clean up.
         """
         message_queue = self._pending_ordered_messages.get(ordering_key)
-        assert (
-            message_queue is not None
-        ), "Cleaning up ordering key that does not exist."
+        assert message_queue is not None, (
+            "Cleaning up ordering key that does not exist."
+        )
         assert not len(message_queue), (
             "Ordering key must only be removed if there are no messages "
             "left for that key."

@@ -18,16 +18,18 @@
 This module is used to add extra supported directives to sphinx.
 """
 
-from docutils.parsers.rst.directives.admonitions import BaseAdmonition
-from docutils.parsers.rst import Directive
 from docutils import nodes
+from docutils.parsers.rst import Directive
+from docutils.parsers.rst.directives.admonitions import BaseAdmonition
 
 from .nodes import remarks
 
 
 class RemarksDirective(BaseAdmonition):
     """A directive to handle 'remarks' blocks."""
+
     node_class = remarks
+
 
 class TodoDirective(Directive):
     """A directive to ignore 'todo' blocks."""

@@ -26,17 +26,18 @@ a bit more work needs to be done to pull docstrings in raw format.
 """
 
 from docutils import nodes
+from sphinx import addnodes
 from sphinx.application import Sphinx
 from sphinx.util.console import bold, red
 from sphinx.util.docfields import _is_single_paragraph
-from sphinx import addnodes
+
 from .utils import _get_desc_data
 
 TITLE_MAP = {
-    'Returns': 'return',
-    'Return type': 'return_type',
-    'Raises': 'raises',
-    'Parameters': 'params',
+    "Returns": "return",
+    "Return type": "return_type",
+    "Raises": "raises",
+    "Parameters": "params",
 }
 
 
@@ -90,12 +91,12 @@ def _get_full_data(node: nodes.Node) -> dict:
 
         data.setdefault(uid, {})
 
-        if fieldtype == 'Returns':
+        if fieldtype == "Returns":
             for child in content:
                 ret_data = child.astext()
                 data[uid].setdefault(fieldtype, []).append(ret_data)
 
-        if fieldtype == 'Raises':
+        if fieldtype == "Raises":
             for child in content:
                 ret_data = child.astext()
                 data[uid].setdefault(fieldtype, []).append(ret_data)
@@ -117,7 +118,9 @@ def extract_info_lists(app: Sphinx, doctree: nodes.document) -> None:
     print(data)
 
 
-def extract_yaml(app: Sphinx, doctree: nodes.document, ignore_patterns: list[str]) -> tuple[list[dict], dict]:
+def extract_yaml(
+    app: Sphinx, doctree: nodes.document, ignore_patterns: list[str]
+) -> tuple[list[dict], dict]:
     """Iterate over all Python domain objects and output YAML.
 
     Args:
@@ -133,46 +136,47 @@ def extract_yaml(app: Sphinx, doctree: nodes.document, ignore_patterns: list[str
     modules = {}
 
     for desc_node in doctree.traverse(addnodes.desc):
-        if desc_node.attributes['domain'] != 'py':
-            app.info(bold('[docfx_yaml] ') + red(
-                'Skipping Domain Object (%s)' % desc_node.attributes['domain']
-            ))
+        if desc_node.attributes["domain"] != "py":
+            app.info(
+                bold("[docfx_yaml] ")
+                + red("Skipping Domain Object (%s)" % desc_node.attributes["domain"])
+            )
             continue
 
-        module = desc_node[0].attributes['module']
+        module = desc_node[0].attributes["module"]
 
         if not module:
-            app.info(bold('[docfx_yaml] ') + red(
-                'Skipping object with no module'
-            ))
+            app.info(bold("[docfx_yaml] ") + red("Skipping object with no module"))
             continue
 
         if module not in modules:
-            modules[module] = [{
-                'module': str(module),
-                'uid': str(module),
-                'type': 'Namespace',
-                'type': 'module',
-                'name': str(module),
-                'children': []
-            }]
+            modules[module] = [
+                {
+                    "module": str(module),
+                    "uid": str(module),
+                    "type": "Namespace",
+                    "type": "module",
+                    "name": str(module),
+                    "children": [],
+                }
+            ]
 
-        _type = desc_node.attributes['objtype']
-        full_name = desc_node[0].attributes['fullname']
+        _type = desc_node.attributes["objtype"]
+        full_name = desc_node[0].attributes["fullname"]
         try:
-            uid = desc_node[0].attributes['ids'][0]
+            uid = desc_node[0].attributes["ids"][0]
         except Exception:
-            uid = f'{module}.{full_name}'
-            print('Non-standard id: %s' % uid)
-        name = desc_node[0].attributes['names'][0]
+            uid = f"{module}.{full_name}"
+            print("Non-standard id: %s" % uid)
+        name = desc_node[0].attributes["names"][0]
         source = desc_node[0].source
         try:
             summary = desc_node[1][0].astext()
         except (KeyError, IndexError):
-            summary = ''
+            summary = ""
 
         try:
-            args = [arg.strip() for arg in desc_node[0][3].astext().split(',')]
+            args = [arg.strip() for arg in desc_node[0][3].astext().split(",")]
         except Exception:
             args = []
 
@@ -180,19 +184,19 @@ def extract_yaml(app: Sphinx, doctree: nodes.document, ignore_patterns: list[str
             full_name += f"({', '.join(args)})"
 
         datam = {
-            'module': str(module),
-            'uid': uid,
-            'type': _type,
-            'name': name,
-            'fullName': full_name,
-            'summary': summary,
-            'rst_source': source,
+            "module": str(module),
+            "uid": uid,
+            "type": _type,
+            "name": name,
+            "fullName": full_name,
+            "summary": summary,
+            "rst_source": source,
         }
 
-        if _type == 'method':
-            datam['class'] = '.'.join(name.split('.')[:-1])
-        if _type == 'class':
-            datam['children'] = []
+        if _type == "method":
+            datam["class"] = ".".join(name.split(".")[:-1])
+        if _type == "class":
+            datam["children"] = []
 
         # insert_children(_type, datam, modules)
         items.append(datam)

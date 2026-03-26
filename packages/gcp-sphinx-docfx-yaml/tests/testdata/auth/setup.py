@@ -14,9 +14,7 @@
 
 import io
 
-from setuptools import find_packages
-from setuptools import setup
-
+from setuptools import find_packages, setup
 
 TOOL_DEPENDENCIES = "click>=6.0.0"
 
@@ -42,7 +40,7 @@ setup(
     extras_require={"tool": TOOL_DEPENDENCIES},
     entry_points={
         "console_scripts": [
-            "google-oauthlib-tool" "=google_auth_oauthlib.tool.__main__:main [tool]"
+            "google-oauthlib-tool=google_auth_oauthlib.tool.__main__:main [tool]"
         ]
     },
     python_requires=">=3.6",

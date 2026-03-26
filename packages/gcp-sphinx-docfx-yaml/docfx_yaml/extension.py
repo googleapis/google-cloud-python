@@ -20,19 +20,20 @@ This extension allows you to automagically generate DocFX YAML from your Python 
 """
 
 import ast
-from collections import defaultdict
-from collections.abc import Mapping, MutableSet, Sequence
 import copy
-from functools import partial
 import inspect
-from itertools import zip_longest
 import json
 import logging
 import os
-from pathlib import Path
 import re
 import shutil
+from collections import defaultdict
+from collections.abc import Mapping, MutableSet, Sequence
+from functools import partial
+from itertools import zip_longest
+from pathlib import Path
 from typing import Any, Iterable
+
 import black
 from black import InvalidInput
 
@@ -41,61 +42,62 @@ try:
 except ImportError:
     from commands import getoutput
 
-from yaml import safe_dump as dump
+import ast
+import subprocess
 
 import sphinx.application
-from sphinx.util.console import darkgreen, bold
-from sphinx.util import ensuredir
+from docuploader import shell
 from sphinx.errors import ExtensionError
+from sphinx.ext.napoleon import Config, GoogleDocstring, _process_docstring
+from sphinx.util import ensuredir
+from sphinx.util.console import bold, darkgreen
 from sphinx.util.nodes import make_refnode
-from sphinx.ext.napoleon import GoogleDocstring
-from sphinx.ext.napoleon import Config
-from sphinx.ext.napoleon import _process_docstring
+from yaml import safe_dump as dump
 
-from .utils import transform_node, transform_string
-from .settings import API_ROOT
-from .monkeypatch import patch_docfields
-from .directives import RemarksDirective, TodoDirective
-from .nodes import remarks
 from docfx_yaml import markdown_utils
 
-import subprocess
-import ast
-from docuploader import shell
+from .directives import RemarksDirective, TodoDirective
+from .monkeypatch import patch_docfields
+from .nodes import remarks
+from .settings import API_ROOT
+from .utils import transform_node, transform_string
+
 
 class Bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
 try:
     from conf import *
 except ImportError:
-    print(Bcolors.FAIL + 'can not import conf.py! '
-    'you should have a conf.py in working project folder' + Bcolors.ENDC)
+    print(
+        Bcolors.FAIL + "can not import conf.py! "
+        "you should have a conf.py in working project folder" + Bcolors.ENDC
+    )
 
-METHOD = 'method'
-FUNCTION = 'function'
-MODULE = 'module'
-CLASS = 'class'
-EXCEPTION = 'exception'
-ATTRIBUTE = 'attribute'
-REFMETHOD = 'meth'
-REFFUNCTION = 'func'
-INITPY = '__init__.py'
+METHOD = "method"
+FUNCTION = "function"
+MODULE = "module"
+CLASS = "class"
+EXCEPTION = "exception"
+ATTRIBUTE = "attribute"
+REFMETHOD = "meth"
+REFFUNCTION = "func"
+INITPY = "__init__.py"
 # Regex expression for checking references of pattern like ":class:`~package_v1.module`"
-REF_PATTERN = r':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_.<> ]*(\(\))?`'
+REF_PATTERN = r":(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_.<> ]*(\(\))?`"
 # Regex expression for checking references of pattern like "~package_v1.subpackage.module"
-REF_PATTERN_LAST = r'~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
+REF_PATTERN_LAST = r"~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?"
 # Regex expression for checking references of pattern like
 # "[module][google.cloud.cloudkms_v1.module]"
-REF_PATTERN_BRACKETS = r'\[[a-zA-Z0-9_<>\-. ]+\]\[[a-zA-Z0-9_<>\-. ]+\]'
+REF_PATTERN_BRACKETS = r"\[[a-zA-Z0-9_<>\-. ]+\]\[[a-zA-Z0-9_<>\-. ]+\]"
 
 REF_PATTERNS = [
     REF_PATTERN,
@@ -103,36 +105,36 @@ REF_PATTERNS = [
     REF_PATTERN_BRACKETS,
 ]
 
-PROPERTY = 'property'
+PROPERTY = "property"
 CODEBLOCK = "code-block"
 CODE = "code"
 PACKAGE = "package"
 
 # DevSite specific notices that can be used.
-NOTE = 'note'
-CAUTION = 'caution'
-WARNING = 'warning'
-IMPORTANT = 'special'
-KEYPOINT = 'key-point'
-KEYTERM = 'key-term'
-OBJECTIVE = 'objective'
-SUCCESS = 'success'
-BETA = 'beta'
-PREVIEW = 'preview'
-DEPRECATED = 'deprecated'
+NOTE = "note"
+CAUTION = "caution"
+WARNING = "warning"
+IMPORTANT = "special"
+KEYPOINT = "key-point"
+KEYTERM = "key-term"
+OBJECTIVE = "objective"
+SUCCESS = "success"
+BETA = "beta"
+PREVIEW = "preview"
+DEPRECATED = "deprecated"
 
 NOTICES = {
-    NOTE: 'Note',
-    CAUTION: 'Caution',
-    WARNING: 'Warning',
-    IMPORTANT: 'Important',
-    KEYPOINT: 'Key Point',
-    KEYTERM: 'Key Term',
-    OBJECTIVE: 'Objective',
-    SUCCESS: 'Success',
-    BETA: 'Beta',
-    PREVIEW: 'Preview',
-    DEPRECATED: 'deprecated',
+    NOTE: "Note",
+    CAUTION: "Caution",
+    WARNING: "Warning",
+    IMPORTANT: "Important",
+    KEYPOINT: "Key Point",
+    KEYTERM: "Key Term",
+    OBJECTIVE: "Objective",
+    SUCCESS: "Success",
+    BETA: "Beta",
+    PREVIEW: "Preview",
+    DEPRECATED: "deprecated",
 }
 
 _SUMMARY_TYPE_BY_ITEM_TYPE = {
@@ -153,9 +155,9 @@ _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE = {
 }
 # Mapping for each summary page entry's file name and entry name.
 _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
-    CLASS: ('summary_class.yml', "Classes"),
-    METHOD: ('summary_method.yml', "Methods"),
-    PROPERTY: ('summary_property.yml', "Properties and Attributes"),
+    CLASS: ("summary_class.yml", "Classes"),
+    METHOD: ("summary_method.yml", "Methods"),
+    PROPERTY: ("summary_property.yml", "Properties and Attributes"),
 }
 
 # Disable blib2to3 output that clutters debugging log.
@@ -174,7 +176,7 @@ def _grab_repo_metadata() -> Mapping[str, str] | None:
             otherwise None.
     """
     try:
-        with open('.repo-metadata.json', 'r') as metadata_file:
+        with open(".repo-metadata.json", "r") as metadata_file:
             json_content = json.load(metadata_file)
         # Return outside of context manager for safe close
         return json_content
@@ -203,7 +205,7 @@ def build_init(app: sphinx.application.Sphinx) -> None:
     Set up environment data
     """
     if not app.config.docfx_yaml_output:
-        raise ExtensionError('You must configure an docfx_yaml_output setting')
+        raise ExtensionError("You must configure an docfx_yaml_output setting")
 
     # This stores YAML object for modules
     app.env.docfx_yaml_modules = {}
@@ -229,19 +231,19 @@ def build_init(app: sphinx.application.Sphinx) -> None:
 
     app.env.docfx_xrefs = {}
 
-    remote = getoutput('git remote -v')
+    remote = getoutput("git remote -v")
 
     try:
-        app.env.docfx_remote = remote.split('\t')[1].split(' ')[0]
+        app.env.docfx_remote = remote.split("\t")[1].split(" ")[0]
     except Exception:
         app.env.docfx_remote = None
     try:
-        app.env.docfx_branch = getoutput('git rev-parse --abbrev-ref HEAD').strip()
+        app.env.docfx_branch = getoutput("git rev-parse --abbrev-ref HEAD").strip()
     except Exception:
         app.env.docfx_branch = None
 
     try:
-        app.env.docfx_root = getoutput('git rev-parse --show-toplevel').strip()
+        app.env.docfx_root = getoutput("git rev-parse --show-toplevel").strip()
     except Exception:
         app.env.docfx_root = None
 
@@ -264,13 +266,13 @@ def _get_cls_module(_type: str, name: str) -> tuple[str | None, str | None]:
 
     cls = None
     if _type in [FUNCTION, EXCEPTION]:
-        module = '.'.join(name.split('.')[:-1])
+        module = ".".join(name.split(".")[:-1])
     elif _type in [METHOD, ATTRIBUTE, PROPERTY]:
-        cls = '.'.join(name.split('.')[:-1])
-        module = '.'.join(name.split('.')[:-2])
+        cls = ".".join(name.split(".")[:-1])
+        module = ".".join(name.split(".")[:-2])
     elif _type in [CLASS]:
         cls = name
-        module = '.'.join(name.split('.')[:-1])
+        module = ".".join(name.split(".")[:-1])
     elif _type in [MODULE]:
         module = name
     else:
@@ -290,11 +292,11 @@ def _create_reference(datam: dict, parent: str, is_external: bool = False) -> di
         dict: A dictionary representing the reference.
     """
     return {
-        'uid': datam['uid'],
-        'parent': parent,
-        'isExternal': is_external,
-        'name': datam['source']['id'],
-        'fullName': datam['fullName'],
+        "uid": datam["uid"],
+        "parent": parent,
+        "isExternal": is_external,
+        "name": datam["source"]["id"],
+        "fullName": datam["fullName"],
     }
 
 
@@ -311,23 +313,23 @@ def _refact_example_in_module_summary(lines: list[str]) -> list[str]:
     block_lines = []
     example_block_flag = False
     for line in lines:
-        if line.startswith('.. admonition:: Example'):
+        if line.startswith(".. admonition:: Example"):
             example_block_flag = True
-            line = '### Example\n\n'
+            line = "### Example\n\n"
             new_lines.append(line)
-        elif example_block_flag and len(line) != 0 and not line.startswith('   '):
+        elif example_block_flag and len(line) != 0 and not line.startswith("   "):
             example_block_flag = False
-            new_lines.append(''.join(block_lines))
+            new_lines.append("".join(block_lines))
             new_lines.append(line)
             block_lines[:] = []
         elif example_block_flag:
-            if line == '   ':  # origianl line is blank line ('\n').
-                line = '\n'  # after outer ['\n'.join] operation,
-                             # this '\n' will be appended to previous line then. BINGO!
-            elif line.startswith('   '):
+            if line == "   ":  # origianl line is blank line ('\n').
+                line = "\n"  # after outer ['\n'.join] operation,
+                # this '\n' will be appended to previous line then. BINGO!
+            elif line.startswith("   "):
                 # will be indented by 4 spaces according to yml block syntax.
                 # https://learnxinyminutes.com/docs/yaml/
-                line = ' ' + line + '\n'
+                line = " " + line + "\n"
             block_lines.append(line)
 
         else:
@@ -358,33 +360,37 @@ def _resolve_reference_in_module_summary(
             matched_str = line[start:end]
             # TODO: separate this portion into a function per pattern.
             if pattern == REF_PATTERN:
-                if '<' in matched_str and '>' in matched_str:
+                if "<" in matched_str and ">" in matched_str:
                     # match string like ':func:`***<***>`'
-                    index = matched_str.index('<')
-                    ref_name = matched_str[index+1:-2]
+                    index = matched_str.index("<")
+                    ref_name = matched_str[index + 1 : -2]
                 else:
                     # match string like ':func:`~***`' or ':func:`***`'
-                    index = matched_str.index('~') if '~' in matched_str else matched_str.index('`')
-                    ref_name = matched_str[index+1:-1]
+                    index = (
+                        matched_str.index("~")
+                        if "~" in matched_str
+                        else matched_str.index("`")
+                    )
+                    ref_name = matched_str[index + 1 : -1]
 
-                index = ref_name.rfind('.') + 1
+                index = ref_name.rfind(".") + 1
                 # Find the last component of the target. "~Queue.get" only returns <xref:get>
                 ref_name = ref_name[index:]
 
             elif pattern == REF_PATTERN_LAST:
-                index = matched_str.rfind('.') + 1
+                index = matched_str.rfind(".") + 1
                 if index == 0:
                     # If there is no dot, push index to not include tilde
                     index = 1
                 ref_name = matched_str[index:]
 
             elif pattern == REF_PATTERN_BRACKETS:
-                lbracket = matched_str.find('[')+1
-                rbracket = matched_str.find(']')
+                lbracket = matched_str.find("[") + 1
+                rbracket = matched_str.find("]")
                 ref_name = matched_str[lbracket:rbracket]
 
             else:
-                raise ValueError(f'Encountered wrong ref pattern: \n{pattern}')
+                raise ValueError(f"Encountered wrong ref pattern: \n{pattern}")
 
             # Find the uid to add for xref
             index = matched_str.find("google.cloud")
@@ -395,17 +401,23 @@ def _resolve_reference_in_module_summary(
                 xrefs.append(xref)
 
             # Check to see if we should create an xref for it.
-            if 'google.cloud' in matched_str:
-                new_line = new_line.replace(matched_str, f'<xref uid="{xref}">{ref_name}</xref>')
+            if "google.cloud" in matched_str:
+                new_line = new_line.replace(
+                    matched_str, f'<xref uid="{xref}">{ref_name}</xref>'
+                )
             # If it not a Cloud library, don't create xref for it.
             else:
                 # Carefully extract the original uid
                 if pattern == REF_PATTERN:
-                    index = matched_str.index('~') if '~' in matched_str else matched_str.index('`')
-                    ref_name = matched_str[index+1:-1]
+                    index = (
+                        matched_str.index("~")
+                        if "~" in matched_str
+                        else matched_str.index("`")
+                    )
+                    ref_name = matched_str[index + 1 : -1]
                 else:
                     ref_name = matched_str[1:]
-                new_line = new_line.replace(matched_str, f'`{ref_name}`')
+                new_line = new_line.replace(matched_str, f"`{ref_name}`")
 
         new_lines.append(new_line)
     return new_lines, xrefs
@@ -425,7 +437,7 @@ def extract_keyword(line: str) -> str:
     # where it begind with 2 dot prefix, followed by a space, then the keyword
     # followed by 2 collon suffix.
     try:
-        return line[ 3 : line.index("::") ]
+        return line[3 : line.index("::")]
     except ValueError:
         # TODO: handle reST template.
         if line[3] != "_":
@@ -465,18 +477,18 @@ def _parse_enum_content(parts: Sequence[str]) -> Sequence[Mapping[str, str]]:
     enum_name = ""
     enum_description = []
     for part in parts:
-        if (
-            (current_tab_space := len(part) - len(part.lstrip(" "))) > 0
-        ):
+        if (current_tab_space := len(part) - len(part.lstrip(" "))) > 0:
             enum_description.append(indent_code_left(part, current_tab_space))
             continue
 
         # Add the new enum and start collecting new entry.
         if enum_name and enum_description:
-            enum_content.append({
-                "id": enum_name,
-                "description": " ".join(enum_description),
-        })
+            enum_content.append(
+                {
+                    "id": enum_name,
+                    "description": " ".join(enum_description),
+                }
+            )
 
         enum_description = []
         # Only collect the name, not the value.
@@ -495,10 +507,12 @@ def _parse_enum_content(parts: Sequence[str]) -> Sequence[Mapping[str, str]]:
             " docstring:\n\n{}".format("\n".join(parts))
         )
 
-    enum_content.append({
-        "id": enum_name,
-        "description": " ".join(enum_description),
-    })
+    enum_content.append(
+        {
+            "id": enum_name,
+            "description": " ".join(enum_description),
+        }
+    )
 
     return enum_content
 
@@ -528,7 +542,7 @@ def _parse_docstring_summary(
     keyword = name = description = var_type = ""
 
     notice_open_tag = '<aside class="{notice_tag}">\n<b>{notice_name}:</b>'
-    notice_close_tag = '</aside>'
+    notice_close_tag = "</aside>"
 
     # We need to separate in chunks, which is defined by 3 newline breaks.
     # Otherwise when parsing for code and blocks of stuff, we will not be able
@@ -543,7 +557,7 @@ def _parse_docstring_summary(
         # Continue adding parts for code-block.
         if keyword and keyword in [CODE, CODEBLOCK]:
             # If we reach the end of keyword, close up the code block.
-            if not part.startswith(" "*tab_space) or part.startswith(".."):
+            if not part.startswith(" " * tab_space) or part.startswith(".."):
                 if code_snippet:
                     parts = [indent_code_left(part, tab_space) for part in code_snippet]
                     summary_parts.append("\n\n".join(parts))
@@ -552,14 +566,20 @@ def _parse_docstring_summary(
 
             else:
                 if tab_space == -1:
-                    parts = [split_part for split_part in part.split("\n") if split_part]
+                    parts = [
+                        split_part for split_part in part.split("\n") if split_part
+                    ]
                     tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
                     if tab_space == 0:
-                        raise ValueError(f"Code in the code block should be indented. Please check the docstring: \n{summary}")
-                if not part.startswith(" "*tab_space):
+                        raise ValueError(
+                            f"Code in the code block should be indented. Please check the docstring: \n{summary}"
+                        )
+                if not part.startswith(" " * tab_space):
                     # No longer looking at code-block, reset keyword.
                     if code_snippet:
-                        parts = [indent_code_left(part, tab_space) for part in code_snippet]
+                        parts = [
+                            indent_code_left(part, tab_space) for part in code_snippet
+                        ]
                         summary_parts.append("\n\n".join(parts))
                     keyword = ""
                     summary_parts.append("```\n")
@@ -580,14 +600,14 @@ def _parse_docstring_summary(
                     var_type = part.split(":type:")[1].strip()
                 keyword = ""
                 if name and description and var_type:
-                    attributes.append({
-                        "id": name,
-                        "description": description,
-                        "var_type": var_type
-                    })
+                    attributes.append(
+                        {"id": name, "description": description, "var_type": var_type}
+                    )
 
                 else:
-                    print(f"Could not process the attribute. Please check the docstring: \n{summary}")
+                    print(
+                        f"Could not process the attribute. Please check the docstring: \n{summary}"
+                    )
 
                 continue
 
@@ -597,9 +617,11 @@ def _parse_docstring_summary(
                 parts = [split_part for split_part in part.split("\n") if split_part]
                 tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
                 if tab_space == 0:
-                    raise ValueError("Content in the block should be indented."\
-                                     f"Please check the docstring: \n{summary}")
-            if not part.startswith(" "*tab_space):
+                    raise ValueError(
+                        "Content in the block should be indented."
+                        f"Please check the docstring: \n{summary}"
+                    )
+            if not part.startswith(" " * tab_space):
                 if notice_body:
                     parts = [indent_code_left(part, tab_space) for part in notice_body]
                     summary_parts.append("\n".join(parts))
@@ -611,25 +633,29 @@ def _parse_docstring_summary(
 
         # Parse keywords if found.
         # lstrip is added to parse code blocks that are not formatted well.
-        if (potential_keyword := part.lstrip('\n')) and (
-            potential_keyword.startswith('..') or
-            potential_keyword.startswith(enum_type_token)
+        if (potential_keyword := part.lstrip("\n")) and (
+            potential_keyword.startswith("..")
+            or potential_keyword.startswith(enum_type_token)
         ):
             if enum_type_token in potential_keyword:
                 # Handle the enum section starting with `Values:`
-                parts = [split_part for split_part in part.split("\n") if split_part][1:]
+                parts = [split_part for split_part in part.split("\n") if split_part][
+                    1:
+                ]
                 if not parts:
                     continue
                 tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
                 if tab_space == 0:
-                    raise ValueError("Content in the block should be indented."\
-                                     f"Please check the docstring: \n{summary}")
+                    raise ValueError(
+                        "Content in the block should be indented."
+                        f"Please check the docstring: \n{summary}"
+                    )
                 parts = [indent_code_left(part, tab_space) for part in parts]
                 enums = _parse_enum_content(parts)
                 continue
 
             try:
-                keyword = extract_keyword(part.lstrip('\n'))
+                keyword = extract_keyword(part.lstrip("\n"))
             except ValueError:
                 raise ValueError(f"Please check the docstring: \n{summary}")
             # Works for both code-block and code
@@ -650,16 +676,22 @@ def _parse_docstring_summary(
 
             # Extracts the notice content and format it.
             elif keyword and keyword in NOTICES:
-                summary_parts.append(f'<aside class="{keyword}">\n<b>{NOTICES[keyword]}:</b>')
+                summary_parts.append(
+                    f'<aside class="{keyword}">\n<b>{NOTICES[keyword]}:</b>'
+                )
                 tab_space = -1
                 notice_body = []
-                parts = [split_part for split_part in part.split("\n") if split_part][1:]
+                parts = [split_part for split_part in part.split("\n") if split_part][
+                    1:
+                ]
                 if not parts:
                     continue
                 tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
                 if tab_space == 0:
-                    raise ValueError("Content in the block should be indented."\
-                                     f"Please check the docstring: \n{summary}")
+                    raise ValueError(
+                        "Content in the block should be indented."
+                        f"Please check the docstring: \n{summary}"
+                    )
                 parts = [indent_code_left(part, tab_space) for part in parts]
                 summary_parts.append("\n".join(parts))
                 summary_parts.append(notice_close_tag)
@@ -710,17 +742,17 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
 
     # Initialize known types needing further processing.
     var_types = {
-        ':rtype:': 'returns',
-        ':returns:': 'returns',
-        ':type': 'variables',
-        ':param': 'variables',
-        ':raises': 'exceptions',
-        ':raises:': 'exceptions',
+        ":rtype:": "returns",
+        ":returns:": "returns",
+        ":type": "variables",
+        ":param": "variables",
+        ":raises": "exceptions",
+        ":raises:": "exceptions",
     }
 
     initial_index = -1
-    front_tag = '<xref'
-    end_tag = '/xref>'
+    front_tag = "<xref"
+    end_tag = "/xref>"
     end_len = len(end_tag)
 
     # Prevent GoogleDocstring crashing on custom types and parse all xrefs to normal
@@ -733,23 +765,31 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
 
         # Remove all occurrences of "<xref uid="uid">text</xref>"
         while front_tag in summary_part:
-
             # Expecting format of "<xref uid="uid">text</xref>"
             if front_tag in summary_part:
                 # Retrieve the index for starting position of xref tag
                 initial_index += summary_part.find(front_tag)
 
                 # Find the index of the end of xref tag, relative to the start of xref tag
-                end_tag_index = initial_index + parsed_text[initial_index:].find(end_tag) + end_len
+                end_tag_index = (
+                    initial_index + parsed_text[initial_index:].find(end_tag) + end_len
+                )
 
                 # Retrieve the entire xref tag
                 original_type = parsed_text[initial_index:end_tag_index]
                 initial_index += len(original_type)
-                original_type = " ".join(filter(None, re.split(r'\n|  |\|\s|\t', original_type)))
+                original_type = " ".join(
+                    filter(None, re.split(r"\n|  |\|\s|\t", original_type))
+                )
 
                 # Extract text from "<xref uid="uid">text</xref>"
                 index = original_type.find(">")
-                safe_type = 'xref_' + original_type[index+1:index+(original_type[index:].find("<"))]
+                safe_type = (
+                    "xref_"
+                    + original_type[
+                        index + 1 : index + (original_type[index:].find("<"))
+                    ]
+                )
             else:
                 raise ValueError("Encountered unexpected type in Exception docstring.")
 
@@ -774,12 +814,12 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
         # helps determine if we simply ran into desired occurrence
         # or if we ran into a similar looking syntax but shouldn't
         # parse upon it.
-        types += ' ' if types[-1] != ':' else ''
+        types += " " if types[-1] != ":" else ""
         if types in parsed_text:
             index = parsed_text.find(types)
             if index > -1:
                 # For now, skip on parsing custom fields like attribute
-                if types == ':type ' and 'attribute::' in parsed_text:
+                if types == ":type " and "attribute::" in parsed_text:
                     continue
                 indexes.append(index)
 
@@ -801,14 +841,14 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
             parsed_text = parsed_text.replace(safe_type, original_type)
 
     # Clean up whitespace and other characters
-    parsed_text = " ".join(filter(None, re.split(r'\|\s', parsed_text))).split()
+    parsed_text = " ".join(filter(None, re.split(r"\|\s", parsed_text))).split()
 
-    cur_type = ''
+    cur_type = ""
     words = []
-    arg_name = ''
+    arg_name = ""
     index = 0
     # Used to track return type and description
-    r_type, r_descr = '', ''
+    r_type, r_descr = "", ""
 
     # Using counter iteration to easily extract names rather than
     # coming up with more complicated stopping logic for each tags.
@@ -818,35 +858,38 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
         if word in var_types or index == len(parsed_text):
             # Finish processing previous section.
             if cur_type:
-                if cur_type == ':type':
-                    summary_info[var_types[cur_type]][arg_name]['var_type'] = " ".join(words)
-                elif cur_type == ':param':
-                    summary_info[var_types[cur_type]][arg_name]['description'] = " ".join(words)
+                if cur_type == ":type":
+                    summary_info[var_types[cur_type]][arg_name]["var_type"] = " ".join(
+                        words
+                    )
+                elif cur_type == ":param":
+                    summary_info[var_types[cur_type]][arg_name]["description"] = (
+                        " ".join(words)
+                    )
                 elif ":raises" in cur_type:
-                    summary_info[var_types[cur_type]].append({
-                        'var_type': arg_name,
-                        'description': " ".join(words)
-                    })
+                    summary_info[var_types[cur_type]].append(
+                        {"var_type": arg_name, "description": " ".join(words)}
+                    )
                 else:
-                    if cur_type == ':rtype:':
+                    if cur_type == ":rtype:":
                         r_type = " ".join(words)
                     else:
                         r_descr = " ".join(words)
                     if r_type and r_descr:
-                        summary_info[var_types[cur_type]].append({
-                            'var_type': r_type,
-                            'description': r_descr
-                        })
-                        r_type, r_descr = '', ''
+                        summary_info[var_types[cur_type]].append(
+                            {"var_type": r_type, "description": r_descr}
+                        )
+                        r_type, r_descr = "", ""
 
             else:
-
                 # If after we processed the top summary and get in this state,
                 # likely we encountered a type that's not covered above or the docstring
                 # was formatted badly. This will likely break docfx job later on, should not
                 # process further.
                 if word not in var_types:
-                    raise ValueError(f"Encountered wrong formatting, please check docstring for {name}")
+                    raise ValueError(
+                        f"Encountered wrong formatting, please check docstring for {name}"
+                    )
 
             # Reached end of string, break after finishing processing
             if index == len(parsed_text):
@@ -854,22 +897,27 @@ def _extract_docstring_info(summary_info: dict, summary: str, name: str) -> str:
 
             # Start processing for new section
             cur_type = word
-            if cur_type in [':type', ':param', ':raises', ':raises:']:
+            if cur_type in [":type", ":param", ":raises", ":raises:"]:
                 index += 1
                 # Exception that's not xref should be treated same as other names
-                if ':raises' not in cur_type or 'xref' not in parsed_text[index]:
+                if ":raises" not in cur_type or "xref" not in parsed_text[index]:
                     arg_name = parsed_text[index][:-1]
                 # xrefs are treated by taking its second half and combining the two
-                elif ':raises' in cur_type and 'xref' in parsed_text[index]:
-                    arg_name = f'{parsed_text[index]} {parsed_text[index+1][:-1]}'
+                elif ":raises" in cur_type and "xref" in parsed_text[index]:
+                    arg_name = f"{parsed_text[index]} {parsed_text[index + 1][:-1]}"
                     index += 1
 
                 try:
                     # Initialize empty dictionary if it doesn't exist already
-                    if arg_name not in summary_info[var_types[cur_type]] and ':raises' not in cur_type:
+                    if (
+                        arg_name not in summary_info[var_types[cur_type]]
+                        and ":raises" not in cur_type
+                    ):
                         summary_info[var_types[cur_type]][arg_name] = {}
                 except KeyError:
-                    raise KeyError(f"Encountered wrong formatting, please check docstring for {name}")
+                    raise KeyError(
+                        f"Encountered wrong formatting, please check docstring for {name}"
+                    )
 
             # Empty target string
             words = []
@@ -896,10 +944,10 @@ def reformat_summary(summary: str) -> str:
 
     reformatted_lines = []
 
-    single_backtick = '`'
-    double_backtick = '``'
-    triple_backtick = '```'
-    for line in summary.split('\n'):
+    single_backtick = "`"
+    double_backtick = "``"
+    triple_backtick = "```"
+    for line in summary.split("\n"):
         # Check that we're only looking for double backtick (``) and not
         # comments (```).
         if triple_backtick not in line and double_backtick in line:
@@ -908,7 +956,7 @@ def reformat_summary(summary: str) -> str:
         else:
             reformatted_lines.append(line)
 
-    return '\n'.join(reformatted_lines)
+    return "\n".join(reformatted_lines)
 
 
 def extract_product_name(name: str) -> str:
@@ -920,13 +968,13 @@ def extract_product_name(name: str) -> str:
     Returns:
         str: The product name.
     """
-    if 'google.cloud' in name:
-        product_name = '.'.join(name.split('.')[2:])
-    elif 'google' in name:
-        product_name = '.'.join(name.split('.')[1:])
+    if "google.cloud" in name:
+        product_name = ".".join(name.split(".")[2:])
+    elif "google" in name:
+        product_name = ".".join(name.split(".")[1:])
     else:
         # Use the short name for other formats.
-        product_name = name.split('.')[-1]
+        product_name = name.split(".")[-1]
 
     return product_name
 
@@ -948,7 +996,7 @@ def _extract_type_name(annotation: Any) -> str:
     """
 
     annotation_dir = dir(annotation)
-    if '__args__' not in annotation_dir:
+    if "__args__" not in annotation_dir:
         return annotation.__name__
 
     # Try to extract names for more complicated types.
@@ -966,11 +1014,13 @@ def _extract_type_name(annotation: Any) -> str:
     while prefix_to_remove_start in type_name:
         start_index = type_name.find(prefix_to_remove_start)
         end_index = type_name.find(prefix_to_remove_end, start_index)
-        type_name = ''.join([
-            type_name[:start_index],
-            type_name[start_index+prefix_start_len:end_index],
-            type_name[end_index+prefix_end_len:],
-        ])
+        type_name = "".join(
+            [
+                type_name[:start_index],
+                type_name[start_index + prefix_start_len : end_index],
+                type_name[end_index + prefix_end_len :],
+            ]
+        )
 
     return type_name
 
@@ -1007,7 +1057,9 @@ def _create_datam(
                 for name in namespace_package_dict:
                     if re.match(name, package_name) is not None:
                         package_name = namespace_package_dict[name]
-                        path = os.path.join(package_name, path[package_name_index + 1:])
+                        path = os.path.join(
+                            package_name, path[package_name_index + 1 :]
+                        )
                         return path
 
             except NameError:
@@ -1023,16 +1075,17 @@ def _create_datam(
     arg_count = 0
     try:
         if _type in [METHOD, FUNCTION, CLASS]:
-            argspec = inspect.getfullargspec(obj) # noqa
+            argspec = inspect.getfullargspec(obj)  # noqa
             type_map = {}
 
-            annotations = getattr(argspec, 'annotations', [])
+            annotations = getattr(argspec, "annotations", [])
             for annotation in argspec.annotations:
                 if annotation == "return":
                     continue
                 try:
                     type_map[annotation] = _extract_type_name(
-                        argspec.annotations[annotation])
+                        argspec.annotations[annotation]
+                    )
                 except AttributeError:
                     print(f"Could not parse argument information for {annotation}.")
                     continue
@@ -1051,20 +1104,20 @@ def _create_datam(
             arg_count += len(original_args)
 
             # Retrieve the default values and convert to a list.
-            defaults = list(getattr(argspec, 'defaults', []))
+            defaults = list(getattr(argspec, "defaults", []))
             # Counter used to extract default values.
             default_index = -len(argspec.args) + len(defaults)
             for arg in original_args:
                 # Ignore adding in entry for "self" or if docstring cannot be
                 # formed for current arg, such as docstring is missing or type
                 # annotation is not given.
-                if arg == 'cls' or arg not in type_map:
+                if arg == "cls" or arg not in type_map:
                     default_index += 1
                     continue
 
                 arg_map = {
-                    'id': arg,
-                    'var_type': type_map[arg],
+                    "id": arg,
+                    "var_type": type_map[arg],
                 }
 
                 if arg in argspec.args:
@@ -1080,21 +1133,21 @@ def _create_datam(
                     # defaults which contain object address for some,
                     # like sys.stdout.
                     default_string = str(defaults[default_index])
-                    if 'at 0x' in default_string:
+                    if "at 0x" in default_string:
                         continue
-                    arg_map['defaultValue'] = default_string
+                    arg_map["defaultValue"] = default_string
                 if arg in kw_defaults:
                     # Cast to string, otherwise different types may be stored as
                     # value instead.
-                    arg_map['defaultValue'] = str(kw_defaults[arg])
+                    arg_map["defaultValue"] = str(kw_defaults[arg])
 
                 default_index += 1
                 args.append(arg_map)
 
             if argspec.varargs:
-                args.append({'id': argspec.varargs})
+                args.append({"id": argspec.varargs})
             if argspec.varkw:
-                args.append({'id': argspec.varkw})
+                args.append({"id": argspec.varkw})
 
             try:
                 if len(lines) == 0:
@@ -1116,17 +1169,17 @@ def _create_datam(
     try:
         full_path = inspect.getsourcefile(obj)
 
-        if full_path is None: # Meet a .pyd file
+        if full_path is None:  # Meet a .pyd file
             raise TypeError()
         # Sub git repo path
-        path = full_path.replace(app.env.docfx_root, '')
+        path = full_path.replace(app.env.docfx_root, "")
         # Support global file imports, if it's installed already
         import_path = os.path.dirname(inspect.getfile(os))
-        path = path.replace(os.path.join(import_path, 'site-packages'), '')
-        path = path.replace(import_path, '')
+        path = path.replace(os.path.join(import_path, "site-packages"), "")
+        path = path.replace(import_path, "")
 
         # Make relative
-        path = path.replace(os.sep, '', 1)
+        path = path.replace(os.sep, "", 1)
         start_line = inspect.getsourcelines(obj)[1]
 
         path = _update_friendly_package_name(path)
@@ -1153,23 +1206,23 @@ def _create_datam(
         start_line = None
 
     datam = {
-        'module': module,
-        'uid': name,
-        'type': _type,
-        'name': short_name,
-        'fullName': name,
-        'source': {
-            'id': short_name,
-            'path': path,
-            'startLine': start_line,
+        "module": module,
+        "uid": name,
+        "type": _type,
+        "name": short_name,
+        "fullName": name,
+        "source": {
+            "id": short_name,
+            "path": path,
+            "startLine": start_line,
         },
-        'langs': ['python'],
+        "langs": ["python"],
     }
 
     summary_info = {
-        'variables': {},  # Stores mapping of variables and its description & types
-        'returns': [],    # Stores the return info
-        'exceptions': []  # Stores the exception info
+        "variables": {},  # Stores mapping of variables and its description & types
+        "returns": [],  # Stores the return info
+        "exceptions": [],  # Stores the exception info
     }
 
     # Add extracted summary
@@ -1178,16 +1231,18 @@ def _create_datam(
             lines, xrefs = _resolve_reference_in_module_summary(ref_pattern, lines)
             for xref in xrefs:
                 if xref not in app.env.docfx_xrefs:
-                    app.env.docfx_xrefs[xref] = ''
+                    app.env.docfx_xrefs[xref] = ""
 
-        summary = app.docfx_transform_string('\n'.join(_refact_example_in_module_summary(lines)))
+        summary = app.docfx_transform_string(
+            "\n".join(_refact_example_in_module_summary(lines))
+        )
 
         # Extract summary info into respective sections.
         if summary:
             summary = reformat_summary(summary)
             top_summary = _extract_docstring_info(summary_info, summary, name)
             try:
-                datam['summary'], datam['attributes'], datam['enum'] = (
+                datam["summary"], datam["attributes"], datam["enum"] = (
                     _parse_docstring_summary(top_summary)
                 )
             except ValueError:
@@ -1198,44 +1253,42 @@ def _create_datam(
                 debug_line.append(f"Failed to parse docstring on {name}.")
                 raise ValueError("".join(debug_line))
 
-
     # If there is no summary, add a short snippet.
     else:
         product_name = extract_product_name(name)
-        datam['summary'] = f"API documentation for `{product_name}` {_type}."
+        datam["summary"] = f"API documentation for `{product_name}` {_type}."
 
     if args or sig or summary_info:
-        datam['syntax'] = {}
+        datam["syntax"] = {}
 
     # If there are well-formatted arguments or a lot of arguments we should look
     # into, loop through what we got from the docstring.
     if args or arg_count > 0:
-        variables = summary_info['variables']
+        variables = summary_info["variables"]
         arg_id = []
         incomplete_args = []
         for arg in args:
-            arg_id.append(arg['id'])
+            arg_id.append(arg["id"])
 
-            if arg['id'] in variables:
+            if arg["id"] in variables:
                 # Retrieve argument info from extracted map of variable info
-                arg_var = variables[arg['id']]
-                arg['description'] = arg_var.get('description')
+                arg_var = variables[arg["id"]]
+                arg["description"] = arg_var.get("description")
 
             # Ignore the entry if we're missing the description.
-            if not arg.get('description'):
+            if not arg.get("description"):
                 incomplete_args.append(arg)
                 continue
 
-            if (arg_var_type := arg_var.get('var_type')):
-                arg['var_type'] = arg_var_type
+            if arg_var_type := arg_var.get("var_type"):
+                arg["var_type"] = arg_var_type
                 continue
 
             # If the type is not documented or missing from type_hint,
             # ignore the entry.
-            if not arg.get('var_type'):
+            if not arg.get("var_type"):
                 incomplete_args.append(arg)
                 continue
-
 
         # Remove any arguments with missing type or description from the YAML.
         for incomplete_arg in incomplete_args:
@@ -1245,30 +1298,32 @@ def _create_datam(
         for variable in variables:
             if variable not in arg_id:
                 # Only include arguments with type and description.
-                if variables[variable].get('var_type') and variables[variable].get('description'):
+                if variables[variable].get("var_type") and variables[variable].get(
+                    "description"
+                ):
                     new_arg = {
                         "id": variable,
-                        "var_type": variables[variable].get('var_type'),
-                        "description": variables[variable].get('description')
+                        "var_type": variables[variable].get("var_type"),
+                        "description": variables[variable].get("description"),
                     }
                     args.append(new_arg)
 
-        datam['syntax']['parameters'] = args
+        datam["syntax"]["parameters"] = args
 
     if sig:
-        datam['syntax']['content'] = sig
+        datam["syntax"]["content"] = sig
 
-    if summary_info['returns']:
-        datam['syntax']['returns'] = summary_info['returns']
+    if summary_info["returns"]:
+        datam["syntax"]["returns"] = summary_info["returns"]
 
-    if summary_info['exceptions']:
-        datam['syntax']['exceptions'] = summary_info['exceptions']
+    if summary_info["exceptions"]:
+        datam["syntax"]["exceptions"] = summary_info["exceptions"]
 
     if cls:
         datam[CLASS] = cls
     if _type in [CLASS, MODULE]:
-        datam['children'] = []
-        datam['references'] = []
+        datam["children"] = []
+        datam["references"] = []
 
     return datam
 
@@ -1318,7 +1373,7 @@ def process_docstring(
             _type = METHOD
 
     # Register current docstring to a set.
-    app.env.docfx_uid_names[name] = ''
+    app.env.docfx_uid_names[name] = ""
 
     # Use exception as class
     if _type == EXCEPTION:
@@ -1328,7 +1383,7 @@ def process_docstring(
         cls, module = _get_cls_module(_type, name)
 
     if not module and _type != PROPERTY:
-        print('Unknown Type: %s' % _type)
+        print("Unknown Type: %s" % _type)
         return None
 
     datam = _create_datam(app, cls, module, name, _type, obj, lines)
@@ -1346,7 +1401,7 @@ def process_docstring(
             app.env.docfx_yaml_classes[cls].append(datam)
 
     if _type == FUNCTION and app.config.autodoc_functions:
-        if datam['uid'] is None:
+        if datam["uid"] is None:
             raise ValueError(f"Issue with {datam} (name={name})")
         if cls is None:
             cls = name
@@ -1361,7 +1416,7 @@ def process_docstring(
     insert_children_on_class(app, _type, datam)
     insert_children_on_function(app, _type, datam)
 
-    app.env.docfx_info_uid_types[datam['uid']] = _type
+    app.env.docfx_info_uid_types[datam["uid"]] = _type
 
 
 def is_valid_python_code(syntax: str) -> bool:
@@ -1381,6 +1436,7 @@ def is_valid_python_code(syntax: str) -> bool:
         return False
     return True
 
+
 def _reformat_pattern(code: str, pattern: str) -> str:
     """Reformats the code for patterns found to remove for code formatting.
 
@@ -1397,23 +1453,25 @@ def _reformat_pattern(code: str, pattern: str) -> str:
         end_tag = " object>"
         pattern_to_find = "<"
     else:
-        end_tag = "\'>"
+        end_tag = "'>"
         pattern_to_find = pattern
 
     while pattern in code:
         pattern_begin = code.find(pattern_to_find)
         end_tag_index = code.find(end_tag)
         # Check that the format is valid.
-        if (pattern_begin == -1 or end_tag_index == -1):
+        if pattern_begin == -1 or end_tag_index == -1:
             print(f"Could not reformat pattern: {pattern} for code: {code}.")
             return code
 
         pattern_end = pattern_begin + len(pattern_to_find)
-        code = ''.join([
-            code[:pattern_begin],
-            code[pattern_end:end_tag_index],
-            code[end_tag_index+len(end_tag):],
-        ])
+        code = "".join(
+            [
+                code[:pattern_begin],
+                code[pattern_end:end_tag_index],
+                code[end_tag_index + len(end_tag) :],
+            ]
+        )
     return code
 
 
@@ -1430,7 +1488,7 @@ def format_code(code: str) -> str:
             an error.
     """
     patterns_to_reformat = (
-        "<class \'",
+        "<class '",
         " object>",
     )
     for pattern in patterns_to_reformat:
@@ -1465,11 +1523,11 @@ def process_signature(
         return_annotation (str): The return annotation of the object.
     """
     if signature:
-        short_name = name.split('.')[-1]
+        short_name = name.split(".")[-1]
         signature_to_use = [short_name, signature]
         if return_annotation and is_valid_python_code(return_annotation):
-            signature_to_use.append(f' -> {return_annotation}')
-        signature = ''.join(signature_to_use)
+            signature_to_use.append(f" -> {return_annotation}")
+        signature = "".join(signature_to_use)
         try:
             signature = format_code(signature)
         except InvalidInput as e:
@@ -1477,7 +1535,9 @@ def process_signature(
         app.env.docfx_signature_funcs_methods[name] = signature
 
 
-def insert_children_on_module(app: sphinx.application.Sphinx, _type: str, datam: dict) -> None:
+def insert_children_on_module(
+    app: sphinx.application.Sphinx, _type: str, datam: dict
+) -> None:
     """Inserts children of a specific module.
 
     Args:
@@ -1493,28 +1553,32 @@ def insert_children_on_module(app: sphinx.application.Sphinx, _type: str, datam:
     # Find the module which the datam belongs to
     for obj in insert_module:
         # Add standardlone function to global class
-        if _type in [FUNCTION] and \
-                obj['type'] == MODULE and \
-                obj[MODULE] == datam[MODULE]:
-            obj['children'].append(datam['uid'])
+        if (
+            _type in [FUNCTION]
+            and obj["type"] == MODULE
+            and obj[MODULE] == datam[MODULE]
+        ):
+            obj["children"].append(datam["uid"])
 
             # If it is a function, add this to its module. No need for class and module since this is
             # done before calling this function.
             insert_module.append(datam)
-            obj['references'].append(_create_reference(datam, parent=obj['uid']))
+            obj["references"].append(_create_reference(datam, parent=obj["uid"]))
             break
         # Add classes & exceptions to module
-        if _type in [CLASS, EXCEPTION] and \
-                obj['type'] == MODULE and \
-                obj[MODULE] == datam[MODULE]:
-            obj['children'].append(datam['uid'])
-            obj['references'].append(_create_reference(datam, parent=obj['uid']))
+        if (
+            _type in [CLASS, EXCEPTION]
+            and obj["type"] == MODULE
+            and obj[MODULE] == datam[MODULE]
+        ):
+            obj["children"].append(datam["uid"])
+            obj["references"].append(_create_reference(datam, parent=obj["uid"]))
             break
 
-    if _type in [MODULE]: # Make sure datam is a module.
+    if _type in [MODULE]:  # Make sure datam is a module.
         # Add this module(datam) to parent module node
-        if datam[MODULE].count('.') >= 1:
-            parent_module_name = '.'.join(datam[MODULE].split('.')[:-1])
+        if datam[MODULE].count(".") >= 1:
+            parent_module_name = ".".join(datam[MODULE].split(".")[:-1])
 
             if parent_module_name not in app.env.docfx_yaml_modules:
                 return
@@ -1522,25 +1586,34 @@ def insert_children_on_module(app: sphinx.application.Sphinx, _type: str, datam:
             insert_module = app.env.docfx_yaml_modules[parent_module_name]
 
             for obj in insert_module:
-                if obj['type'] == MODULE and obj[MODULE] == parent_module_name:
-                    obj['children'].append(datam['uid'])
-                    obj['references'].append(_create_reference(datam, parent=obj['uid']))
+                if obj["type"] == MODULE and obj[MODULE] == parent_module_name:
+                    obj["children"].append(datam["uid"])
+                    obj["references"].append(
+                        _create_reference(datam, parent=obj["uid"])
+                    )
                     break
 
         # Add datam's children modules to it. Based on Python's passing by reference.
         # If passing by reference would be changed in python's future release.
         # Time complex: O(N^2)
         for module, module_contents in app.env.docfx_yaml_modules.items():
-            if module != datam['uid'] and \
-                    module[:module.rfind('.')] == datam['uid']: # Current module is submodule/subpackage of datam
-                for obj in module_contents: # Traverse module's contents to find the module itself.
-                    if obj['type'] == MODULE and obj['uid'] == module:
-                        datam['children'].append(module)
-                        datam['references'].append(_create_reference(obj, parent=module))
+            if (
+                module != datam["uid"] and module[: module.rfind(".")] == datam["uid"]
+            ):  # Current module is submodule/subpackage of datam
+                for obj in (
+                    module_contents
+                ):  # Traverse module's contents to find the module itself.
+                    if obj["type"] == MODULE and obj["uid"] == module:
+                        datam["children"].append(module)
+                        datam["references"].append(
+                            _create_reference(obj, parent=module)
+                        )
                         break
 
 
-def insert_children_on_class(app: sphinx.application.Sphinx, _type: str, datam: dict) -> None:
+def insert_children_on_class(
+    app: sphinx.application.Sphinx, _type: str, datam: dict
+) -> None:
     """Inserts children of a specific class.
 
     Args:
@@ -1557,28 +1630,31 @@ def insert_children_on_class(app: sphinx.application.Sphinx, _type: str, datam: 
 
     # Find the class which the datam belongs to
     for obj in insert_class:
-        if obj['type'] != CLASS:
+        if obj["type"] != CLASS:
             continue
         # Add subclass & methods & attributes & properties to class
-        if _type in [METHOD, ATTRIBUTE, PROPERTY, CLASS] and \
-          (obj[CLASS] == datam[CLASS] and obj != datam):
-            obj['children'].append(datam['uid'])
-            obj['references'].append(_create_reference(datam, parent=obj['uid']))
+        if _type in [METHOD, ATTRIBUTE, PROPERTY, CLASS] and (
+            obj[CLASS] == datam[CLASS] and obj != datam
+        ):
+            obj["children"].append(datam["uid"])
+            obj["references"].append(_create_reference(datam, parent=obj["uid"]))
             insert_class.append(datam)
 
     # If there is a parent class, determine if current class is a subclass.
     if not parent_class:
         return
     for obj in parent_class:
-        if obj['type'] != CLASS:
+        if obj["type"] != CLASS:
             continue
-        if _type == CLASS and obj['class'] == datam['module']:
+        if _type == CLASS and obj["class"] == datam["module"]:
             # No need to add datam to the parent class.
-            obj['children'].append(datam['uid'])
-            obj['references'].append(_create_reference(datam, parent=obj['uid']))
+            obj["children"].append(datam["uid"])
+            obj["references"].append(_create_reference(datam, parent=obj["uid"]))
 
 
-def insert_children_on_function(app: sphinx.application.Sphinx, _type: str, datam: dict) -> None:
+def insert_children_on_function(
+    app: sphinx.application.Sphinx, _type: str, datam: dict
+) -> None:
     """Inserts children of a specific function.
 
     Args:
@@ -1591,6 +1667,7 @@ def insert_children_on_function(app: sphinx.application.Sphinx, _type: str, data
 
     insert_functions = app.env.docfx_yaml_functions[datam[FUNCTION]]
     insert_functions.append(datam)
+
 
 def find_unique_name(package_name: list[str], entries: dict) -> list[str]:
     """Finds a unique name for a package.
@@ -1610,7 +1687,12 @@ def find_unique_name(package_name: list[str], entries: dict) -> list[str]:
         # it will return "instace_v1" or "params_v1" and "types".
         # Also ensure that if name == package_name[-1], we only return one of
         # the duplicate and not both.
-        if name != "google" and name != "cloud" and entries[name] == 1 and name != package_name[-1]:
+        if (
+            name != "google"
+            and name != "cloud"
+            and entries[name] == 1
+            and name != package_name[-1]
+        ):
             return [name, package_name[-1]]
 
     # If there is no way to disambiguate or we found duplicates, return the identifier name.
@@ -1632,14 +1714,14 @@ def disambiguate_toc_name(
     disambiguated_names = {}
 
     for module in pkg_toc_yaml:
-        module_name = module['name']
+        module_name = module["name"]
         if module_name not in name_entries:
             name_entries[module_name] = {}
 
         prev_part = ""
         # Split the name and mark all duplicates.
         # There will be at least 1 unique identifer for each name.
-        for part in module['uidname'].split("."):
+        for part in module["uidname"].split("."):
             if part not in name_entries[module_name] or (
                 # If the name appears in a row, for example:
                 #   google.cloud.run_v2.services
@@ -1656,16 +1738,20 @@ def disambiguate_toc_name(
         if module_name not in name_entries[module_name]:
             name_entries[module_name][module_name] = 1
 
-        if 'items' in module:
+        if "items" in module:
             # Update the dictionary of dismabiguated names
-            disambiguated_names.update(disambiguate_toc_name(module['items']))
+            disambiguated_names.update(disambiguate_toc_name(module["items"]))
 
     for module in pkg_toc_yaml:
-        module_name = module['name']
+        module_name = module["name"]
         # Check if there are multiple entries of module['name'], disambiguate if needed.
         if name_entries[module_name][module_name] > 1:
-            module['name'] = ".".join(find_unique_name(module['uidname'].split("."), name_entries[module_name]))
-            disambiguated_names[module['uidname']] = module['name']
+            module["name"] = ".".join(
+                find_unique_name(
+                    module["uidname"].split("."), name_entries[module_name]
+                )
+            )
+            disambiguated_names[module["uidname"]] = module["name"]
 
     return disambiguated_names
 
@@ -1682,15 +1768,15 @@ def group_by_package(pkg_toc_yaml: list[dict]) -> list[dict]:
     new_pkg_toc_yaml = []
     package_groups = {}
     for module in pkg_toc_yaml:
-        package_group = find_package_group(module['uidname'])
+        package_group = find_package_group(module["uidname"])
         if package_group not in package_groups:
             package_name = pretty_package_name(package_group)
             package_groups[package_group] = {
                 "name": package_name,
                 "uidname": package_group,
-                "items": []
+                "items": [],
             }
-        package_groups[package_group]['items'].append(module)
+        package_groups[package_group]["items"].append(module)
 
     for package_group in package_groups:
         new_pkg_toc_yaml.append(package_groups[package_group])
@@ -1737,7 +1823,10 @@ def _find_and_add_summary_details(
     uid = yaml_data.get("uid", "")
     item_to_add = uid if summary_type == CLASS else f"{uid}-summary"
 
-    if item_to_add not in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0]:
+    if (
+        item_to_add
+        not in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0]
+    ):
         _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0].append(
             item_to_add
         )
@@ -1745,12 +1834,14 @@ def _find_and_add_summary_details(
     if summary_type in [CLASS]:
         name_to_use = f"[{uid}]({cgc_url}{uid})"
 
-        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append({
-            "uid": uid,
-            "name": name_to_use,
-            "fullName": uid,
-            "isExternal": False,
-        })
+        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append(
+            {
+                "uid": uid,
+                "name": name_to_use,
+                "fullName": uid,
+                "isExternal": False,
+            }
+        )
         return
 
     # if summary_type in [METHOD, PROPERTY]:
@@ -1768,7 +1859,7 @@ def _find_and_add_summary_details(
         key=len,
     )
     if first_summary_line and first_summary_line[-1] != ".":
-      first_summary_line += "."
+        first_summary_line += "."
 
     summary_to_use = (
         f"{first_summary_line}\n\n"
@@ -1780,16 +1871,16 @@ def _find_and_add_summary_details(
         "name": name_to_use,
         "summary": summary_to_use,
         "fullName": uid,
-        "type": 'method',
+        "type": "method",
     }
 
     if summary_type == METHOD:
         fields["syntax"] = {
-            "content": yaml_data.get("syntax").get("content") if yaml_data.get("syntax") else ""
+            "content": yaml_data.get("syntax").get("content")
+            if yaml_data.get("syntax")
+            else ""
         }
-    _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append(
-        fields
-    )
+    _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append(fields)
 
 
 def _render_summary_content(
@@ -1800,15 +1891,17 @@ def _render_summary_content(
 ) -> _yaml_type_alias:
     """Returns the summary content in appropriate YAML format to write."""
     summary_content = {
-        "items": [{
-            'uid': f'{summary_type.lower()}-summary',
-            'name': entry_name,
-            'fullName': f'{entry_name} Summary',
-            'langs': ['python'],
-            'type': 'package',
-            'summary': f'Summary of entries of {entry_name} for {library_name}.',
-            'children': children_name_and_summary_content[0],
-        }]
+        "items": [
+            {
+                "uid": f"{summary_type.lower()}-summary",
+                "name": entry_name,
+                "fullName": f"{entry_name} Summary",
+                "langs": ["python"],
+                "type": "package",
+                "summary": f"Summary of entries of {entry_name} for {library_name}.",
+                "children": children_name_and_summary_content[0],
+            }
+        ]
     }
 
     if summary_type in [CLASS]:
@@ -1827,7 +1920,7 @@ def find_uid_to_convert(
     known_uids: list[str],
     current_object_name: str,
     processed_words: list[str],
-    hard_coded_references: dict[str, str] | None = None
+    hard_coded_references: dict[str, str] | None = None,
 ) -> str | None:
     """Given `current_word`, returns the `uid` to convert to cross reference if found.
 
@@ -1858,12 +1951,20 @@ def find_uid_to_convert(
             # If the cross reference has been processed already, "<xref" or
             # "<a" will appear as the previous word.
             # For hard coded references, we use "<a href" style.
-            if "<xref" not in words[index-1] and "<a" not in words[index-1]:
+            if "<xref" not in words[index - 1] and "<a" not in words[index - 1]:
                 # Check to see if the reference has been converted already.
-                if not (processed_words and ( \
-                    f"<xref uid=\"{uid}" in processed_words[-1] or \
-                    (hard_coded_references and f"<a href=\"{hard_coded_references.get(uid)}" in processed_words[-1]))):
-                  return uid
+                if not (
+                    processed_words
+                    and (
+                        f'<xref uid="{uid}' in processed_words[-1]
+                        or (
+                            hard_coded_references
+                            and f'<a href="{hard_coded_references.get(uid)}'
+                            in processed_words[-1]
+                        )
+                    )
+                ):
+                    return uid
 
     return None
 
@@ -1904,10 +2005,14 @@ def convert_cross_references(
     # remove this in the future.
     iam_policy_link = "http://github.com/googleapis/python-grpc-google-iam-v1/blob/8e73b45993f030f521c0169b380d0fbafe66630b/google/iam/v1/iam_policy_pb2_grpc.py"
     hard_coded_references = {
-        "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest": iam_policy_link + "#L103-L109",
-        "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest": iam_policy_link + "#L111-L118",
-        "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest": iam_policy_link + "#L120-L131",
-        "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse": iam_policy_link + "#L120-L131"
+        "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest": iam_policy_link
+        + "#L103-L109",
+        "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest": iam_policy_link
+        + "#L111-L118",
+        "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest": iam_policy_link
+        + "#L120-L131",
+        "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse": iam_policy_link
+        + "#L120-L131",
     }
     known_uids.extend(hard_coded_references.keys())
 
@@ -1917,17 +2022,22 @@ def convert_cross_references(
         if ignore_examples and example_text in word:
             example_index = index
         uid = find_uid_to_convert(
-            word, words, index, known_uids, current_object_name, processed_words, hard_coded_references
+            word,
+            words,
+            index,
+            known_uids,
+            current_object_name,
+            processed_words,
+            hard_coded_references,
         )
 
         # If the reference is found after example section, ignore it.
-        if uid and (
-            not ignore_examples or
-            (ignore_examples and index < example_index)
-        ):
-            cross_reference = f"<a href=\"{hard_coded_references[uid]}\">{uid}</a>" \
-                if uid in hard_coded_references else \
-                f"<xref uid=\"{uid}\">{uid}</xref>"
+        if uid and (not ignore_examples or (ignore_examples and index < example_index)):
+            cross_reference = (
+                f'<a href="{hard_coded_references[uid]}">{uid}</a>'
+                if uid in hard_coded_references
+                else f'<xref uid="{uid}">{uid}</xref>'
+            )
 
             processed_words.append(word.replace(uid, cross_reference))
             print(f"Converted {uid} into cross reference in: \n{content}")
@@ -1938,7 +2048,9 @@ def convert_cross_references(
     return " ".join(processed_words)
 
 
-def search_cross_references(obj: dict, current_object_name: str, known_uids: list[str]) -> None:
+def search_cross_references(
+    obj: dict, current_object_name: str, known_uids: list[str]
+) -> None:
     """Searches for cross references in the object's data.
 
     Args:
@@ -1959,97 +2071,83 @@ def search_cross_references(obj: dict, current_object_name: str, known_uids: lis
             for param in obj["syntax"]["parameters"]:
                 if param.get("description"):
                     param_description = convert_cross_references(
-                        param["description"],
-                        current_object_name,
-                        known_uids
+                        param["description"], current_object_name, known_uids
                     )
-                    param["description"] = (
-                        markdown_utils.reformat_markdown_to_html(param_description))
+                    param["description"] = markdown_utils.reformat_markdown_to_html(
+                        param_description
+                    )
 
                 if param.get("id"):
                     param_id = convert_cross_references(
-                        param["id"],
-                        current_object_name,
-                        known_uids
+                        param["id"], current_object_name, known_uids
                     )
                     param["id"] = markdown_utils.reformat_markdown_to_html(param_id)
 
                 if param.get("var_type"):
                     param_type = convert_cross_references(
-                        param["var_type"],
-                        current_object_name,
-                        known_uids
+                        param["var_type"], current_object_name, known_uids
                     )
-                    param["var_type"] = (
-                        markdown_utils.reformat_markdown_to_html(param_type))
+                    param["var_type"] = markdown_utils.reformat_markdown_to_html(
+                        param_type
+                    )
 
         if obj["syntax"].get("exceptions"):
             for exception in obj["syntax"]["exceptions"]:
                 if exception.get("description"):
                     exception_description = convert_cross_references(
-                        exception["description"],
-                        current_object_name,
-                        known_uids
+                        exception["description"], current_object_name, known_uids
                     )
-                    exception["description"] = (
-                        markdown_utils.reformat_markdown_to_html(exception_description))
+                    exception["description"] = markdown_utils.reformat_markdown_to_html(
+                        exception_description
+                    )
 
                 if exception.get("var_type"):
                     exception_type = convert_cross_references(
-                        exception["var_type"],
-                        current_object_name,
-                        known_uids
+                        exception["var_type"], current_object_name, known_uids
                     )
-                    exception["var_type"] = (
-                        markdown_utils.reformat_markdown_to_html(exception_type))
+                    exception["var_type"] = markdown_utils.reformat_markdown_to_html(
+                        exception_type
+                    )
 
         if obj["syntax"].get("returns"):
             for ret in obj["syntax"]["returns"]:
                 if ret.get("description"):
                     ret_description = convert_cross_references(
-                        ret["description"],
-                        current_object_name,
-                        known_uids
+                        ret["description"], current_object_name, known_uids
                     )
-                    ret["description"] = (
-                        markdown_utils.reformat_markdown_to_html(ret_description))
+                    ret["description"] = markdown_utils.reformat_markdown_to_html(
+                        ret_description
+                    )
 
                 if ret.get("var_type"):
                     ret_type = convert_cross_references(
-                        ret["var_type"],
-                        current_object_name,
-                        known_uids
+                        ret["var_type"], current_object_name, known_uids
                     )
                     ret["var_type"] = markdown_utils.reformat_markdown_to_html(ret_type)
-
 
     if obj.get("attributes"):
         for attribute in obj["attributes"]:
             if attribute.get("description"):
                 attribute_description = convert_cross_references(
-                    attribute["description"],
-                    current_object_name,
-                    known_uids
+                    attribute["description"], current_object_name, known_uids
                 )
-                attribute["description"] = (
-                    markdown_utils.reformat_markdown_to_html(attribute_description))
+                attribute["description"] = markdown_utils.reformat_markdown_to_html(
+                    attribute_description
+                )
 
             if attribute.get("id"):
                 attribute_id = convert_cross_references(
-                    attribute["id"],
-                    current_object_name,
-                    known_uids
+                    attribute["id"], current_object_name, known_uids
                 )
                 attribute["id"] = markdown_utils.reformat_markdown_to_html(attribute_id)
 
             if attribute.get("var_type"):
                 attribute_type = convert_cross_references(
-                    attribute["var_type"],
-                    current_object_name,
-                    known_uids
+                    attribute["var_type"], current_object_name, known_uids
                 )
-                attribute["var_type"] = (
-                    markdown_utils.reformat_markdown_to_html(attribute_type))
+                attribute["var_type"] = markdown_utils.reformat_markdown_to_html(
+                    attribute_type
+                )
 
 
 def merge_markdown_and_package_toc(
@@ -2068,13 +2166,14 @@ def merge_markdown_and_package_toc(
         A set of markdown pages that has been added, and the merged table of
         contents file, with files in the correct position.
     """
+
     def _flatten_toc(
         toc_yaml_entry: list[_yaml_type_alias],
     ) -> list[_yaml_type_alias]:
         """Flattens and retrieves all children within pkg_toc_yaml."""
         entries = list(toc_yaml_entry)
         for entry in toc_yaml_entry:
-            if (children := entry.get('items')):
+            if children := entry.get("items"):
                 entries.extend(_flatten_toc(children))
         return entries
 
@@ -2083,37 +2182,35 @@ def merge_markdown_and_package_toc(
     pkg_toc_entries = _flatten_toc(pkg_toc_yaml)
 
     for entry in pkg_toc_entries:
-        entry_name = entry['name'].lower()
+        entry_name = entry["name"].lower()
         if entry_name not in markdown_toc_yaml:
             continue
 
         markdown_pages_to_add = []
         for page in markdown_toc_yaml[entry_name]:
-            if page['href'].split('.')[0] not in known_uids and (
-                page['href'] not in added_pages):
+            if page["href"].split(".")[0] not in known_uids and (
+                page["href"] not in added_pages
+            ):
                 markdown_pages_to_add.append(
-                    {'name': page['name'], 'href': page['href']}
+                    {"name": page["name"], "href": page["href"]}
                 )
 
         if not markdown_pages_to_add:
             continue
 
         markdown_pages_to_add = sorted(
-            markdown_pages_to_add,
-            key=lambda entry: entry['href'])
+            markdown_pages_to_add, key=lambda entry: entry["href"]
+        )
 
-        entry['items'] = markdown_pages_to_add + entry['items']
-        added_pages.update({
-            page['href'] for page in markdown_pages_to_add
-        })
+        entry["items"] = markdown_pages_to_add + entry["items"]
+        added_pages.update({page["href"] for page in markdown_pages_to_add})
 
-    if (top_level_pages := markdown_toc_yaml.get('/')) is None or (
-        top_level_pages and top_level_pages[0]['href'] != 'index.md'):
+    if (top_level_pages := markdown_toc_yaml.get("/")) is None or (
+        top_level_pages and top_level_pages[0]["href"] != "index.md"
+    ):
         return added_pages, [pkg_toc_yaml]
 
-    added_pages.update({
-        page['href'] for page in top_level_pages
-    })
+    added_pages.update({page["href"] for page in top_level_pages})
 
     return added_pages, top_level_pages + pkg_toc_yaml
 
@@ -2129,43 +2226,44 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     # Used to get rid of the uidname field for cleaner toc file.
     def sanitize_uidname_field(pkg_toc_yaml):
         for module in pkg_toc_yaml:
-            if 'items' in module:
-                sanitize_uidname_field(module['items'])
-            module.pop('uidname')
+            if "items" in module:
+                sanitize_uidname_field(module["items"])
+            module.pop("uidname")
 
     def find_node_in_toc_tree(pkg_toc_yaml, to_add_node):
         for module in pkg_toc_yaml:
-            if module['uidname'] == to_add_node:
+            if module["uidname"] == to_add_node:
                 return module
 
-            if 'items' in module:
-                items = module['items']
+            if "items" in module:
+                items = module["items"]
                 found_module = find_node_in_toc_tree(items, to_add_node)
                 if found_module != None:
                     return found_module
         return None
 
     def convert_module_to_package_if_needed(obj):
-        if 'source' in obj and 'path' in obj['source'] and obj['source']['path']:
-            if obj['source']['path'].endswith(INITPY):
-                obj['type'] = 'subPackage'
-                product_name = extract_product_name(obj['fullName'])
-                obj['summary'] = f"API documentation for `{product_name}` package."
+        if "source" in obj and "path" in obj["source"] and obj["source"]["path"]:
+            if obj["source"]["path"].endswith(INITPY):
+                obj["type"] = "subPackage"
+                product_name = extract_product_name(obj["fullName"])
+                obj["summary"] = f"API documentation for `{product_name}` package."
                 return
 
-        for child_uid in obj['children']:
+        for child_uid in obj["children"]:
             if child_uid in app.env.docfx_info_uid_types:
                 child_uid_type = app.env.docfx_info_uid_types[child_uid]
 
                 if child_uid_type == MODULE:
-                    obj['type'] = 'package'
+                    obj["type"] = "package"
                     return
 
-
-    normalized_outdir = os.path.normpath(os.path.join(
-        app.builder.outdir,  # Output Directory for Builder
-        API_ROOT,
-    ))
+    normalized_outdir = os.path.normpath(
+        os.path.join(
+            app.builder.outdir,  # Output Directory for Builder
+            API_ROOT,
+        )
+    )
     ensuredir(normalized_outdir)
 
     # Add markdown pages to the configured output directory.
@@ -2181,10 +2279,11 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
 
     # Order matters here, we need modules before lower level classes,
     # so that we can make sure to inject the TOC properly
-    for data_set in (app.env.docfx_yaml_modules,
-                     app.env.docfx_yaml_classes, 
-                     app.env.docfx_yaml_functions):  # noqa
-
+    for data_set in (
+        app.env.docfx_yaml_modules,
+        app.env.docfx_yaml_classes,
+        app.env.docfx_yaml_functions,
+    ):  # noqa
         for uid, yaml_data in iter(sorted(data_set.items())):
             if not uid:
                 # Skip objects without a module
@@ -2194,103 +2293,133 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
 
             # Merge module data with class data
             for obj in yaml_data:
-                arg_params = obj.get('syntax', {}).get('parameters', [])
-                if(len(arg_params) > 0 and 'id' in arg_params[0] and arg_params[0]['id'] == 'self'):
+                arg_params = obj.get("syntax", {}).get("parameters", [])
+                if (
+                    len(arg_params) > 0
+                    and "id" in arg_params[0]
+                    and arg_params[0]["id"] == "self"
+                ):
                     # Support having `self` as an arg param, but not documented
                     arg_params = arg_params[1:]
-                    obj['syntax']['parameters'] = arg_params
-                if obj['uid'] in app.env.docfx_info_field_data and \
-                    obj['type'] == app.env.docfx_info_field_data[obj['uid']]['type']:
+                    obj["syntax"]["parameters"] = arg_params
+                if (
+                    obj["uid"] in app.env.docfx_info_field_data
+                    and obj["type"] == app.env.docfx_info_field_data[obj["uid"]]["type"]
+                ):
                     # Avoid entities with same uid and diff type.
-                    del(app.env.docfx_info_field_data[obj['uid']]['type']) # Delete `type` temporarily
-                    if 'syntax' not in obj:
-                        obj['syntax'] = {}
+                    del app.env.docfx_info_field_data[obj["uid"]][
+                        "type"
+                    ]  # Delete `type` temporarily
+                    if "syntax" not in obj:
+                        obj["syntax"] = {}
                     merged_params = []
-                    if 'parameters' in app.env.docfx_info_field_data[obj['uid']]:
-                        doc_params = app.env.docfx_info_field_data[obj['uid']].get('parameters', [])
+                    if "parameters" in app.env.docfx_info_field_data[obj["uid"]]:
+                        doc_params = app.env.docfx_info_field_data[obj["uid"]].get(
+                            "parameters", []
+                        )
                         if arg_params and doc_params:
                             if len(arg_params) - len(doc_params) > 0:
                                 app.warn(
                                     "Documented params don't match size of params:"
-                                    " {}".format(obj['uid']))
+                                    " {}".format(obj["uid"])
+                                )
                             # Zip 2 param lists until the long one is exhausted
-                            for args, docs in zip_longest(arg_params, doc_params, fillvalue={}):
+                            for args, docs in zip_longest(
+                                arg_params, doc_params, fillvalue={}
+                            ):
                                 if len(args) == 0:
                                     merged_params.append(docs)
                                 else:
                                     args.update(docs)
                                     merged_params.append(args)
-                    obj['syntax'].update(app.env.docfx_info_field_data[obj['uid']])
+                    obj["syntax"].update(app.env.docfx_info_field_data[obj["uid"]])
                     if merged_params:
-                        obj['syntax']['parameters'] = merged_params
+                        obj["syntax"]["parameters"] = merged_params
 
-                    if 'parameters' in obj['syntax'] and obj['type'] == 'method':	
-                        for args in obj['syntax']['parameters']:
-                            if 'isRequired' not in args and 'defaultValue' not in args:
-                                args['isRequired'] = True
+                    if "parameters" in obj["syntax"] and obj["type"] == "method":
+                        for args in obj["syntax"]["parameters"]:
+                            if "isRequired" not in args and "defaultValue" not in args:
+                                args["isRequired"] = True
 
                     # Raise up summary
-                    if 'summary' in obj['syntax'] and obj['syntax']['summary']:
-                        obj['summary'] = obj['syntax'].pop('summary').strip(" \n\r\r")
+                    if "summary" in obj["syntax"] and obj["syntax"]["summary"]:
+                        obj["summary"] = obj["syntax"].pop("summary").strip(" \n\r\r")
 
                     # Raise up remarks
-                    if 'remarks' in obj['syntax'] and obj['syntax']['remarks']:
-                        obj['remarks'] = obj['syntax'].pop('remarks')
+                    if "remarks" in obj["syntax"] and obj["syntax"]["remarks"]:
+                        obj["remarks"] = obj["syntax"].pop("remarks")
 
                     # Raise up seealso
-                    if 'seealso' in obj['syntax'] and obj['syntax']['seealso']:
-                        obj['seealsoContent'] = obj['syntax'].pop('seealso')
+                    if "seealso" in obj["syntax"] and obj["syntax"]["seealso"]:
+                        obj["seealsoContent"] = obj["syntax"].pop("seealso")
 
                     # Raise up example
-                    if 'example' in obj['syntax'] and obj['syntax']['example']:
-                        obj.setdefault('example', []).append(obj['syntax'].pop('example'))
+                    if "example" in obj["syntax"] and obj["syntax"]["example"]:
+                        obj.setdefault("example", []).append(
+                            obj["syntax"].pop("example")
+                        )
 
                     # Raise up exceptions
-                    if 'exceptions' in obj['syntax'] and obj['syntax']['exceptions']:
-                        obj['exceptions'] = obj['syntax'].pop('exceptions')
+                    if "exceptions" in obj["syntax"] and obj["syntax"]["exceptions"]:
+                        obj["exceptions"] = obj["syntax"].pop("exceptions")
 
                     # Raise up references
-                    if 'references' in obj['syntax'] and obj['syntax']['references']:
-                        obj.setdefault('references', []).extend(obj['syntax'].pop('references'))
+                    if "references" in obj["syntax"] and obj["syntax"]["references"]:
+                        obj.setdefault("references", []).extend(
+                            obj["syntax"].pop("references")
+                        )
 
                     # add content of temp list 'added_attribute' to children and yaml_data
-                    if 'added_attribute' in obj['syntax'] and obj['syntax']['added_attribute']:
-                        added_attribute = obj['syntax'].pop('added_attribute')
+                    if (
+                        "added_attribute" in obj["syntax"]
+                        and obj["syntax"]["added_attribute"]
+                    ):
+                        added_attribute = obj["syntax"].pop("added_attribute")
                         for attrData in added_attribute:
-                            existed_Data = next((n for n in yaml_data if n['uid'] == attrData['uid']), None)
+                            existed_Data = next(
+                                (n for n in yaml_data if n["uid"] == attrData["uid"]),
+                                None,
+                            )
                             if existed_Data:
                                 # Update data for already existed one which has attribute comment in source file
                                 existed_Data.update(attrData)
                             else:
-                                obj.get('children', []).append(attrData['uid'])
+                                obj.get("children", []).append(attrData["uid"])
                                 yaml_data.append(attrData)
-                                if 'class' in attrData:
+                                if "class" in attrData:
                                     # Get parent for attrData of Non enum class
-                                    parent = attrData['class']
+                                    parent = attrData["class"]
                                 else:
                                     # Get parent for attrData of enum class
-                                    parent = attrData['parent']
-                                obj['references'].append(_create_reference(attrData, parent))
-                    app.env.docfx_info_field_data[obj['uid']]['type'] = obj['type'] # Revert `type` for other objects to use
+                                    parent = attrData["parent"]
+                                obj["references"].append(
+                                    _create_reference(attrData, parent)
+                                )
+                    app.env.docfx_info_field_data[obj["uid"]]["type"] = obj[
+                        "type"
+                    ]  # Revert `type` for other objects to use
 
-                if 'references' in obj:
+                if "references" in obj:
                     # Ensure that references have no duplicate ref
-                    ref_uids = [r['uid'] for r in references]
-                    for ref_obj in obj['references']:
-                        if ref_obj['uid'] not in ref_uids:
+                    ref_uids = [r["uid"] for r in references]
+                    for ref_obj in obj["references"]:
+                        if ref_obj["uid"] not in ref_uids:
                             references.append(ref_obj)
-                    obj.pop('references')
+                    obj.pop("references")
 
-                if obj['type'] == 'module':
+                if obj["type"] == "module":
                     convert_module_to_package_if_needed(obj)
 
-                if obj['type'] == 'method':
+                if obj["type"] == "method":
                     # Update the name to use shorter name to show
-                    obj['name'] = obj['source']['id']
+                    obj["name"] = obj["source"]["id"]
 
                 # To distinguish distribution package and import package
-                if obj.get('type', '') == 'package' and obj.get('kind', '') != 'distribution':
-                    obj['kind'] = 'import'
+                if (
+                    obj.get("type", "") == "package"
+                    and obj.get("kind", "") != "distribution"
+                ):
+                    obj["kind"] = "import"
 
                 # Extract any missing cross references where applicable.
                 # Potential targets are instances of full uid shown, or
@@ -2319,32 +2448,26 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
             node_name = uid.split(".")[-1]
 
             # Build nested TOC
-            if uid.count('.') >= 1:
-                parent_level = '.'.join(uid.split('.')[:-1])
+            if uid.count(".") >= 1:
+                parent_level = ".".join(uid.split(".")[:-1])
                 found_node = find_node_in_toc_tree(pkg_toc_yaml, parent_level)
 
                 if found_node:
                     found_node.setdefault(
-                      'items',
-                      [{'name': 'Overview', 'uidname': parent_level, 'uid': parent_level}]
-                    ).append({
-                      'name': node_name,
-                      'uidname': uid,
-                      'uid': uid
-                    })
+                        "items",
+                        [
+                            {
+                                "name": "Overview",
+                                "uidname": parent_level,
+                                "uid": parent_level,
+                            }
+                        ],
+                    ).append({"name": node_name, "uidname": uid, "uid": uid})
                 else:
-                    pkg_toc_yaml.append({
-                      'name': node_name,
-                      'uidname': uid,
-                      'uid': uid
-                    })
+                    pkg_toc_yaml.append({"name": node_name, "uidname": uid, "uid": uid})
 
             else:
-                pkg_toc_yaml.append({
-                  'name': node_name,
-                  'uidname': uid,
-                  'uid': uid
-                })
+                pkg_toc_yaml.append({"name": node_name, "uidname": uid, "uid": uid})
 
     # Exit if there are no generated YAML pages or Markdown pages.
     if len(pkg_toc_yaml) == 0 and len(app.env.markdown_pages) == 0:
@@ -2361,18 +2484,17 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
 
     sanitize_uidname_field(pkg_toc_yaml)
 
-    known_uids = {
-        uid.split('.')[-1]
-        for uid in app.env.docfx_uid_names
-    }
+    known_uids = {uid.split(".")[-1] for uid in app.env.docfx_uid_names}
 
     added_pages, pkg_toc_yaml = merge_markdown_and_package_toc(
-        pkg_toc_yaml, app.env.markdown_pages, known_uids)
+        pkg_toc_yaml, app.env.markdown_pages, known_uids
+    )
 
     # Remove unused pages after merging the table of contents.
     if added_pages:
         markdown_utils.remove_unused_pages(
-            added_pages, app.env.moved_markdown_pages, normalized_outdir)
+            added_pages, app.env.moved_markdown_pages, normalized_outdir
+        )
 
     if app.env.library_shortname:
         # Add summary pages as the second entry into the table of contents.
@@ -2384,19 +2506,19 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
                     {"name": "API overview", "href": "summary_overview.md"},
                     {"name": "Classes", "href": "summary_class.yml"},
                     {"name": "Methods", "href": "summary_method.yml"},
-                    {"name": "Properties and Attributes", "href": "summary_property.yml"},
+                    {
+                        "name": "Properties and Attributes",
+                        "href": "summary_property.yml",
+                    },
                 ],
-            }
+            },
         )
 
-    toc_file = os.path.join(normalized_outdir, 'toc.yml')
-    with open(toc_file, 'w') as writable:
+    toc_file = os.path.join(normalized_outdir, "toc.yml")
+    with open(toc_file, "w") as writable:
         writable.write(
             dump(
-                [{
-                    'name': app.config.project,
-                    'items': pkg_toc_yaml
-                }],
+                [{"name": app.config.project, "items": pkg_toc_yaml}],
                 default_flow_style=False,
             )
         )
@@ -2408,15 +2530,16 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     yaml_entry_line = "### YamlMime:UniversalReference\n"
     # Output files
     for uid, data in iter(yaml_map.items()):
-
         for yaml_item in data:
             for obj in yaml_item:
                 # If the entry was disambiguated, update here:
-                obj_full_name = obj['fullName']
+                obj_full_name = obj["fullName"]
                 if disambiguated_names.get(obj_full_name):
-                    obj['name'] = disambiguated_names[obj_full_name]
-                    if obj['type'] == 'subPackage':
-                        obj['summary'] = "API documentation for `{}` package.".format(obj['name'])
+                    obj["name"] = disambiguated_names[obj_full_name]
+                    if obj["type"] == "subPackage":
+                        obj["summary"] = "API documentation for `{}` package.".format(
+                            obj["name"]
+                        )
 
         # data is formatted as [yaml_data, references]
         yaml_data, references = data
@@ -2426,22 +2549,22 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
         else:
             filename = uid
 
-        out_file = os.path.join(normalized_outdir, '%s.yml' % filename)
+        out_file = os.path.join(normalized_outdir, "%s.yml" % filename)
         ensuredir(os.path.dirname(out_file))
         if app.verbosity >= 1:
-            app.info(bold('[docfx_yaml] ') + darkgreen('Outputting %s' % filename))
+            app.info(bold("[docfx_yaml] ") + darkgreen("Outputting %s" % filename))
 
-        with open(out_file, 'w') as out_file_obj:
+        with open(out_file, "w") as out_file_obj:
             out_file_obj.write(yaml_entry_line)
             try:
                 dump(
                     {
-                        'items': yaml_data,
-                        'references': references,
-                        'api_name': [],  # Hack around docfx YAML
+                        "items": yaml_data,
+                        "references": references,
+                        "api_name": [],  # Hack around docfx YAML
                     },
                     out_file_obj,
-                    default_flow_style=False
+                    default_flow_style=False,
                 )
             except Exception as e:
                 raise ValueError("Unable to dump object\n{0}".format(yaml_data)) from e
@@ -2458,9 +2581,9 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
             _find_and_add_summary_details(entry, summary_type, cgc_url)
 
     for summary_type in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE:
-        children_names_and_content = (
-            _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type]
-        )
+        children_names_and_content = _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[
+            summary_type
+        ]
         if not all(children_names_and_content):
             continue
 
@@ -2482,29 +2605,33 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
                 default_flow_style=False,
             )
 
-
-    index_file = os.path.join(normalized_outdir, 'index.yml')
+    index_file = os.path.join(normalized_outdir, "index.yml")
     index_children = []
     index_references = []
     for package in pkg_toc_yaml_with_uid:
         for item in package.get("items"):
-            index_children.append(item.get('uidname', ''))
-            index_references.append({
-                'uid': item.get('uidname', ''),
-                'name': item.get('name', ''),
-                'fullname': item.get('uidname', ''),
-                'isExternal': False
-            })
+            index_children.append(item.get("uidname", ""))
+            index_references.append(
+                {
+                    "uid": item.get("uidname", ""),
+                    "name": item.get("name", ""),
+                    "fullname": item.get("uidname", ""),
+                    "isExternal": False,
+                }
+            )
 
-    '''
+    """
     # TODO: handle xref for other products.
     xref_file = os.path.join(normalized_outdir, 'xrefs.yml')
     with open(xref_file, 'w') as xref_file_obj:
         for xref in app.env.docfx_xrefs:
             xref_file_obj.write(f'{xref}\n')
-    '''
+    """
 
-def missing_reference(app: sphinx.application.Sphinx, env: Any, node: Any, contnode: Any) -> Any:
+
+def missing_reference(
+    app: sphinx.application.Sphinx, env: Any, node: Any, contnode: Any
+) -> Any:
     """Called when a reference is missing.
 
     Args:
@@ -2516,27 +2643,31 @@ def missing_reference(app: sphinx.application.Sphinx, env: Any, node: Any, contn
     Returns:
         Any: The new node.
     """
-    reftarget = ''
-    refdoc = ''
-    reftype = ''
-    module = ''
-    if 'refdomain' in node.attributes and node.attributes['refdomain'] == 'py':
-        reftarget = node['reftarget']
-        reftype = node['reftype']
-        if 'refdoc' in node:
-            refdoc = node['refdoc']
-        if 'py:module' in node:
-            module = node['py:module']
+    reftarget = ""
+    refdoc = ""
+    reftype = ""
+    module = ""
+    if "refdomain" in node.attributes and node.attributes["refdomain"] == "py":
+        reftarget = node["reftarget"]
+        reftype = node["reftype"]
+        if "refdoc" in node:
+            refdoc = node["refdoc"]
+        if "py:module" in node:
+            module = node["py:module"]
 
-        #Refactor reftarget to fullname if it is a short name
-        if reftype in [CLASS, REFFUNCTION, REFMETHOD] and module and '.' not in reftarget:
+        # Refactor reftarget to fullname if it is a short name
+        if (
+            reftype in [CLASS, REFFUNCTION, REFMETHOD]
+            and module
+            and "." not in reftarget
+        ):
             if reftype in [CLASS, REFFUNCTION]:
                 fields = (module, reftarget)
             else:
-                fields = (module, node['py:class'], reftarget)
-            reftarget = '.'.join(field for field in fields if field is not None)
+                fields = (module, node["py:class"], reftarget)
+            reftarget = ".".join(field for field in fields if field is not None)
 
-        return make_refnode(app.builder, refdoc, reftarget, '', contnode)
+        return make_refnode(app.builder, refdoc, reftarget, "", contnode)
 
 
 def setup(app: sphinx.application.Sphinx) -> None:
@@ -2548,18 +2679,18 @@ def setup(app: sphinx.application.Sphinx) -> None:
 
     """
 
-    app.setup_extension('sphinx.ext.autodoc')
-    app.connect('autodoc-process-docstring', _process_docstring)
+    app.setup_extension("sphinx.ext.autodoc")
+    app.connect("autodoc-process-docstring", _process_docstring)
 
-    app.add_node(remarks, html = (remarks.visit_remarks, remarks.depart_remarks))
-    app.add_directive('remarks', RemarksDirective)
-    app.add_directive('todo', TodoDirective)
+    app.add_node(remarks, html=(remarks.visit_remarks, remarks.depart_remarks))
+    app.add_directive("remarks", RemarksDirective)
+    app.add_directive("todo", TodoDirective)
 
-    app.connect('builder-inited', build_init)
-    app.connect('autodoc-process-docstring', process_docstring)
-    app.connect('autodoc-process-signature', process_signature)
-    app.connect('build-finished', build_finished)
-    app.connect('missing-reference', missing_reference)
-    app.add_config_value('docfx_yaml_output', API_ROOT, 'html')
-    app.add_config_value('folder', '', 'html')
-    app.add_config_value('autodoc_functions', False, 'env')
+    app.connect("builder-inited", build_init)
+    app.connect("autodoc-process-docstring", process_docstring)
+    app.connect("autodoc-process-signature", process_signature)
+    app.connect("build-finished", build_finished)
+    app.connect("missing-reference", missing_reference)
+    app.add_config_value("docfx_yaml_output", API_ROOT, "html")
+    app.add_config_value("folder", "", "html")
+    app.add_config_value("autodoc_functions", False, "env")

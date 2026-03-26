@@ -2,15 +2,15 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-import copy
 import concurrent.futures
-from datetime import datetime
+import copy
 import logging
 import re
 import time
 import typing
-from typing import Any, Dict, Optional, Sequence, Union
 import warnings
+from datetime import datetime
+from typing import Any, Dict, Optional, Sequence, Union
 
 import numpy as np
 
@@ -20,10 +20,10 @@ import numpy as np
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-from pandas_gbq.exceptions import AccessDenied, GenericGBQException
-from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 import pandas_gbq.timestamp
+from pandas_gbq.exceptions import AccessDenied, GenericGBQException
+from pandas_gbq.features import FEATURES
 
 try:
     import tqdm  # noqa
@@ -285,8 +285,8 @@ class GbqConnector(object):
         client_secret=None,
     ):
         global context
-        from google.api_core.exceptions import GoogleAPIError
-        from google.api_core.exceptions import ClientError
+        from google.api_core.exceptions import ClientError, GoogleAPIError
+
         from pandas_gbq import auth
 
         self.http_error = (ClientError, GoogleAPIError)
@@ -367,8 +367,8 @@ class GbqConnector(object):
 
     def get_client(self):
         import google.api_core.client_info
-        from google.cloud import bigquery
         import pandas
+        from google.cloud import bigquery
 
         client_info = google.api_core.client_info.ClientInfo(
             user_agent="pandas-{}".format(pandas.__version__)
@@ -456,14 +456,13 @@ class GbqConnector(object):
                 self.process_http_error(ex)
 
     def run_query(self, query, max_results=None, progress_bar_type=None, **kwargs):
+        import pandas
         from google.auth.exceptions import RefreshError
         from google.cloud import bigquery
-        import pandas
 
         job_config = {
             "query": {
-                "useLegacySql": self.dialect
-                == "legacy"
+                "useLegacySql": self.dialect == "legacy"
                 # 'allowLargeResults', 'createDisposition',
                 # 'preserveNulls', destinationTable, useQueryCache
             }
@@ -1242,7 +1241,7 @@ def generate_bq_schema(df, default_type="STRING"):
     """
     # deprecation TimeSeries, #11121
     warnings.warn(
-        "generate_bq_schema is deprecated and will be removed in " "a future version",
+        "generate_bq_schema is deprecated and will be removed in a future version",
         FutureWarning,
         stacklevel=2,
     )
@@ -1284,8 +1283,7 @@ class _Table(GbqConnector):
 
     def _table_ref(self, table_id):
         """Return a BigQuery client library table reference"""
-        from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import TableReference
+        from google.cloud.bigquery import DatasetReference, TableReference
 
         return TableReference(
             DatasetReference(self.project_id, self.dataset_id), table_id
@@ -1326,9 +1324,7 @@ class _Table(GbqConnector):
             Use the generate_bq_schema to generate your table schema from a
             dataframe.
         """
-        from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import Table
-        from google.cloud.bigquery import TableReference
+        from google.cloud.bigquery import DatasetReference, Table, TableReference
 
         if self.exists(table_id):
             raise TableCreationError("Table {0} already exists".format(table_id))
@@ -1430,9 +1426,7 @@ class _Dataset(GbqConnector):
         from google.cloud.bigquery import Dataset
 
         if self.exists(dataset_id):
-            raise DatasetCreationError(
-                "Dataset {0} already " "exists".format(dataset_id)
-            )
+            raise DatasetCreationError("Dataset {0} already exists".format(dataset_id))
 
         dataset = Dataset(self._dataset_ref(dataset_id))
 

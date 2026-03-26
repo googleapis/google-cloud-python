@@ -19,10 +19,11 @@ import warnings
 
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
-from google.cloud.storage.retry import ConditionalRetryPolicy
-
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ConditionalRetryPolicy,
+)
 
 # Resumable uploads require a chunk size of precisely a multiple of 256 KiB.
 CHUNK_SIZE_MULTIPLE = 256 * 1024  # 256 KiB

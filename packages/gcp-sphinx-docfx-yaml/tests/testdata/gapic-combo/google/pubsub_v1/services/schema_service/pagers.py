@@ -18,10 +18,10 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.pubsub_v1.types import schema
@@ -51,7 +51,7 @@ class ListSchemasPager:
         request: schema.ListSchemasRequest,
         response: schema.ListSchemasResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -113,7 +113,7 @@ class ListSchemasAsyncPager:
         request: schema.ListSchemasRequest,
         response: schema.ListSchemasResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiates the pager.
 

@@ -65,16 +65,16 @@ from .pubsub import (
 from .schema import (
     CreateSchemaRequest,
     DeleteSchemaRequest,
+    Encoding,
     GetSchemaRequest,
     ListSchemasRequest,
     ListSchemasResponse,
     Schema,
+    SchemaView,
     ValidateMessageRequest,
     ValidateMessageResponse,
     ValidateSchemaRequest,
     ValidateSchemaResponse,
-    Encoding,
-    SchemaView,
 )
 
 TimeoutType = Union[

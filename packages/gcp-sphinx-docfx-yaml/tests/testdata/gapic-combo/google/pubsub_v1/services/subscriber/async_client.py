@@ -13,28 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Dict,
     Mapping,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
     Sequence,
     Tuple,
     Type,
     Union,
 )
-import warnings
+
 import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -43,15 +44,20 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.pubsub_v1.services.subscriber import pagers
 from google.pubsub_v1.types import pubsub
-from .transports.base import SubscriberTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import SubscriberGrpcAsyncIOTransport
+
 from .client import SubscriberClient
+from .transports.base import DEFAULT_CLIENT_INFO, SubscriberTransport
+from .transports.grpc_asyncio import SubscriberGrpcAsyncIOTransport
 
 
 class SubscriberAsyncClient:
@@ -104,7 +110,9 @@ class SubscriberAsyncClient:
         Returns:
             SubscriberAsyncClient: The constructed client.
         """
-        return SubscriberClient.from_service_account_info.__func__(SubscriberAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SubscriberClient.from_service_account_info.__func__(
+            SubscriberAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -120,7 +128,9 @@ class SubscriberAsyncClient:
         Returns:
             SubscriberAsyncClient: The constructed client.
         """
-        return SubscriberClient.from_service_account_file.__func__(SubscriberAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SubscriberClient.from_service_account_file.__func__(
+            SubscriberAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

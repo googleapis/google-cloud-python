@@ -19,7 +19,6 @@ import enum
 import typing
 from typing import Optional, Sequence
 
-
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import pubsub_v1
     from google.cloud.pubsub_v1 import types

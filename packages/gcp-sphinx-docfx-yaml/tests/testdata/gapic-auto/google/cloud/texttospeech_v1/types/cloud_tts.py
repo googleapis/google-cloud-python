@@ -37,6 +37,7 @@ class SsmlVoiceGender(proto.Enum):
     r"""Gender of the voice as described in `SSML voice
     element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     MALE = 1
     FEMALE = 2
@@ -47,6 +48,7 @@ class AudioEncoding(proto.Enum):
     r"""Configuration to set up audio encoder. The encoding
     determines the output audio format that we'd like.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
     MP3 = 2
@@ -350,6 +352,7 @@ class CustomVoiceParams(proto.Message):
         honest and correct usage of the service as it's regulated by
         contract and will cause significant difference in billing.
         """
+
         REPORTED_USAGE_UNSPECIFIED = 0
         REALTIME = 1
         OFFLINE = 2

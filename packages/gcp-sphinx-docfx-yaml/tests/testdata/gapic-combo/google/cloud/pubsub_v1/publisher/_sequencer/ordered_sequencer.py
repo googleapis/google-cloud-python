@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enum
 import collections
+import enum
 import threading
 import typing
 from typing import Deque, Iterable, Sequence
 
 from google.api_core import gapic_v1
-from google.cloud.pubsub_v1.publisher import futures
-from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
+from google.cloud.pubsub_v1.publisher import exceptions, futures
 from google.cloud.pubsub_v1.publisher._batch import base as batch_base
+from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
 from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
@@ -174,8 +173,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 "pause() should have cancelled all of the batches."
             )
             assert self._state != _OrderedSequencerStatus.FINISHED, (
-                "This method should not be called after all batches have been "
-                "finished."
+                "This method should not be called after all batches have been finished."
             )
 
             # Message futures for the batch have been completed (either with a
@@ -214,9 +212,9 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
         _state_lock must be taken before calling this method.
         """
-        assert (
-            self._state != _OrderedSequencerStatus.FINISHED
-        ), "Pause should not be called after all batches have finished."
+        assert self._state != _OrderedSequencerStatus.FINISHED, (
+            "Pause should not be called after all batches have finished."
+        )
         self._state = _OrderedSequencerStatus.PAUSED
         for batch in self._ordered_batches:
             batch.cancel(
@@ -306,9 +304,9 @@ class OrderedSequencer(sequencer_base.Sequencer):
             if self._state == _OrderedSequencerStatus.STOPPED:
                 raise RuntimeError("Cannot publish on a stopped sequencer.")
 
-            assert (
-                self._state == _OrderedSequencerStatus.ACCEPTING_MESSAGES
-            ), "Publish is only allowed in accepting-messages state."
+            assert self._state == _OrderedSequencerStatus.ACCEPTING_MESSAGES, (
+                "Publish is only allowed in accepting-messages state."
+            )
 
             if not self._ordered_batches:
                 new_batch = self._create_batch(

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import PublisherClient
 from .async_client import PublisherAsyncClient
+from .client import PublisherClient
 
 __all__ = (
     "PublisherClient",

@@ -20,32 +20,35 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Dict, Callable, Iterable, List, Optional, Tuple
 import uuid
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 import grpc  # type: ignore
+from grpc_status import rpc_status  # type: ignore
 
-from google.api_core import bidi
-from google.api_core import exceptions
+import google.cloud.pubsub_v1.subscriber.message
+from google.api_core import bidi, exceptions
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
-from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
-from google.cloud.pubsub_v1.subscriber._protocol import histogram
-from google.cloud.pubsub_v1.subscriber._protocol import leaser
-from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
-from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber._protocol import (
+    dispatcher,
+    heartbeater,
+    histogram,
+    leaser,
+    messages_on_hold,
+    requests,
+)
 from google.cloud.pubsub_v1.subscriber.exceptions import (
     AcknowledgeError,
     AcknowledgeStatus,
 )
-import google.cloud.pubsub_v1.subscriber.message
-from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber.scheduler import ThreadScheduler
 from google.pubsub_v1 import types as gapic_types
-from grpc_status import rpc_status  # type: ignore
+from google.rpc import (
+    code_pb2,  # type: ignore
+    status_pb2,
+)
 from google.rpc.error_details_pb2 import ErrorInfo  # type: ignore
-from google.rpc import code_pb2  # type: ignore
-from google.rpc import status_pb2
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber

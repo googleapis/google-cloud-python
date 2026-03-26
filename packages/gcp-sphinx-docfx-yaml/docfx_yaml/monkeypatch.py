@@ -13,21 +13,21 @@
 # limitations under the License.
 
 import re
-from docutils import nodes
 from functools import partial
-
-from sphinx.util.docfields import _is_single_paragraph
-from sphinx.util import docfields
-from sphinx import directives, addnodes
-from sphinx import addnodes
-
-from sphinx.addnodes import desc, desc_signature
 from typing import Any
-from .utils import transform_node as _transform_node
-from .nodes import remarks
-import sphinx.application
 
-TYPE_SEP_PATTERN = r'(\[|\]|, |\(|\))'
+import sphinx.application
+from docutils import nodes
+from sphinx import addnodes, directives
+from sphinx.addnodes import desc, desc_signature
+from sphinx.util import docfields
+from sphinx.util.docfields import _is_single_paragraph
+
+from .nodes import remarks
+from .utils import transform_node as _transform_node
+
+TYPE_SEP_PATTERN = r"(\[|\]|, |\(|\))"
+
 
 def _get_desc_data(node: nodes.Node) -> tuple[str | None, str | None]:
     """Gets the description data from a node.
@@ -37,26 +37,28 @@ def _get_desc_data(node: nodes.Node) -> tuple[str | None, str | None]:
         tuple[str | None, str | None]: A tuple containing the full name
             and uid of the node.
     """
-    assert node.tagname == 'desc'
-    if node.attributes['domain'] != 'py':
-        print(
-            'Skipping Domain Object (%s)' % node.attributes['domain']
-        )
+    assert node.tagname == "desc"
+    if node.attributes["domain"] != "py":
+        print("Skipping Domain Object (%s)" % node.attributes["domain"])
         return None, None
 
     try:
-        module = node[0].attributes['module']
-        full_name = node[0].attributes['fullname'].split('.')[-1]
+        module = node[0].attributes["module"]
+        full_name = node[0].attributes["fullname"].split(".")[-1]
     except KeyError as e:
-        print("[docfx_yaml] There maybe some syntax error in docstring near: " + node.astext())
+        print(
+            "[docfx_yaml] There maybe some syntax error in docstring near: "
+            + node.astext()
+        )
         raise e
 
     try:
-        uid = node[0].attributes['ids'][0]
+        uid = node[0].attributes["ids"][0]
     except Exception:
-        uid = f'{module}.{full_name}'
-        print('Non-standard id: %s' % uid)
+        uid = f"{module}.{full_name}"
+        print("Non-standard id: %s" % uid)
     return full_name, uid
+
 
 def _is_desc_of_enum_class(node: nodes.Node) -> bool:
     """Checks if the node is a description of an enum class.
@@ -66,8 +68,12 @@ def _is_desc_of_enum_class(node: nodes.Node) -> bool:
         bool: True if the node is a description of an enum class,
             False otherwise.
     """
-    assert node.tagname == 'desc_content'
-    if node[0] and node[0].tagname == 'paragraph' and node[0].astext() == 'Bases: enum.Enum':
+    assert node.tagname == "desc_content"
+    if (
+        node[0]
+        and node[0].tagname == "paragraph"
+        and node[0].astext() == "Bases: enum.Enum"
+    ):
         return True
 
     return False
@@ -92,7 +98,7 @@ def _hacked_transform(typemap: dict, node: nodes.Node) -> tuple[list, dict]:
             fieldtype, fieldarg = fieldname.astext().split(None, 1)
         except ValueError:
             # maybe an argument-less field type?
-            fieldtype, fieldarg = fieldname.astext(), ''
+            fieldtype, fieldarg = fieldname.astext(), ""
         typedesc, is_typefield = typemap.get(fieldtype, (None, None))
 
         # sort out unknown fields
@@ -101,7 +107,7 @@ def _hacked_transform(typemap: dict, node: nodes.Node) -> tuple[list, dict]:
             # match the spec; capitalize field name and be done with it
             new_fieldname = fieldtype[0:1].upper() + fieldtype[1:]
             if fieldarg:
-                new_fieldname += ' ' + fieldarg
+                new_fieldname += " " + fieldarg
             fieldname[0] = nodes.Text(new_fieldname)
             entries.append(field)
             continue
@@ -118,8 +124,11 @@ def _hacked_transform(typemap: dict, node: nodes.Node) -> tuple[list, dict]:
         if is_typefield:
             # filter out only inline nodes; others will result in invalid
             # markup being written out
-            content = [n for n in content if isinstance(n, nodes.Inline) or
-                       isinstance(n, nodes.Text)]
+            content = [
+                n
+                for n in content
+                if isinstance(n, nodes.Inline) or isinstance(n, nodes.Text)
+            ]
             if content:
                 types.setdefault(typename, {})[fieldarg] = content
             continue
@@ -131,12 +140,10 @@ def _hacked_transform(typemap: dict, node: nodes.Node) -> tuple[list, dict]:
             except ValueError:
                 pass
             else:
-                types.setdefault(typename, {})[argname] = \
-                    [nodes.Text(argtype)]
+                types.setdefault(typename, {})[argname] = [nodes.Text(argtype)]
                 fieldarg = argname
 
-        translatable_content = nodes.inline(fieldbody.rawsource,
-                                            translatable=True)
+        translatable_content = nodes.inline(fieldbody.rawsource, translatable=True)
         translatable_content.source = fieldbody.parent.source
         translatable_content.line = fieldbody.parent.line
         translatable_content += content
@@ -176,29 +183,28 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
 
     transform_node = partial(_transform_node, app)
 
-    def get_data_structure(entries: list, types: dict, field_object: nodes.Node) -> dict:
+    def get_data_structure(
+        entries: list, types: dict, field_object: nodes.Node
+    ) -> dict:
         """
         Get a proper docfx YAML data structure from the entries & types
         """
 
         data = {
-            'parameters': [],
-            'variables': [],
-            'exceptions': [],
-            'return': {},
-            'references': [],
+            "parameters": [],
+            "variables": [],
+            "exceptions": [],
+            "return": {},
+            "references": [],
         }
 
         def make_param(_id, _description, _type=None, _required=None):
-            ret = {
-                'id': _id,
-                'description': _description.strip(" \n\r\t")
-            }
+            ret = {"id": _id, "description": _description.strip(" \n\r\t")}
             if _type:
-                ret['type'] = _type
+                ret["type"] = _type
 
             if _required is not None:
-                ret['isRequired'] = _required
+                ret["isRequired"] = _required
 
             return ret
 
@@ -210,7 +216,7 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
 
         def resolve_type(data_type):
             # Remove @ ~ and \n for cross reference in parameter/return value type to apply to docfx correctly
-            data_type = re.sub('[@~\n]', '', data_type)
+            data_type = re.sub("[@~\n]", "", data_type)
 
             # Add references for docfx to resolve ref if type contains TYPE_SEP_PATTERN
             _spec_list = []
@@ -218,22 +224,22 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
 
             _added_reference = {}
             if len(_spec_fullnames) > 1:
-                _added_reference_name = ''
+                _added_reference_name = ""
                 for _spec_fullname in _spec_fullnames:
-                    if _spec_fullname != '':
+                    if _spec_fullname != "":
                         _spec = {}
-                        _spec['name'] = _spec_fullname.split('.')[-1]
-                        _spec['fullName'] = _spec_fullname
+                        _spec["name"] = _spec_fullname.split(".")[-1]
+                        _spec["fullName"] = _spec_fullname
                         if re.match(TYPE_SEP_PATTERN, _spec_fullname) is None:
-                            _spec['uid'] = _spec_fullname
+                            _spec["uid"] = _spec_fullname
                         _spec_list.append(_spec)
-                        _added_reference_name += _spec['name']
+                        _added_reference_name += _spec["name"]
 
                 _added_reference = {
-                    'uid': data_type,
-                    'name': _added_reference_name,
-                    'fullName': data_type,
-                    'spec.python': _spec_list
+                    "uid": data_type,
+                    "name": _added_reference_name,
+                    "fullName": data_type,
+                    "spec.python": _spec_list,
                 }
 
             return data_type, _added_reference
@@ -242,22 +248,37 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
             ret = []
             if len(field_object) > 0:
                 for field in field_object:
-                    if 'field_name' == field[0].tagname and field[0].astext() == 'Raises':
-                        assert field[1].tagname == 'field_body'
+                    if (
+                        "field_name" == field[0].tagname
+                        and field[0].astext() == "Raises"
+                    ):
+                        assert field[1].tagname == "field_body"
                         field_body = field[1]
 
-                        children = [n for n in field_body
-                            if not isinstance(n, nodes.Invisible)]
+                        children = [
+                            n for n in field_body if not isinstance(n, nodes.Invisible)
+                        ]
 
                         for child in children:
-                            if isinstance (child, nodes.paragraph):
-                                pending_xref_index = child.first_child_matching_class(addnodes.pending_xref)
+                            if isinstance(child, nodes.paragraph):
+                                pending_xref_index = child.first_child_matching_class(
+                                    addnodes.pending_xref
+                                )
                                 if pending_xref_index is not None:
                                     pending_xref = child[pending_xref_index]
-                                    raise_type_index = pending_xref.first_child_matching_class(nodes.literal)
+                                    raise_type_index = (
+                                        pending_xref.first_child_matching_class(
+                                            nodes.literal
+                                        )
+                                    )
                                     if raise_type_index is not None:
                                         raise_type = pending_xref[raise_type_index]
-                                        ret.append({'type': pending_xref['reftarget'], 'desc': raise_type.astext()})
+                                        ret.append(
+                                            {
+                                                "type": pending_xref["reftarget"],
+                                                "desc": raise_type.astext(),
+                                            }
+                                        )
 
             return ret
 
@@ -268,86 +289,104 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
             else:
                 fieldtype, content = entry
                 fieldtypes = types.get(fieldtype.name, {})
-                if fieldtype.name == 'exceptions':
+                if fieldtype.name == "exceptions":
                     for _type, _description in content:
-                        data['exceptions'].append({
-                            'type': _type,
-                            'description': transform_node(_description[0]).strip(" \n\r\t")
-                        })
-                if fieldtype.name == 'returntype':
+                        data["exceptions"].append(
+                            {
+                                "type": _type,
+                                "description": transform_node(_description[0]).strip(
+                                    " \n\r\t"
+                                ),
+                            }
+                        )
+                if fieldtype.name == "returntype":
                     for returntype_node in content[1]:
                         returntype_ret = transform_node(returntype_node)
                         if returntype_ret:
                             # Support or in returntype
-                            for returntype in re.split('[ \n]or[ \n]', returntype_ret):
+                            for returntype in re.split("[ \n]or[ \n]", returntype_ret):
                                 returntype, _added_reference = resolve_type(returntype)
                                 if _added_reference:
-                                    if len(data['references']) == 0:
-                                        data['references'].append(_added_reference)
-                                    elif any(r['uid'] != _added_reference['uid'] for r in data['references']):
-                                        data['references'].append(_added_reference)
+                                    if len(data["references"]) == 0:
+                                        data["references"].append(_added_reference)
+                                    elif any(
+                                        r["uid"] != _added_reference["uid"]
+                                        for r in data["references"]
+                                    ):
+                                        data["references"].append(_added_reference)
 
-                                data['return'].setdefault('type', []).append(returntype)
-                if fieldtype.name == 'returnvalue':
+                                data["return"].setdefault("type", []).append(returntype)
+                if fieldtype.name == "returnvalue":
                     returnvalue_ret = transform_node(content[1][0])
                     if returnvalue_ret:
-                        data['return']['description'] = returnvalue_ret.strip(" \n\r\t")
-                if fieldtype.name in ['parameter', 'variable', 'keyword']:
+                        data["return"]["description"] = returnvalue_ret.strip(" \n\r\t")
+                if fieldtype.name in ["parameter", "variable", "keyword"]:
                     for field, node_list in content:
                         _id = field
                         _description = transform_node(node_list[0])
                         if field in fieldtypes:
-                            _type = u''.join(transform_para(n) for n in fieldtypes[field])
+                            _type = "".join(
+                                transform_para(n) for n in fieldtypes[field]
+                            )
                         else:
                             _type = None
 
                         _para_types = []
-                        if fieldtype.name == 'parameter' or fieldtype.name == 'keyword':
+                        if fieldtype.name == "parameter" or fieldtype.name == "keyword":
                             if _type:
                                 # Support or in parameter type
-                                for _s_type in re.split('[ \n]or[ \n]', _type):
+                                for _s_type in re.split("[ \n]or[ \n]", _type):
                                     _s_type, _added_reference = resolve_type(_s_type)
                                     if _added_reference:
-                                        if len(data['references']) == 0:
-                                            data['references'].append(_added_reference)
-                                        elif any(r['uid'] != _added_reference['uid'] for r in data['references']):
-                                            data['references'].append(_added_reference)
+                                        if len(data["references"]) == 0:
+                                            data["references"].append(_added_reference)
+                                        elif any(
+                                            r["uid"] != _added_reference["uid"]
+                                            for r in data["references"]
+                                        ):
+                                            data["references"].append(_added_reference)
 
                                     _para_types.append(_s_type)
 
+                            _data = make_param(
+                                _id=_id,
+                                _type=_para_types,
+                                _description=_description,
+                                _required=False
+                                if fieldtype.name == "keyword"
+                                else True,
+                            )
+                            data["parameters"].append(_data)
 
-
-                            _data = make_param(_id=_id, _type=_para_types, _description=_description, _required=False if fieldtype.name == 'keyword' else True)
-                            data['parameters'].append(_data)
-
-                        if fieldtype.name == 'variable':
+                        if fieldtype.name == "variable":
                             if _type:
                                 # Support or in variable type
-                                for _s_type in re.split('[ \n]or[ \n]', _type):
+                                for _s_type in re.split("[ \n]or[ \n]", _type):
                                     _s_type, _added_reference = resolve_type(_s_type)
                                     if _added_reference:
-                                        if len(data['references']) == 0:
-                                            data['references'].append(_added_reference)
-                                        elif any(r['uid'] != _added_reference['uid'] for r in data['references']):
-                                            data['references'].append(_added_reference)
+                                        if len(data["references"]) == 0:
+                                            data["references"].append(_added_reference)
+                                        elif any(
+                                            r["uid"] != _added_reference["uid"]
+                                            for r in data["references"]
+                                        ):
+                                            data["references"].append(_added_reference)
 
                                     _para_types.append(_s_type)
 
-                            _data = make_param(_id=_id, _type=_para_types, _description=_description)
-                            data['variables'].append(_data)
+                            _data = make_param(
+                                _id=_id, _type=_para_types, _description=_description
+                            )
+                            data["variables"].append(_data)
 
                     ret_list = extract_exception_desc(field_object)
                     for ret in ret_list:
                         # only use type in exceptions
-                        data.setdefault('exceptions', []).append({
-                            'type': ret['type']
-                        })
+                        data.setdefault("exceptions", []).append({"type": ret["type"]})
 
         return data
 
-
     class PatchedDocFieldTransformer(docfields.DocFieldTransformer):
-
         @staticmethod
         def type_mapping(type_name: str) -> str:
             """Maps a type name to a docfx type name.
@@ -359,7 +398,7 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
             mapping = {
                 "staticmethod": "method",
                 "classmethod": "method",
-                "exception": "class"
+                "exception": "class",
             }
 
             return mapping[type_name] if type_name in mapping else type_name
@@ -381,72 +420,92 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
             for child in node:
                 if isinstance(child, remarks):
                     remarks_string = transform_node(child)
-                    data['remarks'] = remarks_string
+                    data["remarks"] = remarks_string
                 elif isinstance(child, addnodes.desc):
-                    if child.get('desctype') == 'attribute':
-                        attribute_map = {} # Used for detecting duplicated attributes in intermediate data and merge them
+                    if child.get("desctype") == "attribute":
+                        attribute_map = {}  # Used for detecting duplicated attributes in intermediate data and merge them
 
                         for item in child:
-                            if isinstance(item, desc_signature) and any(isinstance(n, addnodes.desc_annotation) for n in item):
+                            if isinstance(item, desc_signature) and any(
+                                isinstance(n, addnodes.desc_annotation) for n in item
+                            ):
                                 # capture attributes data and cache it
-                                data.setdefault('added_attribute', [])
+                                data.setdefault("added_attribute", [])
 
-                                item_ids = item.get('ids', [''])
+                                item_ids = item.get("ids", [""])
 
-                                if len(item_ids) == 0: # find a node with no 'ids' attribute
-                                    curuid = item.get('module', '') + '.' + item.get('fullname', '')
+                                if (
+                                    len(item_ids) == 0
+                                ):  # find a node with no 'ids' attribute
+                                    curuid = (
+                                        item.get("module", "")
+                                        + "."
+                                        + item.get("fullname", "")
+                                    )
                                     # generate its uid by module and fullname
                                 else:
                                     curuid = item_ids[0]
 
                                 if len(curuid) > 0:
-                                    parent = curuid[:curuid.rfind('.')]
+                                    parent = curuid[: curuid.rfind(".")]
                                     name = item.children[0].astext()
 
                                     if curuid in attribute_map:
-                                        if len(item_ids) == 0: # ensure the order of docstring attributes and real attributes is fixed
-                                            attribute_map[curuid]['syntax']['content'] += (' ' + item.astext())
+                                        if (
+                                            len(item_ids) == 0
+                                        ):  # ensure the order of docstring attributes and real attributes is fixed
+                                            attribute_map[curuid]["syntax"][
+                                                "content"
+                                            ] += " " + item.astext()
                                             # concat the description of duplicated nodes
                                         else:
-                                            attribute_map[curuid]['syntax']['content'] = item.astext() + ' ' + attribute_map[curuid]['syntax']['content']
+                                            attribute_map[curuid]["syntax"][
+                                                "content"
+                                            ] = (
+                                                item.astext()
+                                                + " "
+                                                + attribute_map[curuid]["syntax"][
+                                                    "content"
+                                                ]
+                                            )
                                     else:
                                         if _is_desc_of_enum_class(node):
                                             addedData = {
-                                                'uid': curuid,
-                                                'id': name,
-                                                'parent': parent,
-                                                'langs': ['python'],
-                                                'name': name,
-                                                'fullName': curuid,
-                                                'type': item.parent.get('desctype'),
-                                                'module': item.get('module'),
-                                                'syntax': {
-                                                    'content': item.astext(),
-                                                    'return': {
-                                                        'type': [parent]
-                                                    }
-                                                }
+                                                "uid": curuid,
+                                                "id": name,
+                                                "parent": parent,
+                                                "langs": ["python"],
+                                                "name": name,
+                                                "fullName": curuid,
+                                                "type": item.parent.get("desctype"),
+                                                "module": item.get("module"),
+                                                "syntax": {
+                                                    "content": item.astext(),
+                                                    "return": {"type": [parent]},
+                                                },
                                             }
                                         else:
                                             addedData = {
-                                                'uid': curuid,
-                                                'class': parent,
-                                                'langs': ['python'],
-                                                'name': name,
-                                                'fullName': curuid,
-                                                'type': 'attribute',
-                                                'module': item.get('module'),
-                                                'syntax': {
-                                                    'content': item.astext()
-                                                }
+                                                "uid": curuid,
+                                                "class": parent,
+                                                "langs": ["python"],
+                                                "name": name,
+                                                "fullName": curuid,
+                                                "type": "attribute",
+                                                "module": item.get("module"),
+                                                "syntax": {"content": item.astext()},
                                             }
 
                                         attribute_map[curuid] = addedData
                                 else:
-                                    raise Exception('ids of node: ' + repr(item) + ' is missing.')
+                                    raise Exception(
+                                        "ids of node: " + repr(item) + " is missing."
+                                    )
                                     # no ids and no duplicate or uid can not be generated.
-                        if 'added_attribute' in data:
-                            data['added_attribute'].extend(attribute_map.values()) # Add attributes data to a temp list
+                        if "added_attribute" in data:
+                            data["added_attribute"].extend(
+                                attribute_map.values()
+                            )  # Add attributes data to a temp list
 
                     # Don't recurse into child nodes
                     continue
@@ -455,29 +514,38 @@ def patch_docfields(app: sphinx.application.Sphinx) -> None:
                     _data = get_data_structure(entries, types, child)
                     data.update(_data)
                 elif isinstance(child, addnodes.seealso):
-                    data['seealso'] = transform_node(child)
-                elif isinstance(child, nodes.admonition) and 'Example' in child[0].astext():
+                    data["seealso"] = transform_node(child)
+                elif (
+                    isinstance(child, nodes.admonition)
+                    and "Example" in child[0].astext()
+                ):
                     # Remove the admonition node
                     child_copy = child.deepcopy()
                     child_copy.pop(0)
-                    data['example'] = transform_node(child_copy)
+                    data["example"] = transform_node(child_copy)
                 else:
                     content = transform_node(child)
 
                     # skip 'Bases' in summary
-                    if not content.startswith('Bases: '):
+                    if not content.startswith("Bases: "):
                         summary.append(content)
 
-            if "desctype" in node.parent and node.parent["desctype"] == 'class':
-                data.pop('exceptions', '') # Make sure class doesn't have 'exceptions' field.
+            if "desctype" in node.parent and node.parent["desctype"] == "class":
+                data.pop(
+                    "exceptions", ""
+                )  # Make sure class doesn't have 'exceptions' field.
 
             if summary:
-                data['summary'] = '\n'.join(summary)
+                data["summary"] = "\n".join(summary)
             # Don't include empty data
             for key, val in data.copy().items():
                 if not val:
                     del data[key]
-            data['type'] = PatchedDocFieldTransformer.type_mapping(node.parent["desctype"]) if "desctype" in node.parent else 'unknown'
+            data["type"] = (
+                PatchedDocFieldTransformer.type_mapping(node.parent["desctype"])
+                if "desctype" in node.parent
+                else "unknown"
+            )
             self.directive.env.docfx_info_field_data[uid] = data
             super(PatchedDocFieldTransformer, self).transform_all(node)
 

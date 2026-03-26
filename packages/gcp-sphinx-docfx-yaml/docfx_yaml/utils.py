@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import re
+from collections import namedtuple
+from inspect import signature
+
+from docutils import nodes
 from docutils.io import StringOutput
 from docutils.utils import new_document
-from docutils import nodes
-from inspect import signature
-from collections import namedtuple
 from sphinx.application import Sphinx
-
 
 from .writer import MarkdownWriter as Writer
 
@@ -37,8 +37,8 @@ def slugify(value: str) -> str:
     Returns:
         str: The converted string.
     """
-    value = re.sub(r'[^\w\s-]', '', value).strip()
-    return re.sub(r'[-\s]+', '-', value)
+    value = re.sub(r"[^\w\s-]", "", value).strip()
+    return re.sub(r"[-\s]+", "-", value)
 
 
 def transform_string(app: Sphinx, string: str) -> str:
@@ -54,10 +54,10 @@ def transform_string(app: Sphinx, string: str) -> str:
         str: The transformed string.
     """
     ret = []
-    for para in string.split('\n\n'):
+    for para in string.split("\n\n"):
         tmp = nodes.paragraph(para, para)
         ret.append(transform_node(app, tmp))
-    return '\n\n'.join(ret)
+    return "\n\n".join(ret)
 
 
 def transform_node(app: Sphinx, node: nodes.Node) -> str:
@@ -70,14 +70,14 @@ def transform_node(app: Sphinx, node: nodes.Node) -> str:
     Returns:
         str: The transformed node as a string.
     """
-    destination = StringOutput(encoding='utf-8')
-    doc = new_document(b'<partial node>')
+    destination = StringOutput(encoding="utf-8")
+    doc = new_document(b"<partial node>")
     doc.append(node)
 
     # Resolve refs
-    doc['docname'] = 'inmemory'
-    app.env.resolve_references(doctree=doc, fromdocname='inmemory', builder=app.builder)
+    doc["docname"] = "inmemory"
+    app.env.resolve_references(doctree=doc, fromdocname="inmemory", builder=app.builder)
 
     writer = Writer(app.builder)
     writer.write(doc, destination)
-    return destination.destination.decode('utf-8')
+    return destination.destination.decode("utf-8")

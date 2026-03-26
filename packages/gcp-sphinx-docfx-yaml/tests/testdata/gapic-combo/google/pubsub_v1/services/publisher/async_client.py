@@ -13,17 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
 import re
+from collections import OrderedDict
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+
 import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import timeout as timeouts  # type: ignore
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -32,15 +33,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import duration_pb2  # type: ignore
 from google.pubsub_v1.services.publisher import pagers
-from google.pubsub_v1.types import pubsub
-from google.pubsub_v1.types import TimeoutType
-from .transports.base import PublisherTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
+from google.pubsub_v1.types import TimeoutType, pubsub
+
 from .client import PublisherClient
+from .transports.base import DEFAULT_CLIENT_INFO, PublisherTransport
+from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
 
 
 class PublisherAsyncClient:
@@ -91,7 +94,9 @@ class PublisherAsyncClient:
         Returns:
             PublisherAsyncClient: The constructed client.
         """
-        return PublisherClient.from_service_account_info.__func__(PublisherAsyncClient, info, *args, **kwargs)  # type: ignore
+        return PublisherClient.from_service_account_info.__func__(
+            PublisherAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -107,7 +112,9 @@ class PublisherAsyncClient:
         Returns:
             PublisherAsyncClient: The constructed client.
         """
-        return PublisherClient.from_service_account_file.__func__(PublisherAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return PublisherClient.from_service_account_file.__func__(
+            PublisherAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

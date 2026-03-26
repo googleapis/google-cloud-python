@@ -20,7 +20,6 @@ from .base import PublisherTransport
 from .grpc import PublisherGrpcTransport
 from .grpc_asyncio import PublisherGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[PublisherTransport]]
 _transport_registry["grpc"] = PublisherGrpcTransport

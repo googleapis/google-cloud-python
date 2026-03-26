@@ -15,16 +15,15 @@
 # -*- coding: utf-8 -*-
 """Markdown related utilities for Sphinx DocFX YAML extension."""
 
-
-from collections.abc import MutableSet
 import os
-from pathlib import Path
 import re
 import shutil
+from collections.abc import MutableSet
+from pathlib import Path
 from typing import Iterable
 
-from docuploader import shell
 import sphinx.application
+from docuploader import shell
 
 
 def _reformat_codeblocks(content: str) -> str:
@@ -36,12 +35,14 @@ def _reformat_codeblocks(content: str) -> str:
     Returns:
         str: The reformatted string.
     """
-    triple_backtick = '```'
-    current_tag = '<pre>'
-    next_tag = '</pre>'
+    triple_backtick = "```"
+    current_tag = "<pre>"
+    next_tag = "</pre>"
     # If there are no proper pairs of triple backticks, don't format docstring.
     if content.count(triple_backtick) % 2 != 0:
-        print(f'Docstring is not formatted well, missing proper pairs of triple backticks (```): {content}')
+        print(
+            f"Docstring is not formatted well, missing proper pairs of triple backticks (```): {content}"
+        )
         return content
     while triple_backtick in content:
         content = content.replace(triple_backtick, current_tag, 1)
@@ -62,23 +63,23 @@ def _reformat_code(content: str) -> str:
     """
     reformatted_lines = []
 
-    code_pattern = '`[^`\n]+`'
-    code_start = '<code>'
-    code_end = '</code>'
+    code_pattern = "`[^`\n]+`"
+    code_start = "<code>"
+    code_end = "</code>"
     prev_start = prev_end = 0
     # Convert `text` to <code>text</code>
     for matched_obj in re.finditer(code_pattern, content):
         start = matched_obj.start()
         end = matched_obj.end()
-        code_content = content[start+1:end-1]
+        code_content = content[start + 1 : end - 1]
 
         reformatted_lines.append(content[prev_end:start])
-        reformatted_lines.append(f'{code_start}{code_content}{code_end}')
+        reformatted_lines.append(f"{code_start}{code_content}{code_end}")
         prev_start, prev_end = start, end
 
     reformatted_lines.append(content[prev_end:])
 
-    return ''.join(reformatted_lines)
+    return "".join(reformatted_lines)
 
 
 def reformat_markdown_to_html(content: str) -> str:
@@ -117,10 +118,13 @@ def _parse_markdown_header(current_line: str, prev_line: str) -> str:
     if h1_header_prefix in current_line and current_line.count("#") == 1:
         # Check for proper h1 header formatting, ensure there's more than just
         # the hashtag character, and exactly only one space after the hashtag.
-        if not current_line[current_line.index(h1_header_prefix)+2].isspace() and \
-            len(current_line) > 2:
-
-            return current_line[current_line.index(h1_header_prefix):].strip("#").strip()
+        if (
+            not current_line[current_line.index(h1_header_prefix) + 2].isspace()
+            and len(current_line) > 2
+        ):
+            return (
+                current_line[current_line.index(h1_header_prefix) :].strip("#").strip()
+            )
 
     elif "=" in current_line:
         # Check if we're inspecting an empty or undefined lines.
@@ -147,7 +151,6 @@ def _extract_header_from_markdown(mdfile: Iterable[str]) -> str:
     prev_line = ""
 
     for line in mdfile:
-
         # Ignore licenses and other non-headers prior to the header.
         # If we've found the header, return the header.
         header = _parse_markdown_header(line, prev_line)
@@ -183,10 +186,10 @@ def _remove_license(mdfile_path: str) -> None:
         return
 
     # Strip the license.
-    file_content = file_content[end_index + len(comment_tag_end):]
+    file_content = file_content[end_index + len(comment_tag_end) :]
 
     # Reset file position to the beginning to write
-    with open(mdfile_path, 'w') as mdfile:
+    with open(mdfile_path, "w") as mdfile:
         mdfile.write(file_content)
 
 
@@ -196,8 +199,8 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
     Args:
         mdfile_path (str): The path to the markdown file.
     """
-    fence = '```'
-    fence_with_python = '```python'
+    fence = "```"
+    fence_with_python = "```python"
     new_lines = []
 
     with open(mdfile_path) as mdfile:
@@ -205,12 +208,12 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
         # If there is an odd number of code block annotations, do not syntax
         # highlight.
         if file_content.count(fence) % 2 != 0:
-            print(f'{mdfile.name} contains wrong format of code blocks. Skipping syntax highlighting.')
+            print(
+                f"{mdfile.name} contains wrong format of code blocks. Skipping syntax highlighting."
+            )
             return
         # Retrieve code block positions to replace
-        codeblocks = [[m.start(), m.end()] for m in re.finditer(
-                                                      fence,
-                                                      file_content)]
+        codeblocks = [[m.start(), m.end()] for m in re.finditer(fence, file_content)]
 
         # This is equivalent to grabbing every odd index item.
         codeblocks = codeblocks[::2]
@@ -220,7 +223,7 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
         # Check if the fence comes without a language indicator. If so, include
         # this to a list to render.
         for start, end in codeblocks:
-            if file_content[end] == '\n':
+            if file_content[end] == "\n":
                 blocks_without_indicators.append([start, end])
 
         # Stitch content that does not need to be parsed, and replace with
@@ -235,8 +238,8 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
         new_lines.append(file_content[prev_end:])
 
     # Overwrite with newly parsed content.
-    with open(mdfile_path, 'w') as mdfile:
-        new_content = ''.join(new_lines)
+    with open(mdfile_path, "w") as mdfile:
+        new_content = "".join(new_lines)
         mdfile.write(new_content)
 
 
@@ -246,7 +249,7 @@ def _clean_image_links(mdfile_path: str) -> None:
     Args:
         mdfile_path (str): The path to the markdown file.
     """
-    image_link_pattern=r'\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
+    image_link_pattern = r"\[\s*!\[image\]\(.*\)\s*\]\(.*\)"
     new_lines = []
     with open(mdfile_path) as mdfile:
         file_content = mdfile.read()
@@ -258,7 +261,7 @@ def _clean_image_links(mdfile_path: str) -> None:
             end = matched_obj.end()
             matched_str = file_content[start:end]
             # Clean up all whitespaces for the image link.
-            clean_str = ''.join(matched_str.split())
+            clean_str = "".join(matched_str.split())
 
             new_lines.append(file_content[prev_end:start])
             new_lines.append(clean_str)
@@ -266,8 +269,8 @@ def _clean_image_links(mdfile_path: str) -> None:
 
         new_lines.append(file_content[prev_end:])
 
-    with open(mdfile_path, 'w') as mdfile:
-        new_content = ''.join(new_lines)
+    with open(mdfile_path, "w") as mdfile:
+        new_content = "".join(new_lines)
         mdfile.write(new_content)
 
 
@@ -279,7 +282,7 @@ def _prepend_markdown_header(filename: str, mdfile: Iterable[str]) -> None:
         mdfile: iterator to the markdown file that is both readable
           and writable.
     """
-    file_content = f'# {filename}\n\n' + mdfile.read()
+    file_content = f"# {filename}\n\n" + mdfile.read()
     # Reset file position to the beginning to write
     mdfile.seek(0)
     mdfile.write(file_content)
@@ -304,14 +307,13 @@ def _merge_markdown_content(
             content before the base file content.
     """
     try:
-        with (
-            open(base_file, 'r+') as base,
-            open(additional_content_file, 'r') as additional_content
-        ):
+        with open(base_file, "r+") as base, open(
+            additional_content_file, "r"
+        ) as additional_content:
             file_content = (
-                f'{additional_content.read()}\n{base.read()}'
+                f"{additional_content.read()}\n{base.read()}"
                 if prepend_additional_content
-                else f'{base.read()}\n{additional_content.read()}'
+                else f"{base.read()}\n{additional_content.read()}"
             )
             base.seek(0)
             base.write(file_content)
@@ -337,30 +339,25 @@ def move_markdown_pages(
     """
     # Use this to ignore markdown files that are unnecessary.
     files_to_ignore = [
-        "index.md",     # use readme.md instead
-
-        "reference.md", # Reference docs overlap with Overview. Will try and incorporate this in later.
-                        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
+        "index.md",  # use readme.md instead
+        "reference.md",  # Reference docs overlap with Overview. Will try and incorporate this in later.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
         "overview_content.md",  # Content will be merged into summary_overview page.
     ]
 
     # Use this to move the page but do not add them in the TOC.
     ignore_in_toc = [
         "summary_overview.md",  # Already included in the TOC with other
-                                # summary pages.
+        # summary pages.
     ]
 
     files_to_rename = {
-        'readme.md': 'index.md',
+        "readme.md": "index.md",
     }
 
     base_markdown_dir = Path(app.builder.outdir).parent / "markdown"
 
-    markdown_dir = (
-        base_markdown_dir.joinpath(*cwd)
-        if cwd
-        else base_markdown_dir
-    )
+    markdown_dir = base_markdown_dir.joinpath(*cwd) if cwd else base_markdown_dir
 
     if not markdown_dir.exists():
         print("There's no markdown file to move.")
@@ -369,24 +366,20 @@ def move_markdown_pages(
     # Used to keep track of the index page entry to insert later.
     index_page_entry = None
 
-    markdown_file_names = {
-        mdfile.name.lower()
-        for mdfile in markdown_dir.iterdir()
-    }
+    markdown_file_names = {mdfile.name.lower() for mdfile in markdown_dir.iterdir()}
 
     # If there is an index.md and no readme.md, use the index.md. Otherwise, we ignore the index.md.
-    if ("index.md" in markdown_file_names and
-        "readme.md" not in markdown_file_names):
+    if "index.md" in markdown_file_names and "readme.md" not in markdown_file_names:
         files_to_ignore.remove("index.md")
 
     if (
-        "summary_overview.md" in markdown_file_names and
-        "overview_content.md" in markdown_file_names
+        "summary_overview.md" in markdown_file_names
+        and "overview_content.md" in markdown_file_names
     ):
         # Keep the summary_overview file, prepend the additioanl content.
         _merge_markdown_content(
-            base_file=markdown_dir/"summary_overview.md",
-            additional_content_file=markdown_dir/"overview_content.md",
+            base_file=markdown_dir / "summary_overview.md",
+            additional_content_file=markdown_dir / "overview_content.md",
             prepend_additional_content=True,
         )
 
@@ -410,14 +403,17 @@ def move_markdown_pages(
             name = _extract_header_from_markdown(mdfile_iterator)
 
         if not name:
-            with open(mdfile, 'r+') as mdfile_iterator:
-                mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+            with open(mdfile, "r+") as mdfile_iterator:
+                mdfile_name = (
+                    mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+                )
 
-                print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
+                print(
+                    f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead."
+                )
                 name = mdfile_name
 
                 _prepend_markdown_header(name, mdfile_iterator)
-
 
         mdfile_name_to_use = mdfile.name.lower()
         if mdfile_name_to_use in files_to_rename:
@@ -440,44 +436,48 @@ def move_markdown_pages(
 
         if not cwd:
             # Use Overview as the name for top-level index file.
-            if 'index.md' in mdfile_name_to_use:
+            if "index.md" in mdfile_name_to_use:
                 # Save the index page entry.
                 index_page_entry = {
-                    'name': 'Overview',
-                    'href': 'index.md',
+                    "name": "Overview",
+                    "href": "index.md",
                 }
                 continue
 
             # Use '/' to reserve for top level pages.
-            app.env.markdown_pages['/'].append({
-                'name': name,
-                'href': mdfile_name_to_use,
-            })
+            app.env.markdown_pages["/"].append(
+                {
+                    "name": name,
+                    "href": mdfile_name_to_use,
+                }
+            )
             continue
 
         # Add the file to the TOC later.
-        app.env.markdown_pages[cwd[-1]].append({
-            'name': name,
-            'href': mdfile_name_to_use,
-        })
-
-    if app.env.markdown_pages.get('/'):
-        # Sort the top level pages. Other pages will be sorted when they're
-        # added to package level files accordingly.
-        app.env.markdown_pages['/'] = sorted(
-            app.env.markdown_pages['/'],
-            key=lambda entry: entry['href'],
+        app.env.markdown_pages[cwd[-1]].append(
+            {
+                "name": name,
+                "href": mdfile_name_to_use,
+            }
         )
 
+    if app.env.markdown_pages.get("/"):
+        # Sort the top level pages. Other pages will be sorted when they're
+        # added to package level files accordingly.
+        app.env.markdown_pages["/"] = sorted(
+            app.env.markdown_pages["/"],
+            key=lambda entry: entry["href"],
+        )
 
     if index_page_entry is None:
         return
 
     # Place the Overview page at the top of the list.
-    app.env.markdown_pages['/'].insert(
+    app.env.markdown_pages["/"].insert(
         0,
         index_page_entry,
     )
+
 
 def remove_unused_pages(
     added_pages: MutableSet[str],
@@ -497,10 +497,7 @@ def remove_unused_pages(
         outdir: output directory containing the markdown pages.
     """
 
-    pages_to_remove = set(
-        page for page in all_pages
-        if page not in added_pages
-    )
+    pages_to_remove = set(page for page in all_pages if page not in added_pages)
 
     for page in pages_to_remove:
         try:
@@ -533,6 +530,5 @@ def run_sphinx_markdown(app: sphinx.application) -> None:
             relative_srcdir,
             relative_outdir,
         ],
-        hide_output=False
+        hide_output=False,
     )
-

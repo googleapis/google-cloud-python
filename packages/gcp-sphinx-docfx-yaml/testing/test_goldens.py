@@ -1,5 +1,4 @@
-'''Temporarily disabled, moved over to unblock the repository.
-'''
+"""Temporarily disabled, moved over to unblock the repository."""
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pathlib import Path
 import difflib
 import filecmp
 import os
 import shutil
 import sys
-
-from docuploader import shell
+from pathlib import Path
 
 import pytest
-
+from docuploader import shell
 from sphinx.application import Sphinx
 
 
@@ -113,9 +110,9 @@ def test_goldens(update_goldens, test_dir):
         [f for f in golden_files if f not in got_files]
     )
 
-    assert len(got_files) == len(
-        golden_files
-    ), f"got {len(got_files)} files, want {len(golden_files)}:{nl}{extra}{nl}{missing}"
+    assert len(got_files) == len(golden_files), (
+        f"got {len(got_files)} files, want {len(golden_files)}:{nl}{extra}{nl}{missing}"
+    )
 
     (eq, neq, other) = filecmp.cmpfiles(out_dir, golden_dir, got_files, shallow=False)
     other = [(out_dir / f).as_posix() for f in other]

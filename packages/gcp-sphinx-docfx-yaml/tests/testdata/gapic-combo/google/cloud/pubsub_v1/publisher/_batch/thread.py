@@ -22,8 +22,7 @@ from typing import Any, Callable, List, Optional, Sequence
 
 import google.api_core.exceptions
 from google.api_core import gapic_v1
-from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher import futures
+from google.cloud.pubsub_v1.publisher import exceptions, futures
 from google.cloud.pubsub_v1.publisher._batch import base
 from google.pubsub_v1 import types as gapic_types
 
@@ -182,9 +181,9 @@ class Batch(base.Batch):
         """
 
         with self._state_lock:
-            assert (
-                self._status == base.BatchStatus.ACCEPTING_MESSAGES
-            ), "Cancel should not be called after sending has started."
+            assert self._status == base.BatchStatus.ACCEPTING_MESSAGES, (
+                "Cancel should not be called after sending has started."
+            )
 
             exc = RuntimeError(cancellation_reason.value)
             for future in self._futures:
@@ -246,8 +245,7 @@ class Batch(base.Batch):
                 # called and now, the batch started to be committed, or
                 # completed a commit, then no-op at this point.
                 _LOGGER.debug(
-                    "Batch is already in progress or has been cancelled, "
-                    "exiting commit"
+                    "Batch is already in progress or has been cancelled, exiting commit"
                 )
                 return
 
@@ -362,9 +360,9 @@ class Batch(base.Batch):
         future = None
 
         with self._state_lock:
-            assert (
-                self._status != base.BatchStatus.ERROR
-            ), "Publish after stop() or publish error."
+            assert self._status != base.BatchStatus.ERROR, (
+                "Publish after stop() or publish error."
+            )
 
             if self.status != base.BatchStatus.ACCEPTING_MESSAGES:
                 return None
@@ -388,7 +386,6 @@ class Batch(base.Batch):
             overflow = new_size > size_limit or new_count >= self.settings.max_messages
 
             if not self._messages or not overflow:
-
                 # Store the actual message in the batch's message queue.
                 self._messages.append(message)
                 self._size = new_size

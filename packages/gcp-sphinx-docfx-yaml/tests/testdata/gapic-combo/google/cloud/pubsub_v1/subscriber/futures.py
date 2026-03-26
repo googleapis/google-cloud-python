@@ -15,8 +15,7 @@
 from __future__ import absolute_import
 
 import typing
-from typing import Any
-from typing import Union
+from typing import Any, Union
 
 from google.cloud.pubsub_v1 import futures
 from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus

@@ -18,17 +18,14 @@ import binascii
 import collections
 import datetime
 import hashlib
-import json
-
 import http
+import json
 import urllib
 
 import google.auth.credentials
-
 from google.auth import exceptions
 from google.auth.transport import requests
 from google.cloud import _helpers
-
 
 NOW = datetime.datetime.utcnow  # To be replaced by tests.
 
@@ -147,7 +144,6 @@ def get_expiration_seconds_v4(expiration):
         seconds = expiration
 
     if isinstance(expiration, datetime.datetime):
-
         if expiration.tzinfo is None:
             expiration = expiration.replace(tzinfo=_helpers.UTC)
 
@@ -646,7 +642,6 @@ def get_v4_now_dtstamps():
 
 
 def _sign_message(message, access_token, service_account_email):
-
     """Signs a message.
 
     :type message: str

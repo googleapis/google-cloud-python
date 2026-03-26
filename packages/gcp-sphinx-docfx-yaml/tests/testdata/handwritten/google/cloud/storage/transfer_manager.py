@@ -15,11 +15,9 @@
 """Concurrent media operations. This is a PREVIEW FEATURE: API may change."""
 
 import concurrent.futures
-
 import tempfile
 
 from google.api_core import exceptions
-
 
 DEFAULT_CHUNK_SIZE = 200 * 1024 * 1024
 

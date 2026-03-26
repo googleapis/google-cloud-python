@@ -16,20 +16,21 @@
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
-import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.auth  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import empty_pb2  # type: ignore
 from google.pubsub_v1.types import schema
 from google.pubsub_v1.types import schema as gp_schema
-from .base import SchemaServiceTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, SchemaServiceTransport
 
 
 class SchemaServiceGrpcTransport(SchemaServiceTransport):

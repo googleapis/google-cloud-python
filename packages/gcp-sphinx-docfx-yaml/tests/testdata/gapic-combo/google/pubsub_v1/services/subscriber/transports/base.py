@@ -15,18 +15,20 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+
 import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
+import google.auth  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.oauth2 import service_account  # type: ignore
-
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.pubsub_v1.types import pubsub
 

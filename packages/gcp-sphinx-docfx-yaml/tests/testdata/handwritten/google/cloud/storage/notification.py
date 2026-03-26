@@ -20,10 +20,8 @@ See [Cloud Pub/Sub Notifications for Google Cloud Storage](https://cloud.google.
 import re
 
 from google.api_core.exceptions import NotFound
-
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
-
 
 OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
 OBJECT_METADATA_UPDATE_EVENT_TYPE = "OBJECT_METADATA_UPDATE"
