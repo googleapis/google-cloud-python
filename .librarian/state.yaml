@@ -4166,3 +4166,12 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: gapic-generator
+    version: 1.30.13
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/gapic-generator
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
