@@ -89,6 +89,8 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run Mypy
         run: |
           pip install nox
@@ -130,7 +132,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s prerelease
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s core_prerelease_deps prerelease_deps
           done
 
   fragment-snippet:
