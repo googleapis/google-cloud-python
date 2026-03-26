@@ -17,26 +17,28 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.spanner_admin_database_v1 import gapic_version as package_version
 from google.cloud.spanner_admin_database_v1.types import (
+    backup,
+    backup_schedule,
+    spanner_database_admin,
+)
+from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import (
     backup_schedule as gsad_backup_schedule,
 )
-from google.cloud.spanner_admin_database_v1.types import backup
-from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
-from google.cloud.spanner_admin_database_v1.types import backup_schedule
-from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -828,13 +830,19 @@ class DatabaseAdminTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

@@ -22,12 +22,12 @@ __version__: str = package_version.__version__
 
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1._async.client import Client as AsyncClient
-from google.cloud.spanner_v1._async.pool import BurstyPool as AsyncBurstyPool
-from google.cloud.spanner_v1._async.pool import PingingPool as AsyncPingingPool
 from google.cloud.spanner_v1._async.pool import (
     AbstractSessionPool as AsyncAbstractSessionPool,
 )
+from google.cloud.spanner_v1._async.pool import BurstyPool as AsyncBurstyPool
 from google.cloud.spanner_v1._async.pool import FixedSizePool as AsyncFixedSizePool
+from google.cloud.spanner_v1._async.pool import PingingPool as AsyncPingingPool
 from google.cloud.spanner_v1._async.pool import (
     TransactionPingingPool as AsyncTransactionPingingPool,
 )

@@ -43,6 +43,7 @@ class FulfillmentPeriod(proto.Enum):
             Extended fulfillment period. It can take up
             to an hour for the operation to complete.
     """
+
     FULFILLMENT_PERIOD_UNSPECIFIED = 0
     FULFILLMENT_PERIOD_NORMAL = 1
     FULFILLMENT_PERIOD_EXTENDED = 2

@@ -16,15 +16,15 @@
 import datetime
 from datetime import timezone
 
-from google.api_core.exceptions import Aborted, Cancelled, NotFound, Unknown
 import google.api_core.gapic_v1.method
+import grpc
+import mock
+from google.api_core.exceptions import Aborted, Cancelled, NotFound, Unknown
+from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
 from google.protobuf.duration_pb2 import Duration
 from google.protobuf.struct_pb2 import Struct, Value
 from google.rpc.error_details_pb2 import RetryInfo
-import grpc
-import mock
 
-from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
@@ -33,11 +33,12 @@ from google.cloud.spanner_v1 import (
     DefaultTransactionOptions,
     ExecuteSqlRequest,
     RequestOptions,
+    SpannerClient,
+    TransactionOptions,
+    TypeCode,
 )
 from google.cloud.spanner_v1 import Session as SessionRequestProto
-from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1 import Transaction as TransactionPB
-from google.cloud.spanner_v1 import TransactionOptions, TypeCode
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _delay_until_retry,
@@ -1786,9 +1787,13 @@ class TestSession(OpenTelemetryBase):
         def _time(_results=[1, 2, 4, 8]):
             return _results.pop(0)
 
-        with mock.patch("time.time", _time), mock.patch(
-            "google.cloud.spanner_v1._helpers.random.random", return_value=0
-        ), mock.patch("time.sleep") as sleep_mock:
+        with (
+            mock.patch("time.time", _time),
+            mock.patch(
+                "google.cloud.spanner_v1._helpers.random.random", return_value=0
+            ),
+            mock.patch("time.sleep") as sleep_mock,
+        ):
             # Exception has request_id attribute added
             with self.assertRaises(Aborted) as context:
                 session.run_in_transaction(unit_of_work, timeout_secs=8)

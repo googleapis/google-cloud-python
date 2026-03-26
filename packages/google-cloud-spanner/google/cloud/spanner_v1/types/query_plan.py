@@ -93,6 +93,7 @@ class PlanNode(proto.Message):
                 arithmetic operators appearing inside predicate
                 expressions or references to column names.
         """
+
         KIND_UNSPECIFIED = 0
         RELATIONAL = 1
         SCALAR = 2

@@ -205,10 +205,11 @@ class TestDatabaseSessionManager(TestCase):
         doesn't freeze the event loop for subsequent lock seekers using CrossSync.Lock.
         """
         import asyncio
+        from os import environ
+
         from google.cloud.spanner_v1._async.database_sessions_manager import (
             DatabaseSessionsManager,
         )
-        from os import environ
 
         # Build fresh async manager decoupling from test suite setup
         db = Mock()

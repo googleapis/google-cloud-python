@@ -26,16 +26,19 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.spanner_v1.instance.Instance` owns a
   :class:`~google.cloud.spanner_v1.database.Database`
 """
+
 import logging
 import os
 import threading
-from typing import Optional
 import warnings
+from typing import Optional
+
 import google.api_core.client_options
+import grpc
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
-import grpc
 from google.cloud.client import ClientWithProject
+
 from google.cloud.spanner_admin_database_v1 import (
     DatabaseAdminClient as DatabaseAdminClient,
 )
@@ -44,13 +47,14 @@ from google.cloud.spanner_admin_database_v1.services.database_admin.transports.g
 )
 from google.cloud.spanner_admin_instance_v1 import (
     InstanceAdminClient as InstanceAdminClient,
+)
+from google.cloud.spanner_admin_instance_v1 import (
     ListInstanceConfigsRequest,
     ListInstancesRequest,
 )
 from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
     InstanceAdminGrpcTransport,
 )
-from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _merge_query_options,
@@ -58,6 +62,7 @@ from google.cloud.spanner_v1._helpers import (
     _validate_client_context,
 )
 from google.cloud.spanner_v1.gapic_version import __version__
+from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.metrics.constants import METRIC_EXPORT_INTERVAL_MS
 from google.cloud.spanner_v1.metrics.metrics_exporter import (
     CloudMonitoringMetricsExporter,

@@ -15,10 +15,10 @@ from datetime import datetime, timedelta
 from threading import Lock
 from typing import Mapping
 
+import mock
 from google.api_core import gapic_v1
 from google.api_core.exceptions import Aborted, InternalServerError
 from google.api_core.retry import Retry
-import mock
 
 from google.cloud.spanner_admin_database_v1 import Database
 from google.cloud.spanner_v1 import (

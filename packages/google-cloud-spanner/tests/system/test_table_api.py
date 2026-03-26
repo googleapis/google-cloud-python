@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core import exceptions
 import pytest
+from google.api_core import exceptions
 
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect

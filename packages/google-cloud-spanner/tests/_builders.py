@@ -11,15 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from datetime import datetime
 import inspect
+from datetime import datetime
 from logging import Logger
 from typing import Mapping
 
 from google.auth.credentials import Credentials, Scoped
+from google.cloud._helpers import _datetime_to_pb_timestamp
 from mock import create_autospec
 
-from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_v1 import SpannerAsyncClient, SpannerClient
@@ -33,11 +33,11 @@ from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1.transaction import Transaction
 from google.cloud.spanner_v1.types import CommitResponse as CommitResponsePB
-from google.cloud.spanner_v1.types import Session as SessionPB
-from google.cloud.spanner_v1.types import Transaction as TransactionPB
 from google.cloud.spanner_v1.types import (
     MultiplexedSessionPrecommitToken as PrecommitTokenPB,
 )
+from google.cloud.spanner_v1.types import Session as SessionPB
+from google.cloud.spanner_v1.types import Transaction as TransactionPB
 
 # Default values used to populate required or expected attributes.
 # Tests should not depend on them: if a test requires a specific

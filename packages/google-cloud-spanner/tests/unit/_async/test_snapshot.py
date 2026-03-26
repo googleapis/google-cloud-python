@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import datetime
-from datetime import timedelta
 import unittest
+from datetime import timedelta
 from unittest import mock
 
 from google.api_core.exceptions import (
@@ -30,8 +30,8 @@ from google.cloud.spanner_v1.types.spanner import (
     Partition,
     PartitionResponse,
 )
-from google.cloud.spanner_v1.types.transaction import TransactionSelector
 from google.cloud.spanner_v1.types.transaction import Transaction as TransactionPB
+from google.cloud.spanner_v1.types.transaction import TransactionSelector
 from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
 
 TABLE_NAME = "citizens"
@@ -1000,8 +1000,8 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(api.begin_transaction.call_count, 2)
 
     async def test_update_for_transaction_pb_w_precommit_token(self):
-        from google.cloud.spanner_v1.types import Transaction as TransactionPB
         from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
+        from google.cloud.spanner_v1.types import Transaction as TransactionPB
 
         snapshot = self._make_snapshot(_Session())
         token = MultiplexedSessionPrecommitToken(seq_num=1)

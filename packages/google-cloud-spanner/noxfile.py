@@ -597,9 +597,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{ALL_PYTHON[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -721,7 +719,7 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
-        #"--check-untyped-defs",
+        # "--check-untyped-defs",
         *session.posargs,
     )
 

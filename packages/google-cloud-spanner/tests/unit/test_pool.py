@@ -15,27 +15,33 @@
 import datetime
 import queue
 import unittest
+from datetime import timedelta, timezone
 from unittest import mock
 
-from datetime import timezone, timedelta
-from google.cloud.spanner_v1 import pool as MUT
-from google.cloud.spanner_v1 import _opentelemetry_tracing
-from google.cloud.spanner_v1 import BatchCreateSessionsResponse
-from google.cloud.spanner_v1 import Session
-from google.cloud.spanner_v1.database import Database
-from google.cloud.spanner_v1.pool import AbstractSessionPool
-from google.cloud.spanner_v1.pool import SessionCheckout
-from google.cloud.spanner_v1.pool import FixedSizePool
-from google.cloud.spanner_v1.pool import BurstyPool
-from google.cloud.spanner_v1.pool import PingingPool
-from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.exceptions import NotFound
 from google.cloud._testing import _Monkey
+from google.cloud.exceptions import NotFound
+
+from google.cloud.spanner_v1 import (
+    BatchCreateSessionsResponse,
+    Session,
+    _opentelemetry_tracing,
+)
+from google.cloud.spanner_v1 import pool as MUT
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.pool import (
+    AbstractSessionPool,
+    BurstyPool,
+    FixedSizePool,
+    PingingPool,
+    SessionCheckout,
+)
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
+from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.spanner_v1.types.spanner import Session as SessionProto
 from tests._builders import build_database
 from tests._helpers import (
     HAS_OPENTELEMETRY_INSTALLED,
@@ -44,8 +50,6 @@ from tests._helpers import (
     StatusCode,
     enrich_with_otel_scope,
 )
-
-from google.cloud.spanner_v1.types.spanner import Session as SessionProto
 
 
 class _Queue(object):

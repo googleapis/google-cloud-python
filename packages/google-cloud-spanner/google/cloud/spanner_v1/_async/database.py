@@ -22,27 +22,28 @@ import re
 import threading
 from typing import Optional
 
+import google.auth.credentials
+import grpc
 from google.api_core import gapic_v1
 from google.api_core.exceptions import Aborted
 from google.api_core.retry_async import AsyncRetry
-import google.auth.credentials
+from google.cloud.exceptions import NotFound
 from google.iam.v1 import iam_policy_pb2, options_pb2
 from google.protobuf.field_mask_pb2 import FieldMask
-import grpc
 
 from google.cloud.aio._cross_sync import CrossSync
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_admin_database_v1 import (
     CreateDatabaseRequest,
-    Database as DatabasePB,
     EncryptionConfig,
     ListDatabaseRolesRequest,
     RestoreDatabaseEncryptionConfig,
     RestoreDatabaseRequest,
     UpdateDatabaseDdlRequest,
 )
+from google.cloud.spanner_admin_database_v1 import (
+    Database as DatabasePB,
+)
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
-
 from google.cloud.spanner_v1._async.batch import Batch, MutationGroups
 from google.cloud.spanner_v1._async.database_sessions_manager import (
     DatabaseSessionsManager,
@@ -91,8 +92,6 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     get_current_span,
     trace_call,
 )
-
-
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.table import Table
 
@@ -280,7 +279,7 @@ class Database(object):
         match = _DATABASE_NAME_RE.match(database_pb.name)
         if match is None:
             raise ValueError(
-                "Database protobuf name was not in the " "expected format.",
+                "Database protobuf name was not in the expected format.",
                 database_pb.name,
             )
         if match.group("project") != instance._client.project:
@@ -291,8 +290,7 @@ class Database(object):
         instance_id = match.group("instance_id")
         if instance_id != instance.instance_id:
             raise ValueError(
-                "Instance ID on database does not match the "
-                "Instance ID on the instance"
+                "Instance ID on database does not match the Instance ID on the instance"
             )
         database_id = match.group("database_id")
 
@@ -912,10 +910,13 @@ class Database(object):
             )
 
         async def execute_pdml():
-            with trace_call(
-                "CloudSpanner.Database.execute_partitioned_pdml",
-                observability_options=self.observability_options,
-            ) as span, MetricsCapture(self._resource_info):
+            with (
+                trace_call(
+                    "CloudSpanner.Database.execute_partitioned_pdml",
+                    observability_options=self.observability_options,
+                ) as span,
+                MetricsCapture(self._resource_info),
+            ):
                 transaction_type = TransactionType.PARTITIONED
                 session = await self._sessions_manager.get_session(transaction_type)
 
@@ -1176,11 +1177,14 @@ class Database(object):
         if transaction_tag:
             extra_attributes["transaction.tag"] = transaction_tag
 
-        with trace_call(
-            "CloudSpanner.Database.run_in_transaction",
-            extra_attributes=extra_attributes,
-            observability_options=observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.Database.run_in_transaction",
+                extra_attributes=extra_attributes,
+                observability_options=observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             # Sanity check: Is there a transaction already running?
             # If there is, then raise a red flag. Otherwise, mark that this one
             # is running.
@@ -1854,11 +1858,14 @@ class BatchSnapshot(object):
         timeout=gapic_v1.method.DEFAULT,
     ):
         """Start a partitioned batch read operation."""
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.generate_read_batches",
-            extra_attributes=dict(table=table, columns=columns),
-            observability_options=self.observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.generate_read_batches",
+                extra_attributes=dict(table=table, columns=columns),
+                observability_options=self.observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             snapshot = await self._get_snapshot()
             partitions = await snapshot.partition_read(
                 table=table,
@@ -1893,10 +1900,13 @@ class BatchSnapshot(object):
     ):
         """Process a single, partitioned read."""
         observability_options = self.observability_options
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.process_read_batch",
-            observability_options=observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.process_read_batch",
+                observability_options=observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             kwargs = copy.deepcopy(batch["read"])
             keyset_dict = kwargs.pop("keyset")
             kwargs["keyset"] = KeySet._from_dict(keyset_dict)
@@ -1925,11 +1935,14 @@ class BatchSnapshot(object):
         timeout=gapic_v1.method.DEFAULT,
     ):
         """Start a partitioned query operation."""
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.generate_query_batches",
-            extra_attributes=dict(sql=sql),
-            observability_options=self.observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.generate_query_batches",
+                extra_attributes=dict(sql=sql),
+                observability_options=self.observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             snapshot = await self._get_snapshot()
             partitions = await snapshot.partition_query(
                 sql=sql,
@@ -1970,10 +1983,13 @@ class BatchSnapshot(object):
         timeout=gapic_v1.method.DEFAULT,
     ):
         """Process a single, partitioned query."""
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.process_query_batch",
-            observability_options=self.observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.process_query_batch",
+                observability_options=self.observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             snapshot = await self._get_snapshot()
             return await CrossSync.run_if_async(
                 snapshot.execute_sql,
@@ -1999,11 +2015,14 @@ class BatchSnapshot(object):
         """Start a partitioned query operation to get list of partitions and
         then executes each partition on a separate thread
         """
-        with trace_call(
-            f"CloudSpanner.${type(self).__name__}.run_partitioned_query",
-            extra_attributes=dict(sql=sql),
-            observability_options=self.observability_options,
-        ), MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                f"CloudSpanner.${type(self).__name__}.run_partitioned_query",
+                extra_attributes=dict(sql=sql),
+                observability_options=self.observability_options,
+            ),
+            MetricsCapture(self._resource_info),
+        ):
             partitions = []
             async for partition in self.generate_query_batches(
                 sql,

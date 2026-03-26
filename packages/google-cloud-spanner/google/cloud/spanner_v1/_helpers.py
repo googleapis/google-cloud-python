@@ -15,7 +15,6 @@
 """Helper functions for Cloud Spanner."""
 
 import base64
-from contextlib import contextmanager
 import datetime
 import decimal
 import logging
@@ -23,17 +22,17 @@ import math
 import threading
 import time
 import uuid
+from contextlib import contextmanager
 
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
+from google.cloud._helpers import _date_from_iso8601_date
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from google.protobuf.struct_pb2 import ListValue, Value
 from google.rpc.error_details_pb2 import RetryInfo
 
-from google.cloud._helpers import _date_from_iso8601_date
-from google.cloud.spanner_v1.types import RequestOptions
-from google.cloud.spanner_v1.data_types import JsonObject, Interval
+from google.cloud.spanner_v1.data_types import Interval, JsonObject
 from google.cloud.spanner_v1.exceptions import wrap_with_request_id
 from google.cloud.spanner_v1.request_id_header import (
     with_request_id,
@@ -41,6 +40,7 @@ from google.cloud.spanner_v1.request_id_header import (
 )
 from google.cloud.spanner_v1.types import (
     ExecuteSqlRequest,
+    RequestOptions,
     TransactionOptions,
     TypeCode,
 )
@@ -998,8 +998,8 @@ def _create_experimental_host_transport(
     Raises:
         ValueError: If TLS/mTLS configuration is invalid.
     """
-    from google.auth.credentials import AnonymousCredentials
     import grpc
+    from google.auth.credentials import AnonymousCredentials
 
     channel = None
     if use_plain_text:

@@ -16,20 +16,20 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
@@ -1740,9 +1740,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseCreateInstanceConfig._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseCreateInstanceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance_config(
                 request, metadata
@@ -1895,9 +1893,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseCreateInstancePartition._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseCreateInstancePartition._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance_partition(
                 request, metadata
@@ -2150,9 +2146,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseDeleteInstanceConfig._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseDeleteInstanceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance_config(
                 request, metadata
@@ -2260,9 +2254,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseDeleteInstancePartition._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseDeleteInstancePartition._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance_partition(
                 request, metadata
@@ -2754,9 +2746,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseGetInstanceConfig._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseGetInstanceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance_config(
                 request, metadata
@@ -2906,9 +2896,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseGetInstancePartition._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseGetInstancePartition._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance_partition(
                 request, metadata
@@ -3059,9 +3047,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseListInstanceConfigOperations._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseListInstanceConfigOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instance_config_operations(
                 request, metadata
@@ -3217,9 +3203,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseListInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseListInstanceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instance_configs(
                 request, metadata
@@ -3372,9 +3356,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_http_options()
 
             (
                 request,
@@ -3532,9 +3514,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseListInstancePartitions._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseListInstancePartitions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instance_partitions(
                 request, metadata
@@ -4209,9 +4189,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -4517,9 +4495,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseUpdateInstanceConfig._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseUpdateInstanceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance_config(
                 request, metadata
@@ -4672,9 +4648,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstanceAdminRestTransport._BaseUpdateInstancePartition._get_http_options()
-            )
+            http_options = _BaseInstanceAdminRestTransport._BaseUpdateInstancePartition._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance_partition(
                 request, metadata
@@ -4798,7 +4772,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateInstancePartition(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_instance(
@@ -4826,7 +4802,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteInstancePartition(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_iam_policy(
@@ -4877,7 +4855,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstanceConfigOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInstanceConfigOperations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_instance_configs(
@@ -4899,7 +4879,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstancePartitionOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInstancePartitionOperations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_instance_partitions(
@@ -4910,7 +4892,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstancePartitions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInstancePartitions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_instances(
@@ -4981,7 +4965,9 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInstancePartition(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def cancel_operation(self):

@@ -14,15 +14,15 @@
 
 
 import datetime
-from datetime import timezone
 import unittest
+from datetime import timezone
 from unittest.mock import MagicMock
 
-from google.api_core.exceptions import Aborted, Unknown
-from google.rpc.status_pb2 import Status
 import mock
-
+from google.api_core.exceptions import Aborted, Unknown
 from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+from google.rpc.status_pb2 import Status
+
 from google.cloud.spanner_v1 import (
     BatchWriteResponse,
     CommitResponse,

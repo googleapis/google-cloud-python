@@ -13,17 +13,18 @@
 # limitations under the License.
 
 """User friendly container for Cloud Spanner Instance."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.instance"
 import re
 import typing
 
-from google.api_core.exceptions import InvalidArgument
 import google.api_core.operation
+from google.api_core.exceptions import InvalidArgument
+from google.cloud.exceptions import NotFound
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.field_mask_pb2 import FieldMask
 
 from google.cloud.aio._cross_sync import CrossSync
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_admin_database_v1 import (
     DatabaseDialect,
     ListBackupOperationsRequest,
@@ -198,12 +199,12 @@ class Instance(object):
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
             raise ValueError(
-                "Instance protobuf name was not in the " "expected format.",
+                "Instance protobuf name was not in the expected format.",
                 instance_pb.name,
             )
         if match.group("project") != client.project:
             raise ValueError(
-                "Project ID on instance does not match the " "project ID on the client"
+                "Project ID on instance does not match the project ID on the client"
             )
         instance_id = match.group("instance_id")
         configuration_name = instance_pb.config

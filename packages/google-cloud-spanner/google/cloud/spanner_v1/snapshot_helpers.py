@@ -111,13 +111,16 @@ def _restart_on_unavailable(
     while True:
         try:
             if iterator is None:
-                with trace_call(
-                    trace_name,
-                    session,
-                    attributes,
-                    observability_options=observability_options,
-                    metadata=metadata,
-                ) as span, MetricsCapture():
+                with (
+                    trace_call(
+                        trace_name,
+                        session,
+                        attributes,
+                        observability_options=observability_options,
+                        metadata=metadata,
+                    ) as span,
+                    MetricsCapture(),
+                ):
                     (
                         call_metadata,
                         current_request_id,
@@ -445,13 +448,16 @@ class _SnapshotBase(_SessionWrapper):
         can_include_index = index != "" and index is not None
         if can_include_index:
             trace_attributes["index"] = index
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.partition_read",
-            session,
-            extra_attributes=trace_attributes,
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture():
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.partition_read",
+                session,
+                extra_attributes=trace_attributes,
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(),
+        ):
             nth_request = getattr(database, "_next_nth_request", 0)
             attempt = AtomicCounter()
 
@@ -517,13 +523,16 @@ class _SnapshotBase(_SessionWrapper):
             partition_options=partition_options,
         )
         trace_attributes = {"db.statement": sql}
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.partition_query",
-            session,
-            trace_attributes,
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture():
+        with (
+            trace_call(
+                f"CloudSpanner.{type(self).__name__}.partition_query",
+                session,
+                trace_attributes,
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(),
+        ):
             nth_request = getattr(database, "_next_nth_request", 0)
             attempt = AtomicCounter()
 
@@ -573,12 +582,15 @@ class _SnapshotBase(_SessionWrapper):
             begin_request_kwargs["request_options"] = RequestOptions(
                 transaction_tag=transaction_tag
             )
-        with trace_call(
-            name=f"CloudSpanner.{type(self).__name__}.begin",
-            session=session,
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture():
+        with (
+            trace_call(
+                name=f"CloudSpanner.{type(self).__name__}.begin",
+                session=session,
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(),
+        ):
             nth_request = getattr(database, "_next_nth_request", 0)
             attempt = AtomicCounter()
 

@@ -1,16 +1,16 @@
 import datetime
 from datetime import timezone
 
-from google.api_core.exceptions import Aborted, Cancelled, NotFound, Unknown
 import google.api_core.gapic_v1.method
-from google.protobuf.duration_pb2 import Duration
-from google.protobuf.struct_pb2 import Struct, Value
-from google.rpc.error_details_pb2 import RetryInfo
 import grpc
 import mock
 import pytest
-
+from google.api_core.exceptions import Aborted, Cancelled, NotFound, Unknown
 from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+from google.protobuf.duration_pb2 import Duration
+from google.protobuf.struct_pb2 import Struct, Value
+from google.rpc.error_details_pb2 import RetryInfo
+
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
@@ -20,11 +20,12 @@ from google.cloud.spanner_v1 import (
     DefaultTransactionOptions,
     ExecuteSqlRequest,
     RequestOptions,
+    SpannerClient,
+    TransactionOptions,
+    TypeCode,
 )
 from google.cloud.spanner_v1 import Session as SessionRequestProto
-from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1 import Transaction as TransactionPB
-from google.cloud.spanner_v1 import TransactionOptions, TypeCode
 from google.cloud.spanner_v1._async.batch import Batch
 from google.cloud.spanner_v1._async.database import Database
 from google.cloud.spanner_v1._async.snapshot import Snapshot
@@ -1878,12 +1879,16 @@ class TestSession(OpenTelemetryBase):
         def _time(_results=[1] * 100):
             return _results.pop(0)
 
-        with mock.patch("time.time", _time), mock.patch(
-            "google.cloud.spanner_v1._helpers.random.random", return_value=0
-        ), mock.patch(
-            "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
-            new_callable=mock.AsyncMock,
-        ) as sleep_mock:
+        with (
+            mock.patch("time.time", _time),
+            mock.patch(
+                "google.cloud.spanner_v1._helpers.random.random", return_value=0
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async._helpers.asyncio.sleep",
+                new_callable=mock.AsyncMock,
+            ) as sleep_mock,
+        ):
             # Exception has request_id attribute added
             with pytest.raises(Aborted) as context:
                 await session.run_in_transaction(unit_of_work, timeout_secs=8)

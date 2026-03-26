@@ -13,13 +13,14 @@
 # limitations under the License.
 
 """Manage sessions for a database."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.database_sessions_manager"
 
 import asyncio
+import threading
 from datetime import timedelta
 from enum import Enum
 from os import getenv
-import threading
 from threading import Thread
 from typing import Optional
 from weakref import ref

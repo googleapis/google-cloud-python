@@ -24,8 +24,10 @@ Read-only transactions are unaffected — they still use an explicit
 ``BeginTransaction`` RPC via ``snapshot_checkout()``.
 """
 
+from google.rpc import code_pb2, status_pb2
+
 from google.cloud.spanner_dbapi import Connection
-from google.cloud.spanner_dbapi.exceptions import ProgrammingError, OperationalError
+from google.cloud.spanner_dbapi.exceptions import OperationalError, ProgrammingError
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
@@ -34,16 +36,14 @@ from google.cloud.spanner_v1 import (
     RollbackRequest,
     TypeCode,
 )
-from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from google.rpc import code_pb2, status_pb2
-
+from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    aborted_status,
+    add_error,
     add_single_result,
     add_update_count,
-    add_error,
-    aborted_status,
     invalid_argument_status,
 )
 
@@ -300,13 +300,13 @@ class TestDbapiInlineBegin(MockServerTestBase):
         self.assertEqual(
             2,
             len(commit_requests),
-            "Expected 2 CommitRequests: the aborted original + " "the successful retry",
+            "Expected 2 CommitRequests: the aborted original + the successful retry",
         )
         for i, cr in enumerate(commit_requests):
             self.assertNotEqual(
                 b"",
                 cr.transaction_id,
-                f"CommitRequest[{i}] must carry a transaction_id " "from inline begin",
+                f"CommitRequest[{i}] must carry a transaction_id from inline begin",
             )
 
     def test_dml_fails_retry_succeeds_continues_transaction(self):

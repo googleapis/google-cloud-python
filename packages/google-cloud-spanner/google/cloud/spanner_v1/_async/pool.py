@@ -13,14 +13,16 @@
 # limitations under the License.
 
 """Pools managing shared Session objects."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.pool"
 import asyncio
 import datetime
 import time
 from warnings import warn
 
-from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.exceptions import NotFound
+
+from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._async.session import Session
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_leader_aware_routing,
@@ -330,11 +332,14 @@ class FixedSizePool(AbstractSessionPool):
         )
 
         observability_options = getattr(self._database, "observability_options", None)
-        with trace_call(
-            "CloudSpanner.FixedPool.BatchCreateSessions",
-            observability_options=observability_options,
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.FixedPool.BatchCreateSessions",
+                observability_options=observability_options,
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             returned_session_count = 0
             while not self._sessions.full():
                 request.session_count = requested_session_count - self._sessions.qsize()
@@ -710,11 +715,14 @@ class PingingPool(FixedSizePool):
         )
 
         observability_options = getattr(self._database, "observability_options", None)
-        with trace_call(
-            "CloudSpanner.PingingPool.BatchCreateSessions",
-            observability_options=observability_options,
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.PingingPool.BatchCreateSessions",
+                observability_options=observability_options,
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             returned_session_count = 0
             while returned_session_count < self.size:
                 call_metadata, error_augmenter = database.with_error_augmentation(

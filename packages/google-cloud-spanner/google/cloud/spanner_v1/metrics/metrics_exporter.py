@@ -16,13 +16,14 @@
 import logging
 from typing import Dict, List, NoReturn, Optional, Tuple, Union
 
+import google.auth
 from google.api.distribution_pb2 import (
     Distribution,
 )  # pylint: disable=no-name-in-module
-from google.api.metric_pb2 import MetricDescriptor
 
 # pylint: disable=no-name-in-module
 from google.api.metric_pb2 import Metric as GMetric  # pylint: disable=no-name-in-module
+from google.api.metric_pb2 import MetricDescriptor
 from google.api.monitored_resource_pb2 import (
     MonitoredResource,
 )  # pylint: disable=no-name-in-module
@@ -33,7 +34,6 @@ from google.api_core.exceptions import (
     ServiceUnavailable,
 )
 from google.api_core.retry import Retry
-import google.auth
 from google.auth import credentials as ga_credentials
 
 # pylint: disable=no-name-in-module
@@ -51,6 +51,17 @@ from .constants import (
 )
 
 try:
+    from google.cloud.monitoring_v3 import (
+        CreateTimeSeriesRequest,
+        MetricServiceClient,
+        Point,
+        TimeInterval,
+        TimeSeries,
+        TypedValue,
+    )
+    from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
+        MetricServiceGrpcTransport,
+    )
     from opentelemetry.sdk.metrics.export import (
         Gauge,
         Histogram,
@@ -63,18 +74,6 @@ try:
         Sum,
     )
     from opentelemetry.sdk.resources import Resource
-
-    from google.cloud.monitoring_v3 import (
-        CreateTimeSeriesRequest,
-        MetricServiceClient,
-        Point,
-        TimeInterval,
-        TimeSeries,
-        TypedValue,
-    )
-    from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
-        MetricServiceGrpcTransport,
-    )
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:  # pragma: NO COVER
@@ -229,7 +228,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     @staticmethod
     def _extract_metric_labels(
-        data_point: Union["NumberDataPoint", "HistogramDataPoint"]
+        data_point: Union["NumberDataPoint", "HistogramDataPoint"],
     ) -> Tuple[dict, dict]:
         """
         Extract the metric labels from the data point.

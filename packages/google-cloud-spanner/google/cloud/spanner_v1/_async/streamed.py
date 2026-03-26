@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Wrapper for streaming results."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.streamed"
 from google.protobuf.struct_pb2 import ListValue, Value
 
