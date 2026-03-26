@@ -3210,7 +3210,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
     version: 3.63.0
-    last_generated_commit: 64f1dbf504bab7b58ed96a539a5b26a7ebfc65c7
+    last_generated_commit: ""
     apis:
       - path: google/spanner/admin/instance/v1
         service_config: spanner.yaml
@@ -3243,9 +3243,11 @@ libraries:
       - ^packages/google-cloud-spanner/docs/spanner_v1/spanner.rst
       - ^packages/google-cloud-spanner/docs/spanner_v1/services_.rst
       - ^packages/google-cloud-spanner/docs/spanner_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/database_admin.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/spanner_admin_database.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/services_.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/instance_admin.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/spanner_admin_instance.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/services_.rst
       - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/types_.rst
