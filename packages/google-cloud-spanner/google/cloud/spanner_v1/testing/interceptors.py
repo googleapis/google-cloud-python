@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import defaultdict
 import threading
+from collections import defaultdict
 
 from google.api_core.exceptions import Aborted
 from grpc_interceptor import ClientInterceptor

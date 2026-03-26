@@ -23,9 +23,8 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.spanner_v1.types import keys
+from google.cloud.spanner_v1.types import keys, mutation, result_set
 from google.cloud.spanner_v1.types import location as gs_location
-from google.cloud.spanner_v1.types import mutation, result_set
 from google.cloud.spanner_v1.types import transaction as gs_transaction
 from google.cloud.spanner_v1.types import type as gs_type
 
@@ -381,6 +380,7 @@ class RequestOptions(proto.Message):
                 This specifies that the request is high
                 priority.
         """
+
         PRIORITY_UNSPECIFIED = 0
         PRIORITY_LOW = 1
         PRIORITY_MEDIUM = 2
@@ -496,6 +496,7 @@ class DirectedReadOptions(proto.Message):
                     Read-only replicas only support reads (not
                     writes).
             """
+
             TYPE_UNSPECIFIED = 0
             READ_WRITE = 1
             READ_ONLY = 2
@@ -525,12 +526,12 @@ class DirectedReadOptions(proto.Message):
                 value is ``false``.
         """
 
-        replica_selections: MutableSequence[
-            "DirectedReadOptions.ReplicaSelection"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="DirectedReadOptions.ReplicaSelection",
+        replica_selections: MutableSequence["DirectedReadOptions.ReplicaSelection"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DirectedReadOptions.ReplicaSelection",
+            )
         )
         auto_failover_disabled: bool = proto.Field(
             proto.BOOL,
@@ -546,12 +547,12 @@ class DirectedReadOptions(proto.Message):
                 The directed read replica selector.
         """
 
-        replica_selections: MutableSequence[
-            "DirectedReadOptions.ReplicaSelection"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="DirectedReadOptions.ReplicaSelection",
+        replica_selections: MutableSequence["DirectedReadOptions.ReplicaSelection"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DirectedReadOptions.ReplicaSelection",
+            )
         )
 
     include_replicas: IncludeReplicas = proto.Field(
@@ -727,6 +728,7 @@ class ExecuteSqlRequest(proto.Message):
                 (but not operator-level) execution statistics
                 along with the results.
         """
+
         NORMAL = 0
         PLAN = 1
         PROFILE = 2
@@ -1459,6 +1461,7 @@ class ReadRequest(proto.Message):
             ORDER_BY_NO_ORDER (2):
                 Read rows are returned in any order.
         """
+
         ORDER_BY_UNSPECIFIED = 0
         ORDER_BY_PRIMARY_KEY = 1
         ORDER_BY_NO_ORDER = 2
@@ -1517,6 +1520,7 @@ class ReadRequest(proto.Message):
                 prematurely block other clients from reading the data that
                 you're writing to.
         """
+
         LOCK_HINT_UNSPECIFIED = 0
         LOCK_HINT_SHARED = 1
         LOCK_HINT_EXCLUSIVE = 2

@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,18 +43,23 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
 
 from google.cloud.spanner_v1.services.spanner import (
     SpannerAsyncClient,
@@ -1238,13 +1243,13 @@ def test_spanner_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1686,9 +1691,9 @@ def test_batch_create_sessions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_sessions] = (
+            mock_rpc
+        )
         request = {}
         client.batch_create_sessions(request)
 
@@ -3431,9 +3436,9 @@ def test_execute_streaming_sql_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_streaming_sql
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_streaming_sql] = (
+            mock_rpc
+        )
         request = {}
         client.execute_streaming_sql(request)
 
@@ -3681,9 +3686,9 @@ def test_execute_batch_dml_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_batch_dml
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_batch_dml] = (
+            mock_rpc
+        )
         request = {}
         client.execute_batch_dml(request)
 
@@ -3964,9 +3969,9 @@ async def test_read_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.read
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.read] = (
+            mock_rpc
+        )
 
         request = {}
         await client.read(request)
@@ -4410,9 +4415,9 @@ def test_begin_transaction_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.begin_transaction
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.begin_transaction] = (
+            mock_rpc
+        )
         request = {}
         client.begin_transaction(request)
 
@@ -4813,9 +4818,9 @@ async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.commit
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.commit] = (
+            mock_rpc
+        )
 
         request = {}
         await client.commit(request)
@@ -6448,9 +6453,9 @@ def test_batch_create_sessions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_sessions] = (
+            mock_rpc
+        )
 
         request = {}
         client.batch_create_sessions(request)
@@ -7388,9 +7393,9 @@ def test_execute_streaming_sql_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_streaming_sql
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_streaming_sql] = (
+            mock_rpc
+        )
 
         request = {}
         client.execute_streaming_sql(request)
@@ -7526,9 +7531,9 @@ def test_execute_batch_dml_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_batch_dml
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_batch_dml] = (
+            mock_rpc
+        )
 
         request = {}
         client.execute_batch_dml(request)
@@ -7940,9 +7945,9 @@ def test_begin_transaction_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.begin_transaction
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.begin_transaction] = (
+            mock_rpc
+        )
 
         request = {}
         client.begin_transaction(request)
@@ -9874,8 +9879,9 @@ def test_create_session_rest_bad_request(request_type=spanner.CreateSessionReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9940,17 +9946,19 @@ def test_create_session_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_create_session"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_create_session_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_create_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_create_session"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_create_session_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_create_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10001,8 +10009,9 @@ def test_batch_create_sessions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10060,17 +10069,20 @@ def test_batch_create_sessions_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_create_sessions"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_create_sessions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_batch_create_sessions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_batch_create_sessions"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor,
+            "post_batch_create_sessions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_batch_create_sessions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10128,8 +10140,9 @@ def test_get_session_rest_bad_request(request_type=spanner.GetSessionRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10196,17 +10209,17 @@ def test_get_session_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_get_session"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_get_session_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_get_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_get_session"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_get_session_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_get_session") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10255,8 +10268,9 @@ def test_list_sessions_rest_bad_request(request_type=spanner.ListSessionsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10317,17 +10331,19 @@ def test_list_sessions_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_list_sessions"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_list_sessions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_list_sessions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_list_sessions"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_list_sessions_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_list_sessions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10380,8 +10396,9 @@ def test_delete_session_rest_bad_request(request_type=spanner.DeleteSessionReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10438,13 +10455,13 @@ def test_delete_session_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_delete_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_delete_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = spanner.DeleteSessionRequest.pb(spanner.DeleteSessionRequest())
         transcode.return_value = {
@@ -10487,8 +10504,9 @@ def test_execute_sql_rest_bad_request(request_type=spanner.ExecuteSqlRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10548,17 +10566,17 @@ def test_execute_sql_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_sql"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_sql_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_sql"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_execute_sql"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_execute_sql_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_execute_sql") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10609,8 +10627,9 @@ def test_execute_streaming_sql_rest_bad_request(request_type=spanner.ExecuteSqlR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10681,17 +10700,20 @@ def test_execute_streaming_sql_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_streaming_sql"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_streaming_sql_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_streaming_sql"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_execute_streaming_sql"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor,
+            "post_execute_streaming_sql_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_execute_streaming_sql"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10746,8 +10768,9 @@ def test_execute_batch_dml_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10807,17 +10830,19 @@ def test_execute_batch_dml_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_batch_dml"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_batch_dml_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_batch_dml"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_execute_batch_dml"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_execute_batch_dml_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_execute_batch_dml"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10870,8 +10895,9 @@ def test_read_rest_bad_request(request_type=spanner.ReadRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10931,17 +10957,15 @@ def test_read_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_read_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_read"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.SpannerRestInterceptor, "post_read") as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_read_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_read") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10992,8 +11016,9 @@ def test_streaming_read_rest_bad_request(request_type=spanner.ReadRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11064,17 +11089,19 @@ def test_streaming_read_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_streaming_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_streaming_read_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_streaming_read"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_streaming_read"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_streaming_read_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_streaming_read"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11129,8 +11156,9 @@ def test_begin_transaction_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11193,17 +11221,19 @@ def test_begin_transaction_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_begin_transaction"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_begin_transaction_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_begin_transaction"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_begin_transaction"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_begin_transaction_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_begin_transaction"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11256,8 +11286,9 @@ def test_commit_rest_bad_request(request_type=spanner.CommitRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11317,17 +11348,15 @@ def test_commit_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_commit"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_commit_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_commit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.SpannerRestInterceptor, "post_commit") as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_commit_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_commit") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11380,8 +11409,9 @@ def test_rollback_rest_bad_request(request_type=spanner.RollbackRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11438,13 +11468,11 @@ def test_rollback_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_rollback"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_rollback") as pre,
+    ):
         pre.assert_not_called()
         pb_message = spanner.RollbackRequest.pb(spanner.RollbackRequest())
         transcode.return_value = {
@@ -11487,8 +11515,9 @@ def test_partition_query_rest_bad_request(request_type=spanner.PartitionQueryReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11548,17 +11577,19 @@ def test_partition_query_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_query"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_query_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_partition_query"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_partition_query"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_partition_query_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_partition_query"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11609,8 +11640,9 @@ def test_partition_read_rest_bad_request(request_type=spanner.PartitionReadReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11670,17 +11702,19 @@ def test_partition_read_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_read_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_partition_read"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_partition_read"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_partition_read_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "pre_partition_read"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11731,8 +11765,9 @@ def test_batch_write_rest_bad_request(request_type=spanner.BatchWriteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11799,17 +11834,17 @@ def test_batch_write_rest_interceptors(null_interceptor):
     )
     client = SpannerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_write"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_write_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_batch_write"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_batch_write"
+        ) as post,
+        mock.patch.object(
+            transports.SpannerRestInterceptor, "post_batch_write_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.SpannerRestInterceptor, "pre_batch_write") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12252,11 +12287,14 @@ def test_spanner_base_transport():
 
 def test_spanner_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.spanner_v1.services.spanner.transports.SpannerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.spanner_v1.services.spanner.transports.SpannerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SpannerTransport(
@@ -12276,9 +12314,12 @@ def test_spanner_base_transport_with_credentials_file():
 
 def test_spanner_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.spanner_v1.services.spanner.transports.SpannerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.spanner_v1.services.spanner.transports.SpannerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SpannerTransport()
@@ -12356,11 +12397,12 @@ def test_spanner_transport_auth_gdch_credentials(transport_class):
 def test_spanner_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

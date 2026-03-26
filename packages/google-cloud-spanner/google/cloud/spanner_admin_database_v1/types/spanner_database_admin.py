@@ -74,6 +74,7 @@ class RestoreSourceType(proto.Enum):
             A backup was used as the source of the
             restore.
     """
+
     TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -206,6 +207,7 @@ class Database(proto.Message):
                 database will be restored, and the database will transition
                 to ``READY`` state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -995,6 +997,7 @@ class RestoreDatabaseEncryptionConfig(proto.Message):
                 Use customer managed encryption. If specified,
                 ``kms_key_name`` must must contain a valid Cloud KMS key.
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2

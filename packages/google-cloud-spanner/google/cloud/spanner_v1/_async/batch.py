@@ -22,19 +22,18 @@ from typing import List, Optional
 from google.api_core.exceptions import InternalServerError
 
 from google.cloud.aio._cross_sync import CrossSync
-
 from google.cloud.spanner_v1._async._helpers import _retry, _retry_on_aborted_exception
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
-    _merge_client_context,
-    _merge_request_options,
-    _validate_client_context,
     _check_rst_stream_error,
     _make_list_value_pbs,
+    _merge_client_context,
+    _merge_request_options,
     _merge_Transaction_Options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
     _SessionWrapper,
+    _validate_client_context,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
@@ -259,13 +258,16 @@ class Batch(_BatchBase):
         # Request tags are not supported for commit requests.
         request_options.request_tag = None
 
-        with trace_call(
-            name=f"CloudSpanner.{type(self).__name__}.commit",
-            session=session,
-            extra_attributes={"num_mutations": len(mutations)},
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                name=f"CloudSpanner.{type(self).__name__}.commit",
+                session=session,
+                extra_attributes={"num_mutations": len(mutations)},
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
 
             async def wrapped_method():
                 commit_request = CommitRequest(
@@ -412,13 +414,16 @@ class MutationGroups(_SessionWrapper):
         if request_options is None:
             request_options = RequestOptions()
 
-        with trace_call(
-            name="CloudSpanner.batch_write",
-            session=session,
-            extra_attributes={"num_mutation_groups": len(mutation_groups)},
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                name="CloudSpanner.batch_write",
+                session=session,
+                extra_attributes={"num_mutation_groups": len(mutation_groups)},
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             attempt = AtomicCounter(0)
             nth_request = getattr(database, "_next_nth_request", 0)
 

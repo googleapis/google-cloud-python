@@ -15,8 +15,8 @@
 from datetime import datetime
 
 import mock
-from opentelemetry.metrics import Counter, Histogram
 import pytest
+from opentelemetry.metrics import Counter, Histogram
 
 from google.cloud.spanner_v1.metrics.metrics_tracer import MetricOpTracer, MetricsTracer
 

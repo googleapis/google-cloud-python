@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import threading
 
+import mock
+import pytest
 from google.api_core import gapic_v1
 from google.protobuf.struct_pb2 import Struct
-import mock
 
 from google.cloud.spanner_v1 import (
     DefaultTransactionOptions,

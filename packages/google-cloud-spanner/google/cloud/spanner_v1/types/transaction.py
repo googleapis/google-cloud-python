@@ -132,6 +132,7 @@ class TransactionOptions(proto.Message):
                 transaction, the locking semantics default to
                 ``OPTIMISTIC``.
         """
+
         ISOLATION_LEVEL_UNSPECIFIED = 0
         SERIALIZABLE = 1
         REPEATABLE_READ = 2
@@ -195,6 +196,7 @@ class TransactionOptions(proto.Message):
                     for details on how the guarantees of each isolation level
                     are provided at commit time.
             """
+
             READ_LOCK_MODE_UNSPECIFIED = 0
             PESSIMISTIC = 1
             OPTIMISTIC = 2

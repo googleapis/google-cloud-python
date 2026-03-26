@@ -16,29 +16,29 @@
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.transaction"
 
-from dataclasses import dataclass, field
 import functools
+from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from google.cloud.spanner_v1._helpers import (
-    AtomicCounter,
-    _make_value_pb,
-    _merge_query_options,
-    _metadata_with_prefix,
-    _metadata_with_leader_aware_routing,
-    _check_rst_stream_error,
-    _merge_Transaction_Options,
-    _merge_client_context,
-    _merge_request_options,
-)
-from google.cloud.spanner_v1._async._helpers import _retry
 from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
 from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.aio._cross_sync import CrossSync
+from google.cloud.spanner_v1._async._helpers import _retry
 from google.cloud.spanner_v1._async.batch import _BatchBase
 from google.cloud.spanner_v1._async.snapshot import _SnapshotBase
+from google.cloud.spanner_v1._helpers import (
+    AtomicCounter,
+    _check_rst_stream_error,
+    _make_value_pb,
+    _merge_client_context,
+    _merge_query_options,
+    _merge_request_options,
+    _merge_Transaction_Options,
+    _metadata_with_leader_aware_routing,
+    _metadata_with_prefix,
+)
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.types.commit_response import CommitResponse
@@ -92,9 +92,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: transaction options for this transaction.
         """
 
-        default_transaction_options = (
-            self._session._database.default_transaction_options.default_read_write_transaction_options
-        )
+        default_transaction_options = self._session._database.default_transaction_options.default_read_write_transaction_options
 
         merge_transaction_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite(
@@ -139,15 +137,18 @@ class Transaction(_SnapshotBase, _BatchBase):
         transaction = self._build_transaction_selector_pb()
         request.transaction = transaction
 
-        with trace_call(
-            trace_name,
-            session,
-            attributes,
-            observability_options=getattr(
-                session._database, "observability_options", None
+        with (
+            trace_call(
+                trace_name,
+                session,
+                attributes,
+                observability_options=getattr(
+                    session._database, "observability_options", None
+                ),
+                metadata=metadata,
             ),
-            metadata=metadata,
-        ), MetricsCapture(self._resource_info):
+            MetricsCapture(self._resource_info),
+        ):
             method = functools.partial(method, request=request)
             response = await _retry(
                 method,
@@ -182,12 +183,15 @@ class Transaction(_SnapshotBase, _BatchBase):
                 )
 
             observability_options = getattr(database, "observability_options", None)
-            with trace_call(
-                f"CloudSpanner.{type(self).__name__}.rollback",
-                session,
-                observability_options=observability_options,
-                metadata=metadata,
-            ) as span, MetricsCapture(self._resource_info):
+            with (
+                trace_call(
+                    f"CloudSpanner.{type(self).__name__}.rollback",
+                    session,
+                    observability_options=observability_options,
+                    metadata=metadata,
+                ) as span,
+                MetricsCapture(self._resource_info),
+            ):
                 attempt = AtomicCounter(0)
                 nth_request = database._next_nth_request
 
@@ -265,13 +269,16 @@ class Transaction(_SnapshotBase, _BatchBase):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
 
-        with trace_call(
-            name=f"CloudSpanner.{type(self).__name__}.commit",
-            session=session,
-            extra_attributes={"num_mutations": num_mutations},
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                name=f"CloudSpanner.{type(self).__name__}.commit",
+                session=session,
+                extra_attributes={"num_mutations": num_mutations},
+                observability_options=getattr(database, "observability_options", None),
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             if self.committed is not None:
                 raise ValueError("Transaction already committed.")
             if self.rolled_back:

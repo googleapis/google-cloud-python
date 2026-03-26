@@ -46,10 +46,13 @@ class PartitionExecutor:
         observability_options = getattr(
             self._batch_snapshot, "observability_options", {}
         )
-        with trace_call(
-            "CloudSpanner.PartitionExecutor.run",
-            observability_options=observability_options,
-        ), MetricsCapture():
+        with (
+            trace_call(
+                "CloudSpanner.PartitionExecutor.run",
+                observability_options=observability_options,
+            ),
+            MetricsCapture(),
+        ):
             self.__run()
 
     def __run(self):

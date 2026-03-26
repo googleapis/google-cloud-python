@@ -178,6 +178,7 @@ class ChangeStreamRecord(proto.Message):
                 DELETE (30):
                     Indicates existing data was deleted.
             """
+
             MOD_TYPE_UNSPECIFIED = 0
             INSERT = 10
             UPDATE = 20
@@ -205,6 +206,7 @@ class ChangeStreamRecord(proto.Message):
                     columns. Also records the old values of the
                     modified columns.
             """
+
             VALUE_CAPTURE_TYPE_UNSPECIFIED = 0
             OLD_AND_NEW_VALUES = 10
             NEW_VALUES = 20
@@ -290,12 +292,12 @@ class ChangeStreamRecord(proto.Message):
                     [DELETE][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.ModType.DELETE].
             """
 
-            keys: MutableSequence[
-                "ChangeStreamRecord.DataChangeRecord.ModValue"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="ChangeStreamRecord.DataChangeRecord.ModValue",
+            keys: MutableSequence["ChangeStreamRecord.DataChangeRecord.ModValue"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="ChangeStreamRecord.DataChangeRecord.ModValue",
+                )
             )
             old_values: MutableSequence[
                 "ChangeStreamRecord.DataChangeRecord.ModValue"
@@ -340,12 +342,12 @@ class ChangeStreamRecord(proto.Message):
             number=6,
             message="ChangeStreamRecord.DataChangeRecord.ColumnMetadata",
         )
-        mods: MutableSequence[
-            "ChangeStreamRecord.DataChangeRecord.Mod"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=7,
-            message="ChangeStreamRecord.DataChangeRecord.Mod",
+        mods: MutableSequence["ChangeStreamRecord.DataChangeRecord.Mod"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=7,
+                message="ChangeStreamRecord.DataChangeRecord.Mod",
+            )
         )
         mod_type: "ChangeStreamRecord.DataChangeRecord.ModType" = proto.Field(
             proto.ENUM,

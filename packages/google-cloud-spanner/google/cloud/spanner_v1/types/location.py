@@ -183,6 +183,7 @@ class Tablet(proto.Message):
             READ_ONLY (2):
                 The tablet can only perform reads.
         """
+
         ROLE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
@@ -361,6 +362,7 @@ class KeyRecipe(proto.Message):
                     The key is descending - corresponds to ``DESC`` in the
                     schema definition.
             """
+
             ORDER_UNSPECIFIED = 0
             ASCENDING = 1
             DESCENDING = 2
@@ -380,6 +382,7 @@ class KeyRecipe(proto.Message):
                 NOT_NULL (3):
                     The column does not support NULL values.
             """
+
             NULL_ORDER_UNSPECIFIED = 0
             NULLS_FIRST = 1
             NULLS_LAST = 2

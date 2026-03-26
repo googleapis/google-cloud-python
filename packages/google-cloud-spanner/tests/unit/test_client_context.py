@@ -79,11 +79,12 @@ class TestClientContext(unittest.TestCase):
 
         project = "PROJECT"
         credentials = mock.Mock(spec=["_resource_prefix__"])
-        with mock.patch(
-            "google.auth.default", return_value=(credentials, project)
-        ), mock.patch(
-            "google.cloud.spanner_v1.client._get_spanner_enable_builtin_metrics_env",
-            return_value=False,
+        with (
+            mock.patch("google.auth.default", return_value=(credentials, project)),
+            mock.patch(
+                "google.cloud.spanner_v1.client._get_spanner_enable_builtin_metrics_env",
+                return_value=False,
+            ),
         ):
             client_context = {
                 "secure_context": {"a": struct_pb2.Value(string_value="A")}

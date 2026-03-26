@@ -17,13 +17,14 @@
 import re
 
 from google.cloud.exceptions import NotFound
+
+from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 from google.cloud.spanner_admin_database_v1 import (
     CopyBackupEncryptionConfig,
     CopyBackupRequest,
     CreateBackupEncryptionConfig,
     CreateBackupRequest,
 )
-from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 _BACKUP_NAME_RE = re.compile(
@@ -256,8 +257,7 @@ class Backup(object):
         instance_id = match.group("instance_id")
         if instance_id != instance.instance_id:
             raise ValueError(
-                "Instance ID on database does not match the instance ID"
-                "on the instance"
+                "Instance ID on database does not match the instance IDon the instance"
             )
         backup_id = match.group("backup_id")
         return cls(backup_id, instance)

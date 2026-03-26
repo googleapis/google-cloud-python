@@ -14,10 +14,10 @@
 
 """Custom data types for spanner."""
 
-from dataclasses import dataclass
 import json
 import re
 import types
+from dataclasses import dataclass
 
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message

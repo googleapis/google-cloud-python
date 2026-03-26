@@ -15,8 +15,8 @@
 import unittest
 
 import mock
-
 from google.cloud.exceptions import NotFound
+
 from google.cloud.spanner_v1.types import StructType, Type, TypeCode
 
 

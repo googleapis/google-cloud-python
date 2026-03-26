@@ -13,10 +13,11 @@
 # limitations under the License.
 
 """Wrapper for Cloud Spanner Session objects."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.session"
+import time
 from datetime import datetime, timezone
 from functools import total_ordering
-import time
 from typing import MutableMapping, Optional
 
 from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
@@ -196,13 +197,16 @@ class Session(object):
             else "CloudSpanner.CreateSession"
         )
         nth_request = database._next_nth_request
-        with trace_call(
-            span_name,
-            self,
-            self._labels,
-            observability_options=observability_options,
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                span_name,
+                self,
+                self._labels,
+                observability_options=observability_options,
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
@@ -247,12 +251,15 @@ class Session(object):
 
         observability_options = getattr(self._database, "observability_options", None)
         nth_request = database._next_nth_request
-        with trace_call(
-            "CloudSpanner.GetSession",
-            self,
-            observability_options=observability_options,
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.GetSession",
+                self,
+                observability_options=observability_options,
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
@@ -301,16 +308,19 @@ class Session(object):
         metadata = _metadata_with_prefix(database.name)
         observability_options = getattr(self._database, "observability_options", None)
         nth_request = database._next_nth_request
-        with trace_call(
-            "CloudSpanner.DeleteSession",
-            self,
-            extra_attributes={
-                "session.id": self._session_id,
-                "session.name": self.name,
-            },
-            observability_options=observability_options,
-            metadata=metadata,
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.DeleteSession",
+                self,
+                extra_attributes={
+                    "session.id": self._session_id,
+                    "session.name": self.name,
+                },
+                observability_options=observability_options,
+                metadata=metadata,
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
@@ -554,12 +564,15 @@ class Session(object):
         if transaction_tag:
             extra_attributes["transaction.tag"] = transaction_tag
 
-        with trace_call(
-            "CloudSpanner.Session.run_in_transaction",
-            self,
-            extra_attributes=extra_attributes,
-            observability_options=getattr(database, "observability_options", None),
-        ) as span, MetricsCapture(self._resource_info):
+        with (
+            trace_call(
+                "CloudSpanner.Session.run_in_transaction",
+                self,
+                extra_attributes=extra_attributes,
+                observability_options=getattr(database, "observability_options", None),
+            ) as span,
+            MetricsCapture(self._resource_info),
+        ):
             attempts: int = 0
 
             # If a transaction using a multiplexed session is retried after an aborted

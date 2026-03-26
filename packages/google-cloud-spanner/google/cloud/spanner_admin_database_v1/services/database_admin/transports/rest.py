@@ -16,29 +16,31 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.spanner_admin_database_v1.types import (
+    backup,
+    backup_schedule,
+    spanner_database_admin,
+)
+from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import (
     backup_schedule as gsad_backup_schedule,
 )
-from google.cloud.spanner_admin_database_v1.types import backup
-from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
-from google.cloud.spanner_admin_database_v1.types import backup_schedule
-from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDatabaseAdminRestTransport
@@ -2290,9 +2292,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseCreateBackupSchedule._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseCreateBackupSchedule._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup_schedule(
                 request, metadata
@@ -2699,9 +2699,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseDeleteBackupSchedule._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseDeleteBackupSchedule._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup_schedule(
                 request, metadata
@@ -3071,9 +3069,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseGetBackupSchedule._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseGetBackupSchedule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_schedule(
                 request, metadata
@@ -3762,9 +3758,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseListBackupOperations._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseListBackupOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_operations(
                 request, metadata
@@ -4062,9 +4056,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseListBackupSchedules._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseListBackupSchedules._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_schedules(
                 request, metadata
@@ -4214,9 +4206,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseListDatabaseOperations._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseListDatabaseOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_database_operations(
                 request, metadata
@@ -4367,9 +4357,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseListDatabaseRoles._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseListDatabaseRoles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_database_roles(
                 request, metadata
@@ -5046,9 +5034,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5353,9 +5339,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseUpdateBackupSchedule._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseUpdateBackupSchedule._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup_schedule(
                 request, metadata
@@ -5680,9 +5664,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseAdminRestTransport._BaseUpdateDatabaseDdl._get_http_options()
-            )
+            http_options = _BaseDatabaseAdminRestTransport._BaseUpdateDatabaseDdl._get_http_options()
 
             request, metadata = self._interceptor.pre_update_database_ddl(
                 request, metadata
@@ -5899,7 +5881,9 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._InternalUpdateGraphOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._InternalUpdateGraphOperation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_backup_operations(
@@ -5939,7 +5923,9 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDatabaseOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDatabaseOperations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_database_roles(

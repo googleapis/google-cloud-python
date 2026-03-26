@@ -121,6 +121,7 @@ class ReplicaInfo(proto.Message):
                 - Participate in leader election but are not eligible to
                   become leader.
         """
+
         TYPE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
@@ -260,6 +261,7 @@ class InstanceConfig(proto.Message):
             USER_MANAGED (2):
                 User-managed configuration.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_MANAGED = 1
         USER_MANAGED = 2
@@ -277,6 +279,7 @@ class InstanceConfig(proto.Message):
                 The instance configuration is fully created
                 and ready to be used to create instances.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -304,6 +307,7 @@ class InstanceConfig(proto.Message):
                 because the project has reached its limit of
                 free instances.
         """
+
         FREE_INSTANCE_AVAILABILITY_UNSPECIFIED = 0
         AVAILABLE = 1
         UNSUPPORTED = 2
@@ -332,6 +336,7 @@ class InstanceConfig(proto.Message):
                 spread across more than one region in a multi-region
                 configuration.
         """
+
         QUORUM_TYPE_UNSPECIFIED = 0
         REGION = 1
         DUAL_REGION = 2
@@ -707,12 +712,12 @@ class AutoscalingConfig(proto.Message):
         number=2,
         message=AutoscalingTargets,
     )
-    asymmetric_autoscaling_options: MutableSequence[
-        AsymmetricAutoscalingOption
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=AsymmetricAutoscalingOption,
+    asymmetric_autoscaling_options: MutableSequence[AsymmetricAutoscalingOption] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=AsymmetricAutoscalingOption,
+        )
     )
 
 
@@ -870,6 +875,7 @@ class Instance(proto.Message):
                 The instance is fully created and ready to do
                 work such as creating databases.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -891,6 +897,7 @@ class Instance(proto.Message):
                 [node_count, processing_units] should be 0. They come with
                 stricter usage limits and limited support.
         """
+
         INSTANCE_TYPE_UNSPECIFIED = 0
         PROVISIONED = 1
         FREE_INSTANCE = 2
@@ -909,6 +916,7 @@ class Instance(proto.Message):
             ENTERPRISE_PLUS (3):
                 Enterprise Plus edition.
         """
+
         EDITION_UNSPECIFIED = 0
         STANDARD = 1
         ENTERPRISE = 2
@@ -935,6 +943,7 @@ class Instance(proto.Message):
                 delete the default backup schedule once it's
                 created.
         """
+
         DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED = 0
         NONE = 1
         AUTOMATIC = 2
@@ -959,12 +968,12 @@ class Instance(proto.Message):
         proto.INT32,
         number=9,
     )
-    replica_compute_capacity: MutableSequence[
-        "ReplicaComputeCapacity"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=19,
-        message="ReplicaComputeCapacity",
+    replica_compute_capacity: MutableSequence["ReplicaComputeCapacity"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=19,
+            message="ReplicaComputeCapacity",
+        )
     )
     autoscaling_config: "AutoscalingConfig" = proto.Field(
         proto.MESSAGE,
@@ -1703,6 +1712,7 @@ class FreeInstanceMetadata(proto.Message):
                 instance, and delete it after the grace period
                 passes if it has not been upgraded.
         """
+
         EXPIRE_BEHAVIOR_UNSPECIFIED = 0
         FREE_TO_PROVISIONED = 1
         REMOVE_AFTER_GRACE_PERIOD = 2
@@ -1908,6 +1918,7 @@ class InstancePartition(proto.Message):
                 ready to do work such as creating placements and
                 using in databases.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
