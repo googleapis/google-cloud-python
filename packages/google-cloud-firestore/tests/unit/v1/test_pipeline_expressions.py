@@ -1743,31 +1743,31 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_timestamp_enums(self):
-        from google.cloud.firestore_v1.pipeline_expressions import DatetimeUnit, DatetimeGranularity, DatetimePart
+        from google.cloud.firestore_v1.pipeline_expressions import TimeUnit, TimeGranularity, TimePart
 
         arg1 = self._make_arg("Value")
-        
-        instance_add = Expression.timestamp_add(arg1, DatetimeUnit.DAY, 1)
+
+        instance_add = Expression.timestamp_add(arg1, TimeUnit.DAY, 1)
         assert instance_add.name == "timestamp_add"
         assert isinstance(instance_add.params[1], Constant)
-        assert instance_add.params[1].value == DatetimeUnit.DAY.value
-        
-        instance_trunc = Expression.timestamp_trunc(arg1, DatetimeGranularity.MONTH)
+        assert instance_add.params[1].value == TimeUnit.DAY.value
+
+        instance_trunc = Expression.timestamp_trunc(arg1, TimeGranularity.MONTH)
         assert instance_trunc.name == "timestamp_trunc"
         assert isinstance(instance_trunc.params[1], Constant)
-        assert instance_trunc.params[1].value == DatetimeGranularity.MONTH.value
+        assert instance_trunc.params[1].value == TimeGranularity.MONTH.value
 
-        instance_trunc_inherited = Expression.timestamp_trunc(arg1, DatetimeGranularity.MICROSECOND)
+        instance_trunc_inherited = Expression.timestamp_trunc(arg1, TimeGranularity.MICROSECOND)
         assert instance_trunc_inherited.name == "timestamp_trunc"
         assert isinstance(instance_trunc_inherited.params[1], Constant)
-        assert instance_trunc_inherited.params[1].value == DatetimeGranularity.MICROSECOND.value
-        
-        instance_extract = Expression.timestamp_extract(arg1, DatetimePart.YEAR)
+        assert instance_trunc_inherited.params[1].value == TimeGranularity.MICROSECOND.value
+
+        instance_extract = Expression.timestamp_extract(arg1, TimePart.YEAR)
         assert instance_extract.name == "timestamp_extract"
         assert isinstance(instance_extract.params[1], Constant)
-        assert instance_extract.params[1].value == DatetimePart.YEAR.value
+        assert instance_extract.params[1].value == TimePart.YEAR.value
 
-        instance_extract_inherited = Expression.timestamp_extract(arg1, DatetimePart.SECOND)
+        instance_extract_inherited = Expression.timestamp_extract(arg1, TimePart.SECOND)
         assert instance_extract_inherited.name == "timestamp_extract"
         assert isinstance(instance_extract_inherited.params[1], Constant)
-        assert instance_extract_inherited.params[1].value == DatetimePart.SECOND.value
+        assert instance_extract_inherited.params[1].value == TimePart.SECOND.value

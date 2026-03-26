@@ -48,7 +48,7 @@ CONSTANT_TYPE = TypeVar(
 )
 
 # Create enums for the datetime units, granularities, and parts supported by the backend.
-_DATETIME_UNITS = {
+_TIME_UNITS = {
     "MICROSECOND": "microsecond",
     "MILLISECOND": "millisecond",
     "SECOND": "second",
@@ -56,7 +56,7 @@ _DATETIME_UNITS = {
     "HOUR": "hour",
     "DAY": "day",
 }
-_DATETIME_GRANULARITIES = {
+_TIME_GRANULARITIES = {
     **_DATETIME_UNITS,
     "WEEK": "week",
     "WEEK_MONDAY": "week(monday)",
@@ -72,15 +72,16 @@ _DATETIME_GRANULARITIES = {
     "YEAR": "year",
     "ISOYEAR": "isoyear",
 }
-_DATETIME_PARTS = {
+_TIME_PARTS = {
     **_DATETIME_GRANULARITIES,
     "DAY_OF_WEEK": "dayofweek",
     "DAY_OF_YEAR": "dayofyear",
 }
 
-DatetimeUnit = Enum("DatetimeUnit", _DATETIME_UNITS, type=str)
-DatetimeGranularity = Enum("DatetimeGranularity", _DATETIME_GRANULARITIES, type=str)
-DatetimePart = Enum("DatetimePart", _DATETIME_PARTS, type=str)
+TimeUnit = Enum("TimeUnit", _TIME_UNITS, type=str)
+TimeGranularity = Enum("TimeGranularity", _TIME_GRANULARITIES, type=str)
+TimePart = Enum("TimePart", _TIME_PARTS, type=str)
+
 
 class Ordering:
     """Represents the direction for sorting results in a pipeline."""
@@ -1647,7 +1648,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_add(
-        self, unit: DatetimeUnit | str | Expression, amount: Expression | float
+        self, unit: TimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that adds a specified amount of time to this timestamp expression.
 
@@ -1675,7 +1676,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_subtract(
-        self, unit: DatetimeUnit | str | Expression, amount: Expression | float
+        self, unit: TimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that subtracts a specified amount of time from this timestamp expression.
 
@@ -1798,7 +1799,7 @@ class Expression(ABC):
     @expose_as_static
     def timestamp_trunc(
         self,
-        granularity: DatetimeGranularity | Expression | str,
+        granularity: TimeGranularity | Expression | str,
         timezone: Expression | str | None = None,
     ) -> "Expression":
         """Creates an expression that truncates a timestamp to a specified granularity.
@@ -1823,7 +1824,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_extract(
-        self, part: DatetimePart | str | Expression, timezone: str | Expression | None = None
+        self, part: TimePart | str | Expression, timezone: str | Expression | None = None
     ) -> "Expression":
         """Creates an expression that extracts a part of a timestamp.
 
@@ -1847,7 +1848,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_diff(
-        self, start: Expression | datetime.datetime, unit: DatetimeUnit | str | Expression
+        self, start: Expression | datetime.datetime, unit: TimeUnit | str | Expression
     ) -> "Expression":
         """Creates an expression that computes the difference between two timestamps in the specified unit.
 
