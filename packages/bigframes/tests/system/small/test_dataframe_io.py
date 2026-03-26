@@ -631,6 +631,13 @@ def test_to_gbq_if_exists_is_replace(scalars_dfs, dataset_id):
     assert len(gcs_df) == len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
+    # When replacing a table with same schema but different column order
+    reordered_df = scalars_df[scalars_df.columns[::-1]]
+    reordered_df.to_gbq(destination_table, if_exists="replace")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, reordered_df.columns)
+
     # When replacing a table with different schema
     partitial_scalars_df = scalars_df.drop(columns=["string_col"])
     partitial_scalars_df.to_gbq(destination_table, if_exists="replace")

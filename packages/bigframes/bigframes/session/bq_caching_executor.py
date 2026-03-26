@@ -247,7 +247,7 @@ class BigQueryCachingExecutor(executor.Executor):
         )
         sql = compiled.sql
 
-        if (existing_table is not None) and _if_schema_match(
+        if (existing_table is not None) and _is_schema_match(
             existing_table.schema, array_value.schema
         ):
             # b/409086472: Uses DML for table appends and replacements to avoid
@@ -690,16 +690,16 @@ def _result_schema(
     )
 
 
-def _if_schema_match(
-    table_schema: Tuple[bigquery.SchemaField, ...], schema: schemata.ArraySchema
+def _is_schema_match(
+    table_schema: Tuple[bigquery.SchemaField, ...],
+    schema: schemata.ArraySchema,
 ) -> bool:
     if len(table_schema) != len(schema.items):
         return False
-    for field in table_schema:
-        if field.name not in schema.names:
+    for field, schema_item in zip(table_schema, schema.items):
+        if field.name != schema_item.column:
             return False
-        if bigframes.dtypes.convert_schema_field(field)[1] != schema.get_type(
-            field.name
-        ):
+        _, field_dtype = bigframes.dtypes.convert_schema_field(field)
+        if field_dtype != schema_item.dtype:
             return False
     return True
