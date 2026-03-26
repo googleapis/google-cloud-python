@@ -2180,9 +2180,11 @@ class Expression(ABC):
         """Creates an expression that adds a specified amount of time to this timestamp expression.
 
         Example:
+            >>> # Add 1.5 days to the 'timestamp' field using TimeUnit enum.
+            >>> Field.of("timestamp").timestamp_add(TimeUnit.DAY, 1.5)
             >>> # Add a duration specified by the 'unit' and 'amount' fields to the 'timestamp' field.
             >>> Field.of("timestamp").timestamp_add(Field.of("unit"), Field.of("amount"))
-            >>> # Add 1.5 days to the 'timestamp' field.
+            >>> # Add 1.5 days to the 'timestamp' field using a string.
             >>> Field.of("timestamp").timestamp_add("day", 1.5)
 
         Args:
@@ -2208,9 +2210,11 @@ class Expression(ABC):
         """Creates an expression that subtracts a specified amount of time from this timestamp expression.
 
         Example:
+            >>> # Subtract 2.5 hours from the 'timestamp' field using TimeUnit enum.
+            >>> Field.of("timestamp").timestamp_subtract(TimeUnit.HOUR, 2.5)
             >>> # Subtract a duration specified by the 'unit' and 'amount' fields from the 'timestamp' field.
             >>> Field.of("timestamp").timestamp_subtract(Field.of("unit"), Field.of("amount"))
-            >>> # Subtract 2.5 hours from the 'timestamp' field.
+            >>> # Subtract 2.5 hours from the 'timestamp' field using a string.
             >>> Field.of("timestamp").timestamp_subtract("hour", 2.5)
 
         Args:
@@ -2332,10 +2336,12 @@ class Expression(ABC):
         """Creates an expression that truncates a timestamp to a specified granularity.
 
         Example:
-            >>> # Truncate the 'createdAt' field to the day
-            >>> Field.of("createdAt").timestamp_trunc("day")
+            >>> # Truncate the 'createdAt' field to the day using TimeGranularity enum
+            >>> Field.of("createdAt").timestamp_trunc(TimeGranularity.DAY)
             >>> # Truncate the 'createdAt' field to the day in the 'America/Los_Angeles' timezone
-            >>> Field.of("createdAt").timestamp_trunc("day", "America/Los_Angeles")
+            >>> Field.of("createdAt").timestamp_trunc(TimeGranularity.DAY, "America/Los_Angeles")
+            >>> # Truncate the 'createdAt' field to the day using a string
+            >>> Field.of("createdAt").timestamp_trunc("day")
 
         Args:
             granularity: The granularity to truncate to.
@@ -2358,10 +2364,12 @@ class Expression(ABC):
         """Creates an expression that extracts a part of a timestamp.
 
         Example:
-            >>> # Extract the year from the 'createdAt' field
-            >>> Field.of("createdAt").timestamp_extract("year")
+            >>> # Extract the year from the 'createdAt' field using TimePart enum
+            >>> Field.of("createdAt").timestamp_extract(TimePart.YEAR)
             >>> # Extract the year from the 'createdAt' field in the 'America/Los_Angeles' timezone
-            >>> Field.of("createdAt").timestamp_extract("year", "America/Los_Angeles")
+            >>> Field.of("createdAt").timestamp_extract(TimePart.YEAR, "America/Los_Angeles")
+            >>> # Extract the year from the 'createdAt' field using a string
+            >>> Field.of("createdAt").timestamp_extract("year")
 
         Args:
             part: The part to extract.
@@ -2382,7 +2390,9 @@ class Expression(ABC):
         """Creates an expression that computes the difference between two timestamps in the specified unit.
 
         Example:
-            >>> # Compute the difference in days between the 'end' field and the 'start' field
+            >>> # Compute the difference in days between the 'end' field and the 'start' field using TimeUnit enum
+            >>> Field.of("end").timestamp_diff(Field.of("start"), TimeUnit.DAY)
+            >>> # Compute the difference in days using a string
             >>> Field.of("end").timestamp_diff(Field.of("start"), "day")
 
         Args:
