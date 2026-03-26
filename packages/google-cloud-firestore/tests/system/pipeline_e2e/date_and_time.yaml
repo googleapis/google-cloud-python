@@ -170,3 +170,106 @@ tests:
                     - stringValue: hour
                     name: timestamp_diff
           name: select
+  - description: testTimestampExtractAndTruncAdvancedParts
+    pipeline:
+      - Collection: timestamps
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.timestamp_extract:
+                - Field: time
+                - Constant: "dayofyear"
+                - Constant: "America/Los_Angeles"
+            - "extract_day_of_year"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_extract:
+                - Field: time
+                - Constant: "week(sunday)"
+                - Constant: "America/Los_Angeles"
+            - "extract_week_sunday"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_extract:
+                - Field: time
+                - Constant: "isoweek"
+                - Constant: "America/Los_Angeles"
+            - "extract_isoweek"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_extract:
+                - Field: time
+                - Constant: "quarter"
+                - Constant: "America/Los_Angeles"
+            - "extract_quarter"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_trunc:
+                - Field: time
+                - Constant: "isoweek"
+                - Constant: "America/Los_Angeles"
+            - "trunc_isoweek"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_trunc:
+                - Field: time
+                - Constant: "quarter"
+                - Constant: "America/Los_Angeles"
+            - "trunc_quarter"
+    assert_results:
+      - extract_day_of_year: 118
+        extract_week_sunday: 17
+        extract_isoweek: 17
+        extract_quarter: 2
+        trunc_isoweek: "1993-04-26T07:00:00.000000+00:00"
+        trunc_quarter: "1993-04-01T08:00:00.000000+00:00"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /timestamps
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                extract_day_of_year:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: dayofyear
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_extract
+                extract_week_sunday:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: week(sunday)
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_extract
+                extract_isoweek:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: isoweek
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_extract
+                extract_quarter:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: quarter
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_extract
+                trunc_isoweek:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: isoweek
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_trunc
+                trunc_quarter:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: quarter
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_trunc
+          name: select

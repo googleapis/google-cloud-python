@@ -1741,3 +1741,33 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.is_type(Constant.of('string'))"
         infix_instance = arg1.is_type(Type.STRING)
         assert infix_instance == instance
+
+    def test_timestamp_enums(self):
+        from google.cloud.firestore_v1.pipeline_expressions import DatetimeUnit, DatetimeGranularity, DatetimePart
+
+        arg1 = self._make_arg("Value")
+        
+        instance_add = Expression.timestamp_add(arg1, DatetimeUnit.DAY, 1)
+        assert instance_add.name == "timestamp_add"
+        assert isinstance(instance_add.params[1], Constant)
+        assert instance_add.params[1].value == DatetimeUnit.DAY.value
+        
+        instance_trunc = Expression.timestamp_trunc(arg1, DatetimeGranularity.MONTH)
+        assert instance_trunc.name == "timestamp_trunc"
+        assert isinstance(instance_trunc.params[1], Constant)
+        assert instance_trunc.params[1].value == DatetimeGranularity.MONTH.value
+
+        instance_trunc_inherited = Expression.timestamp_trunc(arg1, DatetimeGranularity.MICROSECOND)
+        assert instance_trunc_inherited.name == "timestamp_trunc"
+        assert isinstance(instance_trunc_inherited.params[1], Constant)
+        assert instance_trunc_inherited.params[1].value == DatetimeGranularity.MICROSECOND.value
+        
+        instance_extract = Expression.timestamp_extract(arg1, DatetimePart.YEAR)
+        assert instance_extract.name == "timestamp_extract"
+        assert isinstance(instance_extract.params[1], Constant)
+        assert instance_extract.params[1].value == DatetimePart.YEAR.value
+
+        instance_extract_inherited = Expression.timestamp_extract(arg1, DatetimePart.SECOND)
+        assert instance_extract_inherited.name == "timestamp_extract"
+        assert isinstance(instance_extract_inherited.params[1], Constant)
+        assert instance_extract_inherited.params[1].value == DatetimePart.SECOND.value

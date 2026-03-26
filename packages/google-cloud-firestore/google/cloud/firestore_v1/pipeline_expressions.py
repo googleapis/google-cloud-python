@@ -47,6 +47,40 @@ CONSTANT_TYPE = TypeVar(
     None,
 )
 
+# Create enums for the datetime units, granularities, and parts supported by the backend.
+_DATETIME_UNITS = {
+    "MICROSECOND": "microsecond",
+    "MILLISECOND": "millisecond",
+    "SECOND": "second",
+    "MINUTE": "minute",
+    "HOUR": "hour",
+    "DAY": "day",
+}
+_DATETIME_GRANULARITIES = {
+    **_DATETIME_UNITS,
+    "WEEK": "week",
+    "WEEK_MONDAY": "week(monday)",
+    "WEEK_TUESDAY": "week(tuesday)",
+    "WEEK_WEDNESDAY": "week(wednesday)",
+    "WEEK_THURSDAY": "week(thursday)",
+    "WEEK_FRIDAY": "week(friday)",
+    "WEEK_SATURDAY": "week(saturday)",
+    "WEEK_SUNDAY": "week(sunday)",
+    "ISOWEEK": "isoweek",
+    "MONTH": "month",
+    "QUARTER": "quarter",
+    "YEAR": "year",
+    "ISOYEAR": "isoyear",
+}
+_DATETIME_PARTS = {
+    **_DATETIME_GRANULARITIES,
+    "DAY_OF_WEEK": "dayofweek",
+    "DAY_OF_YEAR": "dayofyear",
+}
+
+DatetimeUnit = Enum("DatetimeUnit", _DATETIME_UNITS, type=str)
+DatetimeGranularity = Enum("DatetimeGranularity", _DATETIME_GRANULARITIES, type=str)
+DatetimePart = Enum("DatetimePart", _DATETIME_PARTS, type=str)
 
 class Ordering:
     """Represents the direction for sorting results in a pipeline."""
@@ -1613,7 +1647,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_add(
-        self, unit: Expression | str, amount: Expression | float
+        self, unit: DatetimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that adds a specified amount of time to this timestamp expression.
 
@@ -1624,9 +1658,8 @@ class Expression(ABC):
             >>> Field.of("timestamp").timestamp_add("day", 1.5)
 
         Args:
-            unit: The expression or string evaluating to the unit of time to add, must be one of
-                  'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day'.
-            amount: The expression or float representing the amount of time to add.
+            unit: The unit of time to add.
+            amount: The amount of time to add.
 
         Returns:
             A new `Expression` representing the resulting timestamp.
@@ -1642,7 +1675,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_subtract(
-        self, unit: Expression | str, amount: Expression | float
+        self, unit: DatetimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that subtracts a specified amount of time from this timestamp expression.
 
@@ -1653,9 +1686,8 @@ class Expression(ABC):
             >>> Field.of("timestamp").timestamp_subtract("hour", 2.5)
 
         Args:
-            unit: The expression or string evaluating to the unit of time to subtract, must be one of
-                  'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day'.
-            amount: The expression or float representing the amount of time to subtract.
+            unit: The unit of time to subtract.
+            amount: The amount of time to subtract.
 
         Returns:
             A new `Expression` representing the resulting timestamp.
@@ -1766,7 +1798,7 @@ class Expression(ABC):
     @expose_as_static
     def timestamp_trunc(
         self,
-        granularity: Expression | str,
+        granularity: DatetimeGranularity | Expression | str,
         timezone: Expression | str | None = None,
     ) -> "Expression":
         """Creates an expression that truncates a timestamp to a specified granularity.
@@ -1791,7 +1823,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_extract(
-        self, part: Expression | str, timezone: Expression | str | None = None
+        self, part: DatetimePart | str | Expression, timezone: str | Expression | None = None
     ) -> "Expression":
         """Creates an expression that extracts a part of a timestamp.
 
@@ -1815,7 +1847,7 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_diff(
-        self, start: Expression | datetime.datetime, unit: Expression | str
+        self, start: Expression | datetime.datetime, unit: DatetimeUnit | str | Expression
     ) -> "Expression":
         """Creates an expression that computes the difference between two timestamps in the specified unit.
 
