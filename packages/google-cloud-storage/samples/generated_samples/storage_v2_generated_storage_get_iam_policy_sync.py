@@ -32,7 +32,7 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import storage_v2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
