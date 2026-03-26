@@ -47,40 +47,74 @@ CONSTANT_TYPE = TypeVar(
     None,
 )
 
-# Create enums for the datetime units, granularities, and parts supported by the backend.
-_TIME_UNITS = {
-    "MICROSECOND": "microsecond",
-    "MILLISECOND": "millisecond",
-    "SECOND": "second",
-    "MINUTE": "minute",
-    "HOUR": "hour",
-    "DAY": "day",
-}
-_TIME_GRANULARITIES = {
-    **_TIME_UNITS,
-    "WEEK": "week",
-    "WEEK_MONDAY": "week(monday)",
-    "WEEK_TUESDAY": "week(tuesday)",
-    "WEEK_WEDNESDAY": "week(wednesday)",
-    "WEEK_THURSDAY": "week(thursday)",
-    "WEEK_FRIDAY": "week(friday)",
-    "WEEK_SATURDAY": "week(saturday)",
-    "WEEK_SUNDAY": "week(sunday)",
-    "ISOWEEK": "isoweek",
-    "MONTH": "month",
-    "QUARTER": "quarter",
-    "YEAR": "year",
-    "ISOYEAR": "isoyear",
-}
-_TIME_PARTS = {
-    **_TIME_GRANULARITIES,
-    "DAY_OF_WEEK": "dayofweek",
-    "DAY_OF_YEAR": "dayofyear",
-}
 
-TimeUnit = Enum("TimeUnit", _TIME_UNITS, type=str)
-TimeGranularity = Enum("TimeGranularity", _TIME_GRANULARITIES, type=str)
-TimePart = Enum("TimePart", _TIME_PARTS, type=str)
+class TimeUnit(str, Enum):
+    """Enumeration of the different time units supported by the Firestore backend."""
+
+    MICROSECOND = "microsecond"
+    MILLISECOND = "millisecond"
+    SECOND = "second"
+    MINUTE = "minute"
+    HOUR = "hour"
+    DAY = "day"
+
+
+class TimeGranularity(str, Enum):
+    """Enumeration of the different time granularities supported by the Firestore backend."""
+
+    # Inherit from TimeUnit
+    MICROSECOND = TimeUnit.MICROSECOND.value
+    MILLISECOND = TimeUnit.MILLISECOND.value
+    SECOND = TimeUnit.SECOND.value
+    MINUTE = TimeUnit.MINUTE.value
+    HOUR = TimeUnit.HOUR.value
+    DAY = TimeUnit.DAY.value
+
+    # Additional granularities
+    WEEK = "week"
+    WEEK_MONDAY = "week(monday)"
+    WEEK_TUESDAY = "week(tuesday)"
+    WEEK_WEDNESDAY = "week(wednesday)"
+    WEEK_THURSDAY = "week(thursday)"
+    WEEK_FRIDAY = "week(friday)"
+    WEEK_SATURDAY = "week(saturday)"
+    WEEK_SUNDAY = "week(sunday)"
+    ISOWEEK = "isoweek"
+    MONTH = "month"
+    QUARTER = "quarter"
+    YEAR = "year"
+    ISOYEAR = "isoyear"
+
+
+class TimePart(str, Enum):
+    """Enumeration of the different time parts supported by the Firestore backend."""
+
+    # Inherit from TimeUnit
+    MICROSECOND = TimeUnit.MICROSECOND.value
+    MILLISECOND = TimeUnit.MILLISECOND.value
+    SECOND = TimeUnit.SECOND.value
+    MINUTE = TimeUnit.MINUTE.value
+    HOUR = TimeUnit.HOUR.value
+    DAY = TimeUnit.DAY.value
+
+    # Inherit from TimeGranularity
+    WEEK = TimeGranularity.WEEK.value
+    WEEK_MONDAY = TimeGranularity.WEEK_MONDAY.value
+    WEEK_TUESDAY = TimeGranularity.WEEK_TUESDAY.value
+    WEEK_WEDNESDAY = TimeGranularity.WEEK_WEDNESDAY.value
+    WEEK_THURSDAY = TimeGranularity.WEEK_THURSDAY.value
+    WEEK_FRIDAY = TimeGranularity.WEEK_FRIDAY.value
+    WEEK_SATURDAY = TimeGranularity.WEEK_SATURDAY.value
+    WEEK_SUNDAY = TimeGranularity.WEEK_SUNDAY.value
+    ISOWEEK = TimeGranularity.ISOWEEK.value
+    MONTH = TimeGranularity.MONTH.value
+    QUARTER = TimeGranularity.QUARTER.value
+    YEAR = TimeGranularity.YEAR.value
+    ISOYEAR = TimeGranularity.ISOYEAR.value
+
+    # Additional parts
+    DAY_OF_WEEK = "dayofweek"
+    DAY_OF_YEAR = "dayofyear"
 
 
 class Ordering:
