@@ -165,3 +165,28 @@ jobs:
           if [ "${{ matrix.python }}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
             nox -s snippetgen
           fi
+  integration:
+    needs: python_config
+    # Only runs if the Gatekeeper passed
+    if: ${{ needs.python_config.result == 'success' }}
+    runs-on: ubuntu-latest
+    container: gcr.io/gapic-images/googleapis
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Cache Bazel files
+        id: cache-bazel
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel
+          # Ensure CACHE_VERSION is defined in the mono-repo secrets!
+          key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-bazel-20210105-
+
+      - name: Run Bazel Integration Tests
+        run: |
+          # We need to move into the package directory if the 
+          # WORKSPACE file is located there.
+          cd packages/gapic-generator
+          bazelisk test //tests/integration/... --test_output=errors
