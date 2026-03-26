@@ -82,3 +82,44 @@ def test_ai_forecast(snapshot, monkeypatch):
         "context_window": None,
         "output_historical_time_series": False,
     }
+
+
+def test_bigframes_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot):
+    session = mock.create_autospec(bigframes.session.Session)
+
+    result = scalar_types_df.bigquery.sql_scalar(
+        "ROUND({int64_col} + {int64_too})",
+        output_dtype=pd.Int64Dtype(),
+        session=session,
+    )
+
+    session.read_pandas.assert_not_called()
+    # Bigframes implementation returns a bigframes.series.Series
+    sql, _, _ = result.to_frame()._to_sql_query(include_index=True)
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_bigframes_ai_forecast(snapshot, monkeypatch):
+    import bigframes.bigquery.ai
+    import bigframes.session
+
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_df = mock.create_autospec(bpd.DataFrame)
+
+    def mock_ai_forecast(df, **kwargs):
+        assert df is bf_df
+        result_df = mock.create_autospec(bpd.DataFrame)
+        return result_df
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "forecast", mock_ai_forecast)
+
+    result = bf_df.bigquery.ai.forecast(
+        timestamp_col="date",
+        data_col="value",
+        horizon=5,
+        session=session,
+    )
+
+    session.read_pandas.assert_not_called()
+    # BigFrames accessor returns the bf_df directly without calling to_pandas
+    assert result is not None

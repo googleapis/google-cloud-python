@@ -71,6 +71,25 @@ def sql_scalar(
         2    4.000000000
         dtype: decimal128(38, 9)[pyarrow]
 
+    You can also use the `.bigquery` DataFrame accessor to apply a SQL scalar function.
+
+        Compute SQL scalar using a pandas DataFrame:
+
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({"x": [1, 2, 3]})
+        >>> bpd.options.display.progress_bar = None # doctest: +SKIP
+        >>> pandas_s = df.bigquery.sql_scalar("POW({0}, 2)") # doctest: +SKIP
+        >>> type(pandas_s) # doctest: +SKIP
+        <class 'pandas.core.series.Series'>
+
+        Compute SQL scalar using a BigFrames DataFrame:
+
+        >>> bf_df = bpd.DataFrame({"x": [1, 2, 3]})
+        >>> bf_s = bf_df.bigquery.sql_scalar("POW({0}, 2)") # doctest: +SKIP
+        >>> type(bf_s) # doctest: +SKIP
+        <class 'bigframes.series.Series'>
+
+
     Args:
         sql_template (str):
             A SQL format string with Python-style {0} placeholders for each of

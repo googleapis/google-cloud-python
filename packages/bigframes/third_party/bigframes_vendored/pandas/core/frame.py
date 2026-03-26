@@ -2026,7 +2026,6 @@ class DataFrame(generic.NDFrame):
 
         **Examples:**
 
-
             >>> df = bpd.DataFrame({'a': [20, 10, 0], 'b': [0, 10, 20]})
             >>> df
                 a   b
@@ -2097,14 +2096,14 @@ class DataFrame(generic.NDFrame):
                 with corresponding value from other. If cond is callable, it is
                 computed on the Series/DataFrame and returns boolean
                 Series/DataFrame or array. The callable must not change input
-                Series/DataFrame (though pandas doesn’t check it).
+                Series/DataFrame.
             other (scalar, DataFrame, or callable):
                 Entries where cond is False are replaced with corresponding value
                 from other. If other is callable, it is computed on the
                 DataFrame and returns scalar or DataFrame. The callable must not
-                change input DataFrame (though pandas doesn’t check it). If not
-                specified, entries will be filled with the corresponding NULL
-                value (np.nan for numpy dtypes, pd.NA for extension dtypes).
+                change input DataFrame. If not specified, entries will be filled
+                with the corresponding NULL value (np.nan for numpy dtypes,
+                pd.NA for extension dtypes).
 
         Returns:
             DataFrame: DataFrame after the replacement.

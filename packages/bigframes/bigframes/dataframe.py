@@ -37,6 +37,7 @@ from typing import (
     overload,
     Sequence,
     Tuple,
+    TYPE_CHECKING,
     TypeVar,
     Union,
 )
@@ -47,6 +48,8 @@ import bigframes_vendored.pandas.core.frame as vendored_pandas_frame
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.job
+import google.cloud.bigquery.table
 import numpy
 import pandas
 from pandas.api import extensions as pd_ext
@@ -91,9 +94,10 @@ import bigframes.series
 import bigframes.session._io.bigquery
 import bigframes.session.execution_spec as ex_spec
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from _typeshed import SupportsRichComparison
 
+    import bigframes.extensions.bigframes.dataframe_accessor as bigquery_accessor
     import bigframes.session
 
     SingleItemValue = Union[
@@ -144,7 +148,7 @@ class DataFrame:
     ):
         global bigframes
 
-        self._query_job: Optional[bigquery.QueryJob] = None
+        self._query_job: Optional[google.cloud.bigquery.job.QueryJob] = None
 
         if copy is not None and not copy:
             raise ValueError(
@@ -377,6 +381,25 @@ class DataFrame:
         return self._get_block().expr.session
 
     @property
+    def bigquery(
+        self,
+    ) -> bigquery_accessor.BigframesBigQueryDataFrameAccessor:
+        """
+        Accessor for BigQuery functionality.
+
+        Returns:
+            bigframes.extensions.core.dataframe_accessor.BigQueryDataFrameAccessor:
+                Accessor that exposes BigQuery functionality on a DataFrame,
+                with method names closer to SQL.
+        """
+        # Import the accessor here to avoid circular imports.
+        import bigframes.extensions.bigframes.dataframe_accessor
+
+        return bigframes.extensions.bigframes.dataframe_accessor.BigframesBigQueryDataFrameAccessor(
+            self
+        )
+
+    @property
     def _has_index(self) -> bool:
         return len(self._block.index_columns) > 0
 
@@ -438,7 +461,9 @@ class DataFrame:
             self.index.name is not None or len(self.index.names) > 1
         )
 
-    def _to_placeholder_table(self, dry_run: bool = False) -> bigquery.TableReference:
+    def _to_placeholder_table(
+        self, dry_run: bool = False
+    ) -> google.cloud.bigquery.table.TableReference:
         """Compiles this DataFrame's expression tree to SQL and saves it to a
         (temporary) view or table (in the case of a dry run).
         """
@@ -488,11 +513,11 @@ class DataFrame:
             ) from e
 
     @property
-    def query_job(self) -> Optional[bigquery.QueryJob]:
+    def query_job(self) -> Optional[google.cloud.bigquery.job.QueryJob]:
         """BigQuery job metadata for the most recent query.
 
         Returns:
-            None or google.cloud.bigquery.QueryJob:
+            None or google.cloud.bigquery.job.QueryJob:
                 The most recent `QueryJob
                 <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
         """
@@ -606,7 +631,9 @@ class DataFrame:
         )
         return DataFrame(self._block.select_columns(selected_columns))
 
-    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
+    def _set_internal_query_job(
+        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
+    ):
         self._query_job = query_job
 
     def __getitem__(
@@ -1782,7 +1809,7 @@ class DataFrame:
             allow_large_results=allow_large_results,
         )
 
-    def _compute_dry_run(self) -> bigquery.QueryJob:
+    def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
         _, query_job = self._block._compute_dry_run()
         return query_job
 

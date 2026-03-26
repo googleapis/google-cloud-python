@@ -27,7 +27,8 @@ BigQuery DataFrames provides extensions to pandas DataFrame objects.
 .. autosummary::
     :toctree: api
 
-    bigframes.extensions.pandas
+    bigframes.extensions.core.dataframe_accessor.BigQueryDataFrameAccessor
+    bigframes.extensions.core.dataframe_accessor.AIAccessor
 
 ML APIs
 ~~~~~~~

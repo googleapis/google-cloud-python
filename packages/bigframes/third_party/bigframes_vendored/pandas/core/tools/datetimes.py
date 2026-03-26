@@ -1,5 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/tools/datetimes.py
 
+from __future__ import annotations
+
 from datetime import date, datetime
 from typing import List, Mapping, Tuple, Union
 

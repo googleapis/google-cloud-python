@@ -893,6 +893,25 @@ def forecast(
         and might have limited support. For more information, see the launch stage descriptions
         (https://cloud.google.com/products#product-launch-stages).
 
+    **Examples:**
+
+        Forecast using a pandas DataFrame:
+
+        >>> import pandas as pd
+        >>> import bigframes.pandas as bpd
+        >>> df = pd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
+        >>> bpd.options.display.progress_bar = None # doctest: +SKIP
+        >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
+        >>> type(forecasted_pandas_df) # doctest: +SKIP
+        <class 'pandas.core.frame.DataFrame'>
+
+        Forecast using a BigFrames DataFrame:
+
+        >>> bf_df = bpd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
+        >>> forecasted_bf_df = bf_df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
+        >>> type(forecasted_bf_df) # doctest: +SKIP
+        <class 'bigframes.dataframe.DataFrame'>
+
     Args:
         df (DataFrame):
             The dataframe that contains the data that you want to forecast. It could be either a BigFrames Dataframe or
