@@ -45,6 +45,14 @@ UPLOAD_OFFSET_HEADER = "X-Goog-Upload-Offset"
 # Received from the server, typically in query responses.
 UPLOAD_SIZE_RECEIVED_HEADER = "X-Goog-Upload-Size-Received"
 
+# The header specifying the content type of the uploaded content.
+# Sent by the client during upload initiation.
+UPLOAD_CONTENT_TYPE_HEADER = "X-Goog-Upload-Header-Content-Type"
+
+# The header specifying the total content length of the uploaded content.
+# Sent by the client during upload initiation when length is known.
+UPLOAD_CONTENT_LENGTH_HEADER = "X-Goog-Upload-Header-Content-Length"
+
 # The header specifying the required block alignment size for chunks.
 # Received from the server in the start command response.
 UPLOAD_CHUNK_GRANULARITY_HEADER = "X-Goog-Upload-Chunk-Granularity"
@@ -53,16 +61,20 @@ UPLOAD_CHUNK_GRANULARITY_HEADER = "X-Goog-Upload-Chunk-Granularity"
 # Sent by the client in the `UPLOAD_PROTOCOL_HEADER`.
 UPLOAD_PROTOCOL_VALUE = "resumable"
 
+
 class UploadCommand:
     """HTTP Header values for the Resumable Upload command header."""
+
     START = "start"
     UPLOAD = "upload"
     FINALIZE = "finalize"
     QUERY = "query"
     CANCEL = "cancel"
 
+
 class UploadStatus:
     """HTTP Header values for the Resumable Upload status header."""
+
     ACTIVE = "active"
     FINAL = "final"
     CANCELLED = "cancelled"
