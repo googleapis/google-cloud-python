@@ -706,19 +706,56 @@ tests:
     assert_results:
       - title: Dune
       - title: The Lord of the Rings
-  - description: testIfNull
+  - description: testIfNullWithNullField
     pipeline:
       - Collection: errors
+      - Where:
+          - FunctionExpression.equal:
+              - Field: value
+              - Constant: null
       - Select:
         - AliasedExpression:
             - FunctionExpression.if_null:
                 - Field: value
                 - Constant: "default"
             - "value_or_default"
-      - Sort:
-        - Ordering:
-          - Field: value_or_default
-          - ASCENDING
     assert_results:
-      - value_or_default: "NaN"
       - value_or_default: "default"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /errors
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: value
+              - nullValue: null
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                value_or_default:
+                  functionValue:
+                    name: if_null
+                    args:
+                    - fieldReferenceValue: value
+                    - stringValue: default
+          name: select
+  - description: testIfNullWithNonNullField
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.if_null:
+                - Field: title
+                - Constant: "default"
+            - "value_or_default"
+    assert_results:
+      - value_or_default: "1984"
