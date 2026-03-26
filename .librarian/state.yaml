@@ -2133,7 +2133,7 @@ libraries:
       - packages/google-cloud-ids/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
-    version: 3.11.0
+    version: 3.12.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/v1
@@ -2148,7 +2148,7 @@ libraries:
       - packages/google-cloud-kms/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms-inventory
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/inventory/v1
@@ -2162,7 +2162,7 @@ libraries:
       - packages/google-cloud-kms-inventory/
     tag_format: '{id}-v{version}'
   - id: google-cloud-language
-    version: 2.19.0
+    version: 2.20.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/language/v1
@@ -2181,7 +2181,7 @@ libraries:
       - packages/google-cloud-language/
     tag_format: '{id}-v{version}'
   - id: google-cloud-licensemanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/licensemanager/v1
@@ -2195,7 +2195,7 @@ libraries:
       - packages/google-cloud-licensemanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-life-sciences
-    version: 0.11.0
+    version: 0.12.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/lifesciences/v2beta
@@ -2209,7 +2209,7 @@ libraries:
       - packages/google-cloud-life-sciences/
     tag_format: '{id}-v{version}'
   - id: google-cloud-locationfinder
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/locationfinder/v1
@@ -2223,7 +2223,7 @@ libraries:
       - packages/google-cloud-locationfinder/
     tag_format: '{id}-v{version}'
   - id: google-cloud-logging
-    version: 3.14.0
+    version: 3.15.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/logging/v2
@@ -2267,7 +2267,7 @@ libraries:
       - ^packages/google-cloud-logging/tests/unit/gapic
     tag_format: '{id}-v{version}'
   - id: google-cloud-lustre
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/lustre/v1
@@ -2281,7 +2281,7 @@ libraries:
       - packages/google-cloud-lustre/
     tag_format: '{id}-v{version}'
   - id: google-cloud-maintenance-api
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/maintenance/api/v1beta
@@ -2297,7 +2297,7 @@ libraries:
       - packages/google-cloud-maintenance-api/
     tag_format: '{id}-v{version}'
   - id: google-cloud-managed-identities
-    version: 1.14.0
+    version: 1.15.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/managedidentities/v1
@@ -2311,7 +2311,7 @@ libraries:
       - packages/google-cloud-managed-identities/
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/managedkafka/v1
@@ -2325,7 +2325,7 @@ libraries:
       - packages/google-cloud-managedkafka/
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka-schemaregistry
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/managedkafka/schemaregistry/v1
@@ -2339,7 +2339,7 @@ libraries:
       - packages/google-cloud-managedkafka-schemaregistry/
     tag_format: '{id}-v{version}'
   - id: google-cloud-media-translation
-    version: 0.13.0
+    version: 0.14.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/mediatranslation/v1beta1
@@ -2353,7 +2353,7 @@ libraries:
       - packages/google-cloud-media-translation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-memcache
-    version: 1.14.0
+    version: 1.15.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/memcache/v1
@@ -2369,7 +2369,7 @@ libraries:
       - packages/google-cloud-memcache/
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/memorystore/v1beta
@@ -2385,7 +2385,7 @@ libraries:
       - packages/google-cloud-memorystore/
     tag_format: '{id}-v{version}'
   - id: google-cloud-migrationcenter
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/migrationcenter/v1
@@ -2399,7 +2399,7 @@ libraries:
       - packages/google-cloud-migrationcenter/
     tag_format: '{id}-v{version}'
   - id: google-cloud-modelarmor
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/modelarmor/v1beta
@@ -2415,7 +2415,7 @@ libraries:
       - packages/google-cloud-modelarmor/
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring
-    version: 2.29.1
+    version: 2.30.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/monitoring/v3
@@ -2435,7 +2435,7 @@ libraries:
       - packages/google-cloud-monitoring
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-dashboards
-    version: 2.20.1
+    version: 2.21.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/monitoring/dashboard/v1
@@ -2451,7 +2451,7 @@ libraries:
       - packages/google-cloud-monitoring-dashboards
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-metrics-scopes
-    version: 1.11.0
+    version: 1.12.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/monitoring/metricsscope/v1
@@ -2465,7 +2465,7 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ndb
-    version: 2.4.0
+    version: 2.4.1
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2474,7 +2474,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/netapp/v1
@@ -2488,7 +2488,7 @@ libraries:
       - packages/google-cloud-netapp/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
-    version: 2.14.0
+    version: 2.15.0
     last_generated_commit: 77291a3c21b89ebfab5a473a5cbf0eb6eec22a30
     apis:
       - path: google/cloud/networkconnectivity/v1
@@ -2506,7 +2506,7 @@ libraries:
       - packages/google-cloud-network-connectivity/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
-    version: 1.33.0
+    version: 1.34.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/networkmanagement/v1
@@ -2520,7 +2520,7 @@ libraries:
       - packages/google-cloud-network-management/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
-    version: 0.11.0
+    version: 0.12.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/networksecurity/v1alpha1
@@ -2538,7 +2538,7 @@ libraries:
       - packages/google-cloud-network-security
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-services
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/networkservices/v1
@@ -2552,7 +2552,7 @@ libraries:
       - packages/google-cloud-network-services/
     tag_format: '{id}-v{version}'
   - id: google-cloud-notebooks
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/notebooks/v1beta1
@@ -2570,7 +2570,7 @@ libraries:
       - packages/google-cloud-notebooks/
     tag_format: '{id}-v{version}'
   - id: google-cloud-optimization
-    version: 1.13.0
+    version: 1.14.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/optimization/v1
@@ -2584,7 +2584,7 @@ libraries:
       - packages/google-cloud-optimization/
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/oracledatabase/v1
@@ -2598,7 +2598,7 @@ libraries:
       - packages/google-cloud-oracledatabase/
     tag_format: '{id}-v{version}'
   - id: google-cloud-orchestration-airflow
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
@@ -2614,7 +2614,7 @@ libraries:
       - packages/google-cloud-orchestration-airflow/
     tag_format: '{id}-v{version}'
   - id: google-cloud-org-policy
-    version: 1.16.1
+    version: 1.17.0
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
@@ -2633,7 +2633,7 @@ libraries:
       - packages/google-cloud-org-policy
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-config
-    version: 1.23.0
+    version: 1.24.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/osconfig/v1alpha
@@ -2650,7 +2650,7 @@ libraries:
       - packages/google-cloud-os-config/
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-login
-    version: 2.19.0
+    version: 2.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/oslogin/v1
@@ -2666,7 +2666,7 @@ libraries:
       - packages/google-cloud-os-login
     tag_format: '{id}-v{version}'
   - id: google-cloud-parallelstore
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/parallelstore/v1
@@ -2682,7 +2682,7 @@ libraries:
       - packages/google-cloud-parallelstore/
     tag_format: '{id}-v{version}'
   - id: google-cloud-parametermanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/parametermanager/v1
@@ -2696,7 +2696,7 @@ libraries:
       - packages/google-cloud-parametermanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-phishing-protection
-    version: 1.16.0
+    version: 1.17.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/phishingprotection/v1beta1
@@ -2710,7 +2710,7 @@ libraries:
       - packages/google-cloud-phishing-protection/
     tag_format: '{id}-v{version}'
   - id: google-cloud-policy-troubleshooter
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/policytroubleshooter/v1
@@ -2724,7 +2724,7 @@ libraries:
       - packages/google-cloud-policy-troubleshooter/
     tag_format: '{id}-v{version}'
   - id: google-cloud-policysimulator
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/policysimulator/v1
@@ -2738,7 +2738,7 @@ libraries:
       - packages/google-cloud-policysimulator/
     tag_format: '{id}-v{version}'
   - id: google-cloud-policytroubleshooter-iam
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
@@ -2752,7 +2752,7 @@ libraries:
       - packages/google-cloud-policytroubleshooter-iam/
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-ca
-    version: 1.17.0
+    version: 1.18.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/security/privateca/v1
@@ -2768,7 +2768,7 @@ libraries:
       - packages/google-cloud-private-ca/
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-catalog
-    version: 0.11.0
+    version: 0.12.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/privatecatalog/v1beta1
@@ -2782,7 +2782,7 @@ libraries:
       - packages/google-cloud-private-catalog/
     tag_format: '{id}-v{version}'
   - id: google-cloud-privilegedaccessmanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
@@ -2832,7 +2832,7 @@ libraries:
       - ^packages/google-cloud-pubsub/docs/pubsub_v1
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/api/cloudquotas/v1
@@ -2848,7 +2848,7 @@ libraries:
       - packages/google-cloud-quotas/
     tag_format: '{id}-v{version}'
   - id: google-cloud-rapidmigrationassessment
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/rapidmigrationassessment/v1
@@ -2862,7 +2862,7 @@ libraries:
       - packages/google-cloud-rapidmigrationassessment/
     tag_format: '{id}-v{version}'
   - id: google-cloud-recaptcha-enterprise
-    version: 1.30.0
+    version: 1.31.0
     last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
     apis:
       - path: google/cloud/recaptchaenterprise/v1
@@ -2876,7 +2876,7 @@ libraries:
       - packages/google-cloud-recaptcha-enterprise/
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommendations-ai
-    version: 0.12.0
+    version: 0.13.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/recommendationengine/v1beta1
@@ -2890,7 +2890,7 @@ libraries:
       - packages/google-cloud-recommendations-ai/
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommender
-    version: 2.20.0
+    version: 2.21.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/recommender/v1beta1
@@ -2906,7 +2906,7 @@ libraries:
       - packages/google-cloud-recommender/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis
-    version: 2.20.0
+    version: 2.21.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/redis/v1
@@ -2922,7 +2922,7 @@ libraries:
       - packages/google-cloud-redis/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/redis/cluster/v1
@@ -2938,7 +2938,7 @@ libraries:
       - packages/google-cloud-redis-cluster/
     tag_format: '{id}-v{version}'
   - id: google-cloud-resource-manager
-    version: 1.16.0
+    version: 1.17.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/resourcemanager/v3
@@ -2952,7 +2952,7 @@ libraries:
       - packages/google-cloud-resource-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
-    version: 2.9.0
+    version: 2.10.0
     last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/cloud/retail/v2
@@ -2970,7 +2970,7 @@ libraries:
       - packages/google-cloud-retail/
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
-    version: 0.15.0
+    version: 0.16.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/run/v2
@@ -2984,7 +2984,7 @@ libraries:
       - packages/google-cloud-run/
     tag_format: '{id}-v{version}'
   - id: google-cloud-runtimeconfig
-    version: 0.36.0
+    version: 0.36.1
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2993,7 +2993,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
@@ -3007,7 +3007,7 @@ libraries:
       - packages/google-cloud-saasplatform-saasservicemgmt/
     tag_format: '{id}-v{version}'
   - id: google-cloud-scheduler
-    version: 2.18.0
+    version: 2.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/scheduler/v1
@@ -3024,7 +3024,7 @@ libraries:
       - packages/google-cloud-scheduler/
     tag_format: '{id}-v{version}'
   - id: google-cloud-secret-manager
-    version: 2.26.0
+    version: 2.27.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/cloud/secretmanager/v1
@@ -3042,7 +3042,7 @@ libraries:
       - packages/google-cloud-secret-manager
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/securesourcemanager/v1
@@ -3056,7 +3056,7 @@ libraries:
       - packages/google-cloud-securesourcemanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-security-publicca
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/security/publicca/v1
@@ -3072,7 +3072,7 @@ libraries:
       - packages/google-cloud-security-publicca/
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycenter
-    version: 1.43.0
+    version: 1.44.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/cloud/securitycenter/v2
@@ -3092,7 +3092,7 @@ libraries:
       - packages/google-cloud-securitycenter/
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycentermanagement
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/securitycentermanagement/v1
@@ -3106,7 +3106,7 @@ libraries:
       - packages/google-cloud-securitycentermanagement/
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-control
-    version: 1.18.0
+    version: 1.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/api/servicecontrol/v2
@@ -3122,7 +3122,7 @@ libraries:
       - packages/google-cloud-service-control/
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-directory
-    version: 1.16.0
+    version: 1.17.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/servicedirectory/v1
@@ -3138,7 +3138,7 @@ libraries:
       - packages/google-cloud-service-directory/
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-management
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/api/servicemanagement/v1
@@ -3152,7 +3152,7 @@ libraries:
       - packages/google-cloud-service-management/
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-usage
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/api/serviceusage/v1
@@ -3166,7 +3166,7 @@ libraries:
       - packages/google-cloud-service-usage/
     tag_format: '{id}-v{version}'
   - id: google-cloud-servicehealth
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/servicehealth/v1
@@ -3180,7 +3180,7 @@ libraries:
       - packages/google-cloud-servicehealth/
     tag_format: '{id}-v{version}'
   - id: google-cloud-shell
-    version: 1.14.0
+    version: 1.15.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/shell/v1
@@ -3194,7 +3194,7 @@ libraries:
       - packages/google-cloud-shell/
     tag_format: '{id}-v{version}'
   - id: google-cloud-source-context
-    version: 1.9.0
+    version: 1.10.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/devtools/source/v1
@@ -3209,7 +3209,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
-    version: 2.37.0
+    version: 2.38.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/cloud/speech/v1
@@ -3230,7 +3230,7 @@ libraries:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
-    version: 1.10.0
+    version: 1.11.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/storage/control/v2
@@ -3244,7 +3244,7 @@ libraries:
       - packages/google-cloud-storage-control/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-transfer
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/storagetransfer/v1
@@ -3258,7 +3258,7 @@ libraries:
       - packages/google-cloud-storage-transfer/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/storagebatchoperations/v1
@@ -3272,7 +3272,7 @@ libraries:
       - packages/google-cloud-storagebatchoperations/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storageinsights
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/storageinsights/v1
@@ -3286,7 +3286,7 @@ libraries:
       - packages/google-cloud-storageinsights/
     tag_format: '{id}-v{version}'
   - id: google-cloud-support
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/support/v2beta
@@ -3302,7 +3302,7 @@ libraries:
       - packages/google-cloud-support/
     tag_format: '{id}-v{version}'
   - id: google-cloud-talent
-    version: 2.19.0
+    version: 2.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/talent/v4beta1
@@ -3318,7 +3318,7 @@ libraries:
       - packages/google-cloud-talent/
     tag_format: '{id}-v{version}'
   - id: google-cloud-tasks
-    version: 2.21.0
+    version: 2.22.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/tasks/v2beta2
@@ -3338,7 +3338,7 @@ libraries:
       - packages/google-cloud-tasks/
     tag_format: '{id}-v{version}'
   - id: google-cloud-telcoautomation
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/telcoautomation/v1
@@ -3355,7 +3355,7 @@ libraries:
       - packages/google-cloud-telcoautomation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-testutils
-    version: 1.7.0
+    version: 1.7.1
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -3364,7 +3364,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
-    version: 2.34.0
+    version: 2.35.0
     last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/texttospeech/v1
@@ -3381,7 +3381,7 @@ libraries:
       - packages/google-cloud-texttospeech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-tpu
-    version: 1.25.0
+    version: 1.26.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/tpu/v2alpha1
@@ -3399,7 +3399,7 @@ libraries:
       - packages/google-cloud-tpu/
     tag_format: '{id}-v{version}'
   - id: google-cloud-trace
-    version: 1.18.0
+    version: 1.19.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/devtools/cloudtrace/v2
@@ -3415,7 +3415,7 @@ libraries:
       - packages/google-cloud-trace/
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
-    version: 3.24.0
+    version: 3.25.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/translate/v3beta1
@@ -3436,7 +3436,7 @@ libraries:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/cloud/vectorsearch/v1beta
@@ -3452,7 +3452,7 @@ libraries:
       - packages/google-cloud-vectorsearch
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/video/livestream/v1
@@ -3466,7 +3466,7 @@ libraries:
       - packages/google-cloud-video-live-stream/
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-stitcher
-    version: 0.10.0
+    version: 0.11.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/video/stitcher/v1
@@ -3480,7 +3480,7 @@ libraries:
       - packages/google-cloud-video-stitcher/
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-transcoder
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/video/transcoder/v1
@@ -3494,7 +3494,7 @@ libraries:
       - packages/google-cloud-video-transcoder/
     tag_format: '{id}-v{version}'
   - id: google-cloud-videointelligence
-    version: 2.18.0
+    version: 2.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/videointelligence/v1p3beta1
@@ -3517,7 +3517,7 @@ libraries:
       - packages/google-cloud-videointelligence/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vision
-    version: 3.12.1
+    version: 3.13.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/vision/v1p3beta1
@@ -3543,7 +3543,7 @@ libraries:
       - packages/google-cloud-vision/
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/visionai/v1alpha1
@@ -3559,7 +3559,7 @@ libraries:
       - packages/google-cloud-visionai/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vm-migration
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/vmmigration/v1
@@ -3573,7 +3573,7 @@ libraries:
       - packages/google-cloud-vm-migration/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vmwareengine
-    version: 1.10.0
+    version: 1.11.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/vmwareengine/v1
@@ -3587,7 +3587,7 @@ libraries:
       - packages/google-cloud-vmwareengine/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vpc-access
-    version: 1.15.0
+    version: 1.16.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/vpcaccess/v1
@@ -3601,7 +3601,7 @@ libraries:
       - packages/google-cloud-vpc-access/
     tag_format: '{id}-v{version}'
   - id: google-cloud-webrisk
-    version: 1.20.0
+    version: 1.21.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/webrisk/v1beta1
@@ -3617,7 +3617,7 @@ libraries:
       - packages/google-cloud-webrisk/
     tag_format: '{id}-v{version}'
   - id: google-cloud-websecurityscanner
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/websecurityscanner/v1alpha
@@ -3635,7 +3635,7 @@ libraries:
       - packages/google-cloud-websecurityscanner/
     tag_format: '{id}-v{version}'
   - id: google-cloud-workflows
-    version: 1.20.0
+    version: 1.21.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/workflows/executions/v1
@@ -3655,7 +3655,7 @@ libraries:
       - packages/google-cloud-workflows/
     tag_format: '{id}-v{version}'
   - id: google-cloud-workloadmanager
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/workloadmanager/v1
@@ -3673,7 +3673,7 @@ libraries:
       - packages/google-cloud-workloadmanager
     tag_format: '{id}-v{version}'
   - id: google-cloud-workstations
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/workstations/v1beta
@@ -3689,7 +3689,7 @@ libraries:
       - packages/google-cloud-workstations/
     tag_format: '{id}-v{version}'
   - id: google-geo-type
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/geo/type
@@ -3704,7 +3704,7 @@ libraries:
       - packages/google-geo-type
     tag_format: '{id}-v{version}'
   - id: google-maps-addressvalidation
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/maps/addressvalidation/v1
@@ -3718,7 +3718,7 @@ libraries:
       - packages/google-maps-addressvalidation
     tag_format: '{id}-v{version}'
   - id: google-maps-areainsights
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/maps/areainsights/v1
@@ -3732,7 +3732,7 @@ libraries:
       - packages/google-maps-areainsights
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/maps/fleetengine/v1
@@ -3746,7 +3746,7 @@ libraries:
       - packages/google-maps-fleetengine
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine-delivery
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/maps/fleetengine/delivery/v1
@@ -3760,7 +3760,7 @@ libraries:
       - packages/google-maps-fleetengine-delivery
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
     apis:
       - path: google/maps/geocode/v4
@@ -3778,7 +3778,7 @@ libraries:
       - packages/google-maps-geocode
     tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/maps/mapsplatformdatasets/v1
@@ -3810,7 +3810,7 @@ libraries:
       - packages/google-maps-navconnect
     tag_format: '{id}-v{version}'
   - id: google-maps-places
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/maps/places/v1
@@ -3824,7 +3824,7 @@ libraries:
       - packages/google-maps-places
     tag_format: '{id}-v{version}'
   - id: google-maps-routeoptimization
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/maps/routeoptimization/v1
@@ -3838,7 +3838,7 @@ libraries:
       - packages/google-maps-routeoptimization
     tag_format: '{id}-v{version}'
   - id: google-maps-routing
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/maps/routing/v2
@@ -3852,7 +3852,7 @@ libraries:
       - packages/google-maps-routing
     tag_format: '{id}-v{version}'
   - id: google-maps-solar
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/maps/solar/v1
@@ -3866,7 +3866,7 @@ libraries:
       - packages/google-maps-solar
     tag_format: '{id}-v{version}'
   - id: google-resumable-media
-    version: 2.8.1
+    version: 2.8.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -3875,7 +3875,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-shopping-css
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/shopping/css/v1
@@ -3889,7 +3889,7 @@ libraries:
       - packages/google-shopping-css/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
-    version: 1.4.0
+    version: 1.5.0
     last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
     apis:
       - path: google/shopping/merchant/accounts/v1
@@ -3905,7 +3905,7 @@ libraries:
       - packages/google-shopping-merchant-accounts/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-conversions
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/conversions/v1
@@ -3921,7 +3921,7 @@ libraries:
       - packages/google-shopping-merchant-conversions/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-datasources
-    version: 1.3.0
+    version: 1.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/datasources/v1
@@ -3937,7 +3937,7 @@ libraries:
       - packages/google-shopping-merchant-datasources/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-inventories
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/inventories/v1beta
@@ -3953,7 +3953,7 @@ libraries:
       - packages/google-shopping-merchant-inventories/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-issueresolution
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/issueresolution/v1
@@ -3969,7 +3969,7 @@ libraries:
       - packages/google-shopping-merchant-issueresolution/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-lfp
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/lfp/v1beta
@@ -3985,7 +3985,7 @@ libraries:
       - packages/google-shopping-merchant-lfp/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-notifications
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/notifications/v1
@@ -4001,7 +4001,7 @@ libraries:
       - packages/google-shopping-merchant-notifications/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-ordertracking
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/ordertracking/v1
@@ -4017,7 +4017,7 @@ libraries:
       - packages/google-shopping-merchant-ordertracking/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
-    version: 1.4.0
+    version: 1.5.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/shopping/merchant/products/v1
@@ -4033,7 +4033,7 @@ libraries:
       - packages/google-shopping-merchant-products/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-productstudio
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/shopping/merchant/productstudio/v1alpha
@@ -4047,7 +4047,7 @@ libraries:
       - packages/google-shopping-merchant-productstudio/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-promotions
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/promotions/v1
@@ -4063,7 +4063,7 @@ libraries:
       - packages/google-shopping-merchant-promotions/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-quota
-    version: 1.3.0
+    version: 1.4.0
     last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/shopping/merchant/quota/v1beta
@@ -4079,7 +4079,7 @@ libraries:
       - packages/google-shopping-merchant-quota/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reports
-    version: 1.2.0
+    version: 1.3.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/reports/v1beta
@@ -4097,7 +4097,7 @@ libraries:
       - packages/google-shopping-merchant-reports/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reviews
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/reviews/v1beta
@@ -4111,7 +4111,7 @@ libraries:
       - packages/google-shopping-merchant-reviews/
     tag_format: '{id}-v{version}'
   - id: google-shopping-type
-    version: 1.3.0
+    version: 1.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/type
@@ -4126,7 +4126,7 @@ libraries:
       - packages/google-shopping-type/
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
-    version: 1.73.0
+    version: 1.73.1
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/api
@@ -4153,7 +4153,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
-    version: 1.21.0
+    version: 1.22.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: grafeas/v1
@@ -4185,7 +4185,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: pandas-gbq
-    version: 0.34.0
+    version: 0.34.1
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -4194,7 +4194,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: proto-plus
-    version: 1.27.1
+    version: 1.27.2
     last_generated_commit: ""
     apis: []
     source_roots:
