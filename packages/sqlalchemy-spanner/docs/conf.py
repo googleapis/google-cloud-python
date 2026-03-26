@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##
-# google-cloud-dataproc documentation build configuration file
+# sqlalchemy-spanner documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
