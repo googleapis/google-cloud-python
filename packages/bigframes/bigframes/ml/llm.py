@@ -286,7 +286,7 @@ class MultimodalEmbeddingGenerator(base.RetriableRemotePredictor):
     """Multimodal embedding generator LLM model.
 
     .. note::
-        BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
         Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
         and might have limited support. For more information, see the launch stage descriptions
         (https://cloud.google.com/products#product-launch-stages).
@@ -374,7 +374,7 @@ class MultimodalEmbeddingGenerator(base.RetriableRemotePredictor):
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "content" column for prediction.
-                The content column must be of string type or BigFrames Blob of image or video.
+                The content column must be of string type or BigFrames `ObjectRef <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ of image or video.
 
             max_retries (int, default 0):
                 Max number of retries if the prediction for any rows failed. Each try needs to make progress (i.e. has successfully predicted rows) to continue the retry.
@@ -668,13 +668,13 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
 
             prompt (Iterable of str or bigframes.series.Series, or None, default None):
                 .. note::
-                    BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+                    BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
                     Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
                     and might have limited support. For more information, see the launch stage descriptions
                     (https://cloud.google.com/products#product-launch-stages).
 
                 Construct a prompt struct column for prediction based on the input. The input must be an Iterable that can take string literals,
-                such as "summarize", string column(s) of X, such as X["str_col"], or blob column(s) of X, such as X["blob_col"].
+                such as "summarize", string column(s) of X, such as X["str_col"], or `ObjectRef column(s) <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ of X, such as X["objectref_col"].
                 It creates a struct column of the items of the iterable, and use the concatenated result as the input prompt. No-op if set to None.
             output_schema (Mapping[str, str] or None, default None):
                 The schema used to generate structured output as a bigframes DataFrame. The schema is a string key-value pair of <column_name>:<type>.

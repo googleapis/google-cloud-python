@@ -817,7 +817,7 @@ class DataFrame:
         )
 
     def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process blob columns for display."""
+        """Process ObjectRef columns for display."""
         df = self
         blob_cols = []
         if bigframes.options.display.blob_display:

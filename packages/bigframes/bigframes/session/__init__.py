@@ -2234,12 +2234,12 @@ class Session(
     def from_glob_path(
         self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
     ) -> dataframe.DataFrame:
-        r"""Create a BigFrames DataFrame that contains a BigFrames Blob column from a global wildcard path.
+        r"""Create a BigFrames DataFrame that contains a BigFrames `ObjectRef column <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ from a global wildcard path.
         This operation creates a temporary BQ Object Table under the hood and requires bigquery.connections.delegate permission or BigQuery Connection Admin role.
         If you have an existing BQ Object Table, use read_gbq_object_table().
 
         .. note::
-            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
             Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
             and might have limited support. For more information, see the launch stage descriptions
             (https://cloud.google.com/products#product-launch-stages).
@@ -2252,7 +2252,7 @@ class Session(
                 If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
                 permission if the connection isn't fully set up.
             name (str):
-                The column name of the Blob column.
+                The column name of the ObjectRef column.
         Returns:
             bigframes.pandas.DataFrame:
                 Result BigFrames DataFrame.
@@ -2295,18 +2295,18 @@ class Session(
     def read_gbq_object_table(
         self, object_table: str, *, name: Optional[str] = None
     ) -> dataframe.DataFrame:
-        """Read an existing object table to create a BigFrames Blob DataFrame. Use the connection of the object table for the connection of the blob.
+        """Read an existing object table to create a BigFrames `ObjectRef <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ DataFrame. Use the connection of the object table for the connection of the ObjectRef.
         This function dosen't retrieve the object table data. If you want to read the data, use read_gbq() instead.
 
         .. note::
-            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
             Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
             and might have limited support. For more information, see the launch stage descriptions
             (https://cloud.google.com/products#product-launch-stages).
 
         Args:
             object_table (str): name of the object table of form <PROJECT_ID>.<DATASET_ID>.<TABLE_ID>.
-            name (str or None): the returned blob column name.
+            name (str or None): the returned ObjectRef column name.
 
         Returns:
             bigframes.pandas.DataFrame:

@@ -203,7 +203,7 @@ class AIAccessor:
         has_blob_column = False
         for column in columns:
             if df[column].dtype == dtypes.OBJ_REF_DTYPE:
-                # Don't cast blob columns to string
+                # Don't cast ObjectRef columns to string
                 has_blob_column = True
                 continue
 
