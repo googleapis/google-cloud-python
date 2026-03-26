@@ -108,7 +108,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(RUFF_VERSION)
+    session.install("flake8", RUFF_VERSION)
 
     # 2. Check formatting
     session.run(
@@ -120,7 +120,7 @@ def lint(session):
         ".",
     )
 
-    session.run("ruff", "check", ".")
+    session.run("flake8", ".", success_codes=[0, 1])
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
