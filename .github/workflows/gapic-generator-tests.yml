@@ -23,8 +23,27 @@ env:
   ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
 
 jobs:
+  check_changes:
+    # We use a job-level 'if' with dorny/paths-filter because GitHub's top-level 
+    # 'on: pull_request: paths' can be bypassed during repository-wide migrations 
+    # or structural changes. This ensures these specialized (and heavy) matrix 
+    # jobs stay silent on PRs that do not touch the generator.
+    runs-on: ubuntu-latest
+    outputs:
+      run_generator: ${{ steps.filter.outputs.generator }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            generator:
+              - 'packages/gapic-generator/**'
+              - '.github/workflows/gapic-generator-tests.yml'
+
   # Preserve the workaround for env variables in matrix
   python_config:
+    needs: check_changes
     runs-on: ubuntu-latest
     outputs:
       all_python: ${{ env.ALL_PYTHON }}
@@ -34,7 +53,7 @@ jobs:
       - run: echo "Initializing config"
 
   showcase-unit:
-    needs: python_config
+    needs: [check_changes, python_config]
     strategy:
       fail-fast: false
       matrix:
@@ -64,7 +83,7 @@ jobs:
           nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
 
   goldens:
-    needs: python_config
+    needs: [check_changes, python_config]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -83,7 +102,7 @@ jobs:
           done
 
   fragment-snippet:
-    needs: python_config
+    needs: [check_changes, python_config]
     strategy:
       matrix:
         python: ["3.10", "3.14"]
