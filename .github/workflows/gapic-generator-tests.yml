@@ -1,0 +1,167 @@
+name: Gapic Generator Specialized Tests
+
+on:
+  pull_request:
+    paths:
+      - 'packages/gapic-generator/**'
+      - '.github/workflows/gapic-generator-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/gapic-generator/**'
+
+concurrency:
+  group: gapic-gen-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  SHOWCASE_VERSION: 0.35.0
+  PROTOC_VERSION: 3.20.2
+  LATEST_STABLE_PYTHON: 3.14
+  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+
+jobs:
+  check_changes:
+    # We use a job-level 'if' with dorny/paths-filter because GitHub's top-level 
+    # 'on: pull_request: paths' can be bypassed during repository-wide migrations 
+    # or structural changes. This ensures these specialized (and heavy) matrix 
+    # jobs stay silent on PRs that do not touch the generator.
+    runs-on: ubuntu-latest
+    outputs:
+      run_generator: ${{ steps.filter.outputs.generator }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            generator:
+              - 'packages/gapic-generator/**'
+              - '.github/workflows/gapic-generator-tests.yml'
+
+  # Preserve the workaround for env variables in matrix
+  python_config:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_generator == 'true' }}
+    runs-on: ubuntu-latest
+    outputs:
+      all_python: ${{ env.ALL_PYTHON }}
+      latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
+    steps:
+      - run: echo "Initializing config for gapic-generator"
+
+  showcase-unit:
+    needs: python_config
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ${{ fromJSON(needs.python_config.outputs.all_python) }}
+        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
+        logging_scope: ["", "google"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+      - name: Install System Deps & Protoc
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
+          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          cd /usr/src/protoc/ && unzip protoc.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run Nox
+        env:
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
+
+  showcase-mypy:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Run Mypy
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_mypy
+
+  goldens:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Run Goldens
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          for pkg in credentials eventarc logging redis; do
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ needs.python_config.outputs.latest_stable_python }}
+          done
+
+  goldens-prerelease:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Run Goldens (Prerelease)
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          for pkg in credentials eventarc logging redis; do
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s core_deps_from_source prerelease_deps
+          done
+
+  fragment-snippet:
+    needs: python_config
+    strategy:
+      matrix:
+        python: ["3.10", "3.14"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      # This fixes the Pandoc error
+      - name: Install System Deps & Protoc
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
+          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          cd /usr/src/protoc/ && unzip protoc.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run Tests
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          # Run fragment for current matrix python
+          nox -s fragment-${{ matrix.python }}
+          # Run snippetgen only on the latest stable to avoid the "Python not found" error
+          if [ "${{ matrix.python }}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
+            nox -s snippetgen
+          fi
