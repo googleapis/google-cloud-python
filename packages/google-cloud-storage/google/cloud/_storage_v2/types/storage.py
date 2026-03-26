@@ -489,6 +489,11 @@ class ComposeObjectRequest(proto.Message):
             Optional. The checksums of the complete
             object. This is validated against the combined
             checksums of the component objects.
+        delete_source_objects (bool):
+            Whether the source objects should be deleted
+            in the compose request.
+
+            This field is a member of `oneof`_ ``_delete_source_objects``.
     """
 
     class SourceObject(proto.Message):
@@ -579,6 +584,11 @@ class ComposeObjectRequest(proto.Message):
         proto.MESSAGE,
         number=10,
         message="ObjectChecksums",
+    )
+    delete_source_objects: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -1460,18 +1470,18 @@ class ReadRange(proto.Message):
             ``ReadObjectRequest`` with ``read_offset`` = -5 and
             ``read_length`` = 3 would return bytes 10 through 12 of the
             object. Requesting a negative offset with magnitude larger
-            than the size of the object returns the entire object. A
-            ``read_offset`` larger than the size of the object results
-            in an ``OutOfRange`` error.
+            than the size of the object is equivalent to ``read_offset``
+            = 0. A ``read_offset`` larger than the size of the object
+            results in an ``OutOfRange`` error.
         read_length (int):
             Optional. The maximum number of data bytes the server is
             allowed to return across all response messages with the same
             ``read_id``. A ``read_length`` of zero indicates to read
             until the resource end, and a negative ``read_length``
-            causes an error. If the stream returns fewer bytes than
-            allowed by the ``read_length`` and no error occurred, the
-            stream includes all data from the ``read_offset`` to the
-            resource end.
+            causes an ``OutOfRange`` error. If the stream returns fewer
+            bytes than allowed by the ``read_length`` and no error
+            occurred, the stream includes all data from the
+            ``read_offset`` to the resource end.
         read_id (int):
             Required. Read identifier provided by the client. When the
             client issues more than one outstanding ``ReadRange`` on the
@@ -4364,7 +4374,10 @@ class ObjectContexts(proto.Message):
 
     Attributes:
         custom (MutableMapping[str, google.cloud._storage_v2.types.ObjectCustomContextPayload]):
-            Optional. User-defined object contexts.
+            Optional. User-defined object contexts. The maximum key or
+            value size is ``256`` characters. The maximum number of
+            entries is ``50``. The maximum total serialized size of all
+            entries is ``25KiB``.
     """
 
     custom: MutableMapping[str, "ObjectCustomContextPayload"] = proto.MapField(

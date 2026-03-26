@@ -12,7 +12,7 @@
     "api_id": "storage.googleapis.com",
     "requires_billing": true,
     "default_version": "v2",
-    "codeowner_team": "@googleapis/yoshi-python @googleapis/gcs-sdk-team @googleapis/gcs-fs",
+    "codeowner_team": "@googleapis/cloud-sdk-python-team @googleapis/gcs-team @googleapis/gcs-fs",
     "api_shortname": "storage",
     "api_description": "is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally."
 }

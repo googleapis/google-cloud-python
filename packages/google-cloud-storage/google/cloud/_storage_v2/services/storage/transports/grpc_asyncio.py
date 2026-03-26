@@ -971,8 +971,9 @@ class StorageGrpcAsyncIOTransport(StorageTransport):
         across several messages. If an error occurs with any request,
         the stream closes with a relevant error code. Since you can have
         multiple outstanding requests, the error response includes a
-        ``BidiReadObjectRangesError`` field detailing the specific error
-        for each pending ``read_id``.
+        ``BidiReadObjectError`` proto in its ``details`` field,
+        reporting the specific error, if any, for each pending
+        ``read_id``.
 
         **IAM Permissions**:
 
