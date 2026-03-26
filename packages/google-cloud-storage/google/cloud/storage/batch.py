@@ -29,18 +29,18 @@ Examples of situations when you might want to use the Batch module:
 ``bucket.patch()``
 ``bucket.update()``
 """
+
+import io
+import json
 from email.encoders import encode_noop
 from email.generator import Generator
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.parser import Parser
-import io
-import json
 
 import requests
 
-from google.cloud import _helpers
-from google.cloud import exceptions
+from google.cloud import _helpers, exceptions
 from google.cloud.storage._http import Connection
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 

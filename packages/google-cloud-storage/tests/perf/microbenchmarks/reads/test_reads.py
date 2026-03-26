@@ -22,14 +22,17 @@ It includes three main test functions:
 All other functions in this module are helper methods for these three tests.
 """
 
-import time
 import asyncio
-import random
-from io import BytesIO
 import logging
+import multiprocessing
+import random
+import time
+from concurrent.futures import ThreadPoolExecutor
+from io import BytesIO
 
 import pytest
 
+import tests.perf.microbenchmarks.reads.config as config
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
@@ -38,9 +41,6 @@ from tests.perf.microbenchmarks._utils import publish_benchmark_extra_info
 from tests.perf.microbenchmarks.conftest import (
     publish_resource_metrics,
 )
-import tests.perf.microbenchmarks.reads.config as config
-from concurrent.futures import ThreadPoolExecutor
-import multiprocessing
 
 all_params = config._get_params()
 

@@ -18,21 +18,17 @@ import binascii
 import collections
 import datetime
 import hashlib
-import json
-
 import http
+import json
 import urllib
 
 import google.auth.credentials
-
 from google.auth import exceptions
 from google.auth.transport import requests
-from google.cloud import _helpers
-from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
-from google.cloud.storage._helpers import _NOW
-from google.cloud.storage._helpers import _UTC
-from google.cloud.storage.retry import DEFAULT_RETRY
 
+from google.cloud import _helpers
+from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN, _NOW, _UTC
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 # `google.cloud.storage._signing.NOW` is deprecated.
 # Use `_NOW(_UTC)` instead.

@@ -14,7 +14,7 @@
 
 """IP Filter configuration for Google Cloud Storage Buckets."""
 
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 
 _MODE = "mode"
 _PUBLIC_NETWORK_SOURCE = "publicNetworkSource"
@@ -131,9 +131,9 @@ class IPFilter:
         }
 
         if self.public_network_source:
-            resource[
-                _PUBLIC_NETWORK_SOURCE
-            ] = self.public_network_source._to_api_resource()
+            resource[_PUBLIC_NETWORK_SOURCE] = (
+                self.public_network_source._to_api_resource()
+            )
         if self.vpc_network_sources is not None:
             resource[_VPC_NETWORK_SOURCES] = [
                 vns._to_api_resource() for vns in self.vpc_network_sources

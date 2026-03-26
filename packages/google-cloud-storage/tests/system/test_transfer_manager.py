@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tempfile
 import os
+import tempfile
 
 import pytest
+from google.api_core import exceptions
 
 from google.cloud.storage import transfer_manager
 from google.cloud.storage._helpers import _base64_md5hash
-
-from google.api_core import exceptions
 
 DEADLINE = 30
 
@@ -252,8 +251,9 @@ def test_download_many_to_path_downloads_within_dest_dir(
             assert result is None
 
         # Verify the file exists and contents match
-        from google.cloud.storage.transfer_manager import _resolve_path
         from pathlib import Path
+
+        from google.cloud.storage.transfer_manager import _resolve_path
 
         expected_file_path = Path(_resolve_path(tempdir, blobname))
         assert expected_file_path.is_file()
@@ -267,20 +267,12 @@ def test_download_many_to_path_downloads_within_dest_dir(
         assert downloaded_contents == source_contents
 
 
-
-def test_download_many_to_path_mixed_results(
-    shared_bucket, file_data, blobs_to_delete
-):
+def test_download_many_to_path_mixed_results(shared_bucket, file_data, blobs_to_delete):
     """
     Test download_many_to_path with successful downloads, skip_if_exists skips, and path traversal skips.
     """
     PREFIX = "mixed_results/"
-    BLOBNAMES = [
-        "success1.txt",
-        "success2.txt",
-        "exists.txt",
-        "../escape.txt"
-    ]
+    BLOBNAMES = ["success1.txt", "success2.txt", "exists.txt", "../escape.txt"]
 
     FILE_BLOB_PAIRS = [
         (
@@ -309,6 +301,7 @@ def test_download_many_to_path_mixed_results(
             f.write("already here")
 
         import warnings
+
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             results = transfer_manager.download_many_to_path(
@@ -496,8 +489,7 @@ def test_upload_chunks_concurrently(shared_bucket, file_data, blobs_to_delete):
 def test_upload_chunks_concurrently_with_metadata(
     shared_bucket, file_data, blobs_to_delete
 ):
-    from google.cloud.storage._helpers import _NOW
-    from google.cloud.storage._helpers import _UTC
+    from google.cloud.storage._helpers import _NOW, _UTC
 
     now = _NOW(_UTC)
     custom_metadata = {"key_a": "value_a", "key_b": "value_b"}

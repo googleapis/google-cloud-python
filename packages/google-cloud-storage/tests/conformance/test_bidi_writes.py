@@ -11,8 +11,9 @@ from google.api_core.retry_async import AsyncRetry
 from google.auth import credentials as auth_credentials
 
 from google.cloud import _storage_v2 as storage_v2
-from google.cloud.storage.asyncio.async_appendable_object_writer import \
-    AsyncAppendableObjectWriter
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
+    AsyncAppendableObjectWriter,
+)
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from tests.conformance._utils import start_grpc_server
 
@@ -157,9 +158,9 @@ async def run_test_scenario(
                 # Scenarios like 503, 500, smarter resumption, and redirects
                 # SHOULD trigger at least one retry attempt.
                 if not use_default:
-                    assert (
-                        retry_count > 0
-                    ), f"Test passed but no retry was actually triggered for {scenario['name']}!"
+                    assert retry_count > 0, (
+                        f"Test passed but no retry was actually triggered for {scenario['name']}!"
+                    )
                 else:
                     print("Successfully recovered using library's default policy.")
                 print(f"Success: {scenario['name']}")

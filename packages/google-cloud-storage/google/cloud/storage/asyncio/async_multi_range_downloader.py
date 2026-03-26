@@ -13,33 +13,34 @@
 # limitations under the License.
 
 from __future__ import annotations
+
 import asyncio
 import logging
+from io import BytesIO
+from typing import Any, Dict, List, Optional, Tuple
+
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
-from google.cloud.storage.asyncio.retry._helpers import _handle_redirect
 from google.rpc import status_pb2
 
-from typing import List, Optional, Tuple, Any, Dict
-
-from ._utils import raise_if_no_fast_crc32c
-from google.cloud.storage.asyncio.async_read_object_stream import (
-    _AsyncReadObjectStream,
-)
+from google.cloud import _storage_v2
+from google.cloud.storage._helpers import generate_random_56_bit_integer
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
+from google.cloud.storage.asyncio.async_read_object_stream import (
+    _AsyncReadObjectStream,
+)
+from google.cloud.storage.asyncio.retry._helpers import _handle_redirect
 from google.cloud.storage.asyncio.retry.bidi_stream_retry_manager import (
     _BidiStreamRetryManager,
 )
 from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
-    _ReadResumptionStrategy,
     _DownloadState,
+    _ReadResumptionStrategy,
 )
 
-from io import BytesIO
-from google.cloud import _storage_v2
-from google.cloud.storage._helpers import generate_random_56_bit_integer
+from ._utils import raise_if_no_fast_crc32c
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
 _BIDI_READ_REDIRECTED_TYPE_URL = (

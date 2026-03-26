@@ -14,14 +14,14 @@
 
 import unittest.mock as mock
 from unittest.mock import AsyncMock, MagicMock
-import pytest
+
 import grpc
+import pytest
 
-
+from google.cloud import _storage_v2
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
-from google.cloud import _storage_v2
 
 BUCKET = "my-bucket"
 OBJECT = "my-object"

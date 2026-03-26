@@ -18,10 +18,8 @@ Also supported here are simple (media) uploads and multipart
 uploads that contain both metadata and a small file as payload.
 """
 
-
-from google.cloud.storage._media import _upload
+from google.cloud.storage._media import _helpers, _upload
 from google.cloud.storage._media.requests import _request_helpers
-from google.cloud.storage._media import _helpers
 
 
 class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):

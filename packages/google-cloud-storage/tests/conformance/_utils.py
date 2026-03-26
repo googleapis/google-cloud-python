@@ -1,6 +1,8 @@
 import time
-import requests
 import traceback
+
+import requests
+
 
 def start_grpc_server(grpc_endpoint, http_endpoint):
     """Starts the testbench gRPC server if it's not already running.

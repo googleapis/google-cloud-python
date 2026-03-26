@@ -16,17 +16,17 @@ import io
 import unittest.mock as mock
 from datetime import datetime
 
-import pytest
 import google_crc32c
-from google.rpc import status_pb2
+import pytest
 from google.api_core import exceptions
+from google.rpc import status_pb2
 
 from google.cloud._storage_v2.types import storage as storage_type
-from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
-    _WriteState,
-    _WriteResumptionStrategy,
-)
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
+from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
+    _WriteResumptionStrategy,
+    _WriteState,
+)
 
 
 @pytest.fixture

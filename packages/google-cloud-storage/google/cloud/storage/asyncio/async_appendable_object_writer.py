@@ -12,25 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from io import BufferedReader
 import io
 import logging
+from io import BufferedReader
 from typing import Dict, List, Optional, Tuple, Union
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
 from google.rpc import status_pb2
+
+from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
-
-
-from . import _utils
-from google.cloud import _storage_v2
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
+)
+from google.cloud.storage.asyncio.retry._helpers import (
+    _extract_bidi_writes_redirect_proto,
 )
 from google.cloud.storage.asyncio.retry.bidi_stream_retry_manager import (
     _BidiStreamRetryManager,
@@ -39,9 +40,8 @@ from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
     _WriteResumptionStrategy,
     _WriteState,
 )
-from google.cloud.storage.asyncio.retry._helpers import (
-    _extract_bidi_writes_redirect_proto,
-)
+
+from . import _utils
 
 _MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
 _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB

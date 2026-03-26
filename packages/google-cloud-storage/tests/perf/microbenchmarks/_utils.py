@@ -11,11 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from typing import Any, List, Optional
-import statistics
 import io
 import os
 import socket
+import statistics
+from typing import Any, List, Optional
+
 import psutil
 
 _C4_STANDARD_192_NIC = "ens3"  # can be fetched via ip link show
@@ -48,9 +49,9 @@ def publish_benchmark_extra_info(
     benchmark.group = benchmark_group
 
     if download_bytes_list is not None:
-        assert (
-            duration is not None
-        ), "Duration must be provided if total_bytes_transferred is provided."
+        assert duration is not None, (
+            "Duration must be provided if total_bytes_transferred is provided."
+        )
         throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
         min_throughput = min(throughputs_list)
         max_throughput = max(throughputs_list)

@@ -14,32 +14,27 @@
 
 """Concurrent media operations."""
 
-import concurrent.futures
-
-import io
-import inspect
-import os
-import warnings
-import pickle
-import copyreg
-import struct
 import base64
+import concurrent.futures
+import copyreg
 import functools
+import inspect
+import io
+import os
+import pickle
+import struct
+import warnings
 from pathlib import Path
 
-from google.api_core import exceptions
-from google.cloud.storage import Client
-from google.cloud.storage import Blob
-from google.cloud.storage.blob import _get_host_name
-from google.cloud.storage.blob import _quote
-from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.retry import DEFAULT_RETRY
-
 import google_crc32c
+from google.api_core import exceptions
 
-from google.cloud.storage._media.requests.upload import XMLMPUContainer
-from google.cloud.storage._media.requests.upload import XMLMPUPart
+from google.cloud.storage import Blob, Client
+from google.cloud.storage._media.requests.upload import XMLMPUContainer, XMLMPUPart
+from google.cloud.storage.blob import _get_host_name, _quote
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.exceptions import DataCorruption, InvalidPathError
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8
@@ -858,7 +853,7 @@ def download_many_to_path(
         raise_exception=raise_exception,
         worker_type=worker_type,
         max_workers=max_workers,
-        skip_if_exists=False, # skip_if_exists is handled in the loop above
+        skip_if_exists=False,  # skip_if_exists is handled in the loop above
     )
 
     for meta_index, result in zip(indices_to_process, many_results):

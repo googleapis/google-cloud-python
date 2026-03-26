@@ -15,16 +15,17 @@
 import asyncio
 import io
 import unittest
-from google_crc32c import Checksum
-from google.cloud.storage.exceptions import DataCorruption
+
 from google.api_core import exceptions
+from google_crc32c import Checksum
 
 from google.cloud import _storage_v2 as storage_v2
+from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
     _DownloadState,
     _ReadResumptionStrategy,
 )
-from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
+from google.cloud.storage.exceptions import DataCorruption
 
 _READ_ID = 1
 LOGGER_NAME = "google.cloud.storage.asyncio.retry.reads_resumption_strategy"

@@ -36,6 +36,7 @@ class TestConnection(unittest.TestCase):
 
     def test_extra_headers(self):
         import requests
+
         from google.cloud import _http as base_http
         from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
@@ -72,8 +73,9 @@ class TestConnection(unittest.TestCase):
         )
 
     def test_metadata_op_has_client_custom_headers(self):
-        import requests
         import google.auth.credentials
+        import requests
+
         from google.cloud import _http as base_http
         from google.cloud.storage import Client
         from google.cloud.storage.constants import _DEFAULT_TIMEOUT
@@ -124,8 +126,7 @@ class TestConnection(unittest.TestCase):
         )
 
     def test_build_api_url_no_extra_query_params(self):
-        from urllib.parse import parse_qsl
-        from urllib.parse import urlsplit
+        from urllib.parse import parse_qsl, urlsplit
 
         conn = self._make_one(object())
         uri = conn.build_api_url("/foo")
@@ -138,8 +139,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(parms, {})
 
     def test_build_api_url_w_custom_endpoint(self):
-        from urllib.parse import parse_qsl
-        from urllib.parse import urlsplit
+        from urllib.parse import parse_qsl, urlsplit
 
         custom_endpoint = "https://foo-storage.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
@@ -153,8 +153,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(parms, {})
 
     def test_build_api_url_w_extra_query_params(self):
-        from urllib.parse import parse_qsl
-        from urllib.parse import urlsplit
+        from urllib.parse import parse_qsl, urlsplit
 
         conn = self._make_one(object())
         uri = conn.build_api_url("/foo", {"bar": "baz"})
@@ -294,8 +293,9 @@ class TestConnection(unittest.TestCase):
     def test_duplicate_user_agent(self):
         # Regression test for issue #565
         from google.cloud._http import ClientInfo
-        from google.cloud.storage.batch import Batch
+
         from google.cloud.storage import __version__
+        from google.cloud.storage.batch import Batch
 
         client_info = ClientInfo(user_agent="test/123")
         conn = self._make_one(object(), client_info=client_info)

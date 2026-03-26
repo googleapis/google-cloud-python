@@ -1,7 +1,8 @@
-import json
-import csv
 import argparse
+import csv
+import json
 import logging
+
 import numpy as np
 
 MB = 1024 * 1024

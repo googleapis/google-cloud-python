@@ -19,15 +19,10 @@ from __future__ import absolute_import
 import base64
 import hashlib
 import logging
-
-from urllib.parse import parse_qs
-from urllib.parse import urlencode
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
+from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 
 from google.cloud.storage import retry
 from google.cloud.storage.exceptions import InvalidResponse
-
 
 RANGE_HEADER = "range"
 CONTENT_RANGE_HEADER = "content-range"
@@ -107,7 +102,7 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
             "Request failed with status code",
             status_code,
             "Expected one of",
-            *status_codes
+            *status_codes,
         )
     return status_code
 

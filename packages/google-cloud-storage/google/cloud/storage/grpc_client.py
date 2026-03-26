@@ -15,6 +15,7 @@
 """A client for interacting with Google Cloud Storage using the gRPC API."""
 
 from google.cloud.client import ClientWithProject
+
 from google.cloud import _storage_v2 as storage_v2
 
 _marker = object()

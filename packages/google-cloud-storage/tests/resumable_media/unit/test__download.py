@@ -14,14 +14,13 @@
 
 import http.client
 import io
-
 from unittest import mock
+
 import pytest  # type: ignore
 
 from google.cloud.storage._media import _download
 from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.retry import DEFAULT_RETRY
-
 
 EXAMPLE_URL = (
     "https://www.googleapis.com/download/storage/v1/b/{BUCKET}/o/{OBJECT}?alt=media"

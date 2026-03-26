@@ -13,15 +13,17 @@
 # limitations under the License.
 """Microbenchmarks for time-based Google Cloud Storage read operations."""
 
-import time
 import asyncio
-import random
 import logging
-import os
 import multiprocessing
+import os
+import random
+import time
+from io import BytesIO
 
 import pytest
 
+import tests.perf.microbenchmarks.time_based.reads.config as config
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
@@ -33,8 +35,6 @@ from tests.perf.microbenchmarks._utils import (
 from tests.perf.microbenchmarks.conftest import (
     publish_resource_metrics,
 )
-from io import BytesIO
-import tests.perf.microbenchmarks.time_based.reads.config as config
 
 all_params = config._get_params()
 

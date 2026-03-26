@@ -22,26 +22,26 @@ It includes three main test functions:
 All other functions in this module are helper methods for these three tests.
 """
 
+import asyncio
+import logging
+import multiprocessing
 import os
 import time
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
-import multiprocessing
-import logging
 
 import pytest
-from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+
+import tests.perf.microbenchmarks.writes.config as config
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
-
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from tests.perf.microbenchmarks._utils import (
-    publish_benchmark_extra_info,
     RandomBytesIO,
     get_irq_affinity,
+    publish_benchmark_extra_info,
 )
 from tests.perf.microbenchmarks.conftest import publish_resource_metrics
-import tests.perf.microbenchmarks.writes.config as config
 
 # Get write parameters
 all_params = config.get_write_params()

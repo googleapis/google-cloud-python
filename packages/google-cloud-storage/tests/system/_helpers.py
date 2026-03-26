@@ -16,10 +16,9 @@ import os
 import time
 
 from google.api_core import exceptions
-
-from test_utils.retry import RetryErrors
-from test_utils.retry import RetryInstanceState
+from test_utils.retry import RetryErrors, RetryInstanceState
 from test_utils.system import unique_resource_id
+
 from google.cloud.storage._helpers import _get_default_storage_base_url
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)

@@ -24,7 +24,6 @@ import uuid
 
 from google.cloud import storage
 
-
 ##### DEFAULTS & CONSTANTS #####
 HEADER = [
     "Op",

@@ -16,14 +16,14 @@
 
 import logging
 import os
-
 from contextlib import contextmanager
 from urllib.parse import urlparse
+
 from google.api_core import exceptions as api_exceptions
 from google.api_core import retry as api_retry
+
 from google.cloud.storage import __version__
 from google.cloud.storage.retry import ConditionalRetryPolicy
-
 
 ENABLE_OTEL_TRACES_ENV_VAR = "ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"
 _DEFAULT_ENABLE_OTEL_TRACES_VALUE = False

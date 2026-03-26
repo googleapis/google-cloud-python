@@ -26,8 +26,8 @@
 # update. Please update application code to use the new exception classes in
 # this module.
 try:
-    from google.resumable_media import InvalidResponse as InvalidResponseDynamicParent
     from google.resumable_media import DataCorruption as DataCorruptionDynamicParent
+    from google.resumable_media import InvalidResponse as InvalidResponseDynamicParent
 except ImportError:
     InvalidResponseDynamicParent = Exception
     DataCorruptionDynamicParent = Exception

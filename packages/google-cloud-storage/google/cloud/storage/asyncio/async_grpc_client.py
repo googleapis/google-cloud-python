@@ -14,13 +14,14 @@
 
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
+import grpc
+from google.auth import credentials as auth_credentials
+
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
 from google.cloud.storage import __version__
-import grpc
-from google.auth import credentials as auth_credentials
 
 
 class AsyncGrpcClient:

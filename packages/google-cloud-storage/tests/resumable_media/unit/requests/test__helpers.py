@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import http.client
-
 from unittest import mock
 
 from google.cloud.storage._media.requests import _request_helpers

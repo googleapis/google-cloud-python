@@ -30,8 +30,7 @@ def ensure_hmac_key_deleted(hmac_key):
 
 @pytest.fixture
 def scrubbed_hmac_keys(storage_client):
-    from google.cloud.storage._helpers import _NOW
-    from google.cloud.storage._helpers import _UTC
+    from google.cloud.storage._helpers import _NOW, _UTC
 
     before_hmac_keys = set(storage_client.list_hmac_keys())
 

@@ -20,18 +20,17 @@ import os
 import subprocess
 import tempfile
 import time
+import urllib
 import uuid
 
 import pytest
 import requests
-import urllib
-
 from google.auth.credentials import AnonymousCredentials
+
 from google.cloud import storage
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 from . import _read_local_json
-
 
 _CONFORMANCE_TESTS = _read_local_json("retry_strategy_test_data.json")["retryTests"]
 
@@ -957,19 +956,19 @@ def run_test_case(
         success_results = True
 
     # Assert expected success for each scenario.
-    assert (
-        expect_success == success_results
-    ), "Retry API call expected_success was {}, should be {}".format(
-        success_results, expect_success
+    assert expect_success == success_results, (
+        "Retry API call expected_success was {}, should be {}".format(
+            success_results, expect_success
+        )
     )
 
     # Verify that all instructions were used up during the test
     # (indicates that the client sent the correct requests).
     status_response = _get_retry_test(host, id)
-    assert (
-        status_response["completed"] is True
-    ), "Retry test not completed; unused instructions:{}".format(
-        status_response["instructions"]
+    assert status_response["completed"] is True, (
+        "Retry test not completed; unused instructions:{}".format(
+            status_response["instructions"]
+        )
     )
 
     # Clean up and close out test in testbench.

@@ -14,8 +14,10 @@
 
 import unittest
 from unittest import mock
-from google.auth import credentials as auth_credentials
+
 from google.api_core import client_options as client_options_lib
+from google.auth import credentials as auth_credentials
+
 from google.cloud.storage import grpc_client
 
 

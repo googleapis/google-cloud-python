@@ -17,13 +17,12 @@
 See [HMAC keys documentation](https://cloud.google.com/storage/docs/authentication/hmackeys)
 """
 
-from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
+from google.cloud.exceptions import NotFound
 
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
+from google.cloud.storage.retry import DEFAULT_RETRY, DEFAULT_RETRY_IF_ETAG_IN_JSON
 
 
 class HMACKeyMetadata(object):

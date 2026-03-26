@@ -17,19 +17,18 @@ import hashlib
 import http.client
 import io
 import os
-import urllib.parse
 import sys
-
-import pytest  # type: ignore
+import urllib.parse
 from unittest import mock
 
-from google.cloud.storage import _media
-import google.cloud.storage._media.requests as resumable_requests
-from google.cloud.storage._media import _helpers
-from .. import utils
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.exceptions import DataCorruption
+import pytest  # type: ignore
 
+import google.cloud.storage._media.requests as resumable_requests
+from google.cloud.storage import _media
+from google.cloud.storage._media import _helpers
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
+
+from .. import utils
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, "..", "..", "data")

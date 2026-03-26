@@ -16,15 +16,14 @@ from __future__ import absolute_import
 
 import hashlib
 import http.client
-
 from unittest import mock
+
+import google_crc32c
 import pytest  # type: ignore
 
 from google.cloud.storage._media import _helpers
-from google.cloud.storage.retry import _RETRYABLE_STATUS_CODES
 from google.cloud.storage.exceptions import InvalidResponse
-
-import google_crc32c
+from google.cloud.storage.retry import _RETRYABLE_STATUS_CODES
 
 
 def test_do_nothing():

@@ -38,8 +38,8 @@ class TestBucketNotification(unittest.TestCase):
     @staticmethod
     def event_types():
         from google.cloud.storage.notification import (
-            OBJECT_FINALIZE_EVENT_TYPE,
             OBJECT_DELETE_EVENT_TYPE,
+            OBJECT_FINALIZE_EVENT_TYPE,
         )
 
         return [OBJECT_FINALIZE_EVENT_TYPE, OBJECT_DELETE_EVENT_TYPE]
@@ -241,6 +241,7 @@ class TestBucketNotification(unittest.TestCase):
 
     def test_create_wo_topic_name(self):
         from google.cloud.exceptions import BadRequest
+
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
         client = mock.Mock(spec=["_post_resource", "project"])

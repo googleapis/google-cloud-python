@@ -13,20 +13,22 @@
 # limitations under the License.
 
 import datetime
-import pytest
 
+import pytest
 from google.api_core import exceptions
-from . import _helpers
-from google.cloud.storage.ip_filter import (
-    IPFilter,
-    PublicNetworkSource,
-    VpcNetworkSource,
-)
+
 from google.cloud.storage.bucket import EncryptionEnforcementConfig
 from google.cloud.storage.constants import (
     ENFORCEMENT_MODE_FULLY_RESTRICTED,
     ENFORCEMENT_MODE_NOT_RESTRICTED,
 )
+from google.cloud.storage.ip_filter import (
+    IPFilter,
+    PublicNetworkSource,
+    VpcNetworkSource,
+)
+
+from . import _helpers
 
 
 def test_bucket_create_w_alt_storage_class(storage_client, buckets_to_delete):
@@ -49,9 +51,11 @@ def test_bucket_create_w_alt_storage_class(storage_client, buckets_to_delete):
 
 def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     from google.cloud.storage import constants
-    from google.cloud.storage.bucket import LifecycleRuleDelete
-    from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
-    from google.cloud.storage.bucket import LifecycleRuleAbortIncompleteMultipartUpload
+    from google.cloud.storage.bucket import (
+        LifecycleRuleAbortIncompleteMultipartUpload,
+        LifecycleRuleDelete,
+        LifecycleRuleSetStorageClass,
+    )
 
     bucket_name = _helpers.unique_name("w-lifcycle-rules")
     custom_time_before = datetime.date(2018, 8, 1)
@@ -165,9 +169,9 @@ def test_bucket_get_set_iam_policy(
     buckets_to_delete,
     service_account,
 ):
+    from google.api_core.exceptions import BadRequest, PreconditionFailed
+
     from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
-    from google.api_core.exceptions import BadRequest
-    from google.api_core.exceptions import PreconditionFailed
 
     bucket_name = _helpers.unique_name("iam-policy")
     bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)

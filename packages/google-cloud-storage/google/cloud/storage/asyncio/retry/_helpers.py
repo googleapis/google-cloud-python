@@ -15,14 +15,15 @@
 from __future__ import annotations
 
 import logging
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from google.api_core import exceptions
+from google.rpc import status_pb2
+
 from google.cloud._storage_v2.types import (
     BidiReadObjectRedirectedError,
     BidiWriteObjectRedirectedError,
 )
-from google.rpc import status_pb2
 
 _BIDI_READ_REDIRECTED_TYPE_URL = (
     "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"

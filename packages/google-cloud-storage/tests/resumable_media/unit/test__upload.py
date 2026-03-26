@@ -16,16 +16,13 @@ import http.client
 import io
 import sys
 import tempfile
-
 from unittest import mock
+
 import pytest  # type: ignore
 
-from google.cloud.storage._media import _helpers
-from google.cloud.storage._media import _upload
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage._media import _helpers, _upload
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
 from google.cloud.storage.retry import DEFAULT_RETRY
-
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
 SIMPLE_URL = URL_PREFIX + "?uploadType=media&name={OBJECT}"
@@ -289,13 +286,7 @@ class TestMultipartUpload(object):
             ).encode("utf8")
         else:
             metadata_payload = b'{"Some": "Stuff"}\r\n'
-        remainder = (
-            b"--==3==\r\n"
-            b"content-type: text/plain\r\n"
-            b"\r\n"
-            b"Hi\r\n"
-            b"--==3==--"
-        )
+        remainder = b"--==3==\r\ncontent-type: text/plain\r\n\r\nHi\r\n--==3==--"
         expected_payload = preamble + metadata_payload + remainder
 
         assert payload == expected_payload
@@ -1161,7 +1152,7 @@ class Test_construct_multipart_request(object):
         "google.cloud.storage._media._upload.get_boundary", return_value=b"==2=="
     )
     def test_unicode(self, mock_get_boundary):
-        data_unicode = "\N{snowman}"
+        data_unicode = "\N{SNOWMAN}"
         # construct_multipart_request( ASSUMES callers pass bytes.
         data = data_unicode.encode("utf-8")
         metadata = {"name": "snowman.txt"}

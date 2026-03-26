@@ -13,13 +13,15 @@
 # limitations under the License.
 
 from unittest import mock
+
 import pytest
+from google.api_core import client_info as client_info_lib
+from google.api_core import client_options
 from google.auth import credentials as auth_credentials
 from google.auth.credentials import AnonymousCredentials
-from google.api_core import client_info as client_info_lib
-from google.cloud.storage.asyncio import async_grpc_client
+
 from google.cloud.storage import __version__
-from google.api_core import client_options
+from google.cloud.storage.asyncio import async_grpc_client
 
 
 def _make_credentials(spec=None):
