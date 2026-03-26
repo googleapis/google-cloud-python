@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-access-context-manager/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.3.0...google-cloud-access-context-manager-v0.4.0) (2026-03-26)
+
+
+### Features
+
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:c8612d3fffb3f6a32353b2d1abd16b61e87811866f7ec9d65b59b02eb452a620 ([d3579bf00f0cd37df54f7287518a9e2330bdcc83](https://github.com/googleapis/google-cloud-python/commit/d3579bf00f0cd37df54f7287518a9e2330bdcc83))
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.3...google-cloud-access-context-manager-v0.3.0) (2025-10-16)
 
 
