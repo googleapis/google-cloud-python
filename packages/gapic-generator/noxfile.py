@@ -790,3 +790,28 @@ def format(session):
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+@nox.session(python=NEWEST_PYTHON)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def prerelease_deps(session, protobuf_implementation):
+    """
+    Run all tests with pre-release versions of dependencies installed.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184): 
+    # Implement pre-release dependency logic to test against upcoming runtime changes.
+    session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
+
+
+@nox.session(python=NEWEST_PYTHON)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
+    # Implement logic to install core packages directly from the mono-repo directories.
+    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
