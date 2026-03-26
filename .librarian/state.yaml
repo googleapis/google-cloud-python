@@ -24,6 +24,9 @@ libraries:
     apis: []
     source_roots:
       - packages/django-google-spanner
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
     version: 3.2.4
     last_generated_commit: ""
