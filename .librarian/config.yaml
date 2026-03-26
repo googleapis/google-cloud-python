@@ -4,3 +4,11 @@ global_files_allowlist:
   # versions which are hardcoded in the file.
   - path: "CHANGELOG.md"
     permissions: "read-write"
+
+libraries:
+# libraries have "release_blocked: true" so that releases are
+# explicitly initiated.
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16180):
+# `google-django-spanner` is blocked until the presubmits are green.
+  - id: "google-django-spanner"
+    release_blocked: true
