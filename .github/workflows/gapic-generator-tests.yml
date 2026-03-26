@@ -1,0 +1,100 @@
+name: Gapic Generator Specialized Tests
+
+on:
+  pull_request:
+    paths:
+      - 'packages/gapic-generator/**'
+      - '.github/workflows/gapic-generator-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/gapic-generator/**'
+
+concurrency:
+  group: gapic-gen-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  SHOWCASE_VERSION: 0.35.0
+  PROTOC_VERSION: 3.20.2
+  OLDEST_PYTHON: 3.9
+  LATEST_STABLE_PYTHON: 3.14
+  PREVIEW_PYTHON_VERSION: 3.14
+  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+
+jobs:
+  # Preserve the workaround for env variables in matrix
+  python_config:
+    runs-on: ubuntu-latest
+    outputs:
+      all_python: ${{ env.ALL_PYTHON }}
+      oldest_python: ${{ env.OLDEST_PYTHON }}
+      latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
+    steps:
+      - run: echo "Initializing config"
+
+  showcase-unit:
+    needs: python_config
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ${{ fromJSON(needs.python_config.outputs.all_python) }}
+        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
+        logging_scope: ["", "google"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+      - name: Install System Deps & Protoc
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
+          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          cd /usr/src/protoc/ && unzip protoc.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run Nox
+        env:
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
+
+  goldens:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.LATEST_STABLE_PYTHON }}
+      - name: Run Goldens (Lint/Unit)
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          # Running the logic from goldens-lint and goldens-unit combined
+          for pkg in credentials eventarc logging redis; do
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ env.LATEST_STABLE_PYTHON }}
+          done
+
+  fragment-snippet:
+    needs: python_config
+    strategy:
+      matrix:
+        python: ["3.10", "3.14"] # Reduced matrix for efficiency, or use all_python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run Tests
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s fragment-${{ matrix.python }} snippetgen
