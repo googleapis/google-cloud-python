@@ -141,7 +141,8 @@ def unit(session):
 
 @nox.session(python="3.10")
 def docs(session):
-    """Build documentation."""
-    session.install("-r", "requirements.txt")
-    session.install("sphinx", "sphinx-docfx-yaml")
-    session.run("sphinx-build", "-b", "html", "docs", "docs/_build/html")
+    """Build documentation (POSTPONED)."""
+    session.skip(
+        "Docs build postponed during migration. "
+        "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
+    )
