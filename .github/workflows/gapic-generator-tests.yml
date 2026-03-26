@@ -17,9 +17,7 @@ concurrency:
 env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
-  OLDEST_PYTHON: 3.9
   LATEST_STABLE_PYTHON: 3.14
-  PREVIEW_PYTHON_VERSION: 3.14
   ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
 
 jobs:
@@ -48,7 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       all_python: ${{ env.ALL_PYTHON }}
-      oldest_python: ${{ env.OLDEST_PYTHON }}
       latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
     steps:
       - run: echo "Initializing config for gapic-generator"
@@ -91,7 +88,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ env.LATEST_STABLE_PYTHON }}
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Run Mypy
         run: |
           pip install nox
@@ -114,7 +111,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ env.LATEST_STABLE_PYTHON }}
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ needs.python_config.outputs.latest_stable_python }}
           done
 
   goldens-prerelease:
@@ -125,15 +122,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ env.LATEST_STABLE_PYTHON }}
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
-      - name: Run Goldens (Lint/Unit)
+      - name: Run Goldens (Prerelease)
         run: |
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ env.LATEST_STABLE_PYTHON }}
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s prerelease
           done
 
   fragment-snippet:
@@ -163,6 +160,6 @@ jobs:
           # Run fragment for current matrix python
           nox -s fragment-${{ matrix.python }}
           # Run snippetgen only on the latest stable to avoid the "Python not found" error
-          if [ "${{ matrix.python }}" == "${{ env.LATEST_STABLE_PYTHON }}" ]; then
+          if [ "${{ matrix.python }}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
             nox -s snippetgen
           fi
