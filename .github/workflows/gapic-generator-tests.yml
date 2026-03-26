@@ -44,16 +44,17 @@ jobs:
   # Preserve the workaround for env variables in matrix
   python_config:
     needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_generator == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       all_python: ${{ env.ALL_PYTHON }}
       oldest_python: ${{ env.OLDEST_PYTHON }}
       latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
     steps:
-      - run: echo "Initializing config"
+      - run: echo "Initializing config for gapic-generator"
 
   showcase-unit:
-    needs: [check_changes, python_config]
+    needs: python_config
     strategy:
       fail-fast: false
       matrix:
@@ -82,8 +83,42 @@ jobs:
           cd packages/gapic-generator
           nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
 
+  showcase-mypy:
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.LATEST_STABLE_PYTHON }}
+      - name: Run Mypy
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_mypy
+
   goldens:
-    needs: [check_changes, python_config]
+    needs: python_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Run Goldens
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          for pkg in credentials eventarc logging redis; do
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ env.LATEST_STABLE_PYTHON }}
+          done
+
+  goldens-prerelease:
+    needs: python_config
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -102,7 +137,7 @@ jobs:
           done
 
   fragment-snippet:
-    needs: [check_changes, python_config]
+    needs: python_config
     strategy:
       matrix:
         python: ["3.10", "3.14"]
