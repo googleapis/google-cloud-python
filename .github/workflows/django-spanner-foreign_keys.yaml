@@ -2,11 +2,13 @@ on:
   pull_request:
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-foreign_keys.yaml'
   push:
     branches:
       - main
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-foreign_keys.yaml'
 
 defaults:
   run:
@@ -14,7 +16,23 @@ defaults:
 
 name: foreign-keys-test
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            django_spanner:
+              - 'packages/django-google-spanner/**'
+              - '.github/workflows/django-spanner-foreign_keys.yaml'
+
   system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_django_spanner == 'true' }}
     runs-on: ubuntu-latest
 
     services:

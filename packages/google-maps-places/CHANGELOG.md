@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-maps-places/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.7.0...google-maps-places-v0.8.0) (2026-03-26)
+
+
+### Features
+
+* add a new `include_future_opening_businesses` flag to Nearby Search, Text Search, and AutocompletPlaces. When true, businesses opening in the future are included in the results. ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* add a new business status `FUTURE_OPENING` for places, along with an `opening_date` field to indicate when the establishment will open in the future ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.6.0...google-maps-places-v0.7.0) (2026-02-19)
 
 
