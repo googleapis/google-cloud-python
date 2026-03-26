@@ -1710,6 +1710,7 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Field1.if_null(Field2, Field3)"
         infix_instance = arg1.if_null(arg2, arg3)
         assert infix_instance == instance
+
     def test_type(self):
         arg1 = self._make_arg("Value")
         instance = Expression.type(arg1)
@@ -1743,7 +1744,11 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_timestamp_enums(self):
-        from google.cloud.firestore_v1.pipeline_expressions import TimeUnit, TimeGranularity, TimePart
+        from google.cloud.firestore_v1.pipeline_expressions import (
+            TimeGranularity,
+            TimePart,
+            TimeUnit,
+        )
 
         arg1 = self._make_arg("Value")
 
@@ -1757,10 +1762,15 @@ class TestExpressionessionMethods:
         assert isinstance(instance_trunc.params[1], Constant)
         assert instance_trunc.params[1].value == TimeGranularity.MONTH.value
 
-        instance_trunc_inherited = Expression.timestamp_trunc(arg1, TimeGranularity.MICROSECOND)
+        instance_trunc_inherited = Expression.timestamp_trunc(
+            arg1, TimeGranularity.MICROSECOND
+        )
         assert instance_trunc_inherited.name == "timestamp_trunc"
         assert isinstance(instance_trunc_inherited.params[1], Constant)
-        assert instance_trunc_inherited.params[1].value == TimeGranularity.MICROSECOND.value
+        assert (
+            instance_trunc_inherited.params[1].value
+            == TimeGranularity.MICROSECOND.value
+        )
 
         instance_extract = Expression.timestamp_extract(arg1, TimePart.YEAR)
         assert instance_extract.name == "timestamp_extract"

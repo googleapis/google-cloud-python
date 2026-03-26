@@ -57,7 +57,7 @@ _TIME_UNITS = {
     "DAY": "day",
 }
 _TIME_GRANULARITIES = {
-    **_DATETIME_UNITS,
+    **_TIME_UNITS,
     "WEEK": "week",
     "WEEK_MONDAY": "week(monday)",
     "WEEK_TUESDAY": "week(tuesday)",
@@ -73,7 +73,7 @@ _TIME_GRANULARITIES = {
     "ISOYEAR": "isoyear",
 }
 _TIME_PARTS = {
-    **_DATETIME_GRANULARITIES,
+    **_TIME_GRANULARITIES,
     "DAY_OF_WEEK": "dayofweek",
     "DAY_OF_YEAR": "dayofyear",
 }
@@ -1824,7 +1824,9 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_extract(
-        self, part: TimePart | str | Expression, timezone: str | Expression | None = None
+        self,
+        part: TimePart | str | Expression,
+        timezone: str | Expression | None = None,
     ) -> "Expression":
         """Creates an expression that extracts a part of a timestamp.
 
