@@ -610,6 +610,50 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def between(
+        self, lower: Expression | CONSTANT_TYPE, upper: Expression | CONSTANT_TYPE
+    ) -> "BooleanExpression":
+        """Creates an expression that checks if this expression is between two values.
+
+        Example:
+            >>> # Check if the 'age' field is between 18 and 65
+            >>> Field.of("age").between(18, 65)
+
+        Args:
+            lower: The lower bound expression or constant value.
+            upper: The upper bound expression or constant value.
+
+        Returns:
+            A new `BooleanExpression` representing the between comparison.
+        """
+        return BooleanExpression(
+            "between",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(lower),
+                self._cast_to_expr_or_convert_to_constant(upper),
+            ],
+        )
+
+    @expose_as_static
+    def geo_distance(self, other: Expression | CONSTANT_TYPE) -> "FunctionExpression":
+        """Creates an expression that calculates the distance between two geographical points.
+
+        Example:
+            >>> # Calculate distance between the 'location' field and a target GeoPoint
+            >>> Field.of("location").geo_distance(target_point)
+
+        Args:
+            other: The other point expression or constant value.
+
+        Returns:
+            A new `FunctionExpression` representing the distance.
+        """
+        return FunctionExpression(
+            "geo_distance", [self, self._cast_to_expr_or_convert_to_constant(other)]
+        )
+
+    @expose_as_static
     def equal_any(
         self, array: Array | Sequence[Expression | CONSTANT_TYPE] | Expression
     ) -> "BooleanExpression":
@@ -2634,3 +2678,22 @@ class Rand(FunctionExpression):
 
     def __init__(self):
         super().__init__("rand", [], use_infix_repr=False)
+
+
+def document_matches(query: Expression | str) -> BooleanExpression:
+    """Creates a boolean expression for a document match query.
+    
+    Example:
+        >>> # Find documents matching the query string
+        >>> document_matches("search query")
+
+    Args:
+        query: The search query string or expression.
+
+    Returns:
+        A new `BooleanExpression` representing the document match.
+    """
+    return BooleanExpression(
+        "document_matches", [Expression._cast_to_expr_or_convert_to_constant(query)]
+    )
+

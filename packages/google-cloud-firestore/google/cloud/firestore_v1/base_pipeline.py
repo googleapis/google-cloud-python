@@ -344,6 +344,20 @@ class _BasePipeline:
         """
         return self._append(stages.Sort(*orders))
 
+    def search(self, options: stages.SearchOptions) -> "_BasePipeline":
+        """
+        Adds a search stage to the pipeline.
+
+        This stage filters documents based on the provided query expression.
+
+        Args:
+            options: A SearchOptions instance configuring the search.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Search(options))
+
     def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
         """
         Performs a pseudo-random sampling of the documents from the previous stage.

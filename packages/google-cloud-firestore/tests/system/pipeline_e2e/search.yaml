@@ -1,0 +1,24 @@
+tests:
+  - description: search_stage_basic
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query: "technology"
+              limit: 2
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args: []
+          name: search
+          options:
+            limit:
+              integerValue: '2'
+            query:
+              functionValue:
+                args:
+                - stringValue: "technology"
+                name: document_matches

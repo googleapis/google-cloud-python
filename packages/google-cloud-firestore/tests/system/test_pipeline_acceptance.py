@@ -33,6 +33,7 @@ from google.cloud.firestore_v1 import pipeline_expressions
 from google.cloud.firestore_v1 import pipeline_expressions as expr
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.vector import Vector
+from google.cloud.firestore_v1 import GeoPoint
 
 FIRESTORE_PROJECT = os.environ.get("GCLOUD_PROJECT")
 
@@ -343,12 +344,15 @@ def _parse_yaml_types(data):
         else:
             return [_parse_yaml_types(value) for value in data]
     # detect timestamps
-    if isinstance(data, str) and ":" in data:
+    if isinstance(data, str) and ":" in data and not data.startswith("GEOPOINT("):
         try:
             parsed_datetime = datetime.datetime.fromisoformat(data)
             return parsed_datetime
         except ValueError:
             pass
+    if isinstance(data, str) and data.startswith("GEOPOINT("):
+        parts = data[9:-1].split(",")
+        return GeoPoint(float(parts[0]), float(parts[1]))
     if data == "NaN":
         return float("NaN")
     return data

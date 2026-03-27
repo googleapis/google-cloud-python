@@ -145,3 +145,13 @@ data:
       value: "NaN"
     doc_with_null:
       value: null
+  geopoints:
+    loc1:
+      name: SF
+      location: GEOPOINT(37.7749,-122.4194)
+    loc2:
+      name: LA
+      location: GEOPOINT(34.0522,-118.2437)
+    loc3:
+      name: NY
+      location: GEOPOINT(40.7128,-74.0060)

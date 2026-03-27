@@ -790,6 +790,34 @@ class TestExpressionessionMethods:
         infix_instance = arg1.equal(arg2)
         assert infix_instance == instance
 
+    def test_between(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Lower")
+        arg3 = self._make_arg("Upper")
+        instance = Expression.between(arg1, arg2, arg3)
+        assert instance.name == "between"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Left.between(Lower, Upper)"
+        infix_instance = arg1.between(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_geo_distance(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Right")
+        instance = Expression.geo_distance(arg1, arg2)
+        assert instance.name == "geo_distance"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Left.geo_distance(Right)"
+        infix_instance = arg1.geo_distance(arg2)
+        assert infix_instance == instance
+
+    def test_document_matches(self):
+        arg1 = self._make_arg("Query")
+        instance = expr.document_matches(arg1)
+        assert instance.name == "document_matches"
+        assert instance.params == [arg1]
+        assert repr(instance) == "document_matches(Query)"
+
     def test_greater_than_or_equal(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")

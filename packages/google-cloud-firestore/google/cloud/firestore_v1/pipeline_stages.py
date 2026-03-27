@@ -109,6 +109,85 @@ class SampleOptions:
         return SampleOptions(value, mode=SampleOptions.Mode.PERCENT)
 
 
+class QueryEnhancement(Enum):
+    """Define the query expansion behavior used by full-text search expressions."""
+    DISABLED = "disabled"
+    REQUIRED = "required"
+    PREFERRED = "preferred"
+
+
+class SearchOptions:
+    """Options for configuring the `Search` pipeline stage."""
+
+    def __init__(
+        self,
+        query: str | BooleanExpression,
+        limit: Optional[int] = None,
+        retrieval_depth: Optional[int] = None,
+        sort: Optional[Sequence[Ordering] | Ordering] = None,
+        add_fields: Optional[Sequence[Selectable]] = None,
+        select: Optional[Sequence[Selectable | str]] = None,
+        offset: Optional[int] = None,
+        query_enhancement: Optional[str | QueryEnhancement] = None,
+        language_code: Optional[str] = None,
+    ):
+        """
+        Initializes a SearchOptions instance.
+
+        Args:
+            query (str | BooleanExpression): Specifies the search query that will be used to query and score documents
+                by the search stage. The query can be expressed as an `Expression`, which will be used to score
+                and filter the results. Not all expressions supported by Pipelines are supported in the Search query.
+                The query can also be expressed as a string in the Search DSL.
+            limit (Optional[int]): The maximum number of documents to return from the Search stage.
+            retrieval_depth (Optional[int]): The maximum number of documents for the search stage to score. Documents
+                will be processed in the pre-sort order specified by the search index.
+            sort (Optional[Sequence[Ordering] | Ordering]): Orderings specify how the input documents are sorted.
+            add_fields (Optional[Sequence[Selectable]]): The fields to add to each document, specified as a `Selectable`.
+            select (Optional[Sequence[Selectable | str]]): The fields to keep or add to each document,
+                specified as an array of `Selectable` or strings.
+            offset (Optional[int]): The number of documents to skip.
+            query_enhancement (Optional[str | QueryEnhancement]): Define the query expansion behavior used by full-text search expressions
+                in this search stage.
+            language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
+        """
+        if isinstance(query, str):
+            from google.cloud.firestore_v1.pipeline_expressions import document_matches
+            self.query = document_matches(query)
+        else:
+            self.query = query
+        self.limit = limit
+        self.retrieval_depth = retrieval_depth
+        self.sort = [sort] if isinstance(sort, Ordering) else sort
+        self.add_fields = add_fields
+        self.select = select
+        self.offset = offset
+        self.query_enhancement = (
+            QueryEnhancement(query_enhancement.lower()) if isinstance(query_enhancement, str) else query_enhancement
+        )
+        self.language_code = language_code
+
+    def __repr__(self):
+        args = [f"query={self.query!r}"]
+        if self.limit is not None:
+            args.append(f"limit={self.limit}")
+        if self.retrieval_depth is not None:
+            args.append(f"retrieval_depth={self.retrieval_depth}")
+        if self.sort is not None:
+            args.append(f"sort={self.sort}")
+        if self.add_fields is not None:
+            args.append(f"add_fields={self.add_fields}")
+        if self.select is not None:
+            args.append(f"select={self.select}")
+        if self.offset is not None:
+            args.append(f"offset={self.offset}")
+        if self.query_enhancement is not None:
+            args.append(f"query_enhancement={self.query_enhancement!r}")
+        if self.language_code is not None:
+            args.append(f"language_code={self.language_code!r}")
+        return f"{self.__class__.__name__}({', '.join(args)})"
+
+
 class UnnestOptions:
     """Options for configuring the `Unnest` pipeline stage.
 
@@ -421,6 +500,41 @@ class Sample(Stage):
                 Value(double_value=self.options.value),
                 Value(string_value="percent"),
             ]
+
+
+class Search(Stage):
+    """Search stage."""
+
+    def __init__(self, options: SearchOptions):
+        super().__init__("search")
+        self.options = options
+
+    def _pb_args(self) -> list[Value]:
+        return []
+
+    def _pb_options(self) -> dict[str, Value]:
+        options = {}
+        if self.options.query is not None:
+            options["query"] = self.options.query._to_pb()
+        if self.options.limit is not None:
+            options["limit"] = Value(integer_value=self.options.limit)
+        if self.options.retrieval_depth is not None:
+            options["retrieval_depth"] = Value(integer_value=self.options.retrieval_depth)
+        if self.options.sort is not None:
+            options["sort"] = Value(array_value={"values": [s._to_pb() for s in self.options.sort]})
+        if self.options.add_fields is not None:
+            from google.cloud.firestore_v1.pipeline_expressions import Selectable
+            options["add_fields"] = Selectable._to_value(self.options.add_fields)
+        if self.options.select is not None:
+            from google.cloud.firestore_v1.pipeline_expressions import Selectable
+            options["select"] = Selectable._to_value(self.options.select)
+        if self.options.offset is not None:
+            options["offset"] = Value(integer_value=self.options.offset)
+        if self.options.query_enhancement is not None:
+            options["query_enhancement"] = Value(string_value=self.options.query_enhancement.value)
+        if self.options.language_code is not None:
+            options["language_code"] = Value(string_value=self.options.language_code)
+        return options
 
 
 class Select(Stage):
