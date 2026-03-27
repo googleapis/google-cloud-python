@@ -34,7 +34,6 @@ import logging
 from typing import Optional, TYPE_CHECKING
 
 
-from google.auth import _constants
 from google.auth import _exponential_backoff
 from google.auth import _helpers
 from google.auth import credentials
@@ -369,10 +368,8 @@ class Credentials(
                 "Service account email is required to build the Regional Access Boundary lookup URL for impersonated credentials."
             )
             return None
-        return (
-            _constants._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                service_account_email=self.service_account_email
-            )
+        return iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+            service_account_email=self.service_account_email
         )
 
     def sign_bytes(self, message):

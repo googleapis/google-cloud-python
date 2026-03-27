@@ -41,10 +41,10 @@ import re
 from typing import Optional, TYPE_CHECKING
 
 
-from google.auth import _constants
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.oauth2 import sts
 from google.oauth2 import utils
 
@@ -337,10 +337,8 @@ class Credentials(
 
         pool_id = match.groups()[0]
 
-        return (
-            _constants._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                pool_id=pool_id
-            )
+        return iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+            pool_id=pool_id
         )
 
     def revoke(self, request):

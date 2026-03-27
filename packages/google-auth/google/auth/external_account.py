@@ -39,10 +39,10 @@ import re
 from typing import Optional, TYPE_CHECKING
 
 
-from google.auth import _constants
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
@@ -523,7 +523,7 @@ class Credentials(
         )
         if workload_match:
             project_number, pool_id = workload_match.groups()
-            url = _constants._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+            url = iam._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
                 project_number=project_number,
                 pool_id=pool_id,
             )
@@ -535,8 +535,10 @@ class Credentials(
             )
             if workforce_match:
                 pool_id = workforce_match.groups()[0]
-                url = _constants._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                    pool_id=pool_id
+                url = (
+                    iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+                        pool_id=pool_id
+                    )
                 )
 
         if url:

@@ -19,9 +19,9 @@ import abc
 from enum import Enum
 import logging
 import os
-import warnings
 from typing import Dict, List, Optional, TYPE_CHECKING
 from urllib.parse import urlparse
+import warnings
 
 
 from google.auth import _helpers, environment_vars
