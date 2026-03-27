@@ -53,6 +53,8 @@ def yaml_loader(field="tests", dir_name="pipeline_e2e", attach_file_name=True):
     """
     combined_yaml = None
     for file_name in os.listdir(f"{test_dir_name}/{dir_name}"):
+        if not file_name.endswith(".yaml"):
+            continue
         with open(f"{test_dir_name}/{dir_name}/{file_name}") as f:
             new_yaml = yaml.safe_load(f)
             assert new_yaml is not None, f"found empty yaml in {file_name}"

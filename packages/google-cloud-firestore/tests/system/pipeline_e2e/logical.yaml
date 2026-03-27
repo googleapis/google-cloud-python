@@ -688,3 +688,74 @@ tests:
         conditional_field: "Dystopian"
       - title: "Dune"
         conditional_field: "Frank Herbert"
+  - description: testCmp
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - FunctionExpression.cmp:
+                  - Field: rating
+                  - Constant: 4.5
+              - Constant: 1
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: Dune
+      - title: The Lord of the Rings
+  - description: testIfNullWithNullField
+    pipeline:
+      - Collection: errors
+      - Where:
+          - FunctionExpression.equal:
+              - Field: value
+              - Constant: null
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.if_null:
+                - Field: value
+                - Constant: "default"
+            - "value_or_default"
+    assert_results:
+      - value_or_default: "default"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /errors
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: value
+              - nullValue: null
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                value_or_default:
+                  functionValue:
+                    name: if_null
+                    args:
+                    - fieldReferenceValue: value
+                    - stringValue: default
+          name: select
+  - description: testIfNullWithNonNullField
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.if_null:
+                - Field: title
+                - Constant: "default"
+            - "value_or_default"
+    assert_results:
+      - value_or_default: "1984"
