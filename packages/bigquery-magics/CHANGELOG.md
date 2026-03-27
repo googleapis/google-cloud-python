@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.1...bigquery-magics-v0.12.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.12.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.12.0...v0.12.1) (2026-02-25)
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.25.0...google-cloud-dataproc-v5.26.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [5.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.24.0...google-cloud-dataproc-v5.25.0) (2026-02-19)
 
 
