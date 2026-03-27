@@ -4,8 +4,33 @@ tests:
       - Collection: books
       - Search:
           - SearchOptions:
-              query: "technology"
+              query: "science"
               limit: 2
+    assert_results:
+      - title: "Dune"
+        author: "Frank Herbert"
+        genre: "Science Fiction"
+        published: 1965
+        rating: 4.6
+        tags:
+          - politics
+          - desert
+          - adventure
+        awards:
+          hugo: true
+          nebula: true
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+        genre: "Science Fiction"
+        published: 1979
+        rating: 4.2
+        tags:
+          - comedy
+          - space
+          - adventure
+        awards:
+          hugo: true
+          nebula: false
     assert_proto:
       pipeline:
         stages:
@@ -31,9 +56,22 @@ tests:
                   - Constant: "science"
               limit: 5
               retrieval_depth: 10
-              offset: 2
+              offset: 1
               query_enhancement: disabled
               language_code: en
+    assert_results:
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+        genre: "Science Fiction"
+        published: 1979
+        rating: 4.2
+        tags:
+          - comedy
+          - space
+          - adventure
+        awards:
+          hugo: true
+          nebula: false
     assert_proto:
       pipeline:
         stages:
@@ -47,7 +85,7 @@ tests:
             retrieval_depth:
               integerValue: '10'
             offset:
-              integerValue: '2'
+              integerValue: '1'
             query_enhancement:
               stringValue: "disabled"
             language_code:
@@ -57,7 +95,7 @@ tests:
                 args:
                 - stringValue: "science"
                 name: document_matches
-  - description: search_stage_with_sort_and_select
+  - description: search_stage_with_sort_and_add_fields
     pipeline:
       - Collection: books
       - Search:
@@ -67,14 +105,44 @@ tests:
                 Ordering:
                   - Field: rating
                   - DESCENDING
-              select:
-                - title
               add_fields:
                 - AliasedExpression:
                   - FunctionExpression.string_concat:
                     - Field: title
                     - Constant: " - Selected"
                   - "title_selected"
+                - AliasedExpression:
+                  - Score: []
+                  - "search_score"
+    assert_results:
+      - title: "Dune"
+        author: "Frank Herbert"
+        genre: "Science Fiction"
+        published: 1965
+        rating: 4.6
+        tags:
+          - politics
+          - desert
+          - adventure
+        awards:
+          hugo: true
+          nebula: true
+        title_selected: "Dune - Selected"
+        search_score: 0.0
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+        genre: "Science Fiction"
+        published: 1979
+        rating: 4.2
+        tags:
+          - comedy
+          - space
+          - adventure
+        awards:
+          hugo: true
+          nebula: false
+        title_selected: "The Hitchhiker's Guide to the Galaxy - Selected"
+        search_score: 0.0
     assert_proto:
       pipeline:
         stages:
@@ -97,11 +165,6 @@ tests:
                         stringValue: descending
                       expression:
                         fieldReferenceValue: rating
-            select:
-              mapValue:
-                fields:
-                  title:
-                    fieldReferenceValue: title
             add_fields:
               mapValue:
                 fields:
@@ -111,6 +174,9 @@ tests:
                       - fieldReferenceValue: title
                       - stringValue: " - Selected"
                       name: string_concat
+                  search_score:
+                    functionValue:
+                      name: score
   - description: expression_between
     pipeline:
       - Collection: books
@@ -130,6 +196,41 @@ tests:
       - title: One Hundred Years of Solitude
       - title: The Lord of the Rings
       - title: To Kill a Mockingbird
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1950'
+                  name: greater_than_or_equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1970'
+                  name: less_than_or_equal
+              name: and
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
   - description: expression_geo_distance
     pipeline:
       - Collection: geopoints
@@ -138,8 +239,8 @@ tests:
               query:
                 FunctionExpression.less_than:
                   - FunctionExpression.geo_distance:
-                      - Field: location
-                      - Constant: GEOPOINT(37.0,-122.0)
+                     - Field: location
+                     - GeoPoint: [37.0, -122.0]
                   - Constant: 150000.0
       - Select:
         - name
@@ -149,3 +250,37 @@ tests:
           - ASCENDING
     assert_results:
       - name: SF
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /geopoints
+          name: collection
+        - name: search
+          options:
+            query:
+              functionValue:
+                args:
+                - functionValue:
+                    args:
+                    - fieldReferenceValue: location
+                    - geoPointValue:
+                        latitude: 37.0
+                        longitude: -122.0
+                    name: geo_distance
+                - doubleValue: 150000.0
+                name: less_than
+        - args:
+          - mapValue:
+              fields:
+                name:
+                  fieldReferenceValue: name
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: name
+          name: sort

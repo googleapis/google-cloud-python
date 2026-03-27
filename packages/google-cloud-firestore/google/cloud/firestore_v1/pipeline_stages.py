@@ -152,10 +152,7 @@ class SearchOptions:
                 in this search stage.
             language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
         """
-        if isinstance(query, str):
-            self.query = DocumentMatches(query)
-        else:
-            self.query = query
+        self.query = DocumentMatches(query) if isinstance(query, str) else query
         self.limit = limit
         self.retrieval_depth = retrieval_depth
         self.sort = [sort] if isinstance(sort, Ordering) else sort

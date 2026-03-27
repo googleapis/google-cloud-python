@@ -352,9 +352,6 @@ def _parse_yaml_types(data):
             return parsed_datetime
         except ValueError:
             pass
-    if isinstance(data, str) and data.startswith("GEOPOINT("):
-        parts = data[9:-1].split(",")
-        return GeoPoint(float(parts[0]), float(parts[1]))
     if data == "NaN":
         return float("NaN")
     return data
