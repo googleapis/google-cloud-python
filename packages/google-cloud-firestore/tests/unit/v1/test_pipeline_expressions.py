@@ -795,9 +795,11 @@ class TestExpressionessionMethods:
         arg2 = self._make_arg("Lower")
         arg3 = self._make_arg("Upper")
         instance = Expression.between(arg1, arg2, arg3)
-        assert instance.name == "between"
-        assert instance.params == [arg1, arg2, arg3]
-        assert repr(instance) == "Left.between(Lower, Upper)"
+        assert instance.name == "and"
+        assert len(instance.params) == 2
+        assert instance.params[0].name == "greater_than_or_equal"
+        assert instance.params[1].name == "less_than_or_equal"
+        assert repr(instance) == "And(Left.greater_than_or_equal(Lower), Left.less_than_or_equal(Upper))"
         infix_instance = arg1.between(arg2, arg3)
         assert infix_instance == instance
 

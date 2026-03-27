@@ -626,13 +626,9 @@ class Expression(ABC):
         Returns:
             A new `BooleanExpression` representing the between comparison.
         """
-        return BooleanExpression(
-            "between",
-            [
-                self,
-                self._cast_to_expr_or_convert_to_constant(lower),
-                self._cast_to_expr_or_convert_to_constant(upper),
-            ],
+        return And(
+            self.greater_than_or_equal(lower),
+            self.less_than_or_equal(upper),
         )
 
     @expose_as_static
