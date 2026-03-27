@@ -611,7 +611,7 @@ class Expression(ABC):
 
     @expose_as_static
     def between(
-        self, lower: Expression | CONSTANT_TYPE, upper: Expression | CONSTANT_TYPE
+        self, lower: Expression | float, upper: Expression | float
     ) -> "BooleanExpression":
         """Evaluates if the result of this expression is between
         the lower bound (inclusive) and upper bound (inclusive).
@@ -636,7 +636,7 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def geo_distance(self, other: Expression | CONSTANT_TYPE) -> "FunctionExpression":
+    def geo_distance(self, other: Expression | GeoPoint) -> "FunctionExpression":
         """Evaluates to the distance in meters between the location in the specified
         field and the query location.
 
