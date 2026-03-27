@@ -19,7 +19,7 @@ import inspect
 import io
 import os
 import textwrap
-from typing import Any, cast, get_args, get_origin, Sequence, Type
+from typing import Any, cast, get_args, get_origin, Optional, Sequence, Type
 import warnings
 
 import cloudpickle
@@ -401,18 +401,26 @@ class CodeDef:
     # Produced by cloudpickle, not compatible across python versions
     pickled_code: bytes
     # This is just the function itself, and does not include referenced objects/functions/modules
-    function_source: str
+    function_source: Optional[str]
+    entry_point: Optional[str]
     package_requirements: tuple[str, ...]
 
     @classmethod
     def from_func(cls, func, package_requirements: Sequence[str] | None = None):
         bytes_io = io.BytesIO()
         cloudpickle.dump(func, bytes_io, protocol=_pickle_protocol_version)
-        # this is hacky, but works for some nested functions
-        source = textwrap.dedent(inspect.getsource(func))
+        source = None
+        entry_point = None
+        try:
+            # dedent is hacky, but works for some nested functions
+            source = textwrap.dedent(inspect.getsource(func))
+            entry_point = func.__name__
+        except OSError:
+            pass
         return cls(
             pickled_code=bytes_io.getvalue(),
             function_source=source,
+            entry_point=entry_point,
             package_requirements=tuple(package_requirements or []),
         )
 
@@ -445,6 +453,30 @@ class CodeDef:
             for p in sorted(self.package_requirements):
                 hash_val.update(p.encode())
 
+        return hash_val.digest()
+
+
+@dataclasses.dataclass(frozen=True)
+class ManagedFunctionConfig:
+    code: CodeDef
+    signature: UdfSignature
+    max_batching_rows: Optional[int]
+    container_cpu: Optional[float]
+    container_memory: Optional[str]
+    bq_connection_id: Optional[str]
+    # capture_refernces=True -> deploy as cloudpickle
+    # capture_references=False -> deploy as source
+    capture_references: bool = False
+
+    def stable_hash(self) -> bytes:
+        hash_val = google_crc32c.Checksum()
+        hash_val.update(self.code.stable_hash())
+        hash_val.update(self.signature.stable_hash())
+        hash_val.update(str(self.max_batching_rows).encode())
+        hash_val.update(str(self.container_cpu).encode())
+        hash_val.update(str(self.container_memory).encode())
+        hash_val.update(str(self.bq_connection_id).encode())
+        hash_val.update(str(self.capture_references).encode())
         return hash_val.digest()
 
 

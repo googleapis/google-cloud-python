@@ -186,18 +186,6 @@ def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> s
     return f"`{routine_ref.project}.{routine_ref.dataset_id}`.{routine_ref.routine_id}"
 
 
-def get_managed_function_name(
-    function_hash: str,
-    session_id: str | None = None,
-):
-    """Get a name for the bigframes managed function for the given user defined function."""
-    parts = [_BIGFRAMES_FUNCTION_PREFIX]
-    if session_id:
-        parts.append(session_id)
-    parts.append(function_hash)
-    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
-
-
 # Deprecated: Use CodeDef.stable_hash() instead.
 def get_hash(def_, package_requirements=None):
     "Get hash (32 digits alphanumeric) of a function."

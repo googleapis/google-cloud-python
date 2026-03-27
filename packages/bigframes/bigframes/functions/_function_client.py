@@ -15,7 +15,6 @@
 
 from __future__ import annotations
 
-import inspect
 import logging
 import os
 import random
@@ -25,7 +24,7 @@ import string
 import tempfile
 import textwrap
 import types
-from typing import Any, cast, Optional, Sequence, TYPE_CHECKING
+from typing import Any, cast, Optional, TYPE_CHECKING
 import warnings
 
 import requests
@@ -87,7 +86,6 @@ class FunctionClient:
         bq_location,
         bq_dataset,
         bq_client,
-        bq_connection_id,
         bq_connection_manager,
         cloud_function_region=None,
         cloud_functions_client=None,
@@ -102,7 +100,6 @@ class FunctionClient:
         self._bq_location = bq_location
         self._bq_dataset = bq_dataset
         self._bq_client = bq_client
-        self._bq_connection_id = bq_connection_id
         self._bq_connection_manager = bq_connection_manager
         self._session = session
 
@@ -114,12 +111,12 @@ class FunctionClient:
         self._cloud_function_docker_repository = cloud_function_docker_repository
         self._cloud_build_service_account = cloud_build_service_account
 
-    def _create_bq_connection(self) -> None:
+    def _create_bq_connection(self, connection_id: str) -> None:
         if self._bq_connection_manager:
             self._bq_connection_manager.create_bq_connection(
                 self._gcp_project_id,
                 self._bq_location,
-                self._bq_connection_id,
+                connection_id,
                 "run.invoker",
             )
 
@@ -174,7 +171,7 @@ class FunctionClient:
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
-        self._create_bq_connection()
+        self._create_bq_connection(udf_def.connection_id)
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -202,7 +199,7 @@ class FunctionClient:
         create_function_ddl = f"""
             CREATE OR REPLACE FUNCTION `{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name_escaped}({udf_def.signature.to_sql_input_signature()})
             RETURNS {udf_def.signature.with_devirtualize().output.sql_type}
-            REMOTE WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{self._bq_connection_id}`
+            REMOTE WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{udf_def.connection_id}`
             OPTIONS ({remote_function_options_str})"""
 
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
@@ -212,26 +209,15 @@ class FunctionClient:
 
     def provision_bq_managed_function(
         self,
-        func,
-        input_types: Sequence[str],
-        output_type: str,
         name: Optional[str],
-        packages: Optional[Sequence[str]],
-        max_batching_rows: Optional[int],
-        container_cpu: Optional[float],
-        container_memory: Optional[str],
-        is_row_processor: bool,
-        bq_connection_id,
-        *,
-        capture_references: bool = False,
+        config: udf_def.ManagedFunctionConfig,
     ):
         """Create a BigQuery managed function."""
 
         # TODO(b/406283812): Expose the capability to pass down
         # capture_references=True in the public udf API.
-        # TODO(b/495508827): Include all config in the value hash.
         if (
-            capture_references
+            config.capture_references
             and (python_version := _utils.get_python_version())
             != _MANAGED_FUNC_PYTHON_VERSION
         ):
@@ -241,31 +227,26 @@ class FunctionClient:
             )
 
         # Create BQ managed function.
-        bq_function_args = []
-        bq_function_return_type = output_type
-
-        input_args = inspect.getargs(func.__code__).args
-        # We expect the input type annotations to be 1:1 with the input args.
-        for name_, type_ in zip(input_args, input_types):
-            bq_function_args.append(f"{name_} {type_}")
+        bq_function_args = config.signature.to_sql_input_signature()
+        bq_function_return_type = config.signature.with_devirtualize().output.sql_type
 
         managed_function_options: dict[str, Any] = {
             "runtime_version": _MANAGED_FUNC_PYTHON_VERSION,
             "entry_point": "bigframes_handler",
         }
-        if max_batching_rows:
-            managed_function_options["max_batching_rows"] = max_batching_rows
-        if container_cpu:
-            managed_function_options["container_cpu"] = container_cpu
-        if container_memory:
-            managed_function_options["container_memory"] = container_memory
+        if config.max_batching_rows:
+            managed_function_options["max_batching_rows"] = config.max_batching_rows
+        if config.container_cpu:
+            managed_function_options["container_cpu"] = config.container_cpu
+        if config.container_memory:
+            managed_function_options["container_memory"] = config.container_memory
 
         # Augment user package requirements with any internal package
         # requirements.
         packages = _utils.get_updated_package_requirements(
-            packages or [],
-            is_row_processor,
-            capture_references,
+            config.code.package_requirements or [],
+            config.signature.is_row_processor,
+            config.capture_references,
             ignore_package_version=True,
         )
         if packages:
@@ -276,26 +257,20 @@ class FunctionClient:
 
         bq_function_name = name
         if not bq_function_name:
-            # Compute a unique hash representing the user code.
-            function_hash = _utils.get_hash(func, packages)
-            bq_function_name = _utils.get_managed_function_name(
-                function_hash,
-                # session-scope in absensce of name from user
-                # name indicates permanent allocation
-                None if name else self._session.session_id,
+            # Compute a unique hash representing the artifact definition.
+            bq_function_name = get_managed_function_name(
+                config, self._session.session_id
             )
 
         persistent_func_id = (
             f"`{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}"
         )
 
-        udf_name = func.__name__
-
         with_connection_clause = (
             (
-                f"WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{self._bq_connection_id}`"
+                f"WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{config.bq_connection_id}`"
             )
-            if bq_connection_id
+            if config.bq_connection_id
             else ""
         )
 
@@ -303,13 +278,13 @@ class FunctionClient:
         # including the user's function, necessary imports, and the BigQuery
         # handler wrapper.
         python_code_block = bff_template.generate_managed_function_code(
-            func, udf_name, is_row_processor, capture_references
+            config.code, config.signature, config.capture_references
         )
 
         create_function_ddl = (
             textwrap.dedent(
                 f"""
-                CREATE OR REPLACE FUNCTION {persistent_func_id}({','.join(bq_function_args)})
+                CREATE OR REPLACE FUNCTION {persistent_func_id}({bq_function_args})
                 RETURNS {bq_function_return_type}
                 LANGUAGE python
                 {with_connection_clause}
@@ -590,6 +565,7 @@ class FunctionClient:
         cloud_function_memory_mib: int | None,
         cloud_function_cpus: float | None,
         cloud_function_ingress_settings: str,
+        bq_connection_id: str,
     ):
         """Provision a BigQuery remote function."""
         # Augment user package requirements with any internal package
@@ -657,7 +633,7 @@ class FunctionClient:
 
         intended_rf_spec = udf_def.RemoteFunctionConfig(
             endpoint=cf_endpoint,
-            connection_id=self._bq_connection_id,
+            connection_id=bq_connection_id,
             max_batching_rows=max_batching_rows or 1000,
             signature=func_signature,
             bq_metadata=func_signature.protocol_metadata,
@@ -728,6 +704,18 @@ def get_bigframes_function_name(
     parts = [_BIGFRAMES_FUNCTION_PREFIX, session_id, function.stable_hash().hex()]
     if uniq_suffix:
         parts.append(uniq_suffix)
+    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
+
+
+def get_managed_function_name(
+    function_def: udf_def.ManagedFunctionConfig,
+    session_id: str | None = None,
+):
+    """Get a name for the bigframes managed function for the given user defined function."""
+    parts = [_BIGFRAMES_FUNCTION_PREFIX]
+    if session_id:
+        parts.append(session_id)
+    parts.append(function_def.stable_hash().hex())
     return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
 
 

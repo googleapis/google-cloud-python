@@ -34,13 +34,23 @@ import bigframes.exceptions
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
 import bigframes.session._io.bigquery
-from bigframes.testing.utils import (
-    assert_frame_equal,
-    assert_series_equal,
-    get_function_name,
-)
+from bigframes.testing.utils import assert_frame_equal, assert_series_equal
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")
+
+
+def get_function_name(func, package_requirements=None, is_row_processor=False):
+    """Get a bigframes function name for testing given a udf."""
+    # Augment user package requirements with any internal package
+    # requirements.
+    package_requirements = bff_utils.get_updated_package_requirements(
+        package_requirements or [], is_row_processor
+    )
+
+    # Compute a unique hash representing the user code.
+    function_hash = bff_utils.get_hash(func, package_requirements)
+
+    return f"bigframes_{function_hash}"
 
 
 @pytest.fixture(scope="module")
