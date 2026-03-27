@@ -152,8 +152,8 @@ class SearchOptions:
             language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
         """
         if isinstance(query, str):
-            from google.cloud.firestore_v1.pipeline_expressions import document_matches
-            self.query = document_matches(query)
+            from google.cloud.firestore_v1.pipeline_expressions import DocumentMatches
+            self.query = DocumentMatches(query)
         else:
             self.query = query
         self.limit = limit

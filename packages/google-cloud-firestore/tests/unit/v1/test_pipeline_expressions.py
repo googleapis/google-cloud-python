@@ -815,10 +815,10 @@ class TestExpressionessionMethods:
 
     def test_document_matches(self):
         arg1 = self._make_arg("Query")
-        instance = expr.document_matches(arg1)
+        instance = expr.DocumentMatches(arg1)
         assert instance.name == "document_matches"
         assert instance.params == [arg1]
-        assert repr(instance) == "document_matches(Query)"
+        assert repr(instance) == "DocumentMatches(Query)"
 
     def test_greater_than_or_equal(self):
         arg1 = self._make_arg("Left")

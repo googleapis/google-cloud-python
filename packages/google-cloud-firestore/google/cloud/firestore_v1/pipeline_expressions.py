@@ -2676,12 +2676,12 @@ class Rand(FunctionExpression):
         super().__init__("rand", [], use_infix_repr=False)
 
 
-def document_matches(query: Expression | str) -> BooleanExpression:
+class DocumentMatches(BooleanExpression):
     """Creates a boolean expression for a document match query.
     
     Example:
         >>> # Find documents matching the query string
-        >>> document_matches("search query")
+        >>> DocumentMatches("search query")
 
     Args:
         query: The search query string or expression.
@@ -2689,7 +2689,11 @@ def document_matches(query: Expression | str) -> BooleanExpression:
     Returns:
         A new `BooleanExpression` representing the document match.
     """
-    return BooleanExpression(
-        "document_matches", [Expression._cast_to_expr_or_convert_to_constant(query)]
-    )
+
+    def __init__(self, query: Expression | str):
+        super().__init__(
+            "document_matches",
+            [Expression._cast_to_expr_or_convert_to_constant(query)],
+            use_infix_repr=False,
+        )
 
