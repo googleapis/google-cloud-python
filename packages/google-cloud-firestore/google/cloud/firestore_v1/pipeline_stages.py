@@ -30,6 +30,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     AliasedExpression,
     BooleanExpression,
     CONSTANT_TYPE,
+    DocumentMatches,
     Expression,
     Field,
     Ordering,
@@ -152,7 +153,6 @@ class SearchOptions:
             language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
         """
         if isinstance(query, str):
-            from google.cloud.firestore_v1.pipeline_expressions import DocumentMatches
             self.query = DocumentMatches(query)
         else:
             self.query = query
@@ -160,7 +160,7 @@ class SearchOptions:
         self.retrieval_depth = retrieval_depth
         self.sort = [sort] if isinstance(sort, Ordering) else sort
         self.add_fields = add_fields
-        self.select = select
+        self.select = [Field(s) if isinstance(s, str) else s for s in select] if select is not None else None
         self.offset = offset
         self.query_enhancement = (
             QueryEnhancement(query_enhancement.lower()) if isinstance(query_enhancement, str) else query_enhancement
@@ -523,10 +523,8 @@ class Search(Stage):
         if self.options.sort is not None:
             options["sort"] = Value(array_value={"values": [s._to_pb() for s in self.options.sort]})
         if self.options.add_fields is not None:
-            from google.cloud.firestore_v1.pipeline_expressions import Selectable
             options["add_fields"] = Selectable._to_value(self.options.add_fields)
         if self.options.select is not None:
-            from google.cloud.firestore_v1.pipeline_expressions import Selectable
             options["select"] = Selectable._to_value(self.options.select)
         if self.options.offset is not None:
             options["offset"] = Value(integer_value=self.options.offset)
