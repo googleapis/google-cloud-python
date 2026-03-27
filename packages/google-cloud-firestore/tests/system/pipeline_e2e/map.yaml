@@ -279,9 +279,11 @@ tests:
           - Field: awards.hugo
     assert_results:
       - title: The Hitchhiker's Guide to the Galaxy
-        awards.hugo: true
+        awards:
+          hugo: true
       - title: Dune
-        awards.hugo: true
+        awards:
+          hugo: true
     assert_proto:
       pipeline:
         stages:
@@ -340,10 +342,16 @@ tests:
             - FunctionExpression.map_keys:
                 - Field: awards
             - "award_keys"
+      # server doesn't guarantee ordering
+      - Unnest:
+          - Field: award_keys
+      - Sort:
+          - Ordering:
+              - Field: award_keys
+              - ASCENDING
     assert_results:
-      - award_keys:
-          - hugo
-          - nebula
+      - award_keys: hugo
+      - award_keys: nebula
     assert_proto:
       pipeline:
         stages:
@@ -366,6 +374,18 @@ tests:
                     args:
                     - fieldReferenceValue: awards
           name: select
+        - args:
+          - fieldReferenceValue: award_keys
+          - fieldReferenceValue: award_keys
+          name: unnest
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: award_keys
+          name: sort
   - description: testMapValues
     pipeline:
       - Collection: books
@@ -416,12 +436,20 @@ tests:
             - FunctionExpression.map_entries:
                 - Field: awards
             - "award_entries"
+      # server doesn't guarantee ordering
+      - Unnest:
+          - Field: award_entries
+      - Sort:
+          - Ordering:
+              - Field: award_entries.k
+              - ASCENDING
     assert_results:
       - award_entries:
-          - k: hugo
-            v: true
-          - k: nebula
-            v: true
+          k: hugo
+          v: true
+      - award_entries:
+          k: nebula
+          v: true
     assert_proto:
       pipeline:
         stages:
@@ -444,3 +472,15 @@ tests:
                     args:
                     - fieldReferenceValue: awards
           name: select
+        - args:
+          - fieldReferenceValue: award_entries
+          - fieldReferenceValue: award_entries
+          name: unnest
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: award_entries.k
+          name: sort

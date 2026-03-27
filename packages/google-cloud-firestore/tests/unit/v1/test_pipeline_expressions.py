@@ -1793,6 +1793,145 @@ class TestExpressionessionMethods:
         infix_instance = arg1.last()
         assert infix_instance == instance
 
+    def test_cmp(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Other")
+        instance = Expression.cmp(arg1, arg2)
+        assert instance.name == "cmp"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.cmp(Other)"
+        infix_instance = arg1.cmp(arg2)
+        assert infix_instance == instance
+
+    def test_timestamp_trunc(self):
+        arg1 = self._make_arg("Timestamp")
+        arg2 = self._make_arg("Granularity")
+        arg3 = self._make_arg("Timezone")
+        instance = Expression.timestamp_trunc(arg1, arg2)
+        assert instance.name == "timestamp_trunc"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Timestamp.timestamp_trunc(Granularity)"
+        infix_instance = arg1.timestamp_trunc(arg2)
+        assert infix_instance == instance
+
+        instance_tz = Expression.timestamp_trunc(arg1, arg2, arg3)
+        assert instance_tz.name == "timestamp_trunc"
+        assert instance_tz.params == [arg1, arg2, arg3]
+        assert repr(instance_tz) == "Timestamp.timestamp_trunc(Granularity, Timezone)"
+        infix_instance_tz = arg1.timestamp_trunc(arg2, arg3)
+        assert infix_instance_tz == instance_tz
+
+    def test_timestamp_extract(self):
+        arg1 = self._make_arg("Timestamp")
+        arg2 = self._make_arg("Part")
+        arg3 = self._make_arg("Timezone")
+        instance = Expression.timestamp_extract(arg1, arg2)
+        assert instance.name == "timestamp_extract"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Timestamp.timestamp_extract(Part)"
+        infix_instance = arg1.timestamp_extract(arg2)
+        assert infix_instance == instance
+
+        instance_tz = Expression.timestamp_extract(arg1, arg2, arg3)
+        assert instance_tz.name == "timestamp_extract"
+        assert instance_tz.params == [arg1, arg2, arg3]
+        assert repr(instance_tz) == "Timestamp.timestamp_extract(Part, Timezone)"
+        infix_instance_tz = arg1.timestamp_extract(arg2, arg3)
+        assert infix_instance_tz == instance_tz
+
+    def test_timestamp_diff(self):
+        arg1 = self._make_arg("End")
+        arg2 = self._make_arg("Start")
+        arg3 = self._make_arg("Unit")
+        instance = Expression.timestamp_diff(arg1, arg2, arg3)
+        assert instance.name == "timestamp_diff"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "End.timestamp_diff(Start, Unit)"
+        infix_instance = arg1.timestamp_diff(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_if_null(self):
+        arg1 = self._make_arg("Field1")
+        arg2 = self._make_arg("Field2")
+        arg3 = self._make_arg("Field3")
+        instance = Expression.if_null(arg1, arg2, arg3)
+        assert instance.name == "if_null"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Field1.if_null(Field2, Field3)"
+        infix_instance = arg1.if_null(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_type(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.type(arg1)
+        assert instance.name == "type"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.type()"
+        infix_instance = arg1.type()
+        assert infix_instance == instance
+
+    def test_is_type(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("TypeString")
+        instance = Expression.is_type(arg1, arg2)
+        assert instance.name == "is_type"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.is_type(TypeString)"
+        infix_instance = arg1.is_type(arg2)
+        assert infix_instance == instance
+
+    def test_type_enum(self):
+        from google.cloud.firestore_v1.pipeline_expressions import Type
+
+        arg1 = self._make_arg("Value")
+        instance = Expression.is_type(arg1, Type.STRING)
+        assert instance.name == "is_type"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == Type.STRING.value
+        assert repr(instance) == "Value.is_type(Constant.of('string'))"
+        infix_instance = arg1.is_type(Type.STRING)
+        assert infix_instance == instance
+
+    def test_timestamp_enums(self):
+        from google.cloud.firestore_v1.pipeline_expressions import (
+            TimeGranularity,
+            TimePart,
+            TimeUnit,
+        )
+
+        arg1 = self._make_arg("Value")
+
+        instance_add = Expression.timestamp_add(arg1, TimeUnit.DAY, 1)
+        assert instance_add.name == "timestamp_add"
+        assert isinstance(instance_add.params[1], Constant)
+        assert instance_add.params[1].value == TimeUnit.DAY.value
+
+        instance_trunc = Expression.timestamp_trunc(arg1, TimeGranularity.MONTH)
+        assert instance_trunc.name == "timestamp_trunc"
+        assert isinstance(instance_trunc.params[1], Constant)
+        assert instance_trunc.params[1].value == TimeGranularity.MONTH.value
+
+        instance_trunc_inherited = Expression.timestamp_trunc(
+            arg1, TimeGranularity.MICROSECOND
+        )
+        assert instance_trunc_inherited.name == "timestamp_trunc"
+        assert isinstance(instance_trunc_inherited.params[1], Constant)
+        assert (
+            instance_trunc_inherited.params[1].value
+            == TimeGranularity.MICROSECOND.value
+        )
+
+        instance_extract = Expression.timestamp_extract(arg1, TimePart.YEAR)
+        assert instance_extract.name == "timestamp_extract"
+        assert isinstance(instance_extract.params[1], Constant)
+        assert instance_extract.params[1].value == TimePart.YEAR.value
+
+        instance_extract_inherited = Expression.timestamp_extract(arg1, TimePart.SECOND)
+        assert instance_extract_inherited.name == "timestamp_extract"
+        assert isinstance(instance_extract_inherited.params[1], Constant)
+        assert instance_extract_inherited.params[1].value == TimePart.SECOND.value
+
     def test_array_first(self):
         arg1 = self._make_arg("Value")
         instance = Expression.array_first(arg1)
