@@ -613,15 +613,19 @@ class Expression(ABC):
     def between(
         self, lower: Expression | CONSTANT_TYPE, upper: Expression | CONSTANT_TYPE
     ) -> "BooleanExpression":
-        """Creates an expression that checks if this expression is between two values.
+        """Evaluates if the result of this expression is between
+        the lower bound (inclusive) and upper bound (inclusive).
+
+        This is functionally equivalent to performing an `And` operation with
+        `greater_than_or_equal` and `less_than_or_equal`.
 
         Example:
             >>> # Check if the 'age' field is between 18 and 65
             >>> Field.of("age").between(18, 65)
 
         Args:
-            lower: The lower bound expression or constant value.
-            upper: The upper bound expression or constant value.
+            lower: Lower bound (inclusive) of the range.
+            upper: Upper bound (inclusive) of the range.
 
         Returns:
             A new `BooleanExpression` representing the between comparison.
@@ -633,14 +637,17 @@ class Expression(ABC):
 
     @expose_as_static
     def geo_distance(self, other: Expression | CONSTANT_TYPE) -> "FunctionExpression":
-        """Creates an expression that calculates the distance between two geographical points.
+        """Evaluates to the distance in meters between the location in the specified
+        field and the query location.
+
+        Note: This Expression can only be used within a `Search` stage.
 
         Example:
             >>> # Calculate distance between the 'location' field and a target GeoPoint
             >>> Field.of("location").geo_distance(target_point)
 
         Args:
-            other: The other point expression or constant value.
+            other: Compute distance to this GeoPoint expression or constant value.
 
         Returns:
             A new `FunctionExpression` representing the distance.
@@ -2678,6 +2685,8 @@ class Rand(FunctionExpression):
 
 class DocumentMatches(BooleanExpression):
     """Creates a boolean expression for a document match query.
+
+    Note: This Expression can only be used within a `Search` stage.
     
     Example:
         >>> # Find documents matching the query string
