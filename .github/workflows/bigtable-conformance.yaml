@@ -1,0 +1,76 @@
+on:
+  pull_request:
+    paths:
+      - 'packages/google-cloud-bigtable/**'
+      - '.github/workflows/bigtable-conformance.yaml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/google-cloud-bigtable/**'
+      - '.github/workflows/bigtable-conformance.yaml'
+
+defaults:
+  run:
+    working-directory: packages/google-cloud-bigtable
+
+name: Conformance
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_bigtable: ${{ steps.filter.outputs.bigtable }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            bigtable:
+              - 'packages/google-cloud-bigtable/**'
+              - '.github/workflows/bigtable-conformance.yaml'
+
+  system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_bigtable == 'true' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+    matrix:
+      test-version: [ "v0.0.4" ]
+      py-version: [ 3.13 ]
+      client-type: [ "async", "sync"]
+      # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
+      include:
+        - client-type: "async"
+          test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie\""
+        - client-type: "sync"
+          test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream\""
+    fail-fast: false
+  name: "${{ matrix.client-type }} client / python ${{ matrix.py-version }} / test tag ${{ matrix.test-version }}"
+  steps:
+  - uses: actions/checkout@v4
+    name: "Checkout python-bigtable"
+  - uses: actions/checkout@v4
+    name: "Checkout conformance tests"
+    with:
+      repository: googleapis/cloud-bigtable-clients-test
+      ref: ${{ matrix.test-version }}
+      path: cloud-bigtable-clients-test
+  - uses: actions/setup-python@v5
+    with:
+      python-version: ${{ matrix.py-version }}
+  - uses: actions/setup-go@v5
+    with:
+      go-version: '>=1.20.2'
+  - run: chmod +x .kokoro/conformance.sh
+  - run: pip install -e .
+    name: "Install python-bigtable from HEAD"
+  - run: go version
+  - run: .kokoro/conformance.sh
+    name: "Run tests"
+    env:
+      CLIENT_TYPE: ${{ matrix.client-type }}
+      PYTHONUNBUFFERED: 1
+      TEST_ARGS: ${{ matrix.test_args }}
+      PROXY_PORT: 9999
