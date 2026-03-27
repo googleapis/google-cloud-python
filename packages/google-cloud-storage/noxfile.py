@@ -176,7 +176,18 @@ def unit(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+@nox.parametrize(
+    "test_type",
+    ["system", "conformance", "conformance_bidi"],
+)
+def system(session, test_type):
+    if test_type == "conformance":
+        conftest_retry(session)
+        return
+    if test_type == "conformance_bidi":
+        conftest_retry_bidi(session)
+        return
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
