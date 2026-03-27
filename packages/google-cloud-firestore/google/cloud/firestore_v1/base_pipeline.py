@@ -610,3 +610,55 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.Distinct(*fields))
+
+    def delete(self) -> "_BasePipeline":
+        """
+        Deletes the documents from the current pipeline stage.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field
+            >>> pipeline = client.pipeline().collection("logs")
+            >>> # Delete all documents in the "logs" collection where "status" is "archived"
+            >>> pipeline = pipeline.where(Field.of("status").equal("archived")).delete()
+            >>> pipeline.execute()
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Delete())
+
+    def update(self, *transformed_fields: "Selectable") -> "_BasePipeline":
+        """
+        Updates the documents with the given transformations.
+
+        This method updates the documents in place based on the data flowing through the pipeline.
+        To specify transformations, use `*transformed_fields`.
+
+        Example 1: Update a collection's schema by adding a new field and removing an old one.
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> pipeline = client.pipeline().collection("books")
+            >>> pipeline = pipeline.add_fields(Constant.of("Fiction").as_("genre"))
+            >>> pipeline = pipeline.remove_fields("old_genre").update()
+            >>> pipeline.execute()
+
+        Example 2: Update documents in place with data from literals.
+            >>> pipeline = client.pipeline().literals(
+            ...     {"__name__": client.collection("books").document("book1"), "status": "Updated"}
+            ... ).update()
+            >>> pipeline.execute()
+
+        Example 3: Update documents from previous stages with specified transformations.
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field, Constant
+            >>> pipeline = client.pipeline().collection("books")
+            >>> # Update the "status" field to "Discounted" for all books where price > 50
+            >>> pipeline = pipeline.where(Field.of("price").greater_than(50))
+            >>> pipeline = pipeline.update(Constant.of("Discounted").as_("status"))
+            >>> pipeline.execute()
+
+        Args:
+            *transformed_fields: The transformations to apply.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Update(*transformed_fields))

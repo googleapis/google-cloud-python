@@ -206,6 +206,59 @@ async def test_pipeline_results_async(test_dict, async_client):
         assert len(got_results) == expected_count
 
 
+@pytest.mark.parametrize(
+    "test_dict",
+    [t for t in yaml_loader() if "assert_end_state" in t],
+    ids=id_format,
+)
+def test_pipeline_end_state(test_dict, client):
+    """
+    Ensure pipeline leaves database in expected state
+    """
+    expected_state = _parse_yaml_types(test_dict["assert_end_state"])
+    pipeline = parse_pipeline(client, test_dict["pipeline"])
+    
+    # Execute the DML pipeline
+    pipeline.execute()
+    
+    # Assert end state
+    for doc_path, expected_content in expected_state.items():
+        doc_ref = client.document(doc_path)
+        snapshot = doc_ref.get()
+        if expected_content is None or expected_content == {}:
+            assert not snapshot.exists, f"Expected {doc_path} to be deleted, but it exists"
+        else:
+            assert snapshot.exists, f"Expected {doc_path} to exist, but it was deleted"
+            assert snapshot.to_dict() == expected_content
+
+
+@pytest.mark.parametrize(
+    "test_dict",
+    [t for t in yaml_loader() if "assert_end_state" in t],
+    ids=id_format,
+)
+@pytest.mark.asyncio
+async def test_pipeline_end_state_async(test_dict, async_client):
+    """
+    Ensure pipeline leaves database in expected state
+    """
+    expected_state = _parse_yaml_types(test_dict["assert_end_state"])
+    pipeline = parse_pipeline(async_client, test_dict["pipeline"])
+    
+    # Execute the DML pipeline
+    await pipeline.execute()
+    
+    # Assert end state
+    for doc_path, expected_content in expected_state.items():
+        doc_ref = async_client.document(doc_path)
+        snapshot = await doc_ref.get()
+        if expected_content is None or expected_content == {}:
+            assert not snapshot.exists, f"Expected {doc_path} to be deleted, but it exists"
+        else:
+            assert snapshot.exists, f"Expected {doc_path} to exist, but it was deleted"
+            assert snapshot.to_dict() == expected_content
+
+
 #################################################################################
 # Helpers & Fixtures
 #################################################################################
