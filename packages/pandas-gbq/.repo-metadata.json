@@ -8,6 +8,6 @@
     "name": "pandas-gbq",
     "name_pretty": "Google BigQuery connector for pandas",
     "product_documentation": "https://cloud.google.com/bigquery",
-    "release_level": "preview",
+    "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

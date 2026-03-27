@@ -5,6 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/gkemulticloud/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-gke-multicloud",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=997904\u0026template=1807166",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "gkemulticloud",

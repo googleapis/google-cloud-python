@@ -1,7 +1,7 @@
 Python Client for BigLake API
 =============================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `BigLake API`_: The BigLake API provides access to BigLake Metastore, a serverless, fully
 managed, and highly available metastore for open-source data that can be
@@ -10,7 +10,7 @@ used for querying Apache Iceberg tables in BigQuery.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-biglake-hive.svg
    :target: https://pypi.org/project/google-cloud-biglake-hive/
@@ -63,14 +63,14 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.9, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.8
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

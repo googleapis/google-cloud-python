@@ -6503,34 +6503,8 @@ def test_parse_generator_path():
 def test_tool_path():
     project = "squid"
     location = "clam"
-    tool = "whelk"
-    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
-        project=project,
-        location=location,
-        tool=tool,
-    )
-    actual = GeneratorsClient.tool_path(project, location, tool)
-    assert expected == actual
-
-
-def test_parse_tool_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "tool": "nudibranch",
-    }
-    path = GeneratorsClient.tool_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = GeneratorsClient.parse_tool_path(path)
-    assert expected == actual
-
-
-def test_tool_path():
-    project = "cuttlefish"
-    location = "mussel"
-    app = "winkle"
-    tool = "nautilus"
+    app = "whelk"
+    tool = "octopus"
     expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
         project=project,
         location=location,
@@ -6543,9 +6517,35 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "app": "squid",
+        "project": "oyster",
+        "location": "nudibranch",
+        "app": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = GeneratorsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "winkle"
+    location = "nautilus"
+    tool = "scallop"
+    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
+        project=project,
+        location=location,
+        tool=tool,
+    )
+    actual = GeneratorsClient.tool_path(project, location, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
         "tool": "clam",
     }
     path = GeneratorsClient.tool_path(**expected)

@@ -5,6 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/dataplex/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-dataplex",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1155079\u0026template=1656695",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "dataplex",

@@ -6,6 +6,6 @@
     "library_type": "AUTH",
     "name": "google-auth-httplib2",
     "name_pretty": "Google Auth httplib2",
-    "release_level": "preview",
+    "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

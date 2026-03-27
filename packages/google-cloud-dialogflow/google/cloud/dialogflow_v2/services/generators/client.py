@@ -285,28 +285,6 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
     def tool_path(
         project: str,
         location: str,
-        tool: str,
-    ) -> str:
-        """Returns a fully-qualified tool string."""
-        return "projects/{project}/locations/{location}/tools/{tool}".format(
-            project=project,
-            location=location,
-            tool=tool,
-        )
-
-    @staticmethod
-    def parse_tool_path(path: str) -> Dict[str, str]:
-        """Parses a tool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def tool_path(
-        project: str,
-        location: str,
         app: str,
         tool: str,
     ) -> str:
@@ -323,6 +301,28 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         """Parses a tool path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/tools/{tool}".format(
+            project=project,
+            location=location,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

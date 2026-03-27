@@ -7,6 +7,6 @@
     "library_type": "OTHER",
     "name": "documentai-toolbox",
     "name_pretty": "Document AI Toolbox",
-    "release_level": "preview",
+    "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

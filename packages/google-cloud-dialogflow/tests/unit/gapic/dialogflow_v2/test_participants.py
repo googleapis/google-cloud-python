@@ -9704,34 +9704,8 @@ def test_parse_session_entity_type_path():
 def test_tool_path():
     project = "winkle"
     location = "nautilus"
-    tool = "scallop"
-    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
-        project=project,
-        location=location,
-        tool=tool,
-    )
-    actual = ParticipantsClient.tool_path(project, location, tool)
-    assert expected == actual
-
-
-def test_parse_tool_path():
-    expected = {
-        "project": "abalone",
-        "location": "squid",
-        "tool": "clam",
-    }
-    path = ParticipantsClient.tool_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ParticipantsClient.parse_tool_path(path)
-    assert expected == actual
-
-
-def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    app = "oyster"
-    tool = "nudibranch"
+    app = "scallop"
+    tool = "abalone"
     expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
         project=project,
         location=location,
@@ -9744,9 +9718,35 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "app": "winkle",
+        "project": "squid",
+        "location": "clam",
+        "app": "whelk",
+        "tool": "octopus",
+    }
+    path = ParticipantsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
+        project=project,
+        location=location,
+        tool=tool,
+    )
+    actual = ParticipantsClient.tool_path(project, location, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
         "tool": "nautilus",
     }
     path = ParticipantsClient.tool_path(**expected)

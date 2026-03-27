@@ -46,6 +46,15 @@ class ClientLibraryDestination(int, metaclass=_enum_type_wrapper.EnumTypeWrapper
     GITHUB: _ClassVar[ClientLibraryDestination]
     PACKAGE_MANAGER: _ClassVar[ClientLibraryDestination]
 
+class FlowControlLimitExceededBehaviorProto(
+    int, metaclass=_enum_type_wrapper.EnumTypeWrapper
+):
+    __slots__ = ()
+    UNSET_BEHAVIOR: _ClassVar[FlowControlLimitExceededBehaviorProto]
+    THROW_EXCEPTION: _ClassVar[FlowControlLimitExceededBehaviorProto]
+    BLOCK: _ClassVar[FlowControlLimitExceededBehaviorProto]
+    IGNORE: _ClassVar[FlowControlLimitExceededBehaviorProto]
+
 CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED: ClientLibraryOrganization
 CLOUD: ClientLibraryOrganization
 ADS: ClientLibraryOrganization
@@ -57,6 +66,10 @@ GENERATIVE_AI: ClientLibraryOrganization
 CLIENT_LIBRARY_DESTINATION_UNSPECIFIED: ClientLibraryDestination
 GITHUB: ClientLibraryDestination
 PACKAGE_MANAGER: ClientLibraryDestination
+UNSET_BEHAVIOR: FlowControlLimitExceededBehaviorProto
+THROW_EXCEPTION: FlowControlLimitExceededBehaviorProto
+BLOCK: FlowControlLimitExceededBehaviorProto
+IGNORE: FlowControlLimitExceededBehaviorProto
 METHOD_SIGNATURE_FIELD_NUMBER: _ClassVar[int]
 method_signature: _descriptor.FieldDescriptor
 DEFAULT_HOST_FIELD_NUMBER: _ClassVar[int]
@@ -221,11 +234,15 @@ class CppSettings(_message.Message):
     ) -> None: ...
 
 class PhpSettings(_message.Message):
-    __slots__ = ("common",)
+    __slots__ = ("common", "library_package")
     COMMON_FIELD_NUMBER: _ClassVar[int]
+    LIBRARY_PACKAGE_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
+    library_package: str
     def __init__(
-        self, common: _Optional[_Union[CommonLanguageSettings, _Mapping]] = ...
+        self,
+        common: _Optional[_Union[CommonLanguageSettings, _Mapping]] = ...,
+        library_package: _Optional[str] = ...,
     ) -> None: ...
 
 class PythonSettings(_message.Message):
@@ -351,7 +368,7 @@ class GoSettings(_message.Message):
     ) -> None: ...
 
 class MethodSettings(_message.Message):
-    __slots__ = ("selector", "long_running", "auto_populated_fields")
+    __slots__ = ("selector", "long_running", "auto_populated_fields", "batching")
     class LongRunning(_message.Message):
         __slots__ = (
             "initial_poll_delay",
@@ -382,14 +399,17 @@ class MethodSettings(_message.Message):
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     LONG_RUNNING_FIELD_NUMBER: _ClassVar[int]
     AUTO_POPULATED_FIELDS_FIELD_NUMBER: _ClassVar[int]
+    BATCHING_FIELD_NUMBER: _ClassVar[int]
     selector: str
     long_running: MethodSettings.LongRunning
     auto_populated_fields: _containers.RepeatedScalarFieldContainer[str]
+    batching: BatchingConfigProto
     def __init__(
         self,
         selector: _Optional[str] = ...,
         long_running: _Optional[_Union[MethodSettings.LongRunning, _Mapping]] = ...,
         auto_populated_fields: _Optional[_Iterable[str]] = ...,
+        batching: _Optional[_Union[BatchingConfigProto, _Mapping]] = ...,
     ) -> None: ...
 
 class SelectiveGapicGeneration(_message.Message):
@@ -402,4 +422,72 @@ class SelectiveGapicGeneration(_message.Message):
         self,
         methods: _Optional[_Iterable[str]] = ...,
         generate_omitted_as_internal: bool = ...,
+    ) -> None: ...
+
+class BatchingConfigProto(_message.Message):
+    __slots__ = ("thresholds", "batch_descriptor")
+    THRESHOLDS_FIELD_NUMBER: _ClassVar[int]
+    BATCH_DESCRIPTOR_FIELD_NUMBER: _ClassVar[int]
+    thresholds: BatchingSettingsProto
+    batch_descriptor: BatchingDescriptorProto
+    def __init__(
+        self,
+        thresholds: _Optional[_Union[BatchingSettingsProto, _Mapping]] = ...,
+        batch_descriptor: _Optional[_Union[BatchingDescriptorProto, _Mapping]] = ...,
+    ) -> None: ...
+
+class BatchingSettingsProto(_message.Message):
+    __slots__ = (
+        "element_count_threshold",
+        "request_byte_threshold",
+        "delay_threshold",
+        "element_count_limit",
+        "request_byte_limit",
+        "flow_control_element_limit",
+        "flow_control_byte_limit",
+        "flow_control_limit_exceeded_behavior",
+    )
+    ELEMENT_COUNT_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_BYTE_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
+    DELAY_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
+    ELEMENT_COUNT_LIMIT_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_BYTE_LIMIT_FIELD_NUMBER: _ClassVar[int]
+    FLOW_CONTROL_ELEMENT_LIMIT_FIELD_NUMBER: _ClassVar[int]
+    FLOW_CONTROL_BYTE_LIMIT_FIELD_NUMBER: _ClassVar[int]
+    FLOW_CONTROL_LIMIT_EXCEEDED_BEHAVIOR_FIELD_NUMBER: _ClassVar[int]
+    element_count_threshold: int
+    request_byte_threshold: int
+    delay_threshold: _duration_pb2.Duration
+    element_count_limit: int
+    request_byte_limit: int
+    flow_control_element_limit: int
+    flow_control_byte_limit: int
+    flow_control_limit_exceeded_behavior: FlowControlLimitExceededBehaviorProto
+    def __init__(
+        self,
+        element_count_threshold: _Optional[int] = ...,
+        request_byte_threshold: _Optional[int] = ...,
+        delay_threshold: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+        element_count_limit: _Optional[int] = ...,
+        request_byte_limit: _Optional[int] = ...,
+        flow_control_element_limit: _Optional[int] = ...,
+        flow_control_byte_limit: _Optional[int] = ...,
+        flow_control_limit_exceeded_behavior: _Optional[
+            _Union[FlowControlLimitExceededBehaviorProto, str]
+        ] = ...,
+    ) -> None: ...
+
+class BatchingDescriptorProto(_message.Message):
+    __slots__ = ("batched_field", "discriminator_fields", "subresponse_field")
+    BATCHED_FIELD_FIELD_NUMBER: _ClassVar[int]
+    DISCRIMINATOR_FIELDS_FIELD_NUMBER: _ClassVar[int]
+    SUBRESPONSE_FIELD_FIELD_NUMBER: _ClassVar[int]
+    batched_field: str
+    discriminator_fields: _containers.RepeatedScalarFieldContainer[str]
+    subresponse_field: str
+    def __init__(
+        self,
+        batched_field: _Optional[str] = ...,
+        discriminator_fields: _Optional[_Iterable[str]] = ...,
+        subresponse_field: _Optional[str] = ...,
     ) -> None: ...

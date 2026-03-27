@@ -1,4 +1,5 @@
 {
+    "api_description": "Manages access control for Google Cloud Platform resources.",
     "api_id": "iam.googleapis.com",
     "api_shortname": "iam",
     "client_documentation": "https://cloud.google.com/python/docs/reference/grpc-iam/latest",

@@ -5,6 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/publicca/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-security-publicca",
+    "issue_tracker": "https://cloud.google.com/certificate-manager/docs/getting-support",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "publicca",

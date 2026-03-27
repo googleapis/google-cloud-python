@@ -10751,6 +10751,7 @@ def test_create_service_config_rest_call_success(request_type):
                     "disable_auth": True,
                     "protocol": "protocol_value",
                     "overrides_by_request_protocol": {},
+                    "load_balancing_policy": "load_balancing_policy_value",
                 }
             ]
         },
@@ -10973,6 +10974,26 @@ def test_create_service_config_rest_call_success(request_type):
                         "auto_populated_fields_value1",
                         "auto_populated_fields_value2",
                     ],
+                    "batching": {
+                        "thresholds": {
+                            "element_count_threshold": 2462,
+                            "request_byte_threshold": 2376,
+                            "delay_threshold": {},
+                            "element_count_limit": 2032,
+                            "request_byte_limit": 1946,
+                            "flow_control_element_limit": 2783,
+                            "flow_control_byte_limit": 2473,
+                            "flow_control_limit_exceeded_behavior": 1,
+                        },
+                        "batch_descriptor": {
+                            "batched_field": "batched_field_value",
+                            "discriminator_fields": [
+                                "discriminator_fields_value1",
+                                "discriminator_fields_value2",
+                            ],
+                            "subresponse_field": "subresponse_field_value",
+                        },
+                    },
                 }
             ],
             "new_issue_uri": "new_issue_uri_value",
@@ -11003,7 +11024,10 @@ def test_create_service_config_rest_call_success(request_type):
                         },
                     },
                     "cpp_settings": {"common": {}},
-                    "php_settings": {"common": {}},
+                    "php_settings": {
+                        "common": {},
+                        "library_package": "library_package_value",
+                    },
                     "python_settings": {
                         "common": {},
                         "experimental_features": {
