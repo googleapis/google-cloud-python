@@ -154,14 +154,29 @@ class Credentials(
     def _build_regional_access_boundary_lookup_url(
         self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
     ):
-        """Builds and returns the URL for the regional access boundary lookup API for GCE."""
+        """Builds and returns the URL for the regional access boundary lookup API for GCE.
+
+        Args:
+            request (Optional[google.auth.transport.Request]): The object used to make
+                HTTP requests.
+
+        Returns:
+            Optional[str]: The URL for the regional access boundary lookup,
+                or None if it fails to fetch the service account email from
+                the metadata server (due to TransportError or missing email field).
+        """
         # If the service account email is 'default', we need to get the
         # actual email address from the metadata server.
         if self._service_account_email == "default":
             if request is None:
-                from google.auth.transport import _http_client
+                try:
+                    from google.auth.transport import requests as google_auth_requests
 
-                request = _http_client.Request()
+                    request = google_auth_requests.Request()
+                except ImportError:
+                    from google.auth.transport import _http_client
+
+                    request = _http_client.Request()
             try:
                 info = _metadata.get_service_account_info(request, "default")
                 if not info or "email" not in info:
@@ -203,11 +218,16 @@ class Credentials(
         if self._universe_domain_cached:
             return self._universe_domain
 
-        from google.auth.transport import requests as google_auth_requests
+        try:
+            from google.auth.transport import requests as google_auth_requests
 
-        self._universe_domain = _metadata.get_universe_domain(
-            google_auth_requests.Request()
-        )
+            request = google_auth_requests.Request()
+        except ImportError:
+            from google.auth.transport import _http_client
+
+            request = _http_client.Request()
+
+        self._universe_domain = _metadata.get_universe_domain(request)
         self._universe_domain_cached = True
         return self._universe_domain
 
