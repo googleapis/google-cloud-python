@@ -681,4 +681,3 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list.
         """
         return self._append(stages.Define(*aliased_expressions))
-

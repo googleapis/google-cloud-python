@@ -516,4 +516,3 @@ class Subcollection(Stage):
 
     def _pb_args(self) -> list[Value]:
         return [encode_value(self.path)]
-

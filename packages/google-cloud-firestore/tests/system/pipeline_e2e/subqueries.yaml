@@ -1,57 +1,65 @@
 tests:
   - description: array_subquery_with_variable
     pipeline:
-      - Collection: publishers
+      - Collection: books
       - Where:
-          - Field.of.equal:
-              - publisherId
-              - pub1
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
       - Define:
-          - Field.of.as_:
-              - publisherId
-              - pub_id
+          - AliasedExpression:
+              - Field: genre
+              - target_genre
       - AddFields:
-          - Pipeline.to_array_expression:
-              - Collection: books
-              - Where:
-                  - Field.of.equal:
-                      - publisherId
-                      - Variable: pub_id
-            as_: books
+          - AliasedExpression:
+              - Pipeline.to_array_expression:
+                  - Collection: books
+                  - Where:
+                      - FunctionExpression.equal:
+                          - Field: genre
+                          - Variable: target_genre
+                  - Select:
+                      - Field: title
+              - same_genre_books
       - Select:
-          - Field: name
-          - Field: books
+          - Field: title
+          - Field: same_genre_books
     assert_results:
-      - name: Publisher 1
-        books:
-          - title: The Hitchhiker's Guide to the Galaxy
-            author: Douglas Adams
-          - title: Pride and Prejudice
-            author: Jane Austen
+      - title: "1984"
+        same_genre_books:
+          - "1984"
+          - "The Handmaid's Tale"
 
   - description: scalar_subquery_with_current_document
     pipeline:
       - Collection: books
       - Where:
-          - Field.of.equal:
-              - title
-              - 1984
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
       - Define:
-          - CurrentDocument.as_: doc
+          - AliasedExpression:
+              - CurrentDocument:
+              - doc
       - AddFields:
-          - Pipeline.to_scalar_expression:
-              - Collection: reviews
-              - Where:
-                  - Field.of.equal:
-                      - bookId
-                      - Variable.get_field:
-                          - doc
-                          - __name__
-              - Aggregate:
-                  - AggregateFunction.average.as_:
-                      - rating
-                      - avg_rating
-            as_: average_rating
+          - AliasedExpression:
+              - Pipeline.to_scalar_expression:
+                  - Collection: books
+                  - Where:
+                      - FunctionExpression.equal:
+                          - Field: genre
+                          - FunctionExpression.map_get:
+                              - Variable: doc
+                              - Constant: "genre"
+                  - Aggregate:
+                      - AliasedExpression:
+                          - FunctionExpression.average:
+                              - Field: rating
+                          - avg_rating
+              - average_rating
+      - Select:
+          - Field: title
+          - Field: average_rating
     assert_results:
-      - title: 1984
-        average_rating: 4.5
+      - title: "1984"
+        average_rating: 4.15
