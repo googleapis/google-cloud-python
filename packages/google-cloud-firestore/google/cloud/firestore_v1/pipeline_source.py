@@ -174,10 +174,13 @@ class PipelineSource(Generic[PipelineType]):
 
     def subcollection(self, path: str) -> PipelineType:
         """
-        Creates a new Pipeline targeted at a subcollection relative to the current document context.
+        Initializes a pipeline scoped to a subcollection.
 
-        This is used inside stages like `addFields` to query physically nested subcollections
-        without manually joining on IDs.
+        This method allows you to start a new pipeline that operates on a subcollection of the
+        current document. It is intended to be used as a subquery.
+
+        **Note:** A pipeline created with `subcollection` cannot be executed directly using
+        `execute()`. It must be used within a parent pipeline.
 
         Example:
             >>> db.pipeline().collection("books").add_fields(
