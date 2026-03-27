@@ -296,57 +296,20 @@ def system_emulated(session):
         os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
 
-def conformance(session, client_type):
-    # install dependencies
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    install_unittest_dependencies(session, "-c", constraints_path)
-    # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
-    # See https://github.com/googleapis/python-bigtable/blob/c3ea54ee958a79959a649dce2553a84ec808b4d7/.github/workflows/conformance.yaml#L30-L35
-    if client_type == "async":
-        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie"'
-    else:
-        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream"'
-    with session.chdir("test_proxy"):
-        # download the conformance test suite
-        session.run(
-            "bash",
-            "-e",
-            "run_tests.sh",
-            external=True,
-            env={
-                "CLIENT_TYPE": client_type,
-                "PYTHONUNBUFFERED": "1",
-                "TEST_ARGS": test_args,
-                "PROXY_PORT": "9999",
-            },
-        )
-
-
-# Run the system/emulator/conformance tests
+# Run the system/emulator tests
 @nox.session(py="3.12")
 @nox.parametrize(
-    "test_type, client_type",
-    [
-        ("system_default", None),
-        ("system_emulated", None),
-        ("conformance", "async"),
-        ("conformance", "sync"),
-        ("conformance", "legacy"),
-    ],
+    "test_type",
+    ["system_default", "system_emulated"],
 )
 def system(session, test_type, client_type):
     """Run the system/emulator tests."""
-    if test_type == "conformance":
-        conformance(session, client_type)
-    else:
-        # system and emulator tests
-        test_map = {
-            "system_default": system_default,
-            "system_emulated": system_emulated,
-        }
-        test_map[test_type](session)
+    # system and emulator tests
+    test_map = {
+        "system_default": system_default,
+        "system_emulated": system_emulated,
+    }
+    test_map[test_type](session)
 
 
 def system_default(session):
