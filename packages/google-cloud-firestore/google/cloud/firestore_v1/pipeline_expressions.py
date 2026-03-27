@@ -2661,7 +2661,7 @@ class Variable(Expression):
 class _PipelineValueExpression(Expression):
     """Internal wrapper to represent a pipeline as an expression."""
 
-    def __init__(self, pipeline):
+    def __init__(self, pipeline: "google.cloud.firestore_v1.base_pipeline._BasePipeline"):
         self.pipeline = pipeline
 
     def _to_pb(self) -> Value:
