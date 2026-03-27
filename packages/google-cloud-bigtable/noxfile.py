@@ -302,7 +302,7 @@ def system_emulated(session):
     "test_type",
     ["system_default", "system_emulated"],
 )
-def system(session, test_type, client_type):
+def system(session, test_type):
     """Run the system/emulator tests."""
     # system and emulator tests
     test_map = {
