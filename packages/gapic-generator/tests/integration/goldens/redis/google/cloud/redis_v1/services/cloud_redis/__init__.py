@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CloudRedisClient
 from .async_client import CloudRedisAsyncClient
+from .client import CloudRedisClient
 
 __all__ = (
-    'CloudRedisClient',
-    'CloudRedisAsyncClient',
+    "CloudRedisClient",
+    "CloudRedisAsyncClient",
 )

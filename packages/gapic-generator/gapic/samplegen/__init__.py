@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.samplegen import samplegen
-from gapic.samplegen import manifest
+from gapic.samplegen import manifest, samplegen
 
 __all__ = (
     "manifest",

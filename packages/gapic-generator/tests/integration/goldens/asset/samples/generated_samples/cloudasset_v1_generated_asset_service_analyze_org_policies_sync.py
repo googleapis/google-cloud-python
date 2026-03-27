@@ -51,4 +51,5 @@ def sample_analyze_org_policies():
     for response in page_result:
         print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_AnalyzeOrgPolicies_sync]

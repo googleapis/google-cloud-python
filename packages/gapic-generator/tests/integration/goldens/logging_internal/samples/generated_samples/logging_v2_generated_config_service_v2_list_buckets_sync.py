@@ -50,4 +50,5 @@ def sample_list_buckets():
     for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListBuckets_sync]

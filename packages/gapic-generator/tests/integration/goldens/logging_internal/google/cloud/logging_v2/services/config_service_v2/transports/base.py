@@ -16,23 +16,22 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.cloud.logging_v2 import gapic_version as package_version
-
-import google.auth  # type: ignore
 import google.api_core
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
+import google.auth  # type: ignore
 import google.protobuf
-
-from google.cloud.logging_v2.types import logging_config
-from google.longrunning import operations_pb2 # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.logging_v2 import gapic_version as package_version
+from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -42,26 +41,27 @@ class ConfigServiceV2Transport(abc.ABC):
     """Abstract transport class for ConfigServiceV2."""
 
     AUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/logging.read",
     )
 
-    DEFAULT_HOST: str = 'logging.googleapis.com'
+    DEFAULT_HOST: str = "logging.googleapis.com"
 
     def __init__(
-            self, *,
-            host: str = DEFAULT_HOST,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            **kwargs,
-            ) -> None:
+        self,
+        *,
+        host: str = DEFAULT_HOST,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -100,31 +100,43 @@ class ConfigServiceV2Transport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+            raise core_exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                scopes=scopes,
-                                quota_project_id=quota_project_id,
-                                default_scopes=self.AUTH_SCOPES,
-                            )
+                credentials_file,
+                scopes=scopes,
+                quota_project_id=quota_project_id,
+                default_scopes=self.AUTH_SCOPES,
+            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
+            credentials, _ = google.auth.default(
+                scopes=scopes,
+                quota_project_id=quota_project_id,
+                default_scopes=self.AUTH_SCOPES,
+            )
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
+        if ":" not in host:
+            host += ":443"
         self._host = host
 
         self._wrapped_methods: Dict[Callable, Callable] = {}
@@ -388,14 +400,14 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-         }
+        }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
@@ -405,291 +417,306 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_buckets(self) -> Callable[
-            [logging_config.ListBucketsRequest],
-            Union[
-                logging_config.ListBucketsResponse,
-                Awaitable[logging_config.ListBucketsResponse]
-            ]]:
+    def list_buckets(
+        self,
+    ) -> Callable[
+        [logging_config.ListBucketsRequest],
+        Union[
+            logging_config.ListBucketsResponse,
+            Awaitable[logging_config.ListBucketsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_bucket(self) -> Callable[
-            [logging_config.GetBucketRequest],
-            Union[
-                logging_config.LogBucket,
-                Awaitable[logging_config.LogBucket]
-            ]]:
+    def get_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.GetBucketRequest],
+        Union[logging_config.LogBucket, Awaitable[logging_config.LogBucket]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_bucket_async(self) -> Callable[
-            [logging_config.CreateBucketRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_bucket_async(
+        self,
+    ) -> Callable[
+        [logging_config.CreateBucketRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_bucket_async(self) -> Callable[
-            [logging_config.UpdateBucketRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_bucket_async(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateBucketRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_bucket(self) -> Callable[
-            [logging_config.CreateBucketRequest],
-            Union[
-                logging_config.LogBucket,
-                Awaitable[logging_config.LogBucket]
-            ]]:
+    def create_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.CreateBucketRequest],
+        Union[logging_config.LogBucket, Awaitable[logging_config.LogBucket]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_bucket(self) -> Callable[
-            [logging_config.UpdateBucketRequest],
-            Union[
-                logging_config.LogBucket,
-                Awaitable[logging_config.LogBucket]
-            ]]:
+    def update_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateBucketRequest],
+        Union[logging_config.LogBucket, Awaitable[logging_config.LogBucket]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_bucket(self) -> Callable[
-            [logging_config.DeleteBucketRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def delete_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteBucketRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def undelete_bucket(self) -> Callable[
-            [logging_config.UndeleteBucketRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def undelete_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.UndeleteBucketRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_views(self) -> Callable[
-            [logging_config.ListViewsRequest],
-            Union[
-                logging_config.ListViewsResponse,
-                Awaitable[logging_config.ListViewsResponse]
-            ]]:
+    def list_views(
+        self,
+    ) -> Callable[
+        [logging_config.ListViewsRequest],
+        Union[
+            logging_config.ListViewsResponse,
+            Awaitable[logging_config.ListViewsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_view(self) -> Callable[
-            [logging_config.GetViewRequest],
-            Union[
-                logging_config.LogView,
-                Awaitable[logging_config.LogView]
-            ]]:
+    def get_view(
+        self,
+    ) -> Callable[
+        [logging_config.GetViewRequest],
+        Union[logging_config.LogView, Awaitable[logging_config.LogView]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_view(self) -> Callable[
-            [logging_config.CreateViewRequest],
-            Union[
-                logging_config.LogView,
-                Awaitable[logging_config.LogView]
-            ]]:
+    def create_view(
+        self,
+    ) -> Callable[
+        [logging_config.CreateViewRequest],
+        Union[logging_config.LogView, Awaitable[logging_config.LogView]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_view(self) -> Callable[
-            [logging_config.UpdateViewRequest],
-            Union[
-                logging_config.LogView,
-                Awaitable[logging_config.LogView]
-            ]]:
+    def update_view(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateViewRequest],
+        Union[logging_config.LogView, Awaitable[logging_config.LogView]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_view(self) -> Callable[
-            [logging_config.DeleteViewRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def delete_view(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteViewRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_sinks(self) -> Callable[
-            [logging_config.ListSinksRequest],
-            Union[
-                logging_config.ListSinksResponse,
-                Awaitable[logging_config.ListSinksResponse]
-            ]]:
+    def list_sinks(
+        self,
+    ) -> Callable[
+        [logging_config.ListSinksRequest],
+        Union[
+            logging_config.ListSinksResponse,
+            Awaitable[logging_config.ListSinksResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_sink(self) -> Callable[
-            [logging_config.GetSinkRequest],
-            Union[
-                logging_config.LogSink,
-                Awaitable[logging_config.LogSink]
-            ]]:
+    def get_sink(
+        self,
+    ) -> Callable[
+        [logging_config.GetSinkRequest],
+        Union[logging_config.LogSink, Awaitable[logging_config.LogSink]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_sink(self) -> Callable[
-            [logging_config.CreateSinkRequest],
-            Union[
-                logging_config.LogSink,
-                Awaitable[logging_config.LogSink]
-            ]]:
+    def create_sink(
+        self,
+    ) -> Callable[
+        [logging_config.CreateSinkRequest],
+        Union[logging_config.LogSink, Awaitable[logging_config.LogSink]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_sink(self) -> Callable[
-            [logging_config.UpdateSinkRequest],
-            Union[
-                logging_config.LogSink,
-                Awaitable[logging_config.LogSink]
-            ]]:
+    def update_sink(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateSinkRequest],
+        Union[logging_config.LogSink, Awaitable[logging_config.LogSink]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_sink(self) -> Callable[
-            [logging_config.DeleteSinkRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def delete_sink(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteSinkRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_link(self) -> Callable[
-            [logging_config.CreateLinkRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_link(
+        self,
+    ) -> Callable[
+        [logging_config.CreateLinkRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_link(self) -> Callable[
-            [logging_config.DeleteLinkRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_link(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteLinkRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_links(self) -> Callable[
-            [logging_config.ListLinksRequest],
-            Union[
-                logging_config.ListLinksResponse,
-                Awaitable[logging_config.ListLinksResponse]
-            ]]:
+    def list_links(
+        self,
+    ) -> Callable[
+        [logging_config.ListLinksRequest],
+        Union[
+            logging_config.ListLinksResponse,
+            Awaitable[logging_config.ListLinksResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_link(self) -> Callable[
-            [logging_config.GetLinkRequest],
-            Union[
-                logging_config.Link,
-                Awaitable[logging_config.Link]
-            ]]:
+    def get_link(
+        self,
+    ) -> Callable[
+        [logging_config.GetLinkRequest],
+        Union[logging_config.Link, Awaitable[logging_config.Link]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_exclusions(self) -> Callable[
-            [logging_config.ListExclusionsRequest],
-            Union[
-                logging_config.ListExclusionsResponse,
-                Awaitable[logging_config.ListExclusionsResponse]
-            ]]:
+    def list_exclusions(
+        self,
+    ) -> Callable[
+        [logging_config.ListExclusionsRequest],
+        Union[
+            logging_config.ListExclusionsResponse,
+            Awaitable[logging_config.ListExclusionsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_exclusion(self) -> Callable[
-            [logging_config.GetExclusionRequest],
-            Union[
-                logging_config.LogExclusion,
-                Awaitable[logging_config.LogExclusion]
-            ]]:
+    def get_exclusion(
+        self,
+    ) -> Callable[
+        [logging_config.GetExclusionRequest],
+        Union[logging_config.LogExclusion, Awaitable[logging_config.LogExclusion]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_exclusion(self) -> Callable[
-            [logging_config.CreateExclusionRequest],
-            Union[
-                logging_config.LogExclusion,
-                Awaitable[logging_config.LogExclusion]
-            ]]:
+    def create_exclusion(
+        self,
+    ) -> Callable[
+        [logging_config.CreateExclusionRequest],
+        Union[logging_config.LogExclusion, Awaitable[logging_config.LogExclusion]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_exclusion(self) -> Callable[
-            [logging_config.UpdateExclusionRequest],
-            Union[
-                logging_config.LogExclusion,
-                Awaitable[logging_config.LogExclusion]
-            ]]:
+    def update_exclusion(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateExclusionRequest],
+        Union[logging_config.LogExclusion, Awaitable[logging_config.LogExclusion]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_exclusion(self) -> Callable[
-            [logging_config.DeleteExclusionRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def delete_exclusion(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteExclusionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_cmek_settings(self) -> Callable[
-            [logging_config.GetCmekSettingsRequest],
-            Union[
-                logging_config.CmekSettings,
-                Awaitable[logging_config.CmekSettings]
-            ]]:
+    def get_cmek_settings(
+        self,
+    ) -> Callable[
+        [logging_config.GetCmekSettingsRequest],
+        Union[logging_config.CmekSettings, Awaitable[logging_config.CmekSettings]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_cmek_settings(self) -> Callable[
-            [logging_config.UpdateCmekSettingsRequest],
-            Union[
-                logging_config.CmekSettings,
-                Awaitable[logging_config.CmekSettings]
-            ]]:
+    def update_cmek_settings(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateCmekSettingsRequest],
+        Union[logging_config.CmekSettings, Awaitable[logging_config.CmekSettings]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_settings(self) -> Callable[
-            [logging_config.GetSettingsRequest],
-            Union[
-                logging_config.Settings,
-                Awaitable[logging_config.Settings]
-            ]]:
+    def get_settings(
+        self,
+    ) -> Callable[
+        [logging_config.GetSettingsRequest],
+        Union[logging_config.Settings, Awaitable[logging_config.Settings]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_settings(self) -> Callable[
-            [logging_config.UpdateSettingsRequest],
-            Union[
-                logging_config.Settings,
-                Awaitable[logging_config.Settings]
-            ]]:
+    def update_settings(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateSettingsRequest],
+        Union[logging_config.Settings, Awaitable[logging_config.Settings]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def copy_log_entries(self) -> Callable[
-            [logging_config.CopyLogEntriesRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def copy_log_entries(
+        self,
+    ) -> Callable[
+        [logging_config.CopyLogEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -697,7 +724,10 @@ class ConfigServiceV2Transport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -724,6 +754,4 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = (
-    'ConfigServiceV2Transport',
-)
+__all__ = ("ConfigServiceV2Transport",)

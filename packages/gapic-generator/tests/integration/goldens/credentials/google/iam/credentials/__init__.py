@@ -18,26 +18,32 @@ from google.iam.credentials import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.iam.credentials_v1.services.iam_credentials.client import IAMCredentialsClient
-from google.iam.credentials_v1.services.iam_credentials.async_client import IAMCredentialsAsyncClient
+from google.iam.credentials_v1.services.iam_credentials.async_client import (
+    IAMCredentialsAsyncClient,
+)
+from google.iam.credentials_v1.services.iam_credentials.client import (
+    IAMCredentialsClient,
+)
+from google.iam.credentials_v1.types.common import (
+    GenerateAccessTokenRequest,
+    GenerateAccessTokenResponse,
+    GenerateIdTokenRequest,
+    GenerateIdTokenResponse,
+    SignBlobRequest,
+    SignBlobResponse,
+    SignJwtRequest,
+    SignJwtResponse,
+)
 
-from google.iam.credentials_v1.types.common import GenerateAccessTokenRequest
-from google.iam.credentials_v1.types.common import GenerateAccessTokenResponse
-from google.iam.credentials_v1.types.common import GenerateIdTokenRequest
-from google.iam.credentials_v1.types.common import GenerateIdTokenResponse
-from google.iam.credentials_v1.types.common import SignBlobRequest
-from google.iam.credentials_v1.types.common import SignBlobResponse
-from google.iam.credentials_v1.types.common import SignJwtRequest
-from google.iam.credentials_v1.types.common import SignJwtResponse
-
-__all__ = ('IAMCredentialsClient',
-    'IAMCredentialsAsyncClient',
-    'GenerateAccessTokenRequest',
-    'GenerateAccessTokenResponse',
-    'GenerateIdTokenRequest',
-    'GenerateIdTokenResponse',
-    'SignBlobRequest',
-    'SignBlobResponse',
-    'SignJwtRequest',
-    'SignJwtResponse',
+__all__ = (
+    "IAMCredentialsClient",
+    "IAMCredentialsAsyncClient",
+    "GenerateAccessTokenRequest",
+    "GenerateAccessTokenResponse",
+    "GenerateIdTokenRequest",
+    "GenerateIdTokenResponse",
+    "SignBlobRequest",
+    "SignBlobResponse",
+    "SignJwtRequest",
+    "SignJwtResponse",
 )

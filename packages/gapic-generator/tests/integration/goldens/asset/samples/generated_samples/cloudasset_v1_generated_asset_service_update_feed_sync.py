@@ -52,4 +52,5 @@ def sample_update_feed():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_UpdateFeed_sync]

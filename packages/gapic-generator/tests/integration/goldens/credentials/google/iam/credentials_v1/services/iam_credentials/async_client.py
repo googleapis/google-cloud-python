@@ -14,40 +14,52 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from collections import OrderedDict
+from typing import (
+    Callable,
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.iam.credentials_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
-import google.protobuf
-
+from google.api_core.client_options import ClientOptions
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.credentials_v1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.iam.credentials_v1.types import common
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from .transports.base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
+from google.iam.credentials_v1.types import common
+
 from .client import IAMCredentialsClient
+from .transports.base import DEFAULT_CLIENT_INFO, IAMCredentialsTransport
+from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class IAMCredentialsAsyncClient:
     """A service account is a special type of Google account that
@@ -72,17 +84,33 @@ class IAMCredentialsAsyncClient:
     _DEFAULT_UNIVERSE = IAMCredentialsClient._DEFAULT_UNIVERSE
 
     service_account_path = staticmethod(IAMCredentialsClient.service_account_path)
-    parse_service_account_path = staticmethod(IAMCredentialsClient.parse_service_account_path)
-    common_billing_account_path = staticmethod(IAMCredentialsClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(IAMCredentialsClient.parse_common_billing_account_path)
+    parse_service_account_path = staticmethod(
+        IAMCredentialsClient.parse_service_account_path
+    )
+    common_billing_account_path = staticmethod(
+        IAMCredentialsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        IAMCredentialsClient.parse_common_billing_account_path
+    )
     common_folder_path = staticmethod(IAMCredentialsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(IAMCredentialsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(IAMCredentialsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(IAMCredentialsClient.parse_common_organization_path)
+    parse_common_folder_path = staticmethod(
+        IAMCredentialsClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        IAMCredentialsClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        IAMCredentialsClient.parse_common_organization_path
+    )
     common_project_path = staticmethod(IAMCredentialsClient.common_project_path)
-    parse_common_project_path = staticmethod(IAMCredentialsClient.parse_common_project_path)
+    parse_common_project_path = staticmethod(
+        IAMCredentialsClient.parse_common_project_path
+    )
     common_location_path = staticmethod(IAMCredentialsClient.common_location_path)
-    parse_common_location_path = staticmethod(IAMCredentialsClient.parse_common_location_path)
+    parse_common_location_path = staticmethod(
+        IAMCredentialsClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -124,7 +152,9 @@ class IAMCredentialsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -187,12 +217,16 @@ class IAMCredentialsAsyncClient:
 
     get_transport_class = IAMCredentialsClient.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, IAMCredentialsTransport, Callable[..., IAMCredentialsTransport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[
+            Union[str, IAMCredentialsTransport, Callable[..., IAMCredentialsTransport]]
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the iam credentials async client.
 
         Args:
@@ -250,34 +284,42 @@ class IAMCredentialsAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.iam.credentials_v1.IAMCredentialsAsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
-                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def generate_access_token(self,
-            request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            delegates: Optional[MutableSequence[str]] = None,
-            scope: Optional[MutableSequence[str]] = None,
-            lifetime: Optional[duration_pb2.Duration] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> common.GenerateAccessTokenResponse:
+    async def generate_access_token(
+        self,
+        request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        delegates: Optional[MutableSequence[str]] = None,
+        scope: Optional[MutableSequence[str]] = None,
+        lifetime: Optional[duration_pb2.Duration] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
         account.
 
@@ -378,10 +420,14 @@ class IAMCredentialsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, delegates, scope, lifetime]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -401,14 +447,14 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_access_token]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_access_token
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -425,17 +471,18 @@ class IAMCredentialsAsyncClient:
         # Done; return the response.
         return response
 
-    async def generate_id_token(self,
-            request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            delegates: Optional[MutableSequence[str]] = None,
-            audience: Optional[str] = None,
-            include_email: Optional[bool] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> common.GenerateIdTokenResponse:
+    async def generate_id_token(
+        self,
+        request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        delegates: Optional[MutableSequence[str]] = None,
+        audience: Optional[str] = None,
+        include_email: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
         account.
 
@@ -530,10 +577,14 @@ class IAMCredentialsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, delegates, audience, include_email]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -553,14 +604,14 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_id_token]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_id_token
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -577,16 +628,17 @@ class IAMCredentialsAsyncClient:
         # Done; return the response.
         return response
 
-    async def sign_blob(self,
-            request: Optional[Union[common.SignBlobRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            delegates: Optional[MutableSequence[str]] = None,
-            payload: Optional[bytes] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> common.SignBlobResponse:
+    async def sign_blob(
+        self,
+        request: Optional[Union[common.SignBlobRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        delegates: Optional[MutableSequence[str]] = None,
+        payload: Optional[bytes] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
         private key.
 
@@ -670,10 +722,14 @@ class IAMCredentialsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, delegates, payload]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -691,14 +747,14 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.sign_blob]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.sign_blob
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -715,16 +771,17 @@ class IAMCredentialsAsyncClient:
         # Done; return the response.
         return response
 
-    async def sign_jwt(self,
-            request: Optional[Union[common.SignJwtRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            delegates: Optional[MutableSequence[str]] = None,
-            payload: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> common.SignJwtResponse:
+    async def sign_jwt(
+        self,
+        request: Optional[Union[common.SignJwtRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        delegates: Optional[MutableSequence[str]] = None,
+        payload: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
 
@@ -811,10 +868,14 @@ class IAMCredentialsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, delegates, payload]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -837,9 +898,7 @@ class IAMCredentialsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -862,12 +921,13 @@ class IAMCredentialsAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "IAMCredentialsAsyncClient",
-)
+__all__ = ("IAMCredentialsAsyncClient",)

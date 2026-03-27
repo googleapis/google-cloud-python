@@ -50,4 +50,5 @@ async def sample_list_log_metrics():
     async for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_MetricsServiceV2_ListLogMetrics_async_internal]

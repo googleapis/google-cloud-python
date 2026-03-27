@@ -49,4 +49,5 @@ async def sample_get_saved_query():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_GetSavedQuery_async]

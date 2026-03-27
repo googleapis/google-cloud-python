@@ -15,30 +15,29 @@
 #
 import inspect
 import json
-import pickle
 import logging as std_logging
+import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
-import grpc                        # type: ignore
-import proto                       # type: ignore
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.credentials_v1.types import common
+from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
-from google.iam.credentials_v1.types import common
-from .base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
+from .base import DEFAULT_CLIENT_INFO, IAMCredentialsTransport
 from .grpc import IAMCredentialsGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -46,9 +45,13 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -69,7 +72,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -80,7 +83,11 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -95,7 +102,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -131,13 +138,15 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'iamcredentials.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> aio.Channel:
+    def create_channel(
+        cls,
+        host: str = "iamcredentials.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -168,24 +177,26 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
-    def __init__(self, *,
-            host: str = 'iamcredentials.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "iamcredentials.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -314,7 +325,9 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -329,9 +342,12 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         return self._grpc_channel
 
     @property
-    def generate_access_token(self) -> Callable[
-            [common.GenerateAccessTokenRequest],
-            Awaitable[common.GenerateAccessTokenResponse]]:
+    def generate_access_token(
+        self,
+    ) -> Callable[
+        [common.GenerateAccessTokenRequest],
+        Awaitable[common.GenerateAccessTokenResponse],
+    ]:
         r"""Return a callable for the generate access token method over gRPC.
 
         Generates an OAuth 2.0 access token for a service
@@ -347,18 +363,20 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'generate_access_token' not in self._stubs:
-            self._stubs['generate_access_token'] = self._logged_channel.unary_unary(
-                '/google.iam.credentials.v1.IAMCredentials/GenerateAccessToken',
+        if "generate_access_token" not in self._stubs:
+            self._stubs["generate_access_token"] = self._logged_channel.unary_unary(
+                "/google.iam.credentials.v1.IAMCredentials/GenerateAccessToken",
                 request_serializer=common.GenerateAccessTokenRequest.serialize,
                 response_deserializer=common.GenerateAccessTokenResponse.deserialize,
             )
-        return self._stubs['generate_access_token']
+        return self._stubs["generate_access_token"]
 
     @property
-    def generate_id_token(self) -> Callable[
-            [common.GenerateIdTokenRequest],
-            Awaitable[common.GenerateIdTokenResponse]]:
+    def generate_id_token(
+        self,
+    ) -> Callable[
+        [common.GenerateIdTokenRequest], Awaitable[common.GenerateIdTokenResponse]
+    ]:
         r"""Return a callable for the generate id token method over gRPC.
 
         Generates an OpenID Connect ID token for a service
@@ -374,18 +392,18 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'generate_id_token' not in self._stubs:
-            self._stubs['generate_id_token'] = self._logged_channel.unary_unary(
-                '/google.iam.credentials.v1.IAMCredentials/GenerateIdToken',
+        if "generate_id_token" not in self._stubs:
+            self._stubs["generate_id_token"] = self._logged_channel.unary_unary(
+                "/google.iam.credentials.v1.IAMCredentials/GenerateIdToken",
                 request_serializer=common.GenerateIdTokenRequest.serialize,
                 response_deserializer=common.GenerateIdTokenResponse.deserialize,
             )
-        return self._stubs['generate_id_token']
+        return self._stubs["generate_id_token"]
 
     @property
-    def sign_blob(self) -> Callable[
-            [common.SignBlobRequest],
-            Awaitable[common.SignBlobResponse]]:
+    def sign_blob(
+        self,
+    ) -> Callable[[common.SignBlobRequest], Awaitable[common.SignBlobResponse]]:
         r"""Return a callable for the sign blob method over gRPC.
 
         Signs a blob using a service account's system-managed
@@ -401,18 +419,18 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'sign_blob' not in self._stubs:
-            self._stubs['sign_blob'] = self._logged_channel.unary_unary(
-                '/google.iam.credentials.v1.IAMCredentials/SignBlob',
+        if "sign_blob" not in self._stubs:
+            self._stubs["sign_blob"] = self._logged_channel.unary_unary(
+                "/google.iam.credentials.v1.IAMCredentials/SignBlob",
                 request_serializer=common.SignBlobRequest.serialize,
                 response_deserializer=common.SignBlobResponse.deserialize,
             )
-        return self._stubs['sign_blob']
+        return self._stubs["sign_blob"]
 
     @property
-    def sign_jwt(self) -> Callable[
-            [common.SignJwtRequest],
-            Awaitable[common.SignJwtResponse]]:
+    def sign_jwt(
+        self,
+    ) -> Callable[[common.SignJwtRequest], Awaitable[common.SignJwtResponse]]:
         r"""Return a callable for the sign jwt method over gRPC.
 
         Signs a JWT using a service account's system-managed
@@ -428,16 +446,16 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'sign_jwt' not in self._stubs:
-            self._stubs['sign_jwt'] = self._logged_channel.unary_unary(
-                '/google.iam.credentials.v1.IAMCredentials/SignJwt',
+        if "sign_jwt" not in self._stubs:
+            self._stubs["sign_jwt"] = self._logged_channel.unary_unary(
+                "/google.iam.credentials.v1.IAMCredentials/SignJwt",
                 request_serializer=common.SignJwtRequest.serialize,
                 response_deserializer=common.SignJwtResponse.deserialize,
             )
-        return self._stubs['sign_jwt']
+        return self._stubs["sign_jwt"]
 
     def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.generate_access_token: self._wrap_method(
                 self.generate_access_token,
@@ -514,6 +532,4 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         return "grpc_asyncio"
 
 
-__all__ = (
-    'IAMCredentialsGrpcAsyncIOTransport',
-)
+__all__ = ("IAMCredentialsGrpcAsyncIOTransport",)

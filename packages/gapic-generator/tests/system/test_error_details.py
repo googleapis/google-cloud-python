@@ -14,10 +14,10 @@
 
 import pytest
 from google import showcase
-from google.rpc import error_details_pb2
-from google.protobuf import any_pb2
-from grpc_status import rpc_status
 from google.api_core import exceptions
+from google.protobuf import any_pb2
+from google.rpc import error_details_pb2
+from grpc_status import rpc_status
 
 
 def create_status(error_details=None):

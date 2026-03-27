@@ -50,4 +50,5 @@ def sample_generate_id_token():
     # Handle the response
     print(response)
 
+
 # [END iamcredentials_v1_generated_IAMCredentials_GenerateIdToken_sync]

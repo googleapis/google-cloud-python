@@ -13,12 +13,10 @@
 # limitations under the License.
 
 import pytest
-
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import naming
 from gapic.utils import Options
-
 from test_utils.test_utils import make_naming
 
 

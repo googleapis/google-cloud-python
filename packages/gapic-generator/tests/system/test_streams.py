@@ -14,10 +14,10 @@
 
 import logging
 import os
-import pytest
 import threading
-from google import showcase
 
+import pytest
+from google import showcase
 
 # `_METADATA` will be sent as part of the request, and the
 # showcase server will echo it (since it has key 'showcase-trailer') as trailing

@@ -530,6 +530,7 @@ class TestLiterals:
 
     def test_ctor_extended_types(self):
         import datetime
+
         from google.cloud.firestore_v1._helpers import GeoPoint
         from google.cloud.firestore_v1.vector import Vector
 
@@ -567,6 +568,7 @@ class TestLiterals:
 
     def test_to_pb_constant_types(self):
         import datetime
+
         from google.cloud.firestore_v1._helpers import GeoPoint
         from google.cloud.firestore_v1.vector import Vector
 

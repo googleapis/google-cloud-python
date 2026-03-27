@@ -49,4 +49,5 @@ def sample_batch_get_assets_history():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync]

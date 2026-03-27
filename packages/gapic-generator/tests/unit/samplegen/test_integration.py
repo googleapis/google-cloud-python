@@ -12,36 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import jinja2
 import os.path as path
-import pytest
+from collections import namedtuple
 from pathlib import Path
+from textwrap import dedent
 
+import jinja2
+import pytest
 from google.protobuf import json_format
 
 import gapic.utils as utils
-
 from gapic.samplegen import samplegen
-from gapic.samplegen_utils import types, utils as gapic_utils
-from gapic.samplegen_utils import snippet_metadata_pb2
+from gapic.samplegen_utils import snippet_metadata_pb2, types
+from gapic.samplegen_utils import utils as gapic_utils
 from gapic.schema import naming, wrappers
 
 from ..common_types import (
+    DummyApiSchema,
     DummyField,
+    DummyIdent,
     DummyMessage,
     DummyMessageTypePB,
     DummyMethod,
-    DummyService,
-    DummyIdent,
-    DummyApiSchema,
     DummyNaming,
+    DummyService,
     enum_factory,
     message_factory,
 )
-
-from collections import namedtuple
-from textwrap import dedent
-
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(

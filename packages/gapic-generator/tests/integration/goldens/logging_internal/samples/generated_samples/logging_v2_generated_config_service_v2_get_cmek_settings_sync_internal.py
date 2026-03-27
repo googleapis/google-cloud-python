@@ -49,4 +49,5 @@ def sample_get_cmek_settings():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_GetCmekSettings_sync_internal]

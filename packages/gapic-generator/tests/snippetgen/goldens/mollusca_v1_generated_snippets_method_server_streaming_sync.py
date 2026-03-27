@@ -58,4 +58,5 @@ def sample_method_server_streaming():
     for response in stream:
         print(response)
 
+
 # [END mollusca_v1_generated_Snippets_MethodServerStreaming_sync]

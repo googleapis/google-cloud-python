@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import os
-import pytest
 import re
-from unittest import mock
 import warnings
+from unittest import mock
+
+import pytest
 
 from gapic.samplegen_utils import types
 from gapic.utils import Options

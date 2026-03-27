@@ -52,4 +52,5 @@ def sample_write_log_entries():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_LoggingServiceV2_WriteLogEntries_sync]

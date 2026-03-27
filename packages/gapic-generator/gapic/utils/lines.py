@@ -16,7 +16,6 @@ import re
 import textwrap
 from typing import Iterable, Optional
 
-
 NUMBERED_LIST_REGEX = r"^\d+\. "
 
 

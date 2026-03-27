@@ -15,12 +15,11 @@
 
 from pathlib import Path
 
-from google.protobuf.compiler import plugin_pb2
 import pytest
+from google.protobuf.compiler import plugin_pb2
 
 from gapic import utils
 from gapic.schema import api
-
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / "resources" / "speech" / "request.desc"

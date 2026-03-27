@@ -12,38 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import yaml
-import pytest
-
-from textwrap import dedent
-from typing import TypeVar, Sequence
 from collections import OrderedDict, namedtuple
-from google.api import client_pb2
-from google.api import resource_pb2
-from google.protobuf import descriptor_pb2
-from google.protobuf import json_format
+from textwrap import dedent
+from typing import Sequence, TypeVar
 
+import pytest
+import yaml
+from google.api import client_pb2, resource_pb2
+from google.protobuf import descriptor_pb2, json_format
 
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.types as types
 import gapic.samplegen_utils.yaml as gapic_yaml
-from gapic.schema import api, metadata, naming
 import gapic.schema.wrappers as wrappers
+from gapic.samplegen_utils import utils
+from gapic.schema import api, metadata, naming
 from gapic.utils import Options
 
 from ..common_types import (
     DummyApiSchema,
     DummyField,
     DummyIdent,
-    DummyNaming,
     DummyMessage,
     DummyMessageTypePB,
-    DummyService,
     DummyMethod,
-    message_factory,
+    DummyNaming,
+    DummyService,
     enum_factory,
+    message_factory,
 )
-from gapic.samplegen_utils import utils
 
 
 @pytest.fixture(scope="module")

@@ -12,29 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import jinja2
-import yaml
 import itertools
-import re
 import os
 import pathlib
+import re
 import typing
-from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
-from hashlib import sha256
 from collections import OrderedDict, defaultdict
+from hashlib import sha256
+from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
+
+import jinja2
+import yaml
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
+
+from gapic import utils
+from gapic.generator import formatter
+from gapic.samplegen import manifest, samplegen
+from gapic.samplegen_utils import snippet_index, snippet_metadata_pb2
+from gapic.samplegen_utils.types import DuplicateSample
 from gapic.samplegen_utils.utils import (
     coerce_response_name,
     is_valid_sample_cfg,
     render_format_string,
 )
-from gapic.samplegen_utils.types import DuplicateSample
-from gapic.samplegen_utils import snippet_index, snippet_metadata_pb2
-from gapic.samplegen import manifest, samplegen
-from gapic.generator import formatter
 from gapic.schema import api
-from gapic import utils
 from gapic.utils import Options
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
 class Generator:

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import MetricsServiceV2Client
 from .async_client import MetricsServiceV2AsyncClient
+from .client import MetricsServiceV2Client
 
 __all__ = (
-    'MetricsServiceV2Client',
-    'MetricsServiceV2AsyncClient',
+    "MetricsServiceV2Client",
+    "MetricsServiceV2AsyncClient",
 )

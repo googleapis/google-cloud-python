@@ -13,31 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
-import json  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import gapic_v1
-import google.protobuf
-
-from google.protobuf import json_format
-
-from requests import __version__ as requests_version
 import dataclasses
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+import json  # type: ignore
+import logging
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
+import google.protobuf
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.iam.credentials_v1.types import common
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
-
-from .rest_base import _BaseIAMCredentialsRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseIAMCredentialsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -46,6 +39,7 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -114,7 +108,14 @@ class IAMCredentialsRestInterceptor:
 
 
     """
-    def pre_generate_access_token(self, request: common.GenerateAccessTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+
+    def pre_generate_access_token(
+        self,
+        request: common.GenerateAccessTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        common.GenerateAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -122,7 +123,9 @@ class IAMCredentialsRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_access_token(self, response: common.GenerateAccessTokenResponse) -> common.GenerateAccessTokenResponse:
+    def post_generate_access_token(
+        self, response: common.GenerateAccessTokenResponse
+    ) -> common.GenerateAccessTokenResponse:
         """Post-rpc interceptor for generate_access_token
 
         DEPRECATED. Please use the `post_generate_access_token_with_metadata`
@@ -135,7 +138,13 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def post_generate_access_token_with_metadata(self, response: common.GenerateAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_generate_access_token_with_metadata(
+        self,
+        response: common.GenerateAccessTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        common.GenerateAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Post-rpc interceptor for generate_access_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,7 +159,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response, metadata
 
-    def pre_generate_id_token(self, request: common.GenerateIdTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_generate_id_token(
+        self,
+        request: common.GenerateIdTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_id_token
 
         Override in a subclass to manipulate the request or metadata
@@ -158,7 +171,9 @@ class IAMCredentialsRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_id_token(self, response: common.GenerateIdTokenResponse) -> common.GenerateIdTokenResponse:
+    def post_generate_id_token(
+        self, response: common.GenerateIdTokenResponse
+    ) -> common.GenerateIdTokenResponse:
         """Post-rpc interceptor for generate_id_token
 
         DEPRECATED. Please use the `post_generate_id_token_with_metadata`
@@ -171,7 +186,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def post_generate_id_token_with_metadata(self, response: common.GenerateIdTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_generate_id_token_with_metadata(
+        self,
+        response: common.GenerateIdTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.GenerateIdTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_id_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -186,7 +205,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response, metadata
 
-    def pre_sign_blob(self, request: common.SignBlobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_sign_blob(
+        self,
+        request: common.SignBlobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_blob
 
         Override in a subclass to manipulate the request or metadata
@@ -194,7 +217,9 @@ class IAMCredentialsRestInterceptor:
         """
         return request, metadata
 
-    def post_sign_blob(self, response: common.SignBlobResponse) -> common.SignBlobResponse:
+    def post_sign_blob(
+        self, response: common.SignBlobResponse
+    ) -> common.SignBlobResponse:
         """Post-rpc interceptor for sign_blob
 
         DEPRECATED. Please use the `post_sign_blob_with_metadata`
@@ -207,7 +232,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def post_sign_blob_with_metadata(self, response: common.SignBlobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_sign_blob_with_metadata(
+        self,
+        response: common.SignBlobResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.SignBlobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sign_blob
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -222,7 +251,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response, metadata
 
-    def pre_sign_jwt(self, request: common.SignJwtRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_sign_jwt(
+        self,
+        request: common.SignJwtRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_jwt
 
         Override in a subclass to manipulate the request or metadata
@@ -243,7 +276,11 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def post_sign_jwt_with_metadata(self, response: common.SignJwtResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_sign_jwt_with_metadata(
+        self,
+        response: common.SignJwtResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.SignJwtResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sign_jwt
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -287,62 +324,63 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'iamcredentials.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            client_cert_source_for_mtls: Optional[Callable[[
-                ], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            interceptor: Optional[IAMCredentialsRestInterceptor] = None,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "iamcredentials.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        interceptor: Optional[IAMCredentialsRestInterceptor] = None,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to (default: 'iamcredentials.googleapis.com').
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to (default: 'iamcredentials.googleapis.com').
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
 
-            credentials_file (Optional[str]): Deprecated. A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided. This argument will be
-                removed in the next major version of this library.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
-            interceptor (Optional[IAMCredentialsRestInterceptor]): Interceptor used
-                to manipulate requests, request metadata, and responses.
-            api_audience (Optional[str]): The intended audience for the API calls
-                to the service that will be set when using certain 3rd party
-                authentication flows. Audience is typically a resource identifier.
-                If not set, the host value will be used as a default.
+             credentials_file (Optional[str]): Deprecated. A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided. This argument will be
+                 removed in the next major version of this library.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
+             interceptor (Optional[IAMCredentialsRestInterceptor]): Interceptor used
+                 to manipulate requests, request metadata, and responses.
+             api_audience (Optional[str]): The intended audience for the API calls
+                 to the service that will be set when using certain 3rd party
+                 authentication flows. Audience is typically a resource identifier.
+                 If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -354,16 +392,20 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IAMCredentialsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GenerateAccessToken(_BaseIAMCredentialsRestTransport._BaseGenerateAccessToken, IAMCredentialsRestStub):
+    class _GenerateAccessToken(
+        _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken,
+        IAMCredentialsRestStub,
+    ):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.GenerateAccessToken")
 
@@ -375,27 +417,29 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: common.GenerateAccessTokenRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> common.GenerateAccessTokenResponse:
+        def __call__(
+            self,
+            request: common.GenerateAccessTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
             Args:
@@ -416,30 +460,42 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_access_token(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_transcoded_request(http_options, request)
+            request, metadata = self._interceptor.pre_generate_access_token(
+                request, metadata
+            )
+            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_transcoded_request(
+                http_options, request
+            )
 
-            body = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_request_body_json(transcoded_request)
+            body = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(transcoded_request)
+            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(
+                transcoded_request
+            )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
                         "httpRequest": http_request,
@@ -448,7 +504,15 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
 
             # Send the request
-            response = IAMCredentialsRestTransport._GenerateAccessToken._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = IAMCredentialsRestTransport._GenerateAccessToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -463,20 +527,26 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_generate_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_access_token_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_access_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
-                    response_payload = common.GenerateAccessTokenResponse.to_json(response)
+                    response_payload = common.GenerateAccessTokenResponse.to_json(
+                        response
+                    )
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_access_token",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
                         "metadata": http_response["headers"],
@@ -485,7 +555,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
             return resp
 
-    class _GenerateIdToken(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub):
+    class _GenerateIdToken(
+        _BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub
+    ):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.GenerateIdToken")
 
@@ -497,27 +569,29 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: common.GenerateIdTokenRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> common.GenerateIdTokenResponse:
+        def __call__(
+            self,
+            request: common.GenerateIdTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common.GenerateIdTokenResponse:
             r"""Call the generate id token method over HTTP.
 
             Args:
@@ -538,30 +612,42 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_id_token(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_transcoded_request(http_options, request)
+            request, metadata = self._interceptor.pre_generate_id_token(
+                request, metadata
+            )
+            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_transcoded_request(
+                http_options, request
+            )
 
-            body = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_request_body_json(transcoded_request)
+            body = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(transcoded_request)
+            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(
+                transcoded_request
+            )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
                         "httpRequest": http_request,
@@ -570,7 +656,15 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
 
             # Send the request
-            response = IAMCredentialsRestTransport._GenerateIdToken._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = IAMCredentialsRestTransport._GenerateIdToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -585,20 +679,24 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_generate_id_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_id_token_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_id_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = common.GenerateIdTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_id_token",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
                         "metadata": http_response["headers"],
@@ -607,7 +705,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
             return resp
 
-    class _SignBlob(_BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub):
+    class _SignBlob(
+        _BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub
+    ):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.SignBlob")
 
@@ -619,27 +719,29 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: common.SignBlobRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> common.SignBlobResponse:
+        def __call__(
+            self,
+            request: common.SignBlobRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common.SignBlobResponse:
             r"""Call the sign blob method over HTTP.
 
             Args:
@@ -658,32 +760,50 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             """
 
-            http_options = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_http_options()
+            http_options = (
+                _BaseIAMCredentialsRestTransport._BaseSignBlob._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_sign_blob(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_transcoded_request(http_options, request)
+            transcoded_request = (
+                _BaseIAMCredentialsRestTransport._BaseSignBlob._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
-            body = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_request_body_json(transcoded_request)
+            body = (
+                _BaseIAMCredentialsRestTransport._BaseSignBlob._get_request_body_json(
+                    transcoded_request
+                )
+            )
 
             # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(transcoded_request)
+            query_params = (
+                _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
                         "httpRequest": http_request,
@@ -692,7 +812,15 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
 
             # Send the request
-            response = IAMCredentialsRestTransport._SignBlob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = IAMCredentialsRestTransport._SignBlob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -707,20 +835,24 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_sign_blob(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sign_blob_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sign_blob_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = common.SignBlobResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_blob",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
                         "metadata": http_response["headers"],
@@ -729,7 +861,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
             return resp
 
-    class _SignJwt(_BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub):
+    class _SignJwt(
+        _BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub
+    ):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.SignJwt")
 
@@ -741,27 +875,29 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: common.SignJwtRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> common.SignJwtResponse:
+        def __call__(
+            self,
+            request: common.SignJwtRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common.SignJwtResponse:
             r"""Call the sign jwt method over HTTP.
 
             Args:
@@ -780,32 +916,48 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             """
 
-            http_options = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_http_options()
+            http_options = (
+                _BaseIAMCredentialsRestTransport._BaseSignJwt._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_sign_jwt(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_transcoded_request(http_options, request)
+            transcoded_request = (
+                _BaseIAMCredentialsRestTransport._BaseSignJwt._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
-            body = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_request_body_json(transcoded_request)
+            body = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(transcoded_request)
+            query_params = (
+                _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
                         "httpRequest": http_request,
@@ -814,7 +966,15 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 )
 
             # Send the request
-            response = IAMCredentialsRestTransport._SignJwt._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = IAMCredentialsRestTransport._SignJwt._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -829,20 +989,24 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_sign_jwt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sign_jwt_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sign_jwt_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = common.SignJwtResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_jwt",
-                    extra = {
+                    extra={
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
                         "metadata": http_response["headers"],
@@ -852,36 +1016,34 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     @property
-    def generate_access_token(self) -> Callable[
-            [common.GenerateAccessTokenRequest],
-            common.GenerateAccessTokenResponse]:
+    def generate_access_token(
+        self,
+    ) -> Callable[
+        [common.GenerateAccessTokenRequest], common.GenerateAccessTokenResponse
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAccessToken(self._session, self._host, self._interceptor) # type: ignore
+        return self._GenerateAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_id_token(self) -> Callable[
-            [common.GenerateIdTokenRequest],
-            common.GenerateIdTokenResponse]:
+    def generate_id_token(
+        self,
+    ) -> Callable[[common.GenerateIdTokenRequest], common.GenerateIdTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateIdToken(self._session, self._host, self._interceptor) # type: ignore
+        return self._GenerateIdToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sign_blob(self) -> Callable[
-            [common.SignBlobRequest],
-            common.SignBlobResponse]:
+    def sign_blob(self) -> Callable[[common.SignBlobRequest], common.SignBlobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SignBlob(self._session, self._host, self._interceptor) # type: ignore
+        return self._SignBlob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sign_jwt(self) -> Callable[
-            [common.SignJwtRequest],
-            common.SignJwtResponse]:
+    def sign_jwt(self) -> Callable[[common.SignJwtRequest], common.SignJwtResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SignJwt(self._session, self._host, self._interceptor) # type: ignore
+        return self._SignJwt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -891,6 +1053,4 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
         self._session.close()
 
 
-__all__=(
-    'IAMCredentialsRestTransport',
-)
+__all__ = ("IAMCredentialsRestTransport",)

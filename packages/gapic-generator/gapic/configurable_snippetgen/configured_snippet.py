@@ -18,8 +18,7 @@ from typing import List, Optional
 import inflection
 import libcst
 
-from gapic.configurable_snippetgen import libcst_utils
-from gapic.configurable_snippetgen import snippet_config_language_pb2
+from gapic.configurable_snippetgen import libcst_utils, snippet_config_language_pb2
 from gapic.schema import api
 
 

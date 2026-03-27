@@ -49,4 +49,5 @@ def sample_get_link():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_GetLink_sync_internal]

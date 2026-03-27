@@ -50,4 +50,5 @@ def sample_list_views():
     for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListViews_sync_internal]

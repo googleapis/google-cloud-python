@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.utils.reserved_names import RESERVED_NAMES
 from google.api_core import path_template
+
+from gapic.utils.reserved_names import RESERVED_NAMES
 
 
 def convert_uri_fieldnames(uri: str) -> str:

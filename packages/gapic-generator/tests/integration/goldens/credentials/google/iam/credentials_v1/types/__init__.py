@@ -25,12 +25,12 @@ from .common import (
 )
 
 __all__ = (
-    'GenerateAccessTokenRequest',
-    'GenerateAccessTokenResponse',
-    'GenerateIdTokenRequest',
-    'GenerateIdTokenResponse',
-    'SignBlobRequest',
-    'SignBlobResponse',
-    'SignJwtRequest',
-    'SignJwtResponse',
+    "GenerateAccessTokenRequest",
+    "GenerateAccessTokenResponse",
+    "GenerateIdTokenRequest",
+    "GenerateIdTokenResponse",
+    "SignBlobRequest",
+    "SignBlobResponse",
+    "SignJwtRequest",
+    "SignJwtResponse",
 )
