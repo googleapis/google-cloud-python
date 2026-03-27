@@ -776,8 +776,16 @@ class _SnapshotBase(_SessionWrapper):
             self._precommit_token = precommit_token_pb
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class Snapshot(_SnapshotBase):
-    """Allow a set of reads / SQL statements with shared staleness."""
+    """{experimental_api}Allow a set of reads / SQL statements with shared staleness."""
 
     def __init__(
         self,

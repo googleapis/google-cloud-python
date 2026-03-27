@@ -115,8 +115,16 @@ FROM INFORMATION_SCHEMA.TABLES
 DEFAULT_RETRY_BACKOFF = AsyncRetry(initial=0.02, maximum=32, multiplier=1.3)
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class Database(object):
-    """Representation of a Cloud Spanner Database.
+    """{experimental_api}Representation of a Cloud Spanner Database.
 
     We can use a :class:`Database` to:
 

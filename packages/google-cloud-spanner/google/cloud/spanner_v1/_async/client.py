@@ -167,8 +167,16 @@ def _initialize_metrics(project, credentials):
                     )
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Async API is currently experimental and subject to breaking changes. This comment will be removed once the API has stabilized.\n",
+            "",
+        )
+    }
+)
 class Client(ClientWithProject):
-    """Client for interacting with Cloud Spanner API.
+    """{experimental_api}Client for interacting with Cloud Spanner API.
 
     .. note::
 

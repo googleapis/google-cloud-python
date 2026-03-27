@@ -54,8 +54,16 @@ from google.cloud.spanner_v1.types.spanner import (
 from google.cloud.spanner_v1.types.transaction import TransactionOptions
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class Transaction(_SnapshotBase, _BatchBase):
-    """Implement read-write transaction semantics for a session.
+    """{experimental_api}Implement read-write transaction semantics for a session.
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit

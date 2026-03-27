@@ -72,9 +72,16 @@ class SessionCheckout(object):
         await self._pool.put(self._session)
 
 
-@CrossSync.convert_class
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class AbstractSessionPool(object):
-    """Specifies required API for concrete session pool implementations.
+    """{experimental_api}Specifies required API for concrete session pool implementations.
 
     :type labels: dict (str -> str) or None
     :param labels: (Optional) user-assigned labels for sessions created
@@ -208,9 +215,16 @@ class AbstractSessionPool(object):
         return SessionCheckout(self, **kwargs)
 
 
-@CrossSync.convert_class
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class FixedSizePool(AbstractSessionPool):
-    """Concrete session pool implementation:
+    """{experimental_api}Concrete session pool implementation:
 
     - Pre-allocates / creates a fixed number of sessions.
 
@@ -474,9 +488,16 @@ class FixedSizePool(AbstractSessionPool):
                 await session.delete()
 
 
-@CrossSync.convert_class
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class BurstyPool(AbstractSessionPool):
-    """Concrete session pool implementation:
+    """{experimental_api}Concrete session pool implementation:
 
     - "Pings" existing sessions via :meth:`session.exists` before returning
       them.
@@ -585,9 +606,16 @@ class BurstyPool(AbstractSessionPool):
                 await session.delete()
 
 
-@CrossSync.convert_class
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class PingingPool(FixedSizePool):
-    """Concrete session pool implementation:
+    """{experimental_api}Concrete session pool implementation:
 
     - Pre-allocates / creates a fixed number of sessions.
 
@@ -834,9 +862,16 @@ class PingingPool(FixedSizePool):
             await self.put(session)
 
 
-@CrossSync.convert_class
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class TransactionPingingPool(PingingPool):
-    """Concrete session pool implementation:
+    """{experimental_api}Concrete session pool implementation:
 
     Deprecated: TransactionPingingPool no longer begins a transaction for each of its sessions at startup.
     Hence the TransactionPingingPool is same as :class:`PingingPool` and maybe removed in the future.

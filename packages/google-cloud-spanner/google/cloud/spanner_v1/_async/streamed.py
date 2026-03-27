@@ -23,8 +23,16 @@ from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet
 from google.cloud.spanner_v1.types.type import TypeCode
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class StreamedResultSet(object):
-    """Process a sequence of partial result sets into a single set of row data.
+    """{experimental_api}Process a sequence of partial result sets into a single set of row data.
 
     :type response_iterator:
     :param response_iterator:

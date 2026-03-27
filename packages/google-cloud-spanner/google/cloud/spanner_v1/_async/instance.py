@@ -80,9 +80,17 @@ def _type_string_to_type_pb(type_string):
     return _OPERATION_METADATA_TYPES.get(type_string, Empty)
 
 
-@CrossSync.convert_class(add_mapping_for_name="Instance")
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    },
+    add_mapping_for_name="Instance",
+)
 class Instance(object):
-    """Representation of a Cloud Spanner Instance.
+    """{experimental_api}Representation of a Cloud Spanner Instance.
 
     We can use a :class:`Instance` to:
 

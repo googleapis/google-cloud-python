@@ -48,8 +48,16 @@ DEFAULT_RETRY_TIMEOUT_SECS = 30
 
 
 @total_ordering
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class Session(object):
-    """Representation of a Cloud Spanner Session.
+    """{experimental_api}Representation of a Cloud Spanner Session.
 
     We can use a :class:`Session` to:
 

@@ -50,8 +50,16 @@ from google.cloud.spanner_v1.types.transaction import TransactionOptions
 DEFAULT_RETRY_TIMEOUT_SECS = 30
 
 
+@CrossSync.convert_class(
+    docstring_format_vars={
+        "experimental_api": (
+            "\n\n    .. warning::\n        The Spanner AsyncIO API is experimental and may be subject to breaking changes.\n",
+            "",
+        )
+    }
+)
 class _BatchBase(_SessionWrapper):
-    """Accumulate mutations for transmission during :meth:`commit`.
+    """{experimental_api}Accumulate mutations for transmission during :meth:`commit`.
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
