@@ -29,7 +29,54 @@ __protobuf__ = proto.module(
 
 
 class DataDocumentationSpec(proto.Message):
-    r"""DataDocumentation scan related spec."""
+    r"""DataDocumentation scan related spec.
+
+    Attributes:
+        catalog_publishing_enabled (bool):
+            Optional. Whether to publish result to
+            Dataplex Catalog.
+        generation_scopes (MutableSequence[google.cloud.dataplex_v1.types.DataDocumentationSpec.GenerationScope]):
+            Optional. Specifies which components of the
+            data documentation to generate. Any component
+            that is required to generate the specified
+            components will also be generated. If no
+            generation scope is specified, all available
+            documentation components will be generated.
+    """
+
+    class GenerationScope(proto.Enum):
+        r"""The data documentation generation scope. This field contains
+        the possible components of a data documentation scan which can
+        be selectively generated.
+
+        Values:
+            GENERATION_SCOPE_UNSPECIFIED (0):
+                Unspecified generation scope. If no
+                generation scope is specified, all available
+                documentation components will be generated.
+            ALL (1):
+                All the possible results will be generated.
+            TABLE_AND_COLUMN_DESCRIPTIONS (2):
+                Table and column descriptions will be
+                generated.
+            SQL_QUERIES (3):
+                SQL queries will be generated.
+        """
+
+        GENERATION_SCOPE_UNSPECIFIED = 0
+        ALL = 1
+        TABLE_AND_COLUMN_DESCRIPTIONS = 2
+        SQL_QUERIES = 3
+
+    catalog_publishing_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    generation_scopes: MutableSequence[GenerationScope] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=GenerationScope,
+    )
 
 
 class DataDocumentationResult(proto.Message):

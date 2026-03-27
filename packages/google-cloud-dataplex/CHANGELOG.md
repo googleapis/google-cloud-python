@@ -4,6 +4,45 @@
 
 [1]: https://pypi.org/project/google-cloud-dataplex/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.17.0...google-cloud-dataplex-v2.18.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.16.0...google-cloud-dataplex-v2.17.0) (2026-03-23)
+
+
+### Documentation
+
+* remove deprecated metadata change warnings in Dataplex Catalog The DataProductService provides APIs to curate and manage collections of data assets as data products, enabling more organized sharing and usage for specific business cases. MetadataFeeds allow users to monitor metadata changes (CREATE, UPDATE, DELETE) within a specified scope (organization, project, or entry group) and publish them to Pub/Sub. CatalogService now includes a LookupContext API to provide LLM-generated context for resources, and enhanced EntryLink management, including the ability to attach aspects. DataScan operations now support a OneTime trigger for single-run scans, and Data Quality rules support DebugQueries to help investigate rule failures by returning diagnostic values. ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
+
+### Features
+
+* add debug query support to Data Quality rules ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add MetadataFeed to CatalogService for tracking metadata changes ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* support OneTime triggers for DataScan operations ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add SKIPPED state to DataScan catalog publishing status ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add DataProductService to manage data products and underlying data assets ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* allow selective generation scope for Data Documentation scans ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add LookupContext to CatalogService for LLM-generated resource context ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add support for attaching aspects to EntryLinks ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* add UpdateEntryLink and LookupEntryLinks methods to CatalogService ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
+
+### Bug Fixes
+
+* remove deprecated Explore-related methods and messages from public client libraries Breaking Changes: - Removed ContentService and all associated methods (CreateContent, UpdateContent, DeleteContent, GetContent, ListContent, etc.) and request/response messages. - Removed Environment and Session management methods from DataplexService (CreateEnvironment, UpdateEnvironment, DeleteEnvironment, ListEnvironments, GetEnvironment, ListSessions) and their associated messages. ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.15.0...google-cloud-dataplex-v2.16.0) (2026-01-08)
 
 

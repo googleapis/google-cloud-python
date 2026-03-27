@@ -19,9 +19,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
+from google.cloud.oslogin_v1.common.types import common
 from google.protobuf import json_format
 
-from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.types import oslogin
 
 from .base import DEFAULT_CLIENT_INFO, OsLoginServiceTransport

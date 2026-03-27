@@ -85,6 +85,10 @@ class SessionServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -134,6 +138,8 @@ class SessionServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -151,6 +157,11 @@ class SessionServiceTransport(abc.ABC):
                     deadline=220.0,
                 ),
                 default_timeout=220.0,
+                client_info=client_info,
+            ),
+            self.stream_run_session: gapic_v1.method.wrap_method(
+                self.stream_run_session,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.bidi_run_session: gapic_v1.method.wrap_method(
@@ -208,6 +219,18 @@ class SessionServiceTransport(abc.ABC):
 
     @property
     def run_session(
+        self,
+    ) -> Callable[
+        [session_service.RunSessionRequest],
+        Union[
+            session_service.RunSessionResponse,
+            Awaitable[session_service.RunSessionResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_run_session(
         self,
     ) -> Callable[
         [session_service.RunSessionRequest],

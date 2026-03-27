@@ -77,6 +77,7 @@ from google.cloud.ces_v1beta.services.agent_service import (
 from google.cloud.ces_v1beta.types import (
     agent,
     agent_service,
+    agent_tool,
     agent_transfers,
     app,
     app_version,
@@ -103,6 +104,7 @@ from google.cloud.ces_v1beta.types import (
     open_api_toolset,
     python_function,
     schema,
+    security_settings,
     system_tool,
     tool,
     toolset,
@@ -115,6 +117,7 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
+from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -172,6 +175,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert AgentServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -190,6 +194,10 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert AgentServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        AgentServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1310,11 +1318,13 @@ def test_agent_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3305,6 +3315,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
     request = agent_service.ExportAppRequest(
         name="name_value",
         gcs_uri="gcs_uri_value",
+        app_version="app_version_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3318,6 +3329,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
         assert args[0] == agent_service.ExportAppRequest(
             name="name_value",
             gcs_uri="gcs_uri_value",
+            app_version="app_version_value",
         )
 
 
@@ -3933,6 +3945,706 @@ async def test_import_app_flattened_error_async():
             parent="parent_value",
             display_name="display_name_value",
             app_id="app_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent_service.GetSecuritySettingsRequest,
+        dict,
+    ],
+)
+def test_get_security_settings(request_type, transport: str = "grpc"):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = security_settings.SecuritySettings(
+            name="name_value",
+            etag="etag_value",
+        )
+        response = client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = agent_service.GetSecuritySettingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = agent_service.GetSecuritySettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == agent_service.GetSecuritySettingsRequest(
+            name="name_value",
+        )
+
+
+def test_get_security_settings_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AgentServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_security_settings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_security_settings] = (
+            mock_rpc
+        )
+        request = {}
+        client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AgentServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_security_settings
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_security_settings
+        ] = mock_rpc
+
+        request = {}
+        await client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_async(
+    transport: str = "grpc_asyncio",
+    request_type=agent_service.GetSecuritySettingsRequest,
+):
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.SecuritySettings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = agent_service.GetSecuritySettingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_async_from_dict():
+    await test_get_security_settings_async(request_type=dict)
+
+
+def test_get_security_settings_field_headers():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent_service.GetSecuritySettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        call.return_value = security_settings.SecuritySettings()
+        client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_field_headers_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent_service.GetSecuritySettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.SecuritySettings()
+        )
+        await client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_security_settings_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = security_settings.SecuritySettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_security_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_security_settings_flattened_error():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_security_settings(
+            agent_service.GetSecuritySettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = security_settings.SecuritySettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.SecuritySettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_security_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_flattened_error_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_security_settings(
+            agent_service.GetSecuritySettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent_service.UpdateSecuritySettingsRequest,
+        dict,
+    ],
+)
+def test_update_security_settings(request_type, transport: str = "grpc"):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_security_settings.SecuritySettings(
+            name="name_value",
+            etag="etag_value",
+        )
+        response = client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = agent_service.UpdateSecuritySettingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_update_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = agent_service.UpdateSecuritySettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == agent_service.UpdateSecuritySettingsRequest()
+
+
+def test_update_security_settings_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AgentServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_security_settings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_security_settings
+        ] = mock_rpc
+        request = {}
+        client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AgentServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_security_settings
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_security_settings
+        ] = mock_rpc
+
+        request = {}
+        await client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_async(
+    transport: str = "grpc_asyncio",
+    request_type=agent_service.UpdateSecuritySettingsRequest,
+):
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_security_settings.SecuritySettings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = agent_service.UpdateSecuritySettingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_async_from_dict():
+    await test_update_security_settings_async(request_type=dict)
+
+
+def test_update_security_settings_field_headers():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent_service.UpdateSecuritySettingsRequest()
+
+    request.security_settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        call.return_value = gcc_security_settings.SecuritySettings()
+        client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "security_settings.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_field_headers_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent_service.UpdateSecuritySettingsRequest()
+
+    request.security_settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_security_settings.SecuritySettings()
+        )
+        await client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "security_settings.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_security_settings_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_security_settings.SecuritySettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_security_settings(
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].security_settings
+        mock_val = gcc_security_settings.SecuritySettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_security_settings_flattened_error():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_security_settings(
+            agent_service.UpdateSecuritySettingsRequest(),
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_security_settings.SecuritySettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_security_settings.SecuritySettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_security_settings(
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].security_settings
+        mock_val = gcc_security_settings.SecuritySettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_flattened_error_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_security_settings(
+            agent_service.UpdateSecuritySettingsRequest(),
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -21107,6 +21819,376 @@ def test_import_app_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_get_security_settings_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AgentServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_security_settings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_security_settings] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.get_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_security_settings_rest_required_fields(
+    request_type=agent_service.GetSecuritySettingsRequest,
+):
+    transport_class = transports.AgentServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_security_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_security_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = security_settings.SecuritySettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = security_settings.SecuritySettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_security_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_security_settings_rest_unset_required_fields():
+    transport = transports.AgentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_security_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_security_settings_rest_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = security_settings.SecuritySettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/securitySettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = security_settings.SecuritySettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_security_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/securitySettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_security_settings_rest_flattened_error(transport: str = "rest"):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_security_settings(
+            agent_service.GetSecuritySettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_update_security_settings_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AgentServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_security_settings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_security_settings
+        ] = mock_rpc
+
+        request = {}
+        client.update_security_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_security_settings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_security_settings_rest_required_fields(
+    request_type=agent_service.UpdateSecuritySettingsRequest,
+):
+    transport_class = transports.AgentServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_security_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_security_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcc_security_settings.SecuritySettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcc_security_settings.SecuritySettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_security_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_security_settings_rest_unset_required_fields():
+    transport = transports.AgentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_security_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("securitySettings",)))
+
+
+def test_update_security_settings_rest_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_security_settings.SecuritySettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "security_settings": {
+                "name": "projects/sample1/locations/sample2/securitySettings"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcc_security_settings.SecuritySettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_security_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{security_settings.name=projects/*/locations/*/securitySettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_security_settings_rest_flattened_error(transport: str = "rest"):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_security_settings(
+            agent_service.UpdateSecuritySettingsRequest(),
+            security_settings=gcc_security_settings.SecuritySettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_list_agents_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -29666,6 +30748,52 @@ def test_import_app_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_security_settings_empty_call_grpc():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        call.return_value = security_settings.SecuritySettings()
+        client.get_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.GetSecuritySettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_security_settings_empty_call_grpc():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        call.return_value = gcc_security_settings.SecuritySettings()
+        client.update_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.UpdateSecuritySettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_agents_empty_call_grpc():
     client = AgentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30757,6 +31885,66 @@ async def test_import_app_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent_service.ImportAppRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_security_settings_empty_call_grpc_asyncio():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.SecuritySettings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.get_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.GetSecuritySettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_security_settings_empty_call_grpc_asyncio():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_security_settings.SecuritySettings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.update_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.UpdateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -31975,8 +33163,9 @@ def test_list_apps_rest_bad_request(request_type=agent_service.ListAppsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32041,17 +33230,19 @@ def test_list_apps_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_apps"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_apps_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_apps"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_apps"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_apps_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_apps"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32102,8 +33293,9 @@ def test_get_app_rest_bad_request(request_type=agent_service.GetAppRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32186,17 +33378,17 @@ def test_get_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.AgentServiceRestInterceptor, "pre_get_app") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32245,8 +33437,9 @@ def test_create_app_rest_bad_request(request_type=agent_service.CreateAppRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32527,19 +33720,20 @@ def test_create_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_app"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32588,8 +33782,9 @@ def test_update_app_rest_bad_request(request_type=agent_service.UpdateAppRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32896,17 +34091,19 @@ def test_update_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_app"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32955,8 +34152,9 @@ def test_delete_app_rest_bad_request(request_type=agent_service.DeleteAppRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33013,19 +34211,20 @@ def test_delete_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_delete_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_delete_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_delete_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_delete_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_app"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33074,8 +34273,9 @@ def test_export_app_rest_bad_request(request_type=agent_service.ExportAppRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33132,19 +34332,20 @@ def test_export_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_export_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_export_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_export_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_export_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_export_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_export_app"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33193,8 +34394,9 @@ def test_import_app_rest_bad_request(request_type=agent_service.ImportAppRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33251,19 +34453,20 @@ def test_import_app_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_import_app"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_import_app_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_import_app"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_import_app"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_import_app_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_import_app"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33303,6 +34506,366 @@ def test_import_app_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_get_security_settings_rest_bad_request(
+    request_type=agent_service.GetSecuritySettingsRequest,
+):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/securitySettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_security_settings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent_service.GetSecuritySettingsRequest,
+        dict,
+    ],
+)
+def test_get_security_settings_rest_call_success(request_type):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/securitySettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = security_settings.SecuritySettings(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = security_settings.SecuritySettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_security_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_security_settings_rest_interceptors(null_interceptor):
+    transport = transports.AgentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AgentServiceRestInterceptor(),
+    )
+    client = AgentServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_security_settings"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_get_security_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_security_settings"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = agent_service.GetSecuritySettingsRequest.pb(
+            agent_service.GetSecuritySettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = security_settings.SecuritySettings.to_json(
+            security_settings.SecuritySettings()
+        )
+        req.return_value.content = return_value
+
+        request = agent_service.GetSecuritySettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = security_settings.SecuritySettings()
+        post_with_metadata.return_value = security_settings.SecuritySettings(), metadata
+
+        client.get_security_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_security_settings_rest_bad_request(
+    request_type=agent_service.UpdateSecuritySettingsRequest,
+):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "security_settings": {
+            "name": "projects/sample1/locations/sample2/securitySettings"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_security_settings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent_service.UpdateSecuritySettingsRequest,
+        dict,
+    ],
+)
+def test_update_security_settings_rest_call_success(request_type):
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "security_settings": {
+            "name": "projects/sample1/locations/sample2/securitySettings"
+        }
+    }
+    request_init["security_settings"] = {
+        "name": "projects/sample1/locations/sample2/securitySettings",
+        "endpoint_control_policy": {
+            "enforcement_scope": 1,
+            "allowed_origins": ["allowed_origins_value1", "allowed_origins_value2"],
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = agent_service.UpdateSecuritySettingsRequest.meta.fields[
+        "security_settings"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["security_settings"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["security_settings"][field])):
+                    del request_init["security_settings"][field][i][subfield]
+            else:
+                del request_init["security_settings"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_security_settings.SecuritySettings(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcc_security_settings.SecuritySettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_security_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_security_settings.SecuritySettings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_security_settings_rest_interceptors(null_interceptor):
+    transport = transports.AgentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AgentServiceRestInterceptor(),
+    )
+    client = AgentServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_security_settings"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_update_security_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_security_settings"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = agent_service.UpdateSecuritySettingsRequest.pb(
+            agent_service.UpdateSecuritySettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = gcc_security_settings.SecuritySettings.to_json(
+            gcc_security_settings.SecuritySettings()
+        )
+        req.return_value.content = return_value
+
+        request = agent_service.UpdateSecuritySettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcc_security_settings.SecuritySettings()
+        post_with_metadata.return_value = (
+            gcc_security_settings.SecuritySettings(),
+            metadata,
+        )
+
+        client.update_security_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_list_agents_rest_bad_request(request_type=agent_service.ListAgentsRequest):
     client = AgentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -33312,8 +34875,9 @@ def test_list_agents_rest_bad_request(request_type=agent_service.ListAgentsReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33376,17 +34940,19 @@ def test_list_agents_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_agents"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_agents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_agents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_agents"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_agents_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_agents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33441,8 +35007,9 @@ def test_get_agent_rest_bad_request(request_type=agent_service.GetAgentRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33523,17 +35090,19 @@ def test_get_agent_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_agent"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_agent_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_agent"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_agent"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_agent_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_agent"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33582,8 +35151,9 @@ def test_create_agent_rest_bad_request(request_type=agent_service.CreateAgentReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33782,17 +35352,19 @@ def test_create_agent_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_agent"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_agent_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_agent"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_agent"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_agent_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_agent"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33847,8 +35419,9 @@ def test_update_agent_rest_bad_request(request_type=agent_service.UpdateAgentReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34051,17 +35624,19 @@ def test_update_agent_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_agent"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_agent_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_agent"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_agent"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_agent_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_agent"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34114,8 +35689,9 @@ def test_delete_agent_rest_bad_request(request_type=agent_service.DeleteAgentReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34174,13 +35750,13 @@ def test_delete_agent_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_agent"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_agent"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteAgentRequest.pb(
             agent_service.DeleteAgentRequest()
@@ -34223,8 +35799,9 @@ def test_list_examples_rest_bad_request(request_type=agent_service.ListExamplesR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34287,17 +35864,19 @@ def test_list_examples_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_examples"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_examples_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_examples"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_examples"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_examples_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_examples"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34352,8 +35931,9 @@ def test_get_example_rest_bad_request(request_type=agent_service.GetExampleReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34428,17 +36008,19 @@ def test_get_example_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_example"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_example_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_example"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_example"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_example_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_example"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34491,8 +36073,9 @@ def test_create_example_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34680,17 +36263,19 @@ def test_create_example_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_example"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_example_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_example"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_example"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_example_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_example"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34747,8 +36332,9 @@ def test_update_example_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34940,17 +36526,19 @@ def test_update_example_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_example"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_example_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_example"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_example"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_example_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_example"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35005,8 +36593,9 @@ def test_delete_example_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35065,13 +36654,13 @@ def test_delete_example_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_example"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_example"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteExampleRequest.pb(
             agent_service.DeleteExampleRequest()
@@ -35114,8 +36703,9 @@ def test_list_tools_rest_bad_request(request_type=agent_service.ListToolsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35178,17 +36768,19 @@ def test_list_tools_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_tools"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_tools_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_tools"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_tools"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_tools_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_tools"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35241,8 +36833,9 @@ def test_get_tool_rest_bad_request(request_type=agent_service.GetToolRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35315,17 +36908,19 @@ def test_get_tool_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_tool"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_tool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_tool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_tool"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_tool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_tool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35376,8 +36971,9 @@ def test_list_conversations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35440,17 +37036,20 @@ def test_list_conversations_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_conversations"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_conversations_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_conversations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_conversations"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_list_conversations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_conversations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35510,8 +37109,9 @@ def test_get_conversation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35592,17 +37192,20 @@ def test_get_conversation_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_conversation"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_conversation_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_conversation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_conversation"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_get_conversation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_conversation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35657,8 +37260,9 @@ def test_delete_conversation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35717,13 +37321,13 @@ def test_delete_conversation_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_conversation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_conversation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteConversationRequest.pb(
             agent_service.DeleteConversationRequest()
@@ -35768,8 +37372,9 @@ def test_batch_delete_conversations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35826,20 +37431,21 @@ def test_batch_delete_conversations_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_batch_delete_conversations"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor,
-        "post_batch_delete_conversations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_batch_delete_conversations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_batch_delete_conversations"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_batch_delete_conversations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_batch_delete_conversations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35890,8 +37496,9 @@ def test_create_tool_rest_bad_request(request_type=agent_service.CreateToolReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36105,6 +37712,7 @@ def test_create_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36113,11 +37721,24 @@ def test_create_tool_rest_call_success(request_type):
             "file_corpus": "file_corpus_value",
         },
         "system_tool": {"name": "name_value", "description": "description_value"},
+        "agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "root_agent": "root_agent_value",
+        },
         "widget_tool": {
             "parameters": {},
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -36242,17 +37863,19 @@ def test_create_tool_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_tool"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_tool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_tool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_tool"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_tool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_tool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36307,8 +37930,9 @@ def test_update_tool_rest_bad_request(request_type=agent_service.UpdateToolReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36526,6 +38150,7 @@ def test_update_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36534,11 +38159,24 @@ def test_update_tool_rest_call_success(request_type):
             "file_corpus": "file_corpus_value",
         },
         "system_tool": {"name": "name_value", "description": "description_value"},
+        "agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "root_agent": "root_agent_value",
+        },
         "widget_tool": {
             "parameters": {},
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/tools/sample4",
         "display_name": "display_name_value",
@@ -36663,17 +38301,19 @@ def test_update_tool_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_tool"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_tool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_tool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_tool"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_tool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_tool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36726,8 +38366,9 @@ def test_delete_tool_rest_bad_request(request_type=agent_service.DeleteToolReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36786,13 +38427,13 @@ def test_delete_tool_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_tool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_tool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteToolRequest.pb(
             agent_service.DeleteToolRequest()
@@ -36837,8 +38478,9 @@ def test_list_guardrails_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36901,17 +38543,19 @@ def test_list_guardrails_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_guardrails"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_guardrails_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_guardrails"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_guardrails"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_guardrails_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_guardrails"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36969,8 +38613,9 @@ def test_get_guardrail_rest_bad_request(request_type=agent_service.GetGuardrailR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37043,17 +38688,19 @@ def test_get_guardrail_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_guardrail"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_guardrail_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_guardrail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_guardrail"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_guardrail_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_guardrail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37106,8 +38753,9 @@ def test_create_guardrail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37301,17 +38949,20 @@ def test_create_guardrail_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_guardrail"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_guardrail_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_guardrail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_guardrail"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_create_guardrail_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_guardrail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37368,8 +39019,9 @@ def test_update_guardrail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37567,17 +39219,20 @@ def test_update_guardrail_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_guardrail"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_guardrail_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_guardrail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_guardrail"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_update_guardrail_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_guardrail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37632,8 +39287,9 @@ def test_delete_guardrail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37692,13 +39348,13 @@ def test_delete_guardrail_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_guardrail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_guardrail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteGuardrailRequest.pb(
             agent_service.DeleteGuardrailRequest()
@@ -37743,8 +39399,9 @@ def test_list_deployments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37807,17 +39464,20 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_deployments"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_deployments_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_deployments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_deployments"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_list_deployments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_deployments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37877,8 +39537,9 @@ def test_get_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37949,17 +39610,19 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_deployment"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_deployment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38012,8 +39675,9 @@ def test_create_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38179,17 +39843,20 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_deployment"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_create_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38246,8 +39913,9 @@ def test_update_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38417,17 +40085,20 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_deployment"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_update_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38482,8 +40153,9 @@ def test_delete_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38542,13 +40214,13 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteDeploymentRequest.pb(
             agent_service.DeleteDeploymentRequest()
@@ -38591,8 +40263,9 @@ def test_list_toolsets_rest_bad_request(request_type=agent_service.ListToolsetsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38655,17 +40328,19 @@ def test_list_toolsets_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_toolsets"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_toolsets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_toolsets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_toolsets"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_toolsets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_toolsets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38720,8 +40395,9 @@ def test_get_toolset_rest_bad_request(request_type=agent_service.GetToolsetReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38794,17 +40470,19 @@ def test_get_toolset_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_toolset"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_toolset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_toolset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_toolset"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_toolset_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_toolset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38857,8 +40535,9 @@ def test_create_toolset_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38914,6 +40593,7 @@ def test_create_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -39068,17 +40748,19 @@ def test_create_toolset_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_toolset"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_toolset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_toolset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_toolset"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_toolset_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_toolset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39135,8 +40817,9 @@ def test_update_toolset_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39196,6 +40879,7 @@ def test_update_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -39350,17 +41034,19 @@ def test_update_toolset_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_toolset"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_update_toolset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_update_toolset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_toolset"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_update_toolset_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_update_toolset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39415,8 +41101,9 @@ def test_delete_toolset_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39475,13 +41162,13 @@ def test_delete_toolset_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_toolset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_toolset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteToolsetRequest.pb(
             agent_service.DeleteToolsetRequest()
@@ -39526,8 +41213,9 @@ def test_list_app_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39590,17 +41278,20 @@ def test_list_app_versions_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_app_versions"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_app_versions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_app_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_app_versions"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_list_app_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_app_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39660,8 +41351,9 @@ def test_get_app_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39734,17 +41426,19 @@ def test_get_app_version_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_app_version"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_app_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_app_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_app_version"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_app_version_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_app_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39797,8 +41491,9 @@ def test_create_app_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40233,6 +41928,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "tls_config": {},
                         "service_directory_config": {},
+                        "custom_headers": {},
                     },
                     "file_search_tool": {
                         "corpus_type": 1,
@@ -40244,11 +41940,24 @@ def test_create_app_version_rest_call_success(request_type):
                         "name": "name_value",
                         "description": "description_value",
                     },
+                    "agent_tool": {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "root_agent": "root_agent_value",
+                    },
                     "widget_tool": {
                         "parameters": {},
                         "name": "name_value",
                         "description": "description_value",
                         "widget_type": 1,
+                        "ui_config": {},
+                        "data_mapping": {
+                            "source_tool_name": "source_tool_name_value",
+                            "field_mappings": {},
+                            "python_function": {},
+                            "mode": 1,
+                            "python_script": "python_script_value",
+                        },
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
@@ -40384,6 +42093,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "service_directory_config": {},
                         "tls_config": {},
+                        "custom_headers": {},
                     },
                     "open_api_toolset": {
                         "open_api_schema": "open_api_schema_value",
@@ -40522,17 +42232,20 @@ def test_create_app_version_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_app_version"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_create_app_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_create_app_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_create_app_version"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_create_app_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_create_app_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40587,8 +42300,9 @@ def test_delete_app_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40647,13 +42361,13 @@ def test_delete_app_version_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_delete_app_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_delete_app_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = agent_service.DeleteAppVersionRequest.pb(
             agent_service.DeleteAppVersionRequest()
@@ -40700,8 +42414,9 @@ def test_restore_app_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40760,19 +42475,21 @@ def test_restore_app_version_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_restore_app_version"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_restore_app_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_restore_app_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_restore_app_version"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor,
+            "post_restore_app_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_restore_app_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40825,8 +42542,9 @@ def test_list_changelogs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40889,17 +42607,19 @@ def test_list_changelogs_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_changelogs"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_list_changelogs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_list_changelogs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_changelogs"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_list_changelogs_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_list_changelogs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40957,8 +42677,9 @@ def test_get_changelog_rest_bad_request(request_type=agent_service.GetChangelogR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41037,17 +42758,19 @@ def test_get_changelog_rest_interceptors(null_interceptor):
     )
     client = AgentServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_changelog"
-    ) as post, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "post_get_changelog_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AgentServiceRestInterceptor, "pre_get_changelog"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_changelog"
+        ) as post,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "post_get_changelog_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AgentServiceRestInterceptor, "pre_get_changelog"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41100,8 +42823,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41160,8 +42884,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41222,8 +42947,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41284,8 +43010,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41346,8 +43073,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41408,8 +43136,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -41600,6 +43329,50 @@ def test_import_app_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent_service.ImportAppRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_security_settings_empty_call_rest():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        client.get_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.GetSecuritySettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_security_settings_empty_call_rest():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        client.update_security_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = agent_service.UpdateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -42501,6 +44274,8 @@ def test_agent_service_base_transport():
         "delete_app",
         "export_app",
         "import_app",
+        "get_security_settings",
+        "update_security_settings",
         "list_agents",
         "get_agent",
         "create_agent",
@@ -42572,11 +44347,14 @@ def test_agent_service_base_transport():
 
 def test_agent_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.ces_v1beta.services.agent_service.transports.AgentServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.ces_v1beta.services.agent_service.transports.AgentServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AgentServiceTransport(
@@ -42596,9 +44374,12 @@ def test_agent_service_base_transport_with_credentials_file():
 
 def test_agent_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.ces_v1beta.services.agent_service.transports.AgentServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.ces_v1beta.services.agent_service.transports.AgentServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AgentServiceTransport()
@@ -42676,11 +44457,12 @@ def test_agent_service_transport_auth_gdch_credentials(transport_class):
 def test_agent_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -42838,6 +44620,12 @@ def test_agent_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.import_app._session
     session2 = client2.transport.import_app._session
+    assert session1 != session2
+    session1 = client1.transport.get_security_settings._session
+    session2 = client2.transport.get_security_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_security_settings._session
+    session2 = client2.transport.update_security_settings._session
     assert session1 != session2
     session1 = client1.transport.list_agents._session
     session2 = client2.transport.list_agents._session
@@ -43489,11 +45277,34 @@ def test_parse_secret_version_path():
     assert expected == actual
 
 
-def test_service_path():
+def test_security_settings_path():
     project = "scallop"
     location = "abalone"
-    namespace = "squid"
-    service = "clam"
+    expected = "projects/{project}/locations/{location}/securitySettings".format(
+        project=project,
+        location=location,
+    )
+    actual = AgentServiceClient.security_settings_path(project, location)
+    assert expected == actual
+
+
+def test_parse_security_settings_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+    }
+    path = AgentServiceClient.security_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentServiceClient.parse_security_settings_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "whelk"
+    location = "octopus"
+    namespace = "oyster"
+    service = "nudibranch"
     expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
         project=project,
         location=location,
@@ -43506,10 +45317,10 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "namespace": "oyster",
-        "service": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "namespace": "winkle",
+        "service": "nautilus",
     }
     path = AgentServiceClient.service_path(**expected)
 
@@ -43519,10 +45330,10 @@ def test_parse_service_path():
 
 
 def test_tool_path():
-    project = "cuttlefish"
-    location = "mussel"
-    app = "winkle"
-    tool = "nautilus"
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    tool = "clam"
     expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
         project=project,
         location=location,
@@ -43535,10 +45346,10 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "app": "squid",
-        "tool": "clam",
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "tool": "nudibranch",
     }
     path = AgentServiceClient.tool_path(**expected)
 
@@ -43548,10 +45359,10 @@ def test_parse_tool_path():
 
 
 def test_toolset_path():
-    project = "whelk"
-    location = "octopus"
-    app = "oyster"
-    toolset = "nudibranch"
+    project = "cuttlefish"
+    location = "mussel"
+    app = "winkle"
+    toolset = "nautilus"
     expected = (
         "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
             project=project,
@@ -43566,10 +45377,10 @@ def test_toolset_path():
 
 def test_parse_toolset_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "app": "winkle",
-        "toolset": "nautilus",
+        "project": "scallop",
+        "location": "abalone",
+        "app": "squid",
+        "toolset": "clam",
     }
     path = AgentServiceClient.toolset_path(**expected)
 
@@ -43579,7 +45390,7 @@ def test_parse_toolset_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -43589,7 +45400,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "octopus",
     }
     path = AgentServiceClient.common_billing_account_path(**expected)
 
@@ -43599,7 +45410,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -43609,7 +45420,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nudibranch",
     }
     path = AgentServiceClient.common_folder_path(**expected)
 
@@ -43619,7 +45430,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -43629,7 +45440,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = AgentServiceClient.common_organization_path(**expected)
 
@@ -43639,7 +45450,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -43649,7 +45460,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "nautilus",
     }
     path = AgentServiceClient.common_project_path(**expected)
 
@@ -43659,8 +45470,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -43671,8 +45482,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "squid",
+        "location": "clam",
     }
     path = AgentServiceClient.common_location_path(**expected)
 
@@ -43843,6 +45654,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = AgentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -43980,6 +45823,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -44127,6 +46002,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = AgentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -44270,6 +46179,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -44417,6 +46360,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = AgentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -44556,6 +46533,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = AgentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = AgentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

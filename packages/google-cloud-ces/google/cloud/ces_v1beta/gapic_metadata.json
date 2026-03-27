@@ -145,6 +145,11 @@
                 "get_guardrail"
               ]
             },
+            "GetSecuritySettings": {
+              "methods": [
+                "get_security_settings"
+              ]
+            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -238,6 +243,11 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
+              ]
+            },
+            "UpdateSecuritySettings": {
+              "methods": [
+                "update_security_settings"
               ]
             },
             "UpdateTool": {
@@ -390,6 +400,11 @@
                 "get_guardrail"
               ]
             },
+            "GetSecuritySettings": {
+              "methods": [
+                "get_security_settings"
+              ]
+            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -483,6 +498,11 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
+              ]
+            },
+            "UpdateSecuritySettings": {
+              "methods": [
+                "update_security_settings"
               ]
             },
             "UpdateTool": {
@@ -635,6 +655,11 @@
                 "get_guardrail"
               ]
             },
+            "GetSecuritySettings": {
+              "methods": [
+                "get_security_settings"
+              ]
+            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -728,6 +753,11 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
+              ]
+            },
+            "UpdateSecuritySettings": {
+              "methods": [
+                "update_security_settings"
               ]
             },
             "UpdateTool": {
@@ -1242,6 +1272,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1257,6 +1292,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1271,6 +1311,11 @@
             "RunSession": {
               "methods": [
                 "run_session"
+              ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
               ]
             }
           }

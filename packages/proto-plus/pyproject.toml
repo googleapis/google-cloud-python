@@ -20,7 +20,7 @@ build-backend = "setuptools.build_meta"
 name = "proto-plus"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = { text = "Apache 2.0" }
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 description = "Beautiful, Pythonic protocol buffers"
 readme = "README.rst"
 classifiers = [
@@ -29,8 +29,6 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -41,7 +39,7 @@ classifiers = [
   "Topic :: Software Development :: Code Generators",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["protobuf >=3.19.0, < 7.0.0"]
+dependencies = ["protobuf >= 4.25.8, < 8.0.0"]
 dynamic = ["version"]
 
 [project.urls]

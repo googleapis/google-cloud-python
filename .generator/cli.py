@@ -354,7 +354,7 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
         # TODO(https://github.com/googleapis/google-cloud-python/issues/15538):
         # Investigate if a `target_version needs to be maintained
         # or can be eliminated.
-        target_version = "py37"
+        target_version = "py39"
         common_args = [
             f"--target-version={target_version}",
             "--line-length=88",
@@ -1658,7 +1658,8 @@ def handle_release_stage(
         for library_release_data in libraries_to_prep_for_release:
             version = library_release_data["version"]
             library_id = library_release_data["id"]
-            library_changes = library_release_data["changes"]
+            # changes is optional
+            library_changes = library_release_data.get("changes")
             tag_format = library_release_data["tag_format"]
 
             # Get previous version from state.yaml
@@ -1672,16 +1673,17 @@ def handle_release_stage(
             path_to_library = f"packages/{library_id}" if is_mono_repo else "."
 
             _update_version_for_library(repo, output, path_to_library, version)
-            _update_changelog_for_library(
-                repo,
-                output,
-                library_changes,
-                version,
-                previous_version,
-                library_id,
-                is_mono_repo,
-                tag_format,
-            )
+            if library_changes is not None:
+                _update_changelog_for_library(
+                    repo,
+                    output,
+                    library_changes,
+                    version,
+                    previous_version,
+                    library_id,
+                    is_mono_repo,
+                    tag_format,
+                )
 
     except Exception as e:
         raise ValueError(f"Release stage failed: {e}") from e

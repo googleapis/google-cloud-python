@@ -62,7 +62,6 @@ from .types.data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
-    VertexRanker,
 )
 from .types.data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -85,6 +84,9 @@ from .types.vectorsearch_service import (
     DeleteIndexRequest,
     DenseScannIndex,
     DenseVectorField,
+    ExportDataObjectsMetadata,
+    ExportDataObjectsRequest,
+    ExportDataObjectsResponse,
     GetCollectionRequest,
     GetIndexRequest,
     ImportDataObjectsMetadata,
@@ -225,6 +227,9 @@ __all__ = (
     "DenseVectorField",
     "DistanceMetric",
     "EmbeddingTaskType",
+    "ExportDataObjectsMetadata",
+    "ExportDataObjectsRequest",
+    "ExportDataObjectsResponse",
     "GetCollectionRequest",
     "GetDataObjectRequest",
     "GetIndexRequest",
@@ -258,5 +263,4 @@ __all__ = (
     "VectorSearch",
     "VectorSearchServiceClient",
     "VertexEmbeddingConfig",
-    "VertexRanker",
 )

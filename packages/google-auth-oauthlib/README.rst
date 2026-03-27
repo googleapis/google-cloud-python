@@ -29,19 +29,14 @@ The latest documentation is available at `google-auth-oauthlib.googleapis.dev`_.
 
 Supported Python Versions
 -------------------------
-Python >= 3.7
+Python >= 3.9
 
 
 Unsupported Python Versions
 ---------------------------
 
-Python == 2.7, Python < 3.7.
+Python == 2.7, Python <= 3.8.
 
-The last version of this library compatible with Python 2.7 and 3.5 is
-`google-auth-oauthlib==0.4.1`.
-
-The last version of this library compatible with Python 3.6 is
-`google-auth-oauthlib==1.2.2`.
 
 License
 -------

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.17.0...google-cloud-discoveryengine-v0.18.0) (2026-03-26)
+
+
+### Documentation
+
+* Clarify project number requirement for data_store field ([4b400faca2fcd40f68a812dc6f47a79d0cbf7433](https://github.com/googleapis/google-cloud-python/commit/4b400faca2fcd40f68a812dc6f47a79d0cbf7433))
+
+
+### Features
+
+* Update DataStoreSpec and add BoostSpec to SearchService ([4b400faca2fcd40f68a812dc6f47a79d0cbf7433](https://github.com/googleapis/google-cloud-python/commit/4b400faca2fcd40f68a812dc6f47a79d0cbf7433))
+
 ## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.16.0...google-cloud-discoveryengine-v0.17.0) (2026-02-12)
 
 

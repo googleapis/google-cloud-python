@@ -38,7 +38,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
+from google.cloud.dataplex_v1.types import resources, service, tasks
 
 from .base import DEFAULT_CLIENT_INFO, DataplexServiceTransport
 from .grpc import DataplexServiceGrpcTransport
@@ -67,7 +67,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -102,7 +102,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -247,6 +247,10 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -1062,174 +1066,6 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
             )
         return self._stubs["cancel_job"]
 
-    @property
-    def create_environment(
-        self,
-    ) -> Callable[
-        [service.CreateEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the create environment method over gRPC.
-
-        Create an environment resource.
-
-        Returns:
-            Callable[[~.CreateEnvironmentRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_environment" not in self._stubs:
-            self._stubs["create_environment"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
-                request_serializer=service.CreateEnvironmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_environment"]
-
-    @property
-    def update_environment(
-        self,
-    ) -> Callable[
-        [service.UpdateEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the update environment method over gRPC.
-
-        Update the environment resource.
-
-        Returns:
-            Callable[[~.UpdateEnvironmentRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_environment" not in self._stubs:
-            self._stubs["update_environment"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
-                request_serializer=service.UpdateEnvironmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["update_environment"]
-
-    @property
-    def delete_environment(
-        self,
-    ) -> Callable[
-        [service.DeleteEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the delete environment method over gRPC.
-
-        Delete the environment resource. All the child
-        resources must have been deleted before environment
-        deletion can be initiated.
-
-        Returns:
-            Callable[[~.DeleteEnvironmentRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_environment" not in self._stubs:
-            self._stubs["delete_environment"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
-                request_serializer=service.DeleteEnvironmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_environment"]
-
-    @property
-    def list_environments(
-        self,
-    ) -> Callable[
-        [service.ListEnvironmentsRequest], Awaitable[service.ListEnvironmentsResponse]
-    ]:
-        r"""Return a callable for the list environments method over gRPC.
-
-        Lists environments under the given lake.
-
-        Returns:
-            Callable[[~.ListEnvironmentsRequest],
-                    Awaitable[~.ListEnvironmentsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_environments" not in self._stubs:
-            self._stubs["list_environments"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
-                request_serializer=service.ListEnvironmentsRequest.serialize,
-                response_deserializer=service.ListEnvironmentsResponse.deserialize,
-            )
-        return self._stubs["list_environments"]
-
-    @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], Awaitable[analyze.Environment]]:
-        r"""Return a callable for the get environment method over gRPC.
-
-        Get environment resource.
-
-        Returns:
-            Callable[[~.GetEnvironmentRequest],
-                    Awaitable[~.Environment]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_environment" not in self._stubs:
-            self._stubs["get_environment"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
-                request_serializer=service.GetEnvironmentRequest.serialize,
-                response_deserializer=analyze.Environment.deserialize,
-            )
-        return self._stubs["get_environment"]
-
-    @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [service.ListSessionsRequest], Awaitable[service.ListSessionsResponse]
-    ]:
-        r"""Return a callable for the list sessions method over gRPC.
-
-        Lists session resources in an environment.
-
-        Returns:
-            Callable[[~.ListSessionsRequest],
-                    Awaitable[~.ListSessionsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_sessions" not in self._stubs:
-            self._stubs["list_sessions"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataplexService/ListSessions",
-                request_serializer=service.ListSessionsRequest.serialize,
-                response_deserializer=service.ListSessionsResponse.deserialize,
-            )
-        return self._stubs["list_sessions"]
-
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1485,54 +1321,6 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_environment: self._wrap_method(
-                self.create_environment,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_environment: self._wrap_method(
-                self.update_environment,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_environment: self._wrap_method(
-                self.delete_environment,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_environments: self._wrap_method(
-                self.list_environments,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_environment: self._wrap_method(
-                self.get_environment,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_sessions: self._wrap_method(
-                self.list_sessions,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -1540,6 +1328,21 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
             ),
             self.list_locations: self._wrap_method(
                 self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1682,6 +1485,86 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
 
 __all__ = ("DataplexServiceGrpcAsyncIOTransport",)

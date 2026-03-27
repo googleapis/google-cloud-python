@@ -122,6 +122,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert RuleSetServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -142,6 +143,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         RuleSetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        RuleSetServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1287,11 +1292,13 @@ def test_rule_set_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4509,8 +4516,9 @@ def test_create_rule_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4709,17 +4717,20 @@ def test_create_rule_set_rest_interceptors(null_interceptor):
     )
     client = RuleSetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_create_rule_set"
-    ) as post, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_create_rule_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "pre_create_rule_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "post_create_rule_set"
+        ) as post,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor,
+            "post_create_rule_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "pre_create_rule_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4772,8 +4783,9 @@ def test_get_rule_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4840,17 +4852,19 @@ def test_get_rule_set_rest_interceptors(null_interceptor):
     )
     client = RuleSetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_get_rule_set"
-    ) as post, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_get_rule_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "pre_get_rule_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "post_get_rule_set"
+        ) as post,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "post_get_rule_set_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "pre_get_rule_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4903,8 +4917,9 @@ def test_update_rule_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4971,17 +4986,20 @@ def test_update_rule_set_rest_interceptors(null_interceptor):
     )
     client = RuleSetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_update_rule_set"
-    ) as post, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_update_rule_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "pre_update_rule_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "post_update_rule_set"
+        ) as post,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor,
+            "post_update_rule_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "pre_update_rule_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5034,8 +5052,9 @@ def test_delete_rule_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5092,13 +5111,13 @@ def test_delete_rule_set_rest_interceptors(null_interceptor):
     )
     client = RuleSetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "pre_delete_rule_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "pre_delete_rule_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = ruleset_service_request.DeleteRuleSetRequest.pb(
             ruleset_service_request.DeleteRuleSetRequest()
@@ -5143,8 +5162,9 @@ def test_list_rule_sets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5207,17 +5227,20 @@ def test_list_rule_sets_rest_interceptors(null_interceptor):
     )
     client = RuleSetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_list_rule_sets"
-    ) as post, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "post_list_rule_sets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RuleSetServiceRestInterceptor, "pre_list_rule_sets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "post_list_rule_sets"
+        ) as post,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor,
+            "post_list_rule_sets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RuleSetServiceRestInterceptor, "pre_list_rule_sets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5277,8 +5300,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5491,11 +5515,14 @@ def test_rule_set_service_base_transport():
 
 def test_rule_set_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.contentwarehouse_v1.services.rule_set_service.transports.RuleSetServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.contentwarehouse_v1.services.rule_set_service.transports.RuleSetServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RuleSetServiceTransport(
@@ -5512,9 +5539,12 @@ def test_rule_set_service_base_transport_with_credentials_file():
 
 def test_rule_set_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.contentwarehouse_v1.services.rule_set_service.transports.RuleSetServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.contentwarehouse_v1.services.rule_set_service.transports.RuleSetServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RuleSetServiceTransport()
@@ -5586,11 +5616,12 @@ def test_rule_set_service_transport_auth_gdch_credentials(transport_class):
 def test_rule_set_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -6218,6 +6249,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = RuleSetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_transport_close_grpc():

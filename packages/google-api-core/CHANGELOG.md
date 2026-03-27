@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.30.1](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.0...google-api-core-v2.30.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.29.0...google-api-core-v2.30.0) (2026-02-17)
 
 

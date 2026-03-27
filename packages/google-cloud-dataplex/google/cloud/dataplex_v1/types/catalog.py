@@ -59,6 +59,8 @@ __protobuf__ = proto.module(
         "ListEntriesResponse",
         "GetEntryRequest",
         "LookupEntryRequest",
+        "LookupContextRequest",
+        "LookupContextResponse",
         "SearchEntriesRequest",
         "SearchEntriesResult",
         "SearchEntriesResponse",
@@ -71,8 +73,18 @@ __protobuf__ = proto.module(
         "MetadataJob",
         "EntryLink",
         "CreateEntryLinkRequest",
+        "UpdateEntryLinkRequest",
         "DeleteEntryLinkRequest",
+        "LookupEntryLinksRequest",
+        "LookupEntryLinksResponse",
         "GetEntryLinkRequest",
+        "MetadataFeed",
+        "CreateMetadataFeedRequest",
+        "GetMetadataFeedRequest",
+        "ListMetadataFeedsRequest",
+        "ListMetadataFeedsResponse",
+        "DeleteMetadataFeedRequest",
+        "UpdateMetadataFeedRequest",
     },
 )
 
@@ -94,7 +106,8 @@ class EntryView(proto.Enum):
             GetEntryRequest. If the number of aspects
             exceeds 100, the first 100 will be returned.
         ALL (4):
-            No description available.
+            Returns all aspects. If the number of aspects
+            exceeds 100, the first 100 will be returned.
     """
 
     ENTRY_VIEW_UNSPECIFIED = 0
@@ -1887,6 +1900,55 @@ class LookupEntryRequest(proto.Message):
     )
 
 
+class LookupContextRequest(proto.Message):
+    r"""Lookup Context using permissions in the source system.
+
+    Attributes:
+        name (str):
+            Required. The project to which the request should be
+            attributed in the following form:
+            ``projects/{project}/locations/{location}``.
+        resources (MutableSequence[str]):
+            Required. The entry names to lookup context for. The request
+            should have max 10 of those.
+
+            Examples:
+            ---------
+
+            projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+        options (MutableMapping[str, str]):
+            Optional. Allows to configure the context.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resources: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    options: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+
+
+class LookupContextResponse(proto.Message):
+    r"""Lookup Context response.
+
+    Attributes:
+        context (str):
+            LLM generated context for the resources.
+    """
+
+    context: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class SearchEntriesRequest(proto.Message):
     r"""
 
@@ -2968,10 +3030,16 @@ class EntryLink(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the Entry Link was
             last updated.
+        aspects (MutableMapping[str, google.cloud.dataplex_v1.types.Aspect]):
+            Optional. The aspects that are attached to the entry link.
+            The format of the aspect key has to be the following:
+            ``{project_id_or_number}.{location_id}.{aspect_type_id}``
+            Currently, only a single aspect of a Dataplex-owned Aspect
+            Type is allowed.
         entry_references (MutableSequence[google.cloud.dataplex_v1.types.EntryLink.EntryReference]):
-            Required. Specifies the Entries referenced in
-            the Entry Link. There should be exactly two
-            entry references.
+            Required. Immutable. Specifies the Entries
+            referenced in the Entry Link. There should be
+            exactly two entry references.
     """
 
     class EntryReference(proto.Message):
@@ -3044,6 +3112,12 @@ class EntryLink(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
+    aspects: MutableMapping[str, "Aspect"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=6,
+        message="Aspect",
+    )
     entry_references: MutableSequence[EntryReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
@@ -3085,6 +3159,40 @@ class CreateEntryLinkRequest(proto.Message):
     )
 
 
+class UpdateEntryLinkRequest(proto.Message):
+    r"""Request message for UpdateEntryLink method.
+
+    Attributes:
+        entry_link (google.cloud.dataplex_v1.types.EntryLink):
+            Required. Entry Link resource.
+        allow_missing (bool):
+            Optional. If set to true and the entry link
+            doesn't exist, the service will create it.
+        aspect_keys (MutableSequence[str]):
+            Optional. The map keys of the Aspects which the service
+            should modify. It should be the aspect type reference in the
+            format
+            ``{project_id_or_number}.{location_id}.{aspect_type_id}``.
+
+            If this field is left empty, the service treats it as
+            specifying exactly those Aspects present in the request.
+    """
+
+    entry_link: "EntryLink" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EntryLink",
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    aspect_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
 class DeleteEntryLinkRequest(proto.Message):
     r"""Request message for DeleteEntryLink.
 
@@ -3100,6 +3208,114 @@ class DeleteEntryLinkRequest(proto.Message):
     )
 
 
+class LookupEntryLinksRequest(proto.Message):
+    r"""Request message for LookupEntryLinks.
+
+    Attributes:
+        name (str):
+            Required. The project to which the request should be
+            attributed to Format:
+            ``projects/{project_id_or_number}/locations/{location_id}``.
+        entry (str):
+            Required. The resource name of the referred Entry. Format:
+            ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}``.
+            Entry Links which references this entry will be returned in
+            the response.
+        entry_mode (google.cloud.dataplex_v1.types.LookupEntryLinksRequest.EntryMode):
+            Mode of entry reference.
+        entry_link_types (MutableSequence[str]):
+            Entry link types to filter the response by.
+            If empty, all entry link types will be returned.
+            At most 10 entry link types can be specified.
+        page_size (int):
+            Maximum number of EntryLinks to return. The
+            service may return fewer than this value. If
+            unspecified, at most 10 EntryLinks will be
+            returned. The maximum value is 10; values above
+            10 will be coerced to 10.
+        page_token (str):
+            Page token received from a previous ``LookupEntryLinks``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters that are provided to the
+            ``LookupEntryLinks`` request must match the call that
+            provided the page token.
+    """
+
+    class EntryMode(proto.Enum):
+        r"""Mode of entry reference.
+
+        Values:
+            ENTRY_MODE_UNSPECIFIED (0):
+                Unspecified entry mode. Returns both
+                directional and non-directional entry links
+                which references the entry.
+            SOURCE (1):
+                Returns all directed entry links which
+                references the entry as source.
+            TARGET (2):
+                Return all directed entry links which
+                references the entry as target.
+        """
+
+        ENTRY_MODE_UNSPECIFIED = 0
+        SOURCE = 1
+        TARGET = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entry: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    entry_mode: EntryMode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EntryMode,
+    )
+    entry_link_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class LookupEntryLinksResponse(proto.Message):
+    r"""Response message for LookupEntryLinks.
+
+    Attributes:
+        entry_links (MutableSequence[google.cloud.dataplex_v1.types.EntryLink]):
+            List of entry links that reference the
+            specified entry.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    entry_links: MutableSequence["EntryLink"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="EntryLink",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class GetEntryLinkRequest(proto.Message):
     r"""Request message for GetEntryLink.
 
@@ -3112,6 +3328,381 @@ class GetEntryLinkRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class MetadataFeed(proto.Message):
+    r"""MetadataFeed contains information related to the metadata
+    feed.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the metadata feed, in the
+            format
+            ``projects/{project_id_or_number}/locations/{location_id}/metadataFeeds/{metadata_feed_id}``.
+        uid (str):
+            Output only. A system-generated, globally
+            unique ID for the metadata job. If the metadata
+            job is deleted and then re-created with the same
+            name, this ID is different.
+        scope (google.cloud.dataplex_v1.types.MetadataFeed.Scope):
+            Required. The scope of the metadata feed.
+            Only the in scope changes are published.
+        filters (google.cloud.dataplex_v1.types.MetadataFeed.Filters):
+            Optional. The filters of the metadata feed.
+            Only the changes that match the filters are
+            published.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the feed was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the feed was
+            updated.
+        labels (MutableMapping[str, str]):
+            Optional. User-defined labels.
+        pubsub_topic (str):
+            Optional. The pubsub topic that you want the metadata feed
+            messages to publish to. Please grant Dataplex service
+            account the permission to publish messages to the topic. The
+            service account is:
+            service-{PROJECT_NUMBER}@gcp-sa-dataplex.iam.gserviceaccount.com.
+
+            This field is a member of `oneof`_ ``endpoint``.
+    """
+
+    class Scope(proto.Message):
+        r"""Scope defines the scope of the metadata feed.
+        Scopes are exclusive. Only one of the scopes can be specified.
+
+        Attributes:
+            organization_level (bool):
+                Optional. Whether the metadata feed is at the
+                organization-level.
+
+                - If ``true``, all changes happened to the entries in the
+                  same organization as the feed are published.
+                - If ``false``, you must specify a list of projects or a
+                  list of entry groups whose entries you want to listen to.
+
+                The default is ``false``.
+            projects (MutableSequence[str]):
+                Optional. The projects whose entries you want to listen to.
+                Must be in the same organization as the feed. Must be in the
+                format: ``projects/{project_id_or_number}``.
+            entry_groups (MutableSequence[str]):
+                Optional. The entry groups whose entries you want to listen
+                to. Must be in the format:
+                ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}``.
+        """
+
+        organization_level: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        projects: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        entry_groups: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
+    class Filters(proto.Message):
+        r"""Filters defines the type of changes that you want to listen
+        to. You can have multiple entry type filters and multiple aspect
+        type filters. All of the entry type filters are OR'ed together.
+        All of the aspect type filters are OR'ed together.
+        All of the entry type filters and aspect type filters are AND'ed
+        together.
+
+        Attributes:
+            entry_types (MutableSequence[str]):
+                Optional. The entry types that you want to listen to,
+                specified as relative resource names in the format
+                ``projects/{project_id_or_number}/locations/{location}/entryTypes/{entry_type_id}``.
+                Only entries that belong to the specified entry types are
+                published.
+            aspect_types (MutableSequence[str]):
+                Optional. The aspect types that you want to listen to.
+                Depending on how the aspect is attached to the entry, in the
+                format:
+                ``projects/{project_id_or_number}/locations/{location}/aspectTypes/{aspect_type_id}``.
+            change_types (MutableSequence[google.cloud.dataplex_v1.types.MetadataFeed.Filters.ChangeType]):
+                Optional. The type of change that you want to
+                listen to. If not specified, all changes are
+                published.
+        """
+
+        class ChangeType(proto.Enum):
+            r"""The type of change that you want to listen to.
+
+            Values:
+                CHANGE_TYPE_UNSPECIFIED (0):
+                    Unspecified change type. Defaults to
+                    UNSPECIFIED.
+                CREATE (1):
+                    The change is a create event.
+                UPDATE (2):
+                    The change is an update event.
+                DELETE (3):
+                    The change is a delete event.
+            """
+
+            CHANGE_TYPE_UNSPECIFIED = 0
+            CREATE = 1
+            UPDATE = 2
+            DELETE = 3
+
+        entry_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        aspect_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        change_types: MutableSequence["MetadataFeed.Filters.ChangeType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="MetadataFeed.Filters.ChangeType",
+            )
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    scope: Scope = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=Scope,
+    )
+    filters: Filters = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Filters,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    pubsub_topic: str = proto.Field(
+        proto.STRING,
+        number=100,
+        oneof="endpoint",
+    )
+
+
+class CreateMetadataFeedRequest(proto.Message):
+    r"""Request message for CreateMetadataFeed.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent location, in the
+            format
+            ``projects/{project_id_or_number}/locations/{location_id}``
+        metadata_feed (google.cloud.dataplex_v1.types.MetadataFeed):
+            Required. The metadata job resource.
+        metadata_feed_id (str):
+            Optional. The metadata job ID. If not provided, a unique ID
+            is generated with the prefix ``metadata-job-``.
+        validate_only (bool):
+            Optional. The service validates the request
+            without performing any mutations. The default is
+            false.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metadata_feed: "MetadataFeed" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MetadataFeed",
+    )
+    metadata_feed_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class GetMetadataFeedRequest(proto.Message):
+    r"""Request message for GetMetadataFeed.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the metadata feed, in the
+            format
+            ``projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListMetadataFeedsRequest(proto.Message):
+    r"""Request message for ListMetadataFeedsRequest.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent location, in the
+            format
+            ``projects/{project_id_or_number}/locations/{location_id}``
+        page_size (int):
+            Optional. The maximum number of metadata
+            feeds to return. The service might return fewer
+            feeds than this value. If unspecified, at most
+            10 feeds are returned. The maximum value is
+            1,000.
+        page_token (str):
+            Optional. The page token received from a previous
+            ``ListMetadataFeeds`` call. Provide this token to retrieve
+            the subsequent page of results. When paginating, all other
+            parameters that are provided to the ``ListMetadataFeeds``
+            request must match the call that provided the page token.
+        filter (str):
+            Optional. Filter request. Filters are case-sensitive. The
+            service supports the following formats:
+
+            - ``labels.key1 = "value1"``
+            - ``labels:key1``
+            - ``name = "value"``
+
+            You can combine filters with ``AND``, ``OR``, and ``NOT``
+            operators.
+        order_by (str):
+            Optional. The field to sort the results by, either ``name``
+            or ``create_time``. If not specified, the ordering is
+            undefined.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListMetadataFeedsResponse(proto.Message):
+    r"""Response message for ListMetadataFeeds.
+
+    Attributes:
+        metadata_feeds (MutableSequence[google.cloud.dataplex_v1.types.MetadataFeed]):
+            List of metadata feeds under the specified
+            parent location.
+        next_page_token (str):
+            A token to retrieve the next page of results.
+            If there are no more results in the list, the
+            value is empty.
+        unreachable (MutableSequence[str]):
+            Unordered list. Locations that the service
+            couldn't reach.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    metadata_feeds: MutableSequence["MetadataFeed"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="MetadataFeed",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteMetadataFeedRequest(proto.Message):
+    r"""Request message for DeleteMetadataFeed.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the metadata feed, in the
+            format
+            ``projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateMetadataFeedRequest(proto.Message):
+    r"""Request message for UpdateMetadataFeed.
+
+    Attributes:
+        metadata_feed (google.cloud.dataplex_v1.types.MetadataFeed):
+            Required. Update description. Only fields specified in
+            ``update_mask`` are updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Mask of fields to update.
+        validate_only (bool):
+            Optional. Only validate the request, but do
+            not perform mutations. The default is false.
+    """
+
+    metadata_feed: "MetadataFeed" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="MetadataFeed",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

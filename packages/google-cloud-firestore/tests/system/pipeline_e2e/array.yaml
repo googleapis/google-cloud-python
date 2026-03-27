@@ -462,3 +462,341 @@ tests:
                     - integerValue: '-1'
                     name: array_get
           name: select
+  - description: testArrayFirst
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_first:
+                - Field: tags
+            - "firstTag"
+    assert_results:
+      - firstTag: "comedy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                firstTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    name: array_first
+          name: select
+  - description: testArrayLast
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_last:
+                - Field: tags
+            - "lastTag"
+    assert_results:
+      - lastTag: "adventure"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                lastTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    name: array_last
+          name: select
+  - description: testArrayFirstN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_first_n:
+                - Field: tags
+                - Constant: 2
+            - "firstTags"
+    assert_results:
+      - firstTags: ["comedy", "space"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                firstTags:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - integerValue: '2'
+                    name: array_first_n
+          name: select
+  - description: testArrayLastN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_last_n:
+                - Field: tags
+                - Constant: 2
+            - "lastTags"
+    assert_results:
+      - lastTags: ["space", "adventure"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                lastTags:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - integerValue: '2'
+                    name: array_last_n
+          name: select
+
+  - description: testArrayMaximum
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_maximum:
+                - Field: tags
+            - "maxTag"
+    assert_results:
+      - maxTag: "space"
+
+  - description: testArrayMinimum
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_minimum:
+                - Field: tags
+            - "minTag"
+    assert_results:
+      - minTag: "adventure"
+
+  - description: testArrayMaximumN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_maximum_n:
+                - Field: tags
+                - Constant: 2
+            - "maxTags"
+    assert_results:
+      - maxTags: ["space", "comedy"]
+
+  - description: testArrayMinimumN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_minimum_n:
+                - Field: tags
+                - Constant: 2
+            - "minTags"
+    assert_results:
+      - minTags: ["adventure", "comedy"]
+
+  - description: testArraySlice1Arg
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_slice:
+                - Field: tags
+                - Constant: 1
+            - "sliced"
+    assert_results:
+      - sliced: ["space", "adventure"]
+
+  - description: testArraySlice2Args
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_slice:
+                - Field: tags
+                - Constant: 1
+                - Constant: 1
+            - "sliced"
+    assert_results:
+      - sliced: ["space"]
+
+  - description: testArrayIndexOf
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_index_of:
+                - Field: tags
+                - Constant: "space"
+            - "spaceIndex"
+    assert_results:
+      - spaceIndex: 1
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                spaceIndex:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "space"
+                    - stringValue: "first"
+                    name: array_index_of
+          name: select
+
+  - description: testArrayIndexOfAll
+    pipeline:
+      - Collection: books
+      - Sort:
+          - Ordering:
+            - Field: title
+            - ASCENDING
+      - Aggregate:
+        - AliasedExpression:
+            - FunctionExpression.array_agg:
+              - Field: genre
+            - "genre_array"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_index_of_all:
+                - Field: genre_array
+                - Constant: "Science Fiction"
+            - "sciFiIndices"
+    assert_results:
+      - sciFiIndices: [2, 7]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                genre_array:
+                  functionValue:
+                    name: array_agg
+                    args:
+                    - fieldReferenceValue: genre
+          - mapValue: {}
+          name: aggregate
+        - args:
+          - mapValue:
+              fields:
+                sciFiIndices:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: genre_array
+                    - stringValue: "Science Fiction"
+                    name: array_index_of_all
+          name: select

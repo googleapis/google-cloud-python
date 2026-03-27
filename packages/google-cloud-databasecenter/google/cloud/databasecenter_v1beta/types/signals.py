@@ -438,6 +438,9 @@ class SignalType(proto.Enum):
             Recommended maintenance policy.
         SIGNAL_TYPE_EXTENDED_SUPPORT (102):
             Resource version is in extended support.
+        SIGNAL_TYPE_VERSION_NEARING_END_OF_LIFE (104):
+            Represents a database version nearing end of
+            life.
     """
 
     SIGNAL_TYPE_UNSPECIFIED = 0
@@ -539,6 +542,7 @@ class SignalType(proto.Enum):
     SIGNAL_TYPE_DATABOOST_DISABLED = 100
     SIGNAL_TYPE_RECOMMENDED_MAINTENANCE_POLICIES = 101
     SIGNAL_TYPE_EXTENDED_SUPPORT = 102
+    SIGNAL_TYPE_VERSION_NEARING_END_OF_LIFE = 104
 
 
 class SignalTypeGroup(proto.Message):

@@ -46,7 +46,12 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class CatalogServiceTransport(abc.ABC):
     """Abstract transport class for CatalogService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+        "https://www.googleapis.com/auth/dataplex.readonly",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 
@@ -87,6 +92,10 @@ class CatalogServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -135,6 +144,8 @@ class CatalogServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
@@ -388,13 +399,53 @@ class CatalogServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_entry_link: gapic_v1.method.wrap_method(
+                self.update_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_entry_link: gapic_v1.method.wrap_method(
                 self.delete_entry_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.lookup_entry_links: gapic_v1.method.wrap_method(
+                self.lookup_entry_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.lookup_context: gapic_v1.method.wrap_method(
+                self.lookup_context,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_entry_link: gapic_v1.method.wrap_method(
                 self.get_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_metadata_feed: gapic_v1.method.wrap_method(
+                self.create_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata_feed: gapic_v1.method.wrap_method(
+                self.get_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_metadata_feeds: gapic_v1.method.wrap_method(
+                self.list_metadata_feeds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_metadata_feed: gapic_v1.method.wrap_method(
+                self.delete_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_metadata_feed: gapic_v1.method.wrap_method(
+                self.update_metadata_feed,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -405,6 +456,21 @@ class CatalogServiceTransport(abc.ABC):
             ),
             self.list_locations: gapic_v1.method.wrap_method(
                 self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -692,6 +758,15 @@ class CatalogServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_entry_link(
+        self,
+    ) -> Callable[
+        [catalog.UpdateEntryLinkRequest],
+        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_entry_link(
         self,
     ) -> Callable[
@@ -701,11 +776,80 @@ class CatalogServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def lookup_entry_links(
+        self,
+    ) -> Callable[
+        [catalog.LookupEntryLinksRequest],
+        Union[
+            catalog.LookupEntryLinksResponse,
+            Awaitable[catalog.LookupEntryLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def lookup_context(
+        self,
+    ) -> Callable[
+        [catalog.LookupContextRequest],
+        Union[catalog.LookupContextResponse, Awaitable[catalog.LookupContextResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_entry_link(
         self,
     ) -> Callable[
         [catalog.GetEntryLinkRequest],
         Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.CreateMetadataFeedRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.GetMetadataFeedRequest],
+        Union[catalog.MetadataFeed, Awaitable[catalog.MetadataFeed]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_metadata_feeds(
+        self,
+    ) -> Callable[
+        [catalog.ListMetadataFeedsRequest],
+        Union[
+            catalog.ListMetadataFeedsResponse,
+            Awaitable[catalog.ListMetadataFeedsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.DeleteMetadataFeedRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.UpdateMetadataFeedRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -745,6 +889,36 @@ class CatalogServiceTransport(abc.ABC):
     ) -> Callable[
         [operations_pb2.DeleteOperationRequest],
         None,
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-gdchardwaremanagement/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.4.0...google-cloud-gdchardwaremanagement-v0.5.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.3.0...google-cloud-gdchardwaremanagement-v0.4.0) (2026-03-12)
+
+
+### Features
+
+* Add `OFFLINE` state to Zone resources A new `OFFLINE` state has been added to the `Zone.State` enum. This state indicates that the zone is temporarily not operational, for example, while undergoing maintenance or repair ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.2.0...google-cloud-gdchardwaremanagement-v0.3.0) (2026-01-08)
 
 

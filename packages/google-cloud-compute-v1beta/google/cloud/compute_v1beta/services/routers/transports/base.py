@@ -84,6 +84,10 @@ class RoutersTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         self._extended_operations_services: Dict[str, Any] = {}
 
@@ -134,6 +138,8 @@ class RoutersTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -151,6 +157,11 @@ class RoutersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_named_set: gapic_v1.method.wrap_method(
+                self.delete_named_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_route_policy: gapic_v1.method.wrap_method(
                 self.delete_route_policy,
                 default_timeout=None,
@@ -158,6 +169,11 @@ class RoutersTransport(abc.ABC):
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_named_set: gapic_v1.method.wrap_method(
+                self.get_named_set,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -196,6 +212,11 @@ class RoutersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_named_sets: gapic_v1.method.wrap_method(
+                self.list_named_sets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_route_policies: gapic_v1.method.wrap_method(
                 self.list_route_policies,
                 default_timeout=None,
@@ -203,6 +224,11 @@ class RoutersTransport(abc.ABC):
             ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.patch_named_set: gapic_v1.method.wrap_method(
+                self.patch_named_set,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -223,6 +249,11 @@ class RoutersTransport(abc.ABC):
             ),
             self.update: gapic_v1.method.wrap_method(
                 self.update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_named_set: gapic_v1.method.wrap_method(
+                self.update_named_set,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -261,6 +292,15 @@ class RoutersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_named_set(
+        self,
+    ) -> Callable[
+        [compute.DeleteNamedSetRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_route_policy(
         self,
     ) -> Callable[
@@ -274,6 +314,18 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.GetRouterRequest], Union[compute.Router, Awaitable[compute.Router]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_named_set(
+        self,
+    ) -> Callable[
+        [compute.GetNamedSetRouterRequest],
+        Union[
+            compute.RoutersGetNamedSetResponse,
+            Awaitable[compute.RoutersGetNamedSetResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -347,6 +399,15 @@ class RoutersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_named_sets(
+        self,
+    ) -> Callable[
+        [compute.ListNamedSetsRoutersRequest],
+        Union[compute.RoutersListNamedSets, Awaitable[compute.RoutersListNamedSets]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_route_policies(
         self,
     ) -> Callable[
@@ -363,6 +424,15 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def patch_named_set(
+        self,
+    ) -> Callable[
+        [compute.PatchNamedSetRouterRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -403,6 +473,15 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.UpdateRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_named_set(
+        self,
+    ) -> Callable[
+        [compute.UpdateNamedSetRouterRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

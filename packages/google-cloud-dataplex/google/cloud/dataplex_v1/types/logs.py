@@ -910,11 +910,14 @@ class DataScanEvent(proto.Message):
                 Data scan triggers on demand.
             SCHEDULE (2):
                 Data scan triggers as per schedule.
+            ONE_TIME (3):
+                Data scan is run one time on creation.
         """
 
         TRIGGER_UNSPECIFIED = 0
         ON_DEMAND = 1
         SCHEDULE = 2
+        ONE_TIME = 3
 
     class Scope(proto.Enum):
         r"""The scope of job for the data scan.

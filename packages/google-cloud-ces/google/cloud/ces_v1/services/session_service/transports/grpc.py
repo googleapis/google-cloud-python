@@ -56,7 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -91,7 +91,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -187,6 +187,10 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -332,7 +336,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
     ]:
         r"""Return a callable for the run session method over gRPC.
 
-        Initiates a single turn interaction with the CES
+        Initiates a single-turn interaction with the CES
         agent within a session.
 
         Returns:
@@ -352,6 +356,43 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
                 response_deserializer=session_service.RunSessionResponse.deserialize,
             )
         return self._stubs["run_session"]
+
+    @property
+    def stream_run_session(
+        self,
+    ) -> Callable[
+        [session_service.RunSessionRequest], session_service.RunSessionResponse
+    ]:
+        r"""Return a callable for the stream run session method over gRPC.
+
+        Initiates a single-turn interaction with the CES agent. Uses
+        server-side streaming to deliver incremental results and partial
+        responses as they are generated.
+
+        By default, complete responses (e.g., messages from callbacks or
+        full LLM responses) are sent to the client as soon as they are
+        available. To enable streaming individual text chunks directly
+        from the model, set
+        [enable_text_streaming][google.cloud.ces.v1.SessionConfig.enable_text_streaming]
+        to true.
+
+        Returns:
+            Callable[[~.RunSessionRequest],
+                    ~.RunSessionResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_run_session" not in self._stubs:
+            self._stubs["stream_run_session"] = self._logged_channel.unary_stream(
+                "/google.cloud.ces.v1.SessionService/StreamRunSession",
+                request_serializer=session_service.RunSessionRequest.serialize,
+                response_deserializer=session_service.RunSessionResponse.deserialize,
+            )
+        return self._stubs["stream_run_session"]
 
     @property
     def bidi_run_session(

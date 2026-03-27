@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-network-connectivity/#history
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.14.0...google-cloud-network-connectivity-v2.15.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.13.0...google-cloud-network-connectivity-v2.14.0) (2026-03-23)
+
+
+### Features
+
+* onboard a new library ([2647414d77cd75ce9db5db9052a0a072d39c52c4](https://github.com/googleapis/google-cloud-python/commit/2647414d77cd75ce9db5db9052a0a072d39c52c4))
+
+
+### Bug Fixes
+
+* add warehouse package name to v1beta ([370172157701421448e899016df5e808bc3c11a1](https://github.com/googleapis/google-cloud-python/commit/370172157701421448e899016df5e808bc3c11a1))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.12.0...google-cloud-network-connectivity-v2.13.0) (2026-01-22)
 
 

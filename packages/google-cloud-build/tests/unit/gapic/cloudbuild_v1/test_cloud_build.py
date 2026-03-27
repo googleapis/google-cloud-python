@@ -130,6 +130,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert CloudBuildClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -148,6 +149,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert CloudBuildClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        CloudBuildClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1250,11 +1254,13 @@ def test_cloud_build_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -13574,8 +13580,9 @@ def test_create_build_rest_bad_request(request_type=cloudbuild.CreateBuildReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13932,19 +13939,20 @@ def test_create_build_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_build"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_build_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_create_build"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_create_build"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_create_build_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_create_build"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13993,8 +14001,9 @@ def test_get_build_rest_bad_request(request_type=cloudbuild.GetBuildRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14077,17 +14086,17 @@ def test_get_build_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_build"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_build_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_get_build"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_build"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_build_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.CloudBuildRestInterceptor, "pre_get_build") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14136,8 +14145,9 @@ def test_list_builds_rest_bad_request(request_type=cloudbuild.ListBuildsRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14200,17 +14210,19 @@ def test_list_builds_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_builds"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_builds_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_list_builds"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_list_builds"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_list_builds_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_list_builds"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14261,8 +14273,9 @@ def test_cancel_build_rest_bad_request(request_type=cloudbuild.CancelBuildReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14345,17 +14358,19 @@ def test_cancel_build_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_cancel_build"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_cancel_build_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_cancel_build"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_cancel_build"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_cancel_build_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_cancel_build"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14404,8 +14419,9 @@ def test_retry_build_rest_bad_request(request_type=cloudbuild.RetryBuildRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14462,19 +14478,20 @@ def test_retry_build_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_retry_build"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_retry_build_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_retry_build"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_retry_build"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_retry_build_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_retry_build"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14523,8 +14540,9 @@ def test_approve_build_rest_bad_request(request_type=cloudbuild.ApproveBuildRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14581,19 +14599,20 @@ def test_approve_build_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_approve_build"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_approve_build_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_approve_build"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_approve_build"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_approve_build_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_approve_build"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14644,8 +14663,9 @@ def test_create_build_trigger_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15090,17 +15110,20 @@ def test_create_build_trigger_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_build_trigger"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_build_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_create_build_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_create_build_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_create_build_trigger_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_create_build_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15153,8 +15176,9 @@ def test_get_build_trigger_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15236,17 +15260,19 @@ def test_get_build_trigger_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_build_trigger"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_build_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_get_build_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_build_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_build_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_get_build_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15299,8 +15325,9 @@ def test_list_build_triggers_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15363,17 +15390,20 @@ def test_list_build_triggers_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_build_triggers"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_build_triggers_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_list_build_triggers"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_list_build_triggers"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_list_build_triggers_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_list_build_triggers"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15431,8 +15461,9 @@ def test_delete_build_trigger_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15489,13 +15520,13 @@ def test_delete_build_trigger_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_delete_build_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_delete_build_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = cloudbuild.DeleteBuildTriggerRequest.pb(
             cloudbuild.DeleteBuildTriggerRequest()
@@ -15540,8 +15571,9 @@ def test_update_build_trigger_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15986,17 +16018,20 @@ def test_update_build_trigger_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_update_build_trigger"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_update_build_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_update_build_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_update_build_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_update_build_trigger_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_update_build_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16049,8 +16084,9 @@ def test_run_build_trigger_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16184,19 +16220,20 @@ def test_run_build_trigger_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_run_build_trigger"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_run_build_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_run_build_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_run_build_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_run_build_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_run_build_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16249,8 +16286,9 @@ def test_receive_trigger_webhook_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16387,18 +16425,20 @@ def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_receive_trigger_webhook"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor,
-        "post_receive_trigger_webhook_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_receive_trigger_webhook"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_receive_trigger_webhook"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_receive_trigger_webhook_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_receive_trigger_webhook"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16456,8 +16496,9 @@ def test_create_worker_pool_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16609,19 +16650,21 @@ def test_create_worker_pool_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_worker_pool"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_create_worker_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_create_worker_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_create_worker_pool"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_create_worker_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_create_worker_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16672,8 +16715,9 @@ def test_get_worker_pool_rest_bad_request(request_type=cloudbuild.GetWorkerPoolR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16744,17 +16788,19 @@ def test_get_worker_pool_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_worker_pool"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_worker_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_get_worker_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_worker_pool"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_worker_pool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_get_worker_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16807,8 +16853,9 @@ def test_delete_worker_pool_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16865,19 +16912,21 @@ def test_delete_worker_pool_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_delete_worker_pool"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_delete_worker_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_delete_worker_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_delete_worker_pool"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_delete_worker_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_delete_worker_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16934,8 +16983,9 @@ def test_update_worker_pool_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17091,19 +17141,21 @@ def test_update_worker_pool_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_update_worker_pool"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_update_worker_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_update_worker_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_update_worker_pool"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_update_worker_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_update_worker_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17156,8 +17208,9 @@ def test_list_worker_pools_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17220,17 +17273,19 @@ def test_list_worker_pools_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_worker_pools"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_list_worker_pools_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_list_worker_pools"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_list_worker_pools"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_list_worker_pools_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_list_worker_pools"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17285,8 +17340,9 @@ def test_get_default_service_account_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17351,18 +17407,20 @@ def test_get_default_service_account_rest_interceptors(null_interceptor):
     )
     client = CloudBuildClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "post_get_default_service_account"
-    ) as post, mock.patch.object(
-        transports.CloudBuildRestInterceptor,
-        "post_get_default_service_account_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudBuildRestInterceptor, "pre_get_default_service_account"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "post_get_default_service_account"
+        ) as post,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor,
+            "post_get_default_service_account_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudBuildRestInterceptor, "pre_get_default_service_account"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18430,11 +18488,14 @@ def test_cloud_build_base_transport():
 
 def test_cloud_build_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.devtools.cloudbuild_v1.services.cloud_build.transports.CloudBuildTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.devtools.cloudbuild_v1.services.cloud_build.transports.CloudBuildTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudBuildTransport(
@@ -18451,9 +18512,12 @@ def test_cloud_build_base_transport_with_credentials_file():
 
 def test_cloud_build_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.devtools.cloudbuild_v1.services.cloud_build.transports.CloudBuildTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.devtools.cloudbuild_v1.services.cloud_build.transports.CloudBuildTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudBuildTransport()
@@ -18525,11 +18589,12 @@ def test_cloud_build_transport_auth_gdch_credentials(transport_class):
 def test_cloud_build_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

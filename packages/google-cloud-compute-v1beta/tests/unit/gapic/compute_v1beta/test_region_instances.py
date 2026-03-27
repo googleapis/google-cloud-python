@@ -120,6 +120,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert RegionInstancesClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -140,6 +141,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         RegionInstancesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        RegionInstancesClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1664,8 +1669,9 @@ def test_bulk_insert_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -1903,7 +1909,11 @@ def test_bulk_insert_rest_call_success(request_type):
                 "identity_certificate_enabled": True,
             },
         },
-        "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
+        "location_policy": {
+            "locations": {},
+            "target_shape": "target_shape_value",
+            "zones": [{"zone": "zone_value"}],
+        },
         "min_count": 972,
         "name_pattern": "name_pattern_value",
         "per_instance_properties": {},
@@ -2065,17 +2075,19 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
     )
     client = RegionInstancesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionInstancesRestInterceptor, "post_bulk_insert"
-    ) as post, mock.patch.object(
-        transports.RegionInstancesRestInterceptor, "post_bulk_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionInstancesRestInterceptor, "pre_bulk_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionInstancesRestInterceptor, "post_bulk_insert"
+        ) as post,
+        mock.patch.object(
+            transports.RegionInstancesRestInterceptor, "post_bulk_insert_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionInstancesRestInterceptor, "pre_bulk_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -2184,11 +2196,14 @@ def test_region_instances_base_transport():
 
 def test_region_instances_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1beta.services.region_instances.transports.RegionInstancesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.region_instances.transports.RegionInstancesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionInstancesTransport(
@@ -2208,9 +2223,12 @@ def test_region_instances_base_transport_with_credentials_file():
 
 def test_region_instances_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1beta.services.region_instances.transports.RegionInstancesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.region_instances.transports.RegionInstancesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionInstancesTransport()

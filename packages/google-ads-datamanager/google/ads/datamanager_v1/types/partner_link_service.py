@@ -105,9 +105,13 @@ class SearchPartnerLinksRequest(proto.Message):
             ``SearchPartnerLinks`` must match the call that provided the
             page token.
         filter (str):
-            Optional. A `filter string <//google.aip.dev/160>`__. All
-            fields need to be on the left hand side of each condition
-            (for example: ``partner_link_id = 123456789``).
+            Optional. A `filter string <https://google.aip.dev/160>`__.
+            All fields need to be on the left hand side of each
+            condition (for example: ``partner_link_id = 123456789``).
+            Fields must be specified using either all `camel
+            case <https://en.wikipedia.org/wiki/Camel_case>`__ or all
+            `snake case <https://en.wikipedia.org/wiki/Snake_case>`__.
+            Don't use a combination of camel case and snake case.
 
             Supported operations:
 
@@ -124,7 +128,7 @@ class SearchPartnerLinksRequest(proto.Message):
             - ``partner_account.account_id``
 
             Example:
-            ``owning_account.account_type = "GOOGLE_ADS" OR partner_account.account_id = 987654321``
+            ``owning_account.account_type = "GOOGLE_ADS" AND partner_account.account_id = 987654321``
     """
 
     parent: str = proto.Field(

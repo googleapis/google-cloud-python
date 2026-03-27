@@ -28,10 +28,16 @@ __protobuf__ = proto.module(
 
 
 class TrafficModel(proto.Enum):
-    r"""Specifies the assumptions to use when calculating time in traffic.
-    This setting affects the value returned in the ``duration`` field in
-    the response, which contains the predicted time in traffic based on
-    historical averages.
+    r"""This field specifies one of the following assumptions to use when
+    calculating travel time in traffic conditions, shown in the enums
+    below. Depending on the enum chosen, the ``duration`` field of the
+    TrafficModel response will vary. The value contains the predicted
+    time to destination in traffic, based on historical averages.
+    ``TrafficModel`` is only available for requests that have set
+    [``RoutingPreference``][google.maps.routing.v2.RoutingPreference] to
+    ``TRAFFIC_AWARE_OPTIMAL`` and
+    [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode] to
+    ``DRIVE``.
 
     Values:
         TRAFFIC_MODEL_UNSPECIFIED (0):

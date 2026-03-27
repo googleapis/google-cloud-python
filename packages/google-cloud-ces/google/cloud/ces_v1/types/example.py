@@ -169,6 +169,10 @@ class Chunk(proto.Message):
             audio.
 
             This field is a member of `oneof`_ ``data``.
+        blob (google.cloud.ces_v1.types.Blob):
+            Optional. Blob data.
+
+            This field is a member of `oneof`_ ``data``.
         payload (google.protobuf.struct_pb2.Struct):
             Optional. Custom payload data.
 
@@ -212,6 +216,12 @@ class Chunk(proto.Message):
         proto.STRING,
         number=9,
         oneof="data",
+    )
+    blob: "Blob" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="data",
+        message="Blob",
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,

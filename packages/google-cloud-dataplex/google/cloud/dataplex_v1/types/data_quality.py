@@ -465,7 +465,58 @@ class DataQualityRuleResult(proto.Message):
 
             This field is only valid for SQL assertion
             rules.
+        debug_queries_result_sets (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult.DebugQueryResultSet]):
+            Output only. Contains the results of all debug queries for
+            this rule. The number of result sets will correspond to the
+            number of
+            [debug_queries][google.cloud.dataplex.v1.DataQualityRule.debug_queries].
     """
+
+    class DebugQueryResult(proto.Message):
+        r"""Contains a single result from the debug query.
+
+        Attributes:
+            name (str):
+                Specifies the name of the result. Available if provided with
+                an explicit alias using ``[AS] alias``.
+            type_ (str):
+                Indicates the data type of the result. For more information,
+                see `BigQuery data
+                types <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>`__.
+            value (str):
+                Represents the value of the result as a
+                string.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class DebugQueryResultSet(proto.Message):
+        r"""Contains all results from a debug query.
+
+        Attributes:
+            results (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult.DebugQueryResult]):
+                Output only. Contains all results. Up to 10
+                results can be returned.
+        """
+
+        results: MutableSequence["DataQualityRuleResult.DebugQueryResult"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DataQualityRuleResult.DebugQueryResult",
+            )
+        )
 
     rule: "DataQualityRule" = proto.Field(
         proto.MESSAGE,
@@ -499,6 +550,13 @@ class DataQualityRuleResult(proto.Message):
     assertion_row_count: int = proto.Field(
         proto.INT64,
         number=11,
+    )
+    debug_queries_result_sets: MutableSequence[DebugQueryResultSet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=DebugQueryResultSet,
+        )
     )
 
 
@@ -633,7 +691,7 @@ class DataQualityRule(proto.Message):
             - SetExpectation
             - UniquenessExpectation
         dimension (str):
-            Required. The dimension a rule belongs to.
+            Optional. The dimension a rule belongs to.
             Results are also aggregated at the dimension
             level. Custom dimension name is supported with
             all uppercase letters and maximum length of 30
@@ -660,6 +718,11 @@ class DataQualityRule(proto.Message):
         suspended (bool):
             Optional. Whether the Rule is active or
             suspended. Default is false.
+        debug_queries (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule.DebugQuery]):
+            Optional. Specifies the debug queries for
+            this rule. Currently, only one query is
+            supported, but this may be expanded in the
+            future.
     """
 
     class RangeExpectation(proto.Message):
@@ -884,6 +947,48 @@ class DataQualityRule(proto.Message):
             number=1,
         )
 
+    class DebugQuery(proto.Message):
+        r"""Specifies a SQL statement that is evaluated to return up to 10
+        scalar values that are used to debug rules. If the rule fails, the
+        values can help diagnose the cause of the failure.
+
+        The SQL statement must use `GoogleSQL
+        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__,
+        and must not contain any semicolons.
+
+        You can use the data reference parameter ``${data()}`` to reference
+        the source table with all of its precondition filters applied.
+        Examples of precondition filters include row filters, incremental
+        data filters, and sampling. For more information, see `Data
+        reference
+        parameter <https://cloud.google.com/dataplex/docs/auto-data-quality-overview#data-reference-parameter>`__.
+
+        You can also name results with an explicit alias using
+        ``[AS] alias``. For more information, see `BigQuery explicit
+        aliases <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#explicit_alias_syntax>`__.
+
+        Example:
+        ``SELECT MIN(col1) AS min_col1, MAX(col1) AS max_col1 FROM ${data()}``
+
+        Attributes:
+            description (str):
+                Optional. Specifies the description of the debug query.
+
+                - The maximum length is 1,024 characters.
+            sql_statement (str):
+                Required. Specifies the SQL statement to be
+                executed.
+        """
+
+        description: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        sql_statement: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     range_expectation: RangeExpectation = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -965,6 +1070,11 @@ class DataQualityRule(proto.Message):
     suspended: bool = proto.Field(
         proto.BOOL,
         number=506,
+    )
+    debug_queries: MutableSequence[DebugQuery] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=510,
+        message=DebugQuery,
     )
 
 

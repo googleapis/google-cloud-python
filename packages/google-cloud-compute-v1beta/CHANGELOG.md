@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-compute-v1beta/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.9.0...google-cloud-compute-v1beta-v0.10.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.8.0...google-cloud-compute-v1beta-v0.9.0) (2026-03-12)
+
+
+### Features
+
+* Update Compute Engine v1beta API to revision 20260227 (#1164) ([bf437683468336c3863dd06e35099ff605dd55e8](https://github.com/googleapis/google-cloud-python/commit/bf437683468336c3863dd06e35099ff605dd55e8))
+
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.7.0...google-cloud-compute-v1beta-v0.8.0) (2026-03-05)
+
+
+### Features
+
+* Update Compute Engine v1beta API to revision 20260213 ([4049c9b6d963fc1bb0083970373aee34d930d3dd](https://github.com/googleapis/google-cloud-python/commit/4049c9b6d963fc1bb0083970373aee34d930d3dd))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.6.0...google-cloud-compute-v1beta-v0.7.0) (2026-02-26)
 
 

@@ -130,6 +130,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert MemorystoreClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -148,6 +149,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert MemorystoreClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        MemorystoreClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -3999,8 +4003,9 @@ def test_list_instances_rest_bad_request(request_type=memorystore.ListInstancesR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4065,17 +4070,19 @@ def test_list_instances_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_list_instances"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_list_instances_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_list_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_list_instances"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_list_instances_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_list_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4128,8 +4135,9 @@ def test_get_instance_rest_bad_request(request_type=memorystore.GetInstanceReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4244,17 +4252,19 @@ def test_get_instance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_instance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_get_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_instance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_get_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4305,8 +4315,9 @@ def test_create_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4551,19 +4562,20 @@ def test_create_instance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_create_instance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_create_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_create_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_create_instance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_create_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_create_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4618,8 +4630,9 @@ def test_update_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4866,19 +4879,20 @@ def test_update_instance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_update_instance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_update_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_update_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_update_instance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_update_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_update_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4931,8 +4945,9 @@ def test_delete_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4989,19 +5004,20 @@ def test_delete_instance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_delete_instance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_delete_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_delete_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_delete_instance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_delete_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_delete_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5054,8 +5070,9 @@ def test_get_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5118,18 +5135,20 @@ def test_get_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_certificate_authority"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor,
-        "post_get_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_get_certificate_authority"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_certificate_authority"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_get_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_get_certificate_authority"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5184,8 +5203,9 @@ def test_reschedule_maintenance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5242,20 +5262,21 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_reschedule_maintenance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor,
-        "post_reschedule_maintenance_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_reschedule_maintenance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_reschedule_maintenance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_reschedule_maintenance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_reschedule_maintenance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5308,8 +5329,9 @@ def test_list_backup_collections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5374,18 +5396,20 @@ def test_list_backup_collections_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_list_backup_collections"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor,
-        "post_list_backup_collections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_list_backup_collections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_list_backup_collections"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_list_backup_collections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_list_backup_collections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5445,8 +5469,9 @@ def test_get_backup_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5523,18 +5548,20 @@ def test_get_backup_collection_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_backup_collection"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor,
-        "post_get_backup_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_get_backup_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_backup_collection"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_get_backup_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_get_backup_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5589,8 +5616,9 @@ def test_list_backups_rest_bad_request(request_type=memorystore.ListBackupsReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5657,17 +5685,19 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_list_backups_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5720,8 +5750,9 @@ def test_get_backup_rest_bad_request(request_type=memorystore.GetBackupRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5806,17 +5837,19 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_get_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5867,8 +5900,9 @@ def test_delete_backup_rest_bad_request(request_type=memorystore.DeleteBackupReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5927,19 +5961,20 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_delete_backup"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_delete_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_delete_backup"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_delete_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5992,8 +6027,9 @@ def test_export_backup_rest_bad_request(request_type=memorystore.ExportBackupReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6052,19 +6088,20 @@ def test_export_backup_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_export_backup"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_export_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_export_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_export_backup"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_export_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_export_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6117,8 +6154,9 @@ def test_backup_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6175,19 +6213,20 @@ def test_backup_instance_rest_interceptors(null_interceptor):
     )
     client = MemorystoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_backup_instance"
-    ) as post, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "post_backup_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.MemorystoreRestInterceptor, "pre_backup_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_backup_instance"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_backup_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_backup_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6240,8 +6279,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6300,8 +6340,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6362,8 +6403,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6424,8 +6466,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6486,8 +6529,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6548,8 +6592,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6975,11 +7020,14 @@ def test_memorystore_base_transport():
 
 def test_memorystore_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.memorystore_v1.services.memorystore.transports.MemorystoreTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.memorystore_v1.services.memorystore.transports.MemorystoreTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MemorystoreTransport(
@@ -6996,9 +7044,12 @@ def test_memorystore_base_transport_with_credentials_file():
 
 def test_memorystore_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.memorystore_v1.services.memorystore.transports.MemorystoreTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.memorystore_v1.services.memorystore.transports.MemorystoreTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MemorystoreTransport()

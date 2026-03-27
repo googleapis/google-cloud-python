@@ -1244,6 +1244,11 @@
                 "apply_updates_to_instances"
               ]
             },
+            "ConfigureAcceleratorTopologies": {
+              "methods": [
+                "configure_accelerator_topologies"
+              ]
+            },
             "CreateInstances": {
               "methods": [
                 "create_instances"
@@ -3568,6 +3573,11 @@
         "rest": {
           "libraryClient": "RegionHealthCheckServicesClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -4313,6 +4323,11 @@
         "rest": {
           "libraryClient": "RegionNotificationEndpointsClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -4834,6 +4849,11 @@
                 "get"
               ]
             },
+            "GetVersion": {
+              "methods": [
+                "get_version"
+              ]
+            },
             "List": {
               "methods": [
                 "list"
@@ -4861,6 +4881,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetVersion": {
+              "methods": [
+                "get_version"
               ]
             },
             "List": {
@@ -5083,6 +5108,11 @@
                 "delete"
               ]
             },
+            "DeleteNamedSet": {
+              "methods": [
+                "delete_named_set"
+              ]
+            },
             "DeleteRoutePolicy": {
               "methods": [
                 "delete_route_policy"
@@ -5091,6 +5121,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetNamedSet": {
+              "methods": [
+                "get_named_set"
               ]
             },
             "GetNatIpInfo": {
@@ -5128,6 +5163,11 @@
                 "list_bgp_routes"
               ]
             },
+            "ListNamedSets": {
+              "methods": [
+                "list_named_sets"
+              ]
+            },
             "ListRoutePolicies": {
               "methods": [
                 "list_route_policies"
@@ -5136,6 +5176,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "PatchNamedSet": {
+              "methods": [
+                "patch_named_set"
               ]
             },
             "PatchRoutePolicy": {
@@ -5156,6 +5201,11 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            },
+            "UpdateNamedSet": {
+              "methods": [
+                "update_named_set"
               ]
             },
             "UpdateRoutePolicy": {
@@ -5313,6 +5363,50 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SnapshotGroups": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SnapshotGroupsClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
               ]
             },
             "SetIamPolicy": {

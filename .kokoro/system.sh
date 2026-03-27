@@ -24,25 +24,69 @@ export PYTHONUNBUFFERED=1
 # Setup firestore account credentials
 export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
 
-# Setup service account credentials.
-export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
-
-# Setup project id.
-export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
-RETVAL=0
-
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
 cd "$PROJECT_ROOT"
 
-pwd
-
-# A file for running system tests
-system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
-
 # This is needed in order for `git diff` to succeed
 git config --global --add safe.directory $(realpath .)
+
+RETVAL=0
+
+pwd
+
+run_package_test() {
+  local package_name=$1
+  local package_path="packages/${package_name}"
+  
+  # Declare local overrides to prevent bleeding into the next loop iteration
+  local PROJECT_ID
+  local GOOGLE_APPLICATION_CREDENTIALS
+  local NOX_FILE
+  local NOX_SESSION
+
+  echo "------------------------------------------------------------"
+  echo "Configuring environment for: ${package_name}"
+  echo "------------------------------------------------------------"
+
+  case "${package_name}" in
+    "google-auth")
+      # Copy files needed for google-auth system tests
+      mkdir -p "${package_path}/system_tests/data"
+      cp "${KOKORO_GFILE_DIR}/google-auth-service-account.json" "${package_path}/system_tests/data/service_account.json"
+      cp "${KOKORO_GFILE_DIR}/google-auth-authorized-user.json" "${package_path}/system_tests/data/authorized_user.json"
+      cp "${KOKORO_GFILE_DIR}/google-auth-impersonated-service-account.json" "${package_path}/system_tests/data/impersonated_service_account.json"
+
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
+      NOX_FILE="system_tests/noxfile.py"
+      NOX_SESSION=""
+      ;;
+    *)
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
+      NOX_FILE="noxfile.py"
+      NOX_SESSION="system-3.12"
+      ;;
+  esac
+
+  # Export variables for the duration of this function's sub-processes
+  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+  export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
+
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+  gcloud config set project "$PROJECT_ID"
+
+  # Run the actual test
+  pushd "${package_path}" > /dev/null
+  set +e
+  "${system_test_script}"
+  local res=$?
+  set -e
+  popd > /dev/null
+  
+  return $res
+}
 
 packages_with_system_tests=(
   "google-auth"
@@ -51,47 +95,51 @@ packages_with_system_tests=(
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
+  "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
+  "google-cloud-pubsub"
   "google-cloud-testutils"
+  "sqlalchemy-bigquery"
+  "pandas-gbq"
 )
+
+# A file for running system tests
+system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 
 # Join array elements with | for the pattern match
 packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
 packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
-
 # Run system tests for each package with directory packages/*/tests/system
-for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
-  # Get the path to the package by removing the suffix /tests/system
-  package=$(echo $dir | cut -f -2 -d '/')
+for path in `find 'packages' \
+  \( -type d -wholename 'packages/*/tests/system' \) -o \
+  \( -type d -wholename 'packages/*/system_tests' \) -o \
+  \( -type f -wholename 'packages/*/tests/system.py' \)`; do
 
-  # Run system tests on every change to these libraries
-  if [[ $package == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check=${package}
-  else
-    files_to_check=${package}/CHANGELOG.md
+  # Extract the package name and define the relative package path
+  # 1. Remove the 'packages/' prefix
+  # 2. Remove everything after the first '/'
+  package_name=${path#packages/}
+  package_name=${package_name%%/*}
+  package_path="packages/${package_name}"
+
+  # Determine if we should skip based on git diff
+  files_to_check="${package_path}/CHANGELOG.md"
+  if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
+    files_to_check="${package_path}"
   fi
 
   echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
   set +e
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
-  if [[ "${package_modified}" -eq 0 ]]; then
-      echo "no change detected in ${files_to_check}, skipping"
+
+  if [[ "${package_modified}" -gt 0 ]]; then
+      # Call the function - its internal exports won't affect the next loop
+      run_package_test "$package_name" || RETVAL=$?
   else
-      echo "change detected in ${files_to_check}"
-      echo "Running system tests for ${package}"
-      pushd ${package}
-      # Temporarily allow failure.
-      set +e
-      ${system_test_script}
-      ret=$?
-      set -e
-      if [ ${ret} -ne 0 ]; then
-          RETVAL=${ret}
-      fi
-      popd
+      echo "No changes in ${package_name}, skipping."
   fi
 done
 exit ${RETVAL}

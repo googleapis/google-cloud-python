@@ -123,6 +123,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_metadata_feed(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_metadata_feed(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_metadata_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -171,6 +179,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_metadata_feed(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_metadata_feed(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_aspect_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -208,6 +224,14 @@ class CatalogServiceRestInterceptor:
                 return request, metadata
 
             def post_get_entry_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_metadata_feed(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_metadata_feed(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -251,6 +275,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_metadata_feeds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_metadata_feeds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_metadata_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -259,11 +291,27 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_lookup_context(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_lookup_context(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_lookup_entry(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_lookup_entry(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_lookup_entry_links(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_lookup_entry_links(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -299,11 +347,27 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_entry_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_entry_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_entry_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_entry_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_metadata_feed(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_metadata_feed(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -552,6 +616,54 @@ class CatalogServiceRestInterceptor:
         `post_create_entry_type` interceptor. The (possibly modified) response returned by
         `post_create_entry_type` will be passed to
         `post_create_entry_type_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_metadata_feed(
+        self,
+        request: catalog.CreateMetadataFeedRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.CreateMetadataFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_metadata_feed
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_create_metadata_feed(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_metadata_feed
+
+        DEPRECATED. Please use the `post_create_metadata_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_create_metadata_feed` interceptor runs
+        before the `post_create_metadata_feed_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_metadata_feed_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_metadata_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_create_metadata_feed_with_metadata`
+        interceptor in new development instead of the `post_create_metadata_feed` interceptor.
+        When both interceptors are used, this `post_create_metadata_feed_with_metadata` interceptor runs after the
+        `post_create_metadata_feed` interceptor. The (possibly modified) response returned by
+        `post_create_metadata_feed` will be passed to
+        `post_create_metadata_feed_with_metadata`.
         """
         return response, metadata
 
@@ -831,6 +943,54 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_metadata_feed(
+        self,
+        request: catalog.DeleteMetadataFeedRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.DeleteMetadataFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_metadata_feed
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_delete_metadata_feed(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_metadata_feed
+
+        DEPRECATED. Please use the `post_delete_metadata_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_delete_metadata_feed` interceptor runs
+        before the `post_delete_metadata_feed_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_metadata_feed_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_metadata_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_metadata_feed_with_metadata`
+        interceptor in new development instead of the `post_delete_metadata_feed` interceptor.
+        When both interceptors are used, this `post_delete_metadata_feed_with_metadata` interceptor runs after the
+        `post_delete_metadata_feed` interceptor. The (possibly modified) response returned by
+        `post_delete_metadata_feed` will be passed to
+        `post_delete_metadata_feed_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_aspect_type(
         self,
         request: catalog.GetAspectTypeRequest,
@@ -1046,6 +1206,52 @@ class CatalogServiceRestInterceptor:
         `post_get_entry_type` interceptor. The (possibly modified) response returned by
         `post_get_entry_type` will be passed to
         `post_get_entry_type_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_metadata_feed(
+        self,
+        request: catalog.GetMetadataFeedRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.GetMetadataFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_metadata_feed
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_get_metadata_feed(
+        self, response: catalog.MetadataFeed
+    ) -> catalog.MetadataFeed:
+        """Post-rpc interceptor for get_metadata_feed
+
+        DEPRECATED. Please use the `post_get_metadata_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_get_metadata_feed` interceptor runs
+        before the `post_get_metadata_feed_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_metadata_feed_with_metadata(
+        self,
+        response: catalog.MetadataFeed,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.MetadataFeed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_metadata_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_get_metadata_feed_with_metadata`
+        interceptor in new development instead of the `post_get_metadata_feed` interceptor.
+        When both interceptors are used, this `post_get_metadata_feed_with_metadata` interceptor runs after the
+        `post_get_metadata_feed` interceptor. The (possibly modified) response returned by
+        `post_get_metadata_feed` will be passed to
+        `post_get_metadata_feed_with_metadata`.
         """
         return response, metadata
 
@@ -1283,6 +1489,56 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_metadata_feeds(
+        self,
+        request: catalog.ListMetadataFeedsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.ListMetadataFeedsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_metadata_feeds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_list_metadata_feeds(
+        self, response: catalog.ListMetadataFeedsResponse
+    ) -> catalog.ListMetadataFeedsResponse:
+        """Post-rpc interceptor for list_metadata_feeds
+
+        DEPRECATED. Please use the `post_list_metadata_feeds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_list_metadata_feeds` interceptor runs
+        before the `post_list_metadata_feeds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_metadata_feeds_with_metadata(
+        self,
+        response: catalog.ListMetadataFeedsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.ListMetadataFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_metadata_feeds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_list_metadata_feeds_with_metadata`
+        interceptor in new development instead of the `post_list_metadata_feeds` interceptor.
+        When both interceptors are used, this `post_list_metadata_feeds_with_metadata` interceptor runs after the
+        `post_list_metadata_feeds` interceptor. The (possibly modified) response returned by
+        `post_list_metadata_feeds` will be passed to
+        `post_list_metadata_feeds_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_metadata_jobs(
         self,
         request: catalog.ListMetadataJobsRequest,
@@ -1333,6 +1589,52 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_lookup_context(
+        self,
+        request: catalog.LookupContextRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.LookupContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for lookup_context
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_lookup_context(
+        self, response: catalog.LookupContextResponse
+    ) -> catalog.LookupContextResponse:
+        """Post-rpc interceptor for lookup_context
+
+        DEPRECATED. Please use the `post_lookup_context_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_lookup_context` interceptor runs
+        before the `post_lookup_context_with_metadata` interceptor.
+        """
+        return response
+
+    def post_lookup_context_with_metadata(
+        self,
+        response: catalog.LookupContextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.LookupContextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for lookup_context
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_context_with_metadata`
+        interceptor in new development instead of the `post_lookup_context` interceptor.
+        When both interceptors are used, this `post_lookup_context_with_metadata` interceptor runs after the
+        `post_lookup_context` interceptor. The (possibly modified) response returned by
+        `post_lookup_context` will be passed to
+        `post_lookup_context_with_metadata`.
+        """
+        return response, metadata
+
     def pre_lookup_entry(
         self,
         request: catalog.LookupEntryRequest,
@@ -1372,6 +1674,56 @@ class CatalogServiceRestInterceptor:
         `post_lookup_entry` interceptor. The (possibly modified) response returned by
         `post_lookup_entry` will be passed to
         `post_lookup_entry_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_lookup_entry_links(
+        self,
+        request: catalog.LookupEntryLinksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.LookupEntryLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for lookup_entry_links
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_lookup_entry_links(
+        self, response: catalog.LookupEntryLinksResponse
+    ) -> catalog.LookupEntryLinksResponse:
+        """Post-rpc interceptor for lookup_entry_links
+
+        DEPRECATED. Please use the `post_lookup_entry_links_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_lookup_entry_links` interceptor runs
+        before the `post_lookup_entry_links_with_metadata` interceptor.
+        """
+        return response
+
+    def post_lookup_entry_links_with_metadata(
+        self,
+        response: catalog.LookupEntryLinksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.LookupEntryLinksResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for lookup_entry_links
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_entry_links_with_metadata`
+        interceptor in new development instead of the `post_lookup_entry_links` interceptor.
+        When both interceptors are used, this `post_lookup_entry_links_with_metadata` interceptor runs after the
+        `post_lookup_entry_links` interceptor. The (possibly modified) response returned by
+        `post_lookup_entry_links` will be passed to
+        `post_lookup_entry_links_with_metadata`.
         """
         return response, metadata
 
@@ -1559,6 +1911,50 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_update_entry_link(
+        self,
+        request: catalog.UpdateEntryLinkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.UpdateEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for update_entry_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_update_entry_link(self, response: catalog.EntryLink) -> catalog.EntryLink:
+        """Post-rpc interceptor for update_entry_link
+
+        DEPRECATED. Please use the `post_update_entry_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_update_entry_link` interceptor runs
+        before the `post_update_entry_link_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_entry_link_with_metadata(
+        self,
+        response: catalog.EntryLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_entry_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_update_entry_link_with_metadata`
+        interceptor in new development instead of the `post_update_entry_link` interceptor.
+        When both interceptors are used, this `post_update_entry_link_with_metadata` interceptor runs after the
+        `post_update_entry_link` interceptor. The (possibly modified) response returned by
+        `post_update_entry_link` will be passed to
+        `post_update_entry_link_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_entry_type(
         self,
         request: catalog.UpdateEntryTypeRequest,
@@ -1605,6 +2001,54 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_update_metadata_feed(
+        self,
+        request: catalog.UpdateMetadataFeedRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog.UpdateMetadataFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_metadata_feed
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_update_metadata_feed(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_metadata_feed
+
+        DEPRECATED. Please use the `post_update_metadata_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_update_metadata_feed` interceptor runs
+        before the `post_update_metadata_feed_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_metadata_feed_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_metadata_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_update_metadata_feed_with_metadata`
+        interceptor in new development instead of the `post_update_metadata_feed` interceptor.
+        When both interceptors are used, this `post_update_metadata_feed_with_metadata` interceptor runs after the
+        `post_update_metadata_feed` interceptor. The (possibly modified) response returned by
+        `post_update_metadata_feed` will be passed to
+        `post_update_metadata_feed_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
@@ -1648,6 +2092,78 @@ class CatalogServiceRestInterceptor:
         self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
         after it is returned by the CatalogService server but before
@@ -1823,6 +2339,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[CatalogServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -2785,6 +3307,158 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _CreateMetadataFeed(
+        _BaseCatalogServiceRestTransport._BaseCreateMetadataFeed, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.CreateMetadataFeed")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.CreateMetadataFeedRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create metadata feed method over HTTP.
+
+            Args:
+                request (~.catalog.CreateMetadataFeedRequest):
+                    The request object. Request message for
+                CreateMetadataFeed.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateMetadataFeed._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_metadata_feed(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateMetadataFeed._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseCreateMetadataFeed._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateMetadataFeed._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.CreateMetadataFeed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "CreateMetadataFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._CreateMetadataFeed._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_metadata_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_metadata_feed_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.create_metadata_feed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "CreateMetadataFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateMetadataJob(
         _BaseCatalogServiceRestTransport._BaseCreateMetadataJob, CatalogServiceRestStub
     ):
@@ -3664,6 +4338,152 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _DeleteMetadataFeed(
+        _BaseCatalogServiceRestTransport._BaseDeleteMetadataFeed, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.DeleteMetadataFeed")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.DeleteMetadataFeedRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete metadata feed method over HTTP.
+
+            Args:
+                request (~.catalog.DeleteMetadataFeedRequest):
+                    The request object. Request message for
+                DeleteMetadataFeed.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteMetadataFeed._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_metadata_feed(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteMetadataFeed._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteMetadataFeed._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.DeleteMetadataFeed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "DeleteMetadataFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._DeleteMetadataFeed._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_metadata_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_metadata_feed_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.delete_metadata_feed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "DeleteMetadataFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetAspectType(
         _BaseCatalogServiceRestTransport._BaseGetAspectType, CatalogServiceRestStub
     ):
@@ -4401,6 +5221,152 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _GetMetadataFeed(
+        _BaseCatalogServiceRestTransport._BaseGetMetadataFeed, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.GetMetadataFeed")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.GetMetadataFeedRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.MetadataFeed:
+            r"""Call the get metadata feed method over HTTP.
+
+            Args:
+                request (~.catalog.GetMetadataFeedRequest):
+                    The request object. Request message for GetMetadataFeed.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.MetadataFeed:
+                    MetadataFeed contains information
+                related to the metadata feed.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseGetMetadataFeed._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_metadata_feed(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetMetadataFeed._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseGetMetadataFeed._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.GetMetadataFeed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetMetadataFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._GetMetadataFeed._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.MetadataFeed()
+            pb_resp = catalog.MetadataFeed.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_metadata_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_metadata_feed_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.MetadataFeed.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.get_metadata_feed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetMetadataFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetMetadataJob(
         _BaseCatalogServiceRestTransport._BaseGetMetadataJob, CatalogServiceRestStub
     ):
@@ -5125,6 +6091,155 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _ListMetadataFeeds(
+        _BaseCatalogServiceRestTransport._BaseListMetadataFeeds, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.ListMetadataFeeds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.ListMetadataFeedsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.ListMetadataFeedsResponse:
+            r"""Call the list metadata feeds method over HTTP.
+
+            Args:
+                request (~.catalog.ListMetadataFeedsRequest):
+                    The request object. Request message for
+                ListMetadataFeedsRequest.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.ListMetadataFeedsResponse:
+                    Response message for
+                ListMetadataFeeds.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseListMetadataFeeds._get_http_options()
+
+            request, metadata = self._interceptor.pre_list_metadata_feeds(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListMetadataFeeds._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseListMetadataFeeds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.ListMetadataFeeds",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "ListMetadataFeeds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._ListMetadataFeeds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.ListMetadataFeedsResponse()
+            pb_resp = catalog.ListMetadataFeedsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_metadata_feeds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_metadata_feeds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.ListMetadataFeedsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.list_metadata_feeds",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "ListMetadataFeeds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListMetadataJobs(
         _BaseCatalogServiceRestTransport._BaseListMetadataJobs, CatalogServiceRestStub
     ):
@@ -5265,6 +6380,157 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.CatalogService",
                         "rpcName": "ListMetadataJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _LookupContext(
+        _BaseCatalogServiceRestTransport._BaseLookupContext, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.LookupContext")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.LookupContextRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.LookupContextResponse:
+            r"""Call the lookup context method over HTTP.
+
+            Args:
+                request (~.catalog.LookupContextRequest):
+                    The request object. Lookup Context using permissions in
+                the source system.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.LookupContextResponse:
+                    Lookup Context response.
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseLookupContext._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_lookup_context(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseLookupContext._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseLookupContext._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseLookupContext._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.LookupContext",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "LookupContext",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._LookupContext._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.LookupContextResponse()
+            pb_resp = catalog.LookupContextResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_lookup_context(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_context_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.LookupContextResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.lookup_context",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "LookupContext",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5413,6 +6679,154 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.CatalogService",
                         "rpcName": "LookupEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _LookupEntryLinks(
+        _BaseCatalogServiceRestTransport._BaseLookupEntryLinks, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.LookupEntryLinks")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.LookupEntryLinksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.LookupEntryLinksResponse:
+            r"""Call the lookup entry links method over HTTP.
+
+            Args:
+                request (~.catalog.LookupEntryLinksRequest):
+                    The request object. Request message for LookupEntryLinks.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.LookupEntryLinksResponse:
+                    Response message for
+                LookupEntryLinks.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseLookupEntryLinks._get_http_options()
+
+            request, metadata = self._interceptor.pre_lookup_entry_links(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseLookupEntryLinks._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseLookupEntryLinks._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.LookupEntryLinks",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "LookupEntryLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._LookupEntryLinks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.LookupEntryLinksResponse()
+            pb_resp = catalog.LookupEntryLinksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_lookup_entry_links(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_entry_links_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.LookupEntryLinksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.lookup_entry_links",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "LookupEntryLinks",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6018,6 +7432,159 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _UpdateEntryLink(
+        _BaseCatalogServiceRestTransport._BaseUpdateEntryLink, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.UpdateEntryLink")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.UpdateEntryLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.EntryLink:
+            r"""Call the update entry link method over HTTP.
+
+            Args:
+                request (~.catalog.UpdateEntryLinkRequest):
+                    The request object. Request message for UpdateEntryLink
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.EntryLink:
+                    EntryLink represents a link between
+                two Entries.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntryLink._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_entry_link(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntryLink._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseUpdateEntryLink._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntryLink._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.UpdateEntryLink",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "UpdateEntryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._UpdateEntryLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.EntryLink()
+            pb_resp = catalog.EntryLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_entry_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_entry_link_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.EntryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.update_entry_link",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "UpdateEntryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateEntryType(
         _BaseCatalogServiceRestTransport._BaseUpdateEntryType, CatalogServiceRestStub
     ):
@@ -6169,6 +7736,158 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _UpdateMetadataFeed(
+        _BaseCatalogServiceRestTransport._BaseUpdateMetadataFeed, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.UpdateMetadataFeed")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.UpdateMetadataFeedRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update metadata feed method over HTTP.
+
+            Args:
+                request (~.catalog.UpdateMetadataFeedRequest):
+                    The request object. Request message for
+                UpdateMetadataFeed.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateMetadataFeed._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_metadata_feed(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateMetadataFeed._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseUpdateMetadataFeed._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateMetadataFeed._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.UpdateMetadataFeed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "UpdateMetadataFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._UpdateMetadataFeed._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_metadata_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_metadata_feed_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.update_metadata_feed",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "UpdateMetadataFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def cancel_metadata_job(
         self,
@@ -6214,6 +7933,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntryType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_metadata_feed(
+        self,
+    ) -> Callable[[catalog.CreateMetadataFeedRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateMetadataFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_metadata_job(
@@ -6262,6 +7989,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._DeleteEntryType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_metadata_feed(
+        self,
+    ) -> Callable[[catalog.DeleteMetadataFeedRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteMetadataFeed(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_aspect_type(
         self,
     ) -> Callable[[catalog.GetAspectTypeRequest], catalog.AspectType]:
@@ -6298,6 +8033,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntryType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_metadata_feed(
+        self,
+    ) -> Callable[[catalog.GetMetadataFeedRequest], catalog.MetadataFeed]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetMetadataFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_metadata_job(
@@ -6340,6 +8083,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._ListEntryTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_metadata_feeds(
+        self,
+    ) -> Callable[
+        [catalog.ListMetadataFeedsRequest], catalog.ListMetadataFeedsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListMetadataFeeds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_metadata_jobs(
         self,
     ) -> Callable[[catalog.ListMetadataJobsRequest], catalog.ListMetadataJobsResponse]:
@@ -6348,10 +8101,26 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._ListMetadataJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def lookup_context(
+        self,
+    ) -> Callable[[catalog.LookupContextRequest], catalog.LookupContextResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._LookupContext(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], catalog.Entry]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupEntry(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def lookup_entry_links(
+        self,
+    ) -> Callable[[catalog.LookupEntryLinksRequest], catalog.LookupEntryLinksResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._LookupEntryLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_entries(
@@ -6384,12 +8153,28 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._UpdateEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_entry_link(
+        self,
+    ) -> Callable[[catalog.UpdateEntryLinkRequest], catalog.EntryLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateEntryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_entry_type(
         self,
     ) -> Callable[[catalog.UpdateEntryTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntryType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_metadata_feed(
+        self,
+    ) -> Callable[[catalog.UpdateMetadataFeedRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateMetadataFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
@@ -6665,6 +8450,438 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.CatalogService",
                         "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def get_iam_policy(self):
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetIamPolicy(
+        _BaseCatalogServiceRestTransport._BaseGetIamPolicy, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.GetIamPolicyRequest):
+                    The request object for GetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                policy_pb2.Policy: Response from GetIamPolicy method.
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseGetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def set_iam_policy(self):
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _SetIamPolicy(
+        _BaseCatalogServiceRestTransport._BaseSetIamPolicy, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.SetIamPolicyRequest):
+                    The request object for SetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                policy_pb2.Policy: Response from SetIamPolicy method.
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseSetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def test_iam_permissions(self):
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _TestIamPermissions(
+        _BaseCatalogServiceRestTransport._BaseTestIamPermissions, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object for TestIamPermissions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
+            """
+
+            http_options = _BaseCatalogServiceRestTransport._BaseTestIamPermissions._get_http_options()
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "TestIamPermissions",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
                     },

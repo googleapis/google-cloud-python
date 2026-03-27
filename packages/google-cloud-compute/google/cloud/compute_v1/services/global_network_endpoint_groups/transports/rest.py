@@ -551,6 +551,12 @@ class GlobalNetworkEndpointGroupsRestTransport(
              url_scheme: the protocol scheme for the API endpoint.  Normally
                  "https", but for testing or local servers,
                  "http" can be specified.
+             interceptor (Optional[GlobalNetworkEndpointGroupsRestInterceptor]): Interceptor used
+                 to manipulate requests, request metadata, and responses.
+             api_audience (Optional[str]): The intended audience for the API calls
+                 to the service that will be set when using certain 3rd party
+                 authentication flows. Audience is typically a resource identifier.
+                 If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1174,6 +1180,24 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 information about using NEGs for
                 different use cases, seeNetwork endpoint
                 groups overview.
+
+                Note: Use the following APIs to manage
+                network endpoint groups:
+
+                   -
+                   To manage NEGs with zonal scope (such
+                as zonal NEGs, hybrid connectivity
+                NEGs): zonal
+                   API
+                   -
+                   To manage NEGs with regional scope
+                (such as regional internet NEGs,
+                serverless NEGs, Private Service Connect
+                NEGs): regional    API
+                   -
+                   To manage NEGs with global scope
+                (such as global internet NEGs):global
+                API
 
             """
 

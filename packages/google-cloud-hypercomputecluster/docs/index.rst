@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Cluster Director API.
+By default, you will get version ``hypercomputecluster_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    hypercomputecluster_v1/services_
+    hypercomputecluster_v1/types_
 
 API Reference
 -------------

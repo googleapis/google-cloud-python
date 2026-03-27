@@ -124,6 +124,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DataObjectServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -145,6 +146,10 @@ def test__get_default_mtls_endpoint():
     assert (
         DataObjectServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        DataObjectServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1323,11 +1328,13 @@ def test_data_object_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1374,6 +1381,7 @@ def test_create_data_object(request_type, transport: str = "grpc"):
         call.return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.create_data_object(request)
 
@@ -1387,6 +1395,7 @@ def test_create_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_data_object_non_empty_request_with_auto_populated_field():
@@ -1525,6 +1534,7 @@ async def test_create_data_object_async(
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.create_data_object(request)
@@ -1539,6 +1549,7 @@ async def test_create_data_object_async(
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -1991,6 +2002,7 @@ def test_get_data_object(request_type, transport: str = "grpc"):
         call.return_value = data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.get_data_object(request)
 
@@ -2004,6 +2016,7 @@ def test_get_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_data_object_non_empty_request_with_auto_populated_field():
@@ -2132,6 +2145,7 @@ async def test_get_data_object_async(
             data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.get_data_object(request)
@@ -2146,6 +2160,7 @@ async def test_get_data_object_async(
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2321,6 +2336,7 @@ def test_update_data_object(request_type, transport: str = "grpc"):
         call.return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.update_data_object(request)
 
@@ -2334,6 +2350,7 @@ def test_update_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_data_object_non_empty_request_with_auto_populated_field():
@@ -2466,6 +2483,7 @@ async def test_update_data_object_async(
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.update_data_object(request)
@@ -2480,6 +2498,7 @@ async def test_update_data_object_async(
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -3067,6 +3086,7 @@ def test_delete_data_object_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = data_object_service.DeleteDataObjectRequest(
         name="name_value",
+        etag="etag_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3081,6 +3101,7 @@ def test_delete_data_object_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_object_service.DeleteDataObjectRequest(
             name="name_value",
+            etag="etag_value",
         )
 
 
@@ -4680,6 +4701,8 @@ def test_delete_data_object_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_data_object._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4731,7 +4754,7 @@ def test_delete_data_object_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_data_object._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_data_object_rest_flattened():
@@ -5280,6 +5303,7 @@ async def test_create_data_object_empty_call_grpc_asyncio():
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.create_data_object(request=None)
@@ -5335,6 +5359,7 @@ async def test_get_data_object_empty_call_grpc_asyncio():
             data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.get_data_object(request=None)
@@ -5365,6 +5390,7 @@ async def test_update_data_object_empty_call_grpc_asyncio():
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.update_data_object(request=None)
@@ -5472,8 +5498,9 @@ def test_create_data_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5507,6 +5534,7 @@ def test_create_data_object_rest_call_success(request_type):
         "update_time": {},
         "data": {"fields": {}},
         "vectors": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5583,6 +5611,7 @@ def test_create_data_object_rest_call_success(request_type):
         return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5601,6 +5630,7 @@ def test_create_data_object_rest_call_success(request_type):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5613,18 +5643,20 @@ def test_create_data_object_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "post_create_data_object"
-    ) as post, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor,
-        "post_create_data_object_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_create_data_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "post_create_data_object"
+        ) as post,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_create_data_object_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_create_data_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5677,8 +5709,9 @@ def test_batch_create_data_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5740,18 +5773,21 @@ def test_batch_create_data_objects_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "post_batch_create_data_objects"
-    ) as post, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor,
-        "post_batch_create_data_objects_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_batch_create_data_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_batch_create_data_objects",
+        ) as post,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_batch_create_data_objects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_batch_create_data_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5811,8 +5847,9 @@ def test_get_data_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5849,6 +5886,7 @@ def test_get_data_object_rest_call_success(request_type):
         return_value = data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5867,6 +5905,7 @@ def test_get_data_object_rest_call_success(request_type):
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5879,18 +5918,20 @@ def test_get_data_object_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "post_get_data_object"
-    ) as post, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor,
-        "post_get_data_object_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_get_data_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "post_get_data_object"
+        ) as post,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_get_data_object_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_get_data_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5947,8 +5988,9 @@ def test_update_data_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5986,6 +6028,7 @@ def test_update_data_object_rest_call_success(request_type):
         "update_time": {},
         "data": {"fields": {}},
         "vectors": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6062,6 +6105,7 @@ def test_update_data_object_rest_call_success(request_type):
         return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6080,6 +6124,7 @@ def test_update_data_object_rest_call_success(request_type):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6092,18 +6137,20 @@ def test_update_data_object_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "post_update_data_object"
-    ) as post, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor,
-        "post_update_data_object_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_update_data_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "post_update_data_object"
+        ) as post,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_update_data_object_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_update_data_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6156,8 +6203,9 @@ def test_batch_update_data_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6219,18 +6267,21 @@ def test_batch_update_data_objects_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "post_batch_update_data_objects"
-    ) as post, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor,
-        "post_batch_update_data_objects_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_batch_update_data_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_batch_update_data_objects",
+        ) as post,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor,
+            "post_batch_update_data_objects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_batch_update_data_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6290,8 +6341,9 @@ def test_delete_data_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6350,13 +6402,13 @@ def test_delete_data_object_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_delete_data_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_delete_data_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = data_object_service.DeleteDataObjectRequest.pb(
             data_object_service.DeleteDataObjectRequest()
@@ -6401,8 +6453,9 @@ def test_batch_delete_data_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6459,13 +6512,13 @@ def test_batch_delete_data_objects_rest_interceptors(null_interceptor):
     )
     client = DataObjectServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataObjectServiceRestInterceptor, "pre_batch_delete_data_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataObjectServiceRestInterceptor, "pre_batch_delete_data_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = data_object_service.BatchDeleteDataObjectsRequest.pb(
             data_object_service.BatchDeleteDataObjectsRequest()
@@ -6510,8 +6563,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6570,8 +6624,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6632,8 +6687,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6694,8 +6750,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6756,8 +6813,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6818,8 +6876,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7091,11 +7150,14 @@ def test_data_object_service_base_transport():
 
 def test_data_object_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.vectorsearch_v1beta.services.data_object_service.transports.DataObjectServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.vectorsearch_v1beta.services.data_object_service.transports.DataObjectServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataObjectServiceTransport(
@@ -7112,9 +7174,12 @@ def test_data_object_service_base_transport_with_credentials_file():
 
 def test_data_object_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.vectorsearch_v1beta.services.data_object_service.transports.DataObjectServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.vectorsearch_v1beta.services.data_object_service.transports.DataObjectServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataObjectServiceTransport()
@@ -7186,11 +7251,12 @@ def test_data_object_service_transport_auth_gdch_credentials(transport_class):
 def test_data_object_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -7806,6 +7872,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = DataObjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7943,6 +8041,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -8090,6 +8220,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = DataObjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8233,6 +8397,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -8380,6 +8578,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = DataObjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8519,6 +8751,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = DataObjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = DataObjectServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

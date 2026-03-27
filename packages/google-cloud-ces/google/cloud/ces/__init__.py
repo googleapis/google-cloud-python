@@ -100,6 +100,7 @@ from google.cloud.ces_v1.types.agent_service import (
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
+from google.cloud.ces_v1.types.agent_tool import AgentTool
 from google.cloud.ces_v1.types.agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -115,6 +116,7 @@ from google.cloud.ces_v1.types.app import (
     CloudLoggingSettings,
     ConversationLoggingSettings,
     DataStoreSettings,
+    ErrorHandlingSettings,
     EvaluationMetricsThresholds,
     LanguageSettings,
     LoggingSettings,
@@ -180,6 +182,10 @@ from google.cloud.ces_v1.types.schema import Schema
 from google.cloud.ces_v1.types.search_suggestions import (
     GoogleSearchSuggestions,
     WebSearchQuery,
+)
+from google.cloud.ces_v1.types.security_settings import (
+    EndpointControlPolicy,
+    SecuritySettings,
 )
 from google.cloud.ces_v1.types.session_service import (
     AudioEncoding,
@@ -292,6 +298,7 @@ __all__ = (
     "UpdateGuardrailRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "AgentTool",
     "ExpressionCondition",
     "PythonCodeCondition",
     "TransferRule",
@@ -304,6 +311,7 @@ __all__ = (
     "CloudLoggingSettings",
     "ConversationLoggingSettings",
     "DataStoreSettings",
+    "ErrorHandlingSettings",
     "EvaluationMetricsThresholds",
     "LanguageSettings",
     "LoggingSettings",
@@ -362,6 +370,8 @@ __all__ = (
     "Schema",
     "GoogleSearchSuggestions",
     "WebSearchQuery",
+    "EndpointControlPolicy",
+    "SecuritySettings",
     "BidiSessionClientMessage",
     "BidiSessionServerMessage",
     "Citations",

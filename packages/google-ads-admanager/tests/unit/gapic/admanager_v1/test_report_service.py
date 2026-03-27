@@ -133,6 +133,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ReportServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -153,6 +154,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         ReportServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        ReportServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -2386,8 +2391,9 @@ def test_get_report_rest_bad_request(request_type=report_service.GetReportReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -2458,17 +2464,19 @@ def test_get_report_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_get_report"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_get_report_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_get_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_get_report"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_get_report_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_get_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -2519,8 +2527,9 @@ def test_list_reports_rest_bad_request(request_type=report_service.ListReportsRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -2585,17 +2594,19 @@ def test_list_reports_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_list_reports"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_list_reports_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_list_reports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_list_reports"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_list_reports_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_list_reports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -2650,8 +2661,9 @@ def test_create_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -2874,17 +2886,19 @@ def test_create_report_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_create_report"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_create_report_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_create_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_create_report"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_create_report_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_create_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -2937,8 +2951,9 @@ def test_update_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3161,17 +3176,19 @@ def test_update_report_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_update_report"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_update_report_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_update_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_update_report"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_update_report_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_update_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3222,8 +3239,9 @@ def test_run_report_rest_bad_request(request_type=report_service.RunReportReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3280,19 +3298,20 @@ def test_run_report_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_run_report"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_run_report_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_run_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_run_report"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_run_report_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_run_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3345,8 +3364,9 @@ def test_fetch_report_result_rows_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3411,18 +3431,20 @@ def test_fetch_report_result_rows_rest_interceptors(null_interceptor):
     )
     client = ReportServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_fetch_report_result_rows"
-    ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor,
-        "post_fetch_report_result_rows_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_fetch_report_result_rows"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "post_fetch_report_result_rows"
+        ) as post,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor,
+            "post_fetch_report_result_rows_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReportServiceRestInterceptor, "pre_fetch_report_result_rows"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3482,8 +3504,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -3730,11 +3753,14 @@ def test_report_service_base_transport():
 
 def test_report_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.ads.admanager_v1.services.report_service.transports.ReportServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.ads.admanager_v1.services.report_service.transports.ReportServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ReportServiceTransport(
@@ -3751,9 +3777,12 @@ def test_report_service_base_transport_with_credentials_file():
 
 def test_report_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.ads.admanager_v1.services.report_service.transports.ReportServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.ads.admanager_v1.services.report_service.transports.ReportServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ReportServiceTransport()

@@ -84,6 +84,10 @@ class InstanceGroupManagersTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         self._extended_operations_services: Dict[str, Any] = {}
 
@@ -134,6 +138,8 @@ class InstanceGroupManagersTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -153,6 +159,11 @@ class InstanceGroupManagersTransport(abc.ABC):
             ),
             self.apply_updates_to_instances: gapic_v1.method.wrap_method(
                 self.apply_updates_to_instances,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.configure_accelerator_topologies: gapic_v1.method.wrap_method(
+                self.configure_accelerator_topologies,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -323,6 +334,15 @@ class InstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def configure_accelerator_topologies(
+        self,
+    ) -> Callable[
+        [compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

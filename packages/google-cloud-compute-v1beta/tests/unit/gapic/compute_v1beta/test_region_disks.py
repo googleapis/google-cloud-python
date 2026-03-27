@@ -120,6 +120,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert RegionDisksClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -138,6 +139,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert RegionDisksClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        RegionDisksClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -7432,8 +7436,9 @@ def test_add_resource_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7623,18 +7628,20 @@ def test_add_resource_policies_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_add_resource_policies"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor,
-        "post_add_resource_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_add_resource_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_add_resource_policies"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_add_resource_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_add_resource_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7685,8 +7692,9 @@ def test_bulk_insert_rest_bad_request(request_type=compute.BulkInsertRegionDiskR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7716,6 +7724,11 @@ def test_bulk_insert_rest_call_success(request_type):
     request_init["bulk_insert_disk_resource_resource"] = {
         "instant_snapshot_group_parameters": {
             "source_instant_snapshot_group": "source_instant_snapshot_group_value"
+        },
+        "snapshot_group_parameters": {
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
+            "source_snapshot_group": "source_snapshot_group_value",
+            "type_": "type__value",
         },
         "source_consistency_group_policy": "source_consistency_group_policy_value",
     }
@@ -7872,17 +7885,19 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_bulk_insert"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_bulk_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_bulk_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_bulk_insert"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_bulk_insert_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_bulk_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7935,8 +7950,9 @@ def test_create_snapshot_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7995,6 +8011,8 @@ def test_create_snapshot_rest_call_success(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_group_id": "snapshot_group_id_value",
+        "snapshot_group_name": "snapshot_group_name_value",
         "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
@@ -8158,17 +8176,19 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_create_snapshot"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_create_snapshot_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_create_snapshot"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_create_snapshot"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_create_snapshot_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_create_snapshot"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8219,8 +8239,9 @@ def test_delete_rest_bad_request(request_type=compute.DeleteRegionDiskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8325,17 +8346,15 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_delete_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_delete"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_delete") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_delete_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_delete") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8386,8 +8405,9 @@ def test_get_rest_bad_request(request_type=compute.GetRegionDiskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8548,17 +8568,15 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_get") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_get") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8609,8 +8627,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8677,17 +8696,19 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_get_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_get_iam_policy_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8738,8 +8759,9 @@ def test_insert_rest_bad_request(request_type=compute.InsertRegionDiskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8983,17 +9005,15 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_insert") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_insert_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_insert") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9044,8 +9064,9 @@ def test_list_rest_bad_request(request_type=compute.ListRegionDisksRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9114,17 +9135,15 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_list") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_list_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_list") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9175,8 +9194,9 @@ def test_remove_resource_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9366,18 +9386,20 @@ def test_remove_resource_policies_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_remove_resource_policies"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor,
-        "post_remove_resource_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_remove_resource_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_remove_resource_policies"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_remove_resource_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_remove_resource_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9428,8 +9450,9 @@ def test_resize_rest_bad_request(request_type=compute.ResizeRegionDiskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9612,17 +9635,15 @@ def test_resize_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_resize"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_resize_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_resize"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_resize") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_resize_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_resize") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9675,8 +9696,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9859,17 +9881,19 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_set_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_set_iam_policy_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9920,8 +9944,9 @@ def test_set_labels_rest_bad_request(request_type=compute.SetLabelsRegionDiskReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10105,17 +10130,19 @@ def test_set_labels_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_set_labels"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_set_labels_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_set_labels"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_set_labels"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_set_labels_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_set_labels"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10168,8 +10195,9 @@ def test_start_async_replication_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10359,18 +10387,20 @@ def test_start_async_replication_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_start_async_replication"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor,
-        "post_start_async_replication_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_start_async_replication"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_start_async_replication"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_start_async_replication_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_start_async_replication"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10423,8 +10453,9 @@ def test_stop_async_replication_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10529,18 +10560,20 @@ def test_stop_async_replication_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_stop_async_replication"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor,
-        "post_stop_async_replication_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_stop_async_replication"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_stop_async_replication"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_stop_async_replication_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_stop_async_replication"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10593,8 +10626,9 @@ def test_stop_group_async_replication_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10784,18 +10818,20 @@ def test_stop_group_async_replication_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_stop_group_async_replication"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor,
-        "post_stop_group_async_replication_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_stop_group_async_replication"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_stop_group_async_replication"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_stop_group_async_replication_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_stop_group_async_replication"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10848,8 +10884,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10990,17 +11027,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_test_iam_permissions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11053,8 +11093,9 @@ def test_update_rest_bad_request(request_type=compute.UpdateRegionDiskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11298,17 +11339,15 @@ def test_update_rest_interceptors(null_interceptor):
     )
     client = RegionDisksClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_update"
-    ) as post, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "post_update_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionDisksRestInterceptor, "pre_update"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "post_update") as post,
+        mock.patch.object(
+            transports.RegionDisksRestInterceptor, "post_update_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegionDisksRestInterceptor, "pre_update") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11767,11 +11806,14 @@ def test_region_disks_base_transport():
 
 def test_region_disks_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1beta.services.region_disks.transports.RegionDisksTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.region_disks.transports.RegionDisksTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionDisksTransport(
@@ -11791,9 +11833,12 @@ def test_region_disks_base_transport_with_credentials_file():
 
 def test_region_disks_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1beta.services.region_disks.transports.RegionDisksTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.region_disks.transports.RegionDisksTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionDisksTransport()

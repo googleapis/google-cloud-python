@@ -108,7 +108,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
     """The InstanceGroupManagers API."""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -116,7 +116,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -126,6 +126,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -411,7 +415,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -510,7 +514,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -613,7 +617,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         self._universe_domain = InstanceGroupManagersClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -1505,6 +1509,359 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[
             self._transport.apply_updates_to_instances
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
+    def configure_accelerator_topologies_unary(
+        self,
+        request: Optional[
+            Union[
+                compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest, dict
+            ]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance_group_manager: Optional[str] = None,
+        instance_group_managers_configure_accelerator_topologies_request_resource: Optional[
+            compute.InstanceGroupManagersConfigureAcceleratorTopologiesRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> compute.Operation:
+        r"""Updates the accelerator topologies configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1beta
+
+            def sample_configure_accelerator_topologies():
+                # Create a client
+                client = compute_v1beta.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1beta.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.configure_accelerator_topologies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1beta.types.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                InstanceGroupManagers.ConfigureAcceleratorTopologies.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of thezone
+                where the managed instance group is
+                located. It should conform to RFC1035.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_managers_configure_accelerator_topologies_request_resource (google.cloud.compute_v1beta.types.InstanceGroupManagersConfigureAcceleratorTopologiesRequest):
+                The body resource for this request
+                This corresponds to the ``instance_group_managers_configure_accelerator_topologies_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            project,
+            zone,
+            instance_group_manager,
+            instance_group_managers_configure_accelerator_topologies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest
+        ):
+            request = compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                instance_group_managers_configure_accelerator_topologies_request_resource
+                is not None
+            ):
+                request.instance_group_managers_configure_accelerator_topologies_request_resource = instance_group_managers_configure_accelerator_topologies_request_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.configure_accelerator_topologies
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def configure_accelerator_topologies(
+        self,
+        request: Optional[
+            Union[
+                compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest, dict
+            ]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance_group_manager: Optional[str] = None,
+        instance_group_managers_configure_accelerator_topologies_request_resource: Optional[
+            compute.InstanceGroupManagersConfigureAcceleratorTopologiesRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Updates the accelerator topologies configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1beta
+
+            def sample_configure_accelerator_topologies():
+                # Create a client
+                client = compute_v1beta.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1beta.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.configure_accelerator_topologies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1beta.types.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                InstanceGroupManagers.ConfigureAcceleratorTopologies.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of thezone
+                where the managed instance group is
+                located. It should conform to RFC1035.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_managers_configure_accelerator_topologies_request_resource (google.cloud.compute_v1beta.types.InstanceGroupManagersConfigureAcceleratorTopologiesRequest):
+                The body resource for this request
+                This corresponds to the ``instance_group_managers_configure_accelerator_topologies_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            project,
+            zone,
+            instance_group_manager,
+            instance_group_managers_configure_accelerator_topologies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest
+        ):
+            request = compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                instance_group_managers_configure_accelerator_topologies_request_resource
+                is not None
+            ):
+                request.instance_group_managers_configure_accelerator_topologies_request_resource = instance_group_managers_configure_accelerator_topologies_request_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.configure_accelerator_topologies
         ]
 
         # Certain fields should be provided within the metadata header;

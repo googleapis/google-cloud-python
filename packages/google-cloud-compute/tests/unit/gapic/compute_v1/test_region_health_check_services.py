@@ -120,6 +120,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert RegionHealthCheckServicesClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -143,6 +144,10 @@ def test__get_default_mtls_endpoint():
     assert (
         RegionHealthCheckServicesClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        RegionHealthCheckServicesClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1202,6 +1207,284 @@ def test_region_health_check_services_client_client_options_credentials_file(
             always_use_jwt_access=True,
             api_audience=None,
         )
+
+
+def test_aggregated_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RegionHealthCheckServicesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.aggregated_list in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.aggregated_list] = mock_rpc
+
+        request = {}
+        client.aggregated_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.aggregated_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_aggregated_list_rest_required_fields(
+    request_type=compute.AggregatedListRegionHealthCheckServicesRequest,
+):
+    transport_class = transports.RegionHealthCheckServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "include_all_scopes",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+            "service_project_number",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.HealthCheckServiceAggregatedList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.HealthCheckServiceAggregatedList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.aggregated_list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_aggregated_list_rest_unset_required_fields():
+    transport = transports.RegionHealthCheckServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.aggregated_list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "includeAllScopes",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+                "serviceProjectNumber",
+            )
+        )
+        & set(("project",))
+    )
+
+
+def test_aggregated_list_rest_flattened():
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.HealthCheckServiceAggregatedList()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.HealthCheckServiceAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.aggregated_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/aggregated/healthCheckServices"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.aggregated_list(
+            compute.AggregatedListRegionHealthCheckServicesRequest(),
+            project="project_value",
+        )
+
+
+def test_aggregated_list_rest_pager(transport: str = "rest"):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.HealthCheckServiceAggregatedList(
+                items={
+                    "a": compute.HealthCheckServicesScopedList(),
+                    "b": compute.HealthCheckServicesScopedList(),
+                    "c": compute.HealthCheckServicesScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.HealthCheckServiceAggregatedList(
+                items={},
+                next_page_token="def",
+            ),
+            compute.HealthCheckServiceAggregatedList(
+                items={
+                    "g": compute.HealthCheckServicesScopedList(),
+                },
+                next_page_token="ghi",
+            ),
+            compute.HealthCheckServiceAggregatedList(
+                items={
+                    "h": compute.HealthCheckServicesScopedList(),
+                    "i": compute.HealthCheckServicesScopedList(),
+                },
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.HealthCheckServiceAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "sample1"}
+
+        pager = client.aggregated_list(request=sample_request)
+
+        assert isinstance(pager.get("a"), compute.HealthCheckServicesScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.HealthCheckServicesScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.HealthCheckServicesScopedList)
+
+        pages = list(client.aggregated_list(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest_use_cached_wrapped_rpc():
@@ -2942,6 +3225,221 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RegionHealthCheckServicesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.test_iam_permissions in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.test_iam_permissions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_test_iam_permissions_rest_required_fields(
+    request_type=compute.TestIamPermissionsRegionHealthCheckServiceRequest,
+):
+    transport_class = transports.RegionHealthCheckServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.TestPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.TestPermissionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.RegionHealthCheckServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "region",
+                "resource",
+                "testPermissionsRequestResource",
+            )
+        )
+    )
+
+
+def test_test_iam_permissions_rest_flattened():
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.TestPermissionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.test_iam_permissions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/healthCheckServices/{resource}/testIamPermissions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.test_iam_permissions(
+            compute.TestIamPermissionsRegionHealthCheckServiceRequest(),
+            project="project_value",
+            region="region_value",
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegionHealthCheckServicesRestTransport(
@@ -3024,6 +3522,150 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+def test_aggregated_list_rest_bad_request(
+    request_type=compute.AggregatedListRegionHealthCheckServicesRequest,
+):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.aggregated_list(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.AggregatedListRegionHealthCheckServicesRequest,
+        dict,
+    ],
+)
+def test_aggregated_list_rest_call_success(request_type):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.HealthCheckServiceAggregatedList(
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+            unreachables=["unreachables_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.HealthCheckServiceAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.aggregated_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregatedListPager)
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+    assert response.unreachables == ["unreachables_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.RegionHealthCheckServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionHealthCheckServicesRestInterceptor(),
+    )
+    client = RegionHealthCheckServicesClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_aggregated_list"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_aggregated_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_aggregated_list"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.AggregatedListRegionHealthCheckServicesRequest.pb(
+            compute.AggregatedListRegionHealthCheckServicesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.HealthCheckServiceAggregatedList.to_json(
+            compute.HealthCheckServiceAggregatedList()
+        )
+        req.return_value.content = return_value
+
+        request = compute.AggregatedListRegionHealthCheckServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.HealthCheckServiceAggregatedList()
+        post_with_metadata.return_value = (
+            compute.HealthCheckServiceAggregatedList(),
+            metadata,
+        )
+
+        client.aggregated_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_rest_bad_request(
     request_type=compute.DeleteRegionHealthCheckServiceRequest,
 ):
@@ -3039,8 +3681,9 @@ def test_delete_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3149,17 +3792,20 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = RegionHealthCheckServicesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_delete_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "pre_delete"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_delete"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_delete_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_delete"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3214,8 +3860,9 @@ def test_get_rest_bad_request(request_type=compute.GetRegionHealthCheckServiceRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3307,17 +3954,20 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = RegionHealthCheckServicesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_get"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_get_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_get"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3370,8 +4020,9 @@ def test_insert_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3571,17 +4222,20 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = RegionHealthCheckServicesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "pre_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_insert"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_insert_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3634,8 +4288,9 @@ def test_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3704,17 +4359,20 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = RegionHealthCheckServicesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "pre_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_list"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3773,8 +4431,9 @@ def test_patch_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3978,17 +4637,20 @@ def test_patch_rest_interceptors(null_interceptor):
     )
     client = RegionHealthCheckServicesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "post_patch_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegionHealthCheckServicesRestInterceptor, "pre_patch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "post_patch"
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_patch_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor, "pre_patch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4030,11 +4692,244 @@ def test_patch_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_test_iam_permissions_rest_bad_request(
+    request_type=compute.TestIamPermissionsRegionHealthCheckServiceRequest,
+):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.TestIamPermissionsRegionHealthCheckServiceRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest_call_success(request_type):
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
+    request_init["test_permissions_request_resource"] = {
+        "permissions": ["permissions_value1", "permissions_value2"]
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.TestIamPermissionsRegionHealthCheckServiceRequest.meta.fields[
+        "test_permissions_request_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "test_permissions_request_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["test_permissions_request_resource"][field])
+                ):
+                    del request_init["test_permissions_request_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["test_permissions_request_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.TestPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.TestPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.RegionHealthCheckServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionHealthCheckServicesRestInterceptor(),
+    )
+    client = RegionHealthCheckServicesClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_test_iam_permissions",
+        ) as post,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegionHealthCheckServicesRestInterceptor,
+            "pre_test_iam_permissions",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.TestIamPermissionsRegionHealthCheckServiceRequest.pb(
+            compute.TestIamPermissionsRegionHealthCheckServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.TestPermissionsResponse.to_json(
+            compute.TestPermissionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = compute.TestIamPermissionsRegionHealthCheckServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = RegionHealthCheckServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_aggregated_list_empty_call_rest():
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.aggregated_list), "__call__") as call:
+        client.aggregated_list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.AggregatedListRegionHealthCheckServicesRequest()
+
+        assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4137,6 +5032,28 @@ def test_patch_unary_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_rest():
+    client = RegionHealthCheckServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.TestIamPermissionsRegionHealthCheckServiceRequest()
+
+        assert args[0] == request_msg
+
+
 def test_region_health_check_services_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
@@ -4159,11 +5076,13 @@ def test_region_health_check_services_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "aggregated_list",
         "delete",
         "get",
         "insert",
         "list",
         "patch",
+        "test_iam_permissions",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -4183,11 +5102,14 @@ def test_region_health_check_services_base_transport():
 
 def test_region_health_check_services_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.region_health_check_services.transports.RegionHealthCheckServicesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1.services.region_health_check_services.transports.RegionHealthCheckServicesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionHealthCheckServicesTransport(
@@ -4207,9 +5129,12 @@ def test_region_health_check_services_base_transport_with_credentials_file():
 
 def test_region_health_check_services_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1.services.region_health_check_services.transports.RegionHealthCheckServicesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1.services.region_health_check_services.transports.RegionHealthCheckServicesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionHealthCheckServicesTransport()
@@ -4303,6 +5228,9 @@ def test_region_health_check_services_client_transport_session_collision(
         credentials=creds2,
         transport=transport_name,
     )
+    session1 = client1.transport.aggregated_list._session
+    session2 = client2.transport.aggregated_list._session
+    assert session1 != session2
     session1 = client1.transport.delete._session
     session2 = client2.transport.delete._session
     assert session1 != session2
@@ -4317,6 +5245,9 @@ def test_region_health_check_services_client_transport_session_collision(
     assert session1 != session2
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
     assert session1 != session2
 
 
