@@ -345,8 +345,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             DeprecationWarning,
             stacklevel=2,
         )
-        if hasattr(self, "_make_copy"):
-            return self._make_copy()  # type: ignore
+        make_copy = getattr(self, "_make_copy", None)
+        if make_copy:
+            return make_copy()
         else:
             raise NotImplementedError(
                 "This credential does not support trust boundaries."
