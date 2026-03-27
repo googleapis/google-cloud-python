@@ -30,7 +30,8 @@ from typing import (
 )
 
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
-from google.cloud.firestore_v1.types.document import Value, Pipeline
+from google.cloud.firestore_v1.types.document import Value
+from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
 from google.cloud.firestore_v1.types.query import StructuredQuery as Query_pb
 from google.cloud.firestore_v1.vector import Vector
 
@@ -2664,7 +2665,7 @@ class _PipelineValueExpression(Expression):
         self.pipeline = pipeline
 
     def _to_pb(self) -> Value:
-        pipeline_pb = Pipeline(stages=[s._to_pb() for s in self.pipeline.stages])
+        pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
         return Value(pipeline_value=pipeline_pb)
 
 
