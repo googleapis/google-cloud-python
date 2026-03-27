@@ -44,7 +44,7 @@ tests:
             query:
               functionValue:
                 args:
-                - stringValue: "technology"
+                - stringValue: "science"
                 name: document_matches
   - description: search_stage_full_options
     pipeline:
