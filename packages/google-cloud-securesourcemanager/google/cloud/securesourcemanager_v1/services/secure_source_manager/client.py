@@ -2593,7 +2593,7 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the hook resource by the update. The
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field will be
@@ -3630,7 +3630,7 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the branchRule resource by the update.
                 The fields specified in the update_mask are relative to
                 the resource, not the full request. A field will be
@@ -6630,8 +6630,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         used to create multiple PullRequestComments for code
         review. There needs to be exactly one PullRequestComment
         of type Review, and at most 100 PullRequestComments of
-        type Code per request. The Postition of the code
-        comments must be unique within the request.
+        type Code per request. The Position of the code comments
+        must be unique within the request.
 
         .. code-block:: python
 

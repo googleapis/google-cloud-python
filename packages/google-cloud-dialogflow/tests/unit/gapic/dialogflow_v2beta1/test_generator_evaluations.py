@@ -75,10 +75,14 @@ from google.cloud.dialogflow_v2beta1.services.generator_evaluations import (
 )
 from google.cloud.dialogflow_v2beta1.types import (
     agent_coaching_instruction,
+    ces_app,
+    ces_tool,
     generator,
     generator_evaluation,
     operations,
+    tool,
     tool_call,
+    toolset,
 )
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
@@ -4320,6 +4324,9 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                                 {
                                     "tool_call": {
                                         "tool": "tool_value",
+                                        "ces_tool": "ces_tool_value",
+                                        "ces_toolset": "ces_toolset_value",
+                                        "ces_app": "ces_app_value",
                                         "tool_display_name": "tool_display_name_value",
                                         "tool_display_details": "tool_display_details_value",
                                         "action": "action_value",
@@ -4330,6 +4337,9 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                                     },
                                     "tool_call_result": {
                                         "tool": "tool_value",
+                                        "ces_tool": "ces_tool_value",
+                                        "ces_toolset": "ces_toolset_value",
+                                        "ces_app": "ces_app_value",
                                         "action": "action_value",
                                         "error": {"message": "message_value"},
                                         "raw_content": b"raw_content_blob",
@@ -4360,6 +4370,19 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                 "enable_deduping": True,
                 "similarity_threshold": 0.21630000000000002,
             },
+            "toolset_tools": [
+                {
+                    "toolset": "toolset_value",
+                    "operation_id": "operation_id_value",
+                    "confirmation_requirement": 1,
+                }
+            ],
+            "ces_tool_specs": [
+                {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
+            ],
+            "ces_app_specs": [
+                {"ces_app": "ces_app_value", "confirmation_requirement": 1}
+            ],
         },
         "summarization_metrics": {
             "summarization_evaluation_results": [
@@ -5926,10 +5949,36 @@ def test_generator_evaluations_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_generator_path():
+def test_app_path():
     project = "squid"
     location = "clam"
-    generator = "whelk"
+    app = "whelk"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = GeneratorEvaluationsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "app": "nudibranch",
+    }
+    path = GeneratorEvaluationsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_generator_path():
+    project = "cuttlefish"
+    location = "mussel"
+    generator = "winkle"
     expected = "projects/{project}/locations/{location}/generators/{generator}".format(
         project=project,
         location=location,
@@ -5941,9 +5990,9 @@ def test_generator_path():
 
 def test_parse_generator_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "generator": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "generator": "abalone",
     }
     path = GeneratorEvaluationsClient.generator_path(**expected)
 
@@ -5953,10 +6002,10 @@ def test_parse_generator_path():
 
 
 def test_generator_evaluation_path():
-    project = "cuttlefish"
-    location = "mussel"
-    generator = "winkle"
-    evaluation = "nautilus"
+    project = "squid"
+    location = "clam"
+    generator = "whelk"
+    evaluation = "octopus"
     expected = "projects/{project}/locations/{location}/generators/{generator}/evaluations/{evaluation}".format(
         project=project,
         location=location,
@@ -5971,10 +6020,10 @@ def test_generator_evaluation_path():
 
 def test_parse_generator_evaluation_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "generator": "squid",
-        "evaluation": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "generator": "cuttlefish",
+        "evaluation": "mussel",
     }
     path = GeneratorEvaluationsClient.generator_evaluation_path(**expected)
 
@@ -5984,9 +6033,38 @@ def test_parse_generator_evaluation_path():
 
 
 def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    tool = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    app = "scallop"
+    tool = "abalone"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = GeneratorEvaluationsClient.tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "app": "whelk",
+        "tool": "octopus",
+    }
+    path = GeneratorEvaluationsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -5998,9 +6076,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "tool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "tool": "nautilus",
     }
     path = GeneratorEvaluationsClient.tool_path(**expected)
 
@@ -6009,8 +6087,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    toolset = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = GeneratorEvaluationsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "toolset": "nudibranch",
+    }
+    path = GeneratorEvaluationsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6020,7 +6129,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "mussel",
     }
     path = GeneratorEvaluationsClient.common_billing_account_path(**expected)
 
@@ -6030,7 +6139,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6040,7 +6149,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nautilus",
     }
     path = GeneratorEvaluationsClient.common_folder_path(**expected)
 
@@ -6050,7 +6159,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6060,7 +6169,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "abalone",
     }
     path = GeneratorEvaluationsClient.common_organization_path(**expected)
 
@@ -6070,7 +6179,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6080,7 +6189,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "clam",
     }
     path = GeneratorEvaluationsClient.common_project_path(**expected)
 
@@ -6090,8 +6199,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6102,8 +6211,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = GeneratorEvaluationsClient.common_location_path(**expected)
 

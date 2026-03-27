@@ -47,7 +47,7 @@ class ClientTlsPolicy(proto.Message):
         name (str):
             Required. Name of the ClientTlsPolicy resource. It matches
             the pattern
-            ``projects/*/locations/{location}/clientTlsPolicies/{client_tls_policy}``
+            ``projects/{project}/locations/{location}/clientTlsPolicies/{client_tls_policy}``
         description (str):
             Optional. Free-text description of the
             resource.

@@ -27,6 +27,15 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: gapic-generator
+    version: 1.30.13
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/gapic-generator
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
     version: 3.2.4
     last_generated_commit: ""
@@ -52,7 +61,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.7.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -1580,7 +1589,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
     version: 2.47.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/cloud/dialogflow/v2beta1
         service_config: dialogflow_v2beta1.yaml
@@ -1858,7 +1867,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.27.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
@@ -2484,7 +2493,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.8.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/cloud/netapp/v1
         service_config: netapp_v1.yaml
@@ -2530,7 +2539,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
     version: 0.12.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/cloud/networksecurity/v1alpha1
         service_config: networksecurity_v1alpha1.yaml
@@ -3052,7 +3061,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/cloud/securesourcemanager/v1
         service_config: securesourcemanager_v1.yaml
@@ -3770,7 +3779,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
     version: 0.1.0
-    last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
+    last_generated_commit: 77c78e90aeeb1c4612e9ab772c90bc40748a7a19
     apis:
       - path: google/maps/geocode/v4
         service_config: geocoding_backend_v4.yaml
@@ -4226,15 +4235,6 @@ libraries:
     apis: []
     source_roots:
       - packages/sqlalchemy-spanner
-    preserve_regex: []
-    remove_regex: []
-    tag_format: '{id}-v{version}'
-  - id: gapic-generator
-    version: 1.30.13
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/gapic-generator
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'

@@ -338,7 +338,10 @@ class PlaceView(proto.Message):
 
     Attributes:
         place (str):
-            This place's resource name, in ``places/{placeId}`` format.
+            This Place's resource name, in ``places/{placeId}`` format.
+            Can be used to look up the Place.
+        place_id (str):
+            The unique identifier of a place.
         display_name (google.type.localized_text_pb2.LocalizedText):
             Human readable place description. For
             example, "Gate B", "McDonalds".
@@ -400,6 +403,10 @@ class PlaceView(proto.Message):
     place: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    place_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
     display_name: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,
@@ -528,7 +535,10 @@ class NavigationPoint(proto.Message):
             Travel modes that are appropriate for this
             navigation point.
         usages (MutableSequence[google.maps.geocode_v4.types.NavigationPoint.Usage]):
-            Usages supported by this navigation point.
+            Lists ``usages`` supported by this navigation point. If
+            empty, it does not necessarily mean its usage is restricted
+            in any way. All navigation points can be used for general
+            navigation.
     """
 
     class TravelMode(proto.Enum):
@@ -555,10 +565,7 @@ class NavigationPoint(proto.Message):
             USAGE_UNSPECIFIED (0):
                 Not used.
             UNKNOWN (1):
-                Unknown usage type. Most navigation points will be
-                ``UNKNOWN`` and it does not necessarily mean their usage is
-                restricted in any way. This navigation might still be
-                suitable for pickup and/or dropoff.
+                Indicates that the usage type is unknown.
             DROPOFF (2):
                 Suitable for dropping off a passenger. For
                 example, a rideshare drop off location.

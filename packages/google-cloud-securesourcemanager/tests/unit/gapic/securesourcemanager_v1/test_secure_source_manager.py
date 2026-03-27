@@ -2308,7 +2308,6 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
     request = secure_source_manager.CreateInstanceRequest(
         parent="parent_value",
         instance_id="instance_id_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2322,7 +2321,6 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         assert args[0] == secure_source_manager.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
-            request_id="request_id_value",
         )
 
 
@@ -2659,7 +2657,6 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = secure_source_manager.DeleteInstanceRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2672,7 +2669,6 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == secure_source_manager.DeleteInstanceRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -8785,6 +8781,7 @@ def test_get_branch_rule(request_type, transport: str = "grpc"):
             require_pull_request=True,
             minimum_reviews_count=2280,
             minimum_approvals_count=2491,
+            require_code_owner_approval=True,
             require_comments_resolved=True,
             allow_stale_reviews=True,
             require_linear_history=True,
@@ -8807,6 +8804,7 @@ def test_get_branch_rule(request_type, transport: str = "grpc"):
     assert response.require_pull_request is True
     assert response.minimum_reviews_count == 2280
     assert response.minimum_approvals_count == 2491
+    assert response.require_code_owner_approval is True
     assert response.require_comments_resolved is True
     assert response.allow_stale_reviews is True
     assert response.require_linear_history is True
@@ -8944,6 +8942,7 @@ async def test_get_branch_rule_async(
                 require_pull_request=True,
                 minimum_reviews_count=2280,
                 minimum_approvals_count=2491,
+                require_code_owner_approval=True,
                 require_comments_resolved=True,
                 allow_stale_reviews=True,
                 require_linear_history=True,
@@ -8967,6 +8966,7 @@ async def test_get_branch_rule_async(
     assert response.require_pull_request is True
     assert response.minimum_reviews_count == 2280
     assert response.minimum_approvals_count == 2491
+    assert response.require_code_owner_approval is True
     assert response.require_comments_resolved is True
     assert response.allow_stale_reviews is True
     assert response.require_linear_history is True
@@ -21920,7 +21920,12 @@ def test_delete_instance_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -21972,7 +21977,15 @@ def test_delete_instance_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_delete_instance_rest_flattened():
@@ -23827,15 +23840,7 @@ def test_update_hook_rest_unset_required_fields():
     )
 
     unset_fields = transport.update_hook._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "updateMask",
-                "hook",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("hook",)))
 
 
 def test_update_hook_rest_flattened():
@@ -25432,12 +25437,7 @@ def test_update_branch_rule_rest_unset_required_fields():
                 "validateOnly",
             )
         )
-        & set(
-            (
-                "branchRule",
-                "updateMask",
-            )
-        )
+        & set(("branchRule",))
     )
 
 
@@ -33509,6 +33509,7 @@ async def test_get_branch_rule_empty_call_grpc_asyncio():
                 require_pull_request=True,
                 minimum_reviews_count=2280,
                 minimum_approvals_count=2491,
+                require_code_owner_approval=True,
                 require_comments_resolved=True,
                 allow_stale_reviews=True,
                 require_linear_history=True,
@@ -34740,6 +34741,12 @@ def test_create_instance_rest_call_success(request_type):
                 "psc_allowed_projects_value1",
                 "psc_allowed_projects_value2",
             ],
+            "custom_host_config": {
+                "html": "html_value",
+                "api": "api_value",
+                "git_ssh": "git_ssh_value",
+                "git_http": "git_http_value",
+            },
         },
         "state": 1,
         "state_note": 1,
@@ -37145,6 +37152,7 @@ def test_create_branch_rule_rest_call_success(request_type):
         "require_pull_request": True,
         "minimum_reviews_count": 2280,
         "minimum_approvals_count": 2491,
+        "require_code_owner_approval": True,
         "require_comments_resolved": True,
         "allow_stale_reviews": True,
         "require_linear_history": True,
@@ -37499,6 +37507,7 @@ def test_get_branch_rule_rest_call_success(request_type):
             require_pull_request=True,
             minimum_reviews_count=2280,
             minimum_approvals_count=2491,
+            require_code_owner_approval=True,
             require_comments_resolved=True,
             allow_stale_reviews=True,
             require_linear_history=True,
@@ -37526,6 +37535,7 @@ def test_get_branch_rule_rest_call_success(request_type):
     assert response.require_pull_request is True
     assert response.minimum_reviews_count == 2280
     assert response.minimum_approvals_count == 2491
+    assert response.require_code_owner_approval is True
     assert response.require_comments_resolved is True
     assert response.allow_stale_reviews is True
     assert response.require_linear_history is True
@@ -37658,6 +37668,7 @@ def test_update_branch_rule_rest_call_success(request_type):
         "require_pull_request": True,
         "minimum_reviews_count": 2280,
         "minimum_approvals_count": 2491,
+        "require_code_owner_approval": True,
         "require_comments_resolved": True,
         "allow_stale_reviews": True,
         "require_linear_history": True,
