@@ -841,6 +841,12 @@ class TestSearch:
         assert pb_opts["query_enhancement"].string_value == "required"
 
 
+    def test_search_string_field_coercion(self):
+        options = stages.SearchOptions(query="tech", select=["title"])
+        assert len(options.select) == 1
+        assert isinstance(options.select[0], Field)
+        assert options.select[0].path == "title"
+
 class TestSelect:
     def _make_one(self, *args, **kwargs):
         return stages.Select(*args, **kwargs)

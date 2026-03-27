@@ -12,8 +12,7 @@ tests:
         - args:
           - referenceValue: /books
           name: collection
-        - args: []
-          name: search
+        - name: search
           options:
             limit:
               integerValue: '2'
@@ -41,8 +40,7 @@ tests:
         - args:
           - referenceValue: /books
           name: collection
-        - args: []
-          name: search
+        - name: search
           options:
             limit:
               integerValue: '5'
@@ -83,8 +81,7 @@ tests:
         - args:
           - referenceValue: /books
           name: collection
-        - args: []
-          name: search
+        - name: search
           options:
             query:
               functionValue:
