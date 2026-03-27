@@ -2938,6 +2938,22 @@ class Rand(FunctionExpression):
         super().__init__("rand", [], use_infix_repr=False)
 
 
+class Score(FunctionExpression):
+    """Evaluates to the search score that reflects the topicality of the document
+    to all of the text predicates (`queryMatch`)
+    in the search query. If `SearchOptions.query` is not set or does not contain
+    any text predicates, then this topicality score will always be `0`.
+
+    Note: This Expression can only be used within a `Search` stage.
+
+    Returns:
+        A new `Expression` representing the score operation.
+    """
+
+    def __init__(self):
+        super().__init__("score", [], use_infix_repr=False)
+
+
 class DocumentMatches(BooleanExpression):
     """Creates a boolean expression for a document match query.
 

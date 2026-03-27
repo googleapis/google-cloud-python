@@ -820,6 +820,12 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1]
         assert repr(instance) == "DocumentMatches(Query)"
 
+    def test_score(self):
+        instance = expr.Score()
+        assert instance.name == "score"
+        assert instance.params == []
+        assert repr(instance) == "Score()"
+
     def test_greater_than_or_equal(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")
