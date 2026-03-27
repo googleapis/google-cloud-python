@@ -2634,3 +2634,53 @@ class Rand(FunctionExpression):
 
     def __init__(self):
         super().__init__("rand", [], use_infix_repr=False)
+
+
+class Variable(Expression):
+    """
+    Creates an expression that retrieves the value of a variable bound via `Pipeline.define`.
+
+    Example:
+        >>> # Define a variable "discountedPrice" and use it in a filter
+        >>> db.pipeline().collection("products").define(
+        ...     Field.of("price").multiply(0.9).as_("discountedPrice")
+        ... ).where(Variable("discountedPrice").less_than(100))
+
+    Args:
+        name: The name of the variable to retrieve.
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def _to_pb(self) -> Value:
+        return Value(variable_reference_value=self.name)
+
+
+class _PipelineValueExpression(Expression):
+    """Internal wrapper to represent a pipeline as an expression."""
+
+    def __init__(self, pipeline):
+        self.pipeline = pipeline
+
+    def _to_pb(self) -> Value:
+        return Value(pipeline_value=self.pipeline._to_pb())
+
+
+class CurrentDocument(FunctionExpression):
+    """
+    Creates an expression that represents the current document being processed.
+
+    This acts as a handle, allowing you to bind the entire document to a variable or pass the
+    document itself to a function or subquery.
+
+    Example:
+        >>> # Define the current document as a variable "doc"
+        >>> db.pipeline().collection("books").define(
+        ...     CurrentDocument().as_("doc")
+        ... ).select(Variable("doc").get_field("title"))
+    """
+
+    def __init__(self):
+        super().__init__("current_document", [])
+

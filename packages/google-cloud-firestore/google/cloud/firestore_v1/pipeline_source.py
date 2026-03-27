@@ -171,3 +171,25 @@ class PipelineSource(Generic[PipelineType]):
             A new Pipeline object with this stage appended to the stage list.
         """
         return self._create_pipeline(stages.Literals(*documents))
+
+    def subcollection(self, path: str) -> PipelineType:
+        """
+        Creates a new Pipeline targeted at a subcollection relative to the current document context.
+
+        This is used inside stages like `addFields` to query physically nested subcollections
+        without manually joining on IDs.
+
+        Example:
+            >>> db.pipeline().collection("books").add_fields(
+            ...     db.pipeline().subcollection("reviews")
+            ...         .aggregate(AggregateFunction.average("rating").as_("avg_rating"))
+            ...         .to_scalar_expression().as_("average_rating")
+            ... )
+
+        Args:
+            path: The path of the subcollection.
+
+        Returns:
+            A new :class:`Pipeline` instance scoped to the subcollection.
+        """
+        return self._create_pipeline(stages.Subcollection(path))

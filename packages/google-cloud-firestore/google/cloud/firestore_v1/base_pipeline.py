@@ -25,6 +25,8 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Expression,
     Field,
     Selectable,
+    FunctionExpression,
+    _PipelineValueExpression,
 )
 from google.cloud.firestore_v1.types.pipeline import (
     StructuredPipeline as StructuredPipeline_pb,
@@ -89,6 +91,51 @@ class _BasePipeline:
             pipeline={"stages": [s._to_pb() for s in self.stages]},
             options=options,
         )
+
+    def to_array_expression(self) -> Expression:
+        """
+        Converts this Pipeline into an expression that evaluates to an array of results.
+        Used for embedding 1:N subqueries into stages like `addFields`.
+
+        Example:
+            >>> # Get a list of all reviewer names for each book
+            >>> db.pipeline().collection("books").define(Field.of("id").as_("book_id")).add_fields(
+            ...     db.pipeline().collection("reviews")
+            ...         .where(Field.of("book_id").equal(Variable("book_id")))
+            ...         .select(Field.of("reviewer").as_("name"))
+            ...         .to_array_expression().as_("reviewers")
+            ... )
+
+        Returns:
+            An :class:`Expression` representing the execution of this pipeline.
+        """
+        return FunctionExpression("array", [_PipelineValueExpression(self)])
+
+    def to_scalar_expression(self) -> Expression:
+        """
+        Converts this Pipeline into an expression that evaluates to a single scalar result.
+        Used for 1:1 lookups or Aggregations when the subquery is expected to return a single value or object.
+
+        **Result Unwrapping:**
+        For simpler access, scalar subqueries producing a single field automatically unwrap that value to the
+        top level, ignoring the inner alias. If the subquery returns multiple fields, they are preserved as a map.
+
+        Example:
+            >>> # Calculate average rating for each restaurant using a subquery
+            >>> db.pipeline().collection("restaurants").define(Field.of("id").as_("rid")).add_fields(
+            ...     db.pipeline().collection("reviews")
+            ...         .where(Field.of("restaurant_id").equal(Variable("rid")))
+            ...         .aggregate(AggregateFunction.average("rating").as_("value"))
+            ...         .to_scalar_expression().as_("average_rating")
+            ... )
+
+        Raises:
+            RuntimeError: If the result set contains more than one item. If the pipeline has zero results, it evaluates to `null` instead of raising an error.
+
+        Returns:
+            An :class:`Expression` representing the execution of this pipeline.
+        """
+        return FunctionExpression("scalar", [_PipelineValueExpression(self)])
 
     def _append(self, new_stage):
         """
@@ -610,3 +657,28 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.Distinct(*fields))
+
+    def define(self, *aliased_expressions: AliasedExpression) -> "_BasePipeline":
+        """
+        Binds one or more expressions to Variables that can be accessed in subsequent stages
+        or inner subqueries using `Variable`.
+
+        Each Variable is defined using an :class:`AliasedExpression`, which pairs an expression with
+        a name (alias).
+
+        Example:
+            >>> db.pipeline().collection("products").define(
+            ...     Field.of("price").multiply(0.9).as_("discountedPrice"),
+            ...     Field.of("stock").add(10).as_("newStock")
+            ... ).where(
+            ...     Variable("discountedPrice").less_than(100)
+            ... ).select(Field.of("name"), Variable("newStock"))
+
+        Args:
+            *aliased_expressions: One or more :class:`AliasedExpression` defining the Variable names and values.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list.
+        """
+        return self._append(stages.Define(*aliased_expressions))
+

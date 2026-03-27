@@ -1,0 +1,57 @@
+tests:
+  - description: array_subquery_with_variable
+    pipeline:
+      - Collection: publishers
+      - Where:
+          - Field.of.equal:
+              - publisherId
+              - pub1
+      - Define:
+          - Field.of.as_:
+              - publisherId
+              - pub_id
+      - AddFields:
+          - Pipeline.to_array_expression:
+              - Collection: books
+              - Where:
+                  - Field.of.equal:
+                      - publisherId
+                      - Variable: pub_id
+            as_: books
+      - Select:
+          - Field: name
+          - Field: books
+    assert_results:
+      - name: Publisher 1
+        books:
+          - title: The Hitchhiker's Guide to the Galaxy
+            author: Douglas Adams
+          - title: Pride and Prejudice
+            author: Jane Austen
+
+  - description: scalar_subquery_with_current_document
+    pipeline:
+      - Collection: books
+      - Where:
+          - Field.of.equal:
+              - title
+              - 1984
+      - Define:
+          - CurrentDocument.as_: doc
+      - AddFields:
+          - Pipeline.to_scalar_expression:
+              - Collection: reviews
+              - Where:
+                  - Field.of.equal:
+                      - bookId
+                      - Variable.get_field:
+                          - doc
+                          - __name__
+              - Aggregate:
+                  - AggregateFunction.average.as_:
+                      - rating
+                      - avg_rating
+            as_: average_rating
+    assert_results:
+      - title: 1984
+        average_rating: 4.5
