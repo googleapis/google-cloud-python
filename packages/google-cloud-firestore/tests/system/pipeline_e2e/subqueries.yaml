@@ -29,6 +29,59 @@ tests:
         same_genre_books:
           - "1984"
           - "The Handmaid's Tale"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: '1984'
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                target_genre:
+                  fieldReferenceValue: genre
+          name: let
+        - args:
+          - mapValue:
+              fields:
+                same_genre_books:
+                  functionValue:
+                    args:
+                    - pipelineValue:
+                        stages:
+                        - args:
+                          - referenceValue: /books
+                          name: collection
+                        - args:
+                          - functionValue:
+                              args:
+                              - fieldReferenceValue: genre
+                              - variableReferenceValue: target_genre
+                              name: equal
+                          name: where
+                        - args:
+                          - mapValue:
+                              fields:
+                                title:
+                                  fieldReferenceValue: title
+                          name: select
+                    name: array
+          name: add_fields
+        - args:
+          - mapValue:
+              fields:
+                same_genre_books:
+                  fieldReferenceValue: same_genre_books
+                title:
+                  fieldReferenceValue: title
+          name: select
 
   - description: scalar_subquery_with_current_document
     pipeline:
@@ -63,3 +116,65 @@ tests:
     assert_results:
       - title: "1984"
         average_rating: 4.15
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: '1984'
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                doc:
+                  functionValue:
+                    name: current_document
+          name: let
+        - args:
+          - mapValue:
+              fields:
+                average_rating:
+                  functionValue:
+                    args:
+                    - pipelineValue:
+                        stages:
+                        - args:
+                          - referenceValue: /books
+                          name: collection
+                        - args:
+                          - functionValue:
+                              args:
+                              - fieldReferenceValue: genre
+                              - functionValue:
+                                  args:
+                                  - variableReferenceValue: doc
+                                  - stringValue: genre
+                                  name: map_get
+                              name: equal
+                          name: where
+                        - args:
+                          - mapValue:
+                              fields:
+                                avg_rating:
+                                  functionValue:
+                                    args:
+                                    - fieldReferenceValue: rating
+                                    name: average
+                          - mapValue: {}
+                          name: aggregate
+                    name: scalar
+          name: add_fields
+        - args:
+          - mapValue:
+              fields:
+                average_rating:
+                  fieldReferenceValue: average_rating
+                title:
+                  fieldReferenceValue: title
+          name: select
