@@ -24,6 +24,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Constant,
     Field,
     Ordering,
+    DocumentMatches,
 )
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.vector import Vector
@@ -776,6 +777,68 @@ class TestSample:
         assert result_percent.args[0].double_value == 0.25
         assert result_percent.args[1].string_value == "percent"
         assert len(result_percent.options) == 0
+
+
+class TestSearch:
+    def test_search_defaults(self):
+        options = stages.SearchOptions(query="technology")
+        assert options.query.name == "document_matches"
+        assert options.limit is None
+        assert options.retrieval_depth is None
+        assert options.sort is None
+        assert options.add_fields is None
+        assert options.select is None
+        assert options.offset is None
+        assert options.query_enhancement is None
+        assert options.language_code is None
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+        assert "limit" not in pb_opts
+        assert "retrieval_depth" not in pb_opts
+
+    def test_search_full_options(self):
+        options = stages.SearchOptions(
+            query=DocumentMatches("tech"),
+            limit=10,
+            retrieval_depth=2,
+            sort=Ordering("score", Ordering.Direction.DESCENDING),
+            add_fields=[Field("extra")],
+            select=[Field("name")],
+            offset=5,
+            query_enhancement="disabled",
+            language_code="en",
+        )
+        assert options.limit == 10
+        assert options.retrieval_depth == 2
+        assert len(options.sort) == 1
+        assert options.offset == 5
+        assert options.query_enhancement == stages.QueryEnhancement.DISABLED
+        assert options.language_code == "en"
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+
+        assert pb_opts["limit"].integer_value == 10
+        assert pb_opts["retrieval_depth"].integer_value == 2
+        assert len(pb_opts["sort"].array_value.values) == 1
+        assert pb_opts["offset"].integer_value == 5
+        assert pb_opts["query_enhancement"].string_value == "disabled"
+        assert pb_opts["language_code"].string_value == "en"
+        assert "query" in pb_opts
+
+    def test_search_string_query_wrapping(self):
+        options = stages.SearchOptions(query="science")
+        assert options.query.name == "document_matches"
+
+    def test_search_query_enhancement_enum(self):
+        options = stages.SearchOptions(query="q", query_enhancement=stages.QueryEnhancement.REQUIRED)
+        assert options.query_enhancement == stages.QueryEnhancement.REQUIRED
+        
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+        assert pb_opts["query_enhancement"].string_value == "required"
 
 
 class TestSelect:

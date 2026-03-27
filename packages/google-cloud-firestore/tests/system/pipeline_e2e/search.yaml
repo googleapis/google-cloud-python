@@ -22,3 +22,133 @@ tests:
                 args:
                 - stringValue: "technology"
                 name: document_matches
+  - description: search_stage_full_options
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query:
+                DocumentMatches:
+                  - Constant: "science"
+              limit: 5
+              retrieval_depth: 10
+              offset: 2
+              query_enhancement: disabled
+              language_code: en
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args: []
+          name: search
+          options:
+            limit:
+              integerValue: '5'
+            retrieval_depth:
+              integerValue: '10'
+            offset:
+              integerValue: '2'
+            query_enhancement:
+              stringValue: "disabled"
+            language_code:
+              stringValue: "en"
+            query:
+              functionValue:
+                args:
+                - stringValue: "science"
+                name: document_matches
+  - description: search_stage_with_sort_and_select
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query: "science"
+              sort:
+                Ordering:
+                  - Field: rating
+                  - DESCENDING
+              select:
+                - title
+              add_fields:
+                - AliasedExpression:
+                  - FunctionExpression.string_concat:
+                    - Field: title
+                    - Constant: " - Selected"
+                  - "title_selected"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args: []
+          name: search
+          options:
+            query:
+              functionValue:
+                args:
+                - stringValue: "science"
+                name: document_matches
+            sort:
+              arrayValue:
+                values:
+                - mapValue:
+                    fields:
+                      direction:
+                        stringValue: descending
+                      expression:
+                        fieldReferenceValue: rating
+            select:
+              mapValue:
+                fields:
+                  title:
+                    fieldReferenceValue: title
+            add_fields:
+              mapValue:
+                fields:
+                  title_selected:
+                    functionValue:
+                      args:
+                      - fieldReferenceValue: title
+                      - stringValue: " - Selected"
+                      name: string_concat
+  - description: expression_between
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.between:
+              - Field: published
+              - Constant: 1950
+              - Constant: 1970
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: Dune
+      - title: One Hundred Years of Solitude
+      - title: The Lord of the Rings
+      - title: To Kill a Mockingbird
+  - description: expression_geo_distance
+    pipeline:
+      - Collection: geopoints
+      - Search:
+          - SearchOptions:
+              query:
+                FunctionExpression.less_than:
+                  - FunctionExpression.geo_distance:
+                      - Field: location
+                      - Constant: GEOPOINT(37.0,-122.0)
+                  - Constant: 150000.0
+      - Select:
+        - name
+      - Sort:
+        - Ordering:
+          - Field: name
+          - ASCENDING
+    assert_results:
+      - name: SF
