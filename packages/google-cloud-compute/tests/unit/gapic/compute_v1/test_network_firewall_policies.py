@@ -120,6 +120,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert NetworkFirewallPoliciesClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -141,6 +142,10 @@ def test__get_default_mtls_endpoint():
     assert (
         NetworkFirewallPoliciesClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        NetworkFirewallPoliciesClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -8311,8 +8316,9 @@ def test_add_association_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8501,18 +8507,20 @@ def test_add_association_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_add_association"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_add_association_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_add_association"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_add_association"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_add_association_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_add_association"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8565,8 +8573,9 @@ def test_add_packet_mirroring_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8804,20 +8813,22 @@ def test_add_packet_mirroring_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_add_packet_mirroring_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_add_packet_mirroring_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "pre_add_packet_mirroring_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_add_packet_mirroring_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_add_packet_mirroring_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "pre_add_packet_mirroring_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8870,8 +8881,9 @@ def test_add_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9109,17 +9121,20 @@ def test_add_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_add_rule"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_add_rule_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_add_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_add_rule"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_add_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_add_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9172,8 +9187,9 @@ def test_aggregated_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9244,18 +9260,20 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_aggregated_list"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_aggregated_list_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_aggregated_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_aggregated_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_aggregated_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_aggregated_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9313,8 +9331,9 @@ def test_clone_rules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9419,18 +9438,20 @@ def test_clone_rules_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_clone_rules"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_clone_rules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_clone_rules"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_clone_rules"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_clone_rules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_clone_rules"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9483,8 +9504,9 @@ def test_delete_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9589,17 +9611,20 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_delete_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_delete"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_delete"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_delete_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_delete"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9650,8 +9675,9 @@ def test_get_rest_bad_request(request_type=compute.GetNetworkFirewallPolicyReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9740,17 +9766,19 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_get"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_get"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9803,8 +9831,9 @@ def test_get_association_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9875,18 +9904,20 @@ def test_get_association_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get_association"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_get_association_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_association"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_get_association"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_get_association_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_association"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9941,8 +9972,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10009,18 +10041,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_get_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10073,8 +10107,9 @@ def test_get_packet_mirroring_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10161,20 +10196,22 @@ def test_get_packet_mirroring_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_get_packet_mirroring_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_get_packet_mirroring_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "pre_get_packet_mirroring_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_get_packet_mirroring_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_get_packet_mirroring_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "pre_get_packet_mirroring_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10227,8 +10264,9 @@ def test_get_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10315,17 +10353,20 @@ def test_get_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get_rule"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_get_rule_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_get_rule"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_get_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_get_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10378,8 +10419,9 @@ def test_insert_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10650,17 +10692,20 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_insert"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_insert_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10711,8 +10756,9 @@ def test_list_rest_bad_request(request_type=compute.ListNetworkFirewallPoliciesR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10779,17 +10825,19 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_list_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10840,8 +10888,9 @@ def test_patch_rest_bad_request(request_type=compute.PatchNetworkFirewallPolicyR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11112,17 +11161,20 @@ def test_patch_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_patch_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_patch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_patch"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_patch_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_patch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11175,8 +11227,9 @@ def test_patch_packet_mirroring_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11416,20 +11469,22 @@ def test_patch_packet_mirroring_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_patch_packet_mirroring_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_patch_packet_mirroring_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "pre_patch_packet_mirroring_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_patch_packet_mirroring_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_patch_packet_mirroring_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "pre_patch_packet_mirroring_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11482,8 +11537,9 @@ def test_patch_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11721,18 +11777,20 @@ def test_patch_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_patch_rule"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_patch_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_patch_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_patch_rule"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_patch_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_patch_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11785,8 +11843,9 @@ def test_remove_association_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11891,18 +11950,20 @@ def test_remove_association_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_remove_association"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_remove_association_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_remove_association"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_remove_association"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_remove_association_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_remove_association"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11955,8 +12016,9 @@ def test_remove_packet_mirroring_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12061,20 +12123,22 @@ def test_remove_packet_mirroring_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_remove_packet_mirroring_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_remove_packet_mirroring_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "pre_remove_packet_mirroring_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_remove_packet_mirroring_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_remove_packet_mirroring_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "pre_remove_packet_mirroring_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12127,8 +12191,9 @@ def test_remove_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12233,18 +12298,20 @@ def test_remove_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_remove_rule"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_remove_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_remove_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_remove_rule"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_remove_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_remove_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12297,8 +12364,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12481,18 +12549,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_set_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12545,8 +12615,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12687,18 +12758,22 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = NetworkFirewallPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkFirewallPoliciesRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_test_iam_permissions",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkFirewallPoliciesRestInterceptor,
+            "pre_test_iam_permissions",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13243,11 +13318,14 @@ def test_network_firewall_policies_base_transport():
 
 def test_network_firewall_policies_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.network_firewall_policies.transports.NetworkFirewallPoliciesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1.services.network_firewall_policies.transports.NetworkFirewallPoliciesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkFirewallPoliciesTransport(
@@ -13267,9 +13345,12 @@ def test_network_firewall_policies_base_transport_with_credentials_file():
 
 def test_network_firewall_policies_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1.services.network_firewall_policies.transports.NetworkFirewallPoliciesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1.services.network_firewall_policies.transports.NetworkFirewallPoliciesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkFirewallPoliciesTransport()

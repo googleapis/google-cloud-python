@@ -186,7 +186,7 @@ class UserServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -556,8 +556,6 @@ class UserServiceAsyncClient:
         r"""Deletes a Merchant Center account user. Executing
         this method requires admin access. The user to be
         deleted can't be the last admin user of that account.
-        Also a user is protected from deletion if it is managed
-        by Business Manager"
 
         .. code-block:: python
 

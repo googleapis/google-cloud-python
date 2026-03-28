@@ -37,17 +37,17 @@ class Deployment(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            deployment. Format:
-
-            projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}
+            Identifier. The resource name of the deployment. Format:
+            ``projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}``
         display_name (str):
             Required. Display name of the deployment.
         app_version (str):
-            Required. The resource name of the app
-            version to deploy. Format:
-
-            projects/{project}/locations/{location}/apps/{app}/versions/{version}
+            Optional. The resource name of the app version to deploy.
+            Format:
+            ``projects/{project}/locations/{location}/apps/{app}/versions/{version}``
+            Use
+            ``projects/{project}/locations/{location}/apps/{app}/versions/-``
+            to use the draft app.
         channel_profile (google.cloud.ces_v1.types.ChannelProfile):
             Required. The channel profile used in the
             deployment.

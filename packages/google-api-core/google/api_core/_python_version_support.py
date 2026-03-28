@@ -71,18 +71,6 @@ class VersionInfo(NamedTuple):
 PYTHON_VERSIONS: List[VersionInfo] = [
     # Refer to https://devguide.python.org/versions/ and the PEPs linked therefrom.
     VersionInfo(
-        version="3.7",
-        python_beta=None,
-        python_start=datetime.date(2018, 6, 27),
-        python_eol=datetime.date(2023, 6, 27),
-    ),
-    VersionInfo(
-        version="3.8",
-        python_beta=None,
-        python_start=datetime.date(2019, 10, 14),
-        python_eol=datetime.date(2024, 10, 7),
-    ),
-    VersionInfo(
         version="3.9",
         python_beta=datetime.date(2020, 5, 18),
         python_start=datetime.date(2020, 10, 5),

@@ -149,6 +149,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DocumentProcessorServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -170,6 +171,10 @@ def test__get_default_mtls_endpoint():
     assert (
         DocumentProcessorServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        DocumentProcessorServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1382,11 +1387,13 @@ def test_document_processor_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -15584,8 +15591,9 @@ def test_process_document_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15648,18 +15656,20 @@ def test_process_document_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_process_document"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_process_document_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_process_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_process_document"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_process_document_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_process_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15717,8 +15727,9 @@ def test_batch_process_documents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15775,22 +15786,23 @@ def test_batch_process_documents_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_batch_process_documents",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_batch_process_documents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_batch_process_documents",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_batch_process_documents",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_batch_process_documents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_batch_process_documents",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15843,8 +15855,9 @@ def test_fetch_processor_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15906,18 +15919,22 @@ def test_fetch_processor_types_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_fetch_processor_types"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_fetch_processor_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_fetch_processor_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_fetch_processor_types",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_fetch_processor_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_fetch_processor_types",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15975,8 +15992,9 @@ def test_list_processor_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16041,18 +16059,22 @@ def test_list_processor_types_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_processor_types"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_processor_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_types",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_list_processor_types",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16110,8 +16132,9 @@ def test_get_processor_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16184,18 +16207,21 @@ def test_get_processor_type_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_type"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_type_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_type",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_type_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16250,8 +16276,9 @@ def test_list_processors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16316,18 +16343,20 @@ def test_list_processors_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_processors"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_processors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_list_processors"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_list_processors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16385,8 +16414,9 @@ def test_get_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16465,18 +16495,20 @@ def test_get_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_get_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16529,8 +16561,9 @@ def test_train_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16587,22 +16620,23 @@ def test_train_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_train_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_train_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_train_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_train_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_train_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_train_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16657,8 +16691,9 @@ def test_get_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16742,18 +16777,22 @@ def test_get_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_version"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_get_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16806,8 +16845,9 @@ def test_list_processor_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16872,20 +16912,22 @@ def test_list_processor_versions_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_versions",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_list_processor_versions",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_versions",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_list_processor_versions",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16945,8 +16987,9 @@ def test_delete_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17005,22 +17048,23 @@ def test_delete_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_delete_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_delete_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17075,8 +17119,9 @@ def test_deploy_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17135,22 +17180,23 @@ def test_deploy_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_deploy_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_deploy_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_deploy_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_deploy_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_deploy_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_deploy_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17205,8 +17251,9 @@ def test_undeploy_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17265,22 +17312,23 @@ def test_undeploy_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_undeploy_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_undeploy_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_undeploy_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_undeploy_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_undeploy_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_undeploy_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17333,8 +17381,9 @@ def test_create_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17497,18 +17546,20 @@ def test_create_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_create_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_create_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_create_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_create_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_create_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_create_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17561,8 +17612,9 @@ def test_delete_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17619,20 +17671,21 @@ def test_delete_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_delete_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_delete_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_delete_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_delete_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17685,8 +17738,9 @@ def test_enable_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17743,20 +17797,21 @@ def test_enable_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_enable_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_enable_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_enable_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_enable_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_enable_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_enable_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17809,8 +17864,9 @@ def test_disable_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17867,20 +17923,21 @@ def test_disable_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_disable_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_disable_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_disable_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_disable_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_disable_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_disable_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17935,8 +17992,9 @@ def test_set_default_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17995,22 +18053,23 @@ def test_set_default_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_set_default_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_set_default_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_set_default_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_set_default_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_set_default_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_set_default_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18065,8 +18124,9 @@ def test_review_document_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18125,20 +18185,21 @@ def test_review_document_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_review_document"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_review_document_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_review_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_review_document"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_review_document_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_review_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18193,8 +18254,9 @@ def test_evaluate_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18253,22 +18315,23 @@ def test_evaluate_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_evaluate_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_evaluate_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_evaluate_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_evaluate_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_evaluate_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_evaluate_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18323,8 +18386,9 @@ def test_get_evaluation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18393,18 +18457,20 @@ def test_get_evaluation_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_evaluation"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_evaluation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_evaluation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_get_evaluation"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_evaluation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_evaluation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18459,8 +18525,9 @@ def test_list_evaluations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18527,18 +18594,20 @@ def test_list_evaluations_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_evaluations"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_evaluations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_evaluations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_list_evaluations"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_evaluations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_list_evaluations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18596,8 +18665,9 @@ def test_import_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18654,22 +18724,23 @@ def test_import_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_import_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_import_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_import_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_import_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_import_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_import_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18722,8 +18793,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18782,8 +18854,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18844,8 +18917,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18906,8 +18980,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18968,8 +19043,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -19614,11 +19690,14 @@ def test_document_processor_service_base_transport():
 
 def test_document_processor_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DocumentProcessorServiceTransport(
@@ -19635,9 +19714,12 @@ def test_document_processor_service_base_transport_with_credentials_file():
 
 def test_document_processor_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DocumentProcessorServiceTransport()
@@ -19711,11 +19793,12 @@ def test_document_processor_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -20501,6 +20584,38 @@ async def test_cancel_operation_from_dict_async():
         call.assert_called()
 
 
+def test_cancel_operation_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20644,6 +20759,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -20791,6 +20940,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20936,6 +21119,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21079,6 +21296,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

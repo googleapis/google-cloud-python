@@ -125,6 +125,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert SecurityCenterManagementClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -146,6 +147,10 @@ def test__get_default_mtls_endpoint():
     assert (
         SecurityCenterManagementClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        SecurityCenterManagementClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1358,11 +1363,13 @@ def test_security_center_management_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -16998,8 +17005,9 @@ def test_list_effective_security_health_analytics_custom_modules_rest_bad_reques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17072,20 +17080,22 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_effective_security_health_analytics_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_effective_security_health_analytics_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_effective_security_health_analytics_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_effective_security_health_analytics_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_effective_security_health_analytics_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_effective_security_health_analytics_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17145,8 +17155,9 @@ def test_get_effective_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17229,20 +17240,22 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_effective_security_health_analytics_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_effective_security_health_analytics_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_get_effective_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_effective_security_health_analytics_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_effective_security_health_analytics_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_get_effective_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17302,8 +17315,9 @@ def test_list_security_health_analytics_custom_modules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17372,20 +17386,22 @@ def test_list_security_health_analytics_custom_modules_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_security_health_analytics_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_security_health_analytics_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_security_health_analytics_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_security_health_analytics_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_security_health_analytics_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_security_health_analytics_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17445,8 +17461,9 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_bad_reque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17519,20 +17536,22 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_descendant_security_health_analytics_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_descendant_security_health_analytics_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_descendant_security_health_analytics_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_descendant_security_health_analytics_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_descendant_security_health_analytics_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_descendant_security_health_analytics_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17592,8 +17611,9 @@ def test_get_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17677,20 +17697,22 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_security_health_analytics_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_security_health_analytics_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_get_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_security_health_analytics_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_security_health_analytics_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_get_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17754,8 +17776,9 @@ def test_create_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17940,20 +17963,22 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_create_security_health_analytics_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_create_security_health_analytics_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_create_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_create_security_health_analytics_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_create_security_health_analytics_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_create_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18019,8 +18044,9 @@ def test_update_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18209,20 +18235,22 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_security_health_analytics_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_security_health_analytics_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_update_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_security_health_analytics_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_security_health_analytics_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_update_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18286,8 +18314,9 @@ def test_delete_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18348,14 +18377,14 @@ def test_delete_security_health_analytics_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_delete_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_delete_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(
             security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
@@ -18400,8 +18429,9 @@ def test_simulate_security_health_analytics_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18470,20 +18500,22 @@ def test_simulate_security_health_analytics_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_simulate_security_health_analytics_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_simulate_security_health_analytics_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_simulate_security_health_analytics_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_simulate_security_health_analytics_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_simulate_security_health_analytics_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_simulate_security_health_analytics_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18541,8 +18573,9 @@ def test_list_effective_event_threat_detection_custom_modules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18613,20 +18646,22 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_effective_event_threat_detection_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_effective_event_threat_detection_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_effective_event_threat_detection_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_effective_event_threat_detection_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_effective_event_threat_detection_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_effective_event_threat_detection_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18686,8 +18721,9 @@ def test_get_effective_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18773,20 +18809,22 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_effective_event_threat_detection_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_effective_event_threat_detection_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_get_effective_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_effective_event_threat_detection_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_effective_event_threat_detection_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_get_effective_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18846,8 +18884,9 @@ def test_list_event_threat_detection_custom_modules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18916,20 +18955,22 @@ def test_list_event_threat_detection_custom_modules_rest_interceptors(null_inter
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_event_threat_detection_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_event_threat_detection_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_event_threat_detection_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_event_threat_detection_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_event_threat_detection_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_event_threat_detection_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18991,8 +19032,9 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19063,20 +19105,22 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_descendant_event_threat_detection_custom_modules",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_descendant_event_threat_detection_custom_modules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_descendant_event_threat_detection_custom_modules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_descendant_event_threat_detection_custom_modules",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_descendant_event_threat_detection_custom_modules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_descendant_event_threat_detection_custom_modules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19136,8 +19180,9 @@ def test_get_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19221,20 +19266,22 @@ def test_get_event_threat_detection_custom_module_rest_interceptors(null_interce
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_event_threat_detection_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_event_threat_detection_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_get_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_event_threat_detection_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_event_threat_detection_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_get_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19300,8 +19347,9 @@ def test_create_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19473,20 +19521,22 @@ def test_create_event_threat_detection_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_create_event_threat_detection_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_create_event_threat_detection_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_create_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_create_event_threat_detection_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_create_event_threat_detection_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_create_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19554,8 +19604,9 @@ def test_update_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19731,20 +19782,22 @@ def test_update_event_threat_detection_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_event_threat_detection_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_event_threat_detection_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_update_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_event_threat_detection_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_event_threat_detection_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_update_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19810,8 +19863,9 @@ def test_delete_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19872,14 +19926,14 @@ def test_delete_event_threat_detection_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_delete_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_delete_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = security_center_management.DeleteEventThreatDetectionCustomModuleRequest.pb(
             security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
@@ -19926,8 +19980,9 @@ def test_validate_event_threat_detection_custom_module_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19994,20 +20049,22 @@ def test_validate_event_threat_detection_custom_module_rest_interceptors(
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_validate_event_threat_detection_custom_module",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_validate_event_threat_detection_custom_module_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_validate_event_threat_detection_custom_module",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_validate_event_threat_detection_custom_module",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_validate_event_threat_detection_custom_module_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_validate_event_threat_detection_custom_module",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20069,8 +20126,9 @@ def test_get_security_center_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20145,20 +20203,22 @@ def test_get_security_center_service_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_security_center_service",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_get_security_center_service_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_get_security_center_service",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_security_center_service",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_get_security_center_service_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_get_security_center_service",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20216,8 +20276,9 @@ def test_list_security_center_services_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20282,20 +20343,22 @@ def test_list_security_center_services_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_security_center_services",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_list_security_center_services_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_list_security_center_services",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_security_center_services",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_list_security_center_services_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_list_security_center_services",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20361,8 +20424,9 @@ def test_update_security_center_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20520,20 +20584,22 @@ def test_update_security_center_service_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_security_center_service",
-    ) as post, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "post_update_security_center_service_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterManagementRestInterceptor,
-        "pre_update_security_center_service",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_security_center_service",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "post_update_security_center_service_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterManagementRestInterceptor,
+            "pre_update_security_center_service",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20591,8 +20657,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -20651,8 +20718,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -21270,11 +21338,14 @@ def test_security_center_management_base_transport():
 
 def test_security_center_management_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterManagementTransport(
@@ -21291,9 +21362,12 @@ def test_security_center_management_base_transport_with_credentials_file():
 
 def test_security_center_management_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterManagementTransport()
@@ -21367,11 +21441,12 @@ def test_security_center_management_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -22184,6 +22259,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = SecurityCenterManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = SecurityCenterManagementClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22327,6 +22436,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = SecurityCenterManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

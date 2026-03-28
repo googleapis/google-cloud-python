@@ -62,6 +62,17 @@ class ExecuteToolRequest(proto.Message):
             toolset. Otherwise, an error will be returned.
 
             This field is a member of `oneof`_ ``tool_identifier``.
+        variables (google.protobuf.struct_pb2.Struct):
+            Optional. The variables that are available
+            for the tool execution.
+
+            This field is a member of `oneof`_ ``tool_execution_context``.
+        context (google.protobuf.struct_pb2.Struct):
+            Optional. The
+            [ToolCallContext](https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/python#environment
+            for details) to be passed to the Python tool.
+
+            This field is a member of `oneof`_ ``tool_execution_context``.
         parent (str):
             Required. The resource name of the app which the
             tool/toolset belongs to. Format:
@@ -81,6 +92,18 @@ class ExecuteToolRequest(proto.Message):
         number=3,
         oneof="tool_identifier",
         message=gcc_toolset_tool.ToolsetTool,
+    )
+    variables: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="tool_execution_context",
+        message=struct_pb2.Struct,
+    )
+    context: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="tool_execution_context",
+        message=struct_pb2.Struct,
     )
     parent: str = proto.Field(
         proto.STRING,
@@ -115,12 +138,15 @@ class ExecuteToolResponse(proto.Message):
 
             This field is a member of `oneof`_ ``tool_identifier``.
         response (google.protobuf.struct_pb2.Struct):
-            Required. The tool execution result in JSON
-            object format. Use "output" key to specify tool
+            The tool execution result in JSON object
+            format. Use "output" key to specify tool
             response and "error" key to specify error
             details (if any). If "output" and "error" keys
             are not specified, then whole "response" is
             treated as tool execution result.
+        variables (google.protobuf.struct_pb2.Struct):
+            The variable values at the end of the tool
+            execution.
     """
 
     tool: str = proto.Field(
@@ -137,6 +163,11 @@ class ExecuteToolResponse(proto.Message):
     response: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=struct_pb2.Struct,
+    )
+    variables: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message=struct_pb2.Struct,
     )
 
@@ -212,11 +243,9 @@ class RetrieveToolSchemaResponse(proto.Message):
 
             This field is a member of `oneof`_ ``tool_identifier``.
         input_schema (google.cloud.ces_v1.types.Schema):
-            Required. The schema of the tool input
-            parameters.
+            The schema of the tool input parameters.
         output_schema (google.cloud.ces_v1.types.Schema):
-            Required. The schema of the tool output
-            parameters.
+            The schema of the tool output parameters.
     """
 
     tool: str = proto.Field(
@@ -273,8 +302,8 @@ class RetrieveToolsResponse(proto.Message):
 
     Attributes:
         tools (MutableSequence[google.cloud.ces_v1.types.Tool]):
-            Required. The list of tools that are included
-            in the specified toolset.
+            The list of tools that are included in the
+            specified toolset.
     """
 
     tools: MutableSequence[gcc_tool.Tool] = proto.RepeatedField(

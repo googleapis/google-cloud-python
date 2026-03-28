@@ -23,7 +23,6 @@ from __future__ import unicode_literals
 
 import http.client
 from typing import Optional, Dict
-from typing import Union
 import warnings
 
 from google.rpc import error_details_pb2
@@ -121,7 +120,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
             (google.rpc.error_details.ErrorInfo).
     """
 
-    code: Union[int, None] = None
+    code: Optional[int] = None
     """Optional[int]: The HTTP status code associated with this error.
 
     This may be ``None`` if the exception does not have a direct mapping
@@ -130,7 +129,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
     See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
 
-    grpc_status_code = None
+    grpc_status_code: Optional["grpc.StatusCode"] = None
     """Optional[grpc.StatusCode]: The gRPC status code associated with this
     error.
 

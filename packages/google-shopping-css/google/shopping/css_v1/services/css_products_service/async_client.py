@@ -193,7 +193,7 @@ class CssProductsServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -349,8 +349,8 @@ class CssProductsServiceAsyncClient:
             request (Optional[Union[google.shopping.css_v1.types.GetCssProductRequest, dict]]):
                 The request object. The request message for the ``GetCssProduct`` method.
             name (:class:`str`):
-                Required. The name of the CSS product
-                to retrieve.
+                Required. The name of the CSS product to retrieve.
+                Format: ``accounts/{account}/cssProducts/{css_product}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.8.2](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.1...google-resumable-media-v2.8.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
+## [2.8.1](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.0...google-resumable-media-v2.8.1) (2026-03-12)
+
+
+### Bug Fixes
+
+* add max_length support to Gzip/Brotli decoders for urllib3 2.6+ (#495) ([cb9006056d402e01b918a7375662c8c33bfe5566](https://github.com/googleapis/google-cloud-python/commit/cb9006056d402e01b918a7375662c8c33bfe5566))
+
 ## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.7.2...google-resumable-media-v2.8.0) (2025-11-11)
 
 

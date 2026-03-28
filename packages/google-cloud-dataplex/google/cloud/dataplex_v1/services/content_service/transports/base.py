@@ -18,10 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 import google.auth  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -35,8 +32,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dataplex_v1 import gapic_version as package_version
-from google.cloud.dataplex_v1.types import analyze, content
-from google.cloud.dataplex_v1.types import content as gcd_content
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -49,7 +44,7 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ContentServiceTransport(abc.ABC):
     """Abstract transport class for ContentService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = ()
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 
@@ -90,6 +85,10 @@ class ContentServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -139,6 +138,8 @@ class ContentServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -146,82 +147,6 @@ class ContentServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_content: gapic_v1.method.wrap_method(
-                self.create_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_content: gapic_v1.method.wrap_method(
-                self.update_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_content: gapic_v1.method.wrap_method(
-                self.delete_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_content: gapic_v1.method.wrap_method(
-                self.get_content,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
-                self.test_iam_permissions,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_content: gapic_v1.method.wrap_method(
-                self.list_content,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -229,6 +154,21 @@ class ContentServiceTransport(abc.ABC):
             ),
             self.list_locations: gapic_v1.method.wrap_method(
                 self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -261,80 +201,6 @@ class ContentServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
-        raise NotImplementedError()
-
-    @property
-    def create_content(
-        self,
-    ) -> Callable[
-        [gcd_content.CreateContentRequest],
-        Union[analyze.Content, Awaitable[analyze.Content]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_content(
-        self,
-    ) -> Callable[
-        [gcd_content.UpdateContentRequest],
-        Union[analyze.Content, Awaitable[analyze.Content]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_content(
-        self,
-    ) -> Callable[
-        [content.DeleteContentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_content(
-        self,
-    ) -> Callable[
-        [content.GetContentRequest], Union[analyze.Content, Awaitable[analyze.Content]]
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_content(
-        self,
-    ) -> Callable[
-        [content.ListContentRequest],
-        Union[content.ListContentResponse, Awaitable[content.ListContentResponse]],
-    ]:
         raise NotImplementedError()
 
     @property
@@ -373,6 +239,36 @@ class ContentServiceTransport(abc.ABC):
     ) -> Callable[
         [operations_pb2.DeleteOperationRequest],
         None,
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

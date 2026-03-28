@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "Account",
         "GetAccountRequest",
         "CreateAndConfigureAccountRequest",
+        "CreateTestAccountRequest",
         "DeleteAccountRequest",
         "UpdateAccountRequest",
         "ListAccountsRequest",
@@ -70,9 +71,9 @@ class Account(proto.Message):
         account_id (int):
             Output only. The ID of the account.
         account_name (str):
-            Required. A human-readable name of the account. See `store
-            name <https://support.google.com/merchants/answer/160556>`__
-            and `business
+            Required. A human-readable name of the account. Don't use
+            punctuation, capitalization, or non-alphanumeric symbols
+            such as the "/" or "\_" symbols. See `Adding a business
             name <https://support.google.com/merchants/answer/12159159>`__
             for more information.
         adult_content (bool):
@@ -164,7 +165,7 @@ class CreateAndConfigureAccountRequest(proto.Message):
             ``account_aggregation`` and ``accounts.createAndConfigure``
             method can be used to create a sub-account under an existing
             advanced account through this method. Additional
-            ``account_management`` or ``product_management`` services
+            ``account_management`` or ``products_management`` services
             may be provided.
         set_alias (MutableSequence[google.shopping.merchant_accounts_v1.types.CreateAndConfigureAccountRequest.SetAliasForRelationship]):
             Optional. If a relationship is created with a
@@ -361,6 +362,29 @@ class CreateAndConfigureAccountRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=SetAliasForRelationship,
+    )
+
+
+class CreateTestAccountRequest(proto.Message):
+    r"""Request message for the CreateTestAccount RPC
+
+    Attributes:
+        parent (str):
+            Required. The account resource name to create
+            the test account under. Format:
+            accounts/{account}
+        account (google.shopping.merchant_accounts_v1.types.Account):
+            Required. The account to be created.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    account: "Account" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Account",
     )
 
 

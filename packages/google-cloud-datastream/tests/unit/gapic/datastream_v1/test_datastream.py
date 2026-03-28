@@ -134,6 +134,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DatastreamClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -152,6 +153,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert DatastreamClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        DatastreamClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1254,11 +1258,13 @@ def test_datastream_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -17907,8 +17913,9 @@ def test_list_connection_profiles_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17973,18 +17980,20 @@ def test_list_connection_profiles_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_connection_profiles"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_list_connection_profiles_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_list_connection_profiles"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_connection_profiles"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_list_connection_profiles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_list_connection_profiles"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18044,8 +18053,9 @@ def test_get_connection_profile_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18116,18 +18126,20 @@ def test_get_connection_profile_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_connection_profile"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_get_connection_profile_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_get_connection_profile"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_connection_profile"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_get_connection_profile_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_get_connection_profile"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18185,8 +18197,9 @@ def test_create_connection_profile_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18432,20 +18445,21 @@ def test_create_connection_profile_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_connection_profile"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_create_connection_profile_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_create_connection_profile"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_connection_profile"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_create_connection_profile_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_create_connection_profile"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18502,8 +18516,9 @@ def test_update_connection_profile_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18753,20 +18768,21 @@ def test_update_connection_profile_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_update_connection_profile"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_update_connection_profile_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_update_connection_profile"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_update_connection_profile"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_update_connection_profile_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_update_connection_profile"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18821,8 +18837,9 @@ def test_delete_connection_profile_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18881,20 +18898,21 @@ def test_delete_connection_profile_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_connection_profile"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_delete_connection_profile_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_delete_connection_profile"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_connection_profile"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_delete_connection_profile_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_delete_connection_profile"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18947,8 +18965,9 @@ def test_discover_connection_profile_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19008,18 +19027,20 @@ def test_discover_connection_profile_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_discover_connection_profile"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_discover_connection_profile_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_discover_connection_profile"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_discover_connection_profile"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_discover_connection_profile_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_discover_connection_profile"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19075,8 +19096,9 @@ def test_list_streams_rest_bad_request(request_type=datastream.ListStreamsReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19141,17 +19163,19 @@ def test_list_streams_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_streams"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_streams_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_list_streams"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_streams"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_streams_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_list_streams"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19202,8 +19226,9 @@ def test_get_stream_rest_bad_request(request_type=datastream.GetStreamRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19279,17 +19304,19 @@ def test_get_stream_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_stream"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_stream_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_get_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_stream"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_stream_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_get_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19340,8 +19367,9 @@ def test_create_stream_rest_bad_request(request_type=datastream.CreateStreamRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19697,19 +19725,20 @@ def test_create_stream_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_stream"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_stream_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_create_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_stream"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_stream_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_create_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19760,8 +19789,9 @@ def test_update_stream_rest_bad_request(request_type=datastream.UpdateStreamRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20119,19 +20149,20 @@ def test_update_stream_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_update_stream"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_update_stream_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_update_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_update_stream"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_update_stream_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_update_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20180,8 +20211,9 @@ def test_delete_stream_rest_bad_request(request_type=datastream.DeleteStreamRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20238,19 +20270,20 @@ def test_delete_stream_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_stream"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_stream_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_delete_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_stream"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_stream_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_delete_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20299,8 +20332,9 @@ def test_run_stream_rest_bad_request(request_type=datastream.RunStreamRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20357,19 +20391,20 @@ def test_run_stream_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_run_stream"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_run_stream_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_run_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_run_stream"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_run_stream_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_run_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20422,8 +20457,9 @@ def test_get_stream_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20490,17 +20526,19 @@ def test_get_stream_object_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_stream_object"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_stream_object_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_get_stream_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_stream_object"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_stream_object_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_get_stream_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20555,8 +20593,9 @@ def test_lookup_stream_object_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20621,17 +20660,20 @@ def test_lookup_stream_object_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_lookup_stream_object"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_lookup_stream_object_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_lookup_stream_object"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_lookup_stream_object"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_lookup_stream_object_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_lookup_stream_object"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20686,8 +20728,9 @@ def test_list_stream_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20750,17 +20793,20 @@ def test_list_stream_objects_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_stream_objects"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_stream_objects_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_list_stream_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_stream_objects"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_list_stream_objects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_list_stream_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20820,8 +20866,9 @@ def test_start_backfill_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20883,17 +20930,20 @@ def test_start_backfill_job_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_start_backfill_job"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_start_backfill_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_start_backfill_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_start_backfill_job"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_start_backfill_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_start_backfill_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20953,8 +21003,9 @@ def test_stop_backfill_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21016,17 +21067,19 @@ def test_stop_backfill_job_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_stop_backfill_job"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_stop_backfill_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_stop_backfill_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_stop_backfill_job"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_stop_backfill_job_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_stop_backfill_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21081,8 +21134,9 @@ def test_fetch_static_ips_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21147,17 +21201,19 @@ def test_fetch_static_ips_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_fetch_static_ips"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_fetch_static_ips_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_fetch_static_ips"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_fetch_static_ips"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_fetch_static_ips_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_fetch_static_ips"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21212,8 +21268,9 @@ def test_create_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21358,20 +21415,21 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_private_connection"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_create_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_create_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_create_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_create_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21426,8 +21484,9 @@ def test_get_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21500,18 +21559,20 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_private_connection"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_get_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_get_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_get_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_get_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21569,8 +21630,9 @@ def test_list_private_connections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21635,18 +21697,20 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_private_connections"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_list_private_connections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_list_private_connections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_private_connections"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_list_private_connections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_list_private_connections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21706,8 +21770,9 @@ def test_delete_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21766,20 +21831,21 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_private_connection"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor,
-        "post_delete_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_delete_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor,
+            "post_delete_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_delete_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21832,8 +21898,9 @@ def test_create_route_rest_bad_request(request_type=datastream.CreateRouteReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21968,19 +22035,20 @@ def test_create_route_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_route"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_create_route_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_create_route"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_route"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_create_route_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_create_route"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22031,8 +22099,9 @@ def test_get_route_rest_bad_request(request_type=datastream.GetRouteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22103,17 +22172,17 @@ def test_get_route_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_route"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_get_route_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_get_route"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_route"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_get_route_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DatastreamRestInterceptor, "pre_get_route") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22164,8 +22233,9 @@ def test_list_routes_rest_bad_request(request_type=datastream.ListRoutesRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22232,17 +22302,19 @@ def test_list_routes_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_routes"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_list_routes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_list_routes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_routes"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_list_routes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_list_routes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22295,8 +22367,9 @@ def test_delete_route_rest_bad_request(request_type=datastream.DeleteRouteReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22355,19 +22428,20 @@ def test_delete_route_rest_interceptors(null_interceptor):
     )
     client = DatastreamClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_route"
-    ) as post, mock.patch.object(
-        transports.DatastreamRestInterceptor, "post_delete_route_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DatastreamRestInterceptor, "pre_delete_route"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_route"
+        ) as post,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "post_delete_route_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatastreamRestInterceptor, "pre_delete_route"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22418,8 +22492,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22478,8 +22553,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22540,8 +22616,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22602,8 +22679,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22664,8 +22742,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22726,8 +22805,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -23438,11 +23518,14 @@ def test_datastream_base_transport():
 
 def test_datastream_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastreamTransport(
@@ -23459,9 +23542,12 @@ def test_datastream_base_transport_with_credentials_file():
 
 def test_datastream_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastreamTransport()
@@ -23533,11 +23619,12 @@ def test_datastream_transport_auth_gdch_credentials(transport_class):
 def test_datastream_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -24363,6 +24450,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24500,6 +24619,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -24647,6 +24798,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24790,6 +24975,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -24937,6 +25156,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25076,6 +25329,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

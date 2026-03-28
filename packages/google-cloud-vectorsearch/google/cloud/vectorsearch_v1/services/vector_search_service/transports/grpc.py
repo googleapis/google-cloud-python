@@ -56,7 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -91,7 +91,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -191,6 +191,10 @@ class VectorSearchServiceGrpcTransport(VectorSearchServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -622,6 +626,35 @@ class VectorSearchServiceGrpcTransport(VectorSearchServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_data_objects"]
+
+    @property
+    def export_data_objects(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.ExportDataObjectsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the export data objects method over gRPC.
+
+        Initiates a Long-Running Operation to export
+        DataObjects from a Collection.
+
+        Returns:
+            Callable[[~.ExportDataObjectsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_data_objects" not in self._stubs:
+            self._stubs["export_data_objects"] = self._logged_channel.unary_unary(
+                "/google.cloud.vectorsearch.v1.VectorSearchService/ExportDataObjects",
+                request_serializer=vectorsearch_service.ExportDataObjectsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_data_objects"]
 
     def close(self):
         self._logged_channel.close()

@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.21.0...grafeas-v1.22.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.20.0...grafeas-v1.21.0) (2026-03-23)
+
+
+### Features
+
+* Added line_number to FileLocation ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.19.1...grafeas-v1.20.0) (2026-02-19)
 
 

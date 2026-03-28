@@ -81,6 +81,10 @@ class AccountsServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -130,6 +134,8 @@ class AccountsServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -144,6 +150,11 @@ class AccountsServiceTransport(abc.ABC):
             ),
             self.create_and_configure_account: gapic_v1.method.wrap_method(
                 self.create_and_configure_account,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_test_account: gapic_v1.method.wrap_method(
+                self.create_test_account,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -192,6 +203,15 @@ class AccountsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [accounts.CreateAndConfigureAccountRequest],
+        Union[accounts.Account, Awaitable[accounts.Account]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_test_account(
+        self,
+    ) -> Callable[
+        [accounts.CreateTestAccountRequest],
         Union[accounts.Account, Awaitable[accounts.Account]],
     ]:
         raise NotImplementedError()

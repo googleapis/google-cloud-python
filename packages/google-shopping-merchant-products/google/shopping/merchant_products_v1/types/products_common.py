@@ -62,6 +62,7 @@ __protobuf__ = proto.module(
         "CloudExportAdditionalProperties",
         "ProductSustainabilityIncentive",
         "AutomatedDiscounts",
+        "HandlingCutoffTime",
     },
 )
 
@@ -79,11 +80,15 @@ class SubscriptionPeriod(proto.Enum):
         YEAR (2):
             Indicates that the subscription period is
             year.
+        WEEK (3):
+            Indicates that the subscription period is
+            week.
     """
 
     SUBSCRIPTION_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     YEAR = 2
+    WEEK = 3
 
 
 class AgeGroup(proto.Enum):
@@ -779,9 +784,9 @@ class ProductAttributes(proto.Message):
             Number and amount of installments to pay for
             an item.
         subscription_cost (google.shopping.merchant_products_v1.types.SubscriptionCost):
-            Number of periods (months or years) and
-            amount of payment per period for an item with an
-            associated subscription contract.
+            Number of periods (weeks, months or years)
+            and amount of payment per period for an item
+            with an associated subscription contract.
         loyalty_points (google.shopping.merchant_products_v1.types.LoyaltyPoints):
             Loyalty points that users receive after
             purchasing the item. Japan only.
@@ -846,6 +851,16 @@ class ProductAttributes(proto.Message):
             days).
 
             This field is a member of `oneof`_ ``_min_handling_time``.
+        shipping_handling_business_days (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.ShippingBusinessDaysConfig]):
+            The business days during which orders can be
+            handled. If not provided, Monday to Friday
+            business days will be assumed.
+        shipping_transit_business_days (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.ShippingBusinessDaysConfig]):
+            The business days during which orders are in
+            transit. If not provided, Monday to Friday
+            business days will be assumed.
+        handling_cutoff_times (MutableSequence[google.shopping.merchant_products_v1.types.HandlingCutoffTime]):
+            The handling cutoff times for shipping.
         shipping_label (str):
             The shipping label of the product, used to
             group product in account-level shipping rules.
@@ -1294,6 +1309,44 @@ class ProductAttributes(proto.Message):
         USPS_GROUND_ADVANTAGE_RETAIL = 59
         USPS_PRIORITY_MAIL = 60
         USPS_GROUND_ADVANTAGE_COMMERCIAL = 61
+
+    class ShippingBusinessDaysConfig(proto.Message):
+        r"""The business days during which orders are on their path to
+        fulfillment. If not provided, Monday to Friday business days
+        will be assumed.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            country (str):
+                The `CLDR territory
+                code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+                of the country to which an item will ship.
+
+                This field is a member of `oneof`_ ``_country``.
+            business_days (str):
+                Effective days of the week considered for the delivery time
+                calculation. May not be empty. The more business days
+                included the faster the delivery. Can be set through
+                individual days (e.g. ``MTWRF``), or day ranges (e.g.
+                ``Mon-Fri``). For more information about accepted formats,
+                see `Shipping handling business
+                days <https://support.google.com/merchants/answer/16072859>`__.
+
+                This field is a member of `oneof`_ ``_business_days``.
+        """
+
+        country: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        business_days: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
 
     class CarrierShipping(proto.Message):
         r"""Carrier-based shipping configuration. Allows for setting
@@ -1749,6 +1802,25 @@ class ProductAttributes(proto.Message):
         number=45,
         optional=True,
     )
+    shipping_handling_business_days: MutableSequence[ShippingBusinessDaysConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=143,
+            message=ShippingBusinessDaysConfig,
+        )
+    )
+    shipping_transit_business_days: MutableSequence[ShippingBusinessDaysConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=144,
+            message=ShippingBusinessDaysConfig,
+        )
+    )
+    handling_cutoff_times: MutableSequence["HandlingCutoffTime"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=141,
+        message="HandlingCutoffTime",
+    )
     shipping_label: str = proto.Field(
         proto.STRING,
         number=46,
@@ -2077,7 +2149,8 @@ class SubscriptionCost(proto.Message):
             The type of subscription period. Supported values are:
 
             - "``month``"
-            - "``year``".
+            - "``year``"
+            - "``week``".
         period_length (int):
             The number of subscription periods the buyer
             has to pay.
@@ -2364,6 +2437,24 @@ class Shipping(proto.Message):
             is present.
 
             This field is a member of `oneof`_ ``_max_transit_time``.
+        handling_cutoff_time (str):
+            The handling cutoff time until which an order has to be
+            placed to be processed in the same day. This is a string in
+            format of HHMM (e.g. ``1530``) for 3:30 PM. If not
+            configured, the cutoff time will be defaulted to 8AM PST and
+            ``handling_cutoff_timezone`` will be ignored.
+
+            This field is a member of `oneof`_ ``_handling_cutoff_time``.
+        handling_cutoff_timezone (str):
+            `Timezone
+            identifier <https://developers.google.com/adwords/api/docs/appendix/codes-formats#timezone-ids>`__
+            For example ``Europe/Zurich``. This field only applies if
+            ``handling_cutoff_time`` is set. If ``handling_cutoff_time``
+            is set but this field is not set, the shipping destination
+            timezone will be used. If both fields are not set, the
+            handling cutoff time will default to 8AM PST.
+
+            This field is a member of `oneof`_ ``_handling_cutoff_timezone``.
     """
 
     price: types.Price = proto.Field(
@@ -2413,6 +2504,16 @@ class Shipping(proto.Message):
     max_transit_time: int = proto.Field(
         proto.INT64,
         number=11,
+        optional=True,
+    )
+    handling_cutoff_time: str = proto.Field(
+        proto.STRING,
+        number=12,
+        optional=True,
+    )
+    handling_cutoff_timezone: str = proto.Field(
+        proto.STRING,
+        number=13,
         optional=True,
     )
 
@@ -2670,6 +2771,10 @@ class ProductStatus(proto.Message):
 
     class DestinationStatus(proto.Message):
         r"""The destination status of the product status.
+
+        Equivalent to
+        [``StatusPerReportingContext``][google.shopping.merchant.reports.v1.ProductView.StatusPerReportingContext]
+        in Reports API.
 
         Attributes:
             reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
@@ -3020,6 +3125,66 @@ class AutomatedDiscounts(proto.Message):
         proto.MESSAGE,
         number=3,
         message=types.Price,
+    )
+
+
+class HandlingCutoffTime(proto.Message):
+    r"""Configuration for offer or offer-country level shipping
+    handling cutoff time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        country (str):
+            The `CLDR territory
+            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+            of the country to which the handling cutoff time applies.
+
+            This field is a member of `oneof`_ ``_country``.
+        cutoff_time (str):
+            The handling cutoff time until which an order has to be
+            placed to be processed in the same day. This is a string in
+            format of HHMM (e.g. ``1530``) for 3:30 PM. If not
+            configured, the cutoff time will be defaulted to 8AM PST.
+
+            This field is a member of `oneof`_ ``_cutoff_time``.
+        cutoff_timezone (str):
+            `Timezone
+            identifier <https://developers.google.com/adwords/api/docs/appendix/codes-formats#timezone-ids>`__
+            For example 'Europe/Zurich'. If not set, the shipping
+            destination timezone will be used.
+
+            This field is a member of `oneof`_ ``_cutoff_timezone``.
+        disable_delivery_after_cutoff (bool):
+            This field only applies to same-day delivery.
+            If true, prevents next-day delivery from being
+            shown for this offer after the cutoff time. This
+            field only applies to same-day delivery offers,
+            for merchants who want to explicitly disable it.
+
+            This field is a member of `oneof`_ ``_disable_delivery_after_cutoff``.
+    """
+
+    country: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    cutoff_time: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    cutoff_timezone: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    disable_delivery_after_cutoff: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
     )
 
 

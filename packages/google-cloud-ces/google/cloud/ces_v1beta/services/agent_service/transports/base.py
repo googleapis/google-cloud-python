@@ -39,6 +39,7 @@ from google.cloud.ces_v1beta.types import (
     deployment,
     example,
     guardrail,
+    security_settings,
     tool,
     toolset,
 )
@@ -48,6 +49,7 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
+from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -106,6 +108,10 @@ class AgentServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -155,6 +161,8 @@ class AgentServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -194,6 +202,16 @@ class AgentServiceTransport(abc.ABC):
             ),
             self.import_app: gapic_v1.method.wrap_method(
                 self.import_app,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_security_settings: gapic_v1.method.wrap_method(
+                self.get_security_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_security_settings: gapic_v1.method.wrap_method(
+                self.update_security_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -506,6 +524,30 @@ class AgentServiceTransport(abc.ABC):
     ) -> Callable[
         [agent_service.ImportAppRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_security_settings(
+        self,
+    ) -> Callable[
+        [agent_service.GetSecuritySettingsRequest],
+        Union[
+            security_settings.SecuritySettings,
+            Awaitable[security_settings.SecuritySettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_security_settings(
+        self,
+    ) -> Callable[
+        [agent_service.UpdateSecuritySettingsRequest],
+        Union[
+            gcc_security_settings.SecuritySettings,
+            Awaitable[gcc_security_settings.SecuritySettings],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -41,6 +41,7 @@ from google.cloud.ces_v1beta.types import (
     deployment,
     example,
     guardrail,
+    security_settings,
     tool,
     toolset,
 )
@@ -50,6 +51,7 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
+from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -77,7 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -112,7 +114,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -208,6 +210,10 @@ class AgentServiceGrpcTransport(AgentServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -539,6 +545,65 @@ class AgentServiceGrpcTransport(AgentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_app"]
+
+    @property
+    def get_security_settings(
+        self,
+    ) -> Callable[
+        [agent_service.GetSecuritySettingsRequest], security_settings.SecuritySettings
+    ]:
+        r"""Return a callable for the get security settings method over gRPC.
+
+        Retrieves the security settings for the project and
+        location.
+
+        Returns:
+            Callable[[~.GetSecuritySettingsRequest],
+                    ~.SecuritySettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_security_settings" not in self._stubs:
+            self._stubs["get_security_settings"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.AgentService/GetSecuritySettings",
+                request_serializer=agent_service.GetSecuritySettingsRequest.serialize,
+                response_deserializer=security_settings.SecuritySettings.deserialize,
+            )
+        return self._stubs["get_security_settings"]
+
+    @property
+    def update_security_settings(
+        self,
+    ) -> Callable[
+        [agent_service.UpdateSecuritySettingsRequest],
+        gcc_security_settings.SecuritySettings,
+    ]:
+        r"""Return a callable for the update security settings method over gRPC.
+
+        Updates the security settings for the project and
+        location.
+
+        Returns:
+            Callable[[~.UpdateSecuritySettingsRequest],
+                    ~.SecuritySettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_security_settings" not in self._stubs:
+            self._stubs["update_security_settings"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.AgentService/UpdateSecuritySettings",
+                request_serializer=agent_service.UpdateSecuritySettingsRequest.serialize,
+                response_deserializer=gcc_security_settings.SecuritySettings.deserialize,
+            )
+        return self._stubs["update_security_settings"]
 
     @property
     def list_agents(

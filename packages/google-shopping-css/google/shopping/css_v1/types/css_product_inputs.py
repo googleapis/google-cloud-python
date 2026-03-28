@@ -42,7 +42,7 @@ class CssProductInput(proto.Message):
 
     Attributes:
         name (str):
-            The name of the CSS Product input. Format:
+            Identifier. The name of the CSS Product input. Format:
             ``accounts/{account}/cssProductInputs/{css_product_input}``,
             where the last section ``css_product_input`` consists of 3
             parts: contentLanguage~feedLabel~offerId. Example:

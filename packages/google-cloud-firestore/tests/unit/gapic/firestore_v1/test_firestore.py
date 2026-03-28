@@ -137,6 +137,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert FirestoreClient._get_default_mtls_endpoint(None) is None
     assert FirestoreClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -153,6 +154,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert FirestoreClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        FirestoreClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1253,11 +1257,13 @@ def test_firestore_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -9734,8 +9740,9 @@ def test_get_document_rest_bad_request(request_type=firestore.GetDocumentRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9798,17 +9805,19 @@ def test_get_document_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_get_document"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_get_document_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_get_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_get_document"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_get_document_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_get_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9860,8 +9869,9 @@ def test_list_documents_rest_bad_request(request_type=firestore.ListDocumentsReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9925,17 +9935,19 @@ def test_list_documents_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_list_documents"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_list_documents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_list_documents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_list_documents"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_list_documents_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_list_documents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9990,8 +10002,9 @@ def test_update_document_rest_bad_request(request_type=firestore.UpdateDocumentR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10129,17 +10142,19 @@ def test_update_document_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_update_document"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_update_document_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_update_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_update_document"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_update_document_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_update_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10192,8 +10207,9 @@ def test_delete_document_rest_bad_request(request_type=firestore.DeleteDocumentR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10250,13 +10266,13 @@ def test_delete_document_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_delete_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_delete_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = firestore.DeleteDocumentRequest.pb(
             firestore.DeleteDocumentRequest()
@@ -10301,8 +10317,9 @@ def test_batch_get_documents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10368,17 +10385,20 @@ def test_batch_get_documents_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_batch_get_documents"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_batch_get_documents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_batch_get_documents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_batch_get_documents"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor,
+            "post_batch_get_documents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_batch_get_documents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10436,8 +10456,9 @@ def test_begin_transaction_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10498,17 +10519,19 @@ def test_begin_transaction_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_begin_transaction"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_begin_transaction_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_begin_transaction"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_begin_transaction"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_begin_transaction_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_begin_transaction"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10561,8 +10584,9 @@ def test_commit_rest_bad_request(request_type=firestore.CommitRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10620,17 +10644,15 @@ def test_commit_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_commit"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_commit_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_commit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.FirestoreRestInterceptor, "post_commit") as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_commit_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.FirestoreRestInterceptor, "pre_commit") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10679,8 +10701,9 @@ def test_rollback_rest_bad_request(request_type=firestore.RollbackRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10735,13 +10758,11 @@ def test_rollback_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_rollback"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.FirestoreRestInterceptor, "pre_rollback") as pre,
+    ):
         pre.assert_not_called()
         pb_message = firestore.RollbackRequest.pb(firestore.RollbackRequest())
         transcode.return_value = {
@@ -10782,8 +10803,9 @@ def test_run_query_rest_bad_request(request_type=firestore.RunQueryRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10851,17 +10873,17 @@ def test_run_query_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_run_query"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_run_query_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_run_query"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_run_query"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_run_query_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.FirestoreRestInterceptor, "pre_run_query") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10912,8 +10934,9 @@ def test_execute_pipeline_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10978,17 +11001,19 @@ def test_execute_pipeline_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_execute_pipeline"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_execute_pipeline_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_execute_pipeline"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_execute_pipeline"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_execute_pipeline_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_execute_pipeline"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11043,8 +11068,9 @@ def test_run_aggregation_query_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11109,17 +11135,20 @@ def test_run_aggregation_query_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_run_aggregation_query"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_run_aggregation_query_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_run_aggregation_query"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_run_aggregation_query"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor,
+            "post_run_aggregation_query_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_run_aggregation_query"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11175,8 +11204,9 @@ def test_partition_query_rest_bad_request(request_type=firestore.PartitionQueryR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11237,17 +11267,19 @@ def test_partition_query_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_partition_query"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_partition_query_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_partition_query"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_partition_query"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_partition_query_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_partition_query"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11326,8 +11358,9 @@ def test_list_collection_ids_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11390,17 +11423,20 @@ def test_list_collection_ids_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_list_collection_ids"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_list_collection_ids_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_list_collection_ids"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_list_collection_ids"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor,
+            "post_list_collection_ids_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_list_collection_ids"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11456,8 +11492,9 @@ def test_batch_write_rest_bad_request(request_type=firestore.BatchWriteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11515,17 +11552,19 @@ def test_batch_write_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_batch_write"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_batch_write_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_batch_write"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_batch_write"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_batch_write_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_batch_write"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11579,8 +11618,9 @@ def test_create_document_rest_bad_request(request_type=firestore.CreateDocumentR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11717,17 +11757,19 @@ def test_create_document_rest_interceptors(null_interceptor):
     )
     client = FirestoreClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_create_document"
-    ) as post, mock.patch.object(
-        transports.FirestoreRestInterceptor, "post_create_document_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.FirestoreRestInterceptor, "pre_create_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_create_document"
+        ) as post,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "post_create_document_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirestoreRestInterceptor, "pre_create_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11782,8 +11824,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -11844,8 +11887,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -11906,8 +11950,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -11968,8 +12013,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12457,11 +12503,14 @@ def test_firestore_base_transport():
 
 def test_firestore_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.FirestoreTransport(
@@ -12481,9 +12530,12 @@ def test_firestore_base_transport_with_credentials_file():
 
 def test_firestore_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.FirestoreTransport()
@@ -12561,11 +12613,12 @@ def test_firestore_transport_auth_gdch_credentials(transport_class):
 def test_firestore_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -13142,6 +13195,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = FirestoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13279,6 +13364,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = FirestoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -13426,6 +13543,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = FirestoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13569,6 +13720,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = FirestoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_transport_close_grpc():

@@ -120,6 +120,7 @@ from .types.backupvault import (
     UpdateDataSourceRequest,
 )
 from .types.backupvault_alloydb import (
+    AlloyDBClusterBackupPlanAssociationProperties,
     AlloyDbClusterBackupProperties,
     AlloyDBClusterDataSourceProperties,
 )
@@ -288,6 +289,7 @@ __all__ = (
     "AdvancedMachineFeatures",
     "AliasIpRange",
     "AllocationAffinity",
+    "AlloyDBClusterBackupPlanAssociationProperties",
     "AlloyDBClusterDataSourceProperties",
     "AlloyDbClusterBackupProperties",
     "AttachedDisk",

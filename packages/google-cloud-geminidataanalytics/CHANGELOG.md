@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.11.0...google-cloud-geminidataanalytics-v0.12.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.10.0...google-cloud-geminidataanalytics-v0.11.0) (2026-03-12)
+
+
+### Documentation
+
+* update field comments for `generated_looker_query` in `DataMessage` ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
+
+### Features
+
+* add `ParameterizedSecureViewParameters` message and field for PSV support ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+* add `ThinkingMode` enum and field to control agent thinking mode ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.9.0...google-cloud-geminidataanalytics-v0.10.0) (2026-02-04)
 
 

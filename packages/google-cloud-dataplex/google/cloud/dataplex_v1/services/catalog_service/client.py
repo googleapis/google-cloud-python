@@ -127,7 +127,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -135,7 +135,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -145,6 +145,10 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -381,6 +385,28 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def metadata_feed_path(
+        project: str,
+        location: str,
+        metadata_feed: str,
+    ) -> str:
+        """Returns a fully-qualified metadata_feed string."""
+        return "projects/{project}/locations/{location}/metadataFeeds/{metadata_feed}".format(
+            project=project,
+            location=location,
+            metadata_feed=metadata_feed,
+        )
+
+    @staticmethod
+    def parse_metadata_feed_path(path: str) -> Dict[str, str]:
+        """Parses a metadata_feed path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/metadataFeeds/(?P<metadata_feed>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def metadata_job_path(
         project: str,
         location: str,
@@ -594,7 +620,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -691,7 +717,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -787,7 +813,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         self._universe_domain = CatalogServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -3176,12 +3202,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEntriesPager:
-        r"""Lists Entries within an EntryGroup. Caution: The Vertex AI,
-        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
-        metadata that is stored in Dataplex Universal Catalog is
-        changing. For more information, see `Changes to metadata stored
-        in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        r"""Lists Entries within an EntryGroup.
 
         .. code-block:: python
 
@@ -3303,12 +3324,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
-        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
-        stored in Dataplex Universal Catalog is changing. For more
-        information, see `Changes to metadata stored in Dataplex
-        Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        r"""Gets an Entry.
 
         .. code-block:: python
 
@@ -3415,12 +3431,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Looks up an entry by name using the permission on the source
-        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored in
-        Dataplex Universal Catalog is changing. For more information,
-        see `Changes to metadata stored in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        r"""Looks up an entry by name using the permission on the
+        source system.
 
         .. code-block:: python
 
@@ -4252,6 +4264,119 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Done; return the response.
         return response
 
+    def update_entry_link(
+        self,
+        request: Optional[Union[catalog.UpdateEntryLinkRequest, dict]] = None,
+        *,
+        entry_link: Optional[catalog.EntryLink] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.EntryLink:
+        r"""Updates an Entry Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_update_entry_link():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                entry_link = dataplex_v1.EntryLink()
+                entry_link.entry_link_type = "entry_link_type_value"
+                entry_link.entry_references.name = "name_value"
+                entry_link.entry_references.type_ = "TARGET"
+
+                request = dataplex_v1.UpdateEntryLinkRequest(
+                    entry_link=entry_link,
+                )
+
+                # Make the request
+                response = client.update_entry_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.UpdateEntryLinkRequest, dict]):
+                The request object. Request message for UpdateEntryLink
+                method.
+            entry_link (google.cloud.dataplex_v1.types.EntryLink):
+                Required. Entry Link resource.
+                This corresponds to the ``entry_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.EntryLink:
+                EntryLink represents a link between
+                two Entries.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [entry_link]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.UpdateEntryLinkRequest):
+            request = catalog.UpdateEntryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if entry_link is not None:
+                request.entry_link = entry_link
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_entry_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("entry_link.name", request.entry_link.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def delete_entry_link(
         self,
         request: Optional[Union[catalog.DeleteEntryLinkRequest, dict]] = None,
@@ -4338,6 +4463,188 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_entry_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def lookup_entry_links(
+        self,
+        request: Optional[Union[catalog.LookupEntryLinksRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.LookupEntryLinksPager:
+        r"""Looks up Entry Links referencing the specified Entry.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_lookup_entry_links():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.LookupEntryLinksRequest(
+                    name="name_value",
+                    entry="entry_value",
+                )
+
+                # Make the request
+                page_result = client.lookup_entry_links(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.LookupEntryLinksRequest, dict]):
+                The request object. Request message for LookupEntryLinks.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.services.catalog_service.pagers.LookupEntryLinksPager:
+                Response message for
+                LookupEntryLinks.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.LookupEntryLinksRequest):
+            request = catalog.LookupEntryLinksRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.lookup_entry_links]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.LookupEntryLinksPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def lookup_context(
+        self,
+        request: Optional[Union[catalog.LookupContextRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.LookupContextResponse:
+        r"""Looks up LLM Context for the specified resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_lookup_context():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.LookupContextRequest(
+                    name="name_value",
+                    resources=['resources_value1', 'resources_value2'],
+                )
+
+                # Make the request
+                response = client.lookup_context(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.LookupContextRequest, dict]):
+                The request object. Lookup Context using permissions in
+                the source system.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.LookupContextResponse:
+                Lookup Context response.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.LookupContextRequest):
+            request = catalog.LookupContextRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.lookup_context]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4466,6 +4773,653 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Done; return the response.
         return response
 
+    def create_metadata_feed(
+        self,
+        request: Optional[Union[catalog.CreateMetadataFeedRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        metadata_feed: Optional[catalog.MetadataFeed] = None,
+        metadata_feed_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a MetadataFeed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_create_metadata_feed():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                metadata_feed = dataplex_v1.MetadataFeed()
+                metadata_feed.pubsub_topic = "pubsub_topic_value"
+
+                request = dataplex_v1.CreateMetadataFeedRequest(
+                    parent="parent_value",
+                    metadata_feed=metadata_feed,
+                )
+
+                # Make the request
+                operation = client.create_metadata_feed(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreateMetadataFeedRequest, dict]):
+                The request object. Request message for
+                CreateMetadataFeed.
+            parent (str):
+                Required. The resource name of the parent location, in
+                the format
+                ``projects/{project_id_or_number}/locations/{location_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            metadata_feed (google.cloud.dataplex_v1.types.MetadataFeed):
+                Required. The metadata job resource.
+                This corresponds to the ``metadata_feed`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            metadata_feed_id (str):
+                Optional. The metadata job ID. If not provided, a unique
+                ID is generated with the prefix ``metadata-job-``.
+
+                This corresponds to the ``metadata_feed_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dataplex_v1.types.MetadataFeed`
+                MetadataFeed contains information related to the
+                metadata feed.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, metadata_feed, metadata_feed_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.CreateMetadataFeedRequest):
+            request = catalog.CreateMetadataFeedRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if metadata_feed is not None:
+                request.metadata_feed = metadata_feed
+            if metadata_feed_id is not None:
+                request.metadata_feed_id = metadata_feed_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_metadata_feed]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            catalog.MetadataFeed,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_metadata_feed(
+        self,
+        request: Optional[Union[catalog.GetMetadataFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.MetadataFeed:
+        r"""Gets a MetadataFeed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_get_metadata_feed():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetMetadataFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metadata_feed(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetMetadataFeedRequest, dict]):
+                The request object. Request message for GetMetadataFeed.
+            name (str):
+                Required. The resource name of the metadata feed, in the
+                format
+                ``projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.MetadataFeed:
+                MetadataFeed contains information
+                related to the metadata feed.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.GetMetadataFeedRequest):
+            request = catalog.GetMetadataFeedRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_metadata_feed]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_metadata_feeds(
+        self,
+        request: Optional[Union[catalog.ListMetadataFeedsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListMetadataFeedsPager:
+        r"""Retrieve a list of MetadataFeeds.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_list_metadata_feeds():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListMetadataFeedsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_metadata_feeds(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.ListMetadataFeedsRequest, dict]):
+                The request object. Request message for
+                ListMetadataFeedsRequest.
+            parent (str):
+                Required. The resource name of the parent location, in
+                the format
+                ``projects/{project_id_or_number}/locations/{location_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.services.catalog_service.pagers.ListMetadataFeedsPager:
+                Response message for
+                ListMetadataFeeds.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.ListMetadataFeedsRequest):
+            request = catalog.ListMetadataFeedsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_metadata_feeds]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListMetadataFeedsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_metadata_feed(
+        self,
+        request: Optional[Union[catalog.DeleteMetadataFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a MetadataFeed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_delete_metadata_feed():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteMetadataFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_metadata_feed(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.DeleteMetadataFeedRequest, dict]):
+                The request object. Request message for
+                DeleteMetadataFeed.
+            name (str):
+                Required. The resource name of the metadata feed, in the
+                format
+                ``projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.DeleteMetadataFeedRequest):
+            request = catalog.DeleteMetadataFeedRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_metadata_feed]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_metadata_feed(
+        self,
+        request: Optional[Union[catalog.UpdateMetadataFeedRequest, dict]] = None,
+        *,
+        metadata_feed: Optional[catalog.MetadataFeed] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates a MetadataFeed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_update_metadata_feed():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                metadata_feed = dataplex_v1.MetadataFeed()
+                metadata_feed.pubsub_topic = "pubsub_topic_value"
+
+                request = dataplex_v1.UpdateMetadataFeedRequest(
+                    metadata_feed=metadata_feed,
+                )
+
+                # Make the request
+                operation = client.update_metadata_feed(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.UpdateMetadataFeedRequest, dict]):
+                The request object. Request message for
+                UpdateMetadataFeed.
+            metadata_feed (google.cloud.dataplex_v1.types.MetadataFeed):
+                Required. Update description. Only fields specified in
+                ``update_mask`` are updated.
+
+                This corresponds to the ``metadata_feed`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Mask of fields to update.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dataplex_v1.types.MetadataFeed`
+                MetadataFeed contains information related to the
+                metadata feed.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [metadata_feed, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.UpdateMetadataFeedRequest):
+            request = catalog.UpdateMetadataFeedRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if metadata_feed is not None:
+                request.metadata_feed = metadata_feed
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_metadata_feed]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("metadata_feed.name", request.metadata_feed.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            catalog.MetadataFeed,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "CatalogServiceClient":
         return self
 
@@ -4481,7 +5435,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4507,8 +5461,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4517,7 +5475,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4526,7 +5484,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -4540,7 +5498,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4566,8 +5524,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4576,7 +5538,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4585,7 +5547,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -4599,7 +5561,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4629,8 +5591,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4639,7 +5605,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4647,7 +5613,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4655,7 +5621,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4684,8 +5650,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4694,7 +5664,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4702,15 +5672,348 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
+    def set_iam_policy(
+        self,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
+                The request object. Request message for `SetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if request is None:
+            request_pb = iam_policy_pb2.SetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.SetIamPolicyRequest(**request)
+        else:
+            request_pb = request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        try:
+            # Send the request.
+            response = rpc(
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
+
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
+
+    def get_iam_policy(
+        self,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Gets the IAM access control policy for a function.
+
+        Returns an empty policy if the function exists and does not have a
+        policy set.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
+                The request object. Request message for `GetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if
+                any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if request is None:
+            request_pb = iam_policy_pb2.GetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.GetIamPolicyRequest(**request)
+        else:
+            request_pb = request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        try:
+            # Send the request.
+            response = rpc(
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
+
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
+
+    def test_iam_permissions(
+        self,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        r"""Tests the specified IAM permissions against the IAM access control
+            policy for a function.
+
+        If the function does not exist, this will return an empty set
+        of permissions, not a NOT_FOUND error.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
+                The request object. Request message for
+                `TestIamPermissions` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for ``TestIamPermissions`` method.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if request is None:
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        else:
+            request_pb = request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        try:
+            # Send the request.
+            response = rpc(
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
+
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
+
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4736,8 +6039,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4746,7 +6053,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4755,7 +6062,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -4769,7 +6076,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4795,8 +6102,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4805,7 +6116,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4814,7 +6125,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,

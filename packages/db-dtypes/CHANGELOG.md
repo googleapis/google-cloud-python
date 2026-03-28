@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.5.1](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.5.0...db-dtypes-v1.5.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.4.3...db-dtypes-v1.5.0) (2025-12-15)
 
 

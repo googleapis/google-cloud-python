@@ -33,6 +33,7 @@ from google.cloud.ces_v1beta.types import (
     deployment,
     example,
     guardrail,
+    security_settings,
     tool,
     toolset,
 )
@@ -42,6 +43,7 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
+from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -1479,6 +1481,53 @@ class _BaseAgentServiceRestTransport(AgentServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseGetSecuritySettings:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/securitySettings}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = agent_service.GetSecuritySettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseAgentServiceRestTransport._BaseGetSecuritySettings._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseGetTool:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -2435,6 +2484,63 @@ class _BaseAgentServiceRestTransport(AgentServiceTransport):
             )
             query_params.update(
                 _BaseAgentServiceRestTransport._BaseUpdateGuardrail._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseUpdateSecuritySettings:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{security_settings.name=projects/*/locations/*/securitySettings}",
+                    "body": "security_settings",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = agent_service.UpdateSecuritySettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings._get_unset_required_fields(
                     query_params
                 )
             )

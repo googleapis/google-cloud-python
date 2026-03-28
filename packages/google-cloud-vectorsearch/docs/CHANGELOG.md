@@ -4,12 +4,44 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
-## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.6.0...google-cloud-vectorsearch-v0.7.0) (2026-03-09)
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.8.0...google-cloud-vectorsearch-v0.9.0) (2026-03-26)
 
 
 ### Features
 
-* generate libraries ([064889391a726217c43009280e765f7883a610b6](https://github.com/googleapis/google-cloud-python/commit/064889391a726217c43009280e765f7883a610b6))
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.7.0...google-cloud-vectorsearch-v0.8.0) (2026-03-23)
+
+
+### Documentation
+
+* Update changelog entry for release (#16092) ([128966437ae7886c08e613aa7306552b05d515da](https://github.com/googleapis/google-cloud-python/commit/128966437ae7886c08e613aa7306552b05d515da))
+
+
+### Features
+
+* Add support for ExportDataObjects ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Mark Vector Search v1 API as GA ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.6.0...google-cloud-vectorsearch-v0.7.0) (2026-03-09)
+
+
+### Documentation
+
+* Changed default values for max_replica_count for AutoScaling ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
+
+
+### Bug Fixes
+
+* Removed field DenseScannParams from SearchHint ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
 
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.5.0...google-cloud-vectorsearch-v0.6.0) (2026-03-05)
 

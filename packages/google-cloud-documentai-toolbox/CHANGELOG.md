@@ -1,5 +1,22 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-documentai-toolbox/#history
+
+## [0.15.1-alpha.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.15.1-alpha...google-cloud-documentai-toolbox-v0.15.1-alpha.1) (2026-03-26)
+
+
+### Documentation
+
+* remove samples ([a129b70224f173f17e7665c46d2cc8cbd0ad13c0](https://github.com/googleapis/google-cloud-python/commit/a129b70224f173f17e7665c46d2cc8cbd0ad13c0))
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.15.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.15.0-alpha...v0.15.1-alpha) (2026-01-14)
 
 

@@ -1270,6 +1270,8 @@ class Zone(proto.Message):
                 The Zone is running factory turnup checks.
             READY_FOR_SITE_TURNUP (6):
                 The Zone is ready for site turnup.
+            OFFLINE (9):
+                The Zone is offline.
             CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED (7):
                 The Zone failed in factory turnup checks.
             ACTIVE (3):
@@ -1284,6 +1286,7 @@ class Zone(proto.Message):
         READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS = 5
         CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED = 8
         READY_FOR_SITE_TURNUP = 6
+        OFFLINE = 9
         CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED = 7
         ACTIVE = 3
         CANCELLED = 4

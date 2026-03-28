@@ -503,11 +503,17 @@ class SearchRequest(proto.Message):
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+                The path must include the project number, project id is not
+                supported for this field.
             filter (str):
                 Optional. Filter specification to filter documents in the
                 data store specified by data_store field. For more
                 information on filtering, see
                 `Filtering <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+            boost_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec):
+                Optional. Boost specification to boost certain documents.
+                For more information on boosting, see
+                `Boosting <https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>`__
         """
 
         data_store: str = proto.Field(
@@ -517,6 +523,11 @@ class SearchRequest(proto.Message):
         filter: str = proto.Field(
             proto.STRING,
             number=5,
+        )
+        boost_spec: "SearchRequest.BoostSpec" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message="SearchRequest.BoostSpec",
         )
 
     class FacetSpec(proto.Message):

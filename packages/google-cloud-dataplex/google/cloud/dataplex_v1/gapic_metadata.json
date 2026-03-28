@@ -284,6 +284,11 @@
                 "create_entry_type"
               ]
             },
+            "CreateMetadataFeed": {
+              "methods": [
+                "create_metadata_feed"
+              ]
+            },
             "CreateMetadataJob": {
               "methods": [
                 "create_metadata_job"
@@ -314,6 +319,11 @@
                 "delete_entry_type"
               ]
             },
+            "DeleteMetadataFeed": {
+              "methods": [
+                "delete_metadata_feed"
+              ]
+            },
             "GetAspectType": {
               "methods": [
                 "get_aspect_type"
@@ -337,6 +347,11 @@
             "GetEntryType": {
               "methods": [
                 "get_entry_type"
+              ]
+            },
+            "GetMetadataFeed": {
+              "methods": [
+                "get_metadata_feed"
               ]
             },
             "GetMetadataJob": {
@@ -364,14 +379,29 @@
                 "list_entry_types"
               ]
             },
+            "ListMetadataFeeds": {
+              "methods": [
+                "list_metadata_feeds"
+              ]
+            },
             "ListMetadataJobs": {
               "methods": [
                 "list_metadata_jobs"
               ]
             },
+            "LookupContext": {
+              "methods": [
+                "lookup_context"
+              ]
+            },
             "LookupEntry": {
               "methods": [
                 "lookup_entry"
+              ]
+            },
+            "LookupEntryLinks": {
+              "methods": [
+                "lookup_entry_links"
               ]
             },
             "SearchEntries": {
@@ -394,9 +424,19 @@
                 "update_entry_group"
               ]
             },
+            "UpdateEntryLink": {
+              "methods": [
+                "update_entry_link"
+              ]
+            },
             "UpdateEntryType": {
               "methods": [
                 "update_entry_type"
+              ]
+            },
+            "UpdateMetadataFeed": {
+              "methods": [
+                "update_metadata_feed"
               ]
             }
           }
@@ -434,6 +474,11 @@
                 "create_entry_type"
               ]
             },
+            "CreateMetadataFeed": {
+              "methods": [
+                "create_metadata_feed"
+              ]
+            },
             "CreateMetadataJob": {
               "methods": [
                 "create_metadata_job"
@@ -464,6 +509,11 @@
                 "delete_entry_type"
               ]
             },
+            "DeleteMetadataFeed": {
+              "methods": [
+                "delete_metadata_feed"
+              ]
+            },
             "GetAspectType": {
               "methods": [
                 "get_aspect_type"
@@ -487,6 +537,11 @@
             "GetEntryType": {
               "methods": [
                 "get_entry_type"
+              ]
+            },
+            "GetMetadataFeed": {
+              "methods": [
+                "get_metadata_feed"
               ]
             },
             "GetMetadataJob": {
@@ -514,14 +569,29 @@
                 "list_entry_types"
               ]
             },
+            "ListMetadataFeeds": {
+              "methods": [
+                "list_metadata_feeds"
+              ]
+            },
             "ListMetadataJobs": {
               "methods": [
                 "list_metadata_jobs"
               ]
             },
+            "LookupContext": {
+              "methods": [
+                "lookup_context"
+              ]
+            },
             "LookupEntry": {
               "methods": [
                 "lookup_entry"
+              ]
+            },
+            "LookupEntryLinks": {
+              "methods": [
+                "lookup_entry_links"
               ]
             },
             "SearchEntries": {
@@ -544,9 +614,19 @@
                 "update_entry_group"
               ]
             },
+            "UpdateEntryLink": {
+              "methods": [
+                "update_entry_link"
+              ]
+            },
             "UpdateEntryType": {
               "methods": [
                 "update_entry_type"
+              ]
+            },
+            "UpdateMetadataFeed": {
+              "methods": [
+                "update_metadata_feed"
               ]
             }
           }
@@ -584,6 +664,11 @@
                 "create_entry_type"
               ]
             },
+            "CreateMetadataFeed": {
+              "methods": [
+                "create_metadata_feed"
+              ]
+            },
             "CreateMetadataJob": {
               "methods": [
                 "create_metadata_job"
@@ -614,6 +699,11 @@
                 "delete_entry_type"
               ]
             },
+            "DeleteMetadataFeed": {
+              "methods": [
+                "delete_metadata_feed"
+              ]
+            },
             "GetAspectType": {
               "methods": [
                 "get_aspect_type"
@@ -637,6 +727,11 @@
             "GetEntryType": {
               "methods": [
                 "get_entry_type"
+              ]
+            },
+            "GetMetadataFeed": {
+              "methods": [
+                "get_metadata_feed"
               ]
             },
             "GetMetadataJob": {
@@ -664,14 +759,29 @@
                 "list_entry_types"
               ]
             },
+            "ListMetadataFeeds": {
+              "methods": [
+                "list_metadata_feeds"
+              ]
+            },
             "ListMetadataJobs": {
               "methods": [
                 "list_metadata_jobs"
               ]
             },
+            "LookupContext": {
+              "methods": [
+                "lookup_context"
+              ]
+            },
             "LookupEntry": {
               "methods": [
                 "lookup_entry"
+              ]
+            },
+            "LookupEntryLinks": {
+              "methods": [
+                "lookup_entry_links"
               ]
             },
             "SearchEntries": {
@@ -694,9 +804,19 @@
                 "update_entry_group"
               ]
             },
+            "UpdateEntryLink": {
+              "methods": [
+                "update_entry_link"
+              ]
+            },
             "UpdateEntryType": {
               "methods": [
                 "update_entry_type"
+              ]
+            },
+            "UpdateMetadataFeed": {
+              "methods": [
+                "update_metadata_feed"
               ]
             }
           }
@@ -800,136 +920,179 @@
     "ContentService": {
       "clients": {
         "grpc": {
-          "libraryClient": "ContentServiceClient",
+          "libraryClient": "ContentServiceClient"
+        },
+        "grpc-async": {
+          "libraryClient": "ContentServiceAsyncClient"
+        },
+        "rest": {
+          "libraryClient": "ContentServiceClient"
+        }
+      }
+    },
+    "DataProductService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataProductServiceClient",
           "rpcs": {
-            "CreateContent": {
+            "CreateDataAsset": {
               "methods": [
-                "create_content"
+                "create_data_asset"
               ]
             },
-            "DeleteContent": {
+            "CreateDataProduct": {
               "methods": [
-                "delete_content"
+                "create_data_product"
               ]
             },
-            "GetContent": {
+            "DeleteDataAsset": {
               "methods": [
-                "get_content"
+                "delete_data_asset"
               ]
             },
-            "GetIamPolicy": {
+            "DeleteDataProduct": {
               "methods": [
-                "get_iam_policy"
+                "delete_data_product"
               ]
             },
-            "ListContent": {
+            "GetDataAsset": {
               "methods": [
-                "list_content"
+                "get_data_asset"
               ]
             },
-            "SetIamPolicy": {
+            "GetDataProduct": {
               "methods": [
-                "set_iam_policy"
+                "get_data_product"
               ]
             },
-            "TestIamPermissions": {
+            "ListDataAssets": {
               "methods": [
-                "test_iam_permissions"
+                "list_data_assets"
               ]
             },
-            "UpdateContent": {
+            "ListDataProducts": {
               "methods": [
-                "update_content"
+                "list_data_products"
+              ]
+            },
+            "UpdateDataAsset": {
+              "methods": [
+                "update_data_asset"
+              ]
+            },
+            "UpdateDataProduct": {
+              "methods": [
+                "update_data_product"
               ]
             }
           }
         },
         "grpc-async": {
-          "libraryClient": "ContentServiceAsyncClient",
+          "libraryClient": "DataProductServiceAsyncClient",
           "rpcs": {
-            "CreateContent": {
+            "CreateDataAsset": {
               "methods": [
-                "create_content"
+                "create_data_asset"
               ]
             },
-            "DeleteContent": {
+            "CreateDataProduct": {
               "methods": [
-                "delete_content"
+                "create_data_product"
               ]
             },
-            "GetContent": {
+            "DeleteDataAsset": {
               "methods": [
-                "get_content"
+                "delete_data_asset"
               ]
             },
-            "GetIamPolicy": {
+            "DeleteDataProduct": {
               "methods": [
-                "get_iam_policy"
+                "delete_data_product"
               ]
             },
-            "ListContent": {
+            "GetDataAsset": {
               "methods": [
-                "list_content"
+                "get_data_asset"
               ]
             },
-            "SetIamPolicy": {
+            "GetDataProduct": {
               "methods": [
-                "set_iam_policy"
+                "get_data_product"
               ]
             },
-            "TestIamPermissions": {
+            "ListDataAssets": {
               "methods": [
-                "test_iam_permissions"
+                "list_data_assets"
               ]
             },
-            "UpdateContent": {
+            "ListDataProducts": {
               "methods": [
-                "update_content"
+                "list_data_products"
+              ]
+            },
+            "UpdateDataAsset": {
+              "methods": [
+                "update_data_asset"
+              ]
+            },
+            "UpdateDataProduct": {
+              "methods": [
+                "update_data_product"
               ]
             }
           }
         },
         "rest": {
-          "libraryClient": "ContentServiceClient",
+          "libraryClient": "DataProductServiceClient",
           "rpcs": {
-            "CreateContent": {
+            "CreateDataAsset": {
               "methods": [
-                "create_content"
+                "create_data_asset"
               ]
             },
-            "DeleteContent": {
+            "CreateDataProduct": {
               "methods": [
-                "delete_content"
+                "create_data_product"
               ]
             },
-            "GetContent": {
+            "DeleteDataAsset": {
               "methods": [
-                "get_content"
+                "delete_data_asset"
               ]
             },
-            "GetIamPolicy": {
+            "DeleteDataProduct": {
               "methods": [
-                "get_iam_policy"
+                "delete_data_product"
               ]
             },
-            "ListContent": {
+            "GetDataAsset": {
               "methods": [
-                "list_content"
+                "get_data_asset"
               ]
             },
-            "SetIamPolicy": {
+            "GetDataProduct": {
               "methods": [
-                "set_iam_policy"
+                "get_data_product"
               ]
             },
-            "TestIamPermissions": {
+            "ListDataAssets": {
               "methods": [
-                "test_iam_permissions"
+                "list_data_assets"
               ]
             },
-            "UpdateContent": {
+            "ListDataProducts": {
               "methods": [
-                "update_content"
+                "list_data_products"
+              ]
+            },
+            "UpdateDataAsset": {
+              "methods": [
+                "update_data_asset"
+              ]
+            },
+            "UpdateDataProduct": {
+              "methods": [
+                "update_data_product"
               ]
             }
           }
@@ -1349,11 +1512,6 @@
                 "create_asset"
               ]
             },
-            "CreateEnvironment": {
-              "methods": [
-                "create_environment"
-              ]
-            },
             "CreateLake": {
               "methods": [
                 "create_lake"
@@ -1374,11 +1532,6 @@
                 "delete_asset"
               ]
             },
-            "DeleteEnvironment": {
-              "methods": [
-                "delete_environment"
-              ]
-            },
             "DeleteLake": {
               "methods": [
                 "delete_lake"
@@ -1397,11 +1550,6 @@
             "GetAsset": {
               "methods": [
                 "get_asset"
-              ]
-            },
-            "GetEnvironment": {
-              "methods": [
-                "get_environment"
               ]
             },
             "GetJob": {
@@ -1434,11 +1582,6 @@
                 "list_assets"
               ]
             },
-            "ListEnvironments": {
-              "methods": [
-                "list_environments"
-              ]
-            },
             "ListJobs": {
               "methods": [
                 "list_jobs"
@@ -1452,11 +1595,6 @@
             "ListLakes": {
               "methods": [
                 "list_lakes"
-              ]
-            },
-            "ListSessions": {
-              "methods": [
-                "list_sessions"
               ]
             },
             "ListTasks": {
@@ -1482,11 +1620,6 @@
             "UpdateAsset": {
               "methods": [
                 "update_asset"
-              ]
-            },
-            "UpdateEnvironment": {
-              "methods": [
-                "update_environment"
               ]
             },
             "UpdateLake": {
@@ -1519,11 +1652,6 @@
                 "create_asset"
               ]
             },
-            "CreateEnvironment": {
-              "methods": [
-                "create_environment"
-              ]
-            },
             "CreateLake": {
               "methods": [
                 "create_lake"
@@ -1544,11 +1672,6 @@
                 "delete_asset"
               ]
             },
-            "DeleteEnvironment": {
-              "methods": [
-                "delete_environment"
-              ]
-            },
             "DeleteLake": {
               "methods": [
                 "delete_lake"
@@ -1567,11 +1690,6 @@
             "GetAsset": {
               "methods": [
                 "get_asset"
-              ]
-            },
-            "GetEnvironment": {
-              "methods": [
-                "get_environment"
               ]
             },
             "GetJob": {
@@ -1604,11 +1722,6 @@
                 "list_assets"
               ]
             },
-            "ListEnvironments": {
-              "methods": [
-                "list_environments"
-              ]
-            },
             "ListJobs": {
               "methods": [
                 "list_jobs"
@@ -1622,11 +1735,6 @@
             "ListLakes": {
               "methods": [
                 "list_lakes"
-              ]
-            },
-            "ListSessions": {
-              "methods": [
-                "list_sessions"
               ]
             },
             "ListTasks": {
@@ -1652,11 +1760,6 @@
             "UpdateAsset": {
               "methods": [
                 "update_asset"
-              ]
-            },
-            "UpdateEnvironment": {
-              "methods": [
-                "update_environment"
               ]
             },
             "UpdateLake": {
@@ -1689,11 +1792,6 @@
                 "create_asset"
               ]
             },
-            "CreateEnvironment": {
-              "methods": [
-                "create_environment"
-              ]
-            },
             "CreateLake": {
               "methods": [
                 "create_lake"
@@ -1714,11 +1812,6 @@
                 "delete_asset"
               ]
             },
-            "DeleteEnvironment": {
-              "methods": [
-                "delete_environment"
-              ]
-            },
             "DeleteLake": {
               "methods": [
                 "delete_lake"
@@ -1737,11 +1830,6 @@
             "GetAsset": {
               "methods": [
                 "get_asset"
-              ]
-            },
-            "GetEnvironment": {
-              "methods": [
-                "get_environment"
               ]
             },
             "GetJob": {
@@ -1774,11 +1862,6 @@
                 "list_assets"
               ]
             },
-            "ListEnvironments": {
-              "methods": [
-                "list_environments"
-              ]
-            },
             "ListJobs": {
               "methods": [
                 "list_jobs"
@@ -1792,11 +1875,6 @@
             "ListLakes": {
               "methods": [
                 "list_lakes"
-              ]
-            },
-            "ListSessions": {
-              "methods": [
-                "list_sessions"
               ]
             },
             "ListTasks": {
@@ -1822,11 +1900,6 @@
             "UpdateAsset": {
               "methods": [
                 "update_asset"
-              ]
-            },
-            "UpdateEnvironment": {
-              "methods": [
-                "update_environment"
               ]
             },
             "UpdateLake": {

@@ -35,7 +35,7 @@ EXTRAS_REQUIRE = {
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "2.8.0",
+    version = "2.8.2",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
@@ -51,15 +51,13 @@ setuptools.setup(
     zip_safe=False,
     install_requires=REQUIREMENTS,
     extras_require=EXTRAS_REQUIRE,
-    python_requires='>= 3.7',
+    python_requires='>= 3.9',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',

@@ -1,0 +1,11 @@
+# Install Sphinx plugin
+-e .
+
+# Tox specific dependencies
+tox
+mock
+pytest
+
+# Other dependencies
+ruff==0.14.14
+parameterized==0.8.1

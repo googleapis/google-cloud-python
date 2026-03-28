@@ -32,8 +32,6 @@ RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -58,7 +56,6 @@ UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -585,10 +582,10 @@ def core_deps_from_source(session, protobuf_implementation):
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
         f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
         f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
     ]
 
     for dep in core_dependencies_from_source:

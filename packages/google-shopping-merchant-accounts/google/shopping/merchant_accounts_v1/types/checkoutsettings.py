@@ -135,10 +135,11 @@ class CheckoutSettings(proto.Message):
 
             This field is a member of `oneof`_ ``_uri_settings``.
         eligible_destinations (MutableSequence[google.shopping.type.types.Destination.DestinationEnum]):
-            Optional. The destinations (also known as `Marketing
+            Optional. Required for the create operation. The
+            destinations (also known as `Marketing
             methods <https://support.google.com/merchants/answer/15130232>`__)
-            to which the checkout program applies, valid destination
-            values are ``SHOPPING_ADS``, ``FREE_LISTINGS``
+            to which the checkout program applies. Valid destination
+            values are ``SHOPPING_ADS`` and ``FREE_LISTINGS``.
         enrollment_state (google.shopping.merchant_accounts_v1.types.CheckoutSettings.CheckoutEnrollmentState):
             Output only. Reflects the merchant enrollment state in
             ``Checkout`` program.
