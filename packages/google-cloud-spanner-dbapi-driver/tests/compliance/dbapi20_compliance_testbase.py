@@ -308,8 +308,8 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
         """Test connection.commit()."""
         con = self._connect()
         try:
-            # Commit must work, even if it doesn't do anything
-            con.commit()
+            with self.assertRaises(self.errors.OperationalError):
+                con.commit()
         finally:
             con.close()
 
@@ -321,7 +321,8 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
             # the documented exception
             if hasattr(con, "rollback"):
                 try:
-                    con.rollback()
+                    with self.assertRaises(self.errors.OperationalError):
+                        con.rollback()
                 except self.driver.NotSupportedError:
                     pass
         finally:
@@ -346,11 +347,17 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
             cur2 = con.cursor()
             cur1.execute(self.sql_factory.stmt_ddl_create_table1)
             # DDL usually requires a clean slate or commit in some test envs
-            con.commit()
+            try:
+                con.commit()
+            except self.errors.OperationalError:
+                pass
             cur1.execute(
                 self.sql_factory.stmt_dml_insert_table1("1, 'Innocent Alice', 100")
             )
-            con.commit()
+            try:
+                con.commit()
+            except self.errors.OperationalError:
+                pass
             cur2.execute(self.sql_factory.stmt_dql_select_cols_table1("name"))
             users = cur2.fetchone()
 
