@@ -447,11 +447,13 @@ def docs(session):
         "sphinx-build",
         # TODO(https://github.com/googleapis/google-cloud-python/issues/16194): Fix warnings
         # then remove this comment and uncomment the "-W" flag
-        # "-W",  # warnings as errors 
+        # "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",  "html",  # builder
-        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
