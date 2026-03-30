@@ -410,6 +410,9 @@ class Database(object):
         :rtype: :class:`google.cloud.spanner_admin_database_v1.types.DatabaseDialect`
         :returns: the dialect of the database
         """
+        if self._database_dialect == DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED:
+            if not CrossSync.is_async:
+                self.reload()
         return self._database_dialect
 
     @property
