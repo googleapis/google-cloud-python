@@ -5,9 +5,11 @@
 # Require the latest major version be installed for each dependency.
 # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # Then this file should have google-cloud-foo>=1
-google-api-core>=2
-google-auth>=2
-grpcio>=1
-proto-plus>=1
-protobuf>=6
-grpc-google-iam-v1>=0
+google-auth
+google-api-core
+google-cloud-core
+google-resumable-media
+requests
+google-crc32c
+protobuf
+opentelemetry-api

@@ -115,8 +115,8 @@ replacements:
       @nox.session(python=DEFAULT_PYTHON_VERSION)
       @nox.session(python=DEFAULT_PYTHON_VERSION)
       @nox.parametrize(
-        "protobuf_implementation",
-        ["python", "upb"],
+          "protobuf_implementation",
+          ["python", "upb"],
       )
       def core_deps_from_source(session, protobuf_implementation):
     count: 1
@@ -639,12 +639,7 @@ replacements:
     ]
     before: |
       google-api-core==2.21.0
-      google-auth==2.35.0
-      # TODO\(https://github.com/googleapis/gapic-generator-python/issues/2453\)
-      # Add the minimum supported version of grpcio to constraints files
-      proto-plus==1.22.3
-      protobuf==4.25.8
-      grpc-google-iam-v1==0.14.0
+      [\s\S]*?grpc-google-iam-v1==0.14.0
     after: |
       google-auth==2.26.1
       google-api-core==2.27.0
@@ -655,6 +650,41 @@ replacements:
       protobuf==4.25.8
       opentelemetry-api==1.1.0
     count: 1
+  - paths: [
+      packages/google-cloud-storage/testing/constraints-3.10.txt,
+      packages/google-cloud-storage/testing/constraints-3.11.txt,
+      packages/google-cloud-storage/testing/constraints-3.12.txt,
+    ]
+    before: |
+      google-api-core
+      [\s\S]*?grpc-google-iam-v1
+    after: |
+      google-auth
+      google-api-core
+      google-cloud-core
+      google-resumable-media
+      requests
+      google-crc32c
+      protobuf
+      opentelemetry-api
+    count: 3
+  - paths: [
+      packages/google-cloud-storage/testing/constraints-3.13.txt,
+      packages/google-cloud-storage/testing/constraints-3.14.txt,
+    ]
+    before: |
+      google-api-core>=2
+      [\s\S]*?grpc-google-iam-v1>=0
+    after: |
+      google-auth
+      google-api-core
+      google-cloud-core
+      google-resumable-media
+      requests
+      google-crc32c
+      protobuf
+      opentelemetry-api
+    count: 2
   - paths:
       - "packages/google-cloud-storage/docs/conf.py"
     before: |
