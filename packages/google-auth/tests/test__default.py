@@ -891,6 +891,16 @@ def test__get_gce_credentials_explicit_request(ping):
 
 
 @mock.patch(
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
+)
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+def test__get_gce_credentials_default_request(mock_request_cls, ping):
+    _default._get_gce_credentials()
+    mock_request_cls.assert_called_once()
+    ping.assert_called_with(request=mock_request_cls.return_value)
+
+
+@mock.patch(
     "google.auth._default._get_explicit_environ_credentials",
     return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
     autospec=True,
