@@ -63,6 +63,7 @@ UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = [
     "brotli",
+    "grpcio",
     "opentelemetry-api",
     "opentelemetry-sdk",
 ]

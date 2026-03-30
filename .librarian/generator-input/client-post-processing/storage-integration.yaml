@@ -8,6 +8,7 @@ replacements:
     after: |
       UNIT_TEST_EXTRAS: List[str] = [
           "brotli",
+          "grpcio",
           "opentelemetry-api",
           "opentelemetry-sdk",
       ]
