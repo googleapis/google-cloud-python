@@ -393,7 +393,7 @@ def system(session, test_type):
     )
 
 
-@nox.session(python=CONFORMANCE_TEST_PYTHON_VERSIONS)
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def conftest_retry(session):
     """Run the retry conformance test suite."""
     json_conformance_tests = "tests/conformance/test_conformance.py"
@@ -431,7 +431,7 @@ def conftest_retry(session):
     session.run(*test_cmd, env={"DOCKER_API_VERSION": "1.39"})
 
 
-@nox.session(python=CONFORMANCE_TEST_PYTHON_VERSIONS)
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def conftest_retry_bidi(session):
     """Run the retry conformance test suite."""
 

@@ -3250,7 +3250,7 @@ libraries:
       - ^packages/google-cloud-storage/mypy.ini
       - ^packages/google-cloud-storage/noxfile.py
       - ^packages/google-cloud-storage/setup.py
-      - ^packages/google-cloud-storage/google/cloud/_storage_v2
+      - ^packages/google-cloud-storage/google/cloud/_storage
       - ^packages/google-cloud-storage/samples/generated_samples
       - ^packages/google-cloud-storage/testing
       - ^packages/google-cloud-storage/tests/__init__.py
@@ -3263,6 +3263,7 @@ libraries:
       - ^packages/google-cloud-storage/docs/_templates
       - ^packages/google-cloud-storage/docs/_storage
       - ^packages/google-cloud-storage/docs/summary_overview.md
+      - ^packages/google-cloud-storage/docs/multiprocessing.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.10.0
