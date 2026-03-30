@@ -16,11 +16,14 @@
 DBAPI 2.0 Compliance Test
 """
 
+import logging
 import time
 import unittest
 from unittest.mock import MagicMock
 
 from .sql_factory import SQLFactory
+
+logger = logging.getLogger(__name__)
 
 
 def encode(s: str) -> bytes:
@@ -59,6 +62,7 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
         pass
 
     def setUp(self):
+        logger.info("Executing test: %s", self.id())
         self.cleanup()
 
     def tearDown(self):
@@ -73,19 +77,22 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
                     try:
                         cur.execute(ddl)
                         con.commit()
-                    except self.driver.Error:
+                    except self.driver.Error as e:
                         # Assume table didn't exist. Other tests will check if
                         # execute is busted.
-                        pass
+                        logger.debug(
+                            "Cleanup DDL failed (expected if table missing): %s", e
+                        )
             finally:
                 con.close()
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Cleanup failed with exception: %s", e)
 
     def _connect(self):
         try:
             r = self.driver.connect(*self.connect_args, **self.connect_kw_args)
-        except AttributeError:
+        except AttributeError as e:
+            logger.error("No connect method found in self.driver module: %s", e)
             self.fail("No connect method found in self.driver module")
         return r
 
@@ -323,8 +330,8 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
                 try:
                     with self.assertRaises(self.errors.OperationalError):
                         con.rollback()
-                except self.driver.NotSupportedError:
-                    pass
+                except self.driver.NotSupportedError as e:
+                    logger.debug("Rollback not supported (expected): %s", e)
         finally:
             con.close()
 
@@ -349,15 +356,15 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
             # DDL usually requires a clean slate or commit in some test envs
             try:
                 con.commit()
-            except self.errors.OperationalError:
-                pass
+            except self.errors.OperationalError as e:
+                logger.debug("Empty commit threw expected OperationalError: %s", e)
             cur1.execute(
                 self.sql_factory.stmt_dml_insert_table1("1, 'Innocent Alice', 100")
             )
             try:
                 con.commit()
-            except self.errors.OperationalError:
-                pass
+            except self.errors.OperationalError as e:
+                logger.debug("Insert commit threw expected OperationalError: %s", e)
             cur2.execute(self.sql_factory.stmt_dql_select_cols_table1("name"))
             users = cur2.fetchone()
 
@@ -492,8 +499,8 @@ class DBAPI20ComplianceTestBase(unittest.TestCase):
                 self.assertEqual(len(r), 1, "callproc produced no result set")
                 self.assertEqual(len(r[0]), 1, "callproc produced invalid result set")
                 self.assertEqual(r[0][0], "foo", "callproc produced invalid results")
-        except self.driver.NotSupportedError:
-            pass
+        except self.driver.NotSupportedError as e:
+            logger.debug("callproc not supported (expected): %s", e)
         finally:
             con.close()
 
