@@ -44,8 +44,8 @@ async def sample_list_secrets():
     )
 
     # Make the request
-    page_result = client.list_secrets(request=request)
-
+    page_result = await client.list_secrets(request=request)
+    
     # Handle the response
     async for response in page_result:
         print(response)
