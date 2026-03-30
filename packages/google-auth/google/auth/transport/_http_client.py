@@ -94,7 +94,7 @@ class Request(transport.Request):
         if parts.scheme != "http":
             raise exceptions.TransportError(
                 "http.client transport only supports the http scheme, {}"
-                "was specified".format(parts.scheme)
+                " was specified".format(parts.scheme)
             )
 
         connection = http_client.HTTPConnection(parts.netloc, timeout=timeout)
