@@ -21,8 +21,8 @@ jobs:
     outputs:
       run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -43,11 +43,11 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: 3.14
       - name: Run Django foreign key test
         run: sh foreign_key_test.sh
         env:

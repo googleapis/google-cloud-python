@@ -30,8 +30,8 @@ jobs:
     outputs:
       run_generator: ${{ steps.filter.outputs.generator }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -60,7 +60,7 @@ jobs:
         logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -84,7 +84,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -101,7 +101,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -120,7 +120,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -142,7 +142,7 @@ jobs:
         python: ["3.10", "3.14"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -172,11 +172,11 @@ jobs:
     runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/bazel
           # Ensure CACHE_VERSION is defined in the mono-repo secrets!
