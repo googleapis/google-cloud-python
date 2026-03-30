@@ -23,9 +23,9 @@ release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "setuptools",
     "db-dtypes >=1.0.4,<2.0.0",
-    "numpy >=1.18.1",
-    "pandas >=1.1.4",
-    "pyarrow >= 4.0.0",
+    "numpy >=1.26.4",
+    "pandas >=1.5.3",
+    "pyarrow >= 12.0.0",
     # See https://arrow.apache.org/release/22.0.0.html
     "pyarrow >= 22.0.0; python_version >= '3.14'",
     "pydata-google-auth >=1.5.0",
@@ -46,7 +46,7 @@ extras = {
         "google-cloud-bigquery-storage >=2.16.2, <3.0.0",
     ],
     "tqdm": ["tqdm>=4.23.0"],
-    "geopandas": ["geopandas>=0.9.0", "Shapely>=1.8.4"],
+    "geopandas": ["geopandas>=0.14.4", "Shapely>=1.8.5"],
 }
 
 # Setup boilerplate below this line.
@@ -88,7 +88,6 @@ setuptools.setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -102,7 +101,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )
