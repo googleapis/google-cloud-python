@@ -65,9 +65,10 @@ def dns_access_direct(request, project_id):
 
     # Apply the default credentials to the headers to make the request.
     headers = {}
-    credentials.apply(headers)
+    url = "https://dns.googleapis.com/dns/v1/projects/{}".format(project_id)
+    credentials.before_request(request, "GET", url, headers)
     response = request(
-        url="https://dns.googleapis.com/dns/v1/projects/{}".format(project_id),
+        url=url,
         headers=headers,
     )
 
