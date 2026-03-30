@@ -5,6 +5,7 @@ google-auth
 google-api-core
 google-cloud-core
 google-resumable-media
+grpcio
 requests
 google-crc32c
 protobuf
