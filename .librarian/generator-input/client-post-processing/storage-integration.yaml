@@ -4,11 +4,12 @@ replacements:
       packages/google-cloud-storage/noxfile.py,
     ]
     before: |
-      UNIT_TEST_EXTRAS: List\[str\] = \[\]
+      UNIT_TEST_DEPENDENCIES: List\[str\] = \[\]
     after: |
-      UNIT_TEST_EXTRAS: List[str] = [
+      UNIT_TEST_DEPENDENCIES: List[str] = [
           "brotli",
           "grpcio",
+          "grpc-google-iam-v1",
           "opentelemetry-api",
           "opentelemetry-sdk",
       ]
@@ -642,6 +643,8 @@ replacements:
       [\s\S]*?grpc-google-iam-v1==0.14.0
     after: |
       google-auth==2.26.1
+      # cryptography is a direct dependency of google-auth
+      cryptography
       google-api-core==2.27.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
@@ -661,6 +664,8 @@ replacements:
       [\s\S]*?grpc-google-iam-v1
     after: |
       google-auth
+      # cryptography is a direct dependency of google-auth
+      cryptography
       google-api-core
       google-cloud-core
       google-resumable-media
@@ -679,6 +684,8 @@ replacements:
       [\s\S]*?grpc-google-iam-v1>=0
     after: |
       google-auth
+      # cryptography is a direct dependency of google-auth
+      cryptography
       google-api-core
       google-cloud-core
       google-resumable-media
@@ -759,4 +766,22 @@ replacements:
         Official Google Cloud Storage How-to Guides <https://cloud.google.com/storage/docs/how-to>
         Official Google Cloud Storage Samples <https://cloud.google.com/storage/docs/samples>
     count: 1
+  - paths: [
+      packages/google-cloud-storage/tests/unit/__init__.py
+    ]
+    before: "#\n$"
+    after: |
+      import io
+      import json
+      import os
+
+
+      def _read_local_json(json_file):
+          here = os.path.dirname(__file__)
+          json_path = os.path.abspath(os.path.join(here, json_file))
+          with io.open(json_path, "r", encoding="utf-8-sig") as fileobj:
+              return json.load(fileobj)
+    count: 1
+
+
 

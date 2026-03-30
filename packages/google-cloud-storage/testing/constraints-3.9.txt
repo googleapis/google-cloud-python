@@ -6,6 +6,8 @@
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
 google-auth==2.26.1
+# cryptography is a direct dependency of google-auth
+cryptography
 google-api-core==2.27.0
 google-cloud-core==2.4.2
 google-resumable-media==2.7.2
