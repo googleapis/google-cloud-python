@@ -590,7 +590,7 @@ replacements:
           # this dependency.
           "google-resumable-media >= 2.7.2, < 3.0.0",
           "requests >= 2.22.0, < 3.0.0",
-          "google-crc32c >= 1.3.0, < 2.0.0",
+          "google-crc32c >= 1.5.0, < 2.0.0",
       ]
       extras = {
           # TODO: Make these extra dependencies as mandatory once gRPC out of
@@ -650,7 +650,7 @@ replacements:
       google-resumable-media==2.7.2
       grpcio==1.33.2
       requests==2.22.0
-      google-crc32c==1.3.0
+      google-crc32c==1.5.0
       protobuf==4.25.8
       opentelemetry-api==1.1.0
     count: 1
