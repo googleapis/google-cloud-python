@@ -31,21 +31,21 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 def sample_bidi_write_object():
     # Create a client
-    client = storage_v2.StorageClient()
+    client = _storage_v2.StorageClient()
 
     # Initialize request argument(s)
-    request = storage_v2.BidiWriteObjectRequest(
+    request = _storage_v2.BidiWriteObjectRequest(
         upload_id="upload_id_value",
         write_offset=1297,
     )
 
     # This method expects an iterator which contains
-    # 'storage_v2.BidiWriteObjectRequest' objects
+    # '_storage_v2.BidiWriteObjectRequest' objects
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
@@ -60,5 +60,6 @@ def sample_bidi_write_object():
     # Handle the response
     for response in stream:
         print(response)
+
 
 # [END storage_v2_generated_Storage_BidiWriteObject_sync]

@@ -1,7 +1,7 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.cloud.storage_v2",
+  "libraryPackage": "google.cloud._storage_v2",
   "protoPackage": "google.storage.v2",
   "schema": "1.0",
   "services": {

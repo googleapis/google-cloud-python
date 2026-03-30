@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 def sample_rewrite_object():
     # Create a client
-    client = storage_v2.StorageClient()
+    client = _storage_v2.StorageClient()
 
     # Initialize request argument(s)
-    request = storage_v2.RewriteObjectRequest(
+    request = _storage_v2.RewriteObjectRequest(
         destination_name="destination_name_value",
         destination_bucket="destination_bucket_value",
         source_bucket="source_bucket_value",
@@ -51,5 +51,6 @@ def sample_rewrite_object():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_RewriteObject_sync]

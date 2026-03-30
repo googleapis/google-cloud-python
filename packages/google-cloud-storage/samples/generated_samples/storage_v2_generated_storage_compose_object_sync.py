@@ -31,21 +31,21 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 def sample_compose_object():
     # Create a client
-    client = storage_v2.StorageClient()
+    client = _storage_v2.StorageClient()
 
     # Initialize request argument(s)
-    request = storage_v2.ComposeObjectRequest(
-    )
+    request = _storage_v2.ComposeObjectRequest()
 
     # Make the request
     response = client.compose_object(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_ComposeObject_sync]

@@ -31,13 +31,14 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
+from google.cloud import _storage_v2
 
 
 async def sample_get_iam_policy():
     # Create a client
-    client = storage_v2.StorageAsyncClient()
+    client = _storage_v2.StorageAsyncClient()
 
     # Initialize request argument(s)
     request = iam_policy_pb2.GetIamPolicyRequest(
@@ -49,5 +50,6 @@ async def sample_get_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_GetIamPolicy_async]

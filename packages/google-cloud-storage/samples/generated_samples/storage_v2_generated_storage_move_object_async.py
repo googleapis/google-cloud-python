@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 async def sample_move_object():
     # Create a client
-    client = storage_v2.StorageAsyncClient()
+    client = _storage_v2.StorageAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_v2.MoveObjectRequest(
+    request = _storage_v2.MoveObjectRequest(
         bucket="bucket_value",
         source_object="source_object_value",
         destination_object="destination_object_value",
@@ -50,5 +50,6 @@ async def sample_move_object():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_MoveObject_async]

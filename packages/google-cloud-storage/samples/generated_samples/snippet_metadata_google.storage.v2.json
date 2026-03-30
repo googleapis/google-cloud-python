@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.bidi_read_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.bidi_read_object",
         "method": {
           "fullName": "google.storage.v2.Storage.BidiReadObject",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.BidiReadObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.BidiReadObjectRequest]"
           },
           {
             "name": "retry",
@@ -46,7 +46,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.BidiReadObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.BidiReadObjectResponse]",
         "shortName": "bidi_read_object"
       },
       "description": "Sample for BidiReadObject",
@@ -92,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.bidi_read_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.bidi_read_object",
         "method": {
           "fullName": "google.storage.v2.Storage.BidiReadObject",
           "service": {
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.BidiReadObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.BidiReadObjectRequest]"
           },
           {
             "name": "retry",
@@ -122,7 +122,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.BidiReadObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.BidiReadObjectResponse]",
         "shortName": "bidi_read_object"
       },
       "description": "Sample for BidiReadObject",
@@ -169,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.bidi_write_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.bidi_write_object",
         "method": {
           "fullName": "google.storage.v2.Storage.BidiWriteObject",
           "service": {
@@ -184,7 +184,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.BidiWriteObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.BidiWriteObjectRequest]"
           },
           {
             "name": "retry",
@@ -199,7 +199,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.BidiWriteObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.BidiWriteObjectResponse]",
         "shortName": "bidi_write_object"
       },
       "description": "Sample for BidiWriteObject",
@@ -245,10 +245,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.bidi_write_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.bidi_write_object",
         "method": {
           "fullName": "google.storage.v2.Storage.BidiWriteObject",
           "service": {
@@ -260,7 +260,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.BidiWriteObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.BidiWriteObjectRequest]"
           },
           {
             "name": "retry",
@@ -275,7 +275,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.BidiWriteObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.BidiWriteObjectResponse]",
         "shortName": "bidi_write_object"
       },
       "description": "Sample for BidiWriteObject",
@@ -322,10 +322,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.cancel_resumable_write",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.cancel_resumable_write",
         "method": {
           "fullName": "google.storage.v2.Storage.CancelResumableWrite",
           "service": {
@@ -337,7 +337,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.CancelResumableWriteRequest"
+            "type": "google.cloud._storage_v2.types.CancelResumableWriteRequest"
           },
           {
             "name": "upload_id",
@@ -356,7 +356,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.CancelResumableWriteResponse",
+        "resultType": "google.cloud._storage_v2.types.CancelResumableWriteResponse",
         "shortName": "cancel_resumable_write"
       },
       "description": "Sample for CancelResumableWrite",
@@ -402,10 +402,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.cancel_resumable_write",
+        "fullName": "google.cloud._storage_v2.StorageClient.cancel_resumable_write",
         "method": {
           "fullName": "google.storage.v2.Storage.CancelResumableWrite",
           "service": {
@@ -417,7 +417,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.CancelResumableWriteRequest"
+            "type": "google.cloud._storage_v2.types.CancelResumableWriteRequest"
           },
           {
             "name": "upload_id",
@@ -436,7 +436,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.CancelResumableWriteResponse",
+        "resultType": "google.cloud._storage_v2.types.CancelResumableWriteResponse",
         "shortName": "cancel_resumable_write"
       },
       "description": "Sample for CancelResumableWrite",
@@ -483,10 +483,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.compose_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.compose_object",
         "method": {
           "fullName": "google.storage.v2.Storage.ComposeObject",
           "service": {
@@ -498,7 +498,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ComposeObjectRequest"
+            "type": "google.cloud._storage_v2.types.ComposeObjectRequest"
           },
           {
             "name": "retry",
@@ -513,7 +513,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "compose_object"
       },
       "description": "Sample for ComposeObject",
@@ -559,10 +559,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.compose_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.compose_object",
         "method": {
           "fullName": "google.storage.v2.Storage.ComposeObject",
           "service": {
@@ -574,7 +574,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ComposeObjectRequest"
+            "type": "google.cloud._storage_v2.types.ComposeObjectRequest"
           },
           {
             "name": "retry",
@@ -589,7 +589,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "compose_object"
       },
       "description": "Sample for ComposeObject",
@@ -636,10 +636,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.create_bucket",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.create_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.CreateBucket",
           "service": {
@@ -651,7 +651,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.CreateBucketRequest"
+            "type": "google.cloud._storage_v2.types.CreateBucketRequest"
           },
           {
             "name": "parent",
@@ -659,7 +659,7 @@
           },
           {
             "name": "bucket",
-            "type": "google.cloud.storage_v2.types.Bucket"
+            "type": "google.cloud._storage_v2.types.Bucket"
           },
           {
             "name": "bucket_id",
@@ -678,7 +678,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "create_bucket"
       },
       "description": "Sample for CreateBucket",
@@ -724,10 +724,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.create_bucket",
+        "fullName": "google.cloud._storage_v2.StorageClient.create_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.CreateBucket",
           "service": {
@@ -739,7 +739,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.CreateBucketRequest"
+            "type": "google.cloud._storage_v2.types.CreateBucketRequest"
           },
           {
             "name": "parent",
@@ -747,7 +747,7 @@
           },
           {
             "name": "bucket",
-            "type": "google.cloud.storage_v2.types.Bucket"
+            "type": "google.cloud._storage_v2.types.Bucket"
           },
           {
             "name": "bucket_id",
@@ -766,7 +766,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "create_bucket"
       },
       "description": "Sample for CreateBucket",
@@ -813,10 +813,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.delete_bucket",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.delete_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.DeleteBucket",
           "service": {
@@ -828,7 +828,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.DeleteBucketRequest"
+            "type": "google.cloud._storage_v2.types.DeleteBucketRequest"
           },
           {
             "name": "name",
@@ -890,10 +890,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.delete_bucket",
+        "fullName": "google.cloud._storage_v2.StorageClient.delete_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.DeleteBucket",
           "service": {
@@ -905,7 +905,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.DeleteBucketRequest"
+            "type": "google.cloud._storage_v2.types.DeleteBucketRequest"
           },
           {
             "name": "name",
@@ -968,10 +968,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.delete_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.delete_object",
         "method": {
           "fullName": "google.storage.v2.Storage.DeleteObject",
           "service": {
@@ -983,7 +983,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.DeleteObjectRequest"
+            "type": "google.cloud._storage_v2.types.DeleteObjectRequest"
           },
           {
             "name": "bucket",
@@ -1053,10 +1053,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.delete_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.delete_object",
         "method": {
           "fullName": "google.storage.v2.Storage.DeleteObject",
           "service": {
@@ -1068,7 +1068,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.DeleteObjectRequest"
+            "type": "google.cloud._storage_v2.types.DeleteObjectRequest"
           },
           {
             "name": "bucket",
@@ -1139,10 +1139,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.get_bucket",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.get_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.GetBucket",
           "service": {
@@ -1154,7 +1154,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.GetBucketRequest"
+            "type": "google.cloud._storage_v2.types.GetBucketRequest"
           },
           {
             "name": "name",
@@ -1173,7 +1173,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "get_bucket"
       },
       "description": "Sample for GetBucket",
@@ -1219,10 +1219,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.get_bucket",
+        "fullName": "google.cloud._storage_v2.StorageClient.get_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.GetBucket",
           "service": {
@@ -1234,7 +1234,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.GetBucketRequest"
+            "type": "google.cloud._storage_v2.types.GetBucketRequest"
           },
           {
             "name": "name",
@@ -1253,7 +1253,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "get_bucket"
       },
       "description": "Sample for GetBucket",
@@ -1300,10 +1300,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.get_iam_policy",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.get_iam_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.GetIamPolicy",
           "service": {
@@ -1380,10 +1380,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.get_iam_policy",
+        "fullName": "google.cloud._storage_v2.StorageClient.get_iam_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.GetIamPolicy",
           "service": {
@@ -1461,10 +1461,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.get_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.get_object",
         "method": {
           "fullName": "google.storage.v2.Storage.GetObject",
           "service": {
@@ -1476,7 +1476,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.GetObjectRequest"
+            "type": "google.cloud._storage_v2.types.GetObjectRequest"
           },
           {
             "name": "bucket",
@@ -1503,7 +1503,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "get_object"
       },
       "description": "Sample for GetObject",
@@ -1549,10 +1549,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.get_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.get_object",
         "method": {
           "fullName": "google.storage.v2.Storage.GetObject",
           "service": {
@@ -1564,7 +1564,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.GetObjectRequest"
+            "type": "google.cloud._storage_v2.types.GetObjectRequest"
           },
           {
             "name": "bucket",
@@ -1591,7 +1591,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "get_object"
       },
       "description": "Sample for GetObject",
@@ -1638,10 +1638,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.list_buckets",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.list_buckets",
         "method": {
           "fullName": "google.storage.v2.Storage.ListBuckets",
           "service": {
@@ -1653,7 +1653,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ListBucketsRequest"
+            "type": "google.cloud._storage_v2.types.ListBucketsRequest"
           },
           {
             "name": "parent",
@@ -1672,7 +1672,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.services.storage.pagers.ListBucketsAsyncPager",
+        "resultType": "google.cloud._storage_v2.services.storage.pagers.ListBucketsAsyncPager",
         "shortName": "list_buckets"
       },
       "description": "Sample for ListBuckets",
@@ -1718,10 +1718,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.list_buckets",
+        "fullName": "google.cloud._storage_v2.StorageClient.list_buckets",
         "method": {
           "fullName": "google.storage.v2.Storage.ListBuckets",
           "service": {
@@ -1733,7 +1733,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ListBucketsRequest"
+            "type": "google.cloud._storage_v2.types.ListBucketsRequest"
           },
           {
             "name": "parent",
@@ -1752,7 +1752,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.services.storage.pagers.ListBucketsPager",
+        "resultType": "google.cloud._storage_v2.services.storage.pagers.ListBucketsPager",
         "shortName": "list_buckets"
       },
       "description": "Sample for ListBuckets",
@@ -1799,10 +1799,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.list_objects",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.list_objects",
         "method": {
           "fullName": "google.storage.v2.Storage.ListObjects",
           "service": {
@@ -1814,7 +1814,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ListObjectsRequest"
+            "type": "google.cloud._storage_v2.types.ListObjectsRequest"
           },
           {
             "name": "parent",
@@ -1833,7 +1833,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.services.storage.pagers.ListObjectsAsyncPager",
+        "resultType": "google.cloud._storage_v2.services.storage.pagers.ListObjectsAsyncPager",
         "shortName": "list_objects"
       },
       "description": "Sample for ListObjects",
@@ -1879,10 +1879,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.list_objects",
+        "fullName": "google.cloud._storage_v2.StorageClient.list_objects",
         "method": {
           "fullName": "google.storage.v2.Storage.ListObjects",
           "service": {
@@ -1894,7 +1894,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ListObjectsRequest"
+            "type": "google.cloud._storage_v2.types.ListObjectsRequest"
           },
           {
             "name": "parent",
@@ -1913,7 +1913,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.services.storage.pagers.ListObjectsPager",
+        "resultType": "google.cloud._storage_v2.services.storage.pagers.ListObjectsPager",
         "shortName": "list_objects"
       },
       "description": "Sample for ListObjects",
@@ -1960,10 +1960,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.lock_bucket_retention_policy",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.lock_bucket_retention_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.LockBucketRetentionPolicy",
           "service": {
@@ -1975,7 +1975,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.LockBucketRetentionPolicyRequest"
+            "type": "google.cloud._storage_v2.types.LockBucketRetentionPolicyRequest"
           },
           {
             "name": "bucket",
@@ -1994,7 +1994,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "lock_bucket_retention_policy"
       },
       "description": "Sample for LockBucketRetentionPolicy",
@@ -2040,10 +2040,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.lock_bucket_retention_policy",
+        "fullName": "google.cloud._storage_v2.StorageClient.lock_bucket_retention_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.LockBucketRetentionPolicy",
           "service": {
@@ -2055,7 +2055,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.LockBucketRetentionPolicyRequest"
+            "type": "google.cloud._storage_v2.types.LockBucketRetentionPolicyRequest"
           },
           {
             "name": "bucket",
@@ -2074,7 +2074,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "lock_bucket_retention_policy"
       },
       "description": "Sample for LockBucketRetentionPolicy",
@@ -2121,10 +2121,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.move_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.move_object",
         "method": {
           "fullName": "google.storage.v2.Storage.MoveObject",
           "service": {
@@ -2136,7 +2136,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.MoveObjectRequest"
+            "type": "google.cloud._storage_v2.types.MoveObjectRequest"
           },
           {
             "name": "bucket",
@@ -2163,7 +2163,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "move_object"
       },
       "description": "Sample for MoveObject",
@@ -2209,10 +2209,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.move_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.move_object",
         "method": {
           "fullName": "google.storage.v2.Storage.MoveObject",
           "service": {
@@ -2224,7 +2224,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.MoveObjectRequest"
+            "type": "google.cloud._storage_v2.types.MoveObjectRequest"
           },
           {
             "name": "bucket",
@@ -2251,7 +2251,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "move_object"
       },
       "description": "Sample for MoveObject",
@@ -2298,10 +2298,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.query_write_status",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.query_write_status",
         "method": {
           "fullName": "google.storage.v2.Storage.QueryWriteStatus",
           "service": {
@@ -2313,7 +2313,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.QueryWriteStatusRequest"
+            "type": "google.cloud._storage_v2.types.QueryWriteStatusRequest"
           },
           {
             "name": "upload_id",
@@ -2332,7 +2332,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.QueryWriteStatusResponse",
+        "resultType": "google.cloud._storage_v2.types.QueryWriteStatusResponse",
         "shortName": "query_write_status"
       },
       "description": "Sample for QueryWriteStatus",
@@ -2378,10 +2378,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.query_write_status",
+        "fullName": "google.cloud._storage_v2.StorageClient.query_write_status",
         "method": {
           "fullName": "google.storage.v2.Storage.QueryWriteStatus",
           "service": {
@@ -2393,7 +2393,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.QueryWriteStatusRequest"
+            "type": "google.cloud._storage_v2.types.QueryWriteStatusRequest"
           },
           {
             "name": "upload_id",
@@ -2412,7 +2412,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.QueryWriteStatusResponse",
+        "resultType": "google.cloud._storage_v2.types.QueryWriteStatusResponse",
         "shortName": "query_write_status"
       },
       "description": "Sample for QueryWriteStatus",
@@ -2459,10 +2459,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.read_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.read_object",
         "method": {
           "fullName": "google.storage.v2.Storage.ReadObject",
           "service": {
@@ -2474,7 +2474,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ReadObjectRequest"
+            "type": "google.cloud._storage_v2.types.ReadObjectRequest"
           },
           {
             "name": "bucket",
@@ -2501,7 +2501,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.ReadObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.ReadObjectResponse]",
         "shortName": "read_object"
       },
       "description": "Sample for ReadObject",
@@ -2547,10 +2547,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.read_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.read_object",
         "method": {
           "fullName": "google.storage.v2.Storage.ReadObject",
           "service": {
@@ -2562,7 +2562,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.ReadObjectRequest"
+            "type": "google.cloud._storage_v2.types.ReadObjectRequest"
           },
           {
             "name": "bucket",
@@ -2589,7 +2589,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "Iterable[google.cloud.storage_v2.types.ReadObjectResponse]",
+        "resultType": "Iterable[google.cloud._storage_v2.types.ReadObjectResponse]",
         "shortName": "read_object"
       },
       "description": "Sample for ReadObject",
@@ -2636,10 +2636,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.restore_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.restore_object",
         "method": {
           "fullName": "google.storage.v2.Storage.RestoreObject",
           "service": {
@@ -2651,7 +2651,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.RestoreObjectRequest"
+            "type": "google.cloud._storage_v2.types.RestoreObjectRequest"
           },
           {
             "name": "bucket",
@@ -2678,7 +2678,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "restore_object"
       },
       "description": "Sample for RestoreObject",
@@ -2724,10 +2724,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.restore_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.restore_object",
         "method": {
           "fullName": "google.storage.v2.Storage.RestoreObject",
           "service": {
@@ -2739,7 +2739,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.RestoreObjectRequest"
+            "type": "google.cloud._storage_v2.types.RestoreObjectRequest"
           },
           {
             "name": "bucket",
@@ -2766,7 +2766,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "restore_object"
       },
       "description": "Sample for RestoreObject",
@@ -2813,10 +2813,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.rewrite_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.rewrite_object",
         "method": {
           "fullName": "google.storage.v2.Storage.RewriteObject",
           "service": {
@@ -2828,7 +2828,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.RewriteObjectRequest"
+            "type": "google.cloud._storage_v2.types.RewriteObjectRequest"
           },
           {
             "name": "retry",
@@ -2843,7 +2843,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.RewriteResponse",
+        "resultType": "google.cloud._storage_v2.types.RewriteResponse",
         "shortName": "rewrite_object"
       },
       "description": "Sample for RewriteObject",
@@ -2889,10 +2889,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.rewrite_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.rewrite_object",
         "method": {
           "fullName": "google.storage.v2.Storage.RewriteObject",
           "service": {
@@ -2904,7 +2904,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.RewriteObjectRequest"
+            "type": "google.cloud._storage_v2.types.RewriteObjectRequest"
           },
           {
             "name": "retry",
@@ -2919,7 +2919,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.RewriteResponse",
+        "resultType": "google.cloud._storage_v2.types.RewriteResponse",
         "shortName": "rewrite_object"
       },
       "description": "Sample for RewriteObject",
@@ -2966,10 +2966,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.set_iam_policy",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.set_iam_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.SetIamPolicy",
           "service": {
@@ -3046,10 +3046,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.set_iam_policy",
+        "fullName": "google.cloud._storage_v2.StorageClient.set_iam_policy",
         "method": {
           "fullName": "google.storage.v2.Storage.SetIamPolicy",
           "service": {
@@ -3127,10 +3127,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.start_resumable_write",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.start_resumable_write",
         "method": {
           "fullName": "google.storage.v2.Storage.StartResumableWrite",
           "service": {
@@ -3142,7 +3142,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.StartResumableWriteRequest"
+            "type": "google.cloud._storage_v2.types.StartResumableWriteRequest"
           },
           {
             "name": "retry",
@@ -3157,7 +3157,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.StartResumableWriteResponse",
+        "resultType": "google.cloud._storage_v2.types.StartResumableWriteResponse",
         "shortName": "start_resumable_write"
       },
       "description": "Sample for StartResumableWrite",
@@ -3203,10 +3203,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.start_resumable_write",
+        "fullName": "google.cloud._storage_v2.StorageClient.start_resumable_write",
         "method": {
           "fullName": "google.storage.v2.Storage.StartResumableWrite",
           "service": {
@@ -3218,7 +3218,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.StartResumableWriteRequest"
+            "type": "google.cloud._storage_v2.types.StartResumableWriteRequest"
           },
           {
             "name": "retry",
@@ -3233,7 +3233,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.StartResumableWriteResponse",
+        "resultType": "google.cloud._storage_v2.types.StartResumableWriteResponse",
         "shortName": "start_resumable_write"
       },
       "description": "Sample for StartResumableWrite",
@@ -3280,10 +3280,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.test_iam_permissions",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.test_iam_permissions",
         "method": {
           "fullName": "google.storage.v2.Storage.TestIamPermissions",
           "service": {
@@ -3364,10 +3364,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.test_iam_permissions",
+        "fullName": "google.cloud._storage_v2.StorageClient.test_iam_permissions",
         "method": {
           "fullName": "google.storage.v2.Storage.TestIamPermissions",
           "service": {
@@ -3449,10 +3449,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.update_bucket",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.update_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.UpdateBucket",
           "service": {
@@ -3464,11 +3464,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.UpdateBucketRequest"
+            "type": "google.cloud._storage_v2.types.UpdateBucketRequest"
           },
           {
             "name": "bucket",
-            "type": "google.cloud.storage_v2.types.Bucket"
+            "type": "google.cloud._storage_v2.types.Bucket"
           },
           {
             "name": "update_mask",
@@ -3487,7 +3487,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "update_bucket"
       },
       "description": "Sample for UpdateBucket",
@@ -3533,10 +3533,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.update_bucket",
+        "fullName": "google.cloud._storage_v2.StorageClient.update_bucket",
         "method": {
           "fullName": "google.storage.v2.Storage.UpdateBucket",
           "service": {
@@ -3548,11 +3548,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.UpdateBucketRequest"
+            "type": "google.cloud._storage_v2.types.UpdateBucketRequest"
           },
           {
             "name": "bucket",
-            "type": "google.cloud.storage_v2.types.Bucket"
+            "type": "google.cloud._storage_v2.types.Bucket"
           },
           {
             "name": "update_mask",
@@ -3571,7 +3571,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Bucket",
+        "resultType": "google.cloud._storage_v2.types.Bucket",
         "shortName": "update_bucket"
       },
       "description": "Sample for UpdateBucket",
@@ -3618,10 +3618,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.update_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.update_object",
         "method": {
           "fullName": "google.storage.v2.Storage.UpdateObject",
           "service": {
@@ -3633,11 +3633,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.UpdateObjectRequest"
+            "type": "google.cloud._storage_v2.types.UpdateObjectRequest"
           },
           {
             "name": "object_",
-            "type": "google.cloud.storage_v2.types.Object"
+            "type": "google.cloud._storage_v2.types.Object"
           },
           {
             "name": "update_mask",
@@ -3656,7 +3656,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "update_object"
       },
       "description": "Sample for UpdateObject",
@@ -3702,10 +3702,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.update_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.update_object",
         "method": {
           "fullName": "google.storage.v2.Storage.UpdateObject",
           "service": {
@@ -3717,11 +3717,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.storage_v2.types.UpdateObjectRequest"
+            "type": "google.cloud._storage_v2.types.UpdateObjectRequest"
           },
           {
             "name": "object_",
-            "type": "google.cloud.storage_v2.types.Object"
+            "type": "google.cloud._storage_v2.types.Object"
           },
           {
             "name": "update_mask",
@@ -3740,7 +3740,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.Object",
+        "resultType": "google.cloud._storage_v2.types.Object",
         "shortName": "update_object"
       },
       "description": "Sample for UpdateObject",
@@ -3787,10 +3787,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageAsyncClient",
+          "fullName": "google.cloud._storage_v2.StorageAsyncClient",
           "shortName": "StorageAsyncClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageAsyncClient.write_object",
+        "fullName": "google.cloud._storage_v2.StorageAsyncClient.write_object",
         "method": {
           "fullName": "google.storage.v2.Storage.WriteObject",
           "service": {
@@ -3802,7 +3802,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.WriteObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.WriteObjectRequest]"
           },
           {
             "name": "retry",
@@ -3817,7 +3817,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.WriteObjectResponse",
+        "resultType": "google.cloud._storage_v2.types.WriteObjectResponse",
         "shortName": "write_object"
       },
       "description": "Sample for WriteObject",
@@ -3863,10 +3863,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.storage_v2.StorageClient",
+          "fullName": "google.cloud._storage_v2.StorageClient",
           "shortName": "StorageClient"
         },
-        "fullName": "google.cloud.storage_v2.StorageClient.write_object",
+        "fullName": "google.cloud._storage_v2.StorageClient.write_object",
         "method": {
           "fullName": "google.storage.v2.Storage.WriteObject",
           "service": {
@@ -3878,7 +3878,7 @@
         "parameters": [
           {
             "name": "requests",
-            "type": "Iterator[google.cloud.storage_v2.types.WriteObjectRequest]"
+            "type": "Iterator[google.cloud._storage_v2.types.WriteObjectRequest]"
           },
           {
             "name": "retry",
@@ -3893,7 +3893,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.storage_v2.types.WriteObjectResponse",
+        "resultType": "google.cloud._storage_v2.types.WriteObjectResponse",
         "shortName": "write_object"
       },
       "description": "Sample for WriteObject",

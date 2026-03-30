@@ -4,9 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    .nox/*
-    google/cloud/storage/__init__.py
-    google/cloud/storage/gapic_version.py
+    google/cloud/_storage/__init__.py
+    google/cloud/_storage/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

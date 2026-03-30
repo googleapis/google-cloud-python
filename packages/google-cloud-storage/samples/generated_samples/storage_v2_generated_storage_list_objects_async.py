@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 async def sample_list_objects():
     # Create a client
-    client = storage_v2.StorageAsyncClient()
+    client = _storage_v2.StorageAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_v2.ListObjectsRequest(
+    request = _storage_v2.ListObjectsRequest(
         parent="parent_value",
     )
 
@@ -49,5 +49,6 @@ async def sample_list_objects():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END storage_v2_generated_Storage_ListObjects_async]

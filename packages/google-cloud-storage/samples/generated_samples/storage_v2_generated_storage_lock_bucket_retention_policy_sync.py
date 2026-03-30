@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 def sample_lock_bucket_retention_policy():
     # Create a client
-    client = storage_v2.StorageClient()
+    client = _storage_v2.StorageClient()
 
     # Initialize request argument(s)
-    request = storage_v2.LockBucketRetentionPolicyRequest(
+    request = _storage_v2.LockBucketRetentionPolicyRequest(
         bucket="bucket_value",
         if_metageneration_match=2413,
     )
@@ -49,5 +49,6 @@ def sample_lock_bucket_retention_policy():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_LockBucketRetentionPolicy_sync]

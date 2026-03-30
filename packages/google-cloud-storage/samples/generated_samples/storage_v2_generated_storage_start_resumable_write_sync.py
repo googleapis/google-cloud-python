@@ -31,21 +31,21 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 def sample_start_resumable_write():
     # Create a client
-    client = storage_v2.StorageClient()
+    client = _storage_v2.StorageClient()
 
     # Initialize request argument(s)
-    request = storage_v2.StartResumableWriteRequest(
-    )
+    request = _storage_v2.StartResumableWriteRequest()
 
     # Make the request
     response = client.start_resumable_write(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_StartResumableWrite_sync]

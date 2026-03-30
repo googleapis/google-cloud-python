@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import storage_v2
+from google.cloud import _storage_v2
 
 
 async def sample_get_bucket():
     # Create a client
-    client = storage_v2.StorageAsyncClient()
+    client = _storage_v2.StorageAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_v2.GetBucketRequest(
+    request = _storage_v2.GetBucketRequest(
         name="name_value",
     )
 
@@ -48,5 +48,6 @@ async def sample_get_bucket():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_Storage_GetBucket_async]

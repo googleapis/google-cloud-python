@@ -44,12 +44,16 @@ More Examples
   Official Google Cloud Storage How-to Guides <https://cloud.google.com/storage/docs/how-to>
   Official Google Cloud Storage Samples <https://cloud.google.com/storage/docs/samples>
 
+
 Changelog
 ---------
-.. toctree::
-  :maxdepth: 2
 
-  CHANGELOG
+For a list of all ``google-cloud-storage`` releases:
+
+.. toctree::
+    :maxdepth: 2
+
+    CHANGELOG
 
 .. toctree::
   :hidden:
