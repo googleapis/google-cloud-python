@@ -29,8 +29,8 @@ from google.auth import environment_vars
 from google.auth import exceptions
 
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.auth.credentials import Credentials  # noqa: F401
-    from google.auth.transport import Request  # noqa: F401
+    import google.auth.credentials.Credentials  # type: ignore
+    import google.auth.transport.Request  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
 
