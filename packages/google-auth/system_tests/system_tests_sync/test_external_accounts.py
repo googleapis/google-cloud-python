@@ -214,6 +214,8 @@ def test_configurable_token_lifespan(oidc_credentials, http_request):
             request=http_request,
         )
 
+        credentials.refresh(http_request)
+
         utcmax = _helpers.utcnow() + datetime.timedelta(seconds=TOKEN_LIFETIME_SECONDS)
         utcmin = utcmax - datetime.timedelta(seconds=BUFFER_SECONDS)
         assert utcmin < credentials._impersonated_credentials.expiry <= utcmax
