@@ -68,12 +68,12 @@ oidc_provider_id="oidc-"$suffix
 aws_provider_id="aws-"$suffix
 
 # TODO: Fill in.
-project_id="stellar-day-254222"
-project_number="79992041559"
-aws_account_id="077071391996"
-aws_role_name="ci-python-test"
-service_account_email="kokoro@stellar-day-254222.iam.gserviceaccount.com"
-sub="104692443208068386138"
+project_id=""
+project_number=""
+aws_account_id=""
+aws_role_name=""
+service_account_email=""
+sub=""
 
 oidc_aud="//iam.googleapis.com/projects/$project_number/locations/global/workloadIdentityPools/$pool_id/providers/$oidc_provider_id"
 aws_aud="//iam.googleapis.com/projects/$project_number/locations/global/workloadIdentityPools/$pool_id/providers/$aws_provider_id"
