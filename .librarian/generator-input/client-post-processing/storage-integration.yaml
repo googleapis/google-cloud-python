@@ -782,6 +782,19 @@ replacements:
           with io.open(json_path, "r", encoding="utf-8-sig") as fileobj:
               return json.load(fileobj)
     count: 1
+  - paths: [
+      packages/google-cloud-storage/noxfile.py
+    ]
+    before: |
+      """Run the type checker."""
+      [\s\S]*?"google",
+      \        "--check-untyped-defs",
+      \        \*session.posargs,
+      \    \)
+    after: |
+      """Run the type checker."""
 
-
-
+          # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
+          # Enable mypy once this repo has been updated for mypy evaluation.
+          session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
+    count: 1
