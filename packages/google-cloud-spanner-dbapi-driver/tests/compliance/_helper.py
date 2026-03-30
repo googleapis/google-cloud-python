@@ -31,7 +31,7 @@ EMULATOR_TEST_CONNECTION_STRING = (
 
 
 def setup_test_env() -> None:
-    print(f"Set SPANNER_EMULATOR_HOST to {os.environ['SPANNER_EMULATOR_HOST']}")
+    print(f"Set SPANNER_EMULATOR_HOST to {SPANNER_EMULATOR_HOST}")
     print(f"Using Connection String: {get_test_connection_string()}")
 
 

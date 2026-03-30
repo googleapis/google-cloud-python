@@ -364,7 +364,10 @@ def compliance(session):
         MODE,
         f"--junitxml=compliance_{session.python}_sponge_log.xml",
         *test_paths,
-        env={},
+        env={
+            "SPANNER_EMULATOR_HOST": os.environ["SPANNER_EMULATOR_HOST"],
+            "TEST_DIALECT": os.environ.get("TEST_DIALECT", "GoogleSQL"),
+        },
     )
 
 
