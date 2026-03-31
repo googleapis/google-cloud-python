@@ -91,6 +91,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `API Client Generator for Python <https://github.com/googleapis/google-cloud-python/tree/main/packages/gapic-generator>`_
+     - stable
+     - |PyPI-gapic-generator|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `API Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway>`_
      - stable
      - |PyPI-google-cloud-api-gateway|
@@ -1063,6 +1069,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `BigLake API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-biglake-hive>`_
+     - preview
+     - |PyPI-google-cloud-biglake-hive|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187149>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149&template=1019829>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigLake API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-biglake>`_
      - preview
      - |PyPI-google-cloud-biglake|
@@ -1176,6 +1188,12 @@ Libraries
      - |PyPI-google-cloud-datalabeling|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Data Lineage API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog-lineage-configmanagement>`_
+     - preview
+     - |PyPI-google-cloud-datacatalog-lineage-configmanagement|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1530027>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1530027>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Lineage API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog-lineage>`_
      - preview
@@ -1308,6 +1326,12 @@ Libraries
      - |PyPI-google-geo-type|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Geocoding API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-geocode>`_
+     - preview
+     - |PyPI-google-maps-geocode|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:188871>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=188871&template=788907>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Infrastructure Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-config>`_
      - preview
@@ -1621,6 +1645,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1356349>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1356349>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Sphinx DocFX YAML Generator <https://github.com/googleapis/google-cloud-python/tree/main/packages/gcp-sphinx-docfx-yaml>`_
+     - preview
+     - |PyPI-gcp-sphinx-docfx-yaml|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage Batch Operations API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storagebatchoperations>`_
      - preview
      - |PyPI-google-cloud-storagebatchoperations|
@@ -1700,6 +1730,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-aiplatform
 .. |PyPI-google-cloud-notebooks| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg
      :target: https://pypi.org/project/google-cloud-notebooks
+.. |PyPI-gapic-generator| image:: https://img.shields.io/pypi/v/gapic-generator.svg
+     :target: https://pypi.org/project/gapic-generator
 .. |PyPI-google-cloud-api-gateway| image:: https://img.shields.io/pypi/v/google-cloud-api-gateway.svg
      :target: https://pypi.org/project/google-cloud-api-gateway
 .. |PyPI-google-api-core| image:: https://img.shields.io/pypi/v/google-api-core.svg
@@ -2024,6 +2056,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices
 .. |PyPI-google-cloud-beyondcorp-clientgateways| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-clientgateways.svg
      :target: https://pypi.org/project/google-cloud-beyondcorp-clientgateways
+.. |PyPI-google-cloud-biglake-hive| image:: https://img.shields.io/pypi/v/google-cloud-biglake-hive.svg
+     :target: https://pypi.org/project/google-cloud-biglake-hive
 .. |PyPI-google-cloud-biglake| image:: https://img.shields.io/pypi/v/google-cloud-biglake.svg
      :target: https://pypi.org/project/google-cloud-biglake
 .. |PyPI-google-cloud-bigquery-biglake| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-biglake.svg
@@ -2062,6 +2096,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-geminidataanalytics
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
+.. |PyPI-google-cloud-datacatalog-lineage-configmanagement| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog-lineage-configmanagement.svg
+     :target: https://pypi.org/project/google-cloud-datacatalog-lineage-configmanagement
 .. |PyPI-google-cloud-datacatalog-lineage| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog-lineage.svg
      :target: https://pypi.org/project/google-cloud-datacatalog-lineage
 .. |PyPI-google-ads-datamanager| image:: https://img.shields.io/pypi/v/google-ads-datamanager.svg
@@ -2106,6 +2142,8 @@ Libraries
      :target: https://pypi.org/project/google-ai-generativelanguage
 .. |PyPI-google-geo-type| image:: https://img.shields.io/pypi/v/google-geo-type.svg
      :target: https://pypi.org/project/google-geo-type
+.. |PyPI-google-maps-geocode| image:: https://img.shields.io/pypi/v/google-maps-geocode.svg
+     :target: https://pypi.org/project/google-maps-geocode
 .. |PyPI-google-cloud-config| image:: https://img.shields.io/pypi/v/google-cloud-config.svg
      :target: https://pypi.org/project/google-cloud-config
 .. |PyPI-google-cloud-kms-inventory| image:: https://img.shields.io/pypi/v/google-cloud-kms-inventory.svg
@@ -2210,6 +2248,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-servicehealth
 .. |PyPI-google-maps-solar| image:: https://img.shields.io/pypi/v/google-maps-solar.svg
      :target: https://pypi.org/project/google-maps-solar
+.. |PyPI-gcp-sphinx-docfx-yaml| image:: https://img.shields.io/pypi/v/gcp-sphinx-docfx-yaml.svg
+     :target: https://pypi.org/project/gcp-sphinx-docfx-yaml
 .. |PyPI-google-cloud-storagebatchoperations| image:: https://img.shields.io/pypi/v/google-cloud-storagebatchoperations.svg
      :target: https://pypi.org/project/google-cloud-storagebatchoperations
 .. |PyPI-google-cloud-storageinsights| image:: https://img.shields.io/pypi/v/google-cloud-storageinsights.svg
