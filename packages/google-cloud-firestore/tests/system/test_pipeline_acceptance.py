@@ -276,7 +276,10 @@ def parse_pipeline(client, pipeline: list[dict[str, Any], str]):
         # find arguments if given
         if isinstance(stage, dict):
             stage_yaml_args = stage[stage_name]
-            stage_obj = _apply_yaml_args_to_callable(stage_cls, client, stage_yaml_args)
+            if stage_yaml_args is None:
+                stage_obj = stage_cls()
+            else:
+                stage_obj = _apply_yaml_args_to_callable(stage_cls, client, stage_yaml_args)
         else:
             # yaml has no arguments
             stage_obj = stage_cls()
