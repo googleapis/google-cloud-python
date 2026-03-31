@@ -285,6 +285,7 @@ class SpannerGrpcTransport(SpannerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
+
         self._logged_channel = grpc.intercept_channel(
             self._grpc_channel, self._interceptor
         )
