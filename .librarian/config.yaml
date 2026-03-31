@@ -16,3 +16,7 @@ libraries:
 # Allow releases for google-cloud-storage once this bug is fixed.
   - id: "google-cloud-storage"
     release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16490):
+# Allow generation for google-cloud-spanner once this bug is fixed.
+  - id: "google-cloud-spanner"
+    generate_blocked: true
