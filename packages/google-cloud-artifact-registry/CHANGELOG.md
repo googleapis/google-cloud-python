@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-artifact-registry/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.20.0...google-cloud-artifact-registry-v1.21.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.19.0...google-cloud-artifact-registry-v1.20.0) (2026-02-12)
 
 
