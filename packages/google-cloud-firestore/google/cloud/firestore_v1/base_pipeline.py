@@ -350,6 +350,19 @@ class _BasePipeline:
 
         This stage filters documents based on the provided query expression.
 
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_stages import SearchOptions
+            >>> from google.cloud.firestore_v1.pipeline_expressions import And, DocumentMatches, Field, GeoPoint
+            >>> # Search for restaurants matching "waffles" within 1000m of a location
+            >>> pipeline = client.pipeline().collection("restaurants").search(
+            ...     SearchOptions(
+            ...         query=And(
+            ...             DocumentMatches("waffles"),
+            ...             Field.of("location").geo_distance(GeoPoint(38.9, -107.0)).less_than(1000)
+            ...         )
+            ...     )
+            ... )
+
         Args:
             options: A SearchOptions instance configuring the search.
 
