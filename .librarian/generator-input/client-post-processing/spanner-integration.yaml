@@ -121,3 +121,217 @@ replacements:
 
       \g<3>\g<4>
     count: 1
+  - paths: [packages/google-cloud-spanner/setup.py]
+    before: '(?s)dependencies = \[.*?\]\nextras = \{\}'
+    after: |
+      dependencies = [
+          "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-cloud-core >= 1.4.4, < 3.0.0",
+          "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
+          "proto-plus >= 1.22.0, <2.0.0",
+          "sqlparse >= 0.4.4",
+          "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
+          "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+          "grpc-interceptor >= 0.15.4",
+          # Make OpenTelemetry a core dependency
+          "opentelemetry-api >= 1.22.0",
+          "opentelemetry-sdk >= 1.22.0",
+          "opentelemetry-semantic-conventions >= 0.43b0",
+          "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
+          "google-cloud-monitoring >= 2.16.0",
+          "mmh3 >= 4.1.0 ",
+      ]
+      extras = {"libcst": "libcst >= 0.2.5"}
+    count: 1
+  - paths: [packages/google-cloud-spanner/docs/index.rst]
+    before: '(?s)API Reference\n-------------.*'
+    after: |
+      Usage Documentation
+      -------------------
+      .. toctree::
+        :maxdepth: 2
+
+        client-usage
+        table-usage
+        batch-usage
+        snapshot-usage
+        transaction-usage
+
+        database-usage
+        instance-usage
+
+      API Documentation
+      -----------------
+      .. toctree::
+        :maxdepth: 1
+        :titlesonly:
+
+        advanced-session-pool-topics
+        opentelemetry-tracing
+
+        spanner_v1/client
+        spanner_v1/instance
+        spanner_v1/database
+        spanner_v1/table
+        spanner_v1/session
+        spanner_v1/keyset
+        spanner_v1/snapshot
+        spanner_v1/batch
+        spanner_v1/transaction
+        spanner_v1/streamed
+
+        spanner_v1/services_
+        spanner_v1/types_
+        spanner_admin_database_v1/services_
+        spanner_admin_database_v1/types_
+        spanner_admin_database_v1/database_admin
+        spanner_admin_instance_v1/services_
+        spanner_admin_instance_v1/types_
+        spanner_admin_instance_v1/instance_admin
+    count: 1
+  - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py]
+    before: '(?s)import sys\n\nimport google\.api_core as api_core.*'
+    after: |
+      from google.cloud.spanner_v1 import param_types
+      from google.cloud.spanner_v1._async.client import Client as AsyncClient
+      from google.cloud.spanner_v1._async.pool import (
+          AbstractSessionPool as AsyncAbstractSessionPool,
+      )
+      from google.cloud.spanner_v1._async.pool import BurstyPool as AsyncBurstyPool
+      from google.cloud.spanner_v1._async.pool import FixedSizePool as AsyncFixedSizePool
+      from google.cloud.spanner_v1._async.pool import PingingPool as AsyncPingingPool
+      from google.cloud.spanner_v1._async.pool import (
+          TransactionPingingPool as AsyncTransactionPingingPool,
+      )
+      from google.cloud.spanner_v1.client import Client
+      from google.cloud.spanner_v1.keyset import KeyRange, KeySet
+      from google.cloud.spanner_v1.pool import (
+          AbstractSessionPool,
+          BurstyPool,
+          FixedSizePool,
+          PingingPool,
+          TransactionPingingPool,
+      )
+
+      from .data_types import Interval, JsonObject
+      from .exceptions import wrap_with_request_id
+      from .services.spanner import SpannerAsyncClient, SpannerClient
+      from .transaction import BatchTransactionId, DefaultTransactionOptions
+      from .types import RequestOptions
+      from .types.commit_response import CommitResponse
+      from .types.keys import KeyRange as KeyRangePB
+      from .types.keys import KeySet as KeySetPB
+      from .types.mutation import Mutation
+      from .types.query_plan import PlanNode, QueryPlan
+      from .types.result_set import PartialResultSet, ResultSet, ResultSetMetadata, ResultSetStats
+      from .types.spanner import (
+          BatchCreateSessionsRequest,
+          BatchCreateSessionsResponse,
+          BatchWriteRequest,
+          BatchWriteResponse,
+          BeginTransactionRequest,
+          CommitRequest,
+          CreateSessionRequest,
+          DeleteSessionRequest,
+          DirectedReadOptions,
+          ExecuteBatchDmlRequest,
+          ExecuteBatchDmlResponse,
+          ExecuteSqlRequest,
+          GetSessionRequest,
+          ListSessionsRequest,
+          ListSessionsResponse,
+          Partition,
+          PartitionOptions,
+          PartitionQueryRequest,
+          PartitionReadRequest,
+          PartitionResponse,
+          ReadRequest,
+          RollbackRequest,
+          Session,
+      )
+      from .types.transaction import Transaction, TransactionOptions, TransactionSelector
+      from .types.type import StructType, Type, TypeAnnotationCode, TypeCode
+
+      COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
+      """Placeholder be used to store commit timestamp of a transaction in a column.
+      This value can only be used for timestamp columns that have set the option
+      ``(allow_commit_timestamp=true)`` in the schema.
+      """
+
+      __all__ = (
+          # google.cloud.spanner_v1
+          "__version__",
+          "param_types",
+          # google.cloud.spanner_v1.exceptions
+          "wrap_with_request_id",
+          # google.cloud.spanner_v1.client
+          "Client",
+          "AsyncClient",
+          # google.cloud.spanner_v1.keyset
+          "KeyRange",
+          "KeySet",
+          # google.cloud.spanner_v1.pool
+          "AbstractSessionPool",
+          "BurstyPool",
+          "FixedSizePool",
+          "PingingPool",
+          "TransactionPingingPool",
+          "AsyncAbstractSessionPool",
+          "AsyncBurstyPool",
+          "AsyncFixedSizePool",
+          "AsyncPingingPool",
+          "AsyncTransactionPingingPool",
+          # local
+          "COMMIT_TIMESTAMP",
+          # google.cloud.spanner_v1.types
+          "BatchCreateSessionsRequest",
+          "BatchCreateSessionsResponse",
+          "BatchWriteRequest",
+          "BatchWriteResponse",
+          "BeginTransactionRequest",
+          "CommitRequest",
+          "CommitResponse",
+          "CreateSessionRequest",
+          "DeleteSessionRequest",
+          "DirectedReadOptions",
+          "ExecuteBatchDmlRequest",
+          "ExecuteBatchDmlResponse",
+          "ExecuteSqlRequest",
+          "GetSessionRequest",
+          "KeyRangePB",
+          "KeySetPB",
+          "ListSessionsRequest",
+          "ListSessionsResponse",
+          "Mutation",
+          "PartialResultSet",
+          "Partition",
+          "PartitionOptions",
+          "PartitionQueryRequest",
+          "PartitionReadRequest",
+          "PartitionResponse",
+          "PlanNode",
+          "QueryPlan",
+          "ReadRequest",
+          "RequestOptions",
+          "ResultSet",
+          "ResultSetMetadata",
+          "ResultSetStats",
+          "RollbackRequest",
+          "Session",
+          "StructType",
+          "Transaction",
+          "TransactionOptions",
+          "TransactionSelector",
+          "Type",
+          "TypeAnnotationCode",
+          "TypeCode",
+          # Custom spanner related data types
+          "JsonObject",
+          "Interval",
+          # google.cloud.spanner_v1.services
+          "SpannerClient",
+          "SpannerAsyncClient",
+          "BatchTransactionId",
+          "DefaultTransactionOptions",
+      )
+    count: 1
