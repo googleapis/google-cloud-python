@@ -516,19 +516,20 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.13")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
     session.install("-e", ".[scikit-learn]")
     session.install(
-        "sphinx==9.1.0",
-        "sphinx-sitemap==2.9.0",
-        "myst-parser==5.0.0",
-        "myst-nb==1.4.0",
-        "pydata-sphinx-theme==0.16.1",
+        "sphinx",
+        "sphinx-sitemap",
+        "myst-parser",
+        "myst-nb",
+        "pydata-sphinx-theme",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run("python", "-m", "pip", "freeze")
 
     session.run(
         "python",
