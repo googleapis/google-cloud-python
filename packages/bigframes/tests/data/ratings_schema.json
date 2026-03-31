@@ -1,0 +1,17 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "user_id",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "item_id",
+      "type": "INT64"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "rating",
+      "type": "FLOAT"
+    }
+]
