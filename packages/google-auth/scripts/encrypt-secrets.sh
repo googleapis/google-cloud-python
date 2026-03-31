@@ -31,4 +31,4 @@ gcloud kms encrypt \
 
 rm system_tests/secrets.tar
 
-rm system_tests/data
+rm -rf system_tests/data

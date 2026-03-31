@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Copyright 2015 Google Inc. All rights reserved.
 #
@@ -18,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT=$( dirname "$DIR" )
 
 # Work from the project root.
-cd $ROOT
+cd "$ROOT"
 
 # Create working directory if not exists. system_tests/data is not tracked by
 # Git to prevent the secrets from being leaked online.
