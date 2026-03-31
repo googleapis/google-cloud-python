@@ -13,6 +13,6 @@ SELECT
   SUBSTRING(
     `string_col`,
     GREATEST(1, LENGTH(`string_col`) + -2),
-    5 - GREATEST(0, LENGTH(`string_col`) + -3)
+    GREATEST(0, 5 - GREATEST(0, LENGTH(`string_col`) + -3))
   ) AS `m3_5`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

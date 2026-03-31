@@ -18,6 +18,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core.compile.sqlglot import sql
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -29,10 +30,10 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     # For AND, when we encounter a NULL value, we only know when the result is FALSE,
     # otherwise the result is unknown (NULL). See: truth table at
     # https://en.wikibooks.org/wiki/Structured_Query_Language/NULLs_and_the_Three_Valued_Logic#AND,_OR
-    if left.expr == sge.null():
+    if sql.is_null_literal(left.expr):
         condition = sge.EQ(this=right.expr, expression=sge.convert(False))
         return sge.If(this=condition, true=right.expr, false=sge.null())
-    if right.expr == sge.null():
+    if sql.is_null_literal(right.expr):
         condition = sge.EQ(this=left.expr, expression=sge.convert(False))
         return sge.If(this=condition, true=left.expr, false=sge.null())
 
@@ -46,10 +47,10 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     # For OR, when we encounter a NULL value, we only know when the result is TRUE,
     # otherwise the result is unknown (NULL). See: truth table at
     # https://en.wikibooks.org/wiki/Structured_Query_Language/NULLs_and_the_Three_Valued_Logic#AND,_OR
-    if left.expr == sge.null():
+    if sql.is_null_literal(left.expr):
         condition = sge.EQ(this=right.expr, expression=sge.convert(True))
         return sge.If(this=condition, true=right.expr, false=sge.null())
-    if right.expr == sge.null():
+    if sql.is_null_literal(right.expr):
         condition = sge.EQ(this=left.expr, expression=sge.convert(True))
         return sge.If(this=condition, true=left.expr, false=sge.null())
 
@@ -64,12 +65,12 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     # maintains the boolean data type.
     left_expr = left.expr
     left_dtype = left.dtype
-    if left_expr == sge.null():
+    if sql.is_null_literal(left_expr):
         left_expr = sge.Cast(this=sge.convert(None), to="BOOLEAN")
         left_dtype = dtypes.BOOL_DTYPE
     right_expr = right.expr
     right_dtype = right.dtype
-    if right_expr == sge.null():
+    if sql.is_null_literal(right_expr):
         right_expr = sge.Cast(this=sge.convert(None), to="BOOLEAN")
         right_dtype = dtypes.BOOL_DTYPE
 

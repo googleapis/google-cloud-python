@@ -34,6 +34,7 @@ SELECT
     THEN CAST('Infinity' AS FLOAT64) * `float64_col`
     ELSE CAST(FLOOR(IEEE_DIVIDE(`float64_col`, 0.0)) AS INT64)
   END AS `float_div_0`,
+  NULL AS `float_div_null`,
   CASE
     WHEN CAST(`bool_col` AS INT64) = CAST(0 AS INT64)
     THEN CAST(0 AS INT64) * `int64_col`

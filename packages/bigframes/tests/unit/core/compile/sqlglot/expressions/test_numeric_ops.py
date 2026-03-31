@@ -220,6 +220,9 @@ def test_pow(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["int_pow_1"] = bf_df["int64_col"] ** 1
     bf_df["float_pow_1"] = bf_df["float64_col"] ** 1
 
+    bf_df["float_pow_null"] = bf_df["float64_col"] ** pd.NA
+    bf_df["null_pow_float"] = pd.NA ** bf_df["float64_col"]
+
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
@@ -370,6 +373,7 @@ def test_floordiv_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["int_div_float"] = bf_df["int64_col"] // bf_df["float64_col"]
     bf_df["float_div_int"] = bf_df["float64_col"] // bf_df["int64_col"]
     bf_df["float_div_0"] = bf_df["float64_col"] // 0.0
+    bf_df["float_div_null"] = bf_df["float64_col"] // pd.NA
 
     bf_df["int_div_bool"] = bf_df["int64_col"] // bf_df["bool_col"]
     bf_df["bool_div_int"] = bf_df["bool_col"] // bf_df["int64_col"]
@@ -436,6 +440,8 @@ def test_mod_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["float_mod_float_neg"] = bf_df["float64_col"] % -bf_df["float64_col"]
     bf_df["float_mod_1"] = bf_df["float64_col"] % 1
     bf_df["float_mod_0"] = bf_df["float64_col"] % 0
+
+    bf_df["float_mod_null"] = bf_df["float64_col"] % pd.NA
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 

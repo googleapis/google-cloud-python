@@ -241,5 +241,7 @@ SELECT
         ELSE 1
       END
     )
-  END AS `float_pow_1`
+  END AS `float_pow_1`,
+  NULL AS `float_pow_null`,
+  NULL AS `null_pow_float`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

@@ -6,7 +6,7 @@ SELECT
   IEEE_DIVIDE(`int64_col`, `int64_col`) AS `int_div_int`,
   IEEE_DIVIDE(`int64_col`, 1) AS `int_div_1`,
   IEEE_DIVIDE(`int64_col`, 0.0) AS `int_div_0`,
-  IEEE_DIVIDE(`int64_col`, NULL) AS `int_div_null`,
+  NULL AS `int_div_null`,
   IEEE_DIVIDE(`int64_col`, `float64_col`) AS `int_div_float`,
   IEEE_DIVIDE(`float64_col`, `int64_col`) AS `float_div_int`,
   IEEE_DIVIDE(`float64_col`, 0.0) AS `float_div_0`,

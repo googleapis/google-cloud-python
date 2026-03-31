@@ -366,10 +366,16 @@ def string_slice(
                     column_length + sge.convert(start + 1),
                 ]
             )
-            length_expr = sge.convert(op_end) - sge.Greatest(
+            length_expr = sge.Greatest(
                 expressions=[
                     sge.convert(0),
-                    column_length + sge.convert(start),
+                    sge.convert(op_end)
+                    - sge.Greatest(
+                        expressions=[
+                            sge.convert(0),
+                            column_length + sge.convert(start),
+                        ]
+                    ),
                 ]
             )
         else:

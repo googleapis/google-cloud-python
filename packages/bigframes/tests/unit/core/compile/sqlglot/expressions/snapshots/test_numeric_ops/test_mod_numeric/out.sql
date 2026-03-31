@@ -189,5 +189,6 @@ SELECT
       MOD(CAST(`float64_col` AS BIGNUMERIC), CAST(0 AS BIGNUMERIC))
     )
     ELSE MOD(CAST(`float64_col` AS BIGNUMERIC), CAST(0 AS BIGNUMERIC))
-  END AS `float_mod_0`
+  END AS `float_mod_0`,
+  NULL AS `float_mod_null`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

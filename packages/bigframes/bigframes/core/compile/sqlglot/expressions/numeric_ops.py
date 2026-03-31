@@ -19,6 +19,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core.compile.sqlglot import sql
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.common import round_towards_zero
 import bigframes.core.compile.sqlglot.expressions.constants as constants
@@ -260,6 +261,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 def _int_pow_op(
     left_expr: sge.Expression, right_expr: sge.Expression
 ) -> sge.Expression:
+    if sql.is_null_literal(left_expr) or sql.is_null_literal(right_expr):
+        return sge.null()
+
     overflow_cond = sge.and_(
         sge.NEQ(this=left_expr, expression=sge.convert(0)),
         sge.GT(
@@ -292,6 +296,9 @@ def _int_pow_op(
 def _float_pow_op(
     left_expr: sge.Expression, right_expr: sge.Expression
 ) -> sge.Expression:
+    if sql.is_null_literal(left_expr) or sql.is_null_literal(right_expr):
+        return sge.null()
+
     # Most conditions here seek to prevent calling BQ POW with inputs that would generate errors.
     # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions#pow
     overflow_cond = sge.and_(
@@ -425,7 +432,7 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.add_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if left.expr == sge.null() or right.expr == sge.null():
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
         return sge.null()
 
     if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
@@ -463,6 +470,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.div_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -482,7 +492,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.floordiv_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if left.expr == sge.null() or right.expr == sge.null():
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
         return sge.null()
 
     left_expr = _coerce_bool_to_int(left)
@@ -525,6 +535,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.mod_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
     # In BigQuery returned value has the same sign as X. In pandas, the sign of y is used, so we need to flip the result if sign(x) != sign(y)
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
@@ -568,7 +581,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.mul_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if left.expr == sge.null() or right.expr == sge.null():
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
         return sge.null()
 
     left_expr = _coerce_bool_to_int(left)
@@ -594,7 +607,7 @@ def _(expr: TypedExpr, n_digits: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.sub_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if left.expr == sge.null() or right.expr == sge.null():
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
         return sge.null()
 
     if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
