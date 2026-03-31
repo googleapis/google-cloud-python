@@ -284,3 +284,139 @@ tests:
                 expression:
                   fieldReferenceValue: name
           name: sort
+  - description: search_stage_with_select
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query: "science"
+              select:
+                - title
+                - author
+    assert_results:
+      - title: "Dune"
+        author: "Frank Herbert"
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - name: search
+          options:
+            query:
+              functionValue:
+                args:
+                - stringValue: "science"
+                name: document_matches
+            select:
+              mapValue:
+                fields:
+                  author:
+                    fieldReferenceValue: author
+                  title:
+                    fieldReferenceValue: title
+  - description: search_stage_with_select_and_alias
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query: "science"
+              select:
+                - AliasedExpression:
+                  - Field: title
+                  - "book_title"
+                - author
+    assert_results:
+      - book_title: "Dune"
+        author: "Frank Herbert"
+      - book_title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - name: search
+          options:
+            query:
+              functionValue:
+                args:
+                - stringValue: "science"
+                name: document_matches
+            select:
+              mapValue:
+                fields:
+                  author:
+                    fieldReferenceValue: author
+                  book_title:
+                    fieldReferenceValue: title
+  - description: search_stage_with_multiple_sorts
+    pipeline:
+      - Collection: books
+      - Search:
+          - SearchOptions:
+              query: "science"
+              sort:
+                - Ordering:
+                  - Field: rating
+                  - DESCENDING
+                - Ordering:
+                  - Field: published
+                  - ASCENDING
+    assert_results:
+      - title: "Dune"
+        author: "Frank Herbert"
+        genre: "Science Fiction"
+        published: 1965
+        rating: 4.6
+        tags:
+          - politics
+          - desert
+          - adventure
+        awards:
+          hugo: true
+          nebula: true
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+        genre: "Science Fiction"
+        published: 1979
+        rating: 4.2
+        tags:
+          - comedy
+          - space
+          - adventure
+        awards:
+          hugo: true
+          nebula: false
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - name: search
+          options:
+            query:
+              functionValue:
+                args:
+                - stringValue: "science"
+                name: document_matches
+            sort:
+              arrayValue:
+                values:
+                - mapValue:
+                    fields:
+                      direction:
+                        stringValue: descending
+                      expression:
+                        fieldReferenceValue: rating
+                - mapValue:
+                    fields:
+                      direction:
+                        stringValue: ascending
+                      expression:
+                        fieldReferenceValue: published
