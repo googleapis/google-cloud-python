@@ -55,7 +55,7 @@ jobs:
       with:
         repository: googleapis/cloud-bigtable-clients-test
         ref: ${{ matrix.test-version }}
-        path: cloud-bigtable-clients-test
+        path: packages/google-cloud-bigtable/cloud-bigtable-clients-test
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.py-version }}
