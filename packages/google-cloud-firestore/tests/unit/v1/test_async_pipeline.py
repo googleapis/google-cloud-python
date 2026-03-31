@@ -449,8 +449,11 @@ def test_async_pipeline_aggregate_with_groups():
     assert list(result_ppl.stages[0].groups) == [Field.of("author")]
     assert list(result_ppl.stages[0].accumulators) == [Field.of("title")]
 
+
 def test_async_pipeline_union_relative_error():
     start_ppl = _make_async_pipeline(client=mock.Mock())
     other_ppl = _make_async_pipeline(client=None)
-    with pytest.raises(ValueError, match="Union only supports combining root pipelines"):
+    with pytest.raises(
+        ValueError, match="Union only supports combining root pipelines"
+    ):
         start_ppl.union(other_ppl)

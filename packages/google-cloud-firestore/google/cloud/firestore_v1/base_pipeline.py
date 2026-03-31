@@ -16,7 +16,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Sequence, TypeVar, Type
 
-_T = TypeVar("_T", bound="_BasePipeline")
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
@@ -38,6 +37,8 @@ from google.cloud.firestore_v1.vector import Vector
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient
     from google.cloud.firestore_v1.client import Client
+
+_T = TypeVar("_T", bound="_BasePipeline")
 
 
 class _BasePipeline:
