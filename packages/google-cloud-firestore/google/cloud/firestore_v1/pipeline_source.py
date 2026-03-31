@@ -168,7 +168,7 @@ class PipelineSource(Generic[PipelineType]):
             *documents: One or more documents to be returned by this stage. Each can be a `dict`
                        of values of `Expression` or `CONSTANT_TYPE` types.
         Returns:
-            A new Pipeline object with this stage appended to the stage list.
+            A new pipeline instance targeting the specified literal documents
         """
         return self._create_pipeline(stages.Literals(*documents))
 
@@ -193,6 +193,6 @@ class PipelineSource(Generic[PipelineType]):
             path: The path of the subcollection.
 
         Returns:
-            A new :class:`SubPipeline` instance scoped to the subcollection.
+            A new pipeline instance targeting the specified subcollection
         """
         return SubPipeline._create_with_stages(None, stages.Subcollection(path))

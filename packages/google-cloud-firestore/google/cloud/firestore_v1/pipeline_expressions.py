@@ -174,6 +174,8 @@ class Expression(ABC):
         Example:
             >>> # Access the 'city' field from the 'address' map field.
             >>> Field.of("address").get_field("city")
+            >>> # Create a map and access a field from it.
+            >>> Map({"foo": "bar"}).get_field("foo")
 
         Args:
             key: The key of the field to access.
