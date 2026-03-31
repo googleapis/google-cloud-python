@@ -188,4 +188,4 @@ tests:
               - Pipeline.to_scalar_expression:
                   - Collection: books
               - bad_scalar
-    assert_error: ".*more than one item.*"
+    assert_error: ".*multiple results.*"

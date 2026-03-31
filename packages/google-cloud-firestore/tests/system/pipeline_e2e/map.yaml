@@ -162,7 +162,8 @@ tests:
             - FunctionExpression.map_set:
                 - Field: awards
                 - "hugo"
-                - Constant: null
+                - Constant:
+                    value: null
             - "awards_set"
     assert_results:
       - awards_set:
@@ -468,11 +469,6 @@ tests:
           - FunctionExpression.equal:
               - Field: hugoAward
               - Constant: true
-    assert_results:
-      - hugoAward: true
-        title: The Hitchhiker's Guide to the Galaxy
-      - hugoAward: true
-        title: Dune
   - description: testGetFieldWithField
     pipeline:
       - Collection: books

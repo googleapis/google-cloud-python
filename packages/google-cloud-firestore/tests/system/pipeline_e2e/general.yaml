@@ -771,4 +771,4 @@ tests:
       - Union:
         - Pipeline:
           - Subcollection: reviews
-    assert_error: ".*root pipelines.*"
+    assert_error: ".*start of a nested pipeline.*"
