@@ -204,6 +204,9 @@ class Place(proto.Message):
             http://microformats.org/wiki/adr.
         business_status (google.maps.places_v1.types.Place.BusinessStatus):
             The business status for the place.
+        opening_date (google.type.date_pb2.Date):
+            The date this place will open in the future. This field is
+            only populated if the business status is FUTURE_OPENING.
         price_level (google.maps.places_v1.types.PriceLevel):
             Price level of the place.
         attributions (MutableSequence[google.maps.places_v1.types.Place.Attribution]):
@@ -436,12 +439,15 @@ class Place(proto.Message):
                 The establishment is temporarily closed.
             CLOSED_PERMANENTLY (3):
                 The establishment is permanently closed.
+            FUTURE_OPENING (4):
+                The establishment will open in the future.
         """
 
         BUSINESS_STATUS_UNSPECIFIED = 0
         OPERATIONAL = 1
         CLOSED_TEMPORARILY = 2
         CLOSED_PERMANENTLY = 3
+        FUTURE_OPENING = 4
 
     class AddressComponent(proto.Message):
         r"""The structured components that form the formatted address, if
@@ -1391,6 +1397,11 @@ class Place(proto.Message):
         proto.ENUM,
         number=25,
         enum=BusinessStatus,
+    )
+    opening_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=95,
+        message=date_pb2.Date,
     )
     price_level: "PriceLevel" = proto.Field(
         proto.ENUM,

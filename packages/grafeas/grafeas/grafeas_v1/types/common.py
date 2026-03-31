@@ -244,6 +244,10 @@ class FileLocation(proto.Message):
             Each package found in a file should have its
             own layer metadata (that is, information from
             the origin layer of the package).
+        line_number (int):
+            Line number in the file where the package was
+            found. Optional field that only applies to
+            source repository scanning.
     """
 
     file_path: str = proto.Field(
@@ -254,6 +258,10 @@ class FileLocation(proto.Message):
         proto.MESSAGE,
         number=2,
         message="LayerDetails",
+    )
+    line_number: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

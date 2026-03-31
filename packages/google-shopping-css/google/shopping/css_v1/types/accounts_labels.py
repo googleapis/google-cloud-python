@@ -41,7 +41,7 @@ class AccountLabel(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the label.
+            Identifier. The resource name of the label.
             Format: accounts/{account}/labels/{label}
         label_id (int):
             Output only. The ID of the label.

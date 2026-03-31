@@ -63,24 +63,14 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.8
+Python >= 3.9
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.7
-
-**NOTE**:
-Python 3.7 was marked as `unsupported`_ by the python community in June 2023.
-We recommend that all developers upgrade to Python 3.8 and newer as soon as
-they can. Support for Python 3.7 will be removed from all client libraries after
-January 1 2024. Client libraries that support Python 3.7 will continue to be available
-for download, but releases after January 1 2024 will only target Python 3.8 and
-newer.
-
-.. _unsupported: https://devguide.python.org/versions/#unsupported-versions
+Python <= 3.8
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

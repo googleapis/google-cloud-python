@@ -55,7 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -90,7 +90,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -185,6 +185,10 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -378,6 +382,50 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
                 )
             )
         return self._stubs["create_and_configure_account"]
+
+    @property
+    def create_test_account(
+        self,
+    ) -> Callable[[accounts.CreateTestAccountRequest], accounts.Account]:
+        r"""Return a callable for the create test account method over gRPC.
+
+        Creates a Merchant Center test account.
+
+        Test accounts are intended for development and testing
+        purposes, such as validating API integrations or new
+        feature behavior.
+
+        Key characteristics and limitations of test accounts:
+
+        - Immutable Type: A test account cannot be converted
+          into a regular   (live) Merchant Center account.
+          Likewise, a regular account cannot be   converted into
+          a test account.
+        - Non-Serving Products: Any products, offers, or data
+          created within a   test account will not be published
+          or made visible to end-users on any   Google surfaces.
+          They are strictly for testing environments.
+        - Separate Environment: Test accounts operate in a
+          sandbox-like manner,   isolated from live serving and
+          real user traffic.
+
+        Returns:
+            Callable[[~.CreateTestAccountRequest],
+                    ~.Account]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_test_account" not in self._stubs:
+            self._stubs["create_test_account"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.AccountsService/CreateTestAccount",
+                request_serializer=accounts.CreateTestAccountRequest.serialize,
+                response_deserializer=accounts.Account.deserialize,
+            )
+        return self._stubs["create_test_account"]
 
     @property
     def delete_account(

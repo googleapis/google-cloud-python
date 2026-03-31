@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-error-reporting-v1.14.0...google-cloud-error-reporting-v1.15.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:a38add811f7f139d6a385b22d283ad09ef305b8cf50382ef62f0ce690787f021 ([51f9aa03553afae0e4ae2232063eee0f8392c100](https://github.com/googleapis/google-cloud-python/commit/51f9aa03553afae0e4ae2232063eee0f8392c100))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [1.14.0](https://github.com/googleapis/python-error-reporting/compare/v1.13.0...v1.14.0) (2025-12-16)
 
 

@@ -99,6 +99,7 @@ from .types.agent_service import (
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
+from .types.agent_tool import AgentTool
 from .types.agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -114,6 +115,7 @@ from .types.app import (
     CloudLoggingSettings,
     ConversationLoggingSettings,
     DataStoreSettings,
+    ErrorHandlingSettings,
     EvaluationMetricsThresholds,
     LanguageSettings,
     LoggingSettings,
@@ -174,6 +176,7 @@ from .types.open_api_toolset import OpenApiToolset
 from .types.python_function import PythonFunction
 from .types.schema import Schema
 from .types.search_suggestions import GoogleSearchSuggestions, WebSearchQuery
+from .types.security_settings import EndpointControlPolicy, SecuritySettings
 from .types.session_service import (
     AudioEncoding,
     BidiSessionClientMessage,
@@ -311,6 +314,7 @@ __all__ = (
     "Action",
     "Agent",
     "AgentServiceClient",
+    "AgentTool",
     "AgentTransfer",
     "AmbientSoundConfig",
     "ApiAuthentication",
@@ -365,6 +369,8 @@ __all__ = (
     "Deployment",
     "EndSession",
     "EndUserAuthConfig",
+    "EndpointControlPolicy",
+    "ErrorHandlingSettings",
     "EvaluationMetricsThresholds",
     "Event",
     "Example",
@@ -444,6 +450,7 @@ __all__ = (
     "RunSessionRequest",
     "RunSessionResponse",
     "Schema",
+    "SecuritySettings",
     "ServiceAccountAuthConfig",
     "ServiceAgentIdTokenAuthConfig",
     "ServiceDirectoryConfig",

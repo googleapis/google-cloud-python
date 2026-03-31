@@ -1,0 +1,48 @@
+on:
+  pull_request:
+    paths:
+      - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-mockserver-tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-mockserver-tests.yml'
+
+defaults:
+  run:
+    working-directory: packages/django-google-spanner
+
+name: Run Django Spanner mockserver tests
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            django_spanner:
+              - 'packages/django-google-spanner/**'
+              - '.github/workflows/django-spanner-mockserver-tests.yml'
+
+  mockserver-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_django_spanner == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install nox
+        run: python -m pip install nox
+      - name: Run nox
+        run: nox -s mockserver

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.35.0...google-cloud-pubsub-v2.36.0) (2026-03-12)
+
+
+### Features
+
+* Add BigtableConfig type ([ec1a67666be8bec7686ad144a825ae5e6b1b2d8d](https://github.com/googleapis/google-cloud-python/commit/ec1a67666be8bec7686ad144a825ae5e6b1b2d8d))
+
 ## [2.35.0](https://github.com/googleapis/python-pubsub/compare/v2.34.0...v2.35.0) (2026-02-05)
 
 

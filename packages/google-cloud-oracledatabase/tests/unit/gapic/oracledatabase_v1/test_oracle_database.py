@@ -170,6 +170,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert OracleDatabaseClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -190,6 +191,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         OracleDatabaseClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        OracleDatabaseClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1331,11 +1336,13 @@ def test_oracle_database_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -42282,8 +42289,9 @@ def test_list_cloud_exadata_infrastructures_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42348,20 +42356,22 @@ def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_cloud_exadata_infrastructures",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_cloud_exadata_infrastructures_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_list_cloud_exadata_infrastructures",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_cloud_exadata_infrastructures",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_cloud_exadata_infrastructures_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_list_cloud_exadata_infrastructures",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42421,8 +42431,9 @@ def test_get_cloud_exadata_infrastructure_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42493,19 +42504,22 @@ def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_cloud_exadata_infrastructure_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_exadata_infrastructure"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_cloud_exadata_infrastructure",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_cloud_exadata_infrastructure_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_get_cloud_exadata_infrastructure",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42563,8 +42577,9 @@ def test_create_cloud_exadata_infrastructure_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42744,22 +42759,23 @@ def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_cloud_exadata_infrastructure_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_create_cloud_exadata_infrastructure",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_cloud_exadata_infrastructure",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_cloud_exadata_infrastructure_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_create_cloud_exadata_infrastructure",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42814,8 +42830,9 @@ def test_delete_cloud_exadata_infrastructure_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42874,22 +42891,23 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_cloud_exadata_infrastructure_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_delete_cloud_exadata_infrastructure",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_cloud_exadata_infrastructure",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_cloud_exadata_infrastructure_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_delete_cloud_exadata_infrastructure",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42942,8 +42960,9 @@ def test_list_cloud_vm_clusters_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43006,18 +43025,20 @@ def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_cloud_vm_clusters"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_cloud_vm_clusters_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_cloud_vm_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_cloud_vm_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_cloud_vm_clusters_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_cloud_vm_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43077,8 +43098,9 @@ def test_get_cloud_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43161,18 +43183,20 @@ def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_cloud_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_cloud_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_cloud_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_cloud_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43225,8 +43249,9 @@ def test_create_cloud_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43409,20 +43434,21 @@ def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_cloud_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_cloud_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_cloud_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_cloud_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_cloud_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43477,8 +43503,9 @@ def test_delete_cloud_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43537,20 +43564,21 @@ def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_cloud_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_cloud_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_cloud_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_cloud_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_cloud_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43603,8 +43631,9 @@ def test_list_entitlements_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43667,17 +43696,20 @@ def test_list_entitlements_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_entitlements"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_entitlements_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_entitlements"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_entitlements"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_entitlements_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_entitlements"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43737,8 +43769,9 @@ def test_list_db_servers_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43803,17 +43836,20 @@ def test_list_db_servers_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_servers"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_servers_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_servers"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_servers"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_servers_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_db_servers"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43871,8 +43907,9 @@ def test_list_db_nodes_rest_bad_request(request_type=oracledatabase.ListDbNodesR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43937,17 +43974,19 @@ def test_list_db_nodes_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_nodes"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_nodes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_nodes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_nodes"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_nodes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_db_nodes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44002,8 +44041,9 @@ def test_list_gi_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44066,17 +44106,20 @@ def test_list_gi_versions_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_gi_versions"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_gi_versions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_gi_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_gi_versions"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_gi_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_gi_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44134,8 +44177,9 @@ def test_list_minor_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44198,18 +44242,20 @@ def test_list_minor_versions_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_minor_versions"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_minor_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_minor_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_minor_versions"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_minor_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_minor_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44267,8 +44313,9 @@ def test_list_db_system_shapes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44331,18 +44378,20 @@ def test_list_db_system_shapes_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_system_shapes"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_db_system_shapes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_system_shapes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_system_shapes"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_system_shapes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_db_system_shapes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44400,8 +44449,9 @@ def test_list_autonomous_databases_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44464,18 +44514,20 @@ def test_list_autonomous_databases_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_autonomous_databases"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_databases_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_databases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_autonomous_databases"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_databases_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_databases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44535,8 +44587,9 @@ def test_get_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44625,18 +44678,20 @@ def test_get_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44694,8 +44749,9 @@ def test_create_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44971,20 +45027,21 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45041,8 +45098,9 @@ def test_update_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45322,20 +45380,21 @@ def test_update_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_update_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_update_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_update_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_update_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_update_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_update_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45390,8 +45449,9 @@ def test_delete_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45450,20 +45510,21 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45518,8 +45579,9 @@ def test_restore_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45578,20 +45640,21 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_restore_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_restore_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_restore_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_restore_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_restore_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_restore_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45646,8 +45709,9 @@ def test_generate_autonomous_database_wallet_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45714,20 +45778,22 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_generate_autonomous_database_wallet",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_generate_autonomous_database_wallet_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_generate_autonomous_database_wallet",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_generate_autonomous_database_wallet",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_generate_autonomous_database_wallet_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_generate_autonomous_database_wallet",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45785,8 +45851,9 @@ def test_list_autonomous_db_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45849,18 +45916,20 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_autonomous_db_versions"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_db_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_db_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_autonomous_db_versions"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_db_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_db_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45918,8 +45987,9 @@ def test_list_autonomous_database_character_sets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45984,20 +46054,22 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_database_character_sets",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_database_character_sets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_list_autonomous_database_character_sets",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_database_character_sets",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_database_character_sets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_list_autonomous_database_character_sets",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46057,8 +46129,9 @@ def test_list_autonomous_database_backups_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46123,19 +46196,22 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_database_backups",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_autonomous_database_backups_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_database_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_database_backups",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_autonomous_database_backups_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_list_autonomous_database_backups",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46195,8 +46271,9 @@ def test_stop_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46255,20 +46332,21 @@ def test_stop_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_stop_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_stop_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_stop_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_stop_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_stop_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_stop_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46323,8 +46401,9 @@ def test_start_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46383,20 +46462,21 @@ def test_start_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_start_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_start_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_start_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_start_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_start_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_start_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46451,8 +46531,9 @@ def test_restart_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46511,20 +46592,21 @@ def test_restart_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_restart_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_restart_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_restart_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_restart_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_restart_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_restart_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46579,8 +46661,9 @@ def test_switchover_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46639,20 +46722,23 @@ def test_switchover_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_switchover_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_switchover_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_switchover_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_switchover_autonomous_database",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_switchover_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_switchover_autonomous_database",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46707,8 +46793,9 @@ def test_failover_autonomous_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46767,20 +46854,22 @@ def test_failover_autonomous_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_failover_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_failover_autonomous_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_failover_autonomous_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_failover_autonomous_database",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_failover_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_failover_autonomous_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46833,8 +46922,9 @@ def test_list_odb_networks_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46899,17 +46989,20 @@ def test_list_odb_networks_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_odb_networks"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_odb_networks_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_odb_networks"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_odb_networks"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_odb_networks_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_odb_networks"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46967,8 +47060,9 @@ def test_get_odb_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47039,17 +47133,20 @@ def test_get_odb_network_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_odb_network"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_odb_network_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_odb_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_odb_network"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_odb_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_odb_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47102,8 +47199,9 @@ def test_create_odb_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47236,20 +47334,21 @@ def test_create_odb_network_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_odb_network"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_odb_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_odb_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_odb_network"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_odb_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_odb_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47302,8 +47401,9 @@ def test_delete_odb_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47360,20 +47460,21 @@ def test_delete_odb_network_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_odb_network"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_odb_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_odb_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_odb_network"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_odb_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_odb_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47426,8 +47527,9 @@ def test_list_odb_subnets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47492,17 +47594,20 @@ def test_list_odb_subnets_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_odb_subnets"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_odb_subnets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_odb_subnets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_odb_subnets"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_odb_subnets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_odb_subnets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47557,8 +47662,9 @@ def test_get_odb_subnet_rest_bad_request(request_type=odb_subnet.GetOdbSubnetReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47629,17 +47735,20 @@ def test_get_odb_subnet_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_odb_subnet"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_odb_subnet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_odb_subnet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_odb_subnet"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_odb_subnet_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_odb_subnet"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47690,8 +47799,9 @@ def test_create_odb_subnet_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47823,19 +47933,21 @@ def test_create_odb_subnet_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_odb_subnet"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_odb_subnet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_odb_subnet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_odb_subnet"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_odb_subnet_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_odb_subnet"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47890,8 +48002,9 @@ def test_delete_odb_subnet_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47950,19 +48063,21 @@ def test_delete_odb_subnet_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_odb_subnet"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_odb_subnet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_odb_subnet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_odb_subnet"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_odb_subnet_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_odb_subnet"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48015,8 +48130,9 @@ def test_list_exadb_vm_clusters_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48079,18 +48195,20 @@ def test_list_exadb_vm_clusters_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_exadb_vm_clusters"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_exadb_vm_clusters_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_exadb_vm_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_exadb_vm_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_exadb_vm_clusters_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_exadb_vm_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48150,8 +48268,9 @@ def test_get_exadb_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48228,18 +48347,20 @@ def test_get_exadb_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_exadb_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_exadb_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_exadb_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_exadb_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_exadb_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_exadb_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48294,8 +48415,9 @@ def test_create_exadb_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48457,20 +48579,21 @@ def test_create_exadb_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_exadb_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_exadb_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_exadb_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_exadb_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_exadb_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_exadb_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48525,8 +48648,9 @@ def test_delete_exadb_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48585,20 +48709,21 @@ def test_delete_exadb_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_exadb_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_exadb_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_exadb_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_exadb_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_exadb_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_exadb_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48655,8 +48780,9 @@ def test_update_exadb_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48822,20 +48948,21 @@ def test_update_exadb_vm_cluster_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_update_exadb_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_update_exadb_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_update_exadb_vm_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_update_exadb_vm_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_update_exadb_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_update_exadb_vm_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48890,8 +49017,9 @@ def test_remove_virtual_machine_exadb_vm_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48950,22 +49078,23 @@ def test_remove_virtual_machine_exadb_vm_cluster_rest_interceptors(null_intercep
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_remove_virtual_machine_exadb_vm_cluster",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_remove_virtual_machine_exadb_vm_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_remove_virtual_machine_exadb_vm_cluster",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_remove_virtual_machine_exadb_vm_cluster",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_remove_virtual_machine_exadb_vm_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_remove_virtual_machine_exadb_vm_cluster",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49018,8 +49147,9 @@ def test_list_exascale_db_storage_vaults_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49084,18 +49214,22 @@ def test_list_exascale_db_storage_vaults_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_exascale_db_storage_vaults"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_exascale_db_storage_vaults_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_exascale_db_storage_vaults"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_exascale_db_storage_vaults",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_exascale_db_storage_vaults_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_list_exascale_db_storage_vaults",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49159,8 +49293,9 @@ def test_get_exascale_db_storage_vault_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49231,18 +49366,22 @@ def test_get_exascale_db_storage_vault_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_exascale_db_storage_vault"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_exascale_db_storage_vault_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_exascale_db_storage_vault"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_exascale_db_storage_vault",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_exascale_db_storage_vault_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_get_exascale_db_storage_vault",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49300,8 +49439,9 @@ def test_create_exascale_db_storage_vault_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49457,21 +49597,23 @@ def test_create_exascale_db_storage_vault_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_exascale_db_storage_vault",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_exascale_db_storage_vault_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_exascale_db_storage_vault"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_exascale_db_storage_vault",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_exascale_db_storage_vault_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_create_exascale_db_storage_vault",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49528,8 +49670,9 @@ def test_delete_exascale_db_storage_vault_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49588,21 +49731,23 @@ def test_delete_exascale_db_storage_vault_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_exascale_db_storage_vault",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_exascale_db_storage_vault_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_exascale_db_storage_vault"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_exascale_db_storage_vault",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_exascale_db_storage_vault_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_delete_exascale_db_storage_vault",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49655,8 +49800,9 @@ def test_list_db_system_initial_storage_sizes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49725,20 +49871,22 @@ def test_list_db_system_initial_storage_sizes_rest_interceptors(null_interceptor
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_db_system_initial_storage_sizes",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_db_system_initial_storage_sizes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_list_db_system_initial_storage_sizes",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_system_initial_storage_sizes",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_system_initial_storage_sizes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_list_db_system_initial_storage_sizes",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49800,8 +49948,9 @@ def test_list_databases_rest_bad_request(request_type=database.ListDatabasesRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49864,17 +50013,20 @@ def test_list_databases_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_databases"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_databases_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_databases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_databases"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_databases_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_databases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49925,8 +50077,9 @@ def test_get_database_rest_bad_request(request_type=database.GetDatabaseRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50014,17 +50167,19 @@ def test_get_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_database_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_database_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50075,8 +50230,9 @@ def test_list_pluggable_databases_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50141,18 +50297,20 @@ def test_list_pluggable_databases_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_pluggable_databases"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_pluggable_databases_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_pluggable_databases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_pluggable_databases"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_pluggable_databases_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_pluggable_databases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50212,8 +50370,9 @@ def test_get_pluggable_database_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50280,18 +50439,20 @@ def test_get_pluggable_database_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_pluggable_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_pluggable_database_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_pluggable_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_pluggable_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_pluggable_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_pluggable_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50347,8 +50508,9 @@ def test_list_db_systems_rest_bad_request(request_type=db_system.ListDbSystemsRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50411,17 +50573,20 @@ def test_list_db_systems_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_systems"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_systems_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_systems"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_systems"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_systems_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_db_systems"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50472,8 +50637,9 @@ def test_get_db_system_rest_bad_request(request_type=db_system.GetDbSystemReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50548,17 +50714,19 @@ def test_get_db_system_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_db_system"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_db_system_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_db_system"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_db_system"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_get_db_system_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_get_db_system"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50609,8 +50777,9 @@ def test_create_db_system_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50807,19 +50976,21 @@ def test_create_db_system_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_db_system"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_db_system_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_db_system"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_create_db_system"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_create_db_system_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_create_db_system"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50872,8 +51043,9 @@ def test_delete_db_system_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50930,19 +51102,21 @@ def test_delete_db_system_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_db_system"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_db_system_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_db_system"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_delete_db_system"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_delete_db_system_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_delete_db_system"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50995,8 +51169,9 @@ def test_list_db_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51059,17 +51234,20 @@ def test_list_db_versions_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_versions"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_versions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_list_db_versions"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_db_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_db_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51124,8 +51302,9 @@ def test_list_database_character_sets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51190,18 +51369,21 @@ def test_list_database_character_sets_rest_interceptors(null_interceptor):
     )
     client = OracleDatabaseClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_database_character_sets"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_database_character_sets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_database_character_sets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_database_character_sets",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_list_database_character_sets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_list_database_character_sets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51259,8 +51441,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51319,8 +51502,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51381,8 +51565,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51443,8 +51628,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51505,8 +51691,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51567,8 +51754,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53015,11 +53203,14 @@ def test_oracle_database_base_transport():
 
 def test_oracle_database_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.oracledatabase_v1.services.oracle_database.transports.OracleDatabaseTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.oracledatabase_v1.services.oracle_database.transports.OracleDatabaseTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OracleDatabaseTransport(
@@ -53036,9 +53227,12 @@ def test_oracle_database_base_transport_with_credentials_file():
 
 def test_oracle_database_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.oracledatabase_v1.services.oracle_database.transports.OracleDatabaseTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.oracledatabase_v1.services.oracle_database.transports.OracleDatabaseTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OracleDatabaseTransport()
@@ -53110,11 +53304,12 @@ def test_oracle_database_transport_auth_gdch_credentials(transport_class):
 def test_oracle_database_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -54530,6 +54725,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -54667,6 +54894,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -54814,6 +55073,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -54957,6 +55250,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -55104,6 +55431,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -55243,6 +55604,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

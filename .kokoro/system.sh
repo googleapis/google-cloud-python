@@ -72,6 +72,7 @@ run_package_test() {
 
   # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+  export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
   gcloud config set project "$PROJECT_ID"
@@ -94,10 +95,13 @@ packages_with_system_tests=(
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
+  "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
   "google-cloud-pubsub"
   "google-cloud-testutils"
+  "sqlalchemy-bigquery"
+  "pandas-gbq"
 )
 
 # A file for running system tests

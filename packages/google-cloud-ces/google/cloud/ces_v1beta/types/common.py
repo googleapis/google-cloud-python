@@ -272,20 +272,20 @@ class TlsConfig(proto.Message):
                 certificates. This can be used to disambiguate
                 the custom CA certificates.
             cert (bytes):
-                Required. The allowed custom CA certificates
-                (in DER format) for HTTPS verification. This
-                overrides the default SSL trust store. If this
-                is empty or unspecified, CES will use Google's
-                default trust store to verify certificates. N.B.
-                Make sure the HTTPS server certificates are
-                signed with "subject alt name". For instance a
-                certificate can be self-signed using the
-                following command,    openssl x509 -req -days
-                200 -in example.com.csr \      -signkey
-                example.com.key \
-                     -out example.com.crt \
-                     -extfile <(printf
-                "\nsubjectAltName='DNS:www.example.com'")
+                Required. The allowed custom CA certificates (in DER format)
+                for HTTPS verification. This overrides the default SSL trust
+                store. If this is empty or unspecified, CES will use
+                Google's default trust store to verify certificates. N.B.
+                Make sure the HTTPS server certificates are signed with
+                "subject alt name". For instance a certificate can be
+                self-signed using the following command:
+
+                ::
+
+                      openssl x509 -req -days 200 -in example.com.csr \
+                        -signkey example.com.key \
+                        -out example.com.crt \
+                        -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
         """
 
         display_name: str = proto.Field(
@@ -447,12 +447,15 @@ class ChannelProfile(proto.Message):
                     Widget supports only voice input.
                 CHAT_ONLY (3):
                     Widget supports only chat input.
+                CHAT_VOICE_AND_VIDEO (4):
+                    Widget supports chat, voice, and video input.
             """
 
             MODALITY_UNSPECIFIED = 0
             CHAT_AND_VOICE = 1
             VOICE_ONLY = 2
             CHAT_ONLY = 3
+            CHAT_VOICE_AND_VIDEO = 4
 
         class Theme(proto.Enum):
             r"""Theme of the web widget.

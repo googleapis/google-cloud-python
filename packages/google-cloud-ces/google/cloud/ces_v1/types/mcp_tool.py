@@ -69,6 +69,13 @@ class McpTool(proto.Message):
             Optional. Service Directory configuration for
             VPC-SC, used to resolve service names within a
             perimeter.
+        custom_headers (MutableMapping[str, str]):
+            Optional. The custom headers to send in the request to the
+            MCP server. The values must be in the format
+            ``$context.variables.<name_of_variable>`` and can be set in
+            the session variables. See
+            https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
+            for more details.
     """
 
     name: str = proto.Field(
@@ -107,6 +114,11 @@ class McpTool(proto.Message):
         proto.MESSAGE,
         number=8,
         message=common.ServiceDirectoryConfig,
+    )
+    custom_headers: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
     )
 
 

@@ -152,7 +152,7 @@ class SessionConfig(proto.Message):
             specified, the session will be handled by the [root
             agent][google.cloud.ces.v1.App.root_agent] of the app.
             Format:
-            ``projects/{project}/locations/{location}/agents/{agent}``
+            ``projects/{project}/locations/{location}/apps/{app}/agents/{agent}``
         deployment (str):
             Optional. The deployment of the app to use for the session.
             Format:
@@ -165,6 +165,11 @@ class SessionConfig(proto.Message):
 
             The format is the IANA Time Zone Database time zone, e.g.
             "America/Los_Angeles".
+        use_tool_fakes (bool):
+            Optional. Whether to use tool fakes for the
+            session. If this field is set, the agent will
+            attempt use tool fakes instead of calling the
+            real tools.
         remote_dialogflow_query_parameters (google.cloud.ces_v1.types.SessionConfig.RemoteDialogflowQueryParameters):
             Optional.
             `QueryParameters <https://cloud.google.com/dialogflow/cx/docs/reference/rpc/google.cloud.dialogflow.cx.v3#queryparameters>`__
@@ -172,6 +177,14 @@ class SessionConfig(proto.Message):
             `Dialogflow <https://cloud.google.com/dialogflow/cx/docs/concept/console-conversational-agents>`__
             agent when the session control is transferred to the remote
             agent.
+        enable_text_streaming (bool):
+            Optional. Whether to enable streaming text outputs from the
+            model. By default, text outputs from the model are collected
+            before sending to the client. NOTE: This is only supported
+            for text (non-voice) sessions via
+            [StreamRunSession][google.cloud.ces.v1.SessionService.StreamRunSession]
+            or
+            [BidiRunSession][google.cloud.ces.v1.SessionService.BidiRunSession].
     """
 
     class RemoteDialogflowQueryParameters(proto.Message):
@@ -239,10 +252,18 @@ class SessionConfig(proto.Message):
         proto.STRING,
         number=11,
     )
+    use_tool_fakes: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
     remote_dialogflow_query_parameters: RemoteDialogflowQueryParameters = proto.Field(
         proto.MESSAGE,
         number=15,
         message=RemoteDialogflowQueryParameters,
+    )
+    enable_text_streaming: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
 
 
@@ -385,12 +406,15 @@ class SessionInput(proto.Message):
         will_continue (bool):
             Optional. A flag to indicate if the current message is a
             fragment of a larger input in the bidi streaming session.
-            When ``true``, the agent will defer processing until a
-            subsequent message with ``will_continue`` set to ``false``
-            is received.
 
-            Note: This flag has no effect on audio and DTMF inputs,
-            which are always processed in real-time.
+            When set to ``true``, the agent defers processing until it
+            receives a subsequent message where ``will_continue`` is
+            ``false``, or until the system detects an endpoint in the
+            audio input.
+
+            NOTE: This field does not apply to audio and DTMF inputs, as
+            they are always processed automatically based on the
+            endpointing signal.
     """
 
     text: str = proto.Field(
@@ -746,8 +770,8 @@ class BidiSessionServerMessage(proto.Message):
 
             This field is a member of `oneof`_ ``message_type``.
         interruption_signal (google.cloud.ces_v1.types.InterruptionSignal):
-            Optional. Interruption signal detected from
-            the audio input.
+            Optional. Indicates the agent's audio
+            response has been interrupted.
 
             This field is a member of `oneof`_ ``message_type``.
         end_session (google.cloud.ces_v1.types.EndSession):

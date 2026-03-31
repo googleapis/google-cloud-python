@@ -3062,6 +3062,50 @@
         }
       }
     },
+    "RegionCompositeHealthChecks": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionCompositeHealthChecksClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RegionDiskTypes": {
       "clients": {
         "rest": {
@@ -3224,6 +3268,11 @@
         "rest": {
           "libraryClient": "RegionHealthCheckServicesClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -3296,6 +3345,50 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionHealthSources": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionHealthSourcesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -3695,6 +3788,11 @@
         "rest": {
           "libraryClient": "RegionNotificationEndpointsClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -4113,6 +4211,11 @@
                 "get"
               ]
             },
+            "GetVersion": {
+              "methods": [
+                "get_version"
+              ]
+            },
             "List": {
               "methods": [
                 "list"
@@ -4140,6 +4243,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetVersion": {
+              "methods": [
+                "get_version"
               ]
             },
             "List": {

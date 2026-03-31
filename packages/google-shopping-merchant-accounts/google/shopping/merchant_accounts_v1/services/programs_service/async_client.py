@@ -196,7 +196,7 @@ class ProgramsServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -380,6 +380,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -635,6 +636,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -764,6 +766,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 

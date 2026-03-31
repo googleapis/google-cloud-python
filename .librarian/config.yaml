@@ -12,3 +12,11 @@ libraries:
 # Allow releases for bigframes once this bug above is fixed.
   - id: "bigframes"
     release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16180):
+# `google-django-spanner` is blocked until the presubmits are green.
+  - id: "google-django-spanner"
+    release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16487):
+# Allow releases for google-cloud-storage once this bug is fixed.
+  - id: "google-cloud-storage"
+    release_blocked: true

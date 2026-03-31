@@ -55,7 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -90,7 +90,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -185,6 +185,10 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -331,11 +335,11 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
         r"""Return a callable for the insert product input method over gRPC.
 
         `Uploads a product input to your Merchant Center
-        account </merchant/api/guides/products/overview#upload-product-input>`__.
+        account </merchant/api/guides/products/add-manage#add_a_product>`__.
         You must have a products `data
-        source </merchant/api/guides/data-sources/overview>`__ to be
-        able to insert a product. The unique identifier of the data
-        source is passed as a query parameter in the request URL.
+        source </merchant/api/guides/data-sources/api-sources#create-primary-data-source>`__
+        to be able to insert a product. The unique identifier of the
+        data source is passed as a query parameter in the request URL.
 
         If a product input with the same contentLanguage, offerId, and
         dataSource already exists, then the product input inserted by
@@ -371,11 +375,13 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
     ]:
         r"""Return a callable for the update product input method over gRPC.
 
-        Updates the existing product input in your Merchant
-        Center account.
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the processed product
-        can be retrieved.
+        Updates the existing product input in your Merchant Center
+        account. The name of the product input to update is taken from
+        the ``name`` field within the ``ProductInput`` resource.
+
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the processed product can be
+        retrieved.
 
         Returns:
             Callable[[~.UpdateProductInputRequest],

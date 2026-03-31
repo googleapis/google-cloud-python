@@ -1478,6 +1478,13 @@ class TrainProcessorVersionRequest(proto.Message):
                 recommended learning rate. Valid values are
                 between 0.1 and 10. If not provided, recommended
                 learning rate will be used.
+            previous_fine_tuned_processor_version_name (str):
+                Optional. Resource name of a previously fine tuned version
+                id to copy the overwritten configs from. The
+                base_processor_version should be newer than the base
+                processor version used to fine tune this provided processor
+                version. Format:
+                ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``.
         """
 
         train_steps: int = proto.Field(
@@ -1487,6 +1494,10 @@ class TrainProcessorVersionRequest(proto.Message):
         learning_rate_multiplier: float = proto.Field(
             proto.FLOAT,
             number=3,
+        )
+        previous_fine_tuned_processor_version_name: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     custom_document_extraction_options: CustomDocumentExtractionOptions = proto.Field(

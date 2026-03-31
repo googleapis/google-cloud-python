@@ -44,12 +44,6 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.options_pb2 as options_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -73,11 +67,8 @@ from google.oauth2 import service_account
 from google.cloud.dataplex_v1.services.content_service import (
     ContentServiceAsyncClient,
     ContentServiceClient,
-    pagers,
     transports,
 )
-from google.cloud.dataplex_v1.types import analyze, content
-from google.cloud.dataplex_v1.types import content as gcd_content
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -133,6 +124,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ContentServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -153,6 +145,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         ContentServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        ContentServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1294,11 +1290,13 @@ def test_content_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1309,7 +1307,7 @@ def test_content_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -1318,4164 +1316,6 @@ def test_content_service_client_create_channel_credentials_file(
                 ("grpc.max_receive_message_length", -1),
             ],
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_content.CreateContentRequest,
-        dict,
-    ],
-)
-def test_create_content(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-        response = client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = gcd_content.CreateContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-def test_create_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = gcd_content.CreateContentRequest(
-        parent="parent_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_content.CreateContentRequest(
-            parent="parent_value",
-        )
-
-
-def test_create_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.create_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.create_content] = mock_rpc
-        request = {}
-        client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.create_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_create_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.create_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_content
-        ] = mock_rpc
-
-        request = {}
-        await client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.create_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_create_content_async(
-    transport: str = "grpc_asyncio", request_type=gcd_content.CreateContentRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        response = await client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = gcd_content.CreateContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_content_async_from_dict():
-    await test_create_content_async(request_type=dict)
-
-
-def test_create_content_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcd_content.CreateContentRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_content_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcd_content.CreateContentRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        await client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_content_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_content(
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].content
-        mock_val = analyze.Content(name="name_value")
-        assert arg == mock_val
-
-
-def test_create_content_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_content(
-            gcd_content.CreateContentRequest(),
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_content_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_content(
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].content
-        mock_val = analyze.Content(name="name_value")
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_content_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_content(
-            gcd_content.CreateContentRequest(),
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_content.UpdateContentRequest,
-        dict,
-    ],
-)
-def test_update_content(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-        response = client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = gcd_content.UpdateContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-def test_update_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = gcd_content.UpdateContentRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_content.UpdateContentRequest()
-
-
-def test_update_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.update_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.update_content] = mock_rpc
-        request = {}
-        client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.update_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_update_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.update_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_content
-        ] = mock_rpc
-
-        request = {}
-        await client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.update_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_update_content_async(
-    transport: str = "grpc_asyncio", request_type=gcd_content.UpdateContentRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = gcd_content.UpdateContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_content_async_from_dict():
-    await test_update_content_async(request_type=dict)
-
-
-def test_update_content_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcd_content.UpdateContentRequest()
-
-    request.content.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "content.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_content_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcd_content.UpdateContentRequest()
-
-    request.content.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        await client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "content.name=name_value",
-    ) in kw["metadata"]
-
-
-def test_update_content_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_content(
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].content
-        mock_val = analyze.Content(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_content_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_content(
-            gcd_content.UpdateContentRequest(),
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_content_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_content(
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].content
-        mock_val = analyze.Content(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_content_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_content(
-            gcd_content.UpdateContentRequest(),
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.DeleteContentRequest,
-        dict,
-    ],
-)
-def test_delete_content(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = content.DeleteContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = content.DeleteContentRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == content.DeleteContentRequest(
-            name="name_value",
-        )
-
-
-def test_delete_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.delete_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.delete_content] = mock_rpc
-        request = {}
-        client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.delete_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_delete_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.delete_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_content
-        ] = mock_rpc
-
-        request = {}
-        await client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.delete_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_delete_content_async(
-    transport: str = "grpc_asyncio", request_type=content.DeleteContentRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = content.DeleteContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_content_async_from_dict():
-    await test_delete_content_async(request_type=dict)
-
-
-def test_delete_content_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.DeleteContentRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        call.return_value = None
-        client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_content_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.DeleteContentRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_content_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_content(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_content_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_content(
-            content.DeleteContentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_content_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_content(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_content_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_content(
-            content.DeleteContentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.GetContentRequest,
-        dict,
-    ],
-)
-def test_get_content(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-        response = client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = content.GetContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-def test_get_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = content.GetContentRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == content.GetContentRequest(
-            name="name_value",
-        )
-
-
-def test_get_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_content] = mock_rpc
-        request = {}
-        client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_content
-        ] = mock_rpc
-
-        request = {}
-        await client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_content_async(
-    transport: str = "grpc_asyncio", request_type=content.GetContentRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = content.GetContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_content_async_from_dict():
-    await test_get_content_async(request_type=dict)
-
-
-def test_get_content_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.GetContentRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_content_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.GetContentRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        await client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_content_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_content(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_content_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_content(
-            content.GetContentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_content_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analyze.Content()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Content())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_content(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_content_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_content(
-            content.GetContentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-        response = client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = iam_policy_pb2.GetIamPolicyRequest(
-        resource="resource_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_iam_policy(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
-            resource="resource_value",
-        )
-
-
-def test_get_iam_policy_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
-        request = {}
-        client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_iam_policy
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_iam_policy
-        ] = mock_rpc
-
-        request = {}
-        await client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
-
-
-def test_get_iam_policy_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.GetIamPolicyRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-        client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.GetIamPolicyRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
-        await client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-def test_get_iam_policy_from_dict_foreign():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-        response = client.get_iam_policy(
-            request={
-                "resource": "resource_value",
-                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
-            }
-        )
-        call.assert_called()
-
-
-def test_get_iam_policy_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_iam_policy(
-            resource="resource_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].resource
-        mock_val = "resource_value"
-        assert arg == mock_val
-
-
-def test_get_iam_policy_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(),
-            resource="resource_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_iam_policy(
-            resource="resource_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].resource
-        mock_val = "resource_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(),
-            resource="resource_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-        response = client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = iam_policy_pb2.SetIamPolicyRequest(
-        resource="resource_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.set_iam_policy(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
-            resource="resource_value",
-        )
-
-
-def test_set_iam_policy_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.set_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
-        request = {}
-        client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.set_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.set_iam_policy
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.set_iam_policy
-        ] = mock_rpc
-
-        request = {}
-        await client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.set_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
-
-
-def test_set_iam_policy_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.SetIamPolicyRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-        client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.SetIamPolicyRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
-        await client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-def test_set_iam_policy_from_dict_foreign():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-        response = client.set_iam_policy(
-            request={
-                "resource": "resource_value",
-                "policy": policy_pb2.Policy(version=774),
-                "update_mask": field_mask_pb2.FieldMask(paths=["paths_value"]),
-            }
-        )
-        call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-        response = client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = iam_policy_pb2.TestIamPermissionsRequest(
-        resource="resource_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.test_iam_permissions(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
-            resource="resource_value",
-        )
-
-
-def test_test_iam_permissions_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
-            mock_rpc
-        )
-        request = {}
-        client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.test_iam_permissions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.test_iam_permissions
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.test_iam_permissions
-        ] = mock_rpc
-
-        request = {}
-        await client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.test_iam_permissions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        response = await client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
-
-
-def test_test_iam_permissions_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.TestIamPermissionsRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-        client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.TestIamPermissionsRequest()
-
-    request.resource = "resource_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
-        await client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "resource=resource_value",
-    ) in kw["metadata"]
-
-
-def test_test_iam_permissions_from_dict_foreign():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-        response = client.test_iam_permissions(
-            request={
-                "resource": "resource_value",
-                "permissions": ["permissions_value"],
-            }
-        )
-        call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.ListContentRequest,
-        dict,
-    ],
-)
-def test_list_content(request_type, transport: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = content.ListContentResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = content.ListContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListContentPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = content.ListContentRequest(
-        parent="parent_value",
-        page_token="page_token_value",
-        filter="filter_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == content.ListContentRequest(
-            parent="parent_value",
-            page_token="page_token_value",
-            filter="filter_value",
-        )
-
-
-def test_list_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.list_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.list_content] = mock_rpc
-        request = {}
-        client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_list_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ContentServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.list_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_content
-        ] = mock_rpc
-
-        request = {}
-        await client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.list_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_list_content_async(
-    transport: str = "grpc_asyncio", request_type=content.ListContentRequest
-):
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            content.ListContentResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = content.ListContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListContentAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_content_async_from_dict():
-    await test_list_content_async(request_type=dict)
-
-
-def test_list_content_field_headers():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.ListContentRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        call.return_value = content.ListContentResponse()
-        client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_content_field_headers_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = content.ListContentRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            content.ListContentResponse()
-        )
-        await client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_content_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = content.ListContentResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_content(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_content_flattened_error():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_content(
-            content.ListContentRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_content_flattened_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = content.ListContentResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            content.ListContentResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_content(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_content_flattened_error_async():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_content(
-            content.ListContentRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_content_pager(transport_name: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-                next_page_token="abc",
-            ),
-            content.ListContentResponse(
-                content=[],
-                next_page_token="def",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                ],
-                next_page_token="ghi",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_content(request={}, retry=retry, timeout=timeout)
-
-        assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, analyze.Content) for i in results)
-
-
-def test_list_content_pages(transport_name: str = "grpc"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-                next_page_token="abc",
-            ),
-            content.ListContentResponse(
-                content=[],
-                next_page_token="def",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                ],
-                next_page_token="ghi",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_content(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_content_async_pager():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_content), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-                next_page_token="abc",
-            ),
-            content.ListContentResponse(
-                content=[],
-                next_page_token="def",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                ],
-                next_page_token="ghi",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_content(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, analyze.Content) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_content_async_pages():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_content), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-                next_page_token="abc",
-            ),
-            content.ListContentResponse(
-                content=[],
-                next_page_token="def",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                ],
-                next_page_token="ghi",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_content(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-def test_create_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.create_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.create_content] = mock_rpc
-
-        request = {}
-        client.create_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.create_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_create_content_rest_required_fields(
-    request_type=gcd_content.CreateContentRequest,
-):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_content._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("validate_only",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analyze.Content()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analyze.Content.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.create_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_content_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("validateOnly",))
-        & set(
-            (
-                "parent",
-                "content",
-            )
-        )
-    )
-
-
-def test_create_content_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.create_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/lakes/*}/contentitems"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_create_content_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_content(
-            gcd_content.CreateContentRequest(),
-            parent="parent_value",
-            content=analyze.Content(name="name_value"),
-        )
-
-
-def test_update_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.update_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.update_content] = mock_rpc
-
-        request = {}
-        client.update_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.update_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_update_content_rest_required_fields(
-    request_type=gcd_content.UpdateContentRequest,
-):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_content._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "update_mask",
-            "validate_only",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analyze.Content()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analyze.Content.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.update_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_update_content_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "updateMask",
-                "validateOnly",
-            )
-        )
-        & set(
-            (
-                "updateMask",
-                "content",
-            )
-        )
-    )
-
-
-def test_update_content_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "content": {
-                "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-            }
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.update_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{content.name=projects/*/locations/*/lakes/*/contentitems/**}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_update_content_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_content(
-            gcd_content.UpdateContentRequest(),
-            content=analyze.Content(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-def test_delete_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.delete_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.delete_content] = mock_rpc
-
-        request = {}
-        client.delete_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.delete_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_delete_content_rest_required_fields(request_type=content.DeleteContentRequest):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.delete_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_content_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_delete_content_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.delete_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/lakes/*/contentitems/**}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_content_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_content(
-            content.DeleteContentRequest(),
-            name="name_value",
-        )
-
-
-def test_get_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_content] = mock_rpc
-
-        request = {}
-        client.get_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_content_rest_required_fields(request_type=content.GetContentRequest):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_content._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("view",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analyze.Content()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analyze.Content.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_content_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("view",)) & set(("name",)))
-
-
-def test_get_content_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/lakes/*/contentitems/**}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_content_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_content(
-            content.GetContentRequest(),
-            name="name_value",
-        )
-
-
-def test_get_iam_policy_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
-
-        request = {}
-        client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_iam_policy_rest_required_fields(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("options",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = policy_pb2.Policy()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_iam_policy(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("options",)) & set(("resource",)))
-
-
-def test_get_iam_policy_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            resource="resource_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_iam_policy(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{resource=projects/*/locations/*/lakes/*/contentitems/**}:getIamPolicy"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(),
-            resource="resource_value",
-        )
-
-
-def test_set_iam_policy_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.set_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
-
-        request = {}
-        client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.set_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_set_iam_policy_rest_required_fields(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = policy_pb2.Policy()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.set_iam_policy(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "policy",
-            )
-        )
-    )
-
-
-def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
-            mock_rpc
-        )
-
-        request = {}
-        client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.test_iam_permissions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_test_iam_permissions_rest_required_fields(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["resource"] = ""
-    request_init["permissions"] = ""
-    request = request_type(**request_init)
-    pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["resource"] = "resource_value"
-    jsonified_request["permissions"] = "permissions_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-    assert "permissions" in jsonified_request
-    assert jsonified_request["permissions"] == "permissions_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = iam_policy_pb2.TestIamPermissionsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.test_iam_permissions(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "permissions",
-            )
-        )
-    )
-
-
-def test_list_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ContentServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.list_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.list_content] = mock_rpc
-
-        request = {}
-        client.list_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_content_rest_required_fields(request_type=content.ListContentRequest):
-    transport_class = transports.ContentServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_content._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = content.ListContentResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = content.ListContentResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.list_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_content_rest_unset_required_fields():
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
-
-
-def test_list_content_rest_flattened():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = content.ListContentResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = content.ListContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.list_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/lakes/*}/contentitems"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_content_rest_flattened_error(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_content(
-            content.ListContentRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_content_rest_pager(transport: str = "rest"):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-                next_page_token="abc",
-            ),
-            content.ListContentResponse(
-                content=[],
-                next_page_token="def",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                ],
-                next_page_token="ghi",
-            ),
-            content.ListContentResponse(
-                content=[
-                    analyze.Content(),
-                    analyze.Content(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(content.ListContentResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-
-        pager = client.list_content(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, analyze.Content) for i in results)
-
-        pages = list(client.list_content(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -5584,176 +1424,6 @@ def test_initialize_client_w_grpc():
     assert client is not None
 
 
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_content_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.create_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.CreateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_content_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.update_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.UpdateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_content_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        call.return_value = None
-        client.delete_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.DeleteContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_content_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        call.return_value = analyze.Content()
-        client.get_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.GetContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_iam_policy_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-        client.get_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_set_iam_policy_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-        client.set_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_test_iam_permissions_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-        client.test_iam_permissions(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_content_empty_call_grpc():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        call.return_value = content.ListContentResponse()
-        client.list_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.ListContentRequest()
-
-        assert args[0] == request_msg
-
-
 def test_transport_kind_grpc_asyncio():
     transport = ContentServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -5768,1422 +1438,11 @@ def test_initialize_client_w_grpc_asyncio():
     assert client is not None
 
 
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_create_content_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        await client.create_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.CreateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_update_content_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        await client.update_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.UpdateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_delete_content_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.DeleteContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_content_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Content(
-                name="name_value",
-                uid="uid_value",
-                path="path_value",
-                description="description_value",
-            )
-        )
-        await client.get_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.GetContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_iam_policy_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        await client.get_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_set_iam_policy_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        await client.set_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_test_iam_permissions_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        await client.test_iam_permissions(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_list_content_empty_call_grpc_asyncio():
-    client = ContentServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            content.ListContentResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        await client.list_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.ListContentRequest()
-
-        assert args[0] == request_msg
-
-
 def test_transport_kind_rest():
     transport = ContentServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
-
-
-def test_create_content_rest_bad_request(request_type=gcd_content.CreateContentRequest):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.create_content(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_content.CreateContentRequest,
-        dict,
-    ],
-)
-def test_create_content_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-    request_init["content"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "path": "path_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "data_text": "data_text_value",
-        "sql_script": {"engine": 2},
-        "notebook": {"kernel_type": 1},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_content.CreateContentRequest.meta.fields["content"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["content"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["content"][field])):
-                    del request_init["content"][field][i][subfield]
-            else:
-                del request_init["content"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.create_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_content_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_create_content"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_create_content_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_create_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = gcd_content.CreateContentRequest.pb(
-            gcd_content.CreateContentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = analyze.Content.to_json(analyze.Content())
-        req.return_value.content = return_value
-
-        request = gcd_content.CreateContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analyze.Content()
-        post_with_metadata.return_value = analyze.Content(), metadata
-
-        client.create_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_update_content_rest_bad_request(request_type=gcd_content.UpdateContentRequest):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "content": {
-            "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.update_content(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_content.UpdateContentRequest,
-        dict,
-    ],
-)
-def test_update_content_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "content": {
-            "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-        }
-    }
-    request_init["content"] = {
-        "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4",
-        "uid": "uid_value",
-        "path": "path_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "data_text": "data_text_value",
-        "sql_script": {"engine": 2},
-        "notebook": {"kernel_type": 1},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_content.UpdateContentRequest.meta.fields["content"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["content"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["content"][field])):
-                    del request_init["content"][field][i][subfield]
-            else:
-                del request_init["content"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.update_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_content_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_update_content"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_update_content_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_update_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = gcd_content.UpdateContentRequest.pb(
-            gcd_content.UpdateContentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = analyze.Content.to_json(analyze.Content())
-        req.return_value.content = return_value
-
-        request = gcd_content.UpdateContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analyze.Content()
-        post_with_metadata.return_value = analyze.Content(), metadata
-
-        client.update_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_delete_content_rest_bad_request(request_type=content.DeleteContentRequest):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.delete_content(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.DeleteContentRequest,
-        dict,
-    ],
-)
-def test_delete_content_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.delete_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_content_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_delete_content"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = content.DeleteContentRequest.pb(content.DeleteContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        request = content.DeleteContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_get_content_rest_bad_request(request_type=content.GetContentRequest):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_content(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.GetContentRequest,
-        dict,
-    ],
-)
-def test_get_content_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analyze.Content(
-            name="name_value",
-            uid="uid_value",
-            path="path_value",
-            description="description_value",
-            data_text="data_text_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = analyze.Content.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analyze.Content)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.path == "path_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_content_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_get_content"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_get_content_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_get_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = content.GetContentRequest.pb(content.GetContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = analyze.Content.to_json(analyze.Content())
-        req.return_value.content = return_value
-
-        request = content.GetContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analyze.Content()
-        post_with_metadata.return_value = analyze.Content(), metadata
-
-        client.get_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_get_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = iam_policy_pb2.GetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = json_format.MessageToJson(policy_pb2.Policy())
-        req.return_value.content = return_value
-
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-        post_with_metadata.return_value = policy_pb2.Policy(), metadata
-
-        client.get_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_set_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.set_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_set_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = iam_policy_pb2.SetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = json_format.MessageToJson(policy_pb2.Policy())
-        req.return_value.content = return_value
-
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-        post_with_metadata.return_value = policy_pb2.Policy(), metadata
-
-        client.set_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_test_iam_permissions_rest_bad_request(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.test_iam_permissions(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/lakes/sample3/contentitems/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_test_iam_permissions_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = json_format.MessageToJson(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
-        req.return_value.content = return_value
-
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-        post_with_metadata.return_value = (
-            iam_policy_pb2.TestIamPermissionsResponse(),
-            metadata,
-        )
-
-        client.test_iam_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_list_content_rest_bad_request(request_type=content.ListContentRequest):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.list_content(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        content.ListContentRequest,
-        dict,
-    ],
-)
-def test_list_content_rest_call_success(request_type):
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = content.ListContentResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = content.ListContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.list_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListContentPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_content_rest_interceptors(null_interceptor):
-    transport = transports.ContentServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ContentServiceRestInterceptor(),
-    )
-    client = ContentServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_list_content"
-    ) as post, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "post_list_content_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ContentServiceRestInterceptor, "pre_list_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = content.ListContentRequest.pb(content.ListContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = content.ListContentResponse.to_json(
-            content.ListContentResponse()
-        )
-        req.return_value.content = return_value
-
-        request = content.ListContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = content.ListContentResponse()
-        post_with_metadata.return_value = content.ListContentResponse(), metadata
-
-        client.list_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
@@ -7197,8 +1456,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7257,8 +1517,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7306,6 +1567,195 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/lakes/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/lakes/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/lakes/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/lakes/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/lakes/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/lakes/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -7319,8 +1769,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7381,8 +1832,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7443,8 +1895,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7505,8 +1958,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7561,168 +2015,6 @@ def test_initialize_client_w_rest():
     assert client is not None
 
 
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_content_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_content), "__call__") as call:
-        client.create_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.CreateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_content_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_content), "__call__") as call:
-        client.update_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcd_content.UpdateContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_content_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_content), "__call__") as call:
-        client.delete_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.DeleteContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_content_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_content), "__call__") as call:
-        client.get_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.GetContentRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_iam_policy_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        client.get_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_set_iam_policy_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        client.set_iam_policy(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_test_iam_permissions_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        client.test_iam_permissions(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_content_empty_call_rest():
-    client = ContentServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_content), "__call__") as call:
-        client.list_content(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = content.ListContentRequest()
-
-        assert args[0] == request_msg
-
-
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ContentServiceClient(
@@ -7756,14 +2048,9 @@ def test_content_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "create_content",
-        "update_content",
-        "delete_content",
-        "get_content",
-        "get_iam_policy",
         "set_iam_policy",
+        "get_iam_policy",
         "test_iam_permissions",
-        "list_content",
         "get_location",
         "list_locations",
         "get_operation",
@@ -7789,11 +2076,14 @@ def test_content_service_base_transport():
 
 def test_content_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dataplex_v1.services.content_service.transports.ContentServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dataplex_v1.services.content_service.transports.ContentServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ContentServiceTransport(
@@ -7803,16 +2093,19 @@ def test_content_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(),
             quota_project_id="octopus",
         )
 
 
 def test_content_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dataplex_v1.services.content_service.transports.ContentServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dataplex_v1.services.content_service.transports.ContentServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ContentServiceTransport()
@@ -7826,7 +2119,7 @@ def test_content_service_auth_adc():
         ContentServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(),
             quota_project_id=None,
         )
 
@@ -7846,7 +2139,7 @@ def test_content_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(),
             quota_project_id="octopus",
         )
 
@@ -7884,11 +2177,12 @@ def test_content_service_transport_auth_gdch_credentials(transport_class):
 def test_content_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -7898,7 +2192,7 @@ def test_content_service_transport_create_channel(transport_class, grpc_helpers)
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -8028,30 +2322,6 @@ def test_content_service_client_transport_session_collision(transport_name):
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.create_content._session
-    session2 = client2.transport.create_content._session
-    assert session1 != session2
-    session1 = client1.transport.update_content._session
-    session2 = client2.transport.update_content._session
-    assert session1 != session2
-    session1 = client1.transport.delete_content._session
-    session2 = client2.transport.delete_content._session
-    assert session1 != session2
-    session1 = client1.transport.get_content._session
-    session2 = client2.transport.get_content._session
-    assert session1 != session2
-    session1 = client1.transport.get_iam_policy._session
-    session2 = client2.transport.get_iam_policy._session
-    assert session1 != session2
-    session1 = client1.transport.set_iam_policy._session
-    session2 = client2.transport.set_iam_policy._session
-    assert session1 != session2
-    session1 = client1.transport.test_iam_permissions._session
-    session2 = client2.transport.test_iam_permissions._session
-    assert session1 != session2
-    session1 = client1.transport.list_content._session
-    session2 = client2.transport.list_content._session
-    assert session1 != session2
 
 
 def test_content_service_grpc_transport_channel():
@@ -8181,65 +2451,8 @@ def test_content_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_content_path():
-    project = "squid"
-    location = "clam"
-    lake = "whelk"
-    content = "octopus"
-    expected = (
-        "projects/{project}/locations/{location}/lakes/{lake}/content/{content}".format(
-            project=project,
-            location=location,
-            lake=lake,
-            content=content,
-        )
-    )
-    actual = ContentServiceClient.content_path(project, location, lake, content)
-    assert expected == actual
-
-
-def test_parse_content_path():
-    expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "lake": "cuttlefish",
-        "content": "mussel",
-    }
-    path = ContentServiceClient.content_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ContentServiceClient.parse_content_path(path)
-    assert expected == actual
-
-
-def test_lake_path():
-    project = "winkle"
-    location = "nautilus"
-    lake = "scallop"
-    expected = "projects/{project}/locations/{location}/lakes/{lake}".format(
-        project=project,
-        location=location,
-        lake=lake,
-    )
-    actual = ContentServiceClient.lake_path(project, location, lake)
-    assert expected == actual
-
-
-def test_parse_lake_path():
-    expected = {
-        "project": "abalone",
-        "location": "squid",
-        "lake": "clam",
-    }
-    path = ContentServiceClient.lake_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ContentServiceClient.parse_lake_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8249,7 +2462,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "clam",
     }
     path = ContentServiceClient.common_billing_account_path(**expected)
 
@@ -8259,7 +2472,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8269,7 +2482,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "octopus",
     }
     path = ContentServiceClient.common_folder_path(**expected)
 
@@ -8279,7 +2492,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8289,7 +2502,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nudibranch",
     }
     path = ContentServiceClient.common_organization_path(**expected)
 
@@ -8299,7 +2512,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8309,7 +2522,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "mussel",
     }
     path = ContentServiceClient.common_project_path(**expected)
 
@@ -8319,8 +2532,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8331,8 +2544,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = ContentServiceClient.common_location_path(**expected)
 
@@ -8503,6 +2716,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = ContentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8640,6 +2885,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -8787,6 +3064,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = ContentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8930,6 +3241,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -9077,6 +3422,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ContentServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9216,6 +3595,659 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+def test_set_iam_policy(transport: str = "grpc"):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+        response = client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_field_headers():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_field_headers_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_set_iam_policy_from_dict():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_from_dict_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+def test_get_iam_policy(transport: str = "grpc"):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        response = client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+
+        response = await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_field_headers():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_field_headers_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_get_iam_policy_from_dict():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_from_dict_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+def test_test_iam_permissions(transport: str = "grpc"):
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        response = client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+
+        response = await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_field_headers():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_field_headers_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_test_iam_permissions_from_dict():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        response = client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_from_dict_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        response = await client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = ContentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = ContentServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():

@@ -36,13 +36,10 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
-
-SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
+SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
 
 def _calculate_duration(func):
@@ -68,7 +65,6 @@ def _calculate_duration(func):
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
-    "unit_noextras",
     "mypy",
     "system",
     "snippets",
@@ -146,14 +142,11 @@ def default(session, install_extras=True):
     )
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @nox.parametrize("test_type", ["unit", "unit_noextras"])
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
-
-    if session.python == "3.7":
-        session.skip("Python 3.7 is no longer supported")
 
     install_extras = True
     if test_type == "unit_noextras":

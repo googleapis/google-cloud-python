@@ -128,6 +128,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert CertificateAuthorityServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -151,6 +152,10 @@ def test__get_default_mtls_endpoint():
     assert (
         CertificateAuthorityServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        CertificateAuthorityServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1392,11 +1397,13 @@ def test_certificate_authority_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -14682,8 +14689,9 @@ def test_create_certificate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14929,18 +14937,22 @@ def test_create_certificate_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "post_create_certificate"
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_create_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_create_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_create_certificate",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_create_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_create_certificate",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14993,8 +15005,9 @@ def test_get_certificate_rest_bad_request(request_type=service.GetCertificateReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15064,18 +15077,21 @@ def test_get_certificate_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "post_get_certificate"
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_get_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor, "pre_get_certificate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15128,8 +15144,9 @@ def test_list_certificates_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15196,18 +15213,22 @@ def test_list_certificates_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "post_list_certificates"
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_certificates_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_list_certificates"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificates",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificates_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_list_certificates",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15264,8 +15285,9 @@ def test_revoke_certificate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15335,18 +15357,22 @@ def test_revoke_certificate_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "post_revoke_certificate"
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_revoke_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_revoke_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_revoke_certificate",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_revoke_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_revoke_certificate",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15403,8 +15429,9 @@ def test_update_certificate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15652,18 +15679,22 @@ def test_update_certificate_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "post_update_certificate"
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_update_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_update_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_update_certificate",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15718,8 +15749,9 @@ def test_activate_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15778,22 +15810,23 @@ def test_activate_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_activate_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_activate_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_activate_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_activate_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_activate_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_activate_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15846,8 +15879,9 @@ def test_create_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16134,22 +16168,23 @@ def test_create_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_create_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_create_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_create_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_create_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_create_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_create_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16204,8 +16239,9 @@ def test_disable_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16264,22 +16300,23 @@ def test_disable_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_disable_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_disable_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_disable_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_disable_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_disable_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_disable_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16334,8 +16371,9 @@ def test_enable_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16394,22 +16432,23 @@ def test_enable_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_enable_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_enable_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_enable_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_enable_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_enable_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_enable_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16464,8 +16503,9 @@ def test_fetch_certificate_authority_csr_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16530,20 +16570,22 @@ def test_fetch_certificate_authority_csr_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_fetch_certificate_authority_csr",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_fetch_certificate_authority_csr_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_fetch_certificate_authority_csr",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_fetch_certificate_authority_csr",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_fetch_certificate_authority_csr_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_fetch_certificate_authority_csr",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16603,8 +16645,9 @@ def test_get_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16679,20 +16722,22 @@ def test_get_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_get_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_get_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16747,8 +16792,9 @@ def test_list_certificate_authorities_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16813,20 +16859,22 @@ def test_list_certificate_authorities_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_certificate_authorities",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_certificate_authorities_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_list_certificate_authorities",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificate_authorities",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificate_authorities_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_list_certificate_authorities",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16886,8 +16934,9 @@ def test_restore_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16946,22 +16995,23 @@ def test_restore_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_restore_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_restore_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_restore_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_restore_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_restore_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_restore_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17016,8 +17066,9 @@ def test_schedule_delete_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17076,22 +17127,23 @@ def test_schedule_delete_certificate_authority_rest_interceptors(null_intercepto
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_schedule_delete_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_schedule_delete_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_schedule_delete_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_schedule_delete_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_schedule_delete_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_schedule_delete_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17148,8 +17200,9 @@ def test_update_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17440,22 +17493,23 @@ def test_update_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_update_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_update_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_update_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_update_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17510,8 +17564,9 @@ def test_get_certificate_revocation_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17584,20 +17639,22 @@ def test_get_certificate_revocation_list_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_certificate_revocation_list",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_certificate_revocation_list_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_get_certificate_revocation_list",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate_revocation_list",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_certificate_revocation_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_get_certificate_revocation_list",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17657,8 +17714,9 @@ def test_list_certificate_revocation_lists_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17725,20 +17783,22 @@ def test_list_certificate_revocation_lists_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_certificate_revocation_lists",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_certificate_revocation_lists_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_list_certificate_revocation_lists",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificate_revocation_lists",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_certificate_revocation_lists_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_list_certificate_revocation_lists",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17800,8 +17860,9 @@ def test_update_certificate_revocation_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17952,22 +18013,23 @@ def test_update_certificate_revocation_list_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_update_certificate_revocation_list",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_update_certificate_revocation_list_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_update_certificate_revocation_list",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate_revocation_list",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_update_certificate_revocation_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_update_certificate_revocation_list",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18022,8 +18084,9 @@ def test_get_reusable_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18090,19 +18153,22 @@ def test_get_reusable_config_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_reusable_config",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_get_reusable_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor, "pre_get_reusable_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_reusable_config",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_get_reusable_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_get_reusable_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18155,8 +18221,9 @@ def test_list_reusable_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18221,20 +18288,22 @@ def test_list_reusable_configs_rest_interceptors(null_interceptor):
     )
     client = CertificateAuthorityServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_reusable_configs",
-    ) as post, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "post_list_reusable_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CertificateAuthorityServiceRestInterceptor,
-        "pre_list_reusable_configs",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_reusable_configs",
+        ) as post,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "post_list_reusable_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CertificateAuthorityServiceRestInterceptor,
+            "pre_list_reusable_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18820,11 +18889,14 @@ def test_certificate_authority_service_base_transport():
 
 def test_certificate_authority_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.security.privateca_v1beta1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.security.privateca_v1beta1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CertificateAuthorityServiceTransport(
@@ -18841,9 +18913,12 @@ def test_certificate_authority_service_base_transport_with_credentials_file():
 
 def test_certificate_authority_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.security.privateca_v1beta1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.security.privateca_v1beta1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CertificateAuthorityServiceTransport()
@@ -18920,11 +18995,12 @@ def test_certificate_authority_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
