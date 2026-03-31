@@ -2734,6 +2734,17 @@ class BooleanExpression(FunctionExpression):
             raise TypeError(f"Unexpected filter type: {type(filter_pb)}")
 
 
+class _PipelineValueExpression(Expression):
+    """Internal wrapper to represent a pipeline as an expression."""
+
+    def __init__(self, pipeline: "_BasePipeline"):
+        self.pipeline = pipeline
+
+    def _to_pb(self) -> Value:
+        pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
+        return Value(pipeline_value=pipeline_pb)
+
+
 class Array(FunctionExpression):
     """
     Creates an expression that creates a Firestore array value from an input list.
@@ -2935,17 +2946,6 @@ class Variable(Expression):
 
     def _to_pb(self) -> Value:
         return Value(variable_reference_value=self.name)
-
-
-class _PipelineValueExpression(Expression):
-    """Internal wrapper to represent a pipeline as an expression."""
-
-    def __init__(self, pipeline: "_BasePipeline"):
-        self.pipeline = pipeline
-
-    def _to_pb(self) -> Value:
-        pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
-        return Value(pipeline_value=pipeline_pb)
 
 
 class CurrentDocument(FunctionExpression):
