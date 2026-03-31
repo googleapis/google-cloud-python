@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import absolute_import
+
+from google.cloud.spanner_v1 import gapic_version as package_version
+
+__version__: str = package_version.__version__
+
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1._async.client import Client as AsyncClient
 from google.cloud.spanner_v1._async.pool import (
