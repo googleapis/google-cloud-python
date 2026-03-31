@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from __future__ import absolute_import
-
-from google.cloud.spanner_v1 import gapic_version as package_version
-
-__version__: str = package_version.__version__
-
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1._async.client import Client as AsyncClient
 from google.cloud.spanner_v1._async.pool import (
@@ -51,12 +44,7 @@ from .types.keys import KeyRange as KeyRangePB
 from .types.keys import KeySet as KeySetPB
 from .types.mutation import Mutation
 from .types.query_plan import PlanNode, QueryPlan
-from .types.result_set import (
-    PartialResultSet,
-    ResultSet,
-    ResultSetMetadata,
-    ResultSetStats,
-)
+from .types.result_set import PartialResultSet, ResultSet, ResultSetMetadata, ResultSetStats
 from .types.spanner import (
     BatchCreateSessionsRequest,
     BatchCreateSessionsResponse,
@@ -90,7 +78,6 @@ COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
 This value can only be used for timestamp columns that have set the option
 ``(allow_commit_timestamp=true)`` in the schema.
 """
-
 
 __all__ = (
     # google.cloud.spanner_v1
