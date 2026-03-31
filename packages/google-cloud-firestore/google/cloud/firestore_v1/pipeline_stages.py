@@ -112,6 +112,7 @@ class SampleOptions:
 
 class QueryEnhancement(Enum):
     """Define the query expansion behavior used by full-text search expressions."""
+
     DISABLED = "disabled"
     REQUIRED = "required"
     PREFERRED = "preferred"
@@ -157,10 +158,16 @@ class SearchOptions:
         self.retrieval_depth = retrieval_depth
         self.sort = [sort] if isinstance(sort, Ordering) else sort
         self.add_fields = add_fields
-        self.select = [Field(s) if isinstance(s, str) else s for s in select] if select is not None else None
+        self.select = (
+            [Field(s) if isinstance(s, str) else s for s in select]
+            if select is not None
+            else None
+        )
         self.offset = offset
         self.query_enhancement = (
-            QueryEnhancement(query_enhancement.lower()) if isinstance(query_enhancement, str) else query_enhancement
+            QueryEnhancement(query_enhancement.lower())
+            if isinstance(query_enhancement, str)
+            else query_enhancement
         )
         self.language_code = language_code
 
@@ -516,9 +523,13 @@ class Search(Stage):
         if self.options.limit is not None:
             options["limit"] = Value(integer_value=self.options.limit)
         if self.options.retrieval_depth is not None:
-            options["retrieval_depth"] = Value(integer_value=self.options.retrieval_depth)
+            options["retrieval_depth"] = Value(
+                integer_value=self.options.retrieval_depth
+            )
         if self.options.sort is not None:
-            options["sort"] = Value(array_value={"values": [s._to_pb() for s in self.options.sort]})
+            options["sort"] = Value(
+                array_value={"values": [s._to_pb() for s in self.options.sort]}
+            )
         if self.options.add_fields is not None:
             options["add_fields"] = Selectable._to_value(self.options.add_fields)
         if self.options.select is not None:
@@ -526,7 +537,9 @@ class Search(Stage):
         if self.options.offset is not None:
             options["offset"] = Value(integer_value=self.options.offset)
         if self.options.query_enhancement is not None:
-            options["query_enhancement"] = Value(string_value=self.options.query_enhancement.value)
+            options["query_enhancement"] = Value(
+                string_value=self.options.query_enhancement.value
+            )
         if self.options.language_code is not None:
             options["language_code"] = Value(string_value=self.options.language_code)
         return options

@@ -833,19 +833,21 @@ class TestSearch:
         assert options.query.name == "document_matches"
 
     def test_search_query_enhancement_enum(self):
-        options = stages.SearchOptions(query="q", query_enhancement=stages.QueryEnhancement.REQUIRED)
+        options = stages.SearchOptions(
+            query="q", query_enhancement=stages.QueryEnhancement.REQUIRED
+        )
         assert options.query_enhancement == stages.QueryEnhancement.REQUIRED
-        
+
         stage = stages.Search(options)
         pb_opts = stage._pb_options()
         assert pb_opts["query_enhancement"].string_value == "required"
-
 
     def test_search_string_field_coercion(self):
         options = stages.SearchOptions(query="tech", select=["title"])
         assert len(options.select) == 1
         assert isinstance(options.select[0], Field)
         assert options.select[0].path == "title"
+
 
 class TestSelect:
     def _make_one(self, *args, **kwargs):

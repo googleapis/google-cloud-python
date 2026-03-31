@@ -33,7 +33,6 @@ from google.cloud.firestore_v1 import pipeline_expressions
 from google.cloud.firestore_v1 import pipeline_expressions as expr
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import GeoPoint
 
 FIRESTORE_PROJECT = os.environ.get("GCLOUD_PROJECT")
 

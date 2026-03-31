@@ -2958,7 +2958,7 @@ class DocumentMatches(BooleanExpression):
     """Creates a boolean expression for a document match query.
 
     Note: This Expression can only be used within a `Search` stage.
-    
+
     Example:
         >>> # Find documents matching the query string
         >>> DocumentMatches("search query")
@@ -2976,4 +2976,3 @@ class DocumentMatches(BooleanExpression):
             [Expression._cast_to_expr_or_convert_to_constant(query)],
             use_infix_repr=False,
         )
-

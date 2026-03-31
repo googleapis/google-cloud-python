@@ -799,7 +799,10 @@ class TestExpressionessionMethods:
         assert len(instance.params) == 2
         assert instance.params[0].name == "greater_than_or_equal"
         assert instance.params[1].name == "less_than_or_equal"
-        assert repr(instance) == "And(Left.greater_than_or_equal(Lower), Left.less_than_or_equal(Upper))"
+        assert (
+            repr(instance)
+            == "And(Left.greater_than_or_equal(Lower), Left.less_than_or_equal(Upper))"
+        )
         infix_instance = arg1.between(arg2, arg3)
         assert infix_instance == instance
 
