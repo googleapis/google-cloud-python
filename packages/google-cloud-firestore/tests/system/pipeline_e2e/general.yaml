@@ -744,3 +744,10 @@ tests:
                 res:
                   fieldReferenceValue: res
           name: select
+  - description: union_subpipeline_error
+    pipeline:
+      - Collection: books
+      - Union:
+        - Pipeline:
+          - Subcollection: reviews
+    assert_error: ".*root pipelines.*"
