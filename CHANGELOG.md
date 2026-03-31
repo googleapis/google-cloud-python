@@ -225,5 +225,5 @@ Changelogs
 - [google-shopping-type==1.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-type/CHANGELOG.md)
 - [googleapis-common-protos==1.73.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/CHANGELOG.md)
 - [grafeas==1.22.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/grafeas/CHANGELOG.md)
-- [grpc-google-iam-v1==0.14.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/grpc-google-iam-v1/CHANGELOG.md)
+- [grpc-google-iam-v1==0.14.4](https://github.com/googleapis/google-cloud-python/tree/main/packages/grpc-google-iam-v1/CHANGELOG.md)
 
