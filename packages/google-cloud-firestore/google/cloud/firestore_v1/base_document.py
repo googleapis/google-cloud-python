@@ -182,6 +182,8 @@ class BaseDocumentReference(object):
             The parent collection.
         """
         parent_path = self._path[:-1]
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         return self._client.collection(*parent_path)
 
     def collection(self, collection_id: str):
@@ -196,6 +198,8 @@ class BaseDocumentReference(object):
             The child collection.
         """
         child_path = self._path + (collection_id,)
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         return self._client.collection(*child_path)
 
     def _prep_create(
@@ -203,7 +207,9 @@ class BaseDocumentReference(object):
         document_data: dict,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[Any, dict]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.create(self, document_data)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -224,7 +230,9 @@ class BaseDocumentReference(object):
         merge: bool = False,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[Any, dict]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.set(self, document_data, merge=merge)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -246,7 +254,9 @@ class BaseDocumentReference(object):
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[Any, dict]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.update(self, field_updates, option=option)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -270,6 +280,8 @@ class BaseDocumentReference(object):
     ) -> Tuple[dict, dict]:
         """Shared setup for async/sync :meth:`delete`."""
         write_pb = _helpers.pb_for_delete(self._document_path, option)
+        if self._client is None:
+            raise ValueError("A deletion requires a `client`.")
         request = {
             "database": self._client._database_string,
             "writes": [write_pb],
@@ -304,6 +316,8 @@ class BaseDocumentReference(object):
         else:
             mask = None
 
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         request = {
             "database": self._client._database_string,
             "documents": [self._document_path],

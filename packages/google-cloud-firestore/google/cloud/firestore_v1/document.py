@@ -353,6 +353,8 @@ class DocumentReference(BaseDocumentReference):
         """
         request, kwargs = self._prep_delete(option, retry, timeout)
 
+        if self._client is None:
+            raise ValueError("A deletion requires a `client`.")
         commit_response = self._client._firestore_api.commit(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -410,6 +412,8 @@ class DocumentReference(BaseDocumentReference):
             field_paths, transaction, retry, timeout, read_time
         )
 
+        if self._client is None:
+            raise ValueError("A get requires a `client`.")
         response_iter = self._client._firestore_api.batch_get_documents(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -470,6 +474,8 @@ class DocumentReference(BaseDocumentReference):
         """
         request, kwargs = self._prep_collections(page_size, retry, timeout, read_time)
 
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         iterator = self._client._firestore_api.list_collection_ids(
             request=request,
             metadata=self._client._rpc_metadata,
