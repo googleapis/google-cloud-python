@@ -1380,9 +1380,6 @@ def test_read_csv_for_gcs_wildcard_path(session, df_and_gcs_csv):
     bigframes.testing.utils.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
-@pytest.mark.skip(
-    reason="Unstable test blocking PR submissions. Tracking bug b/497970577"
-)
 def test_read_csv_for_names(session, df_and_gcs_csv_for_two_columns):
     _, path = df_and_gcs_csv_for_two_columns
 
