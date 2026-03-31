@@ -23,7 +23,7 @@ replacements:
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/client.py]
     before: '(\s+api_audience=self\._client_options\.api_audience,\n)(?!\s+metrics_interceptor=MetricsInterceptor)'
     after: |
-      \g<1>            metrics_interceptor=MetricsInterceptor(),
+      \g<1>                metrics_interceptor=MetricsInterceptor(),
     count: 1
 
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/base.py]
