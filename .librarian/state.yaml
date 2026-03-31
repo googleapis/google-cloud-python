@@ -27,6 +27,15 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: gapic-generator
+    version: 1.30.13
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/gapic-generator
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
     version: 3.2.4
     last_generated_commit: ""
@@ -1683,7 +1692,7 @@ libraries:
       - packages/google-cloud-documentai/
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai-toolbox
-    version: 0.15.1-alpha.1
+    version: 0.15.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -4226,15 +4235,6 @@ libraries:
     apis: []
     source_roots:
       - packages/sqlalchemy-spanner
-    preserve_regex: []
-    remove_regex: []
-    tag_format: '{id}-v{version}'
-  - id: gapic-generator
-    version: 1.30.13
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/gapic-generator
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
