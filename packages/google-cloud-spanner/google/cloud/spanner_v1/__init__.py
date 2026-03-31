@@ -50,7 +50,12 @@ from .types.keys import KeyRange as KeyRangePB
 from .types.keys import KeySet as KeySetPB
 from .types.mutation import Mutation
 from .types.query_plan import PlanNode, QueryPlan
-from .types.result_set import PartialResultSet, ResultSet, ResultSetMetadata, ResultSetStats
+from .types.result_set import (
+    PartialResultSet,
+    ResultSet,
+    ResultSetMetadata,
+    ResultSetStats,
+)
 from .types.spanner import (
     BatchCreateSessionsRequest,
     BatchCreateSessionsResponse,
