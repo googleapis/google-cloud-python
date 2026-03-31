@@ -3115,11 +3115,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             resp = self._interceptor.post_list_instance_config_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_instance_config_operations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_instance_config_operations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3358,11 +3357,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             http_options = _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_instance_partition_operations(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_instance_partition_operations(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_transcoded_request(
                 http_options, request
@@ -3425,11 +3423,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
 
             resp = self._interceptor.post_list_instance_partition_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_instance_partition_operations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_instance_partition_operations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG

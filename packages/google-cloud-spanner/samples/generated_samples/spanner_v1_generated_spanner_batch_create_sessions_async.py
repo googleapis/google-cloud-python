@@ -50,4 +50,5 @@ async def sample_batch_create_sessions():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_Spanner_BatchCreateSessions_async]

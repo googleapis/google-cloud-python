@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .change_stream import ChangeStreamRecord
-from .commit_response import CommitResponse
-from .keys import KeyRange, KeySet
+from .change_stream import (
+    ChangeStreamRecord,
+)
+from .commit_response import (
+    CommitResponse,
+)
+from .keys import (
+    KeyRange,
+    KeySet,
+)
 from .location import (
     CacheUpdate,
     Group,
@@ -25,9 +32,20 @@ from .location import (
     RoutingHint,
     Tablet,
 )
-from .mutation import Mutation
-from .query_plan import PlanNode, QueryAdvisorResult, QueryPlan
-from .result_set import PartialResultSet, ResultSet, ResultSetMetadata, ResultSetStats
+from .mutation import (
+    Mutation,
+)
+from .query_plan import (
+    PlanNode,
+    QueryAdvisorResult,
+    QueryPlan,
+)
+from .result_set import (
+    PartialResultSet,
+    ResultSet,
+    ResultSetMetadata,
+    ResultSetStats,
+)
 from .spanner import (
     BatchCreateSessionsRequest,
     BatchCreateSessionsResponse,
@@ -60,7 +78,12 @@ from .transaction import (
     TransactionOptions,
     TransactionSelector,
 )
-from .type import StructType, Type, TypeAnnotationCode, TypeCode
+from .type import (
+    StructType,
+    Type,
+    TypeAnnotationCode,
+    TypeCode,
+)
 
 __all__ = (
     "ChangeStreamRecord",

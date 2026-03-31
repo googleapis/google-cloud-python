@@ -50,4 +50,5 @@ def sample_execute_sql():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_Spanner_ExecuteSql_sync]

@@ -51,4 +51,5 @@ def sample_execute_streaming_sql():
     for response in stream:
         print(response)
 
+
 # [END spanner_v1_generated_Spanner_ExecuteStreamingSql_sync]

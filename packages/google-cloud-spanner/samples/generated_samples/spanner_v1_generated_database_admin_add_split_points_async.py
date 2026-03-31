@@ -49,4 +49,5 @@ async def sample_add_split_points():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_AddSplitPoints_async]

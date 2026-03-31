@@ -49,4 +49,5 @@ async def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_GetInstance_async]

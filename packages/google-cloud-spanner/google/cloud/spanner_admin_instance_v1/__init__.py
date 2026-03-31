@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.instance_admin import InstanceAdminAsyncClient, InstanceAdminClient
 from .types.common import FulfillmentPeriod, OperationProgress, ReplicaSelection
 from .types.spanner_instance_admin import (

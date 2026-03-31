@@ -49,4 +49,5 @@ def sample_get_database_ddl():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_GetDatabaseDdl_sync]

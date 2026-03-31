@@ -41,7 +41,7 @@ async def sample_rollback():
     # Initialize request argument(s)
     request = spanner_v1.RollbackRequest(
         session="session_value",
-        transaction_id=b'transaction_id_blob',
+        transaction_id=b"transaction_id_blob",
     )
 
     # Make the request

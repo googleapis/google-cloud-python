@@ -49,4 +49,5 @@ def sample_create_session():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_Spanner_CreateSession_sync]

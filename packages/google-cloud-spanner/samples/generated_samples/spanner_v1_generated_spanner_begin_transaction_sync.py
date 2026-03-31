@@ -49,4 +49,5 @@ def sample_begin_transaction():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_Spanner_BeginTransaction_sync]

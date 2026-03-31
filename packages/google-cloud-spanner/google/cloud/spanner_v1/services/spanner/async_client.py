@@ -124,7 +124,9 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        sa_info_func = SpannerClient.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            SpannerClient.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(SpannerAsyncClient, info, *args, **kwargs)
 
     @classmethod
@@ -141,7 +143,9 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        sa_file_func = SpannerClient.from_service_account_file.__func__  # type: ignore
+        sa_file_func = (
+            SpannerClient.from_service_account_file.__func__  # type: ignore
+        )
         return sa_file_func(SpannerAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
