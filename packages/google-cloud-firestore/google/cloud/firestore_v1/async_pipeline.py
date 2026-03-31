@@ -102,6 +102,9 @@ class AsyncPipeline(_BasePipeline):
                 explain_metrics will be available on the returned list.
             additional_options (Optional[dict[str, Value | Constant]]): Additional options to pass to the query.
                 These options will take precedence over method argument if there is a conflict (e.g. explain_options)
+
+        Raises:
+            google.api_core.exceptions.GoogleAPIError: If there is a backend error.
         """
         kwargs = {k: v for k, v in locals().items() if k != "self"}
         stream = AsyncPipelineStream(PipelineResult, self, **kwargs)
@@ -134,6 +137,9 @@ class AsyncPipeline(_BasePipeline):
                 explain_metrics will be available on the returned generator.
             additional_options (Optional[dict[str, Value | Constant]]): Additional options to pass to the query.
                 These options will take precedence over method argument if there is a conflict (e.g. explain_options)
+
+        Raises:
+            google.api_core.exceptions.GoogleAPIError: If there is a backend error.
         """
         kwargs = {k: v for k, v in locals().items() if k != "self"}
         return AsyncPipelineStream(PipelineResult, self, **kwargs)
