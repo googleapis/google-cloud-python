@@ -66,6 +66,8 @@ class AsyncPipeline(_BasePipeline):
         subject to potential breaking changes in future releases
     """
 
+    _client: AsyncClient
+
     def __init__(self, client: AsyncClient, *stages: stages.Stage):
         """
         Initializes an asynchronous Pipeline.

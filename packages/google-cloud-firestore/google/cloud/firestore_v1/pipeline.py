@@ -63,6 +63,8 @@ class Pipeline(_BasePipeline):
         subject to potential breaking changes in future releases.
     """
 
+    _client: Client
+
     def __init__(self, client: Client, *stages: stages.Stage):
         """
         Initializes a Pipeline.

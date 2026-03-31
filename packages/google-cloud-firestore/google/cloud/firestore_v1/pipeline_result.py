@@ -190,7 +190,7 @@ class _PipelineResultContainer(Generic[T]):
     ):
         # public
         self.transaction = transaction
-        self.pipeline: _BasePipeline = pipeline
+        self.pipeline: Pipeline | AsyncPipeline = pipeline
         self.execution_time: Timestamp | None = None
         # private
         self._client: Client | AsyncClient = pipeline._client

@@ -23,11 +23,15 @@ import datetime
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
     Generic,
     Sequence,
     TypeVar,
 )
+
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
 from google.cloud.firestore_v1.types.document import Value
@@ -2679,7 +2683,7 @@ class Variable(Expression):
 class _PipelineValueExpression(Expression):
     """Internal wrapper to represent a pipeline as an expression."""
 
-    def __init__(self, pipeline: "google.cloud.firestore_v1.base_pipeline._BasePipeline"):
+    def __init__(self, pipeline: "_BasePipeline"):
         self.pipeline = pipeline
 
     def _to_pb(self) -> Value:

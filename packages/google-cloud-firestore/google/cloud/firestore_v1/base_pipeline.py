@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Sequence, TypeVar, Type
+
+_T = TypeVar("_T", bound="_BasePipeline")
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
@@ -46,7 +48,7 @@ class _BasePipeline:
     Use `client.pipeline()` to create pipeline instances.
     """
 
-    def __init__(self, client: Client | AsyncClient):
+    def __init__(self, client: Client | AsyncClient | None):
         """
         Initializes a new pipeline.
 
@@ -61,8 +63,8 @@ class _BasePipeline:
 
     @classmethod
     def _create_with_stages(
-        cls, client: Client | AsyncClient, *stages
-    ) -> _BasePipeline:
+        cls: Type[_T], client: Client | AsyncClient | None, *stages
+    ) -> _T:
         """
         Initializes a new pipeline with the given stages.
 
@@ -438,9 +440,17 @@ class _BasePipeline:
         Args:
             other: The other `Pipeline` whose results will be unioned with this one.
 
+        Raises:
+            ValueError: If the `other` pipeline is a relative pipeline (e.g. created without a client).
+
         Returns:
             A new Pipeline object with this stage appended to the stage list
         """
+        if other._client is None:
+            raise ValueError(
+                "Union only supports combining root pipelines, doesn't support relative scope Pipeline "
+                "like relative subcollection pipeline"
+            )
         return self._append(stages.Union(other))
 
     def unnest(
@@ -681,3 +691,29 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list.
         """
         return self._append(stages.Define(*aliased_expressions))
+
+
+class _SubPipeline(_BasePipeline):
+    """
+    A pipeline scoped to a subcollection, created without a database client.
+    Cannot be executed directly; it must be used as a subquery within another pipeline.
+    """
+
+    _EXECUTE_ERROR_MSG = (
+        "This pipeline was created without a database (e.g., as a subcollection pipeline) and "
+        "cannot be executed directly. It can only be used as part of another pipeline."
+    )
+
+    def execute(self, *args, **kwargs):
+        """
+        Raises:
+            RuntimeError: Always, as a subcollection pipeline cannot be executed directly.
+        """
+        raise RuntimeError(self._EXECUTE_ERROR_MSG)
+
+    def stream(self, *args, **kwargs):
+        """
+        Raises:
+            RuntimeError: Always, as a subcollection pipeline cannot be streamed directly.
+        """
+        raise RuntimeError(self._EXECUTE_ERROR_MSG)
