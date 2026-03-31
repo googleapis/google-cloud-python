@@ -178,3 +178,14 @@ tests:
                 title:
                   fieldReferenceValue: title
           name: select
+
+  - description: scalar_subquery_multiple_items_error
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - AddFields:
+          - AliasedExpression:
+              - Pipeline.to_scalar_expression:
+                  - Collection: books
+              - bad_scalar
+    assert_error: ".*more than one item.*"

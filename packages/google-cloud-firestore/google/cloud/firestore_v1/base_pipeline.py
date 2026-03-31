@@ -129,8 +129,8 @@ class _BasePipeline:
             ...         .to_scalar_expression().as_("average_rating")
             ... )
 
-        Raises:
-            RuntimeError: If the result set contains more than one item. If the pipeline has zero results, it evaluates to `null` instead of raising an error.
+        **Runtime Validation:**
+        The runtime will validate that the result set contains exactly one item. It returns an error if the result has more than one item, and evaluates to `null` if the pipeline has zero results.
 
         Returns:
             An :class:`Expression` representing the execution of this pipeline.
