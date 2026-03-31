@@ -6296,3 +6296,20 @@ def test_agg_with_dict_containing_non_existing_col_raise_key_error(scalars_dfs):
 
     with pytest.raises(KeyError):
         bf_df.agg(agg_funcs)
+
+
+def test_empty_agg_projection_succeeds():
+    # Tests that the compiler generates a SELECT 1 fallback for empty aggregations,
+    # protecting against BigQuery syntax errors when both groups and metrics are empty.
+    import importlib
+
+    bq = importlib.import_module(
+        "bigframes_vendored.ibis.backends.sql.compilers.bigquery"
+    )
+    sg = importlib.import_module("bigframes_vendored.sqlglot")
+
+    compiler = bq.BigQueryCompiler()
+    res = compiler.visit_Aggregate(
+        "op", parent=sg.table("parent_table"), groups=[], metrics=[]
+    )
+    assert "SELECT 1" in res.sql()

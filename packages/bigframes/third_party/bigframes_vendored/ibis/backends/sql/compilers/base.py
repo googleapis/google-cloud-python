@@ -1394,9 +1394,17 @@ class SQLGlotCompiler(abc.ABC):
         return map(sge.convert, range(1, len(groups) + 1))
 
     def visit_Aggregate(self, op, *, parent, groups, metrics):
-        sel = sg.select(
-            *self._cleanup_names(groups), *self._cleanup_names(metrics), copy=False
-        ).from_(parent, copy=False)
+        exprs = []
+        if groups:
+            exprs.extend(self._cleanup_names(groups))
+        if metrics:
+            exprs.extend(self._cleanup_names(metrics))
+
+        if not exprs:
+            # Empty aggregated projections are invalid in BigQuery
+            exprs = [sge.Literal.number(1)]
+
+        sel = sg.select(*exprs, copy=False).from_(parent, copy=False)
 
         if groups:
             sel = sel.group_by(*self._generate_groups(groups.values()), copy=False)

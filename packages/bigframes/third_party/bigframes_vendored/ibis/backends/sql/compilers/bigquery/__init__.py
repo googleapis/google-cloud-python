@@ -540,6 +540,15 @@ class BigQueryCompiler(SQLGlotCompiler):
 
     def visit_Cast(self, op, *, arg, to):
         from_ = op.arg.dtype
+        if to.is_null():
+            return sge.Null()
+        if arg is NULL or (
+            isinstance(arg, sge.Cast)
+            and getattr(arg, "to", None) is not None
+            and str(arg.to).upper() == "NULL"
+        ):
+            if to.is_struct() or to.is_array():
+                return sge.Cast(this=NULL, to=self.type_mapper.from_ibis(to))
         if from_.is_timestamp() and to.is_integer():
             return self.f.unix_micros(arg)
         elif from_.is_integer() and to.is_timestamp():
