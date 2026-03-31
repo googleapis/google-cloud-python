@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import datetime
 import logging
-from typing import Any, Callable, Generator, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Generator, Iterable
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -34,10 +34,15 @@ from google.cloud.firestore_v1.base_document import (
 from google.cloud.firestore_v1.types import write
 from google.cloud.firestore_v1.watch import Watch
 
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.client import Client
+else:
+    Client = None
+
 logger = logging.getLogger(__name__)
 
 
-class DocumentReference(BaseDocumentReference):
+class DocumentReference(BaseDocumentReference[Client]):
     """A reference to a document in a Firestore database.
 
     The document may already exist or can be created by this class.

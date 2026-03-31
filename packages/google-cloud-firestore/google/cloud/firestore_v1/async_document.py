@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import datetime
 import logging
-from typing import AsyncGenerator, Iterable
+from typing import TYPE_CHECKING, AsyncGenerator, Iterable
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
@@ -33,10 +33,16 @@ from google.cloud.firestore_v1.base_document import (
 )
 from google.cloud.firestore_v1.types import write
 
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.async_client import AsyncClient
+else:
+    AsyncClient = None
+
+
 logger = logging.getLogger(__name__)
 
 
-class AsyncDocumentReference(BaseDocumentReference):
+class AsyncDocumentReference(BaseDocumentReference[AsyncClient]):
     """A reference to a document in a Firestore database.
 
     The document may already exist or can be created by this class.
