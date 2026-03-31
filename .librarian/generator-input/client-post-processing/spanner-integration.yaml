@@ -188,6 +188,23 @@ replacements:
         spanner_admin_instance_v1/services_
         spanner_admin_instance_v1/types_
         spanner_admin_instance_v1/instance_admin
+      
+
+
+      Changelog
+      ---------
+
+      For a list of all ``google-cloud-spanner`` releases:
+
+      .. toctree::
+        :maxdepth: 2
+
+        CHANGELOG
+
+      .. toctree::
+        :hidden:
+
+        summary_overview.md
     count: 1
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py]
     before: '(?s)import sys\n\nimport google\.api_core as api_core.*'
