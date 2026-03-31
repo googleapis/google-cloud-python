@@ -494,3 +494,16 @@ tests:
     assert_results:
       - hugoAward: true
         title: Dune
+  - description: testGetFieldWithMap
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Map:
+                      elements: {"foo": "bar"}
+                  - "foo"
+              - "foo_value"
+    assert_results:
+      - foo_value: "bar"
