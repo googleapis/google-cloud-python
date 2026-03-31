@@ -445,15 +445,15 @@ def test_pipeline_union_relative_error():
         start_ppl.union(other_ppl)
 
 def test_subpipeline_execute_error():
-    from google.cloud.firestore_v1.base_pipeline import _SubPipeline
+    from google.cloud.firestore_v1.base_pipeline import SubPipeline
 
-    ppl = _SubPipeline._create_with_stages(None)
+    ppl = SubPipeline._create_with_stages(None)
     with pytest.raises(RuntimeError, match="This pipeline was created without a database"):
         ppl.execute()
 
 def test_subpipeline_stream_error():
-    from google.cloud.firestore_v1.base_pipeline import _SubPipeline
+    from google.cloud.firestore_v1.base_pipeline import SubPipeline
 
-    ppl = _SubPipeline._create_with_stages(None)
+    ppl = SubPipeline._create_with_stages(None)
     with pytest.raises(RuntimeError, match="This pipeline was created without a database"):
         ppl.stream()

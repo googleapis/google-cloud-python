@@ -23,7 +23,7 @@ from typing import Generic, TypeVar, TYPE_CHECKING
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1._helpers import DOCUMENT_PATH_DELIMITER
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline, _SubPipeline
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline, SubPipeline
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient
@@ -172,7 +172,7 @@ class PipelineSource(Generic[PipelineType]):
         """
         return self._create_pipeline(stages.Literals(*documents))
 
-    def subcollection(self, path: str) -> _SubPipeline:
+    def subcollection(self, path: str) -> SubPipeline:
         """
         Initializes a pipeline scoped to a subcollection.
 
@@ -193,6 +193,6 @@ class PipelineSource(Generic[PipelineType]):
             path: The path of the subcollection.
 
         Returns:
-            A new :class:`_SubPipeline` instance scoped to the subcollection.
+            A new :class:`SubPipeline` instance scoped to the subcollection.
         """
-        return _SubPipeline._create_with_stages(None, stages.Subcollection(path))
+        return SubPipeline._create_with_stages(None, stages.Subcollection(path))

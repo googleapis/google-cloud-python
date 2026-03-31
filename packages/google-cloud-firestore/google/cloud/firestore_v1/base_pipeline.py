@@ -693,7 +693,7 @@ class _BasePipeline:
         return self._append(stages.Define(*aliased_expressions))
 
 
-class _SubPipeline(_BasePipeline):
+class SubPipeline(_BasePipeline):
     """
     A pipeline scoped to a subcollection, created without a database client.
     Cannot be executed directly; it must be used as a subquery within another pipeline.
