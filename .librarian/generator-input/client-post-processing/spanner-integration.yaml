@@ -209,6 +209,12 @@ replacements:
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py]
     before: '(?s)import sys\n\nimport google\.api_core as api_core.*'
     after: |
+      from __future__ import absolute_import
+
+      from google.cloud.spanner_v1 import gapic_version as package_version
+
+      __version__: str = package_version.__version__
+
       from google.cloud.spanner_v1 import param_types
       from google.cloud.spanner_v1._async.client import Client as AsyncClient
       from google.cloud.spanner_v1._async.pool import (
