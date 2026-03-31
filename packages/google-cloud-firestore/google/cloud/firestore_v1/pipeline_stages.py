@@ -517,9 +517,7 @@ class Search(Stage):
         return []
 
     def _pb_options(self) -> dict[str, Value]:
-        options = {}
-        if self.options.query is not None:
-            options["query"] = self.options.query._to_pb()
+        options = {"query": self.options.query._to_pb()}
         if self.options.limit is not None:
             options["limit"] = Value(integer_value=self.options.limit)
         if self.options.retrieval_depth is not None:
