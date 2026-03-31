@@ -16,3 +16,7 @@ libraries:
 # Allow releases for google-cloud-storage once this bug is fixed.
   - id: "google-cloud-storage"
     release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16489):
+# Allow releases for bigframes once this bug above is fixed.
+  - id: "bigframes"
+    release_blocked: true
