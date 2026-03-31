@@ -191,6 +191,30 @@ class SearchOptions:
             args.append(f"language_code={self.language_code!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
 
+    def _to_dict(self) -> dict[str, Value]:
+        options = {"query": self.query._to_pb()}
+        if self.limit is not None:
+            options["limit"] = Value(integer_value=self.limit)
+        if self.retrieval_depth is not None:
+            options["retrieval_depth"] = Value(integer_value=self.retrieval_depth)
+        if self.sort is not None:
+            options["sort"] = Value(
+                array_value={"values": [s._to_pb() for s in self.sort]}
+            )
+        if self.add_fields is not None:
+            options["add_fields"] = Selectable._to_value(self.add_fields)
+        if self.select is not None:
+            options["select"] = Selectable._to_value(self.select)
+        if self.offset is not None:
+            options["offset"] = Value(integer_value=self.offset)
+        if self.query_enhancement is not None:
+            options["query_enhancement"] = Value(
+                string_value=self.query_enhancement.value
+            )
+        if self.language_code is not None:
+            options["language_code"] = Value(string_value=self.language_code)
+        return options
+
 
 class UnnestOptions:
     """Options for configuring the `Unnest` pipeline stage.
@@ -517,30 +541,7 @@ class Search(Stage):
         return []
 
     def _pb_options(self) -> dict[str, Value]:
-        options = {"query": self.options.query._to_pb()}
-        if self.options.limit is not None:
-            options["limit"] = Value(integer_value=self.options.limit)
-        if self.options.retrieval_depth is not None:
-            options["retrieval_depth"] = Value(
-                integer_value=self.options.retrieval_depth
-            )
-        if self.options.sort is not None:
-            options["sort"] = Value(
-                array_value={"values": [s._to_pb() for s in self.options.sort]}
-            )
-        if self.options.add_fields is not None:
-            options["add_fields"] = Selectable._to_value(self.options.add_fields)
-        if self.options.select is not None:
-            options["select"] = Selectable._to_value(self.options.select)
-        if self.options.offset is not None:
-            options["offset"] = Value(integer_value=self.options.offset)
-        if self.options.query_enhancement is not None:
-            options["query_enhancement"] = Value(
-                string_value=self.options.query_enhancement.value
-            )
-        if self.options.language_code is not None:
-            options["language_code"] = Value(string_value=self.options.language_code)
-        return options
+        return self.options._to_dict()
 
 
 class Select(Stage):
