@@ -895,9 +895,11 @@ def test__get_gce_credentials_explicit_request(ping):
 )
 @mock.patch("google.auth.transport.requests.Request", autospec=True)
 def test__get_gce_credentials_default_request(mock_request_cls, ping):
-    _default._get_gce_credentials()
+    credentials, project_id = _default._get_gce_credentials()
     mock_request_cls.assert_called_once()
     ping.assert_called_with(request=mock_request_cls.return_value)
+    assert credentials is None
+    assert project_id is None
 
 
 @mock.patch(
