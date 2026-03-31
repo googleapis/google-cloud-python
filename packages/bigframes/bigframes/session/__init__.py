@@ -664,9 +664,11 @@ class Session(
             ...     WHERE year = 2016
             ...     GROUP BY pitcherFirstName, pitcherLastName
             ... ''', index_col="rowindex")
-            >>> df.head(2)
+            >>> print("START_OF_OUTPUT"); df.head(2) # doctest: +ELLIPSIS,+NORMALIZE_WHITESPACE
+            START_OF_OUTPUT
+            ...
                      pitcherFirstName pitcherLastName  averagePitchSpeed
-            rowindex
+            ...
             1                Albertin         Chapman          96.514113
             2                 Zachary         Britton          94.591039
             <BLANKLINE>
