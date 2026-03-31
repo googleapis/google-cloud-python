@@ -444,3 +444,111 @@ tests:
                     args:
                     - fieldReferenceValue: awards
           name: select
+  - description: testGetField
+    pipeline:
+      - Collection: books
+      - Sort:
+        - Ordering:
+          - Field: published
+          - DESCENDING
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Field: awards
+                  - hugo
+              - "hugoAward"
+          - Field: title
+      - Where:
+          - FunctionExpression.equal:
+              - Field: hugoAward
+              - Constant: true
+    assert_results:
+      - hugoAward: true
+        title: The Hitchhiker's Guide to the Galaxy
+      - hugoAward: true
+        title: Dune
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: descending
+                expression:
+                  fieldReferenceValue: published
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                hugoAward:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: awards
+                    - stringValue: hugo
+                    name: get_field
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: hugoAward
+              - booleanValue: true
+              name: equal
+          name: where
+  - description: testGetFieldWithField
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - AddFields:
+        - AliasedExpression:
+            - Constant: "hugo"
+            - "award_name"
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Field: awards
+                  - Field: award_name
+              - "hugoAward"
+          - Field: title
+    assert_results:
+      - hugoAward: true
+        title: Dune
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                award_name:
+                  stringValue: hugo
+          name: add_fields
+        - args:
+          - mapValue:
+              fields:
+                hugoAward:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: awards
+                    - fieldReferenceValue: award_name
+                    name: get_field
+                title:
+                  fieldReferenceValue: title
+          name: select

@@ -164,6 +164,24 @@ class Expression(ABC):
                 return self.instance_func.__get__(instance, owner)
 
     @expose_as_static
+    def get_field(self, key: Expression | str) -> "Expression":
+        """Accesses a field/property of the expression that evaluates to a Map or Document.
+
+        Example:
+            >>> # Access the 'city' field from the 'address' map field.
+            >>> Field.of("address").get_field("city")
+
+        Args:
+            key: The key of the field to access.
+
+        Returns:
+            A new `Expression` representing the value of the field.
+        """
+        return FunctionExpression(
+            "get_field", [self, self._cast_to_expr_or_convert_to_constant(key)]
+        )
+
+    @expose_as_static
     def add(self, other: Expression | float) -> "Expression":
         """Creates an expression that adds this expression to another expression or constant.
 
