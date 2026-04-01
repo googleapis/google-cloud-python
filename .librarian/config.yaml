@@ -24,6 +24,10 @@ libraries:
 # Allow generation for google-cloud-bigtable once this bug is fixed.
   - id: "google-cloud-bigtable"
     generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16489):
+# Allow releases for bigframes once the bug above is fixed.
+  - id: "bigframes"
+    release_blocked: true
 # TODO(https://github.com/googleapis/google-cloud-python/issues/16506):
 # Allow generation for google-cloud-firestore once this bug is fixed.
   - id: "google-cloud-firestore"
