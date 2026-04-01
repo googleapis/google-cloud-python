@@ -13,3 +13,13 @@
 # limitations under the License.
 
 """Resumable media library for Google APIs."""
+
+from .requests_upload import make_resumable_upload
+from .requests_upload import RequestsResumableUpload
+from .requests_upload import ResumableUploadStatus
+
+__all__ = [
+    "make_resumable_upload",
+    "RequestsResumableUpload",
+    "ResumableUploadStatus",
+]

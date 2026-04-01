@@ -78,3 +78,10 @@ class UploadStatus:
     ACTIVE = "active"
     FINAL = "final"
     CANCELLED = "cancelled"
+
+
+# HTTP status codes that indicate a transient error and can be retried.
+RETRYABLE_STATUS_CODES = (408, 429, 500, 502, 503, 504)
+
+# HTTP status codes that indicate a state mismatch and require modification (recovery).
+RECOVERABLE_STATUS_CODES = (400, 412, 416)

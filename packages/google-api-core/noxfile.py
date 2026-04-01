@@ -195,6 +195,7 @@ def default(
         "pytest-cov",
         "pytest-mock",
         "pytest-xdist",
+        "responses",
     )
 
     install_extras = []

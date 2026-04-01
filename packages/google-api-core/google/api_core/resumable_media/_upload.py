@@ -18,8 +18,9 @@ This module provides the pure state machine for Resumable Uploads.
 """
 
 import logging
-from typing import Any, Dict, Optional, Sequence, Tuple, Union
+from typing import Dict, Optional, Tuple
 
+from google.api_core import exceptions
 from google.api_core.resumable_media import _common
 
 _LOGGER = logging.getLogger(__name__)
@@ -80,7 +81,7 @@ class ResumableUpload(object):
                 ) * self._chunk_granularity
         return actual_chunk_size
 
-    def initiate_request(
+    def build_initiate_request(
         self,
         stream_metadata: Optional[Dict[str, str]] = None,
         content_type: Optional[str] = None,
@@ -90,8 +91,8 @@ class ResumableUpload(object):
 
         Args:
             stream_metadata (Optional[Dict[str, str]]): Additional headers for
-                the upload initiation request. These headers are ONLY applied to 
-                the initial request and will NOT be included in subsequent chunk 
+                the upload initiation request. These headers are ONLY applied to
+                the initial request and will NOT be included in subsequent chunk
                 upload requests. If not specified, no additional headers will be appended.
             content_type (Optional[str]): MIME type of the uploaded content.
                 If not specified, the `X-Goog-Upload-Header-Content-Type` header
@@ -146,6 +147,14 @@ class ResumableUpload(object):
         granularity = headers_lower.get(_common.UPLOAD_CHUNK_GRANULARITY_HEADER.lower())
         if granularity:
             self._chunk_granularity = int(granularity)
+
+    def process_initiate_error(self, exc: Exception) -> None:
+        """Processes an error from the initiation request.
+
+        Args:
+            exc (Exception): The exception raised during initiation.
+        """
+        self._invalid = True
 
     def build_chunk_request(
         self, data: bytes, final: bool = False
@@ -212,6 +221,23 @@ class ResumableUpload(object):
         elif status == _common.UploadStatus.CANCELLED:
             self._invalid = True
 
+    def process_chunk_error(self, exc: Exception) -> bool:
+        """Processes an error from the chunk upload request.
+
+        Args:
+            exc (Exception): The exception raised during chunk upload.
+
+        Returns:
+            bool: True if the error is recoverable and requires a recovery query,
+                  False otherwise.
+        """
+        if isinstance(exc, exceptions.GoogleAPICallError):
+            if exc.code in _common.RECOVERABLE_STATUS_CODES:
+                return True
+
+        self._invalid = True
+        return False
+
     def build_recovery_request(self) -> Tuple[str, str, Dict[str, str], bytes]:
         """Constructs a request to query the server's current upload state.
 
@@ -255,3 +281,11 @@ class ResumableUpload(object):
             raise RuntimeError("Upload was cancelled by server")
 
         return self._bytes_uploaded
+
+    def process_recovery_error(self, exc: Exception) -> None:
+        """Processes an error from the recovery query request.
+
+        Args:
+            exc (Exception): The exception raised during recovery.
+        """
+        self._invalid = True
