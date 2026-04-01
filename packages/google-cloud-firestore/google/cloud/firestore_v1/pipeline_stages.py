@@ -505,9 +505,6 @@ class Delete(Stage):
     def _pb_args(self) -> list[Value]:
         return []
 
-    def _pb_options(self) -> dict[str, Value]:
-        return {}
-
 
 class Update(Stage):
     """Updates documents with transformed fields."""
@@ -518,6 +515,3 @@ class Update(Stage):
 
     def _pb_args(self) -> list[Value]:
         return [Selectable._to_value(self.transformed_fields)]
-
-    def _pb_options(self) -> dict[str, Value]:
-        return {}

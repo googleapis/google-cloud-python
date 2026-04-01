@@ -988,8 +988,7 @@ class TestUpdate:
 
     def test_to_pb_with_fields(self):
         instance = self._make_one(
-            Field.of("score").add(10).as_("score"),
-            Constant.of("active").as_("status")
+            Field.of("score").add(10).as_("score"), Constant.of("active").as_("status")
         )
         result = instance._to_pb()
         assert result.name == "update"
