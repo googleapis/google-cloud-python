@@ -27,7 +27,7 @@ warnings.filterwarnings(
 # import configuration and types.
 # This ensures that when the deeper 'core' modules ask for 'dtypes','options', et. al.,
 # they are already defined and available.
-import bigframes.dtypes   # noqa: E402 # isort: skip
+import bigframes.dtypes  # noqa: E402 # isort: skip
 import bigframes._config  # noqa: E402 # isort: skip
 from bigframes._config import option_context, options  # noqa: E402 # isort: skip
 
