@@ -84,12 +84,18 @@ class AnswerRecordsAsyncClient:
     parse_answer_record_path = staticmethod(
         AnswerRecordsClient.parse_answer_record_path
     )
+    app_path = staticmethod(AnswerRecordsClient.app_path)
+    parse_app_path = staticmethod(AnswerRecordsClient.parse_app_path)
     context_path = staticmethod(AnswerRecordsClient.context_path)
     parse_context_path = staticmethod(AnswerRecordsClient.parse_context_path)
     intent_path = staticmethod(AnswerRecordsClient.intent_path)
     parse_intent_path = staticmethod(AnswerRecordsClient.parse_intent_path)
     tool_path = staticmethod(AnswerRecordsClient.tool_path)
     parse_tool_path = staticmethod(AnswerRecordsClient.parse_tool_path)
+    tool_path = staticmethod(AnswerRecordsClient.tool_path)
+    parse_tool_path = staticmethod(AnswerRecordsClient.parse_tool_path)
+    toolset_path = staticmethod(AnswerRecordsClient.toolset_path)
+    parse_toolset_path = staticmethod(AnswerRecordsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         AnswerRecordsClient.common_billing_account_path
     )

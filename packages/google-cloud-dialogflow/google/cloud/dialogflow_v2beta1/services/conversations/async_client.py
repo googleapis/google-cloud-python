@@ -49,7 +49,12 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.conversations import pagers
-from google.cloud.dialogflow_v2beta1.types import conversation, generator, participant
+from google.cloud.dialogflow_v2beta1.types import (
+    conversation,
+    conversation_profile,
+    generator,
+    participant,
+)
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 
 from .client import ConversationsClient
@@ -86,6 +91,8 @@ class ConversationsAsyncClient:
     parse_answer_record_path = staticmethod(
         ConversationsClient.parse_answer_record_path
     )
+    app_path = staticmethod(ConversationsClient.app_path)
+    parse_app_path = staticmethod(ConversationsClient.parse_app_path)
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
     conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
@@ -120,6 +127,10 @@ class ConversationsAsyncClient:
     parse_phrase_set_path = staticmethod(ConversationsClient.parse_phrase_set_path)
     tool_path = staticmethod(ConversationsClient.tool_path)
     parse_tool_path = staticmethod(ConversationsClient.parse_tool_path)
+    tool_path = staticmethod(ConversationsClient.tool_path)
+    parse_tool_path = staticmethod(ConversationsClient.parse_tool_path)
+    toolset_path = staticmethod(ConversationsClient.toolset_path)
+    parse_toolset_path = staticmethod(ConversationsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         ConversationsClient.common_billing_account_path
     )

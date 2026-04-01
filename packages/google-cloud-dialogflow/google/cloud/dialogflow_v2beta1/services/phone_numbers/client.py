@@ -62,6 +62,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -249,6 +250,28 @@ class PhoneNumbersClient(metaclass=PhoneNumbersClientMeta):
         """Parses a phone_number path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/phoneNumbers/(?P<phone_number>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def sip_trunk_path(
+        project: str,
+        location: str,
+        siptrunk: str,
+    ) -> str:
+        """Returns a fully-qualified sip_trunk string."""
+        return "projects/{project}/locations/{location}/sipTrunks/{siptrunk}".format(
+            project=project,
+            location=location,
+            siptrunk=siptrunk,
+        )
+
+    @staticmethod
+    def parse_sip_trunk_path(path: str) -> Dict[str, str]:
+        """Parses a sip_trunk path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sipTrunks/(?P<siptrunk>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 

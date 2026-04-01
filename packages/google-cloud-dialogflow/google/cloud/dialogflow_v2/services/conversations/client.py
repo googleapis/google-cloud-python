@@ -66,7 +66,12 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.services.conversations import pagers
-from google.cloud.dialogflow_v2.types import conversation, generator, participant
+from google.cloud.dialogflow_v2.types import (
+    conversation,
+    conversation_profile,
+    generator,
+    participant,
+)
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationsTransport
@@ -264,6 +269,28 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         """Parses a answer_record path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/answerRecords/(?P<answer_record>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def app_path(
+        project: str,
+        location: str,
+        app: str,
+    ) -> str:
+        """Returns a fully-qualified app string."""
+        return "projects/{project}/locations/{location}/apps/{app}".format(
+            project=project,
+            location=location,
+            app=app,
+        )
+
+    @staticmethod
+    def parse_app_path(path: str) -> Dict[str, str]:
+        """Parses a app path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -501,6 +528,54 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         """Parses a tool path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        app: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+            project=project,
+            location=location,
+            app=app,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def toolset_path(
+        project: str,
+        location: str,
+        app: str,
+        toolset: str,
+    ) -> str:
+        """Returns a fully-qualified toolset string."""
+        return "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+
+    @staticmethod
+    def parse_toolset_path(path: str) -> Dict[str, str]:
+        """Parses a toolset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/toolsets/(?P<toolset>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

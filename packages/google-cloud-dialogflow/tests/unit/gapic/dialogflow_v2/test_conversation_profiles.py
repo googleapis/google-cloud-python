@@ -6467,6 +6467,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {
@@ -6810,6 +6811,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {
