@@ -2352,6 +2352,203 @@ def test_get_certificate_authority_rest_flattened_error(transport: str = "rest")
         )
 
 
+def test_get_shared_regional_certificate_authority_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MemorystoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_shared_regional_certificate_authority
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_shared_regional_certificate_authority
+        ] = mock_rpc
+
+        request = {}
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_shared_regional_certificate_authority_rest_required_fields(
+    request_type=memorystore.GetSharedRegionalCertificateAuthorityRequest,
+):
+    transport_class = transports.MemorystoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shared_regional_certificate_authority._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shared_regional_certificate_authority._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = memorystore.SharedRegionalCertificateAuthority()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = memorystore.SharedRegionalCertificateAuthority.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_shared_regional_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_shared_regional_certificate_authority_rest_unset_required_fields():
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_shared_regional_certificate_authority._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_shared_regional_certificate_authority_rest_flattened():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = memorystore.SharedRegionalCertificateAuthority()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = memorystore.SharedRegionalCertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_shared_regional_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sharedRegionalCertificateAuthority}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_shared_regional_certificate_authority_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_shared_regional_certificate_authority(
+            memorystore.GetSharedRegionalCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
 def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4192,6 +4389,9 @@ def test_get_instance_rest_call_success(request_type):
             effective_maintenance_version="effective_maintenance_version_value",
             available_maintenance_versions=["available_maintenance_versions_value"],
             allow_fewer_zones_deployment=True,
+            server_ca_mode=memorystore.Instance.ServerCaMode.GOOGLE_MANAGED_PER_INSTANCE_CA,
+            server_ca_pool="server_ca_pool_value",
+            rotate_server_certificate=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4240,6 +4440,12 @@ def test_get_instance_rest_call_success(request_type):
         "available_maintenance_versions_value"
     ]
     assert response.allow_fewer_zones_deployment is True
+    assert (
+        response.server_ca_mode
+        == memorystore.Instance.ServerCaMode.GOOGLE_MANAGED_PER_INSTANCE_CA
+    )
+    assert response.server_ca_pool == "server_ca_pool_value"
+    assert response.rotate_server_certificate is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4464,6 +4670,9 @@ def test_create_instance_rest_call_success(request_type):
             "available_maintenance_versions_value2",
         ],
         "allow_fewer_zones_deployment": True,
+        "server_ca_mode": 1,
+        "server_ca_pool": "server_ca_pool_value",
+        "rotate_server_certificate": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4781,6 +4990,9 @@ def test_update_instance_rest_call_success(request_type):
             "available_maintenance_versions_value2",
         ],
         "allow_fewer_zones_deployment": True,
+        "server_ca_mode": 1,
+        "server_ca_pool": "server_ca_pool_value",
+        "rotate_server_certificate": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5180,6 +5392,148 @@ def test_get_certificate_authority_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = memorystore.CertificateAuthority(), metadata
 
         client.get_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_shared_regional_certificate_authority_rest_bad_request(
+    request_type=memorystore.GetSharedRegionalCertificateAuthorityRequest,
+):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_shared_regional_certificate_authority(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetSharedRegionalCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_get_shared_regional_certificate_authority_rest_call_success(request_type):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = memorystore.SharedRegionalCertificateAuthority(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = memorystore.SharedRegionalCertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_shared_regional_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, memorystore.SharedRegionalCertificateAuthority)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_shared_regional_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MemorystoreRestInterceptor(),
+    )
+    client = MemorystoreClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_get_shared_regional_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "post_get_shared_regional_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor,
+            "pre_get_shared_regional_certificate_authority",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = memorystore.GetSharedRegionalCertificateAuthorityRequest.pb(
+            memorystore.GetSharedRegionalCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = memorystore.SharedRegionalCertificateAuthority.to_json(
+            memorystore.SharedRegionalCertificateAuthority()
+        )
+        req.return_value.content = return_value
+
+        request = memorystore.GetSharedRegionalCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = memorystore.SharedRegionalCertificateAuthority()
+        post_with_metadata.return_value = (
+            memorystore.SharedRegionalCertificateAuthority(),
+            metadata,
+        )
+
+        client.get_shared_regional_certificate_authority(
             request,
             metadata=[
                 ("key", "val"),
@@ -6773,6 +7127,28 @@ def test_get_certificate_authority_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_shared_regional_certificate_authority_empty_call_rest():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        client.get_shared_regional_certificate_authority(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_reschedule_maintenance_empty_call_rest():
     client = MemorystoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6982,6 +7358,7 @@ def test_memorystore_base_transport():
         "update_instance",
         "delete_instance",
         "get_certificate_authority",
+        "get_shared_regional_certificate_authority",
         "reschedule_maintenance",
         "list_backup_collections",
         "get_backup_collection",
@@ -7156,6 +7533,9 @@ def test_memorystore_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_certificate_authority._session
     session2 = client2.transport.get_certificate_authority._session
     assert session1 != session2
+    session1 = client1.transport.get_shared_regional_certificate_authority._session
+    session2 = client2.transport.get_shared_regional_certificate_authority._session
+    assert session1 != session2
     session1 = client1.transport.reschedule_maintenance._session
     session2 = client2.transport.reschedule_maintenance._session
     assert session1 != session2
@@ -7239,10 +7619,36 @@ def test_parse_backup_collection_path():
     assert expected == actual
 
 
-def test_certificate_authority_path():
+def test_ca_pool_path():
     project = "whelk"
     location = "octopus"
-    instance = "oyster"
+    ca_pool = "oyster"
+    expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+        project=project,
+        location=location,
+        ca_pool=ca_pool,
+    )
+    actual = MemorystoreClient.ca_pool_path(project, location, ca_pool)
+    assert expected == actual
+
+
+def test_parse_ca_pool_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "ca_pool": "mussel",
+    }
+    path = MemorystoreClient.ca_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = MemorystoreClient.parse_ca_pool_path(path)
+    assert expected == actual
+
+
+def test_certificate_authority_path():
+    project = "winkle"
+    location = "nautilus"
+    instance = "scallop"
     expected = "projects/{project}/locations/{location}/instances/{instance}/certificateAuthority".format(
         project=project,
         location=location,
@@ -7254,9 +7660,9 @@ def test_certificate_authority_path():
 
 def test_parse_certificate_authority_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "instance": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "instance": "clam",
     }
     path = MemorystoreClient.certificate_authority_path(**expected)
 
@@ -7266,10 +7672,10 @@ def test_parse_certificate_authority_path():
 
 
 def test_crypto_key_path():
-    project = "winkle"
-    location = "nautilus"
-    key_ring = "scallop"
-    crypto_key = "abalone"
+    project = "whelk"
+    location = "octopus"
+    key_ring = "oyster"
+    crypto_key = "nudibranch"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -7282,10 +7688,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "key_ring": "whelk",
-        "crypto_key": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "key_ring": "winkle",
+        "crypto_key": "nautilus",
     }
     path = MemorystoreClient.crypto_key_path(**expected)
 
@@ -7295,11 +7701,11 @@ def test_parse_crypto_key_path():
 
 
 def test_crypto_key_version_path():
-    project = "oyster"
-    location = "nudibranch"
-    key_ring = "cuttlefish"
-    crypto_key = "mussel"
-    crypto_key_version = "winkle"
+    project = "scallop"
+    location = "abalone"
+    key_ring = "squid"
+    crypto_key = "clam"
+    crypto_key_version = "whelk"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -7315,11 +7721,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "key_ring": "abalone",
-        "crypto_key": "squid",
-        "crypto_key_version": "clam",
+        "project": "octopus",
+        "location": "oyster",
+        "key_ring": "nudibranch",
+        "crypto_key": "cuttlefish",
+        "crypto_key_version": "mussel",
     }
     path = MemorystoreClient.crypto_key_version_path(**expected)
 
@@ -7329,9 +7735,9 @@ def test_parse_crypto_key_version_path():
 
 
 def test_forwarding_rule_path():
-    project = "whelk"
-    region = "octopus"
-    forwarding_rule = "oyster"
+    project = "winkle"
+    region = "nautilus"
+    forwarding_rule = "scallop"
     expected = (
         "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
             project=project,
@@ -7345,9 +7751,9 @@ def test_forwarding_rule_path():
 
 def test_parse_forwarding_rule_path():
     expected = {
-        "project": "nudibranch",
-        "region": "cuttlefish",
-        "forwarding_rule": "mussel",
+        "project": "abalone",
+        "region": "squid",
+        "forwarding_rule": "clam",
     }
     path = MemorystoreClient.forwarding_rule_path(**expected)
 
@@ -7357,9 +7763,9 @@ def test_parse_forwarding_rule_path():
 
 
 def test_instance_path():
-    project = "winkle"
-    location = "nautilus"
-    instance = "scallop"
+    project = "whelk"
+    location = "octopus"
+    instance = "oyster"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
         project=project,
         location=location,
@@ -7371,9 +7777,9 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "instance": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "instance": "mussel",
     }
     path = MemorystoreClient.instance_path(**expected)
 
@@ -7383,8 +7789,8 @@ def test_parse_instance_path():
 
 
 def test_network_path():
-    project = "whelk"
-    network = "octopus"
+    project = "winkle"
+    network = "nautilus"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -7395,8 +7801,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "oyster",
-        "network": "nudibranch",
+        "project": "scallop",
+        "network": "abalone",
     }
     path = MemorystoreClient.network_path(**expected)
 
@@ -7406,9 +7812,9 @@ def test_parse_network_path():
 
 
 def test_service_attachment_path():
-    project = "cuttlefish"
-    region = "mussel"
-    service_attachment = "winkle"
+    project = "squid"
+    region = "clam"
+    service_attachment = "whelk"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -7422,9 +7828,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "nautilus",
-        "region": "scallop",
-        "service_attachment": "abalone",
+        "project": "octopus",
+        "region": "oyster",
+        "service_attachment": "nudibranch",
     }
     path = MemorystoreClient.service_attachment_path(**expected)
 
@@ -7433,8 +7839,33 @@ def test_parse_service_attachment_path():
     assert expected == actual
 
 
+def test_shared_regional_certificate_authority_path():
+    project = "cuttlefish"
+    location = "mussel"
+    expected = "projects/{project}/locations/{location}/sharedRegionalCertificateAuthority".format(
+        project=project,
+        location=location,
+    )
+    actual = MemorystoreClient.shared_regional_certificate_authority_path(
+        project, location
+    )
+    assert expected == actual
+
+
+def test_parse_shared_regional_certificate_authority_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = MemorystoreClient.shared_regional_certificate_authority_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = MemorystoreClient.parse_shared_regional_certificate_authority_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7444,7 +7875,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = MemorystoreClient.common_billing_account_path(**expected)
 
@@ -7454,7 +7885,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7464,7 +7895,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = MemorystoreClient.common_folder_path(**expected)
 
@@ -7474,7 +7905,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7484,7 +7915,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = MemorystoreClient.common_organization_path(**expected)
 
@@ -7494,7 +7925,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7504,7 +7935,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = MemorystoreClient.common_project_path(**expected)
 
@@ -7514,8 +7945,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7526,8 +7957,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = MemorystoreClient.common_location_path(**expected)
 

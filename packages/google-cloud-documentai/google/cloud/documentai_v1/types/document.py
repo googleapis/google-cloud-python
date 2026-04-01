@@ -110,6 +110,12 @@ class Document(proto.Message):
             Parsed layout of the document.
         chunked_document (google.cloud.documentai_v1.types.Document.ChunkedDocument):
             Document chunked based on chunking config.
+        blob_assets (MutableSequence[google.cloud.documentai_v1.types.Document.BlobAsset]):
+            Optional. The blob assets in this document.
+            This is used to store the content of the inline
+            blobs in this document, for example, image
+            bytes, such that it can be referenced by other
+            fields in the document via asset id.
         entity_validation_output (google.cloud.documentai_v1.types.Document.EntityValidationOutput):
             The entity validation output for the document. This is the
             validation output for ``document.entities`` field.
@@ -123,7 +129,7 @@ class Document(proto.Message):
             The entity revision ID that ``document.entities`` field is
             based on. If this field is set and ``entities_revisions`` is
             not empty, the entities in ``document.entities`` field are
-            the entities in the entity revision with this ID and
+            the entities in the entity revision with this id and
             ``document.entity_validation_output`` field is the
             ``entity_validation_output`` field in this entity revision.
     """
@@ -291,8 +297,9 @@ class Document(proto.Message):
                 A list of visually detected tokens on the
                 page.
             visual_elements (MutableSequence[google.cloud.documentai_v1.types.Document.Page.VisualElement]):
-                A list of detected non-text visual elements
-                e.g. checkbox, signature etc. on the page.
+                A list of detected non-text visual elements,
+                for example, checkbox, signature etc. on the
+                page.
             tables (MutableSequence[google.cloud.documentai_v1.types.Document.Page.Table]):
                 A list of visually detected tables on the
                 page.
@@ -414,9 +421,9 @@ class Document(proto.Message):
                 confidence (float):
                     Confidence of the current
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout]
-                    within context of the object this layout is for. e.g.
-                    confidence can be for a single token, a table, a visual
-                    element, etc. depending on context. Range ``[0, 1]``.
+                    within context of the object this layout is for. For
+                    example, confidence can be for a single token, a table, a
+                    visual element, etc. depending on context. Range ``[0, 1]``.
                 bounding_poly (google.cloud.documentai_v1.types.BoundingPoly):
                     The bounding polygon for the
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout].
@@ -791,8 +798,8 @@ class Document(proto.Message):
             )
 
         class VisualElement(proto.Message):
-            r"""Detected non-text visual elements e.g. checkbox, signature
-            etc. on the page.
+            r"""Detected non-text visual elements, for example, checkbox,
+            signature etc. on the page.
 
             Attributes:
                 layout (google.cloud.documentai_v1.types.Document.Page.Layout):
@@ -936,7 +943,7 @@ class Document(proto.Message):
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     for the
                     [FormField][google.cloud.documentai.v1.Document.Page.FormField]
-                    name. e.g. ``Address``, ``Email``, ``Grand total``,
+                    name. For example, ``Address``, ``Email``, ``Grand total``,
                     ``Phone number``, etc.
                 field_value (google.cloud.documentai_v1.types.Document.Page.Layout):
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout]
@@ -1211,9 +1218,10 @@ class Document(proto.Message):
                 into the
                 [Document.text][google.cloud.documentai.v1.Document.text].
             type_ (str):
-                Required. Entity type from a schema e.g. ``Address``.
+                Required. Entity type from a schema, for example,
+                ``Address``.
             mention_text (str):
-                Optional. Text value of the entity e.g.
+                Optional. Text value of the entity, for example,
                 ``1600 Amphitheatre Pkwy``.
             mention_id (str):
                 Optional. Deprecated. Use ``id`` field instead.
@@ -1230,8 +1238,8 @@ class Document(proto.Message):
             normalized_value (google.cloud.documentai_v1.types.Document.Entity.NormalizedValue):
                 Optional. Normalized entity value. Absent if
                 the extracted value could not be converted or
-                the type (e.g. address) is not supported for
-                certain parsers. This field is also only
+                the type (for example, address) is not supported
+                for certain parsers. This field is also only
                 populated for certain supported document types.
             properties (MutableSequence[google.cloud.documentai_v1.types.Document.Entity]):
                 Optional. Entities can be nested to form a
@@ -1315,6 +1323,8 @@ class Document(proto.Message):
 
                     This field is a member of `oneof`_ ``structured_value``.
                 signature_value (bool):
+                    A signature - a graphical representation of a
+                    person's name, often used to sign a document.
 
                     This field is a member of `oneof`_ ``structured_value``.
                 text (str):
@@ -1790,8 +1800,8 @@ class Document(proto.Message):
 
             Attributes:
                 state (str):
-                    Human review state. e.g. ``requested``, ``succeeded``,
-                    ``rejected``.
+                    Human review state. For example, ``requested``,
+                    ``succeeded``, ``rejected``.
                 state_message (str):
                     A message providing more details about the current state of
                     processing. For example, the rejection reason when the state
@@ -1872,6 +1882,20 @@ class Document(proto.Message):
             message="Document.Provenance",
         )
 
+    class Annotations(proto.Message):
+        r"""Represents the annotation of a block or a chunk.
+
+        Attributes:
+            description (str):
+                The description of the content with this
+                annotation.
+        """
+
+        description: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     class DocumentLayout(proto.Message):
         r"""Represents the parsed layout of a document as a collection of
         blocks that the document is divided into.
@@ -1903,6 +1927,10 @@ class Document(proto.Message):
                     This field is a member of `oneof`_ ``block``.
                 list_block (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutListBlock):
                     Block consisting of list content/structure.
+
+                    This field is a member of `oneof`_ ``block``.
+                image_block (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutImageBlock):
+                    Block consisting of image content.
 
                     This field is a member of `oneof`_ ``block``.
                 block_id (str):
@@ -1947,6 +1975,8 @@ class Document(proto.Message):
                         A text block could further have child blocks.
                         Repeated blocks support further hierarchies and
                         nested blocks.
+                    annotations (google.cloud.documentai_v1.types.Document.Annotations):
+                        Annotation of the text block.
                 """
 
                 text: str = proto.Field(
@@ -1964,6 +1994,11 @@ class Document(proto.Message):
                     number=3,
                     message="Document.DocumentLayout.DocumentLayoutBlock",
                 )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Annotations",
+                )
 
             class LayoutTableBlock(proto.Message):
                 r"""Represents a table type block.
@@ -1975,6 +2010,8 @@ class Document(proto.Message):
                         Body rows containing main table content.
                     caption (str):
                         Table caption/title.
+                    annotations (google.cloud.documentai_v1.types.Document.Annotations):
+                        Annotation of the table block.
                 """
 
                 header_rows: MutableSequence[
@@ -1994,6 +2031,11 @@ class Document(proto.Message):
                 caption: str = proto.Field(
                     proto.STRING,
                     number=3,
+                )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Annotations",
                 )
 
             class LayoutTableRow(proto.Message):
@@ -2083,6 +2125,74 @@ class Document(proto.Message):
                     message="Document.DocumentLayout.DocumentLayoutBlock",
                 )
 
+            class LayoutImageBlock(proto.Message):
+                r"""Represents an image type block.
+
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    blob_asset_id (str):
+                        Optional. Asset id of the inline image. If set, find the
+                        image content in the blob_assets field.
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    gcs_uri (str):
+                        Optional. Google Cloud Storage uri of the
+                        image.
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    data_uri (str):
+                        Optional. Data uri of the image. It is composed of four
+                        parts: a prefix (data:), a MIME type indicating the type of
+                        data, an optional base64 token if non-textual, and the data
+                        itself: data:[][;base64],
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    mime_type (str):
+                        Mime type of the image. An IANA published [media type (MIME
+                        type)]
+                        (https://www.iana.org/assignments/media-types/media-types.xhtml).
+                    image_text (str):
+                        Text extracted from the image using OCR or
+                        alt text describing the image.
+                    annotations (google.cloud.documentai_v1.types.Document.Annotations):
+                        Annotation of the image block.
+                """
+
+                blob_asset_id: str = proto.Field(
+                    proto.STRING,
+                    number=4,
+                    oneof="image_source",
+                )
+                gcs_uri: str = proto.Field(
+                    proto.STRING,
+                    number=5,
+                    oneof="image_source",
+                )
+                data_uri: str = proto.Field(
+                    proto.STRING,
+                    number=6,
+                    oneof="image_source",
+                )
+                mime_type: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                image_text: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    message="Document.Annotations",
+                )
+
             text_block: "Document.DocumentLayout.DocumentLayoutBlock.LayoutTextBlock" = proto.Field(
                 proto.MESSAGE,
                 number=2,
@@ -2100,6 +2210,12 @@ class Document(proto.Message):
                 number=4,
                 oneof="block",
                 message="Document.DocumentLayout.DocumentLayoutBlock.LayoutListBlock",
+            )
+            image_block: "Document.DocumentLayout.DocumentLayoutBlock.LayoutImageBlock" = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                oneof="block",
+                message="Document.DocumentLayout.DocumentLayoutBlock.LayoutImageBlock",
             )
             block_id: str = proto.Field(
                 proto.STRING,
@@ -2148,6 +2264,8 @@ class Document(proto.Message):
                     Page headers associated with the chunk.
                 page_footers (MutableSequence[google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageFooter]):
                     Page footers associated with the chunk.
+                chunk_fields (MutableSequence[google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkField]):
+                    Chunk fields inside this chunk.
             """
 
             class ChunkPageSpan(proto.Message):
@@ -2209,6 +2327,112 @@ class Document(proto.Message):
                     message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
                 )
 
+            class ImageChunkField(proto.Message):
+                r"""The image chunk field in the chunk.
+
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    blob_asset_id (str):
+                        Optional. Asset id of the inline image. If set, find the
+                        image content in the blob_assets field.
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    gcs_uri (str):
+                        Optional. Google Cloud Storage uri of the
+                        image.
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    data_uri (str):
+                        Optional. Data uri of the image. It is composed of four
+                        parts: a prefix (data:), a MIME type indicating the type of
+                        data, an optional base64 token if non-textual, and the data
+                        itself: data:[][;base64],
+
+                        This field is a member of `oneof`_ ``image_source``.
+                    annotations (google.cloud.documentai_v1.types.Document.Annotations):
+                        Annotation of the image chunk field.
+                """
+
+                blob_asset_id: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                    oneof="image_source",
+                )
+                gcs_uri: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                    oneof="image_source",
+                )
+                data_uri: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                    oneof="image_source",
+                )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Annotations",
+                )
+
+            class TableChunkField(proto.Message):
+                r"""The table chunk field in the chunk.
+
+                Attributes:
+                    annotations (google.cloud.documentai_v1.types.Document.Annotations):
+                        Annotation of the table chunk field.
+                """
+
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.Annotations",
+                )
+
+            class ChunkField(proto.Message):
+                r"""The chunk field in the chunk. A chunk field could be one of
+                the various types (for example, image, table) supported.
+
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    image_chunk_field (google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ImageChunkField):
+                        The image chunk field in the chunk.
+
+                        This field is a member of `oneof`_ ``field_type``.
+                    table_chunk_field (google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.TableChunkField):
+                        The table chunk field in the chunk.
+
+                        This field is a member of `oneof`_ ``field_type``.
+                """
+
+                image_chunk_field: "Document.ChunkedDocument.Chunk.ImageChunkField" = (
+                    proto.Field(
+                        proto.MESSAGE,
+                        number=1,
+                        oneof="field_type",
+                        message="Document.ChunkedDocument.Chunk.ImageChunkField",
+                    )
+                )
+                table_chunk_field: "Document.ChunkedDocument.Chunk.TableChunkField" = (
+                    proto.Field(
+                        proto.MESSAGE,
+                        number=2,
+                        oneof="field_type",
+                        message="Document.ChunkedDocument.Chunk.TableChunkField",
+                    )
+                )
+
             chunk_id: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -2240,11 +2464,49 @@ class Document(proto.Message):
                 number=6,
                 message="Document.ChunkedDocument.Chunk.ChunkPageFooter",
             )
+            chunk_fields: MutableSequence[
+                "Document.ChunkedDocument.Chunk.ChunkField"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=7,
+                message="Document.ChunkedDocument.Chunk.ChunkField",
+            )
 
         chunks: MutableSequence["Document.ChunkedDocument.Chunk"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Document.ChunkedDocument.Chunk",
+        )
+
+    class BlobAsset(proto.Message):
+        r"""Represents a blob asset. It's used to store the content of
+        the inline blob in this document, for example, image bytes, such
+        that it can be referenced by other fields in the document via
+        asset ID.
+
+        Attributes:
+            asset_id (str):
+                Optional. The id of the blob asset.
+            content (bytes):
+                Optional. The content of the blob asset, for
+                example, image bytes.
+            mime_type (str):
+                The mime type of the blob asset. An IANA published `media
+                type (MIME
+                type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
+        """
+
+        asset_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        content: bytes = proto.Field(
+            proto.BYTES,
+            number=2,
+        )
+        mime_type: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     class EntityValidationOutput(proto.Message):
@@ -2426,6 +2688,11 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=18,
         message=ChunkedDocument,
+    )
+    blob_assets: MutableSequence[BlobAsset] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message=BlobAsset,
     )
     entity_validation_output: EntityValidationOutput = proto.Field(
         proto.MESSAGE,

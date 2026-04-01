@@ -123,6 +123,7 @@ class AttributeContext(_message.Message):
             "protocol",
             "reason",
             "auth",
+            "origin",
         )
         class HeadersEntry(_message.Message):
             __slots__ = ("key", "value")
@@ -146,6 +147,7 @@ class AttributeContext(_message.Message):
         PROTOCOL_FIELD_NUMBER: _ClassVar[int]
         REASON_FIELD_NUMBER: _ClassVar[int]
         AUTH_FIELD_NUMBER: _ClassVar[int]
+        ORIGIN_FIELD_NUMBER: _ClassVar[int]
         id: str
         method: str
         headers: _containers.ScalarMap[str, str]
@@ -158,6 +160,7 @@ class AttributeContext(_message.Message):
         protocol: str
         reason: str
         auth: AttributeContext.Auth
+        origin: str
         def __init__(
             self,
             id: _Optional[str] = ...,
@@ -172,6 +175,7 @@ class AttributeContext(_message.Message):
             protocol: _Optional[str] = ...,
             reason: _Optional[str] = ...,
             auth: _Optional[_Union[AttributeContext.Auth, _Mapping]] = ...,
+            origin: _Optional[str] = ...,
         ) -> None: ...
 
     class Response(_message.Message):

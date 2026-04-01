@@ -65,9 +65,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class JobsV1Beta3AsyncClient:
-    """Provides a method to create and modify Google Cloud Dataflow
-    jobs. A Job is a multi-stage computation graph run by the Cloud
-    Dataflow service.
+    """Provides a method to create and modify Dataflow jobs.
+    A Job is a multi-stage computation graph run by the Dataflow
+    service.
     """
 
     _client: JobsV1Beta3Client
@@ -301,7 +301,7 @@ class JobsV1Beta3AsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> jobs.Job:
-        r"""Creates a Cloud Dataflow job.
+        r"""Creates a Dataflow job.
 
         To create a job, we recommend using
         ``projects.locations.jobs.create`` with a [regional endpoint]

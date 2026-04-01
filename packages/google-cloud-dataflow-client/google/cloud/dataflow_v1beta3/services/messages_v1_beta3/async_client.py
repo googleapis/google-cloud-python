@@ -62,8 +62,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class MessagesV1Beta3AsyncClient:
-    """The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    """The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
     """
 
     _client: MessagesV1Beta3Client
