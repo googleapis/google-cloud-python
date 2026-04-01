@@ -228,11 +228,16 @@ class Cursor(object):
         """This function should only be used in autocommit mode."""
         self.connection._transaction = transaction
         self.connection._snapshot = None
-        self._result_set = transaction.execute_sql(
-            sql,
+        kwargs = dict(
             params=params,
             param_types=get_param_types(params),
             last_statement=True,
+        )
+        if self.connection._timeout is not None:
+            kwargs["timeout"] = self.connection._timeout
+        self._result_set = transaction.execute_sql(
+            sql,
+            **kwargs,
         )
         self._itr = PeekIterator(self._result_set)
         self._row_count = None
@@ -542,11 +547,16 @@ class Cursor(object):
         return rows
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
+        kwargs = dict(
+            param_types=get_param_types(params),
+            request_options=self.request_options,
+        )
+        if self.connection._timeout is not None:
+            kwargs["timeout"] = self.connection._timeout
         self._result_set = snapshot.execute_sql(
             sql,
             params,
-            get_param_types(params),
-            request_options=self.request_options,
+            **kwargs,
         )
         # Read the first element so that the StreamedResultSet can
         # return the metadata after a DQL statement.
