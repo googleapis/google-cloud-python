@@ -174,8 +174,13 @@ async def verify_pipeline(query):
     """
     from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
+    client = query._client
     if FIRESTORE_EMULATOR:
-        pytest.skip("skip pipeline verification on emulator")
+        print("skip pipeline verification on emulator")
+        return
+    if client._database != FIRESTORE_ENTERPRISE_DB:
+        print("pipelines only supports enterprise db")
+        return
 
     def _clean_results(results):
         if isinstance(results, dict):
@@ -206,7 +211,6 @@ async def verify_pipeline(query):
         except Exception as e:
             # if we expect the query to fail, capture the exception
             query_exception = e
-        client = query._client
         pipeline = client.pipeline().create_from(query)
         if query_exception:
             # ensure that the pipeline uses same error as query
