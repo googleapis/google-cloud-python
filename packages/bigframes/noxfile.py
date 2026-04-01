@@ -517,6 +517,7 @@ def docfx(session):
         "sphinx-sitemap==2.9.0",
         "pydata-sphinx-theme==0.13.3",
         "myst-parser==0.18.1",
+        "myst-nb",
         "gcp-sphinx-docfx-yaml==3.2.4",
         "anywidget",
     )

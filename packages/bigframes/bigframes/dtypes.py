@@ -399,6 +399,7 @@ def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
 
     # Local import to break circular dependency with core.backports
     import bigframes.core.backports
+
     for field in bigframes.core.backports.pyarrow_struct_type_fields(struct_type):
         result[field.name] = arrow_dtype_to_bigframes_dtype(field.type)
     return result
@@ -587,6 +588,7 @@ def to_storage_type(
 
         # Local import to break circular dependency with core.backports
         import bigframes.core.backports
+
         return pa.struct(
             field.with_type(to_storage_type(field.type))
             for field in bigframes.core.backports.pyarrow_struct_type_fields(arrow_type)
@@ -603,6 +605,7 @@ def arrow_type_to_literal(
 
     # Local import to break circular dependency with core.backports
     import bigframes.core.backports
+
     if pa.types.is_struct(arrow_type):
         return {
             field.name: arrow_type_to_literal(field.type)
@@ -1011,6 +1014,7 @@ def contains_db_dtypes_json_arrow_type(type_):
     if isinstance(type_, pa.StructType):
         # Local import to break circular dependency with core.backports
         import bigframes.core.backports
+
         return any(
             contains_db_dtypes_json_arrow_type(field.type)
             for field in bigframes.core.backports.pyarrow_struct_type_fields(type_)
