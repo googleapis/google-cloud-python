@@ -4,30 +4,6 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
-## [2.39.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.38.0...v2.39.0) (2026-03-31)
-
-
-### Documentation
-
-* Rename Blob column references to ObjectRef column (#2535) ([44e0ffd947e9db66ab612f92de6e31f1085e7968](https://github.com/googleapis/python-bigquery-dataframes/commit/44e0ffd947e9db66ab612f92de6e31f1085e7968))
-* gemini retouch of the index page for seo (#2514) ([2e5311e2242b039da4c8e37b7b48942fa8ed34c2](https://github.com/googleapis/python-bigquery-dataframes/commit/2e5311e2242b039da4c8e37b7b48942fa8ed34c2))
-
-
-### Features
-
-* expose DataFrame.bigquery in both pandas and bigframes DataFrames (#2533) ([69fe317612a69aa92f06f0c418c67aa1f9488bd2](https://github.com/googleapis/python-bigquery-dataframes/commit/69fe317612a69aa92f06f0c418c67aa1f9488bd2))
-* support full round-trip persistence for multimodal reference cols (#2511) ([494a0a113b1ba6dcdc9f9b85a4f750d093f5652f](https://github.com/googleapis/python-bigquery-dataframes/commit/494a0a113b1ba6dcdc9f9b85a4f750d093f5652f))
-* add `df.bigquery.ai.forecast` method to pandas dataframe accessor (#2518) ([1126cec9cdfcc1ec1062c60e5affbe1b60223767](https://github.com/googleapis/python-bigquery-dataframes/commit/1126cec9cdfcc1ec1062c60e5affbe1b60223767))
-
-
-### Bug Fixes
-
-* handle aggregate operations on empty selections (#2510) ([34fb5daa93726d0d3ff364912a3c1de0fc535fb2](https://github.com/googleapis/python-bigquery-dataframes/commit/34fb5daa93726d0d3ff364912a3c1de0fc535fb2))
-* Localize BigQuery log suppression for gbq.py (#2541) ([af49ca29399aa2c63753d9045fd382e30334d134](https://github.com/googleapis/python-bigquery-dataframes/commit/af49ca29399aa2c63753d9045fd382e30334d134))
-* to_gbq may swap data columns when replace table (#2532) ([17ecc65e1c0397ef349fca4afcf5a77af72aa798](https://github.com/googleapis/python-bigquery-dataframes/commit/17ecc65e1c0397ef349fca4afcf5a77af72aa798))
-* Respect remote function config changes even if logic unchanged (#2512) ([b9524284ad3b457b15598f546bac04c76b3e27b8](https://github.com/googleapis/python-bigquery-dataframes/commit/b9524284ad3b457b15598f546bac04c76b3e27b8))
-* support melting empty DataFrames without crashing (#2509) ([e8c46032154e186042314d97aa813301413d8a13](https://github.com/googleapis/python-bigquery-dataframes/commit/e8c46032154e186042314d97aa813301413d8a13))
-
 ## [2.38.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.37.0...v2.38.0) (2026-03-16)
 
 
