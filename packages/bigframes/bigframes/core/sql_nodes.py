@@ -18,10 +18,10 @@ import dataclasses
 import functools
 from typing import Callable, Mapping, Optional, Sequence, Tuple
 
-from bigframes.core import bq_data, identifiers, nodes
 import bigframes.core.expression as ex
-from bigframes.core.ordering import OrderingExpression
 import bigframes.dtypes
+from bigframes.core import bq_data, identifiers, nodes
+from bigframes.core.ordering import OrderingExpression
 
 # SQL Nodes are generally terminal, so don't support rich transformation methods
 # like remap_vars, remap_refs, etc.

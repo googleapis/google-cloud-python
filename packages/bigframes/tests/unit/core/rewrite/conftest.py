@@ -17,8 +17,8 @@ import google.cloud.bigquery
 import pytest
 
 import bigframes
-from bigframes.core import bq_data
 import bigframes.core as core
+from bigframes.core import bq_data
 
 TABLE_REF = google.cloud.bigquery.TableReference.from_string("project.dataset.table")
 SCHEMA = (

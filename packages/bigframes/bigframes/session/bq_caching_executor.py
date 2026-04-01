@@ -20,18 +20,14 @@ import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
 
 import google.api_core.exceptions
-from google.cloud import bigquery
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
+from google.cloud import bigquery
 
 import bigframes
-from bigframes import exceptions as bfe
 import bigframes.constants
 import bigframes.core
-from bigframes.core import bq_data, compile, local_data, rewrite
-from bigframes.core.compile.sqlglot import sql as sg_sql
-from bigframes.core.compile.sqlglot import sqlglot_ir
 import bigframes.core.events
 import bigframes.core.guid
 import bigframes.core.identifiers
@@ -39,6 +35,16 @@ import bigframes.core.nodes as nodes
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
+import bigframes.session._io.bigquery as bq_io
+import bigframes.session.execution_cache as execution_cache
+import bigframes.session.execution_spec as ex_spec
+import bigframes.session.metrics
+import bigframes.session.planner
+import bigframes.session.temporary_storage
+from bigframes import exceptions as bfe
+from bigframes.core import bq_data, compile, local_data, rewrite
+from bigframes.core.compile.sqlglot import sql as sg_sql
+from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (
     executor,
     loader,
@@ -46,12 +52,6 @@ from bigframes.session import (
     read_api_execution,
     semi_executor,
 )
-import bigframes.session._io.bigquery as bq_io
-import bigframes.session.execution_cache as execution_cache
-import bigframes.session.execution_spec as ex_spec
-import bigframes.session.metrics
-import bigframes.session.planner
-import bigframes.session.temporary_storage
 
 # Max complexity that should be executed as a single query
 QUERY_COMPLEXITY_LIMIT = 1e7

@@ -8,11 +8,11 @@
 
 from __future__ import annotations
 
+import typing as t
 from collections import defaultdict
 from dataclasses import dataclass
 from heapq import heappop, heappush
 from itertools import chain
-import typing as t
 
 from bigframes_vendored.sqlglot import Dialect
 from bigframes_vendored.sqlglot import expressions as exp

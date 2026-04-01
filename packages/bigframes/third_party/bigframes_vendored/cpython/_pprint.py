@@ -70,11 +70,11 @@ BaseEstimator.__repr__ for pretty-printing estimators"""
 # - removed global get_config, set _changed_only=True
 # - replace is_scalar_nan with isinstance(x, numbers.Real) and math.isnan
 
-from collections import OrderedDict
 import inspect
 import math
 import numbers
 import pprint
+from collections import OrderedDict
 
 from bigframes.ml.base import BaseEstimator
 

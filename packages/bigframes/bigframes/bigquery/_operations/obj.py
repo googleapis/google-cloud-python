@@ -18,7 +18,6 @@
 See bigframes.bigquery.obj for public docs.
 """
 
-
 from __future__ import annotations
 
 import datetime
@@ -27,11 +26,11 @@ from typing import Optional, Sequence, Union
 import numpy as np
 import pandas as pd
 
-from bigframes.core import convert
-from bigframes.core.logging import log_adapter
 import bigframes.core.utils as utils
 import bigframes.operations as ops
 import bigframes.series as series
+from bigframes.core import convert
+from bigframes.core.logging import log_adapter
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_obj")

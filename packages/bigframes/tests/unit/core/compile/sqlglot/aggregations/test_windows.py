@@ -18,15 +18,15 @@ import bigframes_vendored.sqlglot.expressions as sge
 import pandas as pd
 import pytest
 
+import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
+import bigframes.core.ordering as ordering
 from bigframes import dtypes
 from bigframes.core import window_spec
 from bigframes.core.compile.sqlglot.aggregations.windows import (
     apply_window_if_present,
     get_window_order_by,
 )
-import bigframes.core.expression as ex
-import bigframes.core.identifiers as ids
-import bigframes.core.ordering as ordering
 
 
 class WindowsTest(unittest.TestCase):

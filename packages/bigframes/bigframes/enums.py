@@ -16,7 +16,6 @@
 
 # NOTE: This module should not depend on any others in the package.
 
-
 import enum
 
 

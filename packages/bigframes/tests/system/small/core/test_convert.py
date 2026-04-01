@@ -13,9 +13,9 @@
 # limitations under the License.
 
 
-from pandas import testing
 import pandas as pd
 import pytest
+from pandas import testing
 
 from bigframes import dataframe
 from bigframes.core import convert

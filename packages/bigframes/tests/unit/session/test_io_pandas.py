@@ -14,8 +14,8 @@
 
 import datetime
 import re
-from typing import Dict, Union
 import unittest.mock as mock
+from typing import Dict, Union
 
 import geopandas  # type: ignore
 import numpy

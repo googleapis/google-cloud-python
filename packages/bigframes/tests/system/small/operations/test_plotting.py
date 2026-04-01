@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from matplotlib.collections import PathCollection
 import numpy as np
 import pandas as pd
 import pandas._testing as tm
 import pytest
+from matplotlib.collections import PathCollection
 
 import bigframes.operations._matplotlib.core as bf_mpl
 import bigframes.pandas as bpd

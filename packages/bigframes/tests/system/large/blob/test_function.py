@@ -15,16 +15,16 @@
 import logging
 import os
 import traceback
-from typing import Generator
 import uuid
+from typing import Generator
 
-from google.cloud import storage
 import pandas as pd
 import pytest
+from google.cloud import storage
 
 import bigframes
-from bigframes import dtypes
 import bigframes.pandas as bpd
+from bigframes import dtypes
 
 pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
 
@@ -630,9 +630,9 @@ def test_blob_pdf_extract(
     # check for major keywords
     major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
+        )
 
 
 def test_blob_pdf_extract_verbose(
@@ -667,9 +667,9 @@ def test_blob_pdf_extract_verbose(
     # check for major keywords
     major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
+        )
 
 
 def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, bq_connection: str):
@@ -706,9 +706,9 @@ def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, bq_connection: str):
     # check for major keywords
     major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
+        )
 
 
 def test_blob_pdf_chunk_verbose(pdf_mm_df: bpd.DataFrame, bq_connection: str):
@@ -746,9 +746,9 @@ def test_blob_pdf_chunk_verbose(pdf_mm_df: bpd.DataFrame, bq_connection: str):
     # check for major keywords
     major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
+        )
 
 
 @pytest.mark.parametrize(
@@ -797,9 +797,9 @@ def test_blob_transcribe(
     # check for major keywords
     major_keywords = ["book", "picture"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in transcribed text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=False): Expected keyword '{keyword}' not found in transcribed text. "
+        )
 
 
 @pytest.mark.parametrize(
@@ -848,6 +848,6 @@ def test_blob_transcribe_verbose(
     # check for major keywords
     major_keywords = ["book", "picture"]
     for keyword in major_keywords:
-        assert (
-            keyword.lower() in actual_text.lower()
-        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in transcribed text. "
+        assert keyword.lower() in actual_text.lower(), (
+            f"Item (verbose=True): Expected keyword '{keyword}' not found in transcribed text. "
+        )

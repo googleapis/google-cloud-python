@@ -9,7 +9,7 @@ from bigframes_vendored.sqlglot import expressions as exp
 from bigframes_vendored.sqlglot.dialects.dialect import Dialect
 from bigframes_vendored.sqlglot.errors import SchemaError
 from bigframes_vendored.sqlglot.helper import dict_depth, first
-from bigframes_vendored.sqlglot.trie import in_trie, new_trie, TrieResult
+from bigframes_vendored.sqlglot.trie import TrieResult, in_trie, new_trie
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot.dialects.dialect import DialectType

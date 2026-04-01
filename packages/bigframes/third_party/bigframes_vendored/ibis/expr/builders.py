@@ -3,20 +3,20 @@
 from __future__ import annotations
 
 import math
-from typing import Any, Literal, Optional, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.annotations import annotated, attribute
-from bigframes_vendored.ibis.common.deferred import deferrable, Deferred, Resolver
-from bigframes_vendored.ibis.common.exceptions import IbisInputError
-from bigframes_vendored.ibis.common.grounds import Concrete
-from bigframes_vendored.ibis.common.selectors import Selector  # noqa: TCH001
-from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
 import bigframes_vendored.ibis.expr.rules as rlz
 import bigframes_vendored.ibis.expr.types as ir
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.annotations import annotated, attribute
+from bigframes_vendored.ibis.common.deferred import Deferred, Resolver, deferrable
+from bigframes_vendored.ibis.common.exceptions import IbisInputError
+from bigframes_vendored.ibis.common.grounds import Concrete
+from bigframes_vendored.ibis.common.selectors import Selector  # noqa: TCH001
+from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 
 if TYPE_CHECKING:
     from typing_extensions import Self

@@ -17,12 +17,12 @@ Configuration for BigQuery DataFrames. Do not depend on other parts of BigQuery
 DataFrames from this package.
 """
 
+import bigframes._config.global_options as global_options
 from bigframes._config.bigquery_options import BigQueryOptions
 from bigframes._config.compute_options import ComputeOptions
 from bigframes._config.display_options import DisplayOptions
 from bigframes._config.experiment_options import ExperimentOptions
-from bigframes._config.global_options import option_context, Options
-import bigframes._config.global_options as global_options
+from bigframes._config.global_options import Options, option_context
 from bigframes._config.sampling_options import SamplingOptions
 
 options = global_options.options

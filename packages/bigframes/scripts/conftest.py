@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # inserts scripts into path so that tests can import
 project_root = Path(__file__).parent.parent

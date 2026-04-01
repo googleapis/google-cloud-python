@@ -41,8 +41,9 @@ def test_semantics_experiment_off_raise_error(session):
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}, session=session
     )
 
-    with bigframes.option_context(SEM_OP_EXP_OPTION, False), pytest.raises(
-        NotImplementedError
+    with (
+        bigframes.option_context(SEM_OP_EXP_OPTION, False),
+        pytest.raises(NotImplementedError),
     ):
         df.semantics
 

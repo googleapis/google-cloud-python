@@ -14,8 +14,8 @@
 
 import pytest
 
-from bigframes.core import ordering
 import bigframes.pandas as bpd
+from bigframes.core import ordering
 
 pytest.importorskip("pytest_snapshot")
 

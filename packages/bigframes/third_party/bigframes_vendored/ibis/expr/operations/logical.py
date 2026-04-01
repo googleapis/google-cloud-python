@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-from bigframes_vendored.ibis.common.annotations import attribute, ValidationError
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis.common.annotations import ValidationError, attribute
 from bigframes_vendored.ibis.common.exceptions import IbisTypeError
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.operations.core import Binary, Unary, Value
-import bigframes_vendored.ibis.expr.rules as rlz
 from public import public
 
 

@@ -18,6 +18,7 @@ import dataclasses
 import functools
 import itertools
 
+import bigframes.dtypes
 from bigframes import operations as ops
 from bigframes.core import (
     agg_expressions,
@@ -27,7 +28,6 @@ from bigframes.core import (
     nodes,
     ordering,
 )
-import bigframes.dtypes
 from bigframes.operations import aggregations as agg_ops
 
 

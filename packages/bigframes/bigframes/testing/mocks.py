@@ -14,15 +14,15 @@
 
 import copy
 import datetime
-from typing import Any, Dict, Literal, Optional, Sequence
 import unittest.mock as mock
+from typing import Any, Dict, Literal, Optional, Sequence
 
-from bigframes_vendored.google_cloud_bigquery import _pandas_helpers
 import google.auth.credentials
 import google.cloud.bigquery
 import google.cloud.bigquery.table
 import pyarrow
 import pytest
+from bigframes_vendored.google_cloud_bigquery import _pandas_helpers
 
 import bigframes
 import bigframes.clients

@@ -14,10 +14,10 @@
 
 from __future__ import annotations
 
-from bigframes import dtypes
-from bigframes import operations as ops
 import bigframes.core.col
 import bigframes.core.expression
+from bigframes import dtypes
+from bigframes import operations as ops
 
 
 def rand() -> bigframes.core.col.Expression:

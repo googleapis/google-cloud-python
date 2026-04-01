@@ -4,12 +4,13 @@ Module contains tools for processing files into DataFrames or other objects
 
 GH#48849 provides a convenient way of deprecating keyword arguments
 """
+
 from __future__ import annotations
 
 from typing import (
+    IO,
     Any,
     Dict,
-    IO,
     Literal,
     MutableSequence,
     Optional,
@@ -20,8 +21,8 @@ from typing import (
 
 import numpy as np
 
-from bigframes import constants
 import bigframes.enums
+from bigframes import constants
 
 
 class ReaderIOMixin:

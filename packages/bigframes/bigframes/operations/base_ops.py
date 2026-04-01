@@ -17,8 +17,8 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from bigframes import dtypes
 import bigframes.operations.type as op_typing
+from bigframes import dtypes
 
 if typing.TYPE_CHECKING:
     # Avoids circular dependency
@@ -27,11 +27,11 @@ if typing.TYPE_CHECKING:
 
 class RowOp(typing.Protocol):
     @property
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
-    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        ...
+    def output_type(
+        self, *input_types: dtypes.ExpressionType
+    ) -> dtypes.ExpressionType: ...
 
     @property
     def is_monotonic(self) -> bool:
@@ -168,7 +168,7 @@ class TernaryOp(ScalarOp):
 
 
 def _convert_expr_input(
-    input: typing.Union[str, bigframes.core.expression.Expression]
+    input: typing.Union[str, bigframes.core.expression.Expression],
 ) -> bigframes.core.expression.Expression:
     """Allows creating column references with just a string"""
     import bigframes.core.expression

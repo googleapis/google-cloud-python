@@ -70,7 +70,7 @@ def test_parse_sql_to_pyarrow_dtype(sql, expected):
         "a INT64",
         "ARRAY<>",
         "ARRAY<INT64",
-        "ARRAY<x INT64>" "ARRAY<int64>" "STRUCT<>",
+        "ARRAY<x INT64>ARRAY<int64>STRUCT<>",
         "DATE",
         "STRUCT<INT64, FLOAT64>",
         "ARRAY<ARRAY<>>",

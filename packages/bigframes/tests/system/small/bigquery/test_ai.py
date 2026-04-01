@@ -18,9 +18,9 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from bigframes import dataframe, dtypes, series
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
+from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
 
 

@@ -24,19 +24,19 @@ import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
 import bigframes_vendored.sqlglot.expressions as sge
-from google.cloud import bigquery
 import pyarrow as pa
+from google.cloud import bigquery
 
-from bigframes.core import agg_expressions, rewrite
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compiler
 import bigframes.core.compile.ibis_compiler.scalar_op_compiler as op_compilers
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
-from bigframes.core.ordering import OrderingExpression
 import bigframes.core.sql
-from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
+from bigframes.core import agg_expressions, rewrite
+from bigframes.core.ordering import OrderingExpression
+from bigframes.core.window_spec import WindowSpec
 
 op_compiler = op_compilers.scalar_op_compiler
 
@@ -56,7 +56,8 @@ class UnorderedIR:
             column.resolve(table)  # type:ignore
             # TODO(https://github.com/ibis-project/ibis/issues/7613): use
             # public API to refer to Deferred type.
-            if isinstance(column, ibis_deferred.Deferred) else column
+            if isinstance(column, ibis_deferred.Deferred)
+            else column
             for column in columns
         )
         # To allow for more efficient lookup by column name, create a

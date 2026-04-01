@@ -18,7 +18,7 @@ Private helpers for loading a BigQuery table as a BigQuery DataFrames DataFrame.
 
 from __future__ import annotations
 
-from typing import cast, Sequence
+from typing import Sequence, cast
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes

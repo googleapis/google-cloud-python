@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
+import itertools
 from abc import abstractmethod
 from collections import deque
 from collections.abc import Callable, Iterable, Iterator, KeysView, Mapping, Sequence
-import itertools
-from typing import Any, Optional, TYPE_CHECKING, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Optional, TypeVar, Union
 
 from bigframes_vendored.ibis.common.bases import Hashable
 from bigframes_vendored.ibis.common.patterns import NoMatch, Pattern

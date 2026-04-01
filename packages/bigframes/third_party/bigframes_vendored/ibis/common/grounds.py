@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import contextlib
 from copy import copy
-from typing import Any, ClassVar, get_origin, Union
+from typing import Any, ClassVar, Union, get_origin
 
 from bigframes_vendored.ibis.common.annotations import (
     Annotation,
@@ -23,7 +23,7 @@ from bigframes_vendored.ibis.common.bases import (  # noqa: F401
 from bigframes_vendored.ibis.common.collections import FrozenDict  # noqa: TCH001
 from bigframes_vendored.ibis.common.patterns import Pattern
 from bigframes_vendored.ibis.common.typing import evaluate_annotations
-from typing_extensions import dataclass_transform, Self
+from typing_extensions import Self, dataclass_transform
 
 
 class AnnotableMeta(AbstractMeta):

@@ -11,7 +11,6 @@ functions to split the data based on a preset strategy.
 #         Rodion Martynov <marrodion@gmail.com>
 # License: BSD 3 clause
 
-
 from abc import ABCMeta
 
 from bigframes import constants

@@ -15,9 +15,9 @@
 
 import random
 
-from google.cloud import bigquery
 import pandas
 import pytest
+from google.cloud import bigquery
 
 import bigframes
 import bigframes.ml.linear_model

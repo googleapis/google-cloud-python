@@ -8,7 +8,7 @@ import typing as t
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.dialects.dialect import Dialect
 from bigframes_vendored.sqlglot.errors import OptimizeError
-from bigframes_vendored.sqlglot.helper import seq_get, SingleValuedMapping
+from bigframes_vendored.sqlglot.helper import SingleValuedMapping, seq_get
 from bigframes_vendored.sqlglot.optimizer.scope import Scope
 
 if t.TYPE_CHECKING:

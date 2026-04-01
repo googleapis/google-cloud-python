@@ -15,10 +15,10 @@ import dataclasses
 import functools
 from typing import Mapping, Tuple
 
-from bigframes.core import agg_expressions, expression, identifiers
 import bigframes.core.nodes
 import bigframes.core.ordering
 import bigframes.core.window_spec
+from bigframes.core import agg_expressions, expression, identifiers
 from bigframes.operations import aggregations as agg_ops
 
 

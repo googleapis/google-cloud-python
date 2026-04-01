@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
-from bigframes_vendored.ibis.common.collections import FrozenOrderedDict  # noqa: TCH001
 import bigframes_vendored.ibis.common.exceptions as com
-from bigframes_vendored.ibis.common.grounds import Concrete
 import bigframes_vendored.ibis.expr.operations as ops
-from bigframes_vendored.ibis.expr.operations.relations import Unaliased  # noqa: TCH001
 import bigframes_vendored.ibis.expr.types as ir
+from bigframes_vendored.ibis.common.collections import FrozenOrderedDict  # noqa: TCH001
+from bigframes_vendored.ibis.common.grounds import Concrete
+from bigframes_vendored.ibis.expr.operations.relations import Unaliased  # noqa: TCH001
 from bigframes_vendored.ibis.expr.types.relations import unwrap_aliases
 from public import public
 

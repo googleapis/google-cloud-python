@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Optional, Protocol, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Protocol, Union
 
 import bigframes_vendored.constants as constants
 
@@ -32,12 +32,10 @@ if TYPE_CHECKING:
 
 class HasSession(Protocol):
     @property
-    def _session(self) -> Session:
-        ...
+    def _session(self) -> Session: ...
 
     @property
-    def _block(self) -> Block:
-        ...
+    def _block(self) -> Block: ...
 
 
 def requires_index(meth):

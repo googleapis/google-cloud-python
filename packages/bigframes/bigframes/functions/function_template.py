@@ -181,8 +181,8 @@ def udf_http_row_processor(request):
     import math
     import traceback
 
-    from flask import jsonify
     import pandas as pd
+    from flask import jsonify
 
     try:
         request_json = request.get_json(silent=True)

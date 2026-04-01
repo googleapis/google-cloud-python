@@ -22,7 +22,7 @@ import re
 import textwrap
 import types
 import typing
-from typing import Dict, Iterable, Literal, Mapping, Optional, overload, Tuple, Union
+from typing import Dict, Iterable, Literal, Mapping, Optional, Tuple, Union, overload
 
 import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
@@ -32,11 +32,11 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.table
 
-from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.events
-from bigframes.core.logging import log_adapter
 import bigframes.core.sql
 import bigframes.session.metrics
+from bigframes.core.compile.sqlglot import sql as sg_sql
+from bigframes.core.logging import log_adapter
 
 CHECK_DRIVE_PERMISSIONS = "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
 
@@ -275,8 +275,7 @@ def start_query_with_client(
     query_with_job: Literal[True],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
 
 
 @overload
@@ -292,8 +291,7 @@ def start_query_with_client(
     query_with_job: Literal[False],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
 
 
 @overload
@@ -310,8 +308,7 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
 
 
 @overload
@@ -328,8 +325,7 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
 
 
 def start_query_with_client(

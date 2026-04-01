@@ -2,16 +2,17 @@
 """
 Core eval alignment algorithms.
 """
+
 from __future__ import annotations
 
-from functools import partial, wraps
-from typing import Callable, TYPE_CHECKING, Union
 import warnings
+from functools import partial, wraps
+from typing import TYPE_CHECKING, Callable, Union
 
 import bigframes_vendored.pandas.core.common as com
+import numpy as np
 from bigframes_vendored.pandas.core.computation.common import result_type_many
 from bigframes_vendored.pandas.util._exceptions import find_stack_level
-import numpy as np
 from pandas.errors import PerformanceWarning
 
 if TYPE_CHECKING:

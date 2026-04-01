@@ -14,8 +14,9 @@
 from __future__ import annotations
 
 import itertools
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
+import bigframes.operations
 from bigframes.core import (
     agg_expressions,
     array_value,
@@ -23,7 +24,6 @@ from bigframes.core import (
     expression,
     nodes,
 )
-import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
 from bigframes.operations import (
     bool_ops,

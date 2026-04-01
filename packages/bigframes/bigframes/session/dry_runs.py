@@ -16,15 +16,15 @@ from __future__ import annotations
 import copy
 from typing import Any, Dict, List, Sequence, Union
 
-from google.cloud import bigquery
 import pandas
+from google.cloud import bigquery
 
 from bigframes import dtypes
 from bigframes.core import bigframe_node, bq_data, nodes
 
 
 def get_table_stats(
-    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable]
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
 ) -> pandas.Series:
     values: List[Any] = []
     index: List[Any] = []

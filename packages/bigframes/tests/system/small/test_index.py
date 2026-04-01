@@ -18,8 +18,8 @@ import numpy
 import pandas as pd
 import pytest
 
-from bigframes import dtypes
 import bigframes.pandas as bpd
+from bigframes import dtypes
 from bigframes.testing.utils import assert_pandas_index_equal_ignore_index_type
 
 

@@ -14,9 +14,9 @@
 
 import pandas as pd
 
-from bigframes.ml import decomposition
 import bigframes.pandas as bpd
 import bigframes.testing.utils
+from bigframes.ml import decomposition
 
 
 def test_pca_predict(

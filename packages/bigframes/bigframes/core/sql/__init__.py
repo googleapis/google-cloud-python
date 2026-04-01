@@ -19,14 +19,14 @@ Utility functions for SQL construction.
 
 import json
 from typing import (
+    TYPE_CHECKING,
     Any,
-    cast,
     Collection,
     Iterable,
     Mapping,
     Optional,
-    TYPE_CHECKING,
     Union,
+    cast,
 )
 
 import bigframes_vendored.sqlglot.expressions as sge

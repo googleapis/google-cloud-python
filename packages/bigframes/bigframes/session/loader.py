@@ -25,37 +25,51 @@ import math
 import os
 import threading
 import typing
+import warnings
 from typing import (
-    cast,
+    IO,
     Dict,
     Hashable,
-    IO,
     Iterable,
     Iterator,
     List,
     Literal,
     Optional,
-    overload,
     Sequence,
     Tuple,
     TypeVar,
     Union,
+    cast,
+    overload,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
-from google.cloud import bigquery_storage_v1
 import google.cloud.bigquery
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.table
-from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
 import pyarrow as pa
+from google.cloud import bigquery_storage_v1
+from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 
 import bigframes._tools
 import bigframes._tools.strings
+import bigframes.core as core
+import bigframes.core.blocks as blocks
+import bigframes.core.events
+import bigframes.core.schema as schemata
+import bigframes.dtypes
+import bigframes.exceptions as bfe
+import bigframes.formatting_helpers as formatting_helpers
+import bigframes.session._io.bigquery as bf_io_bigquery
+import bigframes.session._io.bigquery.read_gbq_query as bf_read_gbq_query
+import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
+import bigframes.session.iceberg
+import bigframes.session.metrics
+import bigframes.session.temporary_storage
+import bigframes.session.time as session_time
 from bigframes.core import (
     bq_data,
     guid,
@@ -65,21 +79,7 @@ from bigframes.core import (
     ordering,
     utils,
 )
-import bigframes.core as core
-import bigframes.core.blocks as blocks
-import bigframes.core.events
-import bigframes.core.schema as schemata
-import bigframes.dtypes
-import bigframes.exceptions as bfe
-import bigframes.formatting_helpers as formatting_helpers
 from bigframes.session import dry_runs
-import bigframes.session._io.bigquery as bf_io_bigquery
-import bigframes.session._io.bigquery.read_gbq_query as bf_read_gbq_query
-import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
-import bigframes.session.iceberg
-import bigframes.session.metrics
-import bigframes.session.temporary_storage
-import bigframes.session.time as session_time
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
@@ -626,8 +626,7 @@ class GbqDataLoader:
         n_rows: Optional[int] = None,
         index_col_in_columns: bool = False,
         publish_execution: bool = True,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_table(
@@ -650,8 +649,7 @@ class GbqDataLoader:
         n_rows: Optional[int] = None,
         index_col_in_columns: bool = False,
         publish_execution: bool = True,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_table(
         self,
@@ -1135,8 +1133,7 @@ class GbqDataLoader:
         dry_run: Literal[False] = ...,
         force_total_order: Optional[bool] = ...,
         allow_large_results: bool,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_query(
@@ -1152,8 +1149,7 @@ class GbqDataLoader:
         dry_run: Literal[True] = ...,
         force_total_order: Optional[bool] = ...,
         allow_large_results: bool,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_query(
         self,

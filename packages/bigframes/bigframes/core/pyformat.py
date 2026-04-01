@@ -26,10 +26,10 @@ from typing import Any, Optional, Union
 import google.cloud.bigquery
 import pandas
 
-from bigframes.core import utils
 import bigframes.core.local_data
-from bigframes.core.tools import bigquery_schema
 import bigframes.session
+from bigframes.core import utils
+from bigframes.core.tools import bigquery_schema
 
 _BQ_TABLE_TYPES = Union[
     google.cloud.bigquery.Table,

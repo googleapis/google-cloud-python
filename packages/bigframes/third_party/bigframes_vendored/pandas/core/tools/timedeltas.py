@@ -2,8 +2,8 @@
 
 import typing
 
-from bigframes_vendored import constants
 import pandas as pd
+from bigframes_vendored import constants
 
 from bigframes import series
 

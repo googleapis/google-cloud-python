@@ -17,6 +17,7 @@ import dataclasses
 import itertools
 from typing import Optional, Sequence, Union
 
+import bigframes.core.rewrite
 from bigframes.core import (
     agg_expressions,
     expression,
@@ -26,7 +27,6 @@ from bigframes.core import (
     ordering,
     sql_nodes,
 )
-import bigframes.core.rewrite
 
 
 def _limit(select: sql_nodes.SqlSelectNode, limit: int) -> sql_nodes.SqlSelectNode:
@@ -291,7 +291,8 @@ def _extract_ctes_to_with_expr(
         root.top_down(lambda x: mapping.get(x, x)),
         cte_names,
         tuple(
-            cte_node.child.top_down(lambda x: mapping.get(x, x)) for cte_node in topological_ctes  # type: ignore
+            cte_node.child.top_down(lambda x: mapping.get(x, x))
+            for cte_node in topological_ctes  # type: ignore
         ),
     )
 

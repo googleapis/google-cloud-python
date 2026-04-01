@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import bigframes_vendored.ibis
+import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.deferred import Deferred
 from bigframes_vendored.ibis.common.egraph import DisjointSet
@@ -15,13 +16,12 @@ from bigframes_vendored.ibis.common.exceptions import (
     InputTypeError,
     IntegrityError,
 )
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.rewrites import flatten_predicates, peel_join_field
 from bigframes_vendored.ibis.expr.types.generic import Value
 from bigframes_vendored.ibis.expr.types.relations import (
-    bind,
     DerefMap,
     Table,
+    bind,
     unwrap_aliases,
 )
 from public import public

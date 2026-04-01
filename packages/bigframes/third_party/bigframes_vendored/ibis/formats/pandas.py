@@ -4,16 +4,19 @@ from __future__ import annotations
 
 import contextlib
 import datetime
-from importlib.util import find_spec as _find_spec
-from functools import partial
-from typing import TYPE_CHECKING
 import warnings
+from functools import partial
+from importlib.util import find_spec as _find_spec
+from typing import TYPE_CHECKING
 
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.schema as sch
+import numpy as np
+import pandas as pd
+import pandas.api.types as pdt
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.numeric import normalize_decimal
 from bigframes_vendored.ibis.common.temporal import normalize_timezone
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.schema as sch
 from bigframes_vendored.ibis.formats import DataMapper, SchemaMapper, TableProxy
 from bigframes_vendored.ibis.formats.numpy import NumpyType
 from bigframes_vendored.ibis.formats.pyarrow import (
@@ -21,9 +24,6 @@ from bigframes_vendored.ibis.formats.pyarrow import (
     PyArrowSchema,
     PyArrowType,
 )
-import numpy as np
-import pandas as pd
-import pandas.api.types as pdt
 
 if TYPE_CHECKING:
     import polars as pl
@@ -179,13 +179,9 @@ class PandasData(DataMapper):
             return gpd.GeoSeries(s)
         return gpd.GeoSeries.from_wkb(s)
 
-    convert_Point = (
-        convert_LineString
-    ) = (
-        convert_Polygon
-    ) = (
-        convert_MultiLineString
-    ) = convert_MultiPoint = convert_MultiPolygon = convert_GeoSpatial
+    convert_Point = convert_LineString = convert_Polygon = convert_MultiLineString = (
+        convert_MultiPoint
+    ) = convert_MultiPolygon = convert_GeoSpatial
 
     @classmethod
     def convert_default(cls, s, dtype, pandas_type):
@@ -424,8 +420,8 @@ class PandasDataFrameProxy(TableProxy[pd.DataFrame]):
         return pa.Table.from_pandas(self.obj, schema=pyarrow_schema)
 
     def to_polars(self, schema: sch.Schema) -> pl.DataFrame:
-        from bigframes_vendored.ibis.formats.polars import PolarsSchema
         import polars as pl
+        from bigframes_vendored.ibis.formats.polars import PolarsSchema
 
         pl_schema = PolarsSchema.from_ibis(schema)
         return pl.from_pandas(self.obj, schema_overrides=pl_schema)

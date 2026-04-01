@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from datetime import date, datetime
-from typing import Optional, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
@@ -60,10 +60,17 @@ def to_datetime(
 
     arg = bigframes.series.Series(arg, session=session)
 
-    if format and unit and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
+    if (
+        format
+        and unit
+        and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE)
+    ):  # type: ignore
         raise ValueError("cannot specify both format and unit")
 
-    if unit and arg.dtype not in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
+    if unit and arg.dtype not in (
+        bigframes.dtypes.INT_DTYPE,
+        bigframes.dtypes.FLOAT_DTYPE,
+    ):  # type: ignore
         raise NotImplementedError(
             f"Unit parameter is not supported for non-numerical input types. {constants.FEEDBACK_LINK}"
         )

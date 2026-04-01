@@ -15,21 +15,20 @@
 from __future__ import annotations
 
 import datetime
-from typing import Literal, Mapping, Sequence, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Literal, Mapping, Sequence, Union
 
 import bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
 import numpy
 import pandas
 
+import bigframes.core.blocks as blocks
+import bigframes.operations.aggregations as agg_ops
 from bigframes import dtypes
 from bigframes._tools import docs
-from bigframes.core import agg_expressions
+from bigframes.core import agg_expressions, ordering, utils, window_spec
 from bigframes.core import expression as ex
-from bigframes.core import ordering, utils, window_spec
-import bigframes.core.blocks as blocks
 from bigframes.core.logging import log_adapter
 from bigframes.core.window import ordering as window_ordering
-import bigframes.operations.aggregations as agg_ops
 
 if TYPE_CHECKING:
     import bigframes.dataframe as df

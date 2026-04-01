@@ -23,9 +23,8 @@ from typing import Any, Dict, Iterable, List, Literal, Mapping, Optional, Tuple,
 
 import pandas as pd
 
-from bigframes import clients, dataframe, dtypes
+from bigframes import clients, dataframe, dtypes, series, session
 from bigframes import pandas as bpd
-from bigframes import series, session
 from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
 from bigframes.core.compile.sqlglot import sql as sg_sql

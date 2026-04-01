@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 
 def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
     """Use only for testing paths to ensure ibis inferred schema does not diverge from bigframes inferred schema."""
-    from bigframes.core.compile.ibis_compiler import ibis_compiler
     import bigframes.core.rewrite
     import bigframes.core.schema
+    from bigframes.core.compile.ibis_compiler import ibis_compiler
 
     node = ibis_compiler._replace_unsupported_ops(node)
     node = bigframes.core.rewrite.bake_order(node)

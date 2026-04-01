@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import bigframes_vendored.sqlglot.expressions as sge
 
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core import agg_expressions, window_spec
 from bigframes.core.compile.sqlglot.aggregations import (
     binary_compiler,
@@ -22,7 +23,6 @@ from bigframes.core.compile.sqlglot.aggregations import (
     ordered_unary_compiler,
     unary_compiler,
 )
-import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions import typed_expr
 
 

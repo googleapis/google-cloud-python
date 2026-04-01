@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import json
 import logging
 import typing as t
+from dataclasses import dataclass, field
 
-from bigframes_vendored.sqlglot import exp, maybe_parse, Schema
+from bigframes_vendored.sqlglot import Schema, exp, maybe_parse
 from bigframes_vendored.sqlglot.errors import SqlglotError
 from bigframes_vendored.sqlglot.optimizer import (
+    Scope,
     build_scope,
     find_all_in_scope,
     normalize_identifiers,
     qualify,
-    Scope,
 )
 from bigframes_vendored.sqlglot.optimizer.scope import ScopeType
 

@@ -19,13 +19,13 @@ import inspect
 import io
 import os
 import textwrap
-from typing import Any, cast, get_args, get_origin, Optional, Sequence, Type
 import warnings
+from typing import Any, Optional, Sequence, Type, cast, get_args, get_origin
 
 import cloudpickle
-from google.cloud import bigquery
 import google_crc32c
 import pandas as pd
+from google.cloud import bigquery
 
 import bigframes.dtypes
 import bigframes.exceptions as bfe
@@ -282,8 +282,11 @@ class UdfSignature:
         return_type: DirectScalarType | VirtualListTypeV1 = (
             DirectScalarType.from_sdk_type(bq_return_type)
         )
-        if python_output_type := bigframes.functions._utils.get_python_output_type_from_bigframes_metadata(
-            routine.description
+        if (
+            python_output_type
+            := bigframes.functions._utils.get_python_output_type_from_bigframes_metadata(
+                routine.description
+            )
         ):
             if bq_return_type.type_kind != "STRING":
                 raise bf_formatting.create_exception_with_feedback_link(
@@ -297,8 +300,7 @@ class UdfSignature:
             else:
                 raise bf_formatting.create_exception_with_feedback_link(
                     TypeError,
-                    "Currently only list of "
-                    "a type is supported as python output type.",
+                    "Currently only list of a type is supported as python output type.",
                 )
 
         ## Handle input types

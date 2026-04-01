@@ -1,7 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/common.py
 from __future__ import annotations
 
-from typing import Callable, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from bigframes_vendored.pandas.core.dtypes.inference import iterable_not_string
 

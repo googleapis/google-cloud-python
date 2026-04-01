@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Literal, Optional
 import warnings
+from typing import Literal, Optional
 
 import bigframes
 import bigframes.exceptions as bfe

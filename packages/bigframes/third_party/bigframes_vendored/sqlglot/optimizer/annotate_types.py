@@ -16,7 +16,7 @@ from bigframes_vendored.sqlglot.helper import (
     seq_get,
 )
 from bigframes_vendored.sqlglot.optimizer.scope import Scope, traverse_scope
-from bigframes_vendored.sqlglot.schema import ensure_schema, MappingSchema, Schema
+from bigframes_vendored.sqlglot.schema import MappingSchema, Schema, ensure_schema
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot._typing import B, E
@@ -830,12 +830,10 @@ class TypeAnnotator(metaclass=_TypeAnnotator):
         return expression
 
     @t.overload
-    def _annotate_map(self, expression: exp.Map) -> exp.Map:
-        ...
+    def _annotate_map(self, expression: exp.Map) -> exp.Map: ...
 
     @t.overload
-    def _annotate_map(self, expression: exp.VarMap) -> exp.VarMap:
-        ...
+    def _annotate_map(self, expression: exp.VarMap) -> exp.VarMap: ...
 
     def _annotate_map(self, expression):
         keys = expression.args.get("keys")

@@ -4,26 +4,26 @@ from __future__ import annotations
 
 import abc
 from functools import partial
-from typing import Any, ClassVar, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.backends import BaseBackend
-from bigframes_vendored.ibis.backends.sql.compilers.base import STAR
 import bigframes_vendored.ibis.common.exceptions as exc
 import bigframes_vendored.ibis.expr.operations as ops
 import bigframes_vendored.ibis.expr.schema as sch
 import bigframes_vendored.ibis.expr.types as ir
 import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.backends import BaseBackend
+from bigframes_vendored.ibis.backends.sql.compilers.base import STAR
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
 
-    from bigframes_vendored.ibis.backends.sql.compilers.base import SQLGlotCompiler
-    from bigframes_vendored.ibis.expr.schema import SchemaLike
     import pandas as pd
     import pyarrow as pa
+    from bigframes_vendored.ibis.backends.sql.compilers.base import SQLGlotCompiler
+    from bigframes_vendored.ibis.expr.schema import SchemaLike
 
 
 class _DatabaseSchemaHandler:
@@ -89,8 +89,8 @@ class SQLBackend(BaseBackend, _DatabaseSchemaHandler):
         )
 
     def _fetch_from_cursor(self, cursor, schema: sch.Schema) -> pd.DataFrame:
-        from bigframes_vendored.ibis.formats.pandas import PandasData
         import pandas as pd
+        from bigframes_vendored.ibis.formats.pandas import PandasData
 
         try:
             df = pd.DataFrame.from_records(

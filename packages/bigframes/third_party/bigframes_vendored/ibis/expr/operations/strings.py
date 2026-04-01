@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from typing import Optional
 
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.operations.core import Unary, Value
-import bigframes_vendored.ibis.expr.rules as rlz
 from public import public
 
 

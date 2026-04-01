@@ -16,20 +16,20 @@
 
 from __future__ import annotations
 
-from typing import cast, Iterable, Optional, Tuple
+from typing import Iterable, Optional, Tuple, cast
 
-from google.cloud import bigquery
 import google.cloud.bigquery.table
 import pandas
+from google.cloud import bigquery
 
-from bigframes import dataframe
-from bigframes.core import local_data, pyarrow_utils
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.guid
 import bigframes.core.schema as schemata
 import bigframes.enums
 import bigframes.session
+from bigframes import dataframe
+from bigframes.core import local_data, pyarrow_utils
 
 
 def should_return_query_results(query_job: bigquery.QueryJob) -> bool:

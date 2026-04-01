@@ -252,9 +252,9 @@ def legacy_join_as_projection(
             # Most likely because join keys didn't match
             return None
         merged = left_side.merge(right_side, how, join_keys, mappings)
-        assert (
-            merged is not None
-        ), "Couldn't merge nodes. This shouldn't happen. Please share full stacktrace with the BigQuery DataFrames team at bigframes-feedback@google.com."
+        assert merged is not None, (
+            "Couldn't merge nodes. This shouldn't happen. Please share full stacktrace with the BigQuery DataFrames team at bigframes-feedback@google.com."
+        )
         return merged.expand()
     else:
         return None

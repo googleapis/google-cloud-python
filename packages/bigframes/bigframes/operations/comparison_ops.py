@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
+from bigframes.operations import base_ops
 
 EqOp = base_ops.create_binary_op(name="eq", type_signature=op_typing.COMPARISON)
 eq_op = EqOp()

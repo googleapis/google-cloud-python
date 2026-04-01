@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Set, TYPE_CHECKING
+from typing import TYPE_CHECKING, Set
 
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids

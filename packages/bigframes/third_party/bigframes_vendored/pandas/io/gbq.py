@@ -1,12 +1,12 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/io/gbq.py
-""" Google BigQuery support """
+"""Google BigQuery support"""
 
 from __future__ import annotations
 
 from typing import Any, Dict, Iterable, Literal, Optional, Tuple, Union
 
-from bigframes import constants
 import bigframes.enums
+from bigframes import constants
 
 FilterOps = Literal["in", "not in", "<", "<=", "==", "!=", ">=", ">", "LIKE"]
 FilterType = Tuple[str, FilterOps, Any]

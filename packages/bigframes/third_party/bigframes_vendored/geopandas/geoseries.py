@@ -497,7 +497,9 @@ class GeoSeries:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def simplify(self, tolerance: float, preserve_topology: bool = True) -> bigframes.series.Series:  # type: ignore
+    def simplify(
+        self, tolerance: float, preserve_topology: bool = True
+    ) -> bigframes.series.Series:  # type: ignore
         """[Not Implemented] Use ``bigframes.bigquery.st_simplify(series, tolerance_meters)``,
         instead to set the tolerance in meters.
 

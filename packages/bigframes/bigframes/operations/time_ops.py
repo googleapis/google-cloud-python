@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bigframes.operations.type as op_typing
 from bigframes import dtypes
 from bigframes.operations import base_ops
-import bigframes.operations.type as op_typing
 
 HourOp = base_ops.create_unary_op(
     name="hour",

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from packaging import version
 import pandas as pd
 import pandas.testing
 import pytest
+from packaging import version
 
 
 @pytest.mark.parametrize("level", [None, 0, 1, "level0", "level1"])

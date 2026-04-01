@@ -18,10 +18,10 @@ import inspect
 import sys
 
 import bigframes.core.global_session as global_session
-from bigframes.core.logging import log_adapter
-from bigframes.pandas.io.api import _set_default_session_location_if_possible
 import bigframes.session
 import bigframes.streaming.dataframe as streaming_dataframe
+from bigframes.core.logging import log_adapter
+from bigframes.pandas.io.api import _set_default_session_location_if_possible
 
 
 def read_gbq_table(table: str) -> streaming_dataframe.StreamingDataFrame:

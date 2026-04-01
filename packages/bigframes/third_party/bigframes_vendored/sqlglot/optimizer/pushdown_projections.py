@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 import typing as t
+from collections import defaultdict
 
 from bigframes_vendored.sqlglot import alias, exp
 from bigframes_vendored.sqlglot.errors import OptimizeError

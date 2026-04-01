@@ -19,14 +19,14 @@ import typing
 import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 
-from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+import bigframes.dtypes as dtypes
+from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.string_ops import (
     string_index,
     string_slice,
 )
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
-import bigframes.dtypes as dtypes
 
 register_unary_op = expression_compiler.expression_compiler.register_unary_op
 register_nary_op = expression_compiler.expression_compiler.register_nary_op

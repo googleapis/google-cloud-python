@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud import bigquery
 import pandas as pd
 import pytest
+from google.cloud import bigquery
 
+import bigframes.pandas as bpd
 from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core import expression as ex
 from bigframes.functions import udf_def
-import bigframes.pandas as bpd
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")

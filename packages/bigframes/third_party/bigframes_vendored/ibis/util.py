@@ -15,14 +15,14 @@ import os
 import sys
 import textwrap
 import types
-from types import ModuleType
-from typing import Any, Generic, TYPE_CHECKING, TypeVar
 import uuid
-from uuid import uuid4
 import warnings
+from types import ModuleType
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
+from uuid import uuid4
 
-from bigframes_vendored.ibis.common.typing import Coercible
 import toolz
+from bigframes_vendored.ibis.common.typing import Coercible
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator, Sequence

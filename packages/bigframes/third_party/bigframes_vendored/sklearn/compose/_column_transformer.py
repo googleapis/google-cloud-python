@@ -3,7 +3,6 @@
 #         Andreas Mueller
 # License: BSD
 
-
 from abc import ABCMeta
 
 from bigframes_vendored.sklearn.base import BaseEstimator

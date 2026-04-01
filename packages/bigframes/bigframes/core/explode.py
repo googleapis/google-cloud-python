@@ -14,7 +14,7 @@
 
 """Utility functions for implementing 'explode' functions."""
 
-from typing import cast, Sequence, Union
+from typing import Sequence, Union, cast
 
 import bigframes.core.blocks as blocks
 import bigframes.core.utils as utils

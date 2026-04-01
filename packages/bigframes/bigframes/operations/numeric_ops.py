@@ -15,9 +15,9 @@
 import dataclasses
 import typing
 
+import bigframes.operations.type as op_typing
 from bigframes import dtypes
 from bigframes.operations import base_ops
-import bigframes.operations.type as op_typing
 
 SinOp = base_ops.create_unary_op(
     name="sin", type_signature=op_typing.UNARY_REAL_NUMERIC

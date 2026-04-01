@@ -7,11 +7,11 @@ from __future__ import annotations
 import operator
 from typing import Optional
 
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.annotations import attribute
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.operations.core import Binary, Unary, Value
-import bigframes_vendored.ibis.expr.rules as rlz
 from public import public
 
 Integer = Value[dt.Integer]

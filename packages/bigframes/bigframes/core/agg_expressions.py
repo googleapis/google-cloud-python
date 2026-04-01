@@ -21,10 +21,10 @@ import itertools
 import typing
 from typing import Callable, Hashable, Mapping, Tuple, TypeVar
 
-from bigframes import dtypes
-from bigframes.core import expression, window_spec
 import bigframes.core.identifiers as ids
 import bigframes.operations.aggregations as agg_ops
+from bigframes import dtypes
+from bigframes.core import expression, window_spec
 
 TExpression = TypeVar("TExpression", bound="Aggregation")
 
@@ -60,8 +60,7 @@ class Aggregation(expression.Expression):
     @abc.abstractmethod
     def inputs(
         self,
-    ) -> typing.Tuple[expression.Expression, ...]:
-        ...
+    ) -> typing.Tuple[expression.Expression, ...]: ...
 
     @property
     def children(self) -> Tuple[expression.Expression, ...]:
@@ -82,8 +81,7 @@ class Aggregation(expression.Expression):
         return False
 
     @abc.abstractmethod
-    def replace_args(self: TExpression, *arg) -> TExpression:
-        ...
+    def replace_args(self: TExpression, *arg) -> TExpression: ...
 
     def transform_children(
         self: TExpression, t: Callable[[expression.Expression], expression.Expression]

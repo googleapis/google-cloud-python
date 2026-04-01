@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.annotations import annotated
-from bigframes_vendored.ibis.common.temporal import IntervalUnit
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.annotations import annotated
+from bigframes_vendored.ibis.common.temporal import IntervalUnit
 from bigframes_vendored.ibis.expr.types.core import _binop
 from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value
 from public import public

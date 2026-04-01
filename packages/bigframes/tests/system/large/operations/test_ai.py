@@ -152,12 +152,15 @@ def test_filter_single_column_reference(session, gemini_flash_model):
 def test_filter_invalid_instruction_raise_error(instruction, gemini_flash_model):
     df = dataframe.DataFrame({"id": [1, 2], "city": ["Seattle", "Berlin"]})
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df.ai.filter(instruction, gemini_flash_model)
 
 
@@ -166,12 +169,15 @@ def test_filter_invalid_model_raise_error():
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(TypeError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(TypeError),
+    ):
         df.ai.filter("{city} is the capital of {country}", None)
 
 
@@ -308,12 +314,15 @@ def test_map_invalid_instruction_raise_error(instruction, gemini_flash_model):
         }
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df.ai.map(instruction, gemini_flash_model, output_schema={"food": "string"})
 
 
@@ -325,12 +334,15 @@ def test_map_invalid_model_raise_error():
         },
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(TypeError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(TypeError),
+    ):
         df.ai.map(
             "What is the food made from {ingredient_1} and {ingredient_2}? One word only.",
             None,
@@ -522,12 +534,15 @@ def test_join_invalid_instruction_raise_error(
         }
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError, match=error_pattern):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError, match=error_pattern),
+    ):
         df1.ai.join(df2, instruction, gemini_flash_model)
 
 
@@ -535,12 +550,15 @@ def test_join_invalid_model_raise_error():
     cities = dataframe.DataFrame({"city": ["Seattle", "Berlin"]})
     countries = dataframe.DataFrame({"country": ["USA", "UK", "Germany"]})
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(TypeError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(TypeError),
+    ):
         cities.ai.join(countries, "{city} is in {country}", None)
 
 
@@ -625,12 +643,15 @@ def test_search_invalid_column_raises_error(session, text_embedding_generator):
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df.ai.search("whatever", "monkey", top_k=2, model=text_embedding_generator)
 
 
@@ -640,12 +661,15 @@ def test_search_invalid_model_raises_error(session):
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(TypeError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(TypeError),
+    ):
         df.ai.search("creatures", "monkey", top_k=2, model=None)
 
 
@@ -655,12 +679,15 @@ def test_search_invalid_top_k_raises_error(session, text_embedding_generator):
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df.ai.search("creatures", "monkey", top_k=0, model=text_embedding_generator)
 
 
@@ -768,12 +795,15 @@ def test_sim_join_invalid_column_raises_error(
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df1.ai.sim_join(
             df2, left_on=left_on, right_on=right_on, model=text_embedding_generator
         )
@@ -789,12 +819,15 @@ def test_sim_join_invalid_model_raises_error(session):
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(TypeError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(TypeError),
+    ):
         df1.ai.sim_join(df2, left_on="creatures", right_on="creatures", model=None)
 
 
@@ -808,12 +841,15 @@ def test_sim_join_invalid_top_k_raises_error(session, text_embedding_generator):
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df1.ai.sim_join(
             df2,
             left_on="creatures",
@@ -833,12 +869,15 @@ def test_sim_join_data_too_large_raises_error(session, text_embedding_generator)
         session=session,
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            10,
+        ),
+        pytest.raises(ValueError),
+    ):
         df1.ai.sim_join(
             df2,
             left_on="creatures",
@@ -882,14 +921,17 @@ def test_confirm_operation__threshold_is_none_do_not_confirm(mock_input):
 def test_confirm_operation__threshold_autofail_do_not_confirm(mock_input):
     df = dataframe.DataFrame({})
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        1,
-        "compute.ai_ops_threshold_autofail",
-        True,
-    ), pytest.raises(exceptions.OperationAbortedError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            1,
+            "compute.ai_ops_threshold_autofail",
+            True,
+        ),
+        pytest.raises(exceptions.OperationAbortedError),
+    ):
         df.ai._confirm_operation(100)
 
     mock_input.assert_not_called()
@@ -909,10 +951,13 @@ def test_confirm_operation__above_threshold_confirm(reply, expectation, monkeypa
     monkeypatch.setattr("builtins.input", lambda: reply)
     df = dataframe.DataFrame({})
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        3,
-    ), expectation as e:
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            3,
+        ),
+        expectation as e,
+    ):
         assert df.ai._confirm_operation(4) == e

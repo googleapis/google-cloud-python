@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from enum import auto
 import typing as t
+from enum import auto
 
 from bigframes_vendored.sqlglot.helper import AutoName
 

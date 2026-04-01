@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Mapping, Optional
 import weakref
+from typing import Mapping, Optional
 
 from bigframes.core import bq_data, local_data, nodes
 

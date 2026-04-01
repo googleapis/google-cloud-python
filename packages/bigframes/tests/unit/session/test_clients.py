@@ -15,8 +15,8 @@
 import os
 import pathlib
 import tempfile
-from typing import cast, Optional
 import unittest.mock as mock
+from typing import Optional, cast
 
 import google.auth.credentials
 import google.cloud.bigquery

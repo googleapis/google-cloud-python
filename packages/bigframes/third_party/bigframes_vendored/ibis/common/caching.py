@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from collections import namedtuple
 import functools
 import sys
-from typing import Any, TYPE_CHECKING
+from collections import namedtuple
+from typing import TYPE_CHECKING, Any
 from weakref import finalize, ref
 
 if TYPE_CHECKING:

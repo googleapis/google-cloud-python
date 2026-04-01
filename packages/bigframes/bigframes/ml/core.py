@@ -19,16 +19,16 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import typing
-from typing import Callable, Iterable, Mapping, Optional, Union
 import uuid
+from typing import Callable, Iterable, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
 import bigframes.constants as constants
 import bigframes.formatting_helpers as formatting_helpers
-from bigframes.ml import sql as ml_sql
 import bigframes.pandas as bpd
 import bigframes.session
+from bigframes.ml import sql as ml_sql
 
 
 class BaseBqml:
@@ -509,15 +509,15 @@ class BqmlModelFactory:
         transforms: Optional[Iterable[str]] = None,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
-        assert (
-            X_train.columns.size == 1
-        ), "Time series timestamp input must only contain 1 column."
-        assert (
-            y_train.columns.size == 1
-        ), "Time stamp data input must only contain 1 column."
-        assert id_col is None or (
-            id_col is not None and id_col.columns.size == 1
-        ), "Time series id input is either None or must only contain 1 column."
+        assert X_train.columns.size == 1, (
+            "Time series timestamp input must only contain 1 column."
+        )
+        assert y_train.columns.size == 1, (
+            "Time stamp data input must only contain 1 column."
+        )
+        assert id_col is None or (id_col is not None and id_col.columns.size == 1), (
+            "Time series id input is either None or must only contain 1 column."
+        )
 
         options = dict(options)
         # Cache dataframes to make sure base table is not a snapshot

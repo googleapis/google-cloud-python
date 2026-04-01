@@ -23,10 +23,10 @@ import bigframes_vendored.sklearn.ensemble._forest
 import bigframes_vendored.xgboost.sklearn
 from google.cloud import bigquery
 
-from bigframes.core.logging import log_adapter
 import bigframes.dataframe
-from bigframes.ml import base, core, globals, utils
 import bigframes.session
+from bigframes.core.logging import log_adapter
+from bigframes.ml import base, core, globals, utils
 
 _BQML_PARAMS_MAPPING = {
     "booster": "boosterType",

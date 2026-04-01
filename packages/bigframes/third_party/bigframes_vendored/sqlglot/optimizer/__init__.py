@@ -2,10 +2,11 @@
 
 # ruff: noqa: F401
 
+from bigframes_vendored.sqlglot.optimizer.optimizer import RULES as RULES  # noqa: F401
 from bigframes_vendored.sqlglot.optimizer.optimizer import (  # noqa: F401
     optimize as optimize,
 )
-from bigframes_vendored.sqlglot.optimizer.optimizer import RULES as RULES  # noqa: F401
+from bigframes_vendored.sqlglot.optimizer.scope import Scope as Scope  # noqa: F401
 from bigframes_vendored.sqlglot.optimizer.scope import (  # noqa: F401
     build_scope as build_scope,
 )
@@ -15,7 +16,6 @@ from bigframes_vendored.sqlglot.optimizer.scope import (  # noqa: F401
 from bigframes_vendored.sqlglot.optimizer.scope import (  # noqa: F401
     find_in_scope as find_in_scope,
 )
-from bigframes_vendored.sqlglot.optimizer.scope import Scope as Scope  # noqa: F401
 from bigframes_vendored.sqlglot.optimizer.scope import (  # noqa: F401
     traverse_scope as traverse_scope,
 )

@@ -2,16 +2,17 @@
 """
 Module for scope operations
 """
+
 from __future__ import annotations
 
-from collections import ChainMap
 import datetime
 import inspect
-from io import StringIO
 import itertools
 import pprint
 import struct
 import sys
+from collections import ChainMap
+from io import StringIO
 from typing import TypeVar
 
 import numpy as np

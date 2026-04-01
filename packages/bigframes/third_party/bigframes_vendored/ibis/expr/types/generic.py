@@ -3,21 +3,21 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis.common.deferred import _, deferrable, Deferred
 import bigframes_vendored.ibis.common.exceptions as com
-from bigframes_vendored.ibis.common.grounds import Singleton
 import bigframes_vendored.ibis.expr.builders as bl
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.common.deferred import Deferred, _, deferrable
+from bigframes_vendored.ibis.common.grounds import Singleton
 from bigframes_vendored.ibis.expr.rewrites import rewrite_window_input
 from bigframes_vendored.ibis.expr.types.core import (
+    Expr,
     _binop,
     _FixedTextJupyterMixin,
     _is_null_literal,
-    Expr,
 )
 from bigframes_vendored.ibis.expr.types.pretty import to_rich
 from bigframes_vendored.ibis.util import deprecated, warn_deprecated
@@ -26,11 +26,11 @@ from public import public
 if TYPE_CHECKING:
     import bigframes_vendored.ibis.expr.schema as sch
     import bigframes_vendored.ibis.expr.types as ir
-    from bigframes_vendored.ibis.formats.pyarrow import PyArrowData
     import pandas as pd
     import polars as pl
     import pyarrow as pa
     import rich.table
+    from bigframes_vendored.ibis.formats.pyarrow import PyArrowData
 
 
 @public
@@ -1411,9 +1411,9 @@ class Column(Value, _FixedTextJupyterMixin):
     ) -> pd.Series:
         from bigframes_vendored.ibis.formats.pandas import PandasData
 
-        assert (
-            len(df.columns) == 1
-        ), "more than one column when converting columnar result DataFrame to Series"
+        assert len(df.columns) == 1, (
+            "more than one column when converting columnar result DataFrame to Series"
+        )
         # in theory we could use df.iloc[:, 0], but there seems to be a bug in
         # older geopandas where df.iloc[:, 0] doesn't return the same kind of
         # object as df.loc[:, column_name] when df is a GeoDataFrame

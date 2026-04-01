@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime
 import hashlib
 import logging
 import math
@@ -20,6 +19,7 @@ import pathlib
 import textwrap
 import traceback
 import typing
+from datetime import datetime
 from typing import Dict, Generator, Optional
 
 import google.api_core.exceptions

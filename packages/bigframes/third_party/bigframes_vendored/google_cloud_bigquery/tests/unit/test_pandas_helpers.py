@@ -16,11 +16,11 @@
 import functools
 import warnings
 
-from google.cloud.bigquery import schema
 import pyarrow
 import pyarrow.parquet
 import pyarrow.types
 import pytest
+from google.cloud.bigquery import schema
 
 
 @pytest.fixture

@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import re
-from unittest import mock
 import warnings
+from unittest import mock
 
 import google.auth.credentials
 import pytest

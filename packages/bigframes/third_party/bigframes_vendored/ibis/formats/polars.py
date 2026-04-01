@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import bigframes_vendored.ibis.expr.datatypes as dt
+import polars as pl
 from bigframes_vendored.ibis.expr.schema import Schema
 from bigframes_vendored.ibis.formats import (
     DataMapper,
@@ -12,7 +13,6 @@ from bigframes_vendored.ibis.formats import (
     TableProxy,
     TypeMapper,
 )
-import polars as pl
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

@@ -17,15 +17,15 @@ from __future__ import annotations
 import abc
 import dataclasses
 import typing
-from typing import Callable, ClassVar, Iterable, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, ClassVar, Iterable, Optional
 
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from bigframes.core import agg_expressions
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as signatures
+from bigframes.core import agg_expressions
 
 if TYPE_CHECKING:
     from bigframes.core import expression
@@ -65,8 +65,9 @@ class WindowOp:
         return False
 
     @abc.abstractmethod
-    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        ...
+    def output_type(
+        self, *input_types: dtypes.ExpressionType
+    ) -> dtypes.ExpressionType: ...
 
     @property
     def can_be_windowized(self):
@@ -97,13 +98,11 @@ class AggregateOp(WindowOp):
 
     @property
     @abc.abstractmethod
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
     @property
     @abc.abstractmethod
-    def arguments(self) -> int:
-        ...
+    def arguments(self) -> int: ...
 
     @property
     def order_independent(self):

@@ -26,11 +26,11 @@ from typing import (
 )
 
 import bigframes_vendored.constants as constants
-from google.cloud import bigquery
 import pandas as pd
+from google.cloud import bigquery
 
-from bigframes.core import convert, guid
 import bigframes.pandas as bpd
+from bigframes.core import convert, guid
 from bigframes.session import Session
 
 # Internal type alias
