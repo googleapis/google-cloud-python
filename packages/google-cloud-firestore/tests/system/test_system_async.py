@@ -164,70 +164,78 @@ async def cleanup():
         await operation()
 
 
-async def verify_pipeline(query):
+@pytest.fixture
+def verify_pipeline(subtests):
     """
-    This function ensures a pipeline produces the same
-    results as the query it is derived from
+    This fixture provide a subtest function which
+    ensures a pipeline produces the same results as the query it is derived
+    from
 
     It can be attached to existing query tests to check both
     modalities at the same time
 
     Pipelines are only supported on enterprise dbs. Skip other environments
     """
-    from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
-    client = query._client
-    if FIRESTORE_EMULATOR:
-        print("skip pipeline verification on emulator")
-        return
-    if client._database != FIRESTORE_ENTERPRISE_DB:
-        print("pipelines only supports enterprise db")
-        return
+    async def _verifier(query):
+        from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
-    def _clean_results(results):
-        if isinstance(results, dict):
-            return {k: _clean_results(v) for k, v in results.items()}
-        elif isinstance(results, list):
-            return [_clean_results(r) for r in results]
-        elif isinstance(results, float) and math.isnan(results):
-            return "__NAN_VALUE__"
-        else:
-            return results
+        with subtests.test(msg="verify_pipeline"):
 
-    query_exception = None
-    query_results = None
-    try:
-        try:
-            if isinstance(query, BaseAggregationQuery):
-                # aggregation queries return a list of lists of aggregation results
-                query_results = _clean_results(
-                    list(
-                        itertools.chain.from_iterable(
-                            [[a._to_dict() for a in s] for s in await query.get()]
+            client = query._client
+            if FIRESTORE_EMULATOR:
+                pytest.skip("skip pipeline verification on emulator")
+            if client._database != FIRESTORE_ENTERPRISE_DB:
+                pytest.skip("pipelines only supports enterprise db")
+
+            def _clean_results(results):
+                if isinstance(results, dict):
+                    return {k: _clean_results(v) for k, v in results.items()}
+                elif isinstance(results, list):
+                    return [_clean_results(r) for r in results]
+                elif isinstance(results, float) and math.isnan(results):
+                    return "__NAN_VALUE__"
+                else:
+                    return results
+
+            query_exception = None
+            query_results = None
+            try:
+                try:
+                    if isinstance(query, BaseAggregationQuery):
+                        # aggregation queries return a list of lists of aggregation results
+                        query_results = _clean_results(
+                            list(
+                                itertools.chain.from_iterable(
+                                    [[a._to_dict() for a in s] for s in await query.get()]
+                                )
+                            )
                         )
+                    else:
+                        # other qureies return a simple list of results
+                        query_results = _clean_results(
+                            [s.to_dict() for s in await query.get()]
+                        )
+                except Exception as e:
+                    # if we expect the query to fail, capture the exception
+                    query_exception = e
+                pipeline = client.pipeline().create_from(query)
+                if query_exception:
+                    # ensure that the pipeline uses same error as query
+                    with pytest.raises(query_exception.__class__):
+                        await pipeline.execute()
+                else:
+                    # ensure results match query
+                    pipeline_results = _clean_results(
+                        [s.data() async for s in pipeline.stream()]
                     )
-                )
-            else:
-                # other qureies return a simple list of results
-                query_results = _clean_results([s.to_dict() for s in await query.get()])
-        except Exception as e:
-            # if we expect the query to fail, capture the exception
-            query_exception = e
-        pipeline = client.pipeline().create_from(query)
-        if query_exception:
-            # ensure that the pipeline uses same error as query
-            with pytest.raises(query_exception.__class__):
-                await pipeline.execute()
-        else:
-            # ensure results match query
-            pipeline_results = _clean_results(
-                [s.data() async for s in pipeline.stream()]
-            )
-            assert query_results == pipeline_results
-    except FailedPrecondition as e:
-        # if testing against a non-enterprise db, skip this check
-        if ENTERPRISE_MODE_ERROR not in e.message:
-            raise e
+                    assert query_results == pipeline_results
+            except FailedPrecondition as e:
+                # if testing against a non-enterprise db, skip this check
+                if ENTERPRISE_MODE_ERROR not in e.message:
+                    raise e
+
+    return _verifier
 
 
 @pytest.fixture(scope="module")
@@ -1274,7 +1282,7 @@ async def async_query(collection):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_legacy_where(query_docs, database):
+async def test_query_stream_legacy_where(query_docs, database, verify_pipeline):
     """Assert the legacy code still works and returns value, and shows UserWarning"""
     collection, stored, allowed_vals = query_docs
     with pytest.warns(
@@ -1291,7 +1299,7 @@ async def test_query_stream_legacy_where(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_eq_op(query_docs, database):
+async def test_query_stream_w_simple_field_eq_op(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("a", "==", 1))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -1303,7 +1311,7 @@ async def test_query_stream_w_simple_field_eq_op(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_array_contains_op(query_docs, database):
+async def test_query_stream_w_simple_field_array_contains_op(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("c", "array_contains", 1))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -1315,7 +1323,7 @@ async def test_query_stream_w_simple_field_array_contains_op(query_docs, databas
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_in_op(query_docs, database):
+async def test_query_stream_w_simple_field_in_op(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(filter=FieldFilter("a", "in", [1, num_vals + 100]))
@@ -1328,7 +1336,7 @@ async def test_query_stream_w_simple_field_in_op(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_array_contains_any_op(query_docs, database):
+async def test_query_stream_w_simple_field_array_contains_any_op(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(
@@ -1343,7 +1351,7 @@ async def test_query_stream_w_simple_field_array_contains_any_op(query_docs, dat
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_order_by(query_docs, database):
+async def test_query_stream_w_order_by(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     query = collection.order_by("b", direction=firestore.Query.DESCENDING)
     values = [(snapshot.id, snapshot.to_dict()) async for snapshot in query.stream()]
@@ -1358,7 +1366,7 @@ async def test_query_stream_w_order_by(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_field_path(query_docs, database):
+async def test_query_stream_w_field_path(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("stats.sum", ">", 4))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -1397,7 +1405,7 @@ async def test_query_stream_w_start_end_cursor(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_wo_results(query_docs, database):
+async def test_query_stream_wo_results(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(filter=FieldFilter("b", "==", num_vals + 100))
@@ -1424,7 +1432,7 @@ async def test_query_stream_w_projection(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_multiple_filters(query_docs, database):
+async def test_query_stream_w_multiple_filters(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("stats.product", ">", 5)).where(
         "stats.product", "<", 10
@@ -1445,7 +1453,7 @@ async def test_query_stream_w_multiple_filters(query_docs, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_offset(query_docs, database):
+async def test_query_stream_w_offset(query_docs, database, verify_pipeline):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     offset = 3
@@ -1466,7 +1474,7 @@ async def test_query_stream_w_offset(query_docs, database):
 )
 @pytest.mark.parametrize("method", ["stream", "get"])
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_or_get_w_no_explain_options(query_docs, database, method):
+async def test_query_stream_or_get_w_no_explain_options(query_docs, database, method, verify_pipeline):
     from google.cloud.firestore_v1.query_profile import QueryExplainError
 
     collection, _, allowed_vals = query_docs
@@ -1818,7 +1826,7 @@ async def test_query_with_order_dot_key(client, cleanup, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
-async def test_query_unary(client, cleanup, database):
+async def test_query_unary(client, cleanup, database, verify_pipeline):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_name)
     field_name = "foo"
@@ -1875,7 +1883,7 @@ async def test_query_unary(client, cleanup, database):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_collection_group_queries(client, cleanup, database):
+async def test_collection_group_queries(client, cleanup, database, verify_pipeline):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -1952,7 +1960,7 @@ async def test_collection_group_queries_startat_endat(client, cleanup, database)
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_collection_group_queries_filters(client, cleanup, database):
+async def test_collection_group_queries_filters(client, cleanup, database, verify_pipeline):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
