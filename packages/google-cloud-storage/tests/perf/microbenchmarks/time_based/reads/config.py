@@ -80,10 +80,10 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
             chunk_size_bytes = chunk_size_kib * 1024
             bucket_name = bucket_map[bucket_type]
 
-            num_files = num_processes * num_coros
+            num_files = num_processes
 
             # Create a descriptive name for the parameter set
-            name = f"{pattern}_{bucket_type}_{num_processes}p_{file_size_mib}MiB_{chunk_size_kib}KiB_{num_ranges_val}ranges"
+            name = f"{pattern}_{bucket_type}_{num_processes}p_{num_coros}c_{file_size_mib}MiB_{chunk_size_kib}KiB_{num_ranges_val}ranges"
 
             params[workload_name].append(
                 TimeBasedReadParameters(

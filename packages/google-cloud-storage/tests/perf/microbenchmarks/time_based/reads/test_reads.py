@@ -115,47 +115,53 @@ def _download_time_based_json(client, filename, params):
 
 
 async def _download_time_based_async(client, filename, params):
-    total_bytes_downloaded = 0
-
     mrd = AsyncMultiRangeDownloader(client, params.bucket_name, filename)
     await mrd.open()
 
-    offset = 0
-    is_warming_up = True
-    start_time = time.monotonic()
-    warmup_end_time = start_time + params.warmup_duration
-    test_end_time = warmup_end_time + params.duration
+    shared_lock = asyncio.Lock()
 
-    while time.monotonic() < test_end_time:
-        current_time = time.monotonic()
-        if is_warming_up and current_time >= warmup_end_time:
-            is_warming_up = False
-            total_bytes_downloaded = 0  # Reset counter after warmup
+    async def _worker_coro():
+        total_bytes_downloaded = 0
+        offset = 0
+        is_warming_up = True
+        start_time = time.monotonic()
+        warmup_end_time = start_time + params.warmup_duration
+        test_end_time = warmup_end_time + params.duration
 
-        ranges = []
-        if params.pattern == "rand":
-            for _ in range(params.num_ranges):
-                offset = random.randint(
-                    0, params.file_size_bytes - params.chunk_size_bytes
-                )
-                ranges.append((offset, params.chunk_size_bytes, BytesIO()))
-        else:  # seq
-            for _ in range(params.num_ranges):
-                ranges.append((offset, params.chunk_size_bytes, BytesIO()))
-                offset += params.chunk_size_bytes
-                if offset + params.chunk_size_bytes > params.file_size_bytes:
-                    offset = 0  # Reset offset if end of file is reached
+        while time.monotonic() < test_end_time:
+            current_time = time.monotonic()
+            if is_warming_up and current_time >= warmup_end_time:
+                is_warming_up = False
+                total_bytes_downloaded = 0  # Reset counter after warmup
 
-        await mrd.download_ranges(ranges)
+            ranges = []
+            if params.pattern == "rand":
+                for _ in range(params.num_ranges):
+                    offset = random.randint(
+                        0, params.file_size_bytes - params.chunk_size_bytes
+                    )
+                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+            else:  # seq
+                for _ in range(params.num_ranges):
+                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+                    offset += params.chunk_size_bytes
+                    if offset + params.chunk_size_bytes > params.file_size_bytes:
+                        offset = 0  # Reset offset if end of file is reached
 
-        bytes_in_buffers = sum(r[2].getbuffer().nbytes for r in ranges)
-        assert bytes_in_buffers == params.chunk_size_bytes * params.num_ranges
+            await mrd.download_ranges(ranges, lock=shared_lock)
 
-        if not is_warming_up:
-            total_bytes_downloaded += params.chunk_size_bytes * params.num_ranges
+            bytes_in_buffers = sum(r[2].getbuffer().nbytes for r in ranges)
+            assert bytes_in_buffers == params.chunk_size_bytes * params.num_ranges
+
+            if not is_warming_up:
+                total_bytes_downloaded += params.chunk_size_bytes * params.num_ranges
+        return total_bytes_downloaded
+
+    tasks = [asyncio.create_task(_worker_coro()) for _ in range(params.num_coros)]
+    results = await asyncio.gather(*tasks)
 
     await mrd.close()
-    return total_bytes_downloaded
+    return sum(results)
 
 
 def _download_files_worker(process_idx, filename, params, bucket_type):
