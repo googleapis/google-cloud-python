@@ -27,11 +27,10 @@ _LOGGER = logging.getLogger(__name__)
 _DEFAULT_TIMEOUT = 60.0  # seconds
 
 
-
 class _RecoveryRetransmit(Exception):
     """Internal exception to trigger retransmission after a state resync."""
-    pass
 
+    pass
 
 
 class ResumableUploadStatus:
@@ -223,7 +222,9 @@ class RequestsResumableUpload:
 
         try:
             response = retry(do_initiate)()
-            self._machine.process_initiate_response(response.status_code, response.headers)
+            self._machine.process_initiate_response(
+                response.status_code, response.headers
+            )
         except Exception as e:
             self._machine.process_initiate_error(e)
             raise
@@ -260,9 +261,7 @@ class RequestsResumableUpload:
                 transport, data, data_len
             )
             if need_recovery:
-                _LOGGER.info(
-                    "Transparent recovery triggered for chunk transmission."
-                )
+                _LOGGER.info("Transparent recovery triggered for chunk transmission.")
                 self._recover(transport)
                 # Raise to signal the outer Retry loop to resubmit
                 raise _RecoveryRetransmit()
@@ -391,9 +390,9 @@ class RequestsResumableUpload:
             return response
 
         retry_for_recovery = google.api_core.retry.Retry(
-                    predicate=self._get_retry_predicate(),
-                    deadline=self._check_deadline(),
-                )
+            predicate=self._get_retry_predicate(),
+            deadline=self._check_deadline(),
+        )
 
         try:
             response = retry_for_recovery(do_query)()
@@ -406,7 +405,7 @@ class RequestsResumableUpload:
 
         # Seek stream to correct position
         _LOGGER.info("Server reported %d bytes received. Seeking stream.", received)
-        
+
         if hasattr(self.stream, "seekable") and not self.stream.seekable():
             raise ValueError(
                 f"Stream is not seekable. Cannot recover upload to offset {received}."
