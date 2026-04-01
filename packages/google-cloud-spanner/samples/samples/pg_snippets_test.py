@@ -359,7 +359,14 @@ def test_delete_data_with_partitioned_dml(capsys, instance_id, sample_database):
 def test_update_with_batch_dml(capsys, instance_id, sample_database):
     snippets.update_with_batch_dml(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
-    assert "Executed 2 SQL statements using Batch DML" in out
+    assert "Executed 2 SQL statements using Batch DML." in out
+
+
+def test_dml_last_statement_option(capsys, instance_id, sample_database):
+    snippets.dml_last_statement_option(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) inserted." in out
+    assert "1 record(s) updated." in out
 
 
 @pytest.mark.dependency(name="create_table_with_datatypes")
