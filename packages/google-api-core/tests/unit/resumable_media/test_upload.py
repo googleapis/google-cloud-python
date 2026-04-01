@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+from google.api_core import exceptions
 from google.api_core.resumable_media import _common
 from google.api_core.resumable_media import _upload
 
@@ -35,7 +36,7 @@ class TestResumableUpload:
 
     def test_initiate_request(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
-        method, url, headers, body = upload.initiate_request(
+        method, url, headers, body = upload.build_initiate_request(
             stream_metadata={"x-custom-meta": "value"},
             content_type="text/plain",
             size=100,
@@ -51,7 +52,7 @@ class TestResumableUpload:
 
     def test_initiate_request_conflicting_metadata(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
-        method, url, headers, body = upload.initiate_request(
+        method, url, headers, body = upload.build_initiate_request(
             stream_metadata={
                 "x-custom-meta": "value",
                 _common.UPLOAD_PROTOCOL_HEADER: "malicious-protocol",
@@ -209,3 +210,29 @@ class TestResumableUpload:
         upload.process_recovery_response(200, headers)
 
         assert upload.finished
+
+    def test_process_initiate_error(self):
+        upload = _upload.ResumableUpload("http://test.local/upload")
+        upload.process_initiate_error(Exception("Test error"))
+        assert upload.invalid
+
+    def test_process_chunk_error_recoverable(self):
+        upload = _upload.ResumableUpload("http://test.local/upload")
+        exc = exceptions.GoogleAPICallError("Recoverable")
+        exc.code = 400
+
+        assert upload.process_chunk_error(exc)
+        assert not upload.invalid
+
+    def test_process_chunk_error_non_recoverable(self):
+        upload = _upload.ResumableUpload("http://test.local/upload")
+        exc = exceptions.GoogleAPICallError("Non-recoverable")
+        exc.code = 500
+
+        assert not upload.process_chunk_error(exc)
+        assert upload.invalid
+
+    def test_process_recovery_error(self):
+        upload = _upload.ResumableUpload("http://test.local/upload")
+        upload.process_recovery_error(Exception("Test error"))
+        assert upload.invalid
