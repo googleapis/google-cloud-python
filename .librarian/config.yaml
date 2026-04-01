@@ -32,3 +32,7 @@ libraries:
 # Allow generation for google-cloud-firestore once this bug is fixed.
   - id: "google-cloud-firestore"
     generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16165):
+# Allow generation for google-cloud-dialogflow once this bug is fixed.
+  - id: "google-cloud-dialogflow"
+    generate_blocked: true
