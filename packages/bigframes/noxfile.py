@@ -361,13 +361,13 @@ def run_system(
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16489): Restore system test once this bug is fixed
-    # run_system(
-    #     session=session,
-    #     prefix_name="system",
-    #     test_folder=os.path.join("tests", "system", "small"),
-    #     check_cov=True,
-    # )
-    session.skip("Temporarily skip system test")
+    run_system(
+        session=session,
+        prefix_name="system",
+        test_folder=os.path.join("tests", "system", "small"),
+        check_cov=True,
+    )
+    # session.skip("Temporarily skip system test")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
