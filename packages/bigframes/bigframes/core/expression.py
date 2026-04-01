@@ -28,6 +28,9 @@ import bigframes.operations
 from bigframes import dtypes
 from bigframes.core import field
 
+if typing.TYPE_CHECKING:
+    import bigframes.operations
+
 
 def const(
     value: typing.Hashable, dtype: dtypes.ExpressionType = None

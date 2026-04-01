@@ -31,7 +31,6 @@ import pandas as pd
 import pyarrow as pa
 import shapely.geometry  # type: ignore
 
-import bigframes.core.backports
 import bigframes.exceptions
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
@@ -397,6 +396,9 @@ def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
     assert isinstance(type_.pyarrow_dtype, pa.StructType)
     struct_type = type_.pyarrow_dtype
     result: dict[str, Dtype] = {}
+
+    # Local import to break circular dependency with core.backports
+    import bigframes.core.backports
     for field in bigframes.core.backports.pyarrow_struct_type_fields(struct_type):
         result[field.name] = arrow_dtype_to_bigframes_dtype(field.type)
     return result
@@ -582,6 +584,9 @@ def to_storage_type(
         return pa.list_(to_storage_type(arrow_type.value_type))
     if pa.types.is_struct(arrow_type):
         assert isinstance(arrow_type, pa.StructType)
+
+        # Local import to break circular dependency with core.backports
+        import bigframes.core.backports
         return pa.struct(
             field.with_type(to_storage_type(field.type))
             for field in bigframes.core.backports.pyarrow_struct_type_fields(arrow_type)
@@ -595,6 +600,9 @@ def arrow_type_to_literal(
     """Create a representative literal value for an arrow type."""
     if pa.types.is_list(arrow_type):
         return [arrow_type_to_literal(arrow_type.value_type)]
+
+    # Local import to break circular dependency with core.backports
+    import bigframes.core.backports
     if pa.types.is_struct(arrow_type):
         return {
             field.name: arrow_type_to_literal(field.type)
@@ -1001,6 +1009,8 @@ def contains_db_dtypes_json_arrow_type(type_):
         return contains_db_dtypes_json_arrow_type(type_.value_type)
 
     if isinstance(type_, pa.StructType):
+        # Local import to break circular dependency with core.backports
+        import bigframes.core.backports
         return any(
             contains_db_dtypes_json_arrow_type(field.type)
             for field in bigframes.core.backports.pyarrow_struct_type_fields(type_)
