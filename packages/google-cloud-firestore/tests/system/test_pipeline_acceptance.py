@@ -225,7 +225,7 @@ def test_pipeline_end_state(test_dict, client):
     for doc_path, expected_content in expected_state.items():
         doc_ref = client.document(doc_path)
         snapshot = doc_ref.get()
-        if expected_content is None or expected_content == {}:
+        if expected_content is None:
             assert not snapshot.exists, f"Expected {doc_path} to be deleted, but it exists"
         else:
             assert snapshot.exists, f"Expected {doc_path} to exist, but it was deleted"
@@ -252,7 +252,7 @@ async def test_pipeline_end_state_async(test_dict, async_client):
     for doc_path, expected_content in expected_state.items():
         doc_ref = async_client.document(doc_path)
         snapshot = await doc_ref.get()
-        if expected_content is None or expected_content == {}:
+        if expected_content is None:
             assert not snapshot.exists, f"Expected {doc_path} to be deleted, but it exists"
         else:
             assert snapshot.exists, f"Expected {doc_path} to exist, but it was deleted"
