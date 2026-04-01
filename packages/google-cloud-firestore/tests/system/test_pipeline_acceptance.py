@@ -335,18 +335,19 @@ def _apply_yaml_args_to_callable(callable_obj, client, yaml_args):
     Helper to instantiate a class with yaml arguments. The arguments will be applied
     as positional or keyword arguments, based on type
     """
-    if isinstance(yaml_args, dict):
-        return callable_obj(**_parse_expressions(client, yaml_args))
+    parsed = _parse_expressions(client, yaml_args)
+    if isinstance(yaml_args, dict) and isinstance(parsed, dict):
+        return callable_obj(**parsed)
     elif isinstance(yaml_args, list) and not (
         callable_obj == expr.Constant
         or callable_obj == Vector
         or callable_obj == expr.Array
     ):
         # yaml has an array of arguments. Treat as args
-        return callable_obj(*_parse_expressions(client, yaml_args))
+        return callable_obj(*parsed)
     else:
         # yaml has a single argument
-        return callable_obj(_parse_expressions(client, yaml_args))
+        return callable_obj(parsed)
 
 
 def _is_expr_string(yaml_str):
