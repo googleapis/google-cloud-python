@@ -45,6 +45,7 @@ class BackendRule(_message.Message):
         "disable_auth",
         "protocol",
         "overrides_by_request_protocol",
+        "load_balancing_policy",
     )
     class PathTranslation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
@@ -77,6 +78,7 @@ class BackendRule(_message.Message):
     DISABLE_AUTH_FIELD_NUMBER: _ClassVar[int]
     PROTOCOL_FIELD_NUMBER: _ClassVar[int]
     OVERRIDES_BY_REQUEST_PROTOCOL_FIELD_NUMBER: _ClassVar[int]
+    LOAD_BALANCING_POLICY_FIELD_NUMBER: _ClassVar[int]
     selector: str
     address: str
     deadline: float
@@ -87,6 +89,7 @@ class BackendRule(_message.Message):
     disable_auth: bool
     protocol: str
     overrides_by_request_protocol: _containers.MessageMap[str, BackendRule]
+    load_balancing_policy: str
     def __init__(
         self,
         selector: _Optional[str] = ...,
@@ -99,4 +102,5 @@ class BackendRule(_message.Message):
         disable_auth: bool = ...,
         protocol: _Optional[str] = ...,
         overrides_by_request_protocol: _Optional[_Mapping[str, BackendRule]] = ...,
+        load_balancing_policy: _Optional[str] = ...,
     ) -> None: ...

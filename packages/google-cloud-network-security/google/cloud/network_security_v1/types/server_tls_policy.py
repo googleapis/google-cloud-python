@@ -38,10 +38,17 @@ __protobuf__ = proto.module(
 
 
 class ServerTlsPolicy(proto.Message):
-    r"""ServerTlsPolicy is a resource that specifies how a server
-    should authenticate incoming requests. This resource itself does
-    not affect configuration unless it is attached to a target https
-    proxy or endpoint config selector resource.
+    r"""ServerTlsPolicy is a resource that specifies how a server should
+    authenticate incoming requests. This resource itself does not affect
+    configuration unless it is attached to a target HTTPS proxy or
+    endpoint config selector resource.
+
+    ServerTlsPolicy in the form accepted by Application Load Balancers
+    can be attached only to TargetHttpsProxy with an ``EXTERNAL``,
+    ``EXTERNAL_MANAGED`` or ``INTERNAL_MANAGED`` load balancing scheme.
+    Traffic Director compatible ServerTlsPolicies can be attached to
+    EndpointPolicy and TargetHttpsProxy with Traffic Director
+    ``INTERNAL_SELF_MANAGED`` load balancing scheme.
 
     Attributes:
         name (str):
@@ -60,6 +67,9 @@ class ServerTlsPolicy(proto.Message):
             Set of label tags associated with the
             resource.
         allow_open (bool):
+            This field applies only for Traffic Director policies. It is
+            must be set to false for Application Load Balancer policies.
+
             Determines if server allows plaintext connections. If set to
             true, server allows plain text connections. By default, it
             is set to false. This setting is not exclusive of other
@@ -72,11 +82,18 @@ class ServerTlsPolicy(proto.Message):
             deployment to TLS while having mixed TLS and non-TLS traffic
             reaching port :80.
         server_certificate (google.cloud.network_security_v1.types.CertificateProvider):
+            Optional if policy is to be used with Traffic Director. For
+            Application Load Balancers must be empty.
+
             Defines a mechanism to provision server identity (public and
             private keys). Cannot be combined with ``allow_open`` as a
             permissive mode that allows both plain text and TLS is not
             supported.
         mtls_policy (google.cloud.network_security_v1.types.ServerTlsPolicy.MTLSPolicy):
+            This field is required if the policy is used with
+            Application Load Balancers. This field can be empty for
+            Traffic Director.
+
             Defines a mechanism to provision peer validation
             certificates for peer to peer authentication (Mutual TLS -
             mTLS). If not specified, client certificate will not be
@@ -89,16 +106,78 @@ class ServerTlsPolicy(proto.Message):
         r"""Specification of the MTLSPolicy.
 
         Attributes:
+            client_validation_mode (google.cloud.network_security_v1.types.ServerTlsPolicy.MTLSPolicy.ClientValidationMode):
+                When the client presents an invalid certificate or no
+                certificate to the load balancer, the
+                ``client_validation_mode`` specifies how the client
+                connection is handled.
+
+                Required if the policy is to be used with the Application
+                Load Balancers. For Traffic Director it must be empty.
             client_validation_ca (MutableSequence[google.cloud.network_security_v1.types.ValidationCA]):
-                Defines the mechanism to obtain the
-                Certificate Authority certificate to validate
-                the client certificate.
+                Required if the policy is to be used with
+                Traffic Director. For Application Load Balancers
+                it must be empty.
+
+                Defines the mechanism to obtain the Certificate
+                Authority certificate to validate the client
+                certificate.
+            client_validation_trust_config (str):
+                Reference to the TrustConfig from
+                certificatemanager.googleapis.com namespace.
+
+                If specified, the chain validation will be
+                performed against certificates configured in the
+                given TrustConfig.
+
+                Allowed only if the policy is to be used with
+                Application Load Balancers.
         """
 
+        class ClientValidationMode(proto.Enum):
+            r"""Mutual TLS certificate validation mode.
+
+            Values:
+                CLIENT_VALIDATION_MODE_UNSPECIFIED (0):
+                    Not allowed.
+                ALLOW_INVALID_OR_MISSING_CLIENT_CERT (1):
+                    Allow connection even if certificate chain
+                    validation of the client certificate failed or
+                    no client certificate was presented. The proof
+                    of possession of the private key is always
+                    checked if client certificate was presented.
+                    This mode requires the backend to implement
+                    processing of data extracted from a client
+                    certificate to authenticate the peer, or to
+                    reject connections if the client certificate
+                    fingerprint is missing.
+                REJECT_INVALID (2):
+                    Require a client certificate and allow connection to the
+                    backend only if validation of the client certificate passed.
+
+                    If set, requires a reference to non-empty TrustConfig
+                    specified in ``client_validation_trust_config``.
+            """
+
+            CLIENT_VALIDATION_MODE_UNSPECIFIED = 0
+            ALLOW_INVALID_OR_MISSING_CLIENT_CERT = 1
+            REJECT_INVALID = 2
+
+        client_validation_mode: "ServerTlsPolicy.MTLSPolicy.ClientValidationMode" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="ServerTlsPolicy.MTLSPolicy.ClientValidationMode",
+            )
+        )
         client_validation_ca: MutableSequence[tls.ValidationCA] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=tls.ValidationCA,
+        )
+        client_validation_trust_config: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     name: str = proto.Field(
@@ -156,6 +235,14 @@ class ListServerTlsPoliciesRequest(proto.Message):
             ``ListServerTlsPoliciesResponse`` Indicates that this is a
             continuation of a prior ``ListServerTlsPolicies`` call, and
             that the system should return the next page of data.
+        return_partial_success (bool):
+            Optional. Setting this field to ``true`` will opt the
+            request into returning the resources that are reachable, and
+            into including the names of those that were unreachable in
+            the [ListServerTlsPoliciesResponse.unreachable] field. This
+            can only be ``true`` when reading across collections e.g.
+            when ``parent`` is set to
+            ``"projects/example/locations/-"``.
     """
 
     parent: str = proto.Field(
@@ -170,6 +257,10 @@ class ListServerTlsPoliciesRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListServerTlsPoliciesResponse(proto.Message):
@@ -183,6 +274,11 @@ class ListServerTlsPoliciesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. Populated when the request opts into
+            ``return_partial_success`` and reading across collections
+            e.g. when attempting to list all resources across all
+            supported locations.
     """
 
     @property
@@ -197,6 +293,10 @@ class ListServerTlsPoliciesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

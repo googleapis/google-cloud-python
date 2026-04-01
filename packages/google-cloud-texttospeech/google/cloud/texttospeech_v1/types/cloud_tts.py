@@ -215,12 +215,115 @@ class AdvancedVoiceOptions(proto.Message):
 
             This field is a member of `oneof`_ ``_low_latency_journey_synthesis``.
         relax_safety_filters (bool):
-            Optional. Input only. If true, relaxes safety filters for
-            Gemini TTS. Only supported for accounts linked to Invoiced
-            (Offline) Cloud billing accounts. Otherwise, will return
-            result
-            [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+            Optional. Input only. Deprecated, use safety_settings
+            instead. If true, relaxes safety filters for Gemini TTS.
+        safety_settings (google.cloud.texttospeech_v1.types.AdvancedVoiceOptions.SafetySettings):
+            Optional. Input only. This applies to Gemini
+            TTS only. If set, the category specified in the
+            safety setting will be blocked if the harm
+            probability is above the threshold. Otherwise,
+            the safety filter will be disabled by default.
+        enable_textnorm (bool):
+            Optional. If true, textnorm will be applied
+            to text input. This feature is enabled by
+            default. Only applies for Gemini TTS.
+
+            This field is a member of `oneof`_ ``_enable_textnorm``.
     """
+
+    class HarmCategory(proto.Enum):
+        r"""Harm categories that will block the content.
+
+        Values:
+            HARM_CATEGORY_UNSPECIFIED (0):
+                Default value. This value is unused.
+            HARM_CATEGORY_HATE_SPEECH (1):
+                Content that promotes violence or incites
+                hatred against individuals or groups based on
+                certain attributes.
+            HARM_CATEGORY_DANGEROUS_CONTENT (2):
+                Content that promotes, facilitates, or
+                enables dangerous activities.
+            HARM_CATEGORY_HARASSMENT (3):
+                Abusive, threatening, or content intended to
+                bully, torment, or ridicule.
+            HARM_CATEGORY_SEXUALLY_EXPLICIT (4):
+                Content that contains sexually explicit
+                material.
+        """
+
+        HARM_CATEGORY_UNSPECIFIED = 0
+        HARM_CATEGORY_HATE_SPEECH = 1
+        HARM_CATEGORY_DANGEROUS_CONTENT = 2
+        HARM_CATEGORY_HARASSMENT = 3
+        HARM_CATEGORY_SEXUALLY_EXPLICIT = 4
+
+    class HarmBlockThreshold(proto.Enum):
+        r"""Harm block thresholds for the safety settings.
+
+        Values:
+            HARM_BLOCK_THRESHOLD_UNSPECIFIED (0):
+                The harm block threshold is unspecified.
+            BLOCK_LOW_AND_ABOVE (1):
+                Block content with a low harm probability or
+                higher.
+            BLOCK_MEDIUM_AND_ABOVE (2):
+                Block content with a medium harm probability
+                or higher.
+            BLOCK_ONLY_HIGH (3):
+                Block content with a high harm probability.
+            BLOCK_NONE (4):
+                Do not block any content, regardless of its
+                harm probability.
+            OFF (5):
+                Turn off the safety filter entirely.
+        """
+
+        HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
+        BLOCK_LOW_AND_ABOVE = 1
+        BLOCK_MEDIUM_AND_ABOVE = 2
+        BLOCK_ONLY_HIGH = 3
+        BLOCK_NONE = 4
+        OFF = 5
+
+    class SafetySetting(proto.Message):
+        r"""Safety setting for a single harm category.
+
+        Attributes:
+            category (google.cloud.texttospeech_v1.types.AdvancedVoiceOptions.HarmCategory):
+                The harm category to apply the safety setting
+                to.
+            threshold (google.cloud.texttospeech_v1.types.AdvancedVoiceOptions.HarmBlockThreshold):
+                The harm block threshold for the safety
+                setting.
+        """
+
+        category: "AdvancedVoiceOptions.HarmCategory" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AdvancedVoiceOptions.HarmCategory",
+        )
+        threshold: "AdvancedVoiceOptions.HarmBlockThreshold" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="AdvancedVoiceOptions.HarmBlockThreshold",
+        )
+
+    class SafetySettings(proto.Message):
+        r"""Safety settings for the request.
+
+        Attributes:
+            settings (MutableSequence[google.cloud.texttospeech_v1.types.AdvancedVoiceOptions.SafetySetting]):
+                The safety settings for the request.
+        """
+
+        settings: MutableSequence["AdvancedVoiceOptions.SafetySetting"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AdvancedVoiceOptions.SafetySetting",
+            )
+        )
 
     low_latency_journey_synthesis: bool = proto.Field(
         proto.BOOL,
@@ -230,6 +333,16 @@ class AdvancedVoiceOptions(proto.Message):
     relax_safety_filters: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    safety_settings: SafetySettings = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=SafetySettings,
+    )
+    enable_textnorm: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        optional=True,
     )
 
 
@@ -251,7 +364,7 @@ class SynthesizeSpeechRequest(proto.Message):
             Required. The configuration of the
             synthesized audio.
         advanced_voice_options (google.cloud.texttospeech_v1.types.AdvancedVoiceOptions):
-            Advanced voice options.
+            Optional. Advanced voice options.
 
             This field is a member of `oneof`_ ``_advanced_voice_options``.
     """
@@ -485,8 +598,9 @@ class SynthesisInput(proto.Message):
 
             This field is a member of `oneof`_ ``input_source``.
         markup (str):
-            Markup for HD voices specifically. This field
-            may not be used with any other voices.
+            Markup for Chirp 3: HD voices specifically.
+            This field may not be used with any other
+            voices.
 
             This field is a member of `oneof`_ ``input_source``.
         ssml (str):
@@ -838,6 +952,9 @@ class StreamingSynthesizeConfig(proto.Message):
     r"""Provides configuration information for the
     StreamingSynthesize request.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         voice (google.cloud.texttospeech_v1.types.VoiceSelectionParams):
             Required. The desired voice of the
@@ -859,6 +976,10 @@ class StreamingSynthesizeConfig(proto.Message):
             phrase, there must be an exact match of the
             phrase in the input types. If using SSML, the
             phrase must not be inside a phoneme tag.
+        advanced_voice_options (google.cloud.texttospeech_v1.types.AdvancedVoiceOptions):
+            Optional. Advanced voice options.
+
+            This field is a member of `oneof`_ ``_advanced_voice_options``.
     """
 
     voice: "VoiceSelectionParams" = proto.Field(
@@ -875,6 +996,12 @@ class StreamingSynthesizeConfig(proto.Message):
         proto.MESSAGE,
         number=5,
         message="CustomPronunciations",
+    )
+    advanced_voice_options: "AdvancedVoiceOptions" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message="AdvancedVoiceOptions",
     )
 
 
@@ -897,8 +1024,9 @@ class StreamingSynthesisInput(proto.Message):
 
             This field is a member of `oneof`_ ``input_source``.
         markup (str):
-            Markup for HD voices specifically. This field
-            may not be used with any other voices.
+            Markup for Chirp 3: HD voices specifically.
+            This field may not be used with any other
+            voices.
 
             This field is a member of `oneof`_ ``input_source``.
         multi_speaker_markup (google.cloud.texttospeech_v1.types.MultiSpeakerMarkup):

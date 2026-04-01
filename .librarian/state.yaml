@@ -61,7 +61,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.7.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -943,6 +943,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-bigquery-storage
     tag_format: '{id}-v{version}'
+  - id: google-cloud-bigtable
+    version: 2.35.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-bigtable
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
@@ -956,15 +965,6 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-billing/
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-bigtable
-    version: 2.35.0
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/google-cloud-bigtable
-    preserve_regex: []
-    remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing-budgets
     version: 1.20.0
@@ -1044,7 +1044,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
     version: 0.3.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/ces/v1
         service_config: ces_v1.yaml
@@ -1388,7 +1388,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataflow-client
     version: 0.12.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/dataflow/v1beta3
         service_config: dataflow_v1beta3.yaml
@@ -1876,7 +1876,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.27.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
@@ -2397,7 +2397,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/memorystore/v1beta
         service_config: memorystore_v1beta.yaml
@@ -2502,7 +2502,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.8.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/netapp/v1
         service_config: netapp_v1.yaml
@@ -2548,7 +2548,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
     version: 0.12.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/networksecurity/v1alpha1
         service_config: networksecurity_v1alpha1.yaml
@@ -2950,7 +2950,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/redis/cluster/v1
         service_config: redis_v1.yaml
@@ -3070,7 +3070,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/securesourcemanager/v1
         service_config: securesourcemanager_v1.yaml
@@ -3496,7 +3496,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
     version: 2.35.0
-    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/cloud/texttospeech/v1
         service_config: texttospeech_v1.yaml
@@ -3892,7 +3892,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
     version: 0.1.0
-    last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/maps/geocode/v4
         service_config: geocoding_backend_v4.yaml
@@ -4258,7 +4258,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.73.1
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 775a3cb5d47dc07d3a18660cab9c4924e5231ad9
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
