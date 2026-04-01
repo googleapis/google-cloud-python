@@ -2,6 +2,7 @@
 """
 Encoding routines
 """
+
 from __future__ import annotations
 
 from bigframes import constants

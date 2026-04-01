@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime
 import importlib.util
 import inspect
 import math  # must keep this at top level to test udf referring global import
@@ -22,12 +21,13 @@ import tempfile
 import textwrap
 import uuid
 import warnings
+from datetime import datetime
 
 import google.api_core.exceptions
-from google.cloud import bigquery, functions_v2, storage
 import pandas
 import pytest
 import test_utils.prefixer
+from google.cloud import bigquery, functions_v2, storage
 
 import bigframes
 import bigframes.dataframe

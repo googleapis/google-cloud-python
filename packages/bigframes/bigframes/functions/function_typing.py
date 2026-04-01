@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, get_args, get_origin, Type
+from typing import Any, Type, get_args, get_origin
 
 from google.cloud import bigquery
 

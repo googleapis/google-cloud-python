@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable  # noqa: TCH003
 import contextlib
+from collections.abc import Callable  # noqa: TCH003
 from typing import Annotated, Any, Optional
 
 import bigframes_vendored.ibis.common.exceptions as com

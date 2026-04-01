@@ -5,7 +5,7 @@ import typing as t
 
 # The generic time format is based on python time.strftime.
 # https://docs.python.org/3/library/time.html#time.strftime
-from bigframes_vendored.sqlglot.trie import in_trie, new_trie, TrieResult
+from bigframes_vendored.sqlglot.trie import TrieResult, in_trie, new_trie
 
 
 def format_time(

@@ -600,7 +600,10 @@ def test_managed_function_options(session, dataset_id, scalars_dfs):
         multiply_five_ref = session.read_gbq_function(
             function_name=mf_multiply_five.bigframes_bigquery_function,  # type: ignore
         )
-        assert mf_multiply_five.bigframes_bigquery_function == multiply_five_ref.bigframes_bigquery_function  # type: ignore
+        assert (
+            mf_multiply_five.bigframes_bigquery_function
+            == multiply_five_ref.bigframes_bigquery_function
+        )  # type: ignore
 
         bf_result = bf_int64_df_filtered.apply(multiply_five_ref).to_pandas()
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)

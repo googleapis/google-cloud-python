@@ -16,12 +16,12 @@ import typing
 from typing import Tuple
 
 import google.api_core.exceptions
-from google.cloud import bigquery
 import numpy
 import numpy.testing
 import pandas as pd
 import pyarrow as pa
 import pytest
+from google.cloud import bigquery
 
 import bigframes
 import bigframes.dataframe

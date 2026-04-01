@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import random
-from typing import Any, cast, Dict, Iterable
+from typing import Any, Dict, Iterable, cast
 
 import google.cloud.bigquery
 import numpy as np

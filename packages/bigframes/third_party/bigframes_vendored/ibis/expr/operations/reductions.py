@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from typing import Literal, Optional
 
-from bigframes_vendored.ibis.common.annotations import attribute
-from bigframes_vendored.ibis.common.typing import VarTuple
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis.common.annotations import attribute
+from bigframes_vendored.ibis.common.typing import VarTuple
 from bigframes_vendored.ibis.expr.operations.core import Column, Value
 from bigframes_vendored.ibis.expr.operations.relations import Relation  # noqa: TCH001
-import bigframes_vendored.ibis.expr.rules as rlz
 from public import public
 
 

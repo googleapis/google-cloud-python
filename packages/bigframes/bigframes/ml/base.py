@@ -25,16 +25,16 @@ This library is an evolving attempt to:
 
 import abc
 import typing
-from typing import Optional, TypeVar, Union
 import warnings
+from typing import Optional, TypeVar, Union
 
 import bigframes_vendored.sklearn.base
 
-from bigframes._tools import docs
 import bigframes.exceptions as bfe
-from bigframes.ml import core
 import bigframes.ml.utils as utils
 import bigframes.pandas as bpd
+from bigframes._tools import docs
+from bigframes.ml import core
 
 
 @docs.inherit_docs(bigframes_vendored.sklearn.base.BaseEstimator)

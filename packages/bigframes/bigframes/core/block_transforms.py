@@ -21,7 +21,6 @@ import bigframes_vendored.constants as constants
 import pandas as pd
 
 import bigframes.constants
-from bigframes.core import agg_expressions
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
@@ -30,6 +29,7 @@ import bigframes.core.window_spec as windows
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes.core import agg_expressions
 
 
 def equals(block1: blocks.Block, block2: blocks.Block) -> bool:

@@ -15,8 +15,8 @@ import dataclasses
 import functools
 from typing import Optional
 
-from bigframes.core import nodes
 import bigframes.core.rewrite.slices
+from bigframes.core import nodes
 
 
 def try_reduce_to_table_scan(root: nodes.BigFrameNode) -> Optional[nodes.ReadTableNode]:

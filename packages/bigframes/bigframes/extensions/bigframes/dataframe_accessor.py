@@ -14,12 +14,12 @@
 
 from __future__ import annotations
 
-from typing import cast, TypeVar
+from typing import TypeVar, cast
 
-from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 import bigframes.extensions.core.dataframe_accessor as core_accessor
 import bigframes.series
+from bigframes.core.logging import log_adapter
 
 T = TypeVar("T", bound="bigframes.dataframe.DataFrame")
 S = TypeVar("S", bound="bigframes.series.Series")

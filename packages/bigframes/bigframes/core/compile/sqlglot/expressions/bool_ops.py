@@ -16,10 +16,10 @@ from __future__ import annotations
 
 import bigframes_vendored.sqlglot.expressions as sge
 
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot import sql
-import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_binary_op = expression_compiler.expression_compiler.register_binary_op

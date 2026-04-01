@@ -18,7 +18,6 @@ import functools
 import typing
 from typing import cast
 
-from bigframes_vendored import ibis
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations.ai_ops as ai_ops
@@ -27,14 +26,15 @@ import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 import bigframes_vendored.ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
+from bigframes_vendored import ibis
 
-from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 import bigframes.core.compile.ibis_compiler.default_ordering
+import bigframes.core.compile.ibis_types
+import bigframes.operations as ops
+from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.ibis_compiler.scalar_op_compiler import (
     scalar_op_compiler,  # TODO(tswast): avoid import of variables
 )
-import bigframes.core.compile.ibis_types
-import bigframes.operations as ops
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
 _NAN = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.nan))
@@ -1043,8 +1043,7 @@ def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
     )
-    def udf(input):
-        ...
+    def udf(input): ...
 
     x_transformed = udf(x)
     if not op.apply_on_null:
@@ -1063,8 +1062,7 @@ def binary_remote_function_op_impl(
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
     )
-    def udf(input1, input2):
-        ...
+    def udf(input1, input2): ...
 
     x_transformed = udf(x, y)
     return x_transformed
@@ -1084,8 +1082,7 @@ def nary_remote_function_op_impl(
         signature=ibis_py_sig,
         param_name_overrides=arg_names,
     )
-    def udf(*inputs):
-        ...
+    def udf(*inputs): ...
 
     result = udf(*operands)
     return result
@@ -2171,7 +2168,9 @@ def obj_make_ref_json(objectref_json: ibis_dtypes.JSON) -> _OBJ_REF_IBIS_DTYPE: 
 
 
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
-def obj_get_access_url(obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String) -> ibis_dtypes.JSON:  # type: ignore
+def obj_get_access_url(
+    obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String
+) -> ibis_dtypes.JSON:  # type: ignore
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
 
 

@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from bigframes_vendored.ibis.expr.operations.core import Value
 import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis.expr.operations.core import Value
 from public import public
 
 # TODO(kszucs): move the content of this file to generic.py

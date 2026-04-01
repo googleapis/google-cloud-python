@@ -28,6 +28,7 @@ import functools
 import itertools
 import random
 import typing
+import warnings
 from typing import (
     Iterable,
     Iterator,
@@ -39,7 +40,6 @@ from typing import (
     Tuple,
     Union,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import google.cloud.bigquery as bigquery
@@ -47,10 +47,7 @@ import numpy
 import pandas as pd
 import pyarrow as pa
 
-from bigframes import session
-from bigframes._config import sampling_options
 import bigframes.constants
-from bigframes.core import agg_expressions, local_data
 import bigframes.core as core
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.expression as ex
@@ -66,6 +63,9 @@ import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes import session
+from bigframes._config import sampling_options
+from bigframes.core import agg_expressions, local_data
 from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
 from bigframes.session._io import pandas as io_pandas
@@ -2545,7 +2545,10 @@ class Block:
         sort: bool = False,
         block_identity_join: bool = False,
         always_order: bool = False,
-    ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
+    ) -> Tuple[
+        Block,
+        Tuple[Mapping[str, str], Mapping[str, str]],
+    ]:
         """
         Join two blocks objects together, and provide mappings between source columns and output columns.
 
@@ -2794,7 +2797,9 @@ class Block:
                 block = block.drop_columns([equal_monotonic_id, strict_monotonic_id])
 
         block, monotonic_result_id = block.apply_binary_op(
-            last_result_id, last_notna_id, ops.and_op  # type: ignore
+            last_result_id,
+            last_notna_id,
+            ops.and_op,  # type: ignore
         )
         if last_result_id is not None:
             block = block.drop_columns([last_result_id, last_notna_id])
@@ -2963,7 +2968,12 @@ class BlockIndexProperties:
 
 def try_new_row_join(
     left: Block, right: Block
-) -> Optional[Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]]:
+) -> Optional[
+    Tuple[
+        Block,
+        Tuple[Mapping[str, str], Mapping[str, str]],
+    ]
+]:
     join_keys = tuple(
         (left_id, right_id)
         for left_id, right_id in zip(left.index_columns, right.index_columns)
@@ -2994,7 +3004,12 @@ def try_legacy_row_join(
     right: Block,
     *,
     how="left",
-) -> Optional[Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]]:
+) -> Optional[
+    Tuple[
+        Block,
+        Tuple[Mapping[str, str], Mapping[str, str]],
+    ]
+]:
     """Joins two blocks that have a common root expression by merging the projections."""
     left_expr = left.expr
     right_expr = right.expr
@@ -3048,7 +3063,10 @@ def try_legacy_row_join(
 def join_with_single_row(
     left: Block,
     single_row_block: Block,
-) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
+) -> Tuple[
+    Block,
+    Tuple[Mapping[str, str], Mapping[str, str]],
+]:
     """
     Special join case where other is a single row block.
     This property is not validated, caller responsible for not passing multi-row block.
@@ -3083,7 +3101,10 @@ def join_mono_indexed(
     how="left",
     sort: bool = False,
     propogate_order: bool = False,
-) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
+) -> Tuple[
+    Block,
+    Tuple[Mapping[str, str], Mapping[str, str]],
+]:
     left_expr = left.expr
     right_expr = right.expr
 
@@ -3130,7 +3151,10 @@ def join_multi_indexed(
     how="left",
     sort: bool = False,
     propogate_order: bool = False,
-) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
+) -> Tuple[
+    Block,
+    Tuple[Mapping[str, str], Mapping[str, str]],
+]:
     if not (left.index.is_uniquely_named() and right.index.is_uniquely_named()):
         raise ValueError("Joins not supported on indices with non-unique level names")
 

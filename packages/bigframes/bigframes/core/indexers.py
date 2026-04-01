@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 import typing
-from typing import Tuple, Union
 import warnings
+from typing import Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
@@ -144,16 +144,14 @@ class LocDataFrameIndexer:
     @typing.overload
     def __getitem__(
         self, key: LocSingleKey
-    ) -> Union[bigframes.dataframe.DataFrame, pd.Series]:
-        ...
+    ) -> Union[bigframes.dataframe.DataFrame, pd.Series]: ...
 
     # Technically this is wrong since we can have duplicate column labels, but
     # this is expected to be rare.
     @typing.overload
     def __getitem__(
         self, key: Tuple[LocSingleKey, str]
-    ) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]:
-        ...
+    ) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]: ...
 
     def __getitem__(self, key):
         # TODO(tbergeron): Pandas will try both splitting 2-tuple into row, index or as 2-part
@@ -288,15 +286,13 @@ class AtDataFrameIndexer:
 @typing.overload
 def _loc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.series.Series, key
-) -> Union[bigframes.core.scalar.Scalar, bigframes.series.Series]:
-    ...
+) -> Union[bigframes.core.scalar.Scalar, bigframes.series.Series]: ...
 
 
 @typing.overload
 def _loc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.dataframe.DataFrame, key
-) -> Union[bigframes.dataframe.DataFrame, pd.Series]:
-    ...
+) -> Union[bigframes.dataframe.DataFrame, pd.Series]: ...
 
 
 def _loc_getitem_series_or_dataframe(
@@ -367,8 +363,7 @@ def _perform_loc_list_join(
     series_or_dataframe: bigframes.series.Series,
     keys_index: indexes.Index,
     drop_levels: bool = False,
-) -> bigframes.series.Series:
-    ...
+) -> bigframes.series.Series: ...
 
 
 @typing.overload
@@ -376,8 +371,7 @@ def _perform_loc_list_join(
     series_or_dataframe: bigframes.dataframe.DataFrame,
     keys_index: indexes.Index,
     drop_levels: bool = False,
-) -> bigframes.dataframe.DataFrame:
-    ...
+) -> bigframes.dataframe.DataFrame: ...
 
 
 def _perform_loc_list_join(
@@ -435,15 +429,13 @@ def _struct_accessor_check_and_warn(
 @typing.overload
 def _iloc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.series.Series, key
-) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]:
-    ...
+) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]: ...
 
 
 @typing.overload
 def _iloc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.dataframe.DataFrame, key
-) -> Union[bigframes.dataframe.DataFrame, pd.Series, bigframes.core.scalar.Scalar]:
-    ...
+) -> Union[bigframes.dataframe.DataFrame, pd.Series, bigframes.core.scalar.Scalar]: ...
 
 
 def _iloc_getitem_series_or_dataframe(

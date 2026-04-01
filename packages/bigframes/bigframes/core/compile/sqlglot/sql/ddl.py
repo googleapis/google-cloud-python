@@ -114,7 +114,7 @@ def create_external_table(
 
 
 def _get_sge_schema(
-    columns: Optional[Mapping[str, str]] = None
+    columns: Optional[Mapping[str, str]] = None,
 ) -> Optional[sge.Schema]:
     if not columns:
         return None
@@ -132,7 +132,7 @@ def _get_sge_schema(
 
 
 def _get_sge_properties(
-    options: Optional[Mapping[str, Union[str, int, float, bool, list]]] = None
+    options: Optional[Mapping[str, Union[str, int, float, bool, list]]] = None,
 ) -> Optional[sge.Properties]:
     if not options:
         return None

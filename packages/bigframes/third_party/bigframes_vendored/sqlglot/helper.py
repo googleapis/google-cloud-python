@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Collection, Set
-from copy import copy
 import datetime
-from difflib import get_close_matches
-from enum import Enum
 import inspect
-from itertools import count
 import logging
 import re
 import sys
 import typing as t
+from collections.abc import Collection, Set
+from copy import copy
+from difflib import get_close_matches
+from enum import Enum
+from itertools import count
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot import exp
@@ -70,18 +70,15 @@ def seq_get(seq: t.Sequence[T], index: int) -> t.Optional[T]:
 
 
 @t.overload
-def ensure_list(value: t.Collection[T]) -> t.List[T]:
-    ...
+def ensure_list(value: t.Collection[T]) -> t.List[T]: ...
 
 
 @t.overload
-def ensure_list(value: None) -> t.List:
-    ...
+def ensure_list(value: None) -> t.List: ...
 
 
 @t.overload
-def ensure_list(value: T) -> t.List[T]:
-    ...
+def ensure_list(value: T) -> t.List[T]: ...
 
 
 def ensure_list(value):
@@ -103,13 +100,11 @@ def ensure_list(value):
 
 
 @t.overload
-def ensure_collection(value: t.Collection[T]) -> t.Collection[T]:
-    ...
+def ensure_collection(value: t.Collection[T]) -> t.Collection[T]: ...
 
 
 @t.overload
-def ensure_collection(value: T) -> t.Collection[T]:
-    ...
+def ensure_collection(value: T) -> t.Collection[T]: ...
 
 
 def ensure_collection(value):

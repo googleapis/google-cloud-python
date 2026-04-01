@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import contextlib
 import os
-from typing import Any, NoReturn, TYPE_CHECKING
 import webbrowser
+from typing import TYPE_CHECKING, Any, NoReturn
 
 import bigframes_vendored.ibis
+import bigframes_vendored.ibis.expr.operations as ops
+import pandas as pd
 from bigframes_vendored.ibis.common.annotations import ValidationError
 from bigframes_vendored.ibis.common.exceptions import IbisError, TranslationError
 from bigframes_vendored.ibis.common.grounds import Immutable
@@ -16,10 +18,8 @@ from bigframes_vendored.ibis.common.typing import get_defining_scope
 from bigframes_vendored.ibis.config import _default_backend
 from bigframes_vendored.ibis.config import options as opts
 from bigframes_vendored.ibis.expr.format import pretty
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.types.pretty import to_rich
 from bigframes_vendored.ibis.util import experimental
-import pandas as pd
 from public import public
 from rich.console import Console
 from rich.jupyter import JupyterMixin
@@ -29,15 +29,15 @@ if TYPE_CHECKING:
     from collections.abc import Iterator, Mapping
     from pathlib import Path
 
-    from bigframes_vendored.ibis.backends import BaseBackend
     import bigframes_vendored.ibis.expr.types as ir
+    import polars as pl
+    import pyarrow as pa
+    import torch
+    from bigframes_vendored.ibis.backends import BaseBackend
     from bigframes_vendored.ibis.expr.visualize import (
         EdgeAttributeGetter,
         NodeAttributeGetter,
     )
-    import polars as pl
-    import pyarrow as pa
-    import torch
 
 
 class _FixedTextJupyterMixin(JupyterMixin):

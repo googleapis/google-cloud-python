@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from enum import auto
 import os
 import typing as t
+from enum import auto
 
 from bigframes_vendored.sqlglot.errors import SqlglotError, TokenError
 from bigframes_vendored.sqlglot.helper import AutoName
-from bigframes_vendored.sqlglot.trie import in_trie, new_trie, TrieResult
+from bigframes_vendored.sqlglot.trie import TrieResult, in_trie, new_trie
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot.dialects.dialect import DialectType

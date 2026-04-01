@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Callable, Dict, Optional, Sequence, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Dict, Optional, Sequence
 
 import bigframes.core.nodes as nodes
 

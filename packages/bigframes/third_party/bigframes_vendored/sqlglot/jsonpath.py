@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import typing as t
 
-from bigframes_vendored.sqlglot.errors import ParseError
 import bigframes_vendored.sqlglot.expressions as exp
+from bigframes_vendored.sqlglot.errors import ParseError
 from bigframes_vendored.sqlglot.tokens import Token, Tokenizer, TokenType
 
 if t.TYPE_CHECKING:
@@ -230,7 +230,8 @@ JSON_PATH_PART_TRANSFORMS: t.Dict[t.Type[exp.Expression], t.Callable[..., str]] 
         if p is not None
     ),
     exp.JSONPathSubscript: lambda self, e: self._jsonpathsubscript_sql(e),
-    exp.JSONPathUnion: lambda self, e: f"[{','.join(self.json_path_part(p) for p in e.expressions)}]",
+    exp.JSONPathUnion: lambda self,
+    e: f"[{','.join(self.json_path_part(p) for p in e.expressions)}]",
     exp.JSONPathWildcard: lambda *_: "*",
 }
 

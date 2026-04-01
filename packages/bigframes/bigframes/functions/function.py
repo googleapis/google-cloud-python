@@ -15,11 +15,11 @@
 from __future__ import annotations
 
 import logging
-from typing import Callable, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional
 
 if TYPE_CHECKING:
-    from bigframes.session import Session
     import bigframes.series
+    from bigframes.session import Session
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -178,8 +178,8 @@ class BigqueryCallableRoutine:
         if self._local_fun:
             return self._local_fun(*args, **kwargs)
         # avoid circular imports
-        from bigframes.core.compile.sqlglot import sql as sg_sql
         import bigframes.session._io.bigquery as bf_io_bigquery
+        from bigframes.core.compile.sqlglot import sql as sg_sql
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
@@ -252,8 +252,8 @@ class BigqueryCallableRowRoutine:
         if self._local_fun:
             return self._local_fun(*args, **kwargs)
         # avoid circular imports
-        from bigframes.core.compile.sqlglot import sql as sg_sql
         import bigframes.session._io.bigquery as bf_io_bigquery
+        from bigframes.core.compile.sqlglot import sql as sg_sql
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"

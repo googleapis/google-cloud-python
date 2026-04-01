@@ -20,6 +20,9 @@ import json
 import math
 import re
 
+import numpy as np
+import pytest
+
 # Assuming the script to be tested is in the same directory or accessible via PYTHONPATH
 from create_read_gbq_colab_benchmark_tables import (
     BIGQUERY_DATA_TYPE_SIZES,
@@ -27,8 +30,6 @@ from create_read_gbq_colab_benchmark_tables import (
     generate_work_items,
     get_bq_schema,
 )
-import numpy as np
-import pytest
 
 
 # Helper function to calculate estimated row size from schema

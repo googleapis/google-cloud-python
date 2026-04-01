@@ -9,15 +9,16 @@ Similar to its R counterpart, data.frame, except providing automatic data
 alignment and a host of useful data manipulation methods having to do with the
 labeling information
 """
+
 from __future__ import annotations
 
 import datetime
 from typing import Hashable, Iterable, Literal, Optional, Sequence, Union
 
-from bigframes_vendored import constants
 import bigframes_vendored.pandas.core.generic as generic
 import numpy as np
 import pandas as pd
+from bigframes_vendored import constants
 from pandas.api import extensions as pd_ext
 
 # -----------------------------------------------------------------------

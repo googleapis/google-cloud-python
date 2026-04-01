@@ -3,10 +3,10 @@
 
 from __future__ import annotations
 
-from bigframes_vendored.ibis.common.annotations import attribute
 import bigframes_vendored.ibis.expr.datatypes as dt
-from bigframes_vendored.ibis.expr.operations import Unary, Value
 import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis.common.annotations import attribute
+from bigframes_vendored.ibis.expr.operations import Unary, Value
 from public import public
 
 

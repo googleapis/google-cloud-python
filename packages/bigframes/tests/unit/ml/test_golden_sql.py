@@ -14,14 +14,14 @@
 
 from unittest import mock
 
-from google.cloud import bigquery
 import pandas as pd
 import pytest
+from google.cloud import bigquery
 
 import bigframes
-from bigframes.ml import core, decomposition, linear_model
 import bigframes.ml.core
 import bigframes.pandas as bpd
+from bigframes.ml import core, decomposition, linear_model
 
 TEMP_MODEL_ID = bigquery.ModelReference.from_string(
     "test-project._anon123.temp_model_id"

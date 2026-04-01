@@ -18,16 +18,16 @@
 
 from __future__ import annotations
 
-from typing import Annotated, TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated
 
 import bigframes_vendored.ibis
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.ibis.expr.types as ir
 from bigframes_vendored.ibis.common.grounds import Concrete
 from bigframes_vendored.ibis.common.patterns import Length  # noqa: TCH001
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.rewrites import rewrite_window_input
-import bigframes_vendored.ibis.expr.types as ir
 from public import public
 
 if TYPE_CHECKING:

@@ -19,10 +19,10 @@ from typing import Sequence
 
 import pandas as pd
 
-from bigframes.core import blocks
-from bigframes.core import expression as ex
 import bigframes.enums
 import bigframes.operations as ops
+from bigframes.core import blocks
+from bigframes.core import expression as ex
 
 
 def block_groupby_iter(

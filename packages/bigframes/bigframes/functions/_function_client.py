@@ -24,8 +24,8 @@ import string
 import tempfile
 import textwrap
 import types
-from typing import Any, cast, Optional, TYPE_CHECKING
 import warnings
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 import requests
 

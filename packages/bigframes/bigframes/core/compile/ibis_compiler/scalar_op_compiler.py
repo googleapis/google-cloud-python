@@ -23,9 +23,9 @@ from typing import TYPE_CHECKING
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.types as ibis_types
 
-from bigframes.core import agg_expressions, ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
+from bigframes.core import agg_expressions, ordering
 from bigframes.operations import numeric_ops
 
 if TYPE_CHECKING:

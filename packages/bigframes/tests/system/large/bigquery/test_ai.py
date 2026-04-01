@@ -14,8 +14,8 @@
 
 import pytest
 
-from bigframes.bigquery import ai, ml
 import bigframes.pandas as bpd
+from bigframes.bigquery import ai, ml
 
 
 @pytest.fixture(scope="session")

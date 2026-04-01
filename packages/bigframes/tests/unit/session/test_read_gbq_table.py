@@ -20,10 +20,10 @@ import warnings
 import google.cloud.bigquery
 import pytest
 
-from bigframes.core import bq_data
 import bigframes.enums
 import bigframes.exceptions
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
+from bigframes.core import bq_data
 from bigframes.testing import mocks
 
 

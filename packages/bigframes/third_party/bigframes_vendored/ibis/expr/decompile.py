@@ -7,12 +7,12 @@ import functools
 import io
 import itertools
 
-from bigframes_vendored.ibis.common.graph import Graph
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
-from bigframes_vendored.ibis.expr.rewrites import simplify
 import bigframes_vendored.ibis.expr.types as ibis_types
 import bigframes_vendored.ibis.expr.types as ir
+from bigframes_vendored.ibis.common.graph import Graph
+from bigframes_vendored.ibis.expr.rewrites import simplify
 from bigframes_vendored.ibis.util import experimental
 
 _method_overrides = {

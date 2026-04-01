@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import inspect
-from itertools import zip_longest
 import re
 import sys
-from typing import Any, get_args, get_origin
+from abc import abstractmethod
+from itertools import zip_longest
+from typing import TYPE_CHECKING, Any, Optional, TypeVar, Union, get_args, get_origin
 from typing import get_type_hints as _get_type_hints
-from typing import Optional, TYPE_CHECKING, TypeVar, Union
 
 from bigframes_vendored.ibis.common.bases import Abstract
 from bigframes_vendored.ibis.common.caching import memoize
@@ -248,8 +247,7 @@ class Sentinel(type):
         raise TypeError("Sentinels are not constructible")
 
 
-class CoercionError(Exception):
-    ...
+class CoercionError(Exception): ...
 
 
 class Coercible(Abstract):
@@ -262,8 +260,7 @@ class Coercible(Abstract):
 
     @classmethod
     @abstractmethod
-    def __coerce__(cls, value: Any, **kwargs: Any) -> Self:
-        ...
+    def __coerce__(cls, value: Any, **kwargs: Any) -> Self: ...
 
 
 def get_defining_frame(obj):

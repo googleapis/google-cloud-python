@@ -20,12 +20,12 @@ import bigframes_vendored.constants
 import google.cloud.bigquery
 import pandas as pd
 
-from bigframes.bigquery._operations import utils
 import bigframes.core.logging.log_adapter as log_adapter
 import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base
 import bigframes.session
+from bigframes.bigquery._operations import utils
 
 
 def _get_model_metadata(
@@ -131,9 +131,9 @@ def create_model(
     if session is None:
         bpd.read_gbq_query(sql)
         session = bpd.get_global_session()
-        assert (
-            session is not None
-        ), f"Missing connection to BigQuery. Please report how you encountered this error at {bigframes_vendored.constants.FEEDBACK_LINK}."
+        assert session is not None, (
+            f"Missing connection to BigQuery. Please report how you encountered this error at {bigframes_vendored.constants.FEEDBACK_LINK}."
+        )
     else:
         session.read_gbq_query(sql)
 

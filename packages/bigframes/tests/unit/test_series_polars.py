@@ -25,11 +25,11 @@ import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
 import google.api_core.exceptions
 import numpy
-from packaging.version import Version
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 import shapely.geometry  # type: ignore
+from packaging.version import Version
 
 import bigframes
 import bigframes.dtypes as dtypes
@@ -1571,7 +1571,11 @@ def test_isin_bigframes_index(scalars_dfs, session):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = (
         scalars_df["string_col"]
-        .isin(bigframes.pandas.Index(["Hello, World!", "Hi", "こんにちは"], session=session))
+        .isin(
+            bigframes.pandas.Index(
+                ["Hello, World!", "Hi", "こんにちは"], session=session
+            )
+        )
         .to_pandas()
     )
     pd_result = (
@@ -3517,7 +3521,10 @@ def test_series_to_json_local_str(scalars_df_index, scalars_pandas_df_index):
 def test_series_to_json_local_file(scalars_df_index, scalars_pandas_df_index):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.int64_col.to_json(bf_result_file)
         scalars_pandas_df_index.int64_col.to_json(pd_result_file)
 
@@ -3536,7 +3543,10 @@ def test_series_to_csv_local_str(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_series_to_csv_local_file(scalars_df_index, scalars_pandas_df_index):
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.int64_col.to_csv(bf_result_file)
         scalars_pandas_df_index.int64_col.to_csv(pd_result_file)
 
@@ -4861,9 +4871,7 @@ def test_series_pipe(
     )
 
     pd_result = (
-        scalars_pandas_df_index[column]
-        .pipe((foo, "df"), x=7, y=9)
-        .pipe(lambda x: x**2)
+        scalars_pandas_df_index[column].pipe((foo, "df"), x=7, y=9).pipe(lambda x: x**2)
     )
 
     assert_series_equal(bf_result, pd_result)

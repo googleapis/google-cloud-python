@@ -15,7 +15,7 @@
 import datetime
 import threading
 import time
-from typing import cast, Optional
+from typing import Optional, cast
 
 import google.cloud.bigquery as bigquery
 

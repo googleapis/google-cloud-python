@@ -9,9 +9,21 @@ import concurrent.futures
 import contextlib
 import glob
 import os
-from typing import Any, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
 
 import bigframes_vendored.ibis
+import bigframes_vendored.ibis.backends.sql.compilers as sc
+import bigframes_vendored.ibis.common.exceptions as com
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.ibis.expr.schema as sch
+import bigframes_vendored.ibis.expr.types as ir
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
+import google.api_core.exceptions
+import google.auth.credentials
+import google.cloud.bigquery as bq
+import google.cloud.bigquery_storage_v1 as bqstorage
+import pydata_google_auth
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.backends import CanCreateDatabase, CanCreateSchema
 from bigframes_vendored.ibis.backends.bigquery.client import (
@@ -25,18 +37,6 @@ from bigframes_vendored.ibis.backends.bigquery.datatypes import (
     BigQueryType,
 )
 from bigframes_vendored.ibis.backends.sql import SQLBackend
-import bigframes_vendored.ibis.backends.sql.compilers as sc
-import bigframes_vendored.ibis.common.exceptions as com
-import bigframes_vendored.ibis.expr.operations as ops
-import bigframes_vendored.ibis.expr.schema as sch
-import bigframes_vendored.ibis.expr.types as ir
-import bigframes_vendored.sqlglot as sg
-import bigframes_vendored.sqlglot.expressions as sge
-import google.api_core.exceptions
-import google.auth.credentials
-import google.cloud.bigquery as bq
-import google.cloud.bigquery_storage_v1 as bqstorage
-import pydata_google_auth
 from pydata_google_auth import cache
 
 if TYPE_CHECKING:

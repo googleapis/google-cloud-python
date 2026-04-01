@@ -14,18 +14,18 @@
 
 import datetime
 import threading
-from typing import List, Optional, Sequence
 import uuid
 import warnings
+from typing import List, Optional, Sequence
 
-from google.api_core import retry as api_core_retry
 import google.cloud.bigquery as bigquery
+from google.api_core import retry as api_core_retry
 
-from bigframes import constants
 import bigframes.core.events
 import bigframes.exceptions as bfe
-from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bf_io_bigquery
+from bigframes import constants
+from bigframes.session import temporary_storage
 
 _TEMP_TABLE_ID_FORMAT = "bqdf{date}_{session_id}_{random_id}"
 # UDFs older than this many days are considered stale and will be deleted

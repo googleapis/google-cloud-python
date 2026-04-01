@@ -4,20 +4,19 @@
 from __future__ import annotations
 
 import itertools
-from typing import Annotated, Any
+from typing import Annotated, Any, Optional
 from typing import Literal as LiteralType
-from typing import Optional
 
+import bigframes_vendored.ibis.expr.datashape as ds
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.deferred import Deferred  # noqa: TCH001
 from bigframes_vendored.ibis.common.grounds import Singleton
 from bigframes_vendored.ibis.common.patterns import InstanceOf, Length  # noqa: TCH001
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
-import bigframes_vendored.ibis.expr.datashape as ds
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.operations.core import Scalar, Unary, Value
 from bigframes_vendored.ibis.expr.operations.relations import Relation  # noqa: TCH001
-import bigframes_vendored.ibis.expr.rules as rlz
 from public import public
 from typing_extensions import TypeVar
 

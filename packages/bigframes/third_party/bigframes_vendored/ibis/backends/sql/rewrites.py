@@ -4,24 +4,24 @@
 
 from __future__ import annotations
 
+import operator
 from collections.abc import Mapping
 from functools import reduce
-import operator
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
+import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+import toolz
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.collections import FrozenDict  # noqa: TCH001
 from bigframes_vendored.ibis.common.deferred import var
-import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
 from bigframes_vendored.ibis.common.graph import Graph
 from bigframes_vendored.ibis.common.patterns import InstanceOf, Object, Pattern, replace
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.rewrites import d, p, replace_parameter
 from bigframes_vendored.ibis.expr.schema import Schema
 from public import public
-import toolz
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

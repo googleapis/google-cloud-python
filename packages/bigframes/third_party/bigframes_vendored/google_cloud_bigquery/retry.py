@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core import exceptions, retry
 import google.api_core.future.polling
-from google.auth import exceptions as auth_exceptions  # type: ignore
 import requests.exceptions
+from google.api_core import exceptions, retry
+from google.auth import exceptions as auth_exceptions  # type: ignore
 
 _RETRYABLE_REASONS = frozenset(
     ["rateLimitExceeded", "backendError", "internalError", "badGateway"]

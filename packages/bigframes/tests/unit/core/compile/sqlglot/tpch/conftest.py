@@ -15,8 +15,8 @@
 import datetime
 import unittest.mock as mock
 
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
 import bigframes.testing.mocks as mocks
 

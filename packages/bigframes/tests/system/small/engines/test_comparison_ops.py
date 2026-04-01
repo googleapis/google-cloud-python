@@ -16,8 +16,8 @@ import itertools
 
 import pytest
 
-from bigframes.core import array_value
 import bigframes.operations as ops
+from bigframes.core import array_value
 from bigframes.session import polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 

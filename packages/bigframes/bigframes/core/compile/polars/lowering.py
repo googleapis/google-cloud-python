@@ -18,6 +18,7 @@ from typing import cast
 import numpy as np
 import pandas as pd
 
+import bigframes.operations as ops
 from bigframes import dtypes
 from bigframes.core import bigframe_node, expression
 from bigframes.core.rewrite import op_lowering
@@ -29,7 +30,6 @@ from bigframes.operations import (
     numeric_ops,
     string_ops,
 )
-import bigframes.operations as ops
 
 # TODO: Would be more precise to actually have separate op set for polars ops (where they diverge from the original ops)
 

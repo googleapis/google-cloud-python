@@ -3,17 +3,20 @@
 from __future__ import annotations
 
 import collections
-from collections.abc import Mapping, Sequence
 import datetime
 import decimal
 import enum
-from functools import partial
 import ipaddress
 import json
+import uuid
+from collections.abc import Mapping, Sequence
+from functools import partial
 from operator import attrgetter
 from typing import Any
-import uuid
 
+import bigframes_vendored.ibis.expr.datatypes as dt
+import pyarrow as pa
+import toolz
 from bigframes_vendored.ibis.common.collections import frozendict
 from bigframes_vendored.ibis.common.dispatch import lazy_singledispatch
 from bigframes_vendored.ibis.common.exceptions import IbisTypeError, InputTypeError
@@ -24,11 +27,8 @@ from bigframes_vendored.ibis.common.temporal import (
     normalize_timedelta,
     normalize_timezone,
 )
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.datatypes.cast import highest_precedence
 from public import public
-import pyarrow as pa
-import toolz
 
 
 @lazy_singledispatch

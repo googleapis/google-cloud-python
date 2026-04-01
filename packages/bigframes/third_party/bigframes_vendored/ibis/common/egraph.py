@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import collections
-from collections.abc import Callable, Hashable, Iterable, Iterator, Mapping
 import itertools
 import math
+from collections.abc import Callable, Hashable, Iterable, Iterator, Mapping
 from typing import Any, TypeVar
 
 from bigframes_vendored.ibis.common.bases import FrozenSlotted as Slotted

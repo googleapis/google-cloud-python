@@ -20,8 +20,8 @@ from __future__ import annotations
 
 from typing import Literal, Sequence
 
-from bigframes_vendored import constants
 import bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
+from bigframes_vendored import constants
 
 from bigframes import dataframe, series
 from bigframes.core import blocks, utils

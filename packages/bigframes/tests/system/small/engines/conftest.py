@@ -14,9 +14,9 @@
 import pathlib
 from typing import Generator
 
-from google.cloud import bigquery
 import pandas as pd
 import pytest
+from google.cloud import bigquery
 
 import bigframes
 from bigframes.core import ArrayValue, events, local_data

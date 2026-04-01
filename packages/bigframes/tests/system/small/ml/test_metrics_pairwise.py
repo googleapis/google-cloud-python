@@ -15,8 +15,8 @@
 import numpy as np
 import pandas as pd
 
-from bigframes.ml import metrics
 import bigframes.pandas as bpd
+from bigframes.ml import metrics
 
 
 def test_paired_cosine_distances():

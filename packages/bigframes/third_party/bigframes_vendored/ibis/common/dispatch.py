@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import abc
-from collections import defaultdict
 import functools
 import inspect
 import re
 import sys
+from collections import defaultdict
 from typing import Union
 
 from bigframes_vendored.ibis.common.typing import (

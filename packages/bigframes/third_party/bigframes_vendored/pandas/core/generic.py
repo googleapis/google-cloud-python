@@ -1,7 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/generic.py
 from __future__ import annotations
 
-from typing import Callable, Iterator, Literal, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Iterator, Literal, Optional
 
 import bigframes_vendored.constants as constants
 from bigframes_vendored.pandas.core import indexing

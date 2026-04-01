@@ -1,5 +1,4 @@
-""" Matrix Factorization.
-"""
+"""Matrix Factorization."""
 
 # Author: Alexandre Gramfort <alexandre.gramfort@inria.fr>
 #         Olivier Grisel <olivier.grisel@ensta.org>

@@ -15,7 +15,6 @@
 """For composing estimators together. This module is styled after scikit-learn's
 pipeline module: https://scikit-learn.org/stable/modules/pipeline.html."""
 
-
 from __future__ import annotations
 
 from typing import List, Optional, Tuple
@@ -24,8 +23,9 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.pipeline
 from google.cloud import bigquery
 
-from bigframes.core.logging import log_adapter
 import bigframes.dataframe
+import bigframes.session
+from bigframes.core.logging import log_adapter
 from bigframes.ml import (
     base,
     compose,
@@ -35,7 +35,6 @@ from bigframes.ml import (
     preprocessing,
     utils,
 )
-import bigframes.session
 
 
 @log_adapter.class_logger

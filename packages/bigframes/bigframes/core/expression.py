@@ -23,10 +23,10 @@ from typing import Callable, Generator, Hashable, Mapping, TypeVar, Union
 
 import pandas as pd
 
-from bigframes import dtypes
-from bigframes.core import field
 import bigframes.core.identifiers as ids
 import bigframes.operations
+from bigframes import dtypes
+from bigframes.core import field
 
 
 def const(
@@ -71,8 +71,7 @@ class Expression(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        ...
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]: ...
 
     def remap_column_refs(
         self: TExpression,
@@ -86,8 +85,7 @@ class Expression(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def is_const(self) -> bool:
-        ...
+    def is_const(self) -> bool: ...
 
     @property
     @abc.abstractmethod
@@ -99,8 +97,7 @@ class Expression(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def output_type(self) -> dtypes.ExpressionType:
-        ...
+    def output_type(self) -> dtypes.ExpressionType: ...
 
     @abc.abstractmethod
     def bind_refs(
@@ -145,8 +142,9 @@ class Expression(abc.ABC):
         return all(expr.is_scalar_expr for expr in self.children)
 
     @abc.abstractmethod
-    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
-        ...
+    def transform_children(
+        self, t: Callable[[Expression], Expression]
+    ) -> Expression: ...
 
     def bottom_up(self, t: Callable[[Expression], Expression]) -> Expression:
         expr = self.transform_children(lambda child: child.bottom_up(t))

@@ -52,22 +52,22 @@ Using a composition of selectors this is much less tiresome:
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Mapping, Sequence
 import functools
 import inspect
 import operator
 import re
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Optional, Union
 
+import bigframes_vendored.ibis.common.exceptions as exc
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.types as ir
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.collections import frozendict  # noqa: TCH001
 from bigframes_vendored.ibis.common.deferred import Deferred, Resolver
 from bigframes_vendored.ibis.common.exceptions import IbisError
-import bigframes_vendored.ibis.common.exceptions as exc
 from bigframes_vendored.ibis.common.grounds import Singleton
 from bigframes_vendored.ibis.common.selectors import Selector
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.types as ir
 from public import public
 
 

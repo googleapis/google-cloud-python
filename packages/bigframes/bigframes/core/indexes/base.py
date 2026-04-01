@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast, Hashable, Literal, Optional, overload, Sequence, Union
+from typing import Hashable, Literal, Optional, Sequence, Union, cast, overload
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
@@ -26,8 +26,6 @@ import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas
 
-from bigframes import dtypes
-from bigframes._tools import docs
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
@@ -41,6 +39,8 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series
 import bigframes.session.execution_spec as ex_spec
+from bigframes import dtypes
+from bigframes._tools import docs
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -542,8 +542,7 @@ class Index:
     def rename(
         self,
         name: Union[blocks.Label, Sequence[blocks.Label]],
-    ) -> Index:
-        ...
+    ) -> Index: ...
 
     @overload
     def rename(
@@ -551,8 +550,7 @@ class Index:
         name: Union[blocks.Label, Sequence[blocks.Label]],
         *,
         inplace: Literal[False],
-    ) -> Index:
-        ...
+    ) -> Index: ...
 
     @overload
     def rename(
@@ -560,8 +558,7 @@ class Index:
         name: Union[blocks.Label, Sequence[blocks.Label]],
         *,
         inplace: Literal[True],
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def rename(
         self,
@@ -720,14 +717,12 @@ class Index:
         *,
         allow_large_results: Optional[bool] = ...,
         dry_run: Literal[False] = ...,
-    ) -> pandas.Index:
-        ...
+    ) -> pandas.Index: ...
 
     @overload
     def to_pandas(
         self, *, allow_large_results: Optional[bool] = ..., dry_run: Literal[True] = ...
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def to_pandas(
         self,

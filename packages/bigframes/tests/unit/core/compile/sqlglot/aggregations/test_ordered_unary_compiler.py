@@ -16,10 +16,10 @@ import typing
 
 import pytest
 
+import bigframes.pandas as bpd
 from bigframes.core import agg_expressions as agg_exprs
 from bigframes.core import array_value, identifiers, nodes, ordering
 from bigframes.operations import aggregations as agg_ops
-import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 

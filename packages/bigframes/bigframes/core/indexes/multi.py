@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import cast, Hashable, Iterable, Optional, Sequence, TYPE_CHECKING
+from typing import TYPE_CHECKING, Hashable, Iterable, Optional, Sequence, cast
 
 import bigframes_vendored.pandas.core.indexes.multi as vendored_pandas_multindex
 import pandas

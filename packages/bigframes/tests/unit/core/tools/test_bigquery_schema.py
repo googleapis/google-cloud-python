@@ -1,5 +1,5 @@
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
 from bigframes.core.tools import bigquery_schema
 

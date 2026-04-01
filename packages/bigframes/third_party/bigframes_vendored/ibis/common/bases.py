@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import collections.abc
-from typing import Any, TYPE_CHECKING
+from abc import abstractmethod
+from typing import TYPE_CHECKING, Any
 from weakref import WeakValueDictionary
 
 if TYPE_CHECKING:
@@ -128,8 +128,7 @@ class Final(Abstract):
 @collections.abc.Hashable.register
 class Hashable(Abstract):
     @abstractmethod
-    def __hash__(self) -> int:
-        ...
+    def __hash__(self) -> int: ...
 
 
 class Comparable(Abstract):
@@ -147,8 +146,7 @@ class Comparable(Abstract):
     __cache__ = {}
 
     @abstractmethod
-    def __equals__(self, other) -> bool:
-        ...
+    def __equals__(self, other) -> bool: ...
 
     def __eq__(self, other) -> bool:
         if self is other:

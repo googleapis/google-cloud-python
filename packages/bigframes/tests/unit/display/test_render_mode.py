@@ -35,13 +35,11 @@ def test_repr_mimebundle_selection_logic():
     mock_obj = mock.Mock()
 
     # Mocking dependencies
-    with mock.patch(
-        "bigframes.display.html.repr_mimebundle_head"
-    ) as mock_head, mock.patch(
-        "bigframes.display.html.get_anywidget_bundle"
-    ) as mock_anywidget, mock.patch(
-        "bigframes.display.html.repr_mimebundle_deferred"
-    ) as mock_deferred:
+    with (
+        mock.patch("bigframes.display.html.repr_mimebundle_head") as mock_head,
+        mock.patch("bigframes.display.html.get_anywidget_bundle") as mock_anywidget,
+        mock.patch("bigframes.display.html.repr_mimebundle_deferred") as mock_deferred,
+    ):
         mock_head.side_effect = lambda obj: {"text/plain": "plain", "text/html": "html"}
         mock_anywidget.return_value = (
             {

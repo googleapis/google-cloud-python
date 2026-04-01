@@ -17,21 +17,21 @@
 from __future__ import annotations
 
 import dataclasses
-from importlib import resources
 import functools
 import math
 import threading
-from typing import Any, Iterator, Optional
 import uuid
 import warnings
+from importlib import resources
+from typing import Any, Iterator, Optional
 
 import pandas as pd
 
 import bigframes
-from bigframes.core import blocks
 import bigframes.dataframe
 import bigframes.display.html
 import bigframes.dtypes as dtypes
+from bigframes.core import blocks
 
 # anywidget and traitlets are optional dependencies. We don't want the import of
 # this module to fail if they aren't installed, though. Instead, we try to
@@ -293,13 +293,13 @@ class TableWidget(_WIDGET_BASE):
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
         new_page = None
-        with self._setting_html_lock, bigframes.option_context(
-            "display.progress_bar", None
+        with (
+            self._setting_html_lock,
+            bigframes.option_context("display.progress_bar", None),
         ):
             if self._error_message:
                 self.table_html = (
-                    f"<div class='bigframes-error-message'>"
-                    f"{self._error_message}</div>"
+                    f"<div class='bigframes-error-message'>{self._error_message}</div>"
                 )
                 return
 

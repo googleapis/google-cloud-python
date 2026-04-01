@@ -17,9 +17,9 @@ from typing import Union
 
 import bigframes_vendored.sklearn.metrics.pairwise as vendored_metrics_pairwise
 
-from bigframes.ml import utils
 import bigframes.operations as ops
 import bigframes.pandas as bpd
+from bigframes.ml import utils
 
 
 def paired_cosine_distances(

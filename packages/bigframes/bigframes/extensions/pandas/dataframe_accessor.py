@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import cast, TypeVar
+from typing import TypeVar, cast
 
 import pandas
 import pandas.api.extensions
 
 import bigframes.core.global_session as bf_session
-from bigframes.core.logging import log_adapter
 import bigframes.dataframe
+import bigframes.pandas as bpd
+from bigframes.core.logging import log_adapter
 from bigframes.extensions.core.dataframe_accessor import (
     AIAccessor,
     BigQueryDataFrameAccessor,
 )
-import bigframes.pandas as bpd
 
 T = TypeVar("T", bound="pandas.DataFrame")
 S = TypeVar("S", bound="pandas.Series")

@@ -28,11 +28,11 @@ from shapely.geometry import (  # type: ignore
     Polygon,
 )
 
-from bigframes.bigquery import st_length
 import bigframes.bigquery as bbq
 import bigframes.geopandas
 import bigframes.session
 import bigframes.testing.utils
+from bigframes.bigquery import st_length
 
 
 def test_geo_st_area(session: bigframes.session.Session):
@@ -444,9 +444,7 @@ def test_geo_st_isclosed(session: bigframes.session.Session):
             GeometryCollection(),  # Empty GeometryCollection
             bigframes.geopandas.GeoSeries.from_wkt(
                 ["GEOMETRYCOLLECTION EMPTY"], session=session
-            ).iloc[
-                0
-            ],  # Also empty
+            ).iloc[0],  # Also empty
             None,  # Should be filtered out by dropna
         ],
         index=[0, 1, 2, 3, 4, 5, 6],

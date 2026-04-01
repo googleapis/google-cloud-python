@@ -5,18 +5,18 @@ Operator classes for eval.
 
 from __future__ import annotations
 
+import operator
 from datetime import datetime
 from functools import partial
-import operator
-from typing import Callable, Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Literal
 
 import bigframes_vendored.pandas.core.common as com
+import numpy as np
 from bigframes_vendored.pandas.core.computation.common import (
     ensure_decoded,
     result_type_many,
 )
 from bigframes_vendored.pandas.core.computation.scope import DEFAULT_GLOBALS
-import numpy as np
 from pandas._libs.tslibs import Timestamp
 from pandas.core.dtypes.common import is_list_like, is_scalar
 from pandas.io.formats.printing import pprint_thing, pprint_thing_encoded

@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
-from enum import auto, Enum
 import itertools
 import logging
 import typing as t
+from collections import defaultdict
+from enum import Enum, auto
 
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.errors import OptimizeError

@@ -13,7 +13,6 @@
 # limitations under the License.
 import typing
 
-from bigframes.core import bq_data
 import bigframes.core as core
 import bigframes.core.agg_expressions as agg_ex
 import bigframes.core.expression as ex
@@ -21,6 +20,7 @@ import bigframes.core.identifiers as identifiers
 import bigframes.core.nodes as nodes
 import bigframes.core.rewrite.identifiers as id_rewrite
 import bigframes.operations.aggregations as agg_ops
+from bigframes.core import bq_data
 
 
 def test_remap_variables_single_node(leaf):

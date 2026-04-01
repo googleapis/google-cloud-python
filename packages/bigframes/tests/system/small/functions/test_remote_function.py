@@ -19,21 +19,21 @@ from typing import Sequence
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
-from google.cloud import bigquery
 import pandas
 import pandas as pd
 import pyarrow
 import pytest
 import test_utils.prefixer
+from google.cloud import bigquery
 
 import bigframes
 import bigframes.clients
 import bigframes.core.events
 import bigframes.dtypes
 import bigframes.exceptions
+import bigframes.session._io.bigquery
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
-import bigframes.session._io.bigquery
 from bigframes.testing.utils import assert_frame_equal, assert_series_equal
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")
@@ -1220,8 +1220,13 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
         is_row_processor=True,
     )
 
-    assert func_ref.bigframes_remote_function == add_ints_remote.bigframes_remote_function  # type: ignore
-    assert func_ref.bigframes_bigquery_function == add_ints_remote.bigframes_bigquery_function  # type: ignore
+    assert (
+        func_ref.bigframes_remote_function == add_ints_remote.bigframes_remote_function
+    )  # type: ignore
+    assert (
+        func_ref.bigframes_bigquery_function
+        == add_ints_remote.bigframes_bigquery_function
+    )  # type: ignore
     assert func_ref.bigframes_remote_function == func_ref.bigframes_bigquery_function  # type: ignore
 
     bf_result_gbq = scalars_df[columns].apply(func_ref, axis=1).to_pandas()
@@ -1341,13 +1346,17 @@ def test_df_apply_axis_1_unsupported_dtype(session, scalars_dfs, dataset_id_perm
 
         dtype = scalars_df[column].dtype
 
-        with pytest.raises(
-            NotImplementedError,
-            match=re.escape(
-                f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ("
+        with (
+            pytest.raises(
+                NotImplementedError,
+                match=re.escape(
+                    f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ("
+                ),
             ),
-        ), pytest.warns(
-            bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
+            pytest.warns(
+                bigframes.exceptions.PreviewWarning,
+                match="axis=1 scenario is in preview.",
+            ),
         ):
             scalars_df[[column]].apply(echo_len_remote, axis=1)
 

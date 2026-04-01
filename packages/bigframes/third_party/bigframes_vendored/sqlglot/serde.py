@@ -74,13 +74,11 @@ def dump(expression: exp.Expression) -> t.List[t.Dict[str, t.Any]]:
 
 
 @t.overload
-def load(payloads: None) -> None:
-    ...
+def load(payloads: None) -> None: ...
 
 
 @t.overload
-def load(payloads: t.List[t.Dict[str, t.Any]]) -> exp.Expression:
-    ...
+def load(payloads: t.List[t.Dict[str, t.Any]]) -> exp.Expression: ...
 
 
 def load(payloads):

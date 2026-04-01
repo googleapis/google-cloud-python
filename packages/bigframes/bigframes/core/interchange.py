@@ -15,10 +15,10 @@ from __future__ import annotations
 
 import dataclasses
 import functools
-from typing import Any, Dict, Iterable, Optional, Sequence, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Optional, Sequence
 
-from bigframes.core import blocks
 import bigframes.enums
+from bigframes.core import blocks
 
 if TYPE_CHECKING:
     import bigframes.dataframe

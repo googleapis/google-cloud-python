@@ -17,13 +17,13 @@ import datetime
 import operator
 
 import numpy as np
-from packaging import version
 import pandas as pd
 import pyarrow as pa
 import pytest
+from packaging import version
 
-from bigframes import dtypes
 import bigframes.testing.utils
+from bigframes import dtypes
 
 # Some methods/features used by this test don't exist in pandas 1.x
 pytest.importorskip("pandas", minversion="2.0.0")

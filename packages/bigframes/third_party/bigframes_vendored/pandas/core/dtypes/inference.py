@@ -1,5 +1,5 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/dtypes/inference.py
-""" basic inference routines """
+"""basic inference routines"""
 
 from __future__ import annotations
 

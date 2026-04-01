@@ -18,8 +18,8 @@ import pandas as pd
 import pyarrow as pa
 
 import bigframes.features
-from bigframes.ml import preprocessing
 import bigframes.pandas as bpd
+from bigframes.ml import preprocessing
 from bigframes.testing import utils
 
 ONE_HOT_ENCODED_DTYPE = (

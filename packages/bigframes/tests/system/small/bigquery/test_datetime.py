@@ -18,8 +18,8 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from bigframes import bigquery
 import bigframes.testing.utils
+from bigframes import bigquery
 
 _TIMESTAMP_DTYPE = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
 

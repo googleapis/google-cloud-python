@@ -15,8 +15,8 @@ import datetime
 import functools
 import re
 import typing
-from typing import Hashable, Iterable, List
 import warnings
+from typing import Hashable, Iterable, List
 
 import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import numpy as np
@@ -234,7 +234,7 @@ def preview(*, name: str):
 
 
 def timedelta_to_micros(
-    timedelta: typing.Union[pd.Timedelta, datetime.timedelta, np.timedelta64]
+    timedelta: typing.Union[pd.Timedelta, datetime.timedelta, np.timedelta64],
 ) -> int:
     if isinstance(timedelta, pd.Timedelta):
         # pd.Timedelta.value returns total nanoseconds.

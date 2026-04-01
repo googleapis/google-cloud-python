@@ -102,7 +102,7 @@ def _build_struct_sql(
     struct_options: Mapping[
         str,
         Union[str, int, float, bool, Mapping[str, str], List[str], Mapping[str, Any]],
-    ]
+    ],
 ) -> str:
     if not struct_options:
         return ""
@@ -180,9 +180,9 @@ def explain_predict(
     if threshold is not None:
         struct_options["threshold"] = threshold
     if integrated_gradients_num_steps is not None:
-        struct_options[
-            "integrated_gradients_num_steps"
-        ] = integrated_gradients_num_steps
+        struct_options["integrated_gradients_num_steps"] = (
+            integrated_gradients_num_steps
+        )
     if approx_feature_contrib is not None:
         struct_options["approx_feature_contrib"] = approx_feature_contrib
 

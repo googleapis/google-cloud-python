@@ -8,7 +8,7 @@ from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.errors import OptimizeError
 from bigframes_vendored.sqlglot.helper import while_changing
 from bigframes_vendored.sqlglot.optimizer.scope import find_all_in_scope
-from bigframes_vendored.sqlglot.optimizer.simplify import flatten, Simplifier
+from bigframes_vendored.sqlglot.optimizer.simplify import Simplifier, flatten
 
 logger = logging.getLogger("sqlglot")
 

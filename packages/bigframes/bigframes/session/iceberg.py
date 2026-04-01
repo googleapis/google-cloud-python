@@ -16,16 +16,16 @@ from __future__ import annotations
 
 import datetime
 import json
-from typing import List
 import urllib.parse
+from typing import List
 
 import google.auth.transport.requests
 import google.cloud.bigquery as bq
 import pyiceberg
-from pyiceberg.catalog import load_catalog
 import pyiceberg.schema
 import pyiceberg.types
 import requests
+from pyiceberg.catalog import load_catalog
 
 from bigframes.core import bq_data
 
@@ -98,7 +98,9 @@ def _extract_location_from_catalog_extension_data(data):
 
 
 class SchemaVisitor(pyiceberg.schema.SchemaVisitorPerPrimitiveType[bq.SchemaField]):
-    def schema(self, schema: pyiceberg.schema.Schema, struct_result: bq.SchemaField) -> tuple[bq.SchemaField, ...]:  # type: ignore
+    def schema(
+        self, schema: pyiceberg.schema.Schema, struct_result: bq.SchemaField
+    ) -> tuple[bq.SchemaField, ...]:  # type: ignore
         return tuple(f for f in struct_result.fields)
 
     def struct(

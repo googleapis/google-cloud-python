@@ -15,16 +15,16 @@ from __future__ import annotations
 
 from typing import Literal, Optional, Tuple
 
-from google.cloud import bigquery
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
+from google.cloud import bigquery
 
-from bigframes.core import compile, nodes
 import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
 import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 import bigframes.core.events
-from bigframes.session import executor, semi_executor
 import bigframes.session._io.bigquery as bq_io
+from bigframes.core import compile, nodes
+from bigframes.session import executor, semi_executor
 
 
 # used only in testing right now, BigQueryCachingExecutor is the fully featured engine

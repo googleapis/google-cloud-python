@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.schema as sch
-from bigframes_vendored.ibis.formats import SchemaMapper, TypeMapper
 import numpy as np
 import toolz
+from bigframes_vendored.ibis.formats import SchemaMapper, TypeMapper
 
 _from_numpy_types = toolz.keymap(
     np.dtype,

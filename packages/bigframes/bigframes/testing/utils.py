@@ -19,18 +19,18 @@ from typing import Iterable, Optional, Sequence, Set, TypeVar, Union
 
 import geopandas as gpd  # type: ignore
 import google.api_core.operation
-from google.cloud import bigquery, functions_v2
-from google.cloud.functions_v2.types import functions
 import numpy as np
 import pandas as pd
 import pandas.api.types as pd_types
 import pyarrow as pa  # type: ignore
 import pytest
+from google.cloud import bigquery, functions_v2
+from google.cloud.functions_v2.types import functions
 
-from bigframes import operations as ops
-from bigframes.core import expression as ex
 import bigframes.functions._utils as bff_utils
 import bigframes.pandas as bpd
+from bigframes import operations as ops
+from bigframes.core import expression as ex
 
 ML_REGRESSION_METRICS = [
     "mean_absolute_error",
@@ -428,9 +428,9 @@ def get_cloud_functions(
 ) -> Iterable[functions.ListFunctionsResponse]:
     """Get the cloud functions in the given project and location."""
 
-    assert (
-        not name or not name_prefix
-    ), "Either 'name' or 'name_prefix' can be passed but not both."
+    assert not name or not name_prefix, (
+        "Either 'name' or 'name_prefix' can be passed but not both."
+    )
 
     _, location = bff_utils.get_remote_function_locations(location)
     parent = f"projects/{project}/locations/{location}"

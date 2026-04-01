@@ -19,8 +19,8 @@ import tempfile
 import textwrap
 import time
 import typing
-from typing import List, Optional, Sequence
 import warnings
+from typing import List, Optional, Sequence
 
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 import db_dtypes  # type:ignore
@@ -1911,7 +1911,8 @@ def test_read_parquet_gcs(
     df_out = (
         session.read_parquet(read_path, engine=engine)
         # Restore order.
-        .set_index(df_write.index.name).sort_index()
+        .set_index(df_write.index.name)
+        .sort_index()
         # Restore index.
         .set_index(typing.cast(str, df_in.index.name))
     )
@@ -1962,7 +1963,8 @@ def test_read_parquet_gcs_compressed(
     df_out = (
         session.read_parquet(path, engine="bigquery")
         # Restore order.
-        .set_index(df_write.index.name).sort_index()
+        .set_index(df_write.index.name)
+        .sort_index()
         # Restore index.
         .set_index(typing.cast(str, df_in.index.name))
     )

@@ -14,8 +14,8 @@
 
 from unittest import mock
 
-from bigframes.core.logging import data_types
 import bigframes.session._io.bigquery as bq_io
+from bigframes.core.logging import data_types
 
 
 def test_data_type_logging(scalars_df_index):

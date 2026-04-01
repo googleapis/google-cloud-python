@@ -1,7 +1,7 @@
 # Contains code from https://github.com/tobymao/sqlglot/blob/v28.5.0/sqlglot/trie.py
 
-from enum import auto, Enum
 import typing as t
+from enum import Enum, auto
 
 key = t.Sequence[t.Hashable]
 

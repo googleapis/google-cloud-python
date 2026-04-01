@@ -24,10 +24,10 @@ import bigframes_vendored.sklearn.linear_model._base
 import bigframes_vendored.sklearn.linear_model._logistic
 from google.cloud import bigquery
 
-from bigframes.core.logging import log_adapter
-from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import bigframes.session
+from bigframes.core.logging import log_adapter
+from bigframes.ml import base, core, globals, utils
 
 _BQML_PARAMS_MAPPING = {
     "optimize_strategy": "optimizationStrategy",

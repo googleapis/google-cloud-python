@@ -22,8 +22,9 @@ LARGE_TABLE_OPTION = "compute.allow_large_results"
 
 
 def test_to_pandas_batches_raise_when_large_result_not_allowed(session):
-    with bigframes.option_context(LARGE_TABLE_OPTION, False), pytest.raises(
-        google.api_core.exceptions.Forbidden
+    with (
+        bigframes.option_context(LARGE_TABLE_OPTION, False),
+        pytest.raises(google.api_core.exceptions.Forbidden),
     ):
         df = session.read_gbq(WIKIPEDIA_TABLE)
         next(df.to_pandas_batches(page_size=500, max_results=1500))
@@ -59,8 +60,9 @@ def test_to_pandas_batches_override_global_option(
 
 
 def test_to_pandas_raise_when_large_result_not_allowed(session):
-    with bigframes.option_context(LARGE_TABLE_OPTION, False), pytest.raises(
-        google.api_core.exceptions.Forbidden
+    with (
+        bigframes.option_context(LARGE_TABLE_OPTION, False),
+        pytest.raises(google.api_core.exceptions.Forbidden),
     ):
         df = session.read_gbq(WIKIPEDIA_TABLE)
         next(df.to_pandas())

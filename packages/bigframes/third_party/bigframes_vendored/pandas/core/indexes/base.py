@@ -1,8 +1,8 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexes/base.py
 from __future__ import annotations
 
-from collections.abc import Hashable
 import typing
+from collections.abc import Hashable
 
 import bigframes
 from bigframes import constants

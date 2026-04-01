@@ -339,7 +339,7 @@ class BooleanColumn(NumericColumn, BooleanValue):
         │ np.False_ │
         └───────────┘
         """
-        from bigframes_vendored.ibis.common.deferred import _, Call, Deferred
+        from bigframes_vendored.ibis.common.deferred import Call, Deferred, _
 
         parents = self.op().relations
 

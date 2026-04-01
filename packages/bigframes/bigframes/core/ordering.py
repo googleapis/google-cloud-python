@@ -14,9 +14,9 @@
 
 from __future__ import annotations
 
+import typing
 from dataclasses import dataclass, field
 from enum import Enum
-import typing
 from typing import Callable, Mapping, Optional, Sequence, Set, Union
 
 import bigframes.core.expression as expression
@@ -341,15 +341,13 @@ class TotalOrdering(RowOrdering):
     def join(
         self,
         other: TotalOrdering,
-    ) -> TotalOrdering:
-        ...
+    ) -> TotalOrdering: ...
 
     @typing.overload
     def join(
         self,
         other: RowOrdering,
-    ) -> RowOrdering:
-        ...
+    ) -> RowOrdering: ...
 
     def join(
         self,

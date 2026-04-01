@@ -18,10 +18,10 @@ from typing import Mapping, Optional, Union
 
 import pandas as pd
 
-from bigframes.bigquery._operations.table import _get_table_metadata
 import bigframes.core.compile.sqlglot.sql as sql
 import bigframes.core.logging.log_adapter as log_adapter
 import bigframes.session
+from bigframes.bigquery._operations.table import _get_table_metadata
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_io")

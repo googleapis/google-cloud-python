@@ -1,6 +1,6 @@
 # Contains code from https://github.com/tobymao/sqlglot/blob/v28.5.0/sqlglot/optimizer/eliminate_ctes.py
 
-from bigframes_vendored.sqlglot.optimizer.scope import build_scope, Scope
+from bigframes_vendored.sqlglot.optimizer.scope import Scope, build_scope
 
 
 def eliminate_ctes(expression):

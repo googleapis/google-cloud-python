@@ -7,18 +7,18 @@ import typing as t
 
 from bigframes_vendored.sqlglot import alias, exp
 from bigframes_vendored.sqlglot.dialects.dialect import Dialect, DialectType
-from bigframes_vendored.sqlglot.errors import highlight_sql, OptimizeError
+from bigframes_vendored.sqlglot.errors import OptimizeError, highlight_sql
 from bigframes_vendored.sqlglot.helper import seq_get
 from bigframes_vendored.sqlglot.optimizer.annotate_types import TypeAnnotator
 from bigframes_vendored.sqlglot.optimizer.resolver import Resolver
 from bigframes_vendored.sqlglot.optimizer.scope import (
-    build_scope,
     Scope,
+    build_scope,
     traverse_scope,
     walk_in_scope,
 )
 from bigframes_vendored.sqlglot.optimizer.simplify import simplify_parens
-from bigframes_vendored.sqlglot.schema import ensure_schema, Schema
+from bigframes_vendored.sqlglot.schema import Schema, ensure_schema
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot._typing import E

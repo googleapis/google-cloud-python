@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import bigframes_vendored.sqlglot.expressions as sge
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
 from bigframes.core.compile.sqlglot.sql import base, dml
 

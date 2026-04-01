@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import contextlib
-from functools import singledispatch
 import operator
+from functools import singledispatch
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.api as api
@@ -12,11 +12,11 @@ import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.schema as sch
 import bigframes_vendored.ibis.expr.types as ibis_types
 import bigframes_vendored.ibis.expr.types as ir
-from bigframes_vendored.ibis.util import experimental
 import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 import bigframes_vendored.sqlglot.optimizer as sgo
 import bigframes_vendored.sqlglot.planner as sgp
+from bigframes_vendored.ibis.util import experimental
 from public import public
 
 

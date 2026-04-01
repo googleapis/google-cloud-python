@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import bigframes_vendored.pandas.core.reshape.pivot as vendored_pandas_pivot
 import pandas as pd

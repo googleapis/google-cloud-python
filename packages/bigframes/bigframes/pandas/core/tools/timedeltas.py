@@ -14,11 +14,11 @@
 
 import typing
 
+import pandas as pd
+import pandas.api.types as pdtypes
 from bigframes_vendored.pandas.core.tools import (
     timedeltas as vendored_pandas_timedeltas,
 )
-import pandas as pd
-import pandas.api.types as pdtypes
 
 from bigframes import operations as ops
 from bigframes import series, session

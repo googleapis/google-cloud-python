@@ -3,15 +3,15 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator, Mapping
-from typing import Any, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Union
 
+import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.collections import FrozenOrderedDict, MapSet
 from bigframes_vendored.ibis.common.dispatch import lazy_singledispatch
 from bigframes_vendored.ibis.common.exceptions import InputTypeError, IntegrityError
 from bigframes_vendored.ibis.common.grounds import Concrete
 from bigframes_vendored.ibis.common.patterns import Coercible
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.util import indent
 
 if TYPE_CHECKING:

@@ -24,15 +24,15 @@ import threading
 import typing
 from typing import Any, Iterator, List, Literal, Optional, Sequence, Tuple, Union
 
-from google.cloud import bigquery_storage_v1
 import google.cloud.bigquery as bq
 import google.cloud.bigquery_storage_v1.types as bq_storage_types
-from google.protobuf import timestamp_pb2
 import pyarrow as pa
+from google.cloud import bigquery_storage_v1
+from google.protobuf import timestamp_pb2
 
 import bigframes.constants
-from bigframes.core import pyarrow_utils
 import bigframes.core.schema
+from bigframes.core import pyarrow_utils
 
 if typing.TYPE_CHECKING:
     import bigframes.core.ordering as orderings

@@ -3,16 +3,16 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Generic, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeVar
 
-from bigframes_vendored.ibis.util import indent, PseudoHashable
+from bigframes_vendored.ibis.util import PseudoHashable, indent
 
 if TYPE_CHECKING:
-    from bigframes_vendored.ibis.expr.datatypes import DataType
-    from bigframes_vendored.ibis.expr.schema import Schema
     import pandas as pd
     import polars as pl
     import pyarrow as pa
+    from bigframes_vendored.ibis.expr.datatypes import DataType
+    from bigframes_vendored.ibis.expr.schema import Schema
 
 C = TypeVar("C")
 T = TypeVar("T")

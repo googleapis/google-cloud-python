@@ -18,10 +18,10 @@ import typing
 
 import bigframes_vendored.sqlglot.expressions as sge
 
-from bigframes.core import window_spec
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
-from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
 import bigframes.core.compile.sqlglot.expressions.typed_expr as typed_expr
+from bigframes.core import window_spec
+from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
 from bigframes.operations import aggregations as agg_ops
 
 BINARY_OP_REGISTRATION = reg.OpRegistration()

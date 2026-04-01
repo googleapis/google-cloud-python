@@ -7,18 +7,18 @@ import collections.abc
 import functools
 import importlib.metadata
 import keyword
-from pathlib import Path
 import re
-from typing import Any, ClassVar, TYPE_CHECKING
 import urllib.parse
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.caching import RefCountedCache
 import bigframes_vendored.ibis.common.exceptions as exc
 import bigframes_vendored.ibis.config
 import bigframes_vendored.ibis.expr.operations as ops
 import bigframes_vendored.ibis.expr.types as ir
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.caching import RefCountedCache
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Mapping, MutableMapping

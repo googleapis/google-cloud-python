@@ -21,9 +21,9 @@ import pandas.testing
 import pytest
 
 import bigframes
+import bigframes.operations.ai
 from bigframes import dataframe, dtypes
 from bigframes.ml import llm
-import bigframes.operations.ai
 from bigframes.testing import utils
 
 AI_OP_EXP_OPTION = "experiments.ai_operators"
@@ -86,8 +86,9 @@ def test_experiment_off_raise_error(session, func, kwargs):
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}, session=session
     )
 
-    with bigframes.option_context(AI_OP_EXP_OPTION, False), pytest.raises(
-        NotImplementedError
+    with (
+        bigframes.option_context(AI_OP_EXP_OPTION, False),
+        pytest.raises(NotImplementedError),
     ):
         func(df.ai, **kwargs)
 
@@ -203,12 +204,15 @@ def test_classify_invalid_labels_raise_error(session, labels):
         ),
     )
 
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        50,
-    ), pytest.raises(ValueError):
+    with (
+        bigframes.option_context(
+            AI_OP_EXP_OPTION,
+            True,
+            THRESHOLD_OPTION,
+            50,
+        ),
+        pytest.raises(ValueError),
+    ):
         df.ai.classify("classify {col}", model=model, labels=labels)
 
 

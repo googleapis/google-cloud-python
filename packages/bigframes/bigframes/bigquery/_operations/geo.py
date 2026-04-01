@@ -19,10 +19,10 @@ from typing import Mapping, Optional, Union
 
 import shapely  # type: ignore
 
-from bigframes import operations as ops
 import bigframes.dataframe
 import bigframes.geopandas
 import bigframes.series
+from bigframes import operations as ops
 
 """
 Search functions defined from

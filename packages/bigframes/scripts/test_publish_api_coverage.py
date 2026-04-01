@@ -15,8 +15,8 @@
 import sys
 
 import pandas
-from publish_api_coverage import build_api_coverage_table
 import pytest
+from publish_api_coverage import build_api_coverage_table
 
 pytest.importorskip("sklearn")
 

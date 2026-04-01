@@ -1,5 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/io/common.py
 """Common IO api utilities"""
+
 from __future__ import annotations
 
 from collections import defaultdict

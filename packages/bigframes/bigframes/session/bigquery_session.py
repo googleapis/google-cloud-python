@@ -17,17 +17,17 @@ from __future__ import annotations
 import datetime
 import logging
 import threading
-from typing import Callable, Optional, Sequence
 import uuid
+from typing import Callable, Optional, Sequence
 
 # TODO: Non-ibis implementation
 import bigframes_vendored.ibis.backends.bigquery.datatypes as ibis_bq
 import google.cloud.bigquery as bigquery
 
-from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.events
-from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bfbqio
+from bigframes.core.compile.sqlglot import sql as sg_sql
+from bigframes.session import temporary_storage
 
 KEEPALIVE_QUERY_TIMEOUT_SECONDS = 5.0
 

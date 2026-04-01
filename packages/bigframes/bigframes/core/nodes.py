@@ -22,22 +22,22 @@ import typing
 from typing import (
     AbstractSet,
     Callable,
-    cast,
     Iterable,
     Mapping,
     Optional,
     Sequence,
     Tuple,
+    cast,
 )
 
-from bigframes.core import agg_expressions, bq_data, identifiers, local_data, sequences
-from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET
 import bigframes.core.expression as ex
-from bigframes.core.field import Field
-from bigframes.core.ordering import OrderingExpression, RowOrdering
 import bigframes.core.slices as slices
 import bigframes.core.window_spec as window
 import bigframes.dtypes
+from bigframes.core import agg_expressions, bq_data, identifiers, local_data, sequences
+from bigframes.core.bigframe_node import COLUMN_SET, BigFrameNode
+from bigframes.core.field import Field
+from bigframes.core.ordering import OrderingExpression, RowOrdering
 
 if typing.TYPE_CHECKING:
     import bigframes.core.ordering as orderings
@@ -69,17 +69,14 @@ class AdditiveNode:
 
     @property
     @abc.abstractmethod
-    def added_fields(self) -> Tuple[Field, ...]:
-        ...
+    def added_fields(self) -> Tuple[Field, ...]: ...
 
     @property
     @abc.abstractmethod
-    def additive_base(self) -> BigFrameNode:
-        ...
+    def additive_base(self) -> BigFrameNode: ...
 
     @abc.abstractmethod
-    def replace_additive_base(self, BigFrameNode) -> BigFrameNode:
-        ...
+    def replace_additive_base(self, BigFrameNode) -> BigFrameNode: ...
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -322,9 +319,9 @@ class JoinNode(BigFrameNode):
     propogate_order: bool
 
     def _validate(self):
-        assert not (
-            set(self.left_child.ids) & set(self.right_child.ids)
-        ), "Join ids collide"
+        assert not (set(self.left_child.ids) & set(self.right_child.ids)), (
+            "Join ids collide"
+        )
 
     @property
     def row_preserving(self) -> bool:

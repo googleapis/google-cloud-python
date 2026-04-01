@@ -31,8 +31,7 @@ def concat(
     axis: typing.Literal["index", 0] = ...,
     join=...,
     ignore_index=...,
-) -> bigframes.series.Series:
-    ...
+) -> bigframes.series.Series: ...
 
 
 @typing.overload
@@ -42,8 +41,7 @@ def concat(
     axis: typing.Literal["index", 0] = ...,
     join=...,
     ignore_index=...,
-) -> bigframes.dataframe.DataFrame:
-    ...
+) -> bigframes.dataframe.DataFrame: ...
 
 
 @typing.overload
@@ -53,8 +51,7 @@ def concat(
     axis: typing.Literal["columns", 1],
     join=...,
     ignore_index=...,
-) -> bigframes.dataframe.DataFrame:
-    ...
+) -> bigframes.dataframe.DataFrame: ...
 
 
 @typing.overload
@@ -64,8 +61,7 @@ def concat(
     axis=...,
     join=...,
     ignore_index=...,
-) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
-    ...
+) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]: ...
 
 
 def concat(

@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import abc
-from typing import Generic, Iterable, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Generic, Iterable, TypeVar
 
 if TYPE_CHECKING:
     import bigframes.dataframe

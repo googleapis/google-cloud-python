@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
+from bigframes.operations import base_ops
 
 AndOp = base_ops.create_binary_op(name="and", type_signature=op_typing.LOGICAL)
 and_op = AndOp()

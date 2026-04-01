@@ -23,11 +23,11 @@ import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 import pyarrow as pa
 
+import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 from bigframes import dtypes
 from bigframes.core import guid, local_data, schema
 from bigframes.core.compile.sqlglot import sql
 from bigframes.core.compile.sqlglot.expressions import typed_expr
-import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 
 # shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
 try:
@@ -289,9 +289,9 @@ class SQLGlotIR:
         uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds a SQLGlot expression by unioning of multiple select expressions."""
-        assert (
-            len(list(selects)) >= 2
-        ), f"At least two select expressions must be provided, but got {selects}."
+        assert len(list(selects)) >= 2, (
+            f"At least two select expressions must be provided, but got {selects}."
+        )
         union_expr: sge.Query = selects[0].subquery()
         for select in selects[1:]:
             union_expr = sge.Union(

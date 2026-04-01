@@ -14,14 +14,14 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any, Hashable, Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Hashable, Literal
 
 import bigframes_vendored.pandas.core.col as pd_col
 
-from bigframes.core import agg_expressions, window_spec
 import bigframes.core.expression as bf_expression
 import bigframes.operations as bf_ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes.core import agg_expressions, window_spec
 
 if TYPE_CHECKING:
     import bigframes.operations.datetimes as datetimes

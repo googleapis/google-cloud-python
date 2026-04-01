@@ -14,8 +14,8 @@
 
 import pytest
 
-from bigframes.core import array_value, nodes, ordering
 import bigframes.operations as bf_ops
+from bigframes.core import array_value, nodes, ordering
 from bigframes.session import polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 

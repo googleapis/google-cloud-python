@@ -9,11 +9,10 @@ from google.cloud import bigquery
 
 def preprocess_csv(input_file_path, output_file_path):
     try:
-        with open(
-            input_file_path, mode="r", newline="", encoding="utf-8"
-        ) as infile, open(
-            output_file_path, mode="w", newline="", encoding="utf-8"
-        ) as outfile:
+        with (
+            open(input_file_path, mode="r", newline="", encoding="utf-8") as infile,
+            open(output_file_path, mode="w", newline="", encoding="utf-8") as outfile,
+        ):
             reader = csv.reader(infile, delimiter="|")
             writer = csv.writer(outfile, delimiter="|")
 

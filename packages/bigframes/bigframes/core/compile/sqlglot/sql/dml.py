@@ -51,7 +51,7 @@ def replace(
 
 
 def _as_from_item(
-    query_or_table: typing.Union[sge.Select, sge.Table]
+    query_or_table: typing.Union[sge.Select, sge.Table],
 ) -> typing.Union[sge.Subquery, sge.Table]:
     if isinstance(query_or_table, sge.Select):
         return query_or_table.subquery()

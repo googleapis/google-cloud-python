@@ -15,9 +15,9 @@
 import os
 import re
 
-from google.cloud import bigquery
 import pandas as pd
 import pytest
+from google.cloud import bigquery
 
 TPCH_PATH = "third_party/bigframes_vendored/tpch"
 PROJECT_ID = "bigframes-dev-perf"

@@ -6,14 +6,14 @@ from __future__ import annotations
 
 import functools
 
-from bigframes_vendored.ibis.backends.bigquery.datatypes import (
-    BigQuerySchema,
-    BigQueryType,
-)
 import bigframes_vendored.ibis.common.exceptions as com
 import bigframes_vendored.ibis.expr.datatypes as dt
 import google.cloud.bigquery as bq
 import pandas as pd
+from bigframes_vendored.ibis.backends.bigquery.datatypes import (
+    BigQuerySchema,
+    BigQueryType,
+)
 
 NATIVE_PARTITION_COL = "_PARTITIONTIME"
 

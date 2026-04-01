@@ -6,12 +6,12 @@ from __future__ import annotations
 
 __version__ = "9.2.0"
 
-from typing import Any
 import warnings
+from typing import Any
 
+import bigframes_vendored.ibis.backends.bigquery as bigquery
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.backends import BaseBackend
-import bigframes_vendored.ibis.backends.bigquery as bigquery
 from bigframes_vendored.ibis.common.exceptions import IbisError
 from bigframes_vendored.ibis.config import options
 from bigframes_vendored.ibis.expr import api

@@ -7,8 +7,8 @@
 #          Joel Nothman <joel.nothman@gmail.com>
 # License: BSD 3 clause
 
-from bigframes import constants
 import bigframes.pandas as bpd
+from bigframes import constants
 
 
 def paired_cosine_distances(X, Y) -> bpd.DataFrame:

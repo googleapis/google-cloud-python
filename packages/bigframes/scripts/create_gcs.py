@@ -16,12 +16,12 @@
 # bigframes.streaming testing if they don't already exist
 
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import google.cloud.exceptions as exceptions
-from google.cloud.storage import transfer_manager
 import google.cloud.storage as gcs
+from google.cloud.storage import transfer_manager
 
 PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT")
 

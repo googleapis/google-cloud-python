@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import inspect
 import typing
-from typing import Literal, overload, Tuple, Union
+from typing import Literal, Tuple, Union, overload
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.metrics._classification as vendored_metrics_classification
@@ -28,8 +28,8 @@ import bigframes_vendored.sklearn.metrics._regression as vendored_metrics_regres
 import numpy as np
 import pandas as pd
 
-from bigframes.ml import utils
 import bigframes.pandas as bpd
+from bigframes.ml import utils
 
 
 def r2_score(
@@ -268,8 +268,7 @@ def precision_score(
     *,
     pos_label: int | float | bool | str = ...,
     average: Literal["binary"] = ...,
-) -> float:
-    ...
+) -> float: ...
 
 
 @overload
@@ -279,8 +278,7 @@ def precision_score(
     *,
     pos_label: int | float | bool | str = ...,
     average: None = ...,
-) -> pd.Series:
-    ...
+) -> pd.Series: ...
 
 
 def precision_score(

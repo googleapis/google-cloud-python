@@ -6,10 +6,10 @@ import collections
 from keyword import iskeyword
 from typing import TYPE_CHECKING
 
+import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.common.deferred import deferrable
 from bigframes_vendored.ibis.common.exceptions import IbisError
-import bigframes_vendored.ibis.expr.operations as ops
-from bigframes_vendored.ibis.expr.types.generic import Column, literal, Scalar, Value
+from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value, literal
 from public import public
 
 if TYPE_CHECKING:

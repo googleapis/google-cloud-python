@@ -7,10 +7,10 @@ from __future__ import annotations
 import numbers  # noqa: TCH003
 from typing import Literal
 
-from bigframes_vendored.ibis.common.annotations import attribute, ValidationError
-from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
+from bigframes_vendored.ibis.common.annotations import ValidationError, attribute
+from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 from bigframes_vendored.ibis.expr.operations.core import Column, Value
 from public import public
 

@@ -53,7 +53,10 @@ def eval(df: dataframe.DataFrame, expr: str, target: Optional[dataframe.DataFram
     }
     # 3 Levels: user -> logging wrapper -> dataframe -> eval helper (this)
     return vendored_pandas_eval.eval(
-        expr=expr, level=3, target=target, resolvers=(index_resolver, column_resolver)  # type: ignore
+        expr=expr,
+        level=3,
+        target=target,
+        resolvers=(index_resolver, column_resolver),  # type: ignore
     )
 
 

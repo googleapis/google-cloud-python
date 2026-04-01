@@ -20,16 +20,16 @@ import html
 import json
 import traceback
 import typing
-from typing import Any, Union
 import warnings
+from typing import Any, Union
 
 import pandas as pd
 import pandas.api.types
 
 import bigframes
+import bigframes.formatting_helpers as formatter
 from bigframes._config import display_options, options
 from bigframes.display import plaintext
-import bigframes.formatting_helpers as formatter
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -181,7 +181,7 @@ def _obj_ref_rt_to_html(obj_ref_rt: str) -> str:
             url = obj_ref_rt_json["access_urls"]["read_url"]
             return f'<img src="{url}"{size_str}>'
 
-    return f'uri: {obj_ref_rt_json["objectref"]["uri"]}, authorizer: {obj_ref_rt_json["objectref"]["authorizer"]}'
+    return f"uri: {obj_ref_rt_json['objectref']['uri']}, authorizer: {obj_ref_rt_json['objectref']['authorizer']}"
 
 
 def create_html_representation(

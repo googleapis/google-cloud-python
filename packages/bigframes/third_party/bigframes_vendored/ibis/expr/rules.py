@@ -5,13 +5,13 @@ from __future__ import annotations
 from itertools import product, starmap
 from typing import Optional
 
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.grounds import Concrete
 from bigframes_vendored.ibis.common.patterns import CoercionError, NoMatch, Pattern
 from bigframes_vendored.ibis.common.temporal import IntervalUnit
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.operations as ops
 from public import public
 
 

@@ -1,7 +1,7 @@
 # Contains code from https://github.com/pola-rs/tpch/blob/main/queries/pandas/q1.py
 
-from datetime import datetime
 import typing
+from datetime import datetime
 
 import bigframes
 import bigframes.pandas as bpd
