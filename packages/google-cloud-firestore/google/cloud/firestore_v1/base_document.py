@@ -392,7 +392,7 @@ class BaseDocumentReference(Generic[C]):
             mask = None
 
         if self._client is None:
-            raise ValueError("A batch requires a `client`.")
+            raise ValueError("A get requires a `client`.")
         request = {
             "database": self._client._database_string,
             "documents": [self._document_path],
