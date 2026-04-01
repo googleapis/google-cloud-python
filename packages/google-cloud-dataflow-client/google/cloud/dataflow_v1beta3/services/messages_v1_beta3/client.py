@@ -106,8 +106,8 @@ class MessagesV1Beta3ClientMeta(type):
 
 
 class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
-    """The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    """The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
     """
 
     @staticmethod

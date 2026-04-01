@@ -59,7 +59,8 @@ class Backup(proto.Message):
             Output only. Type of backup, manually created
             or created by a backup policy.
         source_volume (str):
-            Volume full name of this backup belongs to. Format:
+            Volume full name of this backup belongs to. Either
+            source_volume or ontap_source should be provided. Format:
             ``projects/{projects_id}/locations/{location}/volumes/{volume_id}``
         source_snapshot (str):
             If specified, backup will be created from the given

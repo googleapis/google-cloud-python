@@ -113,7 +113,6 @@ class MetricStructuredName(proto.Message):
 
 class MetricUpdate(proto.Message):
     r"""Describes the state of a metric.
-    Next ID: 14
 
     Attributes:
         name (google.cloud.dataflow_v1beta3.types.MetricStructuredName):
@@ -161,6 +160,12 @@ class MetricUpdate(proto.Message):
             Worker-computed aggregate value for the
             "Trie" aggregation kind.  The only possible
             value type is a BoundedTrieNode.
+        bounded_trie (google.protobuf.struct_pb2.Value):
+            Worker-computed aggregate value for the "Trie" aggregation
+            kind. The only possible value type is a BoundedTrieNode.
+            Introduced this field to avoid breaking older SDKs when
+            Dataflow service starts to populate the ``bounded_trie``
+            field.
         distribution (google.protobuf.struct_pb2.Value):
             A struct value describing properties of a
             distribution of numeric values.
@@ -215,6 +220,11 @@ class MetricUpdate(proto.Message):
     trie: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=13,
+        message=struct_pb2.Value,
+    )
+    bounded_trie: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=14,
         message=struct_pb2.Value,
     )
     distribution: struct_pb2.Value = proto.Field(
