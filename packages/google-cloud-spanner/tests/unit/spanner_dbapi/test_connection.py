@@ -355,6 +355,61 @@ class TestConnection(unittest.TestCase):
         with pytest.raises(ValueError):
             connection.commit()
 
+    def test_retry_aborts_internally_defaults_true(self):
+        connection = self._make_connection()
+        self.assertTrue(connection.retry_aborts_internally)
+
+    def test_retry_aborts_internally_set_false(self):
+        connection = self._make_connection(retry_aborts_internally=False)
+        self.assertFalse(connection.retry_aborts_internally)
+
+    def test_retry_aborts_internally_setter(self):
+        connection = self._make_connection()
+        connection.retry_aborts_internally = False
+        self.assertFalse(connection.retry_aborts_internally)
+
+    def test_retry_aborts_internally_setter_while_transaction_active(self):
+        connection = self._make_connection()
+        connection._spanner_transaction_started = True
+        with pytest.raises(ValueError, match="retry_aborts_internally can't be changed"):
+            connection.retry_aborts_internally = False
+
+    def test_commit_retries_internally_when_enabled(self):
+        from google.api_core.exceptions import Aborted
+
+        self._under_test._transaction = mock_transaction = mock.MagicMock()
+        self._under_test._spanner_transaction_started = True
+        mock_transaction.commit = mock.MagicMock(
+            side_effect=[Aborted("aborted"), None]
+        )
+        self._under_test._retry_aborts_internally = True
+
+        with mock.patch.object(
+            self._under_test._transaction_helper, "retry_transaction"
+        ) as mock_retry, mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection._release_session"
+        ):
+            self._under_test.commit()
+
+        mock_retry.assert_called_once()
+
+    def test_commit_raises_retry_aborted_when_internal_retry_disabled(self):
+        from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_dbapi.exceptions import RetryAborted
+
+        self._under_test._transaction = mock_transaction = mock.MagicMock()
+        self._under_test._spanner_transaction_started = True
+        mock_transaction.commit = mock.MagicMock(
+            side_effect=Aborted("aborted")
+        )
+        self._under_test._retry_aborts_internally = False
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection._release_session"
+        ):
+            with pytest.raises(RetryAborted, match="aborted"):
+                self._under_test.commit()
+
     @mock.patch.object(warnings, "warn")
     def test_rollback_spanner_transaction_not_started(self, mock_warn):
         self._under_test._spanner_transaction_started = False
@@ -881,6 +936,31 @@ class TestConnection(unittest.TestCase):
             client_options={"api_endpoint": "none"},
         )
         self.assertTrue(connection.database is None)
+
+    def test_connect_retry_aborts_internally_default(self):
+        from google.cloud.spanner_dbapi import connect
+
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
+        self.assertTrue(connection.retry_aborts_internally)
+
+    def test_connect_retry_aborts_internally_false(self):
+        from google.cloud.spanner_dbapi import connect
+
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+            retry_aborts_internally=False,
+        )
+        self.assertFalse(connection.retry_aborts_internally)
 
 
 def exit_ctx_func(self, exc_type, exc_value, traceback):
