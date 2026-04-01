@@ -629,10 +629,13 @@ class _BasePipeline:
 
     def update(self, *transformed_fields: "Selectable") -> "_BasePipeline":
         """
-        Updates the documents with the given transformations.
+        Performs an update operation using documents from previous stages.
 
-        This method updates the documents in place based on the data flowing through the pipeline.
-        To specify transformations, use `*transformed_fields`.
+        If called without `transformed_fields`, this method updates the documents in
+        place based on the data flowing through the pipeline.
+
+        To update specific fields with new values, provide `Selectable` expressions that define the
+        transformations to apply.
 
         Example 1: Update a collection's schema by adding a new field and removing an old one.
             >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
@@ -656,7 +659,8 @@ class _BasePipeline:
             >>> pipeline.execute()
 
         Args:
-            *transformed_fields: The transformations to apply.
+            *transformed_fields: Optional. The transformations to apply. If not provided,
+                the update is performed in place based on the data flowing through the pipeline.
 
         Returns:
             A new Pipeline object with this stage appended to the stage list
