@@ -91,6 +91,8 @@ def verify_pipeline(query):
 
     It can be attached to existing query tests to check both
     modalities at the same time
+
+    Pipelines are only supported on enterprise dbs. Skip other environments
     """
     from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
