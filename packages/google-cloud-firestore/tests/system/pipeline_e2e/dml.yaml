@@ -30,8 +30,7 @@ tests:
               - integerValue: '50'
               name: less_than
           name: where
-        - args: []
-          name: delete
+        - name: delete
 
   - description: "Basic DML update"
     pipeline:
