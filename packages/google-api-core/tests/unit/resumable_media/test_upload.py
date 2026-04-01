@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 
 from google.api_core.resumable_media import _common
 from google.api_core.resumable_media import _upload
@@ -139,7 +138,10 @@ class TestResumableUpload:
         # Upload an exact-size chunk but signal final explicitly
         method, url, headers, body = upload.build_chunk_request(b"d" * 100, final=True)
         assert method == "POST"
-        assert headers[_common.UPLOAD_COMMAND_HEADER] == f"{_common.UploadCommand.UPLOAD}, {_common.UploadCommand.FINALIZE}"
+        assert (
+            headers[_common.UPLOAD_COMMAND_HEADER]
+            == f"{_common.UploadCommand.UPLOAD}, {_common.UploadCommand.FINALIZE}"
+        )
 
     def test_process_chunk_response_active(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
@@ -166,9 +168,9 @@ class TestResumableUpload:
     def test_process_chunk_response_transient_error(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
         upload._resumable_url = "http://test.local/resumable_session"
-        
+
         upload.process_chunk_response(503, {}, 50)
-        
+
         # Ensure that transient errors do not invalidate the upload state,
         # allowing the I/O layer to issue a recovery query.
         assert not upload.invalid
