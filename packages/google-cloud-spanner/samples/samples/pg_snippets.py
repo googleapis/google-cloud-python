@@ -1081,9 +1081,9 @@ def update_with_batch_dml(instance_id, database_id):
     # [END spanner_postgresql_dml_batch_update]
 
 
-# [START spanner_postgresql_dml_last_statement]
 def dml_last_statement_option(instance_id, database_id):
-    """Inserts and updates using DML where the update set the last statement option."""
+    """Inserts and updates using DML where the update sets the last statement option."""
+    # [START spanner_postgresql_dml_last_statement]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
 
@@ -1094,7 +1094,7 @@ def dml_last_statement_option(instance_id, database_id):
     def insert_and_update_singers(transaction):
         insert_row_ct = transaction.execute_update(
             "INSERT INTO Singers (SingerId, FirstName, LastName) "
-            " VALUES (54214, 'John', 'Do')"
+            "VALUES (54214, 'John', 'Do')"
         )
 
         print("{} record(s) inserted.".format(insert_row_ct))
@@ -1107,9 +1107,7 @@ def dml_last_statement_option(instance_id, database_id):
         print("{} record(s) updated.".format(update_row_ct))
 
     database.run_in_transaction(insert_and_update_singers)
-
-
-# [END spanner_postgresql_dml_last_statement]
+    # [END spanner_postgresql_dml_last_statement]
 
 
 def create_table_with_datatypes(instance_id, database_id):

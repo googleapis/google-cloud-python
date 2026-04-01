@@ -2046,7 +2046,7 @@ def update_with_batch_dml(instance_id, database_id):
 
 
 def dml_last_statement_option(instance_id, database_id):
-    """Inserts and updates using DML where the update set the last statement option."""
+    """Inserts and updates using DML where the update sets the last statement option."""
     # [START spanner_dml_last_statement]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -2058,7 +2058,7 @@ def dml_last_statement_option(instance_id, database_id):
     def insert_and_update_singers(transaction):
         insert_row_ct = transaction.execute_update(
             "INSERT INTO Singers (SingerId, FirstName, LastName) "
-            " VALUES (54213, 'John', 'Do')"
+            "VALUES (54213, 'John', 'Do')"
         )
 
         print("{} record(s) inserted.".format(insert_row_ct))
