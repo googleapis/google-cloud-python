@@ -943,6 +943,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-bigquery-storage
     tag_format: '{id}-v{version}'
+  - id: google-cloud-bigtable
+    version: 2.35.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-bigtable
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
@@ -956,15 +965,6 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-billing/
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-bigtable
-    version: 2.35.0
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/google-cloud-bigtable
-    preserve_regex: []
-    remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing-budgets
     version: 1.20.0
@@ -3236,7 +3236,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
-    version: 3.63.0
+    version: 3.64.0
     last_generated_commit: 64f1dbf504bab7b58ed96a539a5b26a7ebfc65c7
     apis:
       - path: google/spanner/admin/instance/v1
