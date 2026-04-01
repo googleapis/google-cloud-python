@@ -19,7 +19,6 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 import inspect
 import time
 import typing
-from itertools import chain
 from itertools import chain as _chain
 from typing import Generator, List, Optional, Union
 
