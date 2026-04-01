@@ -181,7 +181,6 @@ def verify_pipeline(subtests):
         from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
         with subtests.test(msg="verify_pipeline"):
-
             client = query._client
             if FIRESTORE_EMULATOR:
                 pytest.skip("skip pipeline verification on emulator")
@@ -207,7 +206,10 @@ def verify_pipeline(subtests):
                         query_results = _clean_results(
                             list(
                                 itertools.chain.from_iterable(
-                                    [[a._to_dict() for a in s] for s in await query.get()]
+                                    [
+                                        [a._to_dict() for a in s]
+                                        for s in await query.get()
+                                    ]
                                 )
                             )
                         )
@@ -1311,7 +1313,9 @@ async def test_query_stream_w_simple_field_eq_op(query_docs, database, verify_pi
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_array_contains_op(query_docs, database, verify_pipeline):
+async def test_query_stream_w_simple_field_array_contains_op(
+    query_docs, database, verify_pipeline
+):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("c", "array_contains", 1))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -1336,7 +1340,9 @@ async def test_query_stream_w_simple_field_in_op(query_docs, database, verify_pi
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_w_simple_field_array_contains_any_op(query_docs, database, verify_pipeline):
+async def test_query_stream_w_simple_field_array_contains_any_op(
+    query_docs, database, verify_pipeline
+):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(
@@ -1474,7 +1480,9 @@ async def test_query_stream_w_offset(query_docs, database, verify_pipeline):
 )
 @pytest.mark.parametrize("method", ["stream", "get"])
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_query_stream_or_get_w_no_explain_options(query_docs, database, method, verify_pipeline):
+async def test_query_stream_or_get_w_no_explain_options(
+    query_docs, database, method, verify_pipeline
+):
     from google.cloud.firestore_v1.query_profile import QueryExplainError
 
     collection, _, allowed_vals = query_docs
@@ -1960,7 +1968,9 @@ async def test_collection_group_queries_startat_endat(client, cleanup, database)
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-async def test_collection_group_queries_filters(client, cleanup, database, verify_pipeline):
+async def test_collection_group_queries_filters(
+    client, cleanup, database, verify_pipeline
+):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [

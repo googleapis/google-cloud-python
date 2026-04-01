@@ -83,6 +83,7 @@ def cleanup():
     for operation in operations:
         operation()
 
+
 @pytest.fixture
 def verify_pipeline(subtests):
     """
@@ -98,8 +99,8 @@ def verify_pipeline(subtests):
 
     def _verifier(query):
         from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
-        with subtests.test(msg="verify_pipeline"):
 
+        with subtests.test(msg="verify_pipeline"):
             client = query._client
             if FIRESTORE_EMULATOR:
                 pytest.skip("skip pipeline verification on emulator")
@@ -131,7 +132,9 @@ def verify_pipeline(subtests):
                         )
                     else:
                         # other qureies return a simple list of results
-                        query_results = _clean_results([s.to_dict() for s in query.get()])
+                        query_results = _clean_results(
+                            [s.to_dict() for s in query.get()]
+                        )
                 except Exception as e:
                     # if we expect the query to fail, capture the exception
                     query_exception = e
@@ -142,7 +145,9 @@ def verify_pipeline(subtests):
                         pipeline.execute()
                 else:
                     # ensure results match query
-                    pipeline_results = _clean_results([s.data() for s in pipeline.execute()])
+                    pipeline_results = _clean_results(
+                        [s.data() for s in pipeline.execute()]
+                    )
                     assert query_results == pipeline_results
             except FailedPrecondition as e:
                 # if testing against a non-enterprise db, skip this check
@@ -1333,7 +1338,9 @@ def test_query_stream_w_simple_field_eq_op(query_docs, database, verify_pipeline
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-def test_query_stream_w_simple_field_array_contains_op(query_docs, database, verify_pipeline):
+def test_query_stream_w_simple_field_array_contains_op(
+    query_docs, database, verify_pipeline
+):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("c", "array_contains", 1))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
@@ -1394,7 +1401,9 @@ def test_query_stream_w_simple_not_in_op(query_docs, database, verify_pipeline):
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-def test_query_stream_w_simple_field_array_contains_any_op(query_docs, database, verify_pipeline):
+def test_query_stream_w_simple_field_array_contains_any_op(
+    query_docs, database, verify_pipeline
+):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(
@@ -1532,7 +1541,9 @@ def test_query_stream_w_offset(query_docs, database, verify_pipeline):
 )
 @pytest.mark.parametrize("method", ["stream", "get"])
 @pytest.mark.parametrize("database", TEST_DATABASES_W_ENTERPRISE, indirect=True)
-def test_query_stream_or_get_w_no_explain_options(query_docs, database, method, verify_pipeline):
+def test_query_stream_or_get_w_no_explain_options(
+    query_docs, database, method, verify_pipeline
+):
     from google.cloud.firestore_v1.query_profile import QueryExplainError
 
     collection, _, allowed_vals = query_docs
