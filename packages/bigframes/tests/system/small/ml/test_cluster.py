@@ -141,6 +141,16 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         .sort_values(["centroid_id", "feature"])
         .reset_index(drop=True)
     )
+
+    # FIX: Sort the internal lists of dictionaries by the 'category' key. 
+    # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE].
+    def sort_categorical_lists(val):
+        if isinstance(val, list) and len(val) > 0:
+            return sorted(val, key=lambda x: x["category"])
+        return val
+
+    result["categorical_value"] = result["categorical_value"].apply(sort_categorical_lists)
+
     expected = (
         pd.DataFrame(
             {
@@ -198,11 +208,15 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         .sort_values(["centroid_id", "feature"])
         .reset_index(drop=True)
     )
+    
+    # Sort expected as well to ensure alignment
+    expected["categorical_value"] = expected["categorical_value"].apply(sort_categorical_lists)
+
     pd.testing.assert_frame_equal(
         result,
         expected,
         check_exact=False,
-        rtol=0.1,
+        rtol=0.1, # Keep or slightly increase if numerical drift persists
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
         check_dtype=False,
