@@ -133,7 +133,7 @@ class BaseDocumentReference(Generic[C]):
             return NotImplemented
 
     def __hash__(self) -> int:
-        return hash(self._path) + hash(self._client)
+        return hash((self._path, self._client))
 
     def __ne__(self, other) -> bool:
         """Inequality check against another instance.
