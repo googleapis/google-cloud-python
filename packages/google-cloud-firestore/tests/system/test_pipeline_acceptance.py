@@ -157,7 +157,9 @@ def test_pipeline_results(test_dict, client):
                     f"Expected {doc_path} to be absent, but it exists"
                 )
             else:
-                assert snapshot.exists, f"Expected {doc_path} to exist, but it was absent"
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
                 assert snapshot.to_dict() == expected_content
 
 
@@ -228,7 +230,9 @@ async def test_pipeline_results_async(test_dict, async_client):
                     f"Expected {doc_path} to be absent, but it exists"
                 )
             else:
-                assert snapshot.exists, f"Expected {doc_path} to exist, but it was absent"
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
                 assert snapshot.to_dict() == expected_content
 
 
