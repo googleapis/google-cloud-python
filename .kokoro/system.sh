@@ -89,6 +89,7 @@ run_package_test() {
 }
 
 packages_with_system_tests=(
+  "bigframes"
   "google-auth"
   "google-cloud-bigquery-storage"
   "google-cloud-bigtable"
