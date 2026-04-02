@@ -40,12 +40,8 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1, 3.14.0) DO (
     py -!python_version_trimmed!-64 -m pip install cmake
 
     @rem Add directory as safe to avoid "detected dubious ownership" fatal issue
-    git config --global --add safe.directory %cd%
-    git config --global --add safe.directory C:/tmpfs/src/github/python-crc32c
+    git config --global --add safe.directory *
     git submodule update --init --recursive
-
-    git config --global --add safe.directory %cd%\google_crc32c
-    git config --global --add safe.directory C:/tmpfs/src/github/python-crc32c/google_crc32c
     pushd google_crc32c
     @rem reset hard to cleanup any changes done by a previous build.
     git reset --hard
@@ -59,7 +55,7 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1, 3.14.0) DO (
 
     echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: x64, Install Prefix: %CRC32C_INSTALL_PREFIX%"
 
-    py -!python_version_trimmed!-64 -m cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.12 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=C:\tmpfs\src\github\python-crc32c\build\RelWithDebInfo ..
+    py -!python_version_trimmed!-64 -m cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.12 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH="%CRC32C_INSTALL_PREFIX%" ..
 
     py -!python_version_trimmed!-64 -m cmake --build . --config "%CONFIGURATION%" --target install
 

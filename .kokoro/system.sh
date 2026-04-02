@@ -89,6 +89,7 @@ run_package_test() {
 }
 
 packages_with_system_tests=(
+  "bigframes"
   "google-auth"
   "google-cloud-bigquery-storage"
   "google-cloud-bigtable"
@@ -98,6 +99,7 @@ packages_with_system_tests=(
   "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
+  "google-cloud-ndb"
   "google-cloud-pubsub"
   "google-cloud-testutils"
   "sqlalchemy-bigquery"

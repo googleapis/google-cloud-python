@@ -3,3 +3,5 @@
 
 # Default owner for all directories not owned by others
 *                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
+
+/packages/google-auth/                        @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/cloud-sdk-auth-team @googleapis/aion-team
