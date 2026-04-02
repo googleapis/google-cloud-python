@@ -101,6 +101,7 @@ packages_with_system_tests=(
   "google-cloud-logging"
   "google-cloud-ndb"
   "google-cloud-pubsub"
+  "google-cloud-spanner"
   "google-cloud-testutils"
   "sqlalchemy-bigquery"
   "pandas-gbq"
