@@ -1850,7 +1850,7 @@ libraries:
       product_documentation_override: https://cloud.google.com/financial-services/anti-money-laundering/docs/concepts/overview
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
   - name: google-cloud-firestore
-    version: 2.27.0
+    version: 2.26.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
