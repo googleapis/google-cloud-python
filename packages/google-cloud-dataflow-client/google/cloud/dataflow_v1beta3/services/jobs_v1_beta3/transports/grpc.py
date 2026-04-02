@@ -110,9 +110,9 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
     """gRPC backend transport for JobsV1Beta3.
 
-    Provides a method to create and modify Google Cloud Dataflow
-    jobs. A Job is a multi-stage computation graph run by the Cloud
-    Dataflow service.
+    Provides a method to create and modify Dataflow jobs.
+    A Job is a multi-stage computation graph run by the Dataflow
+    service.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -331,7 +331,7 @@ class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
     def create_job(self) -> Callable[[jobs.CreateJobRequest], jobs.Job]:
         r"""Return a callable for the create job method over gRPC.
 
-        Creates a Cloud Dataflow job.
+        Creates a Dataflow job.
 
         To create a job, we recommend using
         ``projects.locations.jobs.create`` with a [regional endpoint]

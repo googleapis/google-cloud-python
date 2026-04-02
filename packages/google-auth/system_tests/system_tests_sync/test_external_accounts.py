@@ -65,9 +65,10 @@ def dns_access_direct(request, project_id):
 
     # Apply the default credentials to the headers to make the request.
     headers = {}
-    credentials.apply(headers)
+    url = "https://dns.googleapis.com/dns/v1/projects/{}".format(project_id)
+    credentials.before_request(request, "GET", url, headers)
     response = request(
-        url="https://dns.googleapis.com/dns/v1/projects/{}".format(project_id),
+        url=url,
         headers=headers,
     )
 
@@ -212,6 +213,8 @@ def test_configurable_token_lifespan(oidc_credentials, http_request):
             scopes=["https://www.googleapis.com/auth/cloud-platform.read-only"],
             request=http_request,
         )
+
+        credentials.refresh(http_request)
 
         utcmax = _helpers.utcnow() + datetime.timedelta(seconds=TOKEN_LIFETIME_SECONDS)
         utcmin = utcmax - datetime.timedelta(seconds=BUFFER_SECONDS)

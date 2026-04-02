@@ -12,3 +12,32 @@ libraries:
 # `google-django-spanner` is blocked until the presubmits are green.
   - id: "google-django-spanner"
     release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16487):
+# Allow releases for google-cloud-storage once this bug is fixed.
+  - id: "google-cloud-storage"
+    release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16490):
+# Allow generation for google-cloud-spanner once this bug is fixed.
+  - id: "google-cloud-spanner"
+    generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16494):
+# Allow generation for google-cloud-bigtable once this bug is fixed.
+  - id: "google-cloud-bigtable"
+    generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16489):
+# Allow releases for bigframes once the bug above is fixed.
+  - id: "bigframes"
+    release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16506):
+# Allow generation/release for google-cloud-firestore once this bug is fixed.
+  - id: "google-cloud-firestore"
+    generate_blocked: true
+    release_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16165):
+# Allow generation for google-cloud-dialogflow once this bug is fixed.
+  - id: "google-cloud-dialogflow"
+    generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16520):
+# Allow release for google-crc32c once this bug is fixed.
+  - id: "google-crc32c"
+    release_blocked: true

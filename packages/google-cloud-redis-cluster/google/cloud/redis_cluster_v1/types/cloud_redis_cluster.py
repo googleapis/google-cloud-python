@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "AuthorizationMode",
         "NodeType",
         "TransitEncryptionMode",
+        "ServerCaMode",
         "ConnectionType",
         "CreateClusterRequest",
         "ListClustersRequest",
@@ -64,6 +65,8 @@ __protobuf__ = proto.module(
         "ClusterEndpoint",
         "ConnectionDetail",
         "PscAutoConnection",
+        "SharedRegionalCertificateAuthority",
+        "GetSharedRegionalCertificateAuthorityRequest",
         "OperationMetadata",
         "CertificateAuthority",
         "ClusterPersistenceConfig",
@@ -147,6 +150,28 @@ class TransitEncryptionMode(proto.Enum):
     TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
     TRANSIT_ENCRYPTION_MODE_DISABLED = 1
     TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION = 2
+
+
+class ServerCaMode(proto.Enum):
+    r"""Server CA mode for the cluster.
+
+    Values:
+        SERVER_CA_MODE_UNSPECIFIED (0):
+            Server CA mode not specified.
+        SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA (1):
+            Each cluster has its own Google managed CA.
+        SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA (2):
+            The cluster uses Google managed shared CA in
+            the region.
+        SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA (3):
+            The cluster uses customer managed CA from
+            CAS.
+    """
+
+    SERVER_CA_MODE_UNSPECIFIED = 0
+    SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA = 1
+    SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA = 2
+    SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA = 3
 
 
 class ConnectionType(proto.Enum):
@@ -790,6 +815,22 @@ class Cluster(proto.Message):
         encryption_info (google.cloud.redis_cluster_v1.types.EncryptionInfo):
             Output only. Encryption information of the
             data at rest of the cluster.
+        server_ca_mode (google.cloud.redis_cluster_v1.types.ServerCaMode):
+            Optional. Server CA mode for the cluster.
+
+            This field is a member of `oneof`_ ``_server_ca_mode``.
+        server_ca_pool (str):
+            Optional. Customer-managed CA pool for the cluster. Only
+            applicable for BYOCA i.e. if server_ca_mode is
+            SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA. Format:
+            "projects/{project}/locations/{region}/caPools/{ca_pool}".
+
+            This field is a member of `oneof`_ ``_server_ca_pool``.
+        rotate_server_certificate (bool):
+            Optional. Input only. Rotate the server
+            certificates.
+
+            This field is a member of `oneof`_ ``_rotate_server_certificate``.
     """
 
     class State(proto.Enum):
@@ -1053,6 +1094,22 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=43,
         message="EncryptionInfo",
+    )
+    server_ca_mode: "ServerCaMode" = proto.Field(
+        proto.ENUM,
+        number=53,
+        optional=True,
+        enum="ServerCaMode",
+    )
+    server_ca_pool: str = proto.Field(
+        proto.STRING,
+        number=54,
+        optional=True,
+    )
+    rotate_server_certificate: bool = proto.Field(
+        proto.BOOL,
+        number=55,
+        optional=True,
     )
 
 
@@ -1873,6 +1930,86 @@ class PscAutoConnection(proto.Message):
         proto.ENUM,
         number=9,
         enum="ConnectionType",
+    )
+
+
+class SharedRegionalCertificateAuthority(proto.Message):
+    r"""Shared regional certificate authority
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_server_ca (google.cloud.redis_cluster_v1.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority):
+            CA certificate chains for redis managed
+            server authentication.
+
+            This field is a member of `oneof`_ ``server_ca``.
+        name (str):
+            Identifier. Unique name of the resource in this scope
+            including project and location using the form:
+            ``projects/{project}/locations/{location}/sharedRegionalCertificateAuthority``
+    """
+
+    class RegionalManagedCertificateAuthority(proto.Message):
+        r"""CA certificate chains for redis managed server
+        authentication.
+
+        Attributes:
+            ca_certs (MutableSequence[google.cloud.redis_cluster_v1.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain]):
+                The PEM encoded CA certificate chains for
+                redis managed server authentication
+        """
+
+        class RegionalCertChain(proto.Message):
+            r"""The certificates that form the CA chain, from leaf to root
+            order.
+
+            Attributes:
+                certificates (MutableSequence[str]):
+                    The certificates that form the CA chain, from
+                    leaf to root order.
+            """
+
+            certificates: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        ca_certs: MutableSequence[
+            "SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain",
+        )
+
+    managed_server_ca: RegionalManagedCertificateAuthority = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="server_ca",
+        message=RegionalManagedCertificateAuthority,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetSharedRegionalCertificateAuthorityRequest(proto.Message):
+    r"""Request for
+    [GetSharedRegionalCertificateAuthority][CloudRedis.GetSharedRegionalCertificateAuthority].
+
+    Attributes:
+        name (str):
+            Required. Regional certificate authority resource name using
+            the form:
+            ``projects/{project_id}/locations/{location_id}/sharedRegionalCertificateAuthority``
+            where ``location_id`` refers to a Google Cloud region.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

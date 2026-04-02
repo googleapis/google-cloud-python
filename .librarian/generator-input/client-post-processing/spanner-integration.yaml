@@ -1,0 +1,152 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+description: Integrate Google Cloud Spanner customizations for MetricsInterceptor and gRPC options
+# TODO(Fill in issue number below to add more context)
+url: https://github.com/googleapis/gapic-generator-python/issues/123
+replacements:
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/base.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc_asyncio.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/rest.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/rest_base.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/client.py",
+    ]
+    before: |
+      from google.cloud.spanner_v1.types import transaction
+    after: |
+      from google.cloud.spanner_v1.types import transaction
+      from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+    count: 6
+
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/base.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc_asyncio.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/rest.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/rest_base.py",
+    ]
+    before: |
+      (?P<indent>\s+)api_audience: Optional\[str\] = None,\n\s+\*\*kwargs,\n\s+\) -> None:
+    after: |
+      \g<indent>api_audience: Optional[str] = None,
+      \g<indent>    metrics_interceptor: Optional[MetricsInterceptor] = None,
+      \g<indent>    **kwargs,
+      \g<indent>) -> None:
+    count: 1 # Using regex with backreferences for correctness
+
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+    ]
+    before: |
+      \)\n\n        self._interceptor = _LoggingClientInterceptor\(\)
+    after: |
+      )
+
+              # Wrap the gRPC channel with the metric interceptor
+              if metrics_interceptor is not None:
+                  self._metrics_interceptor = metrics_interceptor
+                  self._grpc_channel = grpc.intercept_channel(
+                      self._grpc_channel, metrics_interceptor
+                  )
+
+              self._interceptor = _LoggingClientInterceptor()
+    count: 1
+
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+    ]
+    before: |
+      self._stubs: Dict\[str, Callable\] = \{\}\n\n        if api_mtls_endpoint:
+    after: |
+      self._stubs: Dict[str, Callable] = {}
+              self._metrics_interceptor = None
+
+              if api_mtls_endpoint:
+    count: 1
+
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/client.py",
+    ]
+    before: |
+      # initialize with the provided callable or the passed in class
+                  self._transport = transport_init\(
+                      credentials=credentials,
+                      credentials_file=self._client_options.credentials_file,
+                      host=self._api_endpoint,
+                      scopes=self._client_options.scopes,
+                      client_cert_source_for_mtls=self._client_cert_source,
+                      quota_project_id=self._client_options.quota_project_id,
+                      client_info=client_info,
+                      always_use_jwt_access=True,
+                      api_audience=self._client_options.api_audience,
+                  \)
+    after: |
+      # initialize with the provided callable or the passed in class
+                  self._transport = transport_init(
+                      credentials=credentials,
+                      credentials_file=self._client_options.credentials_file,
+                      host=self._api_endpoint,
+                      scopes=self._client_options.scopes,
+                      client_cert_source_for_mtls=self._client_cert_source,
+                      quota_project_id=self._client_options.quota_project_id,
+                      client_info=client_info,
+                      always_use_jwt_access=True,
+                      api_audience=self._client_options.api_audience,
+                      metrics_interceptor=MetricsInterceptor(),
+                  )
+    count: 1
+
+  - paths: [
+      "packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py",
+    ]
+    before: |
+      api_audience=None,\n(\s+)\)
+    after: |
+      api_audience=None,
+                  metrics_interceptor=mock.ANY,
+              )
+    count: 12
+
+  - paths: [
+      "packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py",
+    ]
+    before: |
+      api_audience="https://language.googleapis.com"\n(\s+)\)
+    after: |
+      api_audience="https://language.googleapis.com",
+                  metrics_interceptor=mock.ANY,
+              )
+    count: 1
+
+  - paths: [
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc_asyncio.py",
+      "packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/services/instance_admin/transports/grpc.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/services/instance_admin/transports/grpc_asyncio.py",
+      "packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1/test_instance_admin.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/services/database_admin/transports/grpc.py",
+      "packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/services/database_admin/transports/grpc_asyncio.py",
+      "packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1/test_database_admin.py",
+    ]
+    before: |
+      ^\s+options=\[[\s\S]*?\]
+    after: |
+      options=[
+                          ("grpc.max_send_message_length", -1),
+                          ("grpc.max_receive_message_length", -1),
+                          ("grpc.keepalive_time_ms", 120000),
+                      ]
+    count: 9 # One per file roughly, or adjusts based on regex triggers

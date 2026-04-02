@@ -405,9 +405,9 @@ class JobsV1Beta3RestStub:
 class JobsV1Beta3RestTransport(_BaseJobsV1Beta3RestTransport):
     """REST backend synchronous transport for JobsV1Beta3.
 
-    Provides a method to create and modify Google Cloud Dataflow
-    jobs. A Job is a multi-stage computation graph run by the Cloud
-    Dataflow service.
+    Provides a method to create and modify Dataflow jobs.
+    A Job is a multi-stage computation graph run by the Dataflow
+    service.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
