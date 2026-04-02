@@ -116,6 +116,7 @@ nox.options.sessions = [
     # from GitHub actions.
     "unit_noextras",
     "system-3.10",  # No extras.
+    "system-3.12",  # No extras.
     f"system-{DEFAULT_PYTHON_VERSION}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
@@ -357,7 +358,7 @@ def run_system(
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16489): Restore system test once this bug is fixed
