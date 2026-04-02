@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.14](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.30.13...gapic-generator-v1.30.14) (2026-04-02)
+
+
+### Bug Fixes
+
+* Use proper SPDX license identifier (#2594) ([2b3b06c2fb0e41e054e451d947f994f7308512e4](https://github.com/googleapis/google-cloud-python/commit/2b3b06c2fb0e41e054e451d947f994f7308512e4))
+* async samples missing await (#2577) ([6ccd3710e43c255bdeca934be03b11a90e1bdfce](https://github.com/googleapis/google-cloud-python/commit/6ccd3710e43c255bdeca934be03b11a90e1bdfce))
+
 ## [1.30.13](https://github.com/googleapis/gapic-generator-python/compare/v1.30.12...v1.30.13) (2026-03-13)
 
 ## [1.30.12](https://github.com/googleapis/gapic-generator-python/compare/v1.30.11...v1.30.12) (2026-03-12)
