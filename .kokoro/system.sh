@@ -98,6 +98,7 @@ packages_with_system_tests=(
   "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
+  "google-cloud-ndb"
   "google-cloud-pubsub"
   "google-cloud-testutils"
   "sqlalchemy-bigquery"
