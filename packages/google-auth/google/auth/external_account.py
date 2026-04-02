@@ -52,7 +52,7 @@ _STS_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:token-exchange"
 # The token exchange requested_token_type. This is always an access_token.
 _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # Cloud resource manager URL used to retrieve project information.
-_CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
+_CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.{universe_domain}/v1/projects/"
 # Default Google sts token url.
 _DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
 
@@ -164,6 +164,9 @@ class Credentials(
             self._token_url = self._token_url.replace(
                 "{universe_domain}", self._universe_domain
             )
+        self._cloud_resource_manager_url = _CLOUD_RESOURCE_MANAGER.replace(
+            "{universe_domain}", self._universe_domain
+        )
         self._token_info_url = token_info_url
         self._credential_source = credential_source
         self._service_account_impersonation_url = service_account_impersonation_url
@@ -395,7 +398,7 @@ class Credentials(
         project_number = self.project_number or self._workforce_pool_user_project
         if project_number and scopes:
             headers = {}
-            url = _CLOUD_RESOURCE_MANAGER + project_number
+            url = self._cloud_resource_manager_url + project_number
             self.before_request(request, "GET", url, headers)
             response = request(url=url, method="GET", headers=headers)
 

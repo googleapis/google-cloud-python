@@ -2404,6 +2404,42 @@ class TestCredentials(object):
         # Only 2 requests to STS and cloud resource manager should be sent.
         assert len(request.call_args_list) == 2
 
+    def test_cloud_resource_manager_url_with_default_universe_domain(self):
+        credentials = self.make_credentials()
+        assert credentials._cloud_resource_manager_url == (
+            "https://cloudresourcemanager.googleapis.com/v1/projects/"
+        )
+
+    def test_cloud_resource_manager_url_with_custom_universe_domain(self):
+        credentials = self.make_credentials(universe_domain="example.com")
+        assert credentials._cloud_resource_manager_url == (
+            "https://cloudresourcemanager.example.com/v1/projects/"
+        )
+
+    def test_get_project_id_cloud_resource_manager_custom_universe_domain(self):
+        custom_universe_domain = "example.com"
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=self.SUCCESS_RESPONSE.copy(),
+            cloud_resource_manager_status=http_client.OK,
+            cloud_resource_manager_data=self.CLOUD_RESOURCE_MANAGER_SUCCESS_RESPONSE,
+        )
+        credentials = self.make_credentials(
+            scopes=self.SCOPES,
+            universe_domain=custom_universe_domain,
+        )
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id == self.PROJECT_ID
+        # Verify that the cloud resource manager request used the custom universe domain URL.
+        assert len(request.call_args_list) == 2
+        crm_request_kwargs = request.call_args_list[1][1]
+        expected_url = "https://cloudresourcemanager.{}/v1/projects/{}".format(
+            custom_universe_domain, self.PROJECT_NUMBER
+        )
+        assert crm_request_kwargs["url"] == expected_url
+
     def test_refresh_with_existing_impersonated_credentials(self):
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
