@@ -53,7 +53,7 @@ dependencies = [
     "opentelemetry-semantic-conventions >= 0.43b0",
     "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
     "google-cloud-monitoring >= 2.16.0",
-    "mmh3 >= 4.1.0 ",
+    "mmh3 >= 4.1.0",
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
 
