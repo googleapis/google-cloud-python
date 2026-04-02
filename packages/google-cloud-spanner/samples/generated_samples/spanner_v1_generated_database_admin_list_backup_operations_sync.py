@@ -50,4 +50,5 @@ def sample_list_backup_operations():
     for response in page_result:
         print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_ListBackupOperations_sync]

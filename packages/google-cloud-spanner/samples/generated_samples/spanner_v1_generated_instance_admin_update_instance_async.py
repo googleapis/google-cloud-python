@@ -58,4 +58,5 @@ async def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_UpdateInstance_async]

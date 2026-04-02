@@ -54,4 +54,5 @@ def sample_batch_write():
     for response in stream:
         print(response)
 
+
 # [END spanner_v1_generated_Spanner_BatchWrite_sync]

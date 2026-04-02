@@ -3246,7 +3246,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
     version: 3.64.0
-    last_generated_commit: 64f1dbf504bab7b58ed96a539a5b26a7ebfc65c7
+    last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
     apis:
       - path: google/spanner/admin/instance/v1
         service_config: spanner.yaml

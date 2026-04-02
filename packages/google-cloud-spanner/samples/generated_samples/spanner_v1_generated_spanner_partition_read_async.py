@@ -50,4 +50,5 @@ async def sample_partition_read():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_Spanner_PartitionRead_async]

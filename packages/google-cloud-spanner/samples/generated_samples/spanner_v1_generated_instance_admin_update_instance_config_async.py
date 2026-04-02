@@ -39,8 +39,7 @@ async def sample_update_instance_config():
     client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
     # Initialize request argument(s)
-    request = spanner_admin_instance_v1.UpdateInstanceConfigRequest(
-    )
+    request = spanner_admin_instance_v1.UpdateInstanceConfigRequest()
 
     # Make the request
     operation = client.update_instance_config(request=request)
@@ -51,5 +50,6 @@ async def sample_update_instance_config():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_InstanceAdmin_UpdateInstanceConfig_async]

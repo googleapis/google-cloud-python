@@ -50,4 +50,5 @@ def sample_list_database_roles():
     for response in page_result:
         print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_ListDatabaseRoles_sync]

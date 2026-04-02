@@ -44,7 +44,12 @@ from .backup_schedule import (
     ListBackupSchedulesResponse,
     UpdateBackupScheduleRequest,
 )
-from .common import DatabaseDialect, EncryptionConfig, EncryptionInfo, OperationProgress
+from .common import (
+    DatabaseDialect,
+    EncryptionConfig,
+    EncryptionInfo,
+    OperationProgress,
+)
 from .spanner_database_admin import (
     AddSplitPointsRequest,
     AddSplitPointsResponse,

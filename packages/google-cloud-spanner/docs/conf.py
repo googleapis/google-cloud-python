@@ -28,7 +28,6 @@ import logging
 import os
 import shlex
 import sys
-import logging
 from typing import Any
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -83,9 +82,9 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-spanner"
-copyright = u"2025, Google, LLC"
-author = u"Google APIs"
+project = "google-cloud-spanner"
+copyright = "2025, Google, LLC"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -285,7 +284,7 @@ latex_documents = [
     (
         root_doc,
         "google-cloud-spanner.tex",
-        u"google-cloud-spanner Documentation",
+        "google-cloud-spanner Documentation",
         author,
         "manual",
     )
@@ -386,6 +385,7 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
+
 # Setup for sphinx behaviors such as warning filters.
 class UnexpectedUnindentFilter(logging.Filter):
     """Filter out warnings about unexpected unindentation following bullet lists."""
@@ -413,5 +413,5 @@ def setup(app: Any) -> None:
     """
     # Sphinx's logger is hierarchical. Adding a filter to the
     # root 'sphinx' logger will catch warnings from all sub-loggers.
-    logger = logging.getLogger('sphinx')
+    logger = logging.getLogger("sphinx")
     logger.addFilter(UnexpectedUnindentFilter())

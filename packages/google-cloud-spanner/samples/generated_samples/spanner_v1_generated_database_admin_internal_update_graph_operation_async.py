@@ -51,4 +51,5 @@ async def sample_internal_update_graph_operation():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_InternalUpdateGraphOperation_async]

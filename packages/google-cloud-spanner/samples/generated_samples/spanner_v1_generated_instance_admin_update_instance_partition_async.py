@@ -59,4 +59,5 @@ async def sample_update_instance_partition():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_UpdateInstancePartition_async]

@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import spanner_admin_instance_v1
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
+from google.cloud import spanner_admin_instance_v1
 
 
 def sample_test_iam_permissions():
@@ -42,7 +43,7 @@ def sample_test_iam_permissions():
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
-        permissions=['permissions_value1', 'permissions_value2'],
+        permissions=["permissions_value1", "permissions_value2"],
     )
 
     # Make the request
@@ -50,5 +51,6 @@ def sample_test_iam_permissions():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_InstanceAdmin_TestIamPermissions_sync]

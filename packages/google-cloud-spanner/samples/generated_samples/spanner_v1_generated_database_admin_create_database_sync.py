@@ -54,4 +54,5 @@ def sample_create_database():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_CreateDatabase_sync]
