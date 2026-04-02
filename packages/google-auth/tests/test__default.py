@@ -1020,6 +1020,35 @@ def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
 
 @mock.patch(
     "google.auth._default._get_explicit_environ_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._default._get_gcloud_sdk_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._default._get_gae_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
+)
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+def test_default_gce_triggers_request_creation(
+    mock_request_cls, is_on_gce, unused_gae, unused_sdk, unused_explicit
+):
+    with pytest.raises(exceptions.DefaultCredentialsError):
+        _default.default()
+
+    mock_request_cls.assert_called_once()
+    is_on_gce.assert_called_once_with(request=mock_request_cls.return_value)
+
+
+@mock.patch(
+    "google.auth._default._get_explicit_environ_credentials",
     return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
     autospec=True,
 )
