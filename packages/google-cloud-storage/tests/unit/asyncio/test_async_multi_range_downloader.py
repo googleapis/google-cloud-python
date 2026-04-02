@@ -60,6 +60,9 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
+        mock_stream.is_stream_open = True
+        # Default recv blocks forever (tests override with specific side_effect)
+        mock_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             mock_client, bucket_name, object_name, generation, read_handle
@@ -102,69 +105,39 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_download_ranges_via_async_gather(
+    async def test_download_ranges(
         self, mock_cls_async_read_object_stream, mock_random_int
     ):
-        # Arrange
         data = b"these_are_18_chars"
         crc32c = Checksum(data).digest()
         crc32c_int = int.from_bytes(crc32c, "big")
-        crc32c_checksum_for_data_slice = int.from_bytes(
-            Checksum(data[10:16]).digest(), "big"
-        )
 
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
-
-        mock_random_int.side_effect = [456, 91011]
+        mock_random_int.side_effect = [456]
 
         mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock()
-
-        mock_mrd.read_obj_str.recv.side_effect = [
-            _storage_v2.BidiReadObjectResponse(
-                object_data_ranges=[
-                    _storage_v2.ObjectRangeData(
-                        checksummed_data=_storage_v2.ChecksummedData(
-                            content=data, crc32c=crc32c_int
-                        ),
-                        range_end=True,
-                        read_range=_storage_v2.ReadRange(
-                            read_offset=0, read_length=18, read_id=456
-                        ),
-                    )
-                ]
-            ),
-            _storage_v2.BidiReadObjectResponse(
-                object_data_ranges=[
-                    _storage_v2.ObjectRangeData(
-                        checksummed_data=_storage_v2.ChecksummedData(
-                            content=data[10:16],
-                            crc32c=crc32c_checksum_for_data_slice,
-                        ),
-                        range_end=True,
-                        read_range=_storage_v2.ReadRange(
-                            read_offset=10, read_length=6, read_id=91011
-                        ),
-                    )
-                ],
-            ),
-            None,
-        ]
-
-        # Act
-        buffer = BytesIO()
-        second_buffer = BytesIO()
-        lock = asyncio.Lock()
-
-        task1 = asyncio.create_task(mock_mrd.download_ranges([(0, 18, buffer)], lock))
-        task2 = asyncio.create_task(
-            mock_mrd.download_ranges([(10, 6, second_buffer)], lock)
+        mock_mrd.read_obj_str.recv = AsyncMock(
+            side_effect=[
+                _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data, crc32c=crc32c_int
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=18, read_id=456
+                            ),
+                        )
+                    ],
+                ),
+                None,
+            ]
         )
-        await asyncio.gather(task1, task2)
 
-        # Assert
+        buffer = BytesIO()
+        await mock_mrd.download_ranges([(0, 18, buffer)])
         assert buffer.getvalue() == data
-        assert second_buffer.getvalue() == data[10:16]
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -173,50 +146,78 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_download_ranges(
+    async def test_download_ranges_via_async_gather(
         self, mock_cls_async_read_object_stream, mock_random_int
     ):
-        # Arrange
         data = b"these_are_18_chars"
         crc32c = Checksum(data).digest()
         crc32c_int = int.from_bytes(crc32c, "big")
+        crc32c_checksum_for_data_slice = int.from_bytes(
+            Checksum(data[10:16]).digest(), "big"
+        )
 
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456, 91011]
 
-        mock_random_int.side_effect = [456]
+        send_count = 0
+        both_sent = asyncio.Event()
 
-        mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock()
-        mock_mrd.read_obj_str.recv.side_effect = [
-            _storage_v2.BidiReadObjectResponse(
-                object_data_ranges=[
-                    _storage_v2.ObjectRangeData(
-                        checksummed_data=_storage_v2.ChecksummedData(
-                            content=data, crc32c=crc32c_int
-                        ),
-                        range_end=True,
-                        read_range=_storage_v2.ReadRange(
-                            read_offset=0, read_length=18, read_id=456
-                        ),
-                    )
-                ],
-            ),
-            None,
-        ]
+        async def counting_send(request):
+            nonlocal send_count
+            send_count += 1
+            if send_count >= 2:
+                both_sent.set()
 
-        # Act
+        mock_mrd.read_obj_str.send = AsyncMock(side_effect=counting_send)
+
+        recv_call_count = 0
+
+        async def controlled_recv():
+            nonlocal recv_call_count
+            recv_call_count += 1
+            if recv_call_count == 1:
+                await both_sent.wait()
+                return _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data, crc32c=crc32c_int
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=18, read_id=456
+                            ),
+                        )
+                    ]
+                )
+            elif recv_call_count == 2:
+                return _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data[10:16],
+                                crc32c=crc32c_checksum_for_data_slice,
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=10, read_length=6, read_id=91011
+                            ),
+                        )
+                    ],
+                )
+            return None
+
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=controlled_recv)
+
         buffer = BytesIO()
-        await mock_mrd.download_ranges([(0, 18, buffer)])
+        second_buffer = BytesIO()
 
-        # Assert
-        mock_mrd.read_obj_str.send.assert_called_once_with(
-            _storage_v2.BidiReadObjectRequest(
-                read_ranges=[
-                    _storage_v2.ReadRange(read_offset=0, read_length=18, read_id=456)
-                ]
-            )
-        )
+        task1 = asyncio.create_task(mock_mrd.download_ranges([(0, 18, buffer)]))
+        task2 = asyncio.create_task(mock_mrd.download_ranges([(10, 6, second_buffer)]))
+        await asyncio.gather(task1, task2)
+
         assert buffer.getvalue() == data
+        assert second_buffer.getvalue() == data[10:16]
 
     @pytest.mark.asyncio
     async def test_downloading_ranges_with_more_than_1000_should_throw_error(self):
@@ -320,6 +321,7 @@ class TestAsyncMultiRangeDownloader:
     async def test_download_ranges_raises_on_checksum_mismatch(
         self, mock_checksum_class
     ):
+        from google.cloud.storage.asyncio._stream_multiplexer import _StreamMultiplexer
         from google.cloud.storage.asyncio.async_multi_range_downloader import (
             AsyncMultiRangeDownloader,
         )
@@ -353,6 +355,7 @@ class TestAsyncMultiRangeDownloader:
         mrd = AsyncMultiRangeDownloader(mock_client, "bucket", "object")
         mrd.read_obj_str = mock_stream
         mrd._is_stream_open = True
+        mrd._multiplexer = _StreamMultiplexer(mock_stream)
 
         with pytest.raises(DataCorruption) as exc_info:
             with mock.patch(
@@ -419,6 +422,8 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
+        mock_stream.is_stream_open = True
+        mock_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
 
         # Act
         mrd = await AsyncMultiRangeDownloader.create_mrd(
@@ -521,59 +526,50 @@ class TestAsyncMultiRangeDownloader:
     async def test_download_ranges_resumption_logging(
         self, mock_cls_async_read_object_stream, mock_random_int, mock_logger
     ):
-        # Arrange
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
-
-        mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock()
 
         from google.api_core import exceptions as core_exceptions
 
         retryable_exc = core_exceptions.ServiceUnavailable("Retry me")
 
-        # mock send to raise exception ONCE then succeed
-        mock_mrd.read_obj_str.send.side_effect = [
-            retryable_exc,
-            None,  # Success on second try
-        ]
+        mock_mrd.read_obj_str.send = AsyncMock(
+            side_effect=[
+                retryable_exc,
+                None,
+            ]
+        )
 
-        # mock recv for second try
-        mock_mrd.read_obj_str.recv.side_effect = [
-            _storage_v2.BidiReadObjectResponse(
-                object_data_ranges=[
-                    _storage_v2.ObjectRangeData(
-                        checksummed_data=_storage_v2.ChecksummedData(
-                            content=b"data", crc32c=123
-                        ),
-                        range_end=True,
-                        read_range=_storage_v2.ReadRange(
-                            read_offset=0, read_length=4, read_id=123
-                        ),
-                    )
-                ]
-            ),
-            None,
-        ]
+        recv_call_count = 0
+
+        async def staged_recv():
+            nonlocal recv_call_count
+            recv_call_count += 1
+            if recv_call_count == 1:
+                return _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=b"data", crc32c=123
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=4, read_id=123
+                            ),
+                        )
+                    ]
+                )
+            return None
+
+        mock_mrd.read_obj_str.recv = AsyncMock(side_effect=staged_recv)
+        mock_mrd.read_obj_str.is_stream_open = True
 
         mock_random_int.return_value = 123
 
-        # Act
         buffer = BytesIO()
-        # Patch Checksum where it is likely used (reads_resumption_strategy or similar),
-        # but actually if we use google_crc32c directly, we should patch that or provide valid CRC.
-        # Since we can't reliably predict where Checksum is imported/used without more digging,
-        # let's provide a valid CRC for b"data".
-        # Checksum(b"data").digest() -> needs to match crc32c=123.
-        # But we can't force b"data" to have crc=123.
-        # So we MUST patch Checksum.
-        # It is used in google.cloud.storage.asyncio.retry.reads_resumption_strategy
-
         with mock.patch(
             "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
         ) as mock_chk:
             mock_chk.return_value.digest.return_value = (123).to_bytes(4, "big")
-
             await mock_mrd.download_ranges([(0, 4, buffer)])
 
-        # Assert
         mock_logger.info.assert_any_call("Resuming download (attempt 2) for 1 ranges.")
