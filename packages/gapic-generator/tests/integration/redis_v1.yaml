@@ -75,6 +75,7 @@ authentication:
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this section
 # when async rest is GA.
 publishing:
+  organization: DOES_NOT_EXIST
   library_settings:
   - version: 'google.cloud.redis.v1'
     python_settings:
