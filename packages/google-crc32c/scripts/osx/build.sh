@@ -32,8 +32,7 @@ export CRC32C_INSTALL_PREFIX="${REPO_ROOT}/usr"
 
 cd ${REPO_ROOT}
 # Add directory as safe to avoid "detected dubious ownership" fatal issue
-git config --global --add safe.directory $REPO_ROOT
-git config --global --add safe.directory $REPO_ROOT/google_crc32c
+git config --global --add safe.directory '*'
 git submodule update --init --recursive
 
 ${OSX_DIR}/build_c_lib.sh

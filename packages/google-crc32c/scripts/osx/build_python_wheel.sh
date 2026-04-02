@@ -52,12 +52,8 @@ install_python_pyenv() {
 install_python_pyenv ${PY_BIN}
 
 
-# ``readlink -f`` is not our friend on OS X. This relies on **some**
-# ``python`` being installed.
-SCRIPT_FI=$(python3 -c "import os; print(os.path.realpath('${0}'))")
-OSX_DIR=$(dirname ${SCRIPT_FI})
-SCRIPTS_DIR=$(dirname ${OSX_DIR})
-export REPO_ROOT=$(dirname ${SCRIPTS_DIR})
+# Rely on the REPO_ROOT already provided by the parent script
+OSX_DIR="${REPO_ROOT}/scripts/osx"
 
 # Create a virtualenv where we can install Python build dependencies.
 VENV=${REPO_ROOT}/venv${PY_BIN}
