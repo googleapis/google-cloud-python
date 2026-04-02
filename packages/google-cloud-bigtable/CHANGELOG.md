@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.35.0...google-cloud-bigtable-v2.36.0) (2026-04-02)
+
+
+### Features
+
+* add TieredStorageConfig to table admin api ([778ae57190af47d655557aa5491d8f35c4288bbd](https://github.com/googleapis/google-cloud-python/commit/778ae57190af47d655557aa5491d8f35c4288bbd))
+* add data model for client side metrics (#1187) ([db8d52862242b7718b110ac01d945611a8a8acee](https://github.com/googleapis/google-cloud-python/commit/db8d52862242b7718b110ac01d945611a8a8acee))
+
+
+### Bug Fixes
+
+* allow empty location for cluster update (#1258) ([c163cb3e900d00b01b62ba2324fc2d67460e8981](https://github.com/googleapis/google-cloud-python/commit/c163cb3e900d00b01b62ba2324fc2d67460e8981))
+
 ## [2.35.0](https://github.com/googleapis/python-bigtable/compare/v2.34.0...v2.35.0) (2025-12-16)
 
 

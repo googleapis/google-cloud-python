@@ -37,7 +37,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.30.13
+    version: 1.30.14
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -46,7 +46,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
-    version: 3.2.4
+    version: 3.2.5
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -69,7 +69,7 @@ libraries:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/ads/datamanager/v1
@@ -151,7 +151,7 @@ libraries:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
   - id: google-api-core
-    version: 2.30.1
+    version: 2.30.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -953,7 +953,7 @@ libraries:
       - packages/google-cloud-bigquery-storage
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
-    version: 2.35.0
+    version: 2.36.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1052,7 +1052,7 @@ libraries:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/ces/v1
@@ -1396,7 +1396,7 @@ libraries:
       - packages/google-cloud-datacatalog-lineage-configmanagement
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataflow-client
-    version: 0.12.0
+    version: 0.13.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/dataflow/v1beta3
@@ -1694,7 +1694,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
-    version: 3.13.0
+    version: 3.14.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/documentai/v1beta3
@@ -2501,7 +2501,7 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ndb
-    version: 2.4.1
+    version: 2.4.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2510,7 +2510,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/netapp/v1
@@ -2556,7 +2556,7 @@ libraries:
       - packages/google-cloud-network-management/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
-    version: 0.12.0
+    version: 0.13.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/networksecurity/v1alpha1
@@ -3078,7 +3078,7 @@ libraries:
       - packages/google-cloud-secret-manager
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/securesourcemanager/v1
@@ -3504,7 +3504,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
-    version: 2.35.0
+    version: 2.36.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/texttospeech/v1
@@ -3909,7 +3909,7 @@ libraries:
       - packages/google-maps-fleetengine-delivery
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/maps/geocode/v4
@@ -4275,7 +4275,7 @@ libraries:
       - packages/google-shopping-type/
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
-    version: 1.73.1
+    version: 1.74.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/api
