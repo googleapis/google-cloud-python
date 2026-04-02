@@ -54,8 +54,6 @@ WITH `bfcte_0` AS (
     AVG(`bfcol_43`) AS `bfcol_61`,
     COUNT(`bfcol_41`) AS `bfcol_62`
   FROM `bfcte_0`
-  WHERE
-    NOT `bfcol_44` IS NULL AND NOT `bfcol_45` IS NULL
   GROUP BY
     `bfcol_44`,
     `bfcol_45`

@@ -124,8 +124,7 @@ WITH `bfcte_0` AS (
     ) AS `bfcol_31`
   FROM `bfcte_2`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_7`, 0) = COALESCE(`bfcol_1`, 0)
-    AND COALESCE(`bfcol_7`, 1) = COALESCE(`bfcol_1`, 1)
+    ON `bfcol_7` = `bfcol_1`
   WHERE
     (
       COALESCE(COALESCE(`bfcol_6` IN ('AIR', 'AIR REG'), FALSE), FALSE)

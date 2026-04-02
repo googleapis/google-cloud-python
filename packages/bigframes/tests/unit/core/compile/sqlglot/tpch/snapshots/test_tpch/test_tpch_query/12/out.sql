@@ -51,8 +51,7 @@ WITH `bfcte_0` AS (
     ) AS INT64) AS `bfcol_28`
   FROM `bfcte_1`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_5`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_5`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_5` = `bfcol_0`
   WHERE
     (
       (
@@ -79,8 +78,6 @@ WITH `bfcte_0` AS (
     COALESCE(SUM(`bfcol_27`), 0) AS `bfcol_32`,
     COALESCE(SUM(`bfcol_28`), 0) AS `bfcol_33`
   FROM `bfcte_2`
-  WHERE
-    NOT `bfcol_26` IS NULL
   GROUP BY
     `bfcol_26`
 )

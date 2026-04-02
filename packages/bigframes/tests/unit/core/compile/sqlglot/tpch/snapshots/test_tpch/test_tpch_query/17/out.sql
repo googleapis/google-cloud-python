@@ -30,18 +30,14 @@ WITH `bfcte_0` AS (
     `bfcol_15` AS `bfcol_18`
   FROM `bfcte_2`
   RIGHT JOIN `bfcte_1`
-    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_15`, 0)
-    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_15`, 1)
+    ON `bfcol_3` = `bfcol_15`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_15`,
     AVG(`bfcol_7`) AS `bfcol_21`
   FROM `bfcte_3`
   RIGHT JOIN `bfcte_1`
-    ON COALESCE(`bfcol_6`, 0) = COALESCE(`bfcol_15`, 0)
-    AND COALESCE(`bfcol_6`, 1) = COALESCE(`bfcol_15`, 1)
-  WHERE
-    NOT `bfcol_15` IS NULL
+    ON `bfcol_6` = `bfcol_15`
   GROUP BY
     `bfcol_15`
 ), `bfcte_6` AS (
@@ -89,8 +85,6 @@ WITH `bfcte_0` AS (
     `bfcol_9`,
     ANY_VALUE(`bfcol_41`) AS `bfcol_45`
   FROM `bfcte_10`
-  WHERE
-    NOT `bfcol_8` IS NULL AND NOT `bfcol_9` IS NULL
   GROUP BY
     `bfcol_8`,
     `bfcol_9`

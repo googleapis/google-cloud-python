@@ -33,6 +33,7 @@ from bigframes.core.rewrite.windows import (
     rewrite_range_rolling,
     simplify_complex_windows,
 )
+from bigframes.core.rewrite.nullity import simplify_join
 
 __all__ = [
     "as_sql_nodes",
@@ -55,4 +56,5 @@ __all__ = [
     "defer_selection",
     "simplify_complex_windows",
     "lower_udfs",
+    "simplify_join",
 ]

@@ -541,6 +541,7 @@ class ArrayValue:
                 for l_col, r_col in conditions
             ),
             type=type,
+            nulls_equal=True,  # pandas semantics
             propogate_order=propogate_order or self.session._strictly_ordered,
         )
         return ArrayValue(join_node), (l_mapping, r_mapping)

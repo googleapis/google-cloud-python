@@ -50,6 +50,7 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
         # Need to do this before replacing unsupported ops, as that will rewrite slice ops
         result_node = rewrites.pull_up_limits(result_node)
     result_node = _replace_unsupported_ops(result_node)
+    result_node = result_node.bottom_up(rewrites.simplify_join)
     # prune before pulling up order to avoid unnnecessary row_number() ops
     result_node = cast(nodes.ResultNode, rewrites.column_pruning(result_node))
     result_node = rewrites.defer_order(
