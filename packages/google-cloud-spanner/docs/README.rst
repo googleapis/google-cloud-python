@@ -204,7 +204,7 @@ To add one or more records to a table, use ``insert``:
         'citizens',
         columns=['email', 'first_name', 'last_name', 'age'],
         values=[
-            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+            ['phred@example.com', 'Phred', 'Phlyntstone', 32],
             ['bharney@example.com', 'Bharney', 'Rhubble', 31],
         ],
     )
@@ -243,7 +243,7 @@ if any of the records does not already exist.
         'citizens',
         columns=['email', 'age'],
         values=[
-            ['phred@exammple.com', 33],
+            ['phred@example.com', 33],
             ['bharney@example.com', 32],
         ],
     )

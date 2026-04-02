@@ -363,6 +363,44 @@ replacements:
           "DefaultTransactionOptions",
       )
     count: 1
+  - paths: [packages/google-cloud-spanner/google/cloud/spanner/__init__.py]
+    before: '(?s)from google.cloud.spanner import gapic_version as package_version.*'
+    after: |
+      from __future__ import absolute_import
+
+      from google.cloud.spanner_v1 import (
+          COMMIT_TIMESTAMP,
+          AbstractSessionPool,
+          BurstyPool,
+          Client,
+          FixedSizePool,
+          KeyRange,
+          KeySet,
+          PingingPool,
+          TransactionPingingPool,
+          __version__,
+          param_types,
+      )
+
+      __all__ = (
+          # google.cloud.spanner
+          "__version__",
+          "param_types",
+          # google.cloud.spanner_v1.client
+          "Client",
+          # google.cloud.spanner_v1.keyset
+          "KeyRange",
+          "KeySet",
+          # google.cloud.spanner_v1.pool
+          "AbstractSessionPool",
+          "BurstyPool",
+          "FixedSizePool",
+          "PingingPool",
+          "TransactionPingingPool",
+          # local
+          "COMMIT_TIMESTAMP",
+      )
+    count: 1
   - paths: [
       packages/google-cloud-spanner/README.rst
     ]
@@ -484,7 +522,7 @@ replacements:
               'citizens',
               columns=['email', 'first_name', 'last_name', 'age'],
               values=[
-                  ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+                  ['phred@example.com', 'Phred', 'Phlyntstone', 32],
                   ['bharney@example.com', 'Bharney', 'Rhubble', 31],
               ],
           )
@@ -523,7 +561,7 @@ replacements:
               'citizens',
               columns=['email', 'age'],
               values=[
-                  ['phred@exammple.com', 33],
+                  ['phred@example.com', 33],
                   ['bharney@example.com', 32],
               ],
           )

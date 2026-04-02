@@ -13,128 +13,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.spanner import gapic_version as package_version
+from __future__ import absolute_import
 
-__version__ = package_version.__version__
-
-
-from google.cloud.spanner_v1.services.spanner.async_client import SpannerAsyncClient
-from google.cloud.spanner_v1.services.spanner.client import SpannerClient
-from google.cloud.spanner_v1.types.change_stream import ChangeStreamRecord
-from google.cloud.spanner_v1.types.commit_response import CommitResponse
-from google.cloud.spanner_v1.types.keys import KeyRange, KeySet
-from google.cloud.spanner_v1.types.location import (
-    CacheUpdate,
-    Group,
-    KeyRecipe,
-    Range,
-    RecipeList,
-    RoutingHint,
-    Tablet,
-)
-from google.cloud.spanner_v1.types.mutation import Mutation
-from google.cloud.spanner_v1.types.query_plan import (
-    PlanNode,
-    QueryAdvisorResult,
-    QueryPlan,
-)
-from google.cloud.spanner_v1.types.result_set import (
-    PartialResultSet,
-    ResultSet,
-    ResultSetMetadata,
-    ResultSetStats,
-)
-from google.cloud.spanner_v1.types.spanner import (
-    BatchCreateSessionsRequest,
-    BatchCreateSessionsResponse,
-    BatchWriteRequest,
-    BatchWriteResponse,
-    BeginTransactionRequest,
-    CommitRequest,
-    CreateSessionRequest,
-    DeleteSessionRequest,
-    DirectedReadOptions,
-    ExecuteBatchDmlRequest,
-    ExecuteBatchDmlResponse,
-    ExecuteSqlRequest,
-    GetSessionRequest,
-    ListSessionsRequest,
-    ListSessionsResponse,
-    Partition,
-    PartitionOptions,
-    PartitionQueryRequest,
-    PartitionReadRequest,
-    PartitionResponse,
-    ReadRequest,
-    RequestOptions,
-    RollbackRequest,
-    Session,
-)
-from google.cloud.spanner_v1.types.transaction import (
-    MultiplexedSessionPrecommitToken,
-    Transaction,
-    TransactionOptions,
-    TransactionSelector,
-)
-from google.cloud.spanner_v1.types.type import (
-    StructType,
-    Type,
-    TypeAnnotationCode,
-    TypeCode,
+from google.cloud.spanner_v1 import (
+    COMMIT_TIMESTAMP,
+    AbstractSessionPool,
+    BurstyPool,
+    Client,
+    FixedSizePool,
+    KeyRange,
+    KeySet,
+    PingingPool,
+    TransactionPingingPool,
+    __version__,
+    param_types,
 )
 
 __all__ = (
-    "SpannerClient",
-    "SpannerAsyncClient",
-    "ChangeStreamRecord",
-    "CommitResponse",
+    # google.cloud.spanner
+    "__version__",
+    "param_types",
+    # google.cloud.spanner_v1.client
+    "Client",
+    # google.cloud.spanner_v1.keyset
     "KeyRange",
     "KeySet",
-    "CacheUpdate",
-    "Group",
-    "KeyRecipe",
-    "Range",
-    "RecipeList",
-    "RoutingHint",
-    "Tablet",
-    "Mutation",
-    "PlanNode",
-    "QueryAdvisorResult",
-    "QueryPlan",
-    "PartialResultSet",
-    "ResultSet",
-    "ResultSetMetadata",
-    "ResultSetStats",
-    "BatchCreateSessionsRequest",
-    "BatchCreateSessionsResponse",
-    "BatchWriteRequest",
-    "BatchWriteResponse",
-    "BeginTransactionRequest",
-    "CommitRequest",
-    "CreateSessionRequest",
-    "DeleteSessionRequest",
-    "DirectedReadOptions",
-    "ExecuteBatchDmlRequest",
-    "ExecuteBatchDmlResponse",
-    "ExecuteSqlRequest",
-    "GetSessionRequest",
-    "ListSessionsRequest",
-    "ListSessionsResponse",
-    "Partition",
-    "PartitionOptions",
-    "PartitionQueryRequest",
-    "PartitionReadRequest",
-    "PartitionResponse",
-    "ReadRequest",
-    "RequestOptions",
-    "RollbackRequest",
-    "Session",
-    "MultiplexedSessionPrecommitToken",
-    "Transaction",
-    "TransactionOptions",
-    "TransactionSelector",
-    "StructType",
-    "Type",
-    "TypeAnnotationCode",
-    "TypeCode",
+    # google.cloud.spanner_v1.pool
+    "AbstractSessionPool",
+    "BurstyPool",
+    "FixedSizePool",
+    "PingingPool",
+    "TransactionPingingPool",
+    # local
+    "COMMIT_TIMESTAMP",
 )
