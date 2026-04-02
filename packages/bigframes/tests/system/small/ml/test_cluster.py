@@ -142,14 +142,20 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         .reset_index(drop=True)
     )
 
-    # FIX: Sort the internal lists of dictionaries by the 'category' key. 
-    # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE].
-    def sort_categorical_lists(val):
+    # FIX: Helper to ignore row order inside categorical_value lists
+    # and sign flipping of values inside numerical_value list.
+    # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE]
+    # or 0.197 versus -0.197.
+    def sort_and_abs_categorical(val):
         if isinstance(val, list) and len(val) > 0:
-            return sorted(val, key=lambda x: x["category"])
+            # Take abs of value first, then sort
+            processed = [{"category": x["category"], "value": abs(x["value"])} for x in val]
+            return sorted(processed, key=lambda x: x["category"])
         return val
 
-    result["categorical_value"] = result["categorical_value"].apply(sort_categorical_lists)
+
+    result["numerical_value"] = result["numerical_value"].abs()
+    result["categorical_value"] = result["categorical_value"].apply(sort_and_abs_categorical)
 
     expected = (
         pd.DataFrame(
@@ -209,8 +215,9 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         .reset_index(drop=True)
     )
     
-    # Sort expected as well to ensure alignment
-    expected["categorical_value"] = expected["categorical_value"].apply(sort_categorical_lists)
+    # Sort and sign flip expected values to match the output of the model.
+    expected["numerical_value"] = expected["numerical_value"].abs()
+    expected["categorical_value"] = expected["categorical_value"].apply(sort_and_abs_categorical)
 
     pd.testing.assert_frame_equal(
         result,

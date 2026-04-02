@@ -78,6 +78,19 @@ def test_model_eval_with_data(penguins_bqml_linear_model, penguins_df_default_in
 
 def test_model_centroids(penguins_bqml_kmeans_model: core.BqmlModel):
     result = penguins_bqml_kmeans_model.centroids().to_pandas()
+    
+    # FIX: Helper to ignore row order inside categorical_value lists
+    # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE]
+    def sort_categorical(val):
+        if isinstance(val, list) and len(val) > 0:
+            return sorted(val, key=lambda x: x["category"])
+        return val
+
+    result["categorical_value"] = result["categorical_value"].apply(sort_categorical)
+    
+    
+    
+    
     expected = (
         pd.DataFrame(
             {
@@ -135,6 +148,10 @@ def test_model_centroids(penguins_bqml_kmeans_model: core.BqmlModel):
         .sort_values(["centroid_id", "feature"])
         .reset_index(drop=True)
     )
+
+    # Sort expected values to match the output of the model.
+    expected["categorical_value"] = expected["categorical_value"].apply(sort_categorical)
+
     pd.testing.assert_frame_equal(
         result,
         expected,
@@ -152,6 +169,22 @@ def test_pca_model_principal_components(penguins_bqml_pca_model: core.BqmlModel)
 
     # result is too long, only check the first principal component here.
     result = result.head(7)
+
+    # FIX: Helper to ignore row order inside categorical_value lists
+    # and sign flipping of values inside numerical_value list.
+    # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE]
+    # or 0.197 versus -0.197.
+    def sort_and_abs_categorical(val):
+        if isinstance(val, list) and len(val) > 0:
+            # Take abs of value first, then sort
+            processed = [{"category": x["category"], "value": abs(x["value"])} for x in val]
+            return sorted(processed, key=lambda x: x["category"])
+        return val
+
+
+    result["numerical_value"] = result["numerical_value"].abs()
+    result["categorical_value"] = result["categorical_value"].apply(sort_and_abs_categorical)
+
     expected = (
         pd.DataFrame(
             {
@@ -210,6 +243,10 @@ def test_pca_model_principal_components(penguins_bqml_pca_model: core.BqmlModel)
         .sort_values(["principal_component_id", "feature"])
         .reset_index(drop=True)
     )
+
+    # Sort and sign flip expected values to match the output of the model.
+    expected["numerical_value"] = expected["numerical_value"].abs()
+    expected["categorical_value"] = expected["categorical_value"].apply(sort_and_abs_categorical)
 
     utils.assert_pandas_df_equal_pca_components(
         result,
