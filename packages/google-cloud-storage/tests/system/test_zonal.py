@@ -2,13 +2,14 @@
 import asyncio
 import gc
 import os
+import random
 import uuid
 from io import BytesIO
 
 # python additional imports
 import google_crc32c
 import pytest
-from google.api_core.exceptions import FailedPrecondition, NotFound
+from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
@@ -592,5 +593,196 @@ def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
         # cleanup
         del writer
         gc.collect()
+
+    event_loop.run_until_complete(_run())
+
+
+def test_mrd_concurrent_download(
+    storage_client, blobs_to_delete, event_loop, grpc_client
+):
+    """
+    Test that mrd can handle concurrent `download_ranges` calls correctly.
+    Tests overlapping ranges, high concurrency (len > 100 multiplexing batch limits),
+    mixed random chunk sizes (small/medium/large), and full object fetching alongside specific chunks.
+    """
+    object_size = 15 * 1024 * 1024  # 15MB
+    object_name = f"test_mrd_concurrent-{uuid.uuid4()}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+
+        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        await writer.open()
+        await writer.append(object_data)
+        await writer.close(finalize_on_close=True)
+
+        async with AsyncMultiRangeDownloader(
+            grpc_client, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            tasks = []
+            ranges_to_fetch = []
+
+            # Overlapping ranges & Mixed random chunk sizes
+            # Small chunks
+            for _ in range(60):
+                start = random.randint(0, object_size - 100)
+                length = random.randint(1, 100)
+                ranges_to_fetch.append((start, length))
+            # Medium chunks
+            for _ in range(60):
+                start = random.randint(0, object_size - 100000)
+                length = random.randint(100, 100000)
+                ranges_to_fetch.append((start, length))
+            # Large chunks
+            for _ in range(5):
+                start = random.randint(0, object_size - 2000000)
+                length = random.randint(1000000, 2000000)
+                ranges_to_fetch.append((start, length))
+
+            # Full object fetching concurrently
+            ranges_to_fetch.append((0, 0))
+
+            # High concurrency batching (Total > 100 ranges)
+            assert len(ranges_to_fetch) > 100
+            random.shuffle(ranges_to_fetch)
+
+            buffers = [BytesIO() for _ in range(len(ranges_to_fetch))]
+
+            for idx, (start, length) in enumerate(ranges_to_fetch):
+                tasks.append(
+                    asyncio.create_task(
+                        mrd.download_ranges([(start, length, buffers[idx])])
+                    )
+                )
+
+            await asyncio.gather(*tasks)
+
+            # Validation
+            for idx, (start, length) in enumerate(ranges_to_fetch):
+                if length == 0:
+                    expected_data = object_data[start:]
+                else:
+                    expected_data = object_data[start : start + length]
+                assert buffers[idx].getvalue() == expected_data
+
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_mrd_concurrent_download_cancellation(
+    storage_client, blobs_to_delete, event_loop, grpc_client
+):
+    """
+    Test task cancellation / abort mid-stream.
+    Tests that downloading gracefully manages memory and internal references
+    when tasks are canceled during active multiplexing, without breaking remaining downloads.
+    """
+    object_size = 5 * 1024 * 1024  # 5MB
+    object_name = f"test_mrd_cancel-{uuid.uuid4()}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+
+        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        await writer.open()
+        await writer.append(object_data)
+        await writer.close(finalize_on_close=True)
+
+        async with AsyncMultiRangeDownloader(
+            grpc_client, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            tasks = []
+            num_chunks = 100
+            chunk_size = object_size // num_chunks
+            buffers = [BytesIO() for _ in range(num_chunks)]
+
+            for i in range(num_chunks):
+                start = i * chunk_size
+                tasks.append(
+                    asyncio.create_task(
+                        mrd.download_ranges([(start, chunk_size, buffers[i])])
+                    )
+                )
+
+            # Let the loop start sending Bidi requests
+            await asyncio.sleep(0.01)
+
+            # Cancel a subset of evenly distributed tasks
+            for i in range(0, num_chunks, 2):
+                tasks[i].cancel()
+
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            for i in range(num_chunks):
+                if i % 2 == 0:
+                    assert isinstance(results[i], asyncio.CancelledError)
+                else:
+                    start = i * chunk_size
+                    expected_data = object_data[start : start + chunk_size]
+                    assert buffers[i].getvalue() == expected_data
+
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_mrd_concurrent_download_out_of_bounds(
+    storage_client, blobs_to_delete, event_loop, grpc_client
+):
+    """
+    Test out-of-bounds & edge ranges concurrent with valid requests.
+    Verifies isolation: invalid bounds generate correct exceptions and don't stall the stream
+    for concurrently valid requests.
+    """
+    object_size = 2 * 1024 * 1024  # 2MB
+    object_name = f"test_mrd_oob-{uuid.uuid4()}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+
+        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        await writer.open()
+        await writer.append(object_data)
+        await writer.close(finalize_on_close=True)
+
+        async with AsyncMultiRangeDownloader(
+            grpc_client, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            b_valid = BytesIO()
+            t_valid = asyncio.create_task(mrd.download_ranges([(0, 100, b_valid)]))
+
+            b_oob1 = BytesIO()
+            t_oob1 = asyncio.create_task(
+                mrd.download_ranges([(object_size + 1000, 100, b_oob1)])
+            )
+
+            # EOF ask for 100 bytes
+            b_oob2 = BytesIO()
+            t_oob2 = asyncio.create_task(
+                mrd.download_ranges([(object_size, 100, b_oob2)])
+            )
+
+            results = await asyncio.gather(
+                t_valid, t_oob1, t_oob2, return_exceptions=True
+            )
+
+            # Verify valid one processed correctly
+            assert b_valid.getvalue() == object_data[:100]
+
+            # Verify fully OOB request returned Exception
+            assert isinstance(results[1], OutOfRange)
+
+            # Verify request exactly at EOF successfully completed with 0 bytes
+            assert not isinstance(results[2], Exception)
+            assert b_oob2.getvalue() == b""
+
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
 
     event_loop.run_until_complete(_run())
