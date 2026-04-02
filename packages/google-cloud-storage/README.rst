@@ -145,7 +145,7 @@ Tracing With OpenTelemetry
 This is a PREVIEW FEATURE: Coverage and functionality are still in development and subject to change.
 
 This library can be configured to use `OpenTelemetry`_ to generate traces on calls to Google Cloud Storage.
-For information on the benefits and utility of tracing, read the `Cloud Trace Overview`_.
+For information on the benefits and utility of tracing, read the Cloud Trace Overview <https://cloud.google.com/trace/docs/overview>_.
 
 To enable OpenTelemetry tracing in the Cloud Storage client, first install OpenTelemetry:
 
@@ -229,8 +229,7 @@ as not to break user applications following this pattern,
 setup.py file. Applications that do not import directly from
 ``google-resumable-media`` can safely disregard this dependency.
 This backwards compatibility feature **will be removed** in a future major
-version update. Please migrate to using the ``google.cloud.storage.exceptions``
-classes as above.
+version update. Please migrate to using the ``google.cloud.storage.exceptions`` classes as above.
 
 Checksum Defaults
 ~~~~~~~~~~~~~~~~~
@@ -239,7 +238,7 @@ In Python Storage 3.0, uploads and downloads now have a default of "auto" where
 applicable. "Auto" will use crc32c checksums, except for unusual cases where the
 fast (C extension) crc32c implementation is not available, in which case it will
 use md5 instead. Before Python Storage 3.0, the default was md5 for most
-downloads and none for most uploads. Note that ranged downloads ("start" or "end" set) still do not support any checksumming, and some features in
+downloads and None for most uploads. Note that ranged downloads ("start" or "end" set) still do not support any checksumming, and some features in
 ``transfer_manager.py`` still support crc32c only.
 
 Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
