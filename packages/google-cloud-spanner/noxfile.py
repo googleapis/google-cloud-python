@@ -113,6 +113,8 @@ def lint(session):
         *LINT_PATHS,
     )
 
+    session.run("flake8", "google", "tests")
+
 
 # Use a python runtime which is available in the owlbot post processor here
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
