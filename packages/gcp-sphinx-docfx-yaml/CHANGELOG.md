@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
 
+## [3.2.5](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.4...gcp-sphinx-docfx-yaml-v3.2.5) (2026-04-02)
+
+
+### Bug Fixes
+
+* do not store reference to algorithms dict on PyJWK (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1143">#1143</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/f3ba74c106df9ce10e272dfaad96acb4ab3ef5a5"><code>f3ba74c</code></a> [pre-commit.ci] pre-commit autoupdate (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1145">#1145</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/0318ffa7b156b01600376e38952bf961382e0724"><code>0318ffa</code></a> [pre-commit.ci] pre-commit autoupdate (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1141">#1141</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/a52753db3c1075ac01337fa8b7cc92b13a19ac09"><code>a52753d</code></a> Bump actions/download-artifact from 7 to 8 (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1142">#1142</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/b85050f1d444c6828bb4618ee764443b0a3f5d18"><code>b85050f</code></a> ([b2950d55e4f9d904de9b232551f65354044eccbb](https://github.com/googleapis/google-cloud-python/commit/b2950d55e4f9d904de9b232551f65354044eccbb))
+* close HTTPError to prevent ResourceWarning on Python 3.14 (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1133">#1133</a>)</li> <li>Additional commits viewable in <a href="https://github.com/jpadilla/pyjwt/compare/2.4.0...2.12.0">compare view</a></li> </ul> </details> <br /> ([b2950d55e4f9d904de9b232551f65354044eccbb](https://github.com/googleapis/google-cloud-python/commit/b2950d55e4f9d904de9b232551f65354044eccbb))
+
 ## [3.2.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.3...v3.2.4) (2025-10-22)
 
 

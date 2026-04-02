@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-ads-datamanager/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.7.0...google-ads-datamanager-v0.8.0) (2026-04-02)
+
+
+### Features
+
+* add INVALID_MERCHANT_ID to the ErrorReason enum for when the merchant_id field is not valid ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* add EU_POLITICAL_ADVERTISING_DECLARATION_REQUIRED to the ErrorReason enum for campaigns missing the EU political advertising declaration ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.6.0...google-ads-datamanager-v0.7.0) (2026-03-26)
 
 

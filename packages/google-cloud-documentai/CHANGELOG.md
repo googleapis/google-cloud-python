@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.13.0...google-cloud-documentai-v3.14.0) (2026-04-02)
+
+
+### Features
+
+* Update comments for proto fields ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Added a fields for image and table annotation output ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.12.0...google-cloud-documentai-v3.13.0) (2026-03-26)
 
 
