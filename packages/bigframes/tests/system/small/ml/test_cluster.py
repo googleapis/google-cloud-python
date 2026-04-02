@@ -151,13 +151,16 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         # Accept BOTH python lists AND numpy arrays
         if isinstance(val, (list, np.ndarray)) and len(val) > 0:
             # Take abs of value first, then sort
-            processed = [{"category": x["category"], "value": abs(x["value"])} for x in val]
+            processed = [
+                {"category": x["category"], "value": abs(x["value"])} for x in val
+            ]
             return sorted(processed, key=lambda x: x["category"])
         return val
 
-
     result["numerical_value"] = result["numerical_value"].abs()
-    result["categorical_value"] = result["categorical_value"].apply(sort_and_abs_categorical)
+    result["categorical_value"] = result["categorical_value"].apply(
+        sort_and_abs_categorical
+    )
 
     expected = (
         pd.DataFrame(
@@ -216,16 +219,18 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
         .sort_values(["centroid_id", "feature"])
         .reset_index(drop=True)
     )
-    
+
     # Sort and sign flip expected values to match the output of the model.
     expected["numerical_value"] = expected["numerical_value"].abs()
-    expected["categorical_value"] = expected["categorical_value"].apply(sort_and_abs_categorical)
+    expected["categorical_value"] = expected["categorical_value"].apply(
+        sort_and_abs_categorical
+    )
 
     pd.testing.assert_frame_equal(
         result,
         expected,
         check_exact=False,
-        rtol=0.1, # Keep or slightly increase if numerical drift persists
+        rtol=0.1,  # Keep or slightly increase if numerical drift persists
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
         check_dtype=False,

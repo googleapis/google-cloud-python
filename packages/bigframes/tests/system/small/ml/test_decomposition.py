@@ -112,13 +112,16 @@ def test_pca_components_(penguins_pca_model: decomposition.PCA):
         # Accept BOTH python lists AND numpy arrays
         if isinstance(val, (list, np.ndarray)) and len(val) > 0:
             # Take abs of value first, then sort
-            processed = [{"category": x["category"], "value": abs(x["value"])} for x in val]
+            processed = [
+                {"category": x["category"], "value": abs(x["value"])} for x in val
+            ]
             return sorted(processed, key=lambda x: x["category"])
         return val
 
-
     result["numerical_value"] = result["numerical_value"].abs()
-    result["categorical_value"] = result["categorical_value"].apply(sort_and_abs_categorical)
+    result["categorical_value"] = result["categorical_value"].apply(
+        sort_and_abs_categorical
+    )
 
     expected = (
         pd.DataFrame(
@@ -144,16 +147,28 @@ def test_pca_components_(penguins_pca_model: decomposition.PCA):
                 ],
                 "categorical_value": [
                     [
-                        {"category": "Gentoo penguin (Pygoscelis papua)", "value": 0.25068877125667804},
-                        {"category": "Adelie Penguin (Pygoscelis adeliae)", "value": -0.20622291900416198},
-                        {"category": "Chinstrap penguin (Pygoscelis antarctica)", "value": -0.030161149275185855},
+                        {
+                            "category": "Gentoo penguin (Pygoscelis papua)",
+                            "value": 0.25068877125667804,
+                        },
+                        {
+                            "category": "Adelie Penguin (Pygoscelis adeliae)",
+                            "value": -0.20622291900416198,
+                        },
+                        {
+                            "category": "Chinstrap penguin (Pygoscelis antarctica)",
+                            "value": -0.030161149275185855,
+                        },
                     ],
                     [
                         {"category": "Biscoe", "value": 0.19761120114410635},
                         {"category": "Dream", "value": -0.11264736305259061},
                         {"category": "Torgersen", "value": -0.07065913511418596},
                     ],
-                    [], [], [], [],
+                    [],
+                    [],
+                    [],
+                    [],
                     [
                         {"category": ".", "value": 0.0015916894448071784},
                         {"category": "MALE", "value": 0.06869704739750442},
@@ -166,11 +181,12 @@ def test_pca_components_(penguins_pca_model: decomposition.PCA):
         .sort_values(["principal_component_id", "feature"])
         .reset_index(drop=True)
     )
-    
+
     # Sort and sign flip expected values to match the output of the model.
     expected["numerical_value"] = expected["numerical_value"].abs()
-    expected["categorical_value"] = expected["categorical_value"].apply(sort_and_abs_categorical)
-
+    expected["categorical_value"] = expected["categorical_value"].apply(
+        sort_and_abs_categorical
+    )
 
     bigframes.testing.utils.assert_pandas_df_equal_pca_components(
         result,
