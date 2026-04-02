@@ -36,3 +36,7 @@ libraries:
 # Allow generation for google-cloud-dialogflow once this bug is fixed.
   - id: "google-cloud-dialogflow"
     generate_blocked: true
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16520):
+# Allow release for google-crc32c once this bug is fixed.
+  - id: "google-crc32c"
+    release_blocked: true
