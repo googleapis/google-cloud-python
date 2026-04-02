@@ -474,7 +474,7 @@ def test_arima_plus_score(
                 "root_mean_squared_error": [120.675442, 120.675442],
                 "mean_absolute_percentage_error": [4.80044, 4.80044],
                 "symmetric_mean_absolute_percentage_error": [4.744332, 4.744332],
-                "mean_absolute_scaled_error": [0.0, 0.0],
+                "mean_absolute_scaled_error": [0.400, 0.400],
             },
             dtype="Float64",
         )
@@ -490,7 +490,7 @@ def test_arima_plus_score(
                 "root_mean_squared_error": [120.675442],
                 "mean_absolute_percentage_error": [4.80044],
                 "symmetric_mean_absolute_percentage_error": [4.744332],
-                "mean_absolute_scaled_error": [0.0],
+                "mean_absolute_scaled_error": [0.400],
             },
             dtype="Float64",
         )
@@ -577,7 +577,7 @@ def test_arima_plus_score_series(
                 "root_mean_squared_error": [120.675442, 120.675442],
                 "mean_absolute_percentage_error": [4.80044, 4.80044],
                 "symmetric_mean_absolute_percentage_error": [4.744332, 4.744332],
-                "mean_absolute_scaled_error": [0.0, 0.0],
+                "mean_absolute_scaled_error": [0.400, 0.400],
             },
             dtype="Float64",
         )
@@ -593,7 +593,7 @@ def test_arima_plus_score_series(
                 "root_mean_squared_error": [120.675442],
                 "mean_absolute_percentage_error": [4.80044],
                 "symmetric_mean_absolute_percentage_error": [4.744332],
-                "mean_absolute_scaled_error": [0.0],
+                "mean_absolute_scaled_error": [0.400],
             },
             dtype="Float64",
         )
