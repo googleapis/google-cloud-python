@@ -15,6 +15,7 @@
 import typing
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
@@ -82,7 +83,7 @@ def test_model_centroids(penguins_bqml_kmeans_model: core.BqmlModel):
     # FIX: Helper to ignore row order inside categorical_value lists
     # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE]
     def sort_categorical(val):
-        if isinstance(val, list) and len(val) > 0:
+        if isinstance(val, (list, np.ndarray)) and len(val) > 0:
             return sorted(val, key=lambda x: x["category"])
         return val
 
