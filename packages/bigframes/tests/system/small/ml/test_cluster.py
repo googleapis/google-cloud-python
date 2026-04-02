@@ -147,7 +147,8 @@ def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
     # This prevents the test from failing if BQML returns [MALE, FEMALE] instead of [FEMALE, MALE]
     # or 0.197 versus -0.197.
     def sort_and_abs_categorical(val):
-        if isinstance(val, list) and len(val) > 0:
+        # Accept BOTH python lists AND numpy arrays
+        if isinstance(val, (list, np.ndarray)) and len(val) > 0:
             # Take abs of value first, then sort
             processed = [{"category": x["category"], "value": abs(x["value"])} for x in val]
             return sorted(processed, key=lambda x: x["category"])
