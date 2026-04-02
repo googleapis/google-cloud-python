@@ -11,11 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-.. warning::
-    **Preview API**: Firestore Pipelines is currently in preview and is
-    subject to potential breaking changes in future releases.
-"""
 
 from __future__ import annotations
 
@@ -1832,10 +1827,6 @@ class Expression(ABC):
         `None`. The order of elements in the output array is not stable and
         shouldn't be relied upon.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Collect all values of field 'color' into an array
             >>> Field.of("color").array_agg()
@@ -1854,10 +1845,6 @@ class Expression(ABC):
         `None`. The order of elements in the output array is not stable and
         shouldn't be relied upon.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Collect distinct values of field 'color' into an array
             >>> Field.of("color").array_agg_distinct()
@@ -1872,10 +1859,6 @@ class Expression(ABC):
         """Creates an aggregation that finds the first value of an expression
         across multiple stage inputs.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Select the first value of field 'color'
             >>> Field.of("color").first()
@@ -1889,10 +1872,6 @@ class Expression(ABC):
     def last(self) -> "Expression":
         """Creates an aggregation that finds the last value of an expression
         across multiple stage inputs.
-
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
 
         Example:
             >>> # Select the last value of field 'color'
