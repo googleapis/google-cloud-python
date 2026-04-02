@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-ces/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.3.0...google-cloud-ces-v0.4.0) (2026-04-02)
+
+
+### Documentation
+
+* A comment for field `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* deprecate `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` in favor of new `agent` field. ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* add support for generating app resources with LLM ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* update public libraries for CES v1beta ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.2.0...google-cloud-ces-v0.3.0) (2026-03-26)
 
 

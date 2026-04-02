@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-netapp/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.8.0...google-cloud-netapp-v0.9.0) (2026-04-02)
+
+
+### Documentation
+
+* A comment for field `source_volume` in message `.google.cloud.netapp.v1.Backup` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* A comment for field `source_backup` in message `.google.cloud.netapp.v1.RestoreParameters` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* A comment for field `type` in message `.google.cloud.netapp.v1.StoragePool` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* Add ONTAP passthrough APIs Adds the following new methods for direct ONTAP API interaction: - ExecuteOntapPost - ExecuteOntapGet - ExecuteOntapDelete - ExecuteOntapPatch `StoragePoolType` ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Bug Fixes
+
+* An existing value `UNIFIED_LARGE_CAPACITY` is removed from enum `StoragePoolType` ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.7.0...google-cloud-netapp-v0.8.0) (2026-03-26)
 
 

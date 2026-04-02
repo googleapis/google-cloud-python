@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataflow-client/#history
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.12.0...google-cloud-dataflow-client-v0.13.0) (2026-04-02)
+
+
+### Features
+
+* add sha256 field to Package proto ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Add Pausing/Yaml capabilities to public protos ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.11.0...google-cloud-dataflow-client-v0.12.0) (2026-03-26)
 
 
