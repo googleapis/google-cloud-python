@@ -810,7 +810,7 @@ tests:
           - referenceValue: /books
           name: collection
         - args:
-          - integerValue: 1
+          - integerValue: '1'
           name: limit
         - args:
           - mapValue:
