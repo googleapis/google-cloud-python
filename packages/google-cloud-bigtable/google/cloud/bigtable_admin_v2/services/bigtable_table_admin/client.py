@@ -61,18 +61,12 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import (
-    operation,  # type: ignore
-    operation_async,  # type: ignore
-)
-from google.iam.v1 import (
-    iam_policy_pb2,  # type: ignore
-    policy_pb2,  # type: ignore
-)
-from google.protobuf import (
-    field_mask_pb2,  # type: ignore
-    timestamp_pb2,  # type: ignore
-)
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table, types
@@ -128,7 +122,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -136,7 +130,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -146,6 +140,10 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -614,7 +612,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -713,7 +711,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -804,18 +802,16 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = BaseBigtableTableAdminClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            BaseBigtableTableAdminClient._read_environment_variables()
+        )
         self._client_cert_source = BaseBigtableTableAdminClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
         self._universe_domain = BaseBigtableTableAdminClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -4421,7 +4417,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -4561,7 +4557,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
@@ -4702,7 +4698,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client

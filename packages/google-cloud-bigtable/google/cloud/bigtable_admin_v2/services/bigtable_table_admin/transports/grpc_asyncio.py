@@ -20,6 +20,9 @@ import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -28,12 +31,7 @@ from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.iam.v1 import (
-    iam_policy_pb2,  # type: ignore
-    policy_pb2,  # type: ignore
-)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
@@ -67,7 +65,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -102,7 +100,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -246,6 +244,10 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport

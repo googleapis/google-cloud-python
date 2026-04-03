@@ -31,7 +31,7 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.iam.v1 import iam_policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
 from google.cloud import bigtable_admin_v2
 

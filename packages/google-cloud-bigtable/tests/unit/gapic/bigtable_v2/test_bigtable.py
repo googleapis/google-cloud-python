@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import json
 import math
-from collections.abc import AsyncIterable, Iterable
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
 import grpc
 import pytest
@@ -44,6 +44,9 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -56,11 +59,6 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import (
-    duration_pb2,  # type: ignore
-    timestamp_pb2,  # type: ignore
-)
-from google.type import date_pb2  # type: ignore
 
 from google.cloud.bigtable_v2.services.bigtable import (
     BigtableAsyncClient,
@@ -123,6 +121,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert BigtableClient._get_default_mtls_endpoint(None) is None
     assert BigtableClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -139,6 +138,7 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert BigtableClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert BigtableClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 
 def test__read_environment_variables():
@@ -916,10 +916,9 @@ def test_bigtable_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -964,10 +963,9 @@ def test_bigtable_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1003,10 +1001,9 @@ def test_bigtable_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 

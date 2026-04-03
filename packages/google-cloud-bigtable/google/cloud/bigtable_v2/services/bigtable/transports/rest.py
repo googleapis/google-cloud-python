@@ -765,6 +765,12 @@ class BigtableRestTransport(_BaseBigtableRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[BigtableRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1160,11 +1166,10 @@ class BigtableRestTransport(_BaseBigtableRestTransport):
 
             http_options = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_initial_change_stream_partitions(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_generate_initial_change_stream_partitions(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_transcoded_request(
                 http_options, request
@@ -1231,11 +1236,10 @@ class BigtableRestTransport(_BaseBigtableRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_initial_change_stream_partitions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_initial_change_stream_partitions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG

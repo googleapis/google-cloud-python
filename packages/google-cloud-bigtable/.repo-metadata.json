@@ -1,6 +1,7 @@
 {
     "name": "bigtable",
-    "name_pretty": "Cloud Bigtable",
+    "name_pretty": "Google Cloud Bigtable",
+    "api_description": "is Google's NoSQL Big Data database service. It's the\nsame database that powers many core Google services, including Search,\nAnalytics, Maps, and Gmail.",
     "product_documentation": "https://cloud.google.com/bigtable",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigtable/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",

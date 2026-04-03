@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigtable_v2.types import bigtable, data, request_stats
 
@@ -118,9 +118,10 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        return BigtableClient.from_service_account_info.__func__(
-            BigtableAsyncClient, info, *args, **kwargs
-        )  # type: ignore
+        sa_info_func = (
+            BigtableClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(BigtableAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -136,9 +137,10 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        return BigtableClient.from_service_account_file.__func__(
-            BigtableAsyncClient, filename, *args, **kwargs
-        )  # type: ignore
+        sa_file_func = (
+            BigtableClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(BigtableAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -188,7 +190,7 @@ class BigtableAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:

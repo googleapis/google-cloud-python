@@ -44,18 +44,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import (
-    operation,  # type: ignore
-    operation_async,  # type: ignore
-)
-from google.iam.v1 import (
-    iam_policy_pb2,  # type: ignore
-    policy_pb2,  # type: ignore
-)
-from google.protobuf import (
-    field_mask_pb2,  # type: ignore
-    timestamp_pb2,  # type: ignore
-)
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import pagers
 from google.cloud.bigtable_admin_v2.types import (
@@ -163,9 +157,10 @@ class BigtableInstanceAdminAsyncClient:
         Returns:
             BigtableInstanceAdminAsyncClient: The constructed client.
         """
-        return BigtableInstanceAdminClient.from_service_account_info.__func__(
-            BigtableInstanceAdminAsyncClient, info, *args, **kwargs
-        )  # type: ignore
+        sa_info_func = (
+            BigtableInstanceAdminClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(BigtableInstanceAdminAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -181,9 +176,10 @@ class BigtableInstanceAdminAsyncClient:
         Returns:
             BigtableInstanceAdminAsyncClient: The constructed client.
         """
-        return BigtableInstanceAdminClient.from_service_account_file.__func__(
-            BigtableInstanceAdminAsyncClient, filename, *args, **kwargs
-        )  # type: ignore
+        sa_file_func = (
+            BigtableInstanceAdminClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(BigtableInstanceAdminAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -235,7 +231,7 @@ class BigtableInstanceAdminAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -2524,7 +2520,7 @@ class BigtableInstanceAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -2663,7 +2659,7 @@ class BigtableInstanceAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client
@@ -2803,7 +2799,7 @@ class BigtableInstanceAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_test_iam_permissions():
                 # Create a client
