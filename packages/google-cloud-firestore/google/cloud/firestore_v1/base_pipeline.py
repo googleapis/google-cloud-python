@@ -459,7 +459,12 @@ class _BasePipeline:
         """
         return self._append(stages.Unnest(field, alias, options))
 
-    def raw_stage(self, name: str, *params: Expression) -> "_BasePipeline":
+    def raw_stage(
+        self,
+        name: str,
+        *params: Expression,
+        options: dict[str, Expression | Value] | None = None,
+    ) -> "_BasePipeline":
         """
         Adds a stage to the pipeline by specifying the stage name as an argument. This does not offer any
         type safety on the stage params and requires the caller to know the order (and optionally names)
@@ -477,11 +482,12 @@ class _BasePipeline:
         Args:
             name: The name of the stage.
             *params: A sequence of `Expression` objects representing the parameters for the stage.
+            options: An optional dictionary of stage options.
 
         Returns:
             A new Pipeline object with this stage appended to the stage list
         """
-        return self._append(stages.RawStage(name, *params))
+        return self._append(stages.RawStage(name, *params, options=options or {}))
 
     def offset(self, offset: int) -> "_BasePipeline":
         """
