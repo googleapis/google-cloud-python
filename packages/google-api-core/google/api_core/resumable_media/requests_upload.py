@@ -96,7 +96,10 @@ class RequestsResumableUpload:
         self.size = size
         self.content_type = content_type
         self.deadline = deadline
-        self.extra_headers = dict(headers or [])
+        self.extra_headers = {
+            k: v.decode("utf-8") if isinstance(v, bytes) else v
+            for k, v in (headers or [])
+        }
         self.on_progress = on_progress
 
         if hasattr(stream, "tell"):
@@ -231,6 +234,7 @@ class RequestsResumableUpload:
 
         # The state machine processes the response to extract session URL etc.
         if self.on_progress:
+            assert self._machine.resumable_url is not None
             self.on_progress(
                 ResumableUploadStatus(
                     upload_url=self._machine.resumable_url,
@@ -276,6 +280,7 @@ class RequestsResumableUpload:
         response = recovery_retransmit(do_transmit)()
 
         if self.on_progress:
+            assert self._machine.resumable_url is not None
             self.on_progress(
                 ResumableUploadStatus(
                     upload_url=self._machine.resumable_url,
@@ -468,4 +473,5 @@ def make_resumable_upload(
     final_response = None
     while not upload.finished:
         final_response = upload.transmit_next_chunk(transport=transport)
+    assert final_response is not None
     return final_response
