@@ -170,7 +170,7 @@ class TestQueryResultRowReader:
         returned_values = []
 
         def intercept_return_values(func):
-            nonlocal intercept_return_values
+            nonlocal intercept_return_values  # noqa: F824
 
             def wrapped(*args, **kwargs):
                 value = func(*args, **kwargs)
