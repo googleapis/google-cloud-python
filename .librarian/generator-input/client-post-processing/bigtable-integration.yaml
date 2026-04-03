@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-description: Integrate Google Cloud Logging Handwritten code
-# TODO(Fill in issue number below to add more context)
+description: Integrate Google Cloud Bigtable Handwritten code
 url: https://github.com/googleapis/gapic-generator-python/issues/123
 replacements:
   - paths: [
