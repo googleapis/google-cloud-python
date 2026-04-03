@@ -589,6 +589,38 @@ def read_parquet(
 read_parquet.__doc__ = inspect.getdoc(bigframes.session.Session.read_parquet)
 
 
+def read_orc(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+    write_engine: constants.WriteEngineType = "default",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_orc,
+        path,
+        engine=engine,
+        write_engine=write_engine,
+    )
+
+
+read_orc.__doc__ = inspect.getdoc(bigframes.session.Session.read_orc)
+
+
+def read_avro(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_avro,
+        path,
+        engine=engine,
+    )
+
+
+read_avro.__doc__ = inspect.getdoc(bigframes.session.Session.read_avro)
+
+
 def read_gbq_function(
     function_name: str,
     is_row_processor: bool = False,
