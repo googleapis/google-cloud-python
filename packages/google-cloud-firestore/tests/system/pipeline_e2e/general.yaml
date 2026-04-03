@@ -861,13 +861,14 @@ tests:
               - Constant: "1984"
       - Select:
         - AliasedExpression:
-            - FunctionExpression.reference_slice:
-                - Field: __name__
-                - 0
-                - 1
+            - FunctionExpression.document_id:
+                - FunctionExpression.reference_slice:
+                    - Field: __name__
+                    - Constant: 0
+                    - Constant: 1
             - res
     assert_results:
-      - res: "/books/book8"
+      - res: "book8"
     assert_proto:
       pipeline:
         stages:
@@ -887,8 +888,11 @@ tests:
                 res:
                   functionValue:
                     args:
-                    - fieldReferenceValue: __name__
-                    - integerValue: '4'
-                    - integerValue: '1'
-                    name: reference_slice
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: __name__
+                        - integerValue: '0'
+                        - integerValue: '1'
+                        name: reference_slice
+                    name: document_id
           name: select
