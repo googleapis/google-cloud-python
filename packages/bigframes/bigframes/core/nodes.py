@@ -204,6 +204,7 @@ class InNode(BigFrameNode, AdditiveNode):
     right_child: BigFrameNode
     left_col: ex.DerefOp
     indicator_col: identifiers.ColumnId
+    # For matching left_col to right_child[0], if true, nulls match nulls, if false, nulls don't match nulls
     nulls_equal: bool = True
 
     def _validate(self):
@@ -314,6 +315,7 @@ class JoinNode(BigFrameNode):
     right_child: BigFrameNode
     conditions: typing.Tuple[typing.Tuple[ex.DerefOp, ex.DerefOp], ...]
     type: typing.Literal["inner", "outer", "left", "right", "cross"]
+    # choose to treat nulls as equal or not for purposes of the join
     # pandas treats nulls as equal, sql does not
     nulls_equal: bool
     propogate_order: bool
