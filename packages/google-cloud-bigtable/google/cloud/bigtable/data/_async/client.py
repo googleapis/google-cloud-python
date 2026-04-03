@@ -126,11 +126,11 @@ else:
         BigtableMetricsInterceptor as MetricsInterceptorType,
     )
     from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
-    from google.cloud.bigtable_v2.services.bigtable import (
-        BigtableClient as GapicClient,  # type: ignore
+    from google.cloud.bigtable_v2.services.bigtable import (  # type: ignore
+        BigtableClient as GapicClient,
     )
-    from google.cloud.bigtable_v2.services.bigtable.transports import (
-        BigtableGrpcTransport as TransportType,  # type: ignore
+    from google.cloud.bigtable_v2.services.bigtable.transports import (  # type: ignore
+        BigtableGrpcTransport as TransportType,
     )
 
 if TYPE_CHECKING:
