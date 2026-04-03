@@ -183,7 +183,7 @@ class Expression(ABC):
     """Represents an expression that can be evaluated to a value within the
     execution of a pipeline.
 
-    Expressionessions are the building blocks for creating complex queries and
+    Expressions are the building blocks for creating complex queries and
     transformations in Firestore pipelines. They can represent:
 
     - **Field references:** Access values from document fields.
@@ -933,7 +933,7 @@ class Expression(ABC):
             >>> Field.of("email").is_absent()
 
         Returns:
-            A new `BooleanExpressionession` representing the isAbsent operation.
+            A new `BooleanExpression` representing the isAbsent operation.
         """
         return BooleanExpression("is_absent", [self])
 
