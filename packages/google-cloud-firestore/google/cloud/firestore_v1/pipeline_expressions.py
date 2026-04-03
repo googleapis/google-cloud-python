@@ -1150,19 +1150,6 @@ class Expression(ABC):
         return FunctionExpression("switch_on", args)
 
     @expose_as_static
-    def parent(self) -> "Expression":
-        """Creates an expression that returns the parent document of a document reference.
-
-        Example:
-            >>> # Get the parent document of a document reference.
-            >>> Field.of("__name__").parent()
-
-        Returns:
-            An Expression representing that returns a reference to the parent document.
-        """
-        return FunctionExpression("parent", [self])
-
-    @expose_as_static
     def storage_size(self) -> "Expression":
         """Calculates the Firestore storage size of a given value.
 
@@ -1175,29 +1162,6 @@ class Expression(ABC):
             A new `Expression` representing the storage size.
         """
         return FunctionExpression("storage_size", [self])
-
-    @expose_as_static
-    def reference_slice(
-        self, offset: int | Expression, length: int | Expression
-    ) -> "Expression":
-        """Extracts a slice of the path segments from a document reference.
-
-        Example:
-            >>> Field.of("__name__").reference_slice(1, 2)
-
-        Args:
-            offset: The starting index of the path segment.
-            length: The number of segments to include in the slice.
-
-        Returns:
-            A new `Expression` that returns a reference to the sliced portion of the document path.
-        """
-        args = [
-            self,
-            self._cast_to_expr_or_convert_to_constant(offset),
-            self._cast_to_expr_or_convert_to_constant(length),
-        ]
-        return FunctionExpression("reference_slice", args)
 
     @expose_as_static
     def sum(self) -> "Expression":

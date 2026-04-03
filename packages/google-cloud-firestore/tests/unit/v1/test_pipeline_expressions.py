@@ -949,15 +949,6 @@ class TestExpressionessionMethods:
         infix_instance = arg1.switch_on(arg2, arg3, arg4, arg5)
         assert infix_instance == instance
 
-    def test_parent(self):
-        arg1 = self._make_arg("Input")
-        instance = Expression.parent(arg1)
-        assert instance.name == "parent"
-        assert instance.params == [arg1]
-        assert repr(instance) == "Input.parent()"
-        infix_instance = arg1.parent()
-        assert infix_instance == instance
-
     def test_storage_size(self):
         arg1 = self._make_arg("Input")
         instance = Expression.storage_size(arg1)
@@ -965,17 +956,6 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1]
         assert repr(instance) == "Input.storage_size()"
         infix_instance = arg1.storage_size()
-        assert infix_instance == instance
-
-    def test_reference_slice(self):
-        arg1 = self._make_arg("Input")
-        arg2 = self._make_arg("Offset")
-        arg3 = self._make_arg("Length")
-        instance = Expression.reference_slice(arg1, arg2, arg3)
-        assert instance.name == "reference_slice"
-        assert instance.params == [arg1, arg2, arg3]
-        assert repr(instance) == "Input.reference_slice(Offset, Length)"
-        infix_instance = arg1.reference_slice(arg2, arg3)
         assert infix_instance == instance
 
     def test_not(self):
