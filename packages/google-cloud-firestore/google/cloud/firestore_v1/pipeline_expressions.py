@@ -1113,11 +1113,11 @@ class Expression(ABC):
         Returns:
             An Expression representing the coalesce operation.
         """
-        args = [self]
-        args.extend(
-            [Expression._cast_to_expr_or_convert_to_constant(x) for x in others]
+        return FunctionExpression(
+            "coalesce",
+            [self]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
         )
-        return FunctionExpression("coalesce", args)
 
     @expose_as_static
     def switch_on(
@@ -1141,13 +1141,13 @@ class Expression(ABC):
             *others: Additional alternating conditions and results, optionally followed by a default value.
 
         Returns:
-            An Expression representing the switchOn operation.
+            An Expression representing the "switch_on" operation.
         """
-        args = [self, Expression._cast_to_expr_or_convert_to_constant(result)]
-        args.extend(
-            [Expression._cast_to_expr_or_convert_to_constant(x) for x in others]
+        return FunctionExpression(
+            "switch_on",
+            [self, Expression._cast_to_expr_or_convert_to_constant(result)]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
         )
-        return FunctionExpression("switch_on", args)
 
     @expose_as_static
     def storage_size(self) -> "Expression":

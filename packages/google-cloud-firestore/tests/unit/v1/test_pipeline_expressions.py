@@ -750,8 +750,8 @@ class TestExpressionessionMethods:
         assert instance.name == "array_get"
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "ArrayField.array_get(Offset)"
-        infix_istance = arg1.array_get(arg2)
-        assert infix_istance == instance
+        infix_instance = arg1.array_get(arg2)
+        assert infix_instance == instance
 
     def test_offset(self):
         arg1 = self._make_arg("ArrayField")
@@ -760,8 +760,8 @@ class TestExpressionessionMethods:
         assert instance.name == "offset"
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "ArrayField.offset(Offset)"
-        infix_istance = arg1.offset(arg2)
-        assert infix_istance == instance
+        infix_instance = arg1.offset(arg2)
+        assert infix_instance == instance
 
     def test_array_contains(self):
         arg1 = self._make_arg("ArrayField")
@@ -1654,8 +1654,8 @@ class TestExpressionessionMethods:
         assert instance.name == "array_reverse"
         assert instance.params == [arg1]
         assert repr(instance) == "ArrayField.array_reverse()"
-        infix_istance = arg1.array_reverse()
-        assert infix_istance == instance
+        infix_instance = arg1.array_reverse()
+        assert infix_instance == instance
 
     def test_array_filter(self):
         arg1 = self._make_arg("ArrayField")
