@@ -903,10 +903,10 @@ tests:
         - AliasedExpression:
             - FunctionExpression.array_filter:
                 - Field: tags
-                - "tag"
                 - FunctionExpression.equal:
                     - Field: tag
                     - Constant: comedy
+                - "tag"
             - "comedyTag"
     assert_results:
       - comedyTag: ["comedy"]
@@ -949,9 +949,9 @@ tests:
         - AliasedExpression:
             - FunctionExpression.array_transform:
                 - Field: tags
-                - "tag"
                 - FunctionExpression.to_upper:
                     - Field: tag
+                - "tag"
             - "upperTags"
     assert_results:
       - upperTags: ["COMEDY", "SPACE", "ADVENTURE"]
@@ -993,9 +993,9 @@ tests:
         - AliasedExpression:
             - FunctionExpression.array_transform:
                 - Field: tags
+                - Field: "i"
                 - "tag"
-                - Field: i
-                - index_alias: "i"
+                - "i"
             - "indexedTags"
     assert_results:
       - indexedTags: [0, 1, 2]
