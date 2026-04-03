@@ -55,6 +55,7 @@ def test_happy_path_upload():
         initial_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
     )
 
     # Mock Upload & Finalize
@@ -102,10 +103,11 @@ def test_upload_with_retry():
         initial_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
     )
 
     # Mock 503 then 200 for the same request
-    responses.add(responses.POST, session_url, status=503)
+    responses.add(responses.POST, session_url, status=503, body="")
     responses.add(
         responses.POST,
         session_url,
@@ -142,6 +144,7 @@ def test_upload_with_recovery_query():
         initial_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
     )
 
     # Fatal error
@@ -150,6 +153,7 @@ def test_upload_with_recovery_query():
         session_url,
         status=400,
         headers={},
+        body="",
     )
 
     # Recovery Query
@@ -158,6 +162,7 @@ def test_upload_with_recovery_query():
         session_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "0"},
+        body="",
     )
 
     # Final Upload
@@ -200,6 +205,7 @@ def test_interruption_and_query_recovery_mid_stream():
         initial_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
     )
 
     # 1. First chunk (0-4) succeeds. Note: The chunk boundary is 5
@@ -208,6 +214,7 @@ def test_interruption_and_query_recovery_mid_stream():
         session_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active"},
+        body="",
     )
 
     # 2. Second chunk (5-9) fails fatally
@@ -215,6 +222,7 @@ def test_interruption_and_query_recovery_mid_stream():
         responses.POST,
         session_url,
         status=400,
+        body="",
     )
 
     # 3. Query reports 5 bytes received
@@ -223,6 +231,7 @@ def test_interruption_and_query_recovery_mid_stream():
         session_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "5"},
+        body="",
     )
 
     # 4. Resume from 5 succeeds
@@ -263,6 +272,7 @@ def test_logging_success_path(caplog):
         initial_url,
         status=200,
         headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
     )
     responses.add(
         responses.POST,
