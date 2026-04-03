@@ -969,12 +969,12 @@ class TestExpressionessionMethods:
 
     def test_reference_slice(self):
         arg1 = self._make_arg("Input")
-        arg2 = self._make_arg("Start")
-        arg3 = self._make_arg("End")
+        arg2 = self._make_arg("Offset")
+        arg3 = self._make_arg("Length")
         instance = Expression.reference_slice(arg1, arg2, arg3)
         assert instance.name == "reference_slice"
         assert instance.params == [arg1, arg2, arg3]
-        assert repr(instance) == "Input.reference_slice(Start, End)"
+        assert repr(instance) == "Input.reference_slice(Offset, Length)"
         infix_instance = arg1.reference_slice(arg2, arg3)
         assert infix_instance == instance
 

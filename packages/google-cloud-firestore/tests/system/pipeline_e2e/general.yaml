@@ -801,8 +801,10 @@ tests:
       - Select:
         - AliasedExpression:
             - FunctionExpression.parent:
-                - Field: __path__
+                - Field: __name__
             - res
+    assert_results:
+      - res: "/books/book1"
     assert_proto:
       pipeline:
         stages:
@@ -818,7 +820,7 @@ tests:
                 res:
                   functionValue:
                     args:
-                    - fieldReferenceValue: __path__
+                    - fieldReferenceValue: __name__
                     name: parent
           name: select
   - description: testStorageSize
@@ -828,8 +830,10 @@ tests:
       - Select:
         - AliasedExpression:
             - FunctionExpression.storage_size:
-                - Field: __path__
+                - Field: __name__
             - res
+    assert_results:
+      - res: 29
     assert_proto:
       pipeline:
         stages:
@@ -845,19 +849,25 @@ tests:
                 res:
                   functionValue:
                     args:
-                    - fieldReferenceValue: __path__
+                    - fieldReferenceValue: __name__
                     name: storage_size
           name: select
   - description: testReferenceSlice
     pipeline:
       - Collection: books
-      - Limit: 1
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
       - Select:
         - AliasedExpression:
             - FunctionExpression.reference_slice:
-                - Field: __path__
-                - Constant: 1
+                - Field: __name__
+                - 0
+                - 1
             - res
+    assert_results:
+      - res: "/books/book8"
     assert_proto:
       pipeline:
         stages:
@@ -865,15 +875,20 @@ tests:
           - referenceValue: /books
           name: collection
         - args:
-          - integerValue: '1'
-          name: limit
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: '1984'
+              name: equal
+          name: where
         - args:
           - mapValue:
               fields:
                 res:
                   functionValue:
                     args:
-                    - fieldReferenceValue: __path__
+                    - fieldReferenceValue: __name__
+                    - integerValue: '4'
                     - integerValue: '1'
                     name: reference_slice
           name: select

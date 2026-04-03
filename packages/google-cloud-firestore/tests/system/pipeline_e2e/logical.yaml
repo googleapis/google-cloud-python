@@ -764,12 +764,27 @@ tests:
       - Collection: books
       - Where:
           - Nor:
-              - FunctionExpression.greater_than:
-                  - Field: rating
-                  - Constant: 4.5
               - FunctionExpression.equal:
                   - Field: genre
-                  - Constant: Science Fiction
+                  - Constant: Romance
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Dystopian
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Fantasy
+              - FunctionExpression.greater_than:
+                  - Field: published
+                  - Constant: 1949
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: "Crime and Punishment"
+      - title: "The Great Gatsby"
     assert_proto:
       pipeline:
         stages:
@@ -781,13 +796,37 @@ tests:
               args:
               - functionValue:
                   args:
-                  - fieldReferenceValue: rating
-                  - doubleValue: 4.5
-                  name: greater_than
+                  - fieldReferenceValue: genre
+                  - stringValue: Romance
+                  name: equal
               - functionValue:
                   args:
                   - fieldReferenceValue: genre
-                  - stringValue: Science Fiction
+                  - stringValue: Dystopian
                   name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Fantasy
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1949'
+                  name: greater_than
               name: nor
           name: where
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort

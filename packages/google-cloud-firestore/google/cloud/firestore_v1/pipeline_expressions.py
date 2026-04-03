@@ -1155,10 +1155,10 @@ class Expression(ABC):
 
         Example:
             >>> # Get the parent document of a document reference.
-            >>> Field.of("__path__").parent()
+            >>> Field.of("__name__").parent()
 
         Returns:
-            An Expression representing the parent operation.
+            An Expression representing that returns a reference to the parent document.
         """
         return FunctionExpression("parent", [self])
 
@@ -1178,23 +1178,25 @@ class Expression(ABC):
 
     @expose_as_static
     def reference_slice(
-        self, start: int | Expression, end: int | Expression | None = None
+        self, offset: int | Expression, length: int | Expression
     ) -> "Expression":
         """Extracts a slice of the path segments from a document reference.
 
         Example:
-            >>> Field.of("__path__").reference_slice(1, 3)
+            >>> Field.of("__name__").reference_slice(1, 2)
 
         Args:
-            start: The starting index of the path segment.
-            end: The ending index (exclusive) of the path segment. If None, slices to the end.
+            offset: The starting index of the path segment.
+            length: The number of segments to include in the slice.
 
         Returns:
-            A new `Expression` representing the sliced path.
+            A new `Expression` that returns a reference to the sliced portion of the document path.
         """
-        args = [self, self._cast_to_expr_or_convert_to_constant(start)]
-        if end is not None:
-            args.append(self._cast_to_expr_or_convert_to_constant(end))
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(offset),
+            self._cast_to_expr_or_convert_to_constant(length),
+        ]
         return FunctionExpression("reference_slice", args)
 
     @expose_as_static
