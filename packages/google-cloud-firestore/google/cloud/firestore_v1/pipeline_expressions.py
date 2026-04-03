@@ -761,6 +761,9 @@ class Expression(ABC):
         Creates an expression that indexes into an array from the beginning or end and returns the
         element. A negative offset starts from the end.
 
+        If the expression is evaluated against a non-array type, it evaluates to an error. See `offset`
+        for an alternative that evaluates to unset instead.
+
         Example:
             >>> Array([1,2,3]).array_get(0)
 
@@ -772,6 +775,26 @@ class Expression(ABC):
         """
         return FunctionExpression(
             "array_get", [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        )
+
+    @expose_as_static
+    def offset(self, offset: Expression | int) -> "FunctionExpression":
+        """
+        Creates an expression that indexes into an array from the beginning or end and returns the
+        element. A negative offset starts from the end.
+        If the expression is evaluated against a non-array type, it evaluates to unset.
+
+        Example:
+            >>> Array([1,2,3]).offset(0)
+
+        Args:
+            offset: the index of the element to return
+
+        Returns:
+            A new `Expression` representing the `offset` operation.
+        """
+        return FunctionExpression(
+            "offset", [self, self._cast_to_expr_or_convert_to_constant(offset)]
         )
 
     @expose_as_static
@@ -1436,6 +1459,7 @@ class Expression(ABC):
     @expose_as_static
     def map_get(self, key: str | Constant[str]) -> "Expression":
         """Accesses a value from the map produced by evaluating this expression.
+        If the expression is evaluated against a non-map type, it evaluates to an error.
 
         Example:
             >>> Map({"city": "London"}).map_get("city")

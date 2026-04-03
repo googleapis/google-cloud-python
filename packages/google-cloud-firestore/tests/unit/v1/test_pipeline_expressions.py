@@ -753,6 +753,16 @@ class TestExpressionessionMethods:
         infix_istance = arg1.array_get(arg2)
         assert infix_istance == instance
 
+    def test_offset(self):
+        arg1 = self._make_arg("ArrayField")
+        arg2 = self._make_arg("Offset")
+        instance = Expression.offset(arg1, arg2)
+        assert instance.name == "offset"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "ArrayField.offset(Offset)"
+        infix_istance = arg1.offset(arg2)
+        assert infix_istance == instance
+
     def test_array_contains(self):
         arg1 = self._make_arg("ArrayField")
         arg2 = self._make_arg("Element")

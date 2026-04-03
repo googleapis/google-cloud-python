@@ -424,6 +424,90 @@ tests:
                     - integerValue: '0'
                     name: array_get
           name: select
+  - description: testArrayGet_NonArray
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.is_error:
+                - FunctionExpression.array_get:
+                    - Field: title
+                    - Constant: 0
+            - "isError"
+    assert_results:
+      - isError: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                isError:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: title
+                        - integerValue: '0'
+                        name: array_get
+                    name: is_error
+          name: select
+  - description: testOffset_NonArray
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.is_absent:
+                - FunctionExpression.offset:
+                    - Field: title
+                    - Constant: 0
+            - "isAbsent"
+    assert_results:
+      - isAbsent: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                isAbsent:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: title
+                        - integerValue: '0'
+                        name: offset
+                    name: is_absent
+          name: select
   - description: testArrayGet_NegativeOffset
     pipeline:
       - Collection: books
@@ -461,6 +545,44 @@ tests:
                     - fieldReferenceValue: tags
                     - integerValue: '-1'
                     name: array_get
+          name: select
+  - description: testOffset
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Field: tags
+                - Constant: -1
+            - "lastTag"
+    assert_results:
+      - lastTag: "adventure"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                lastTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - integerValue: '-1'
+                    name: offset
           name: select
   - description: testArrayFirst
     pipeline:
