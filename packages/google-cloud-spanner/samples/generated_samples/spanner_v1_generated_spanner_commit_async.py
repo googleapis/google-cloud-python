@@ -40,7 +40,7 @@ async def sample_commit():
 
     # Initialize request argument(s)
     request = spanner_v1.CommitRequest(
-        transaction_id=b'transaction_id_blob',
+        transaction_id=b"transaction_id_blob",
         session="session_value",
     )
 
@@ -49,5 +49,6 @@ async def sample_commit():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_Spanner_Commit_async]

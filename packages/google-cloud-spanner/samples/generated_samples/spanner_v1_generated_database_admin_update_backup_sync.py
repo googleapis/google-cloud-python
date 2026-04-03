@@ -39,13 +39,13 @@ def sample_update_backup():
     client = spanner_admin_database_v1.DatabaseAdminClient()
 
     # Initialize request argument(s)
-    request = spanner_admin_database_v1.UpdateBackupRequest(
-    )
+    request = spanner_admin_database_v1.UpdateBackupRequest()
 
     # Make the request
     response = client.update_backup(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_DatabaseAdmin_UpdateBackup_sync]

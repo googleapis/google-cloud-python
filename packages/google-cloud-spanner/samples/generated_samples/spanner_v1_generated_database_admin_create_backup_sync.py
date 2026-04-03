@@ -54,4 +54,5 @@ def sample_create_backup():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_CreateBackup_sync]

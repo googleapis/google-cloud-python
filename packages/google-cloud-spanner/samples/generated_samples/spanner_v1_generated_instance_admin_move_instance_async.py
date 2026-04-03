@@ -54,4 +54,5 @@ async def sample_move_instance():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_MoveInstance_async]

@@ -60,4 +60,5 @@ async def sample_create_instance():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_CreateInstance_async]

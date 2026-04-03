@@ -41,7 +41,7 @@ def sample_update_database_ddl():
     # Initialize request argument(s)
     request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
         database="database_value",
-        statements=['statements_value1', 'statements_value2'],
+        statements=["statements_value1", "statements_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ def sample_update_database_ddl():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_DatabaseAdmin_UpdateDatabaseDdl_sync]

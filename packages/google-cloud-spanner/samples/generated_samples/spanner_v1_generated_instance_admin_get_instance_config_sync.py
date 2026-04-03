@@ -49,4 +49,5 @@ def sample_get_instance_config():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_GetInstanceConfig_sync]

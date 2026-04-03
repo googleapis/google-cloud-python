@@ -49,4 +49,5 @@ def sample_get_backup_schedule():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_GetBackupSchedule_sync]

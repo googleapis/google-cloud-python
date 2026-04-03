@@ -50,4 +50,5 @@ def sample_list_instance_partition_operations():
     for response in page_result:
         print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_ListInstancePartitionOperations_sync]

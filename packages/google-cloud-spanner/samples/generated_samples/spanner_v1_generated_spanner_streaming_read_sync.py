@@ -42,7 +42,7 @@ def sample_streaming_read():
     request = spanner_v1.ReadRequest(
         session="session_value",
         table="table_value",
-        columns=['columns_value1', 'columns_value2'],
+        columns=["columns_value1", "columns_value2"],
     )
 
     # Make the request
@@ -51,5 +51,6 @@ def sample_streaming_read():
     # Handle the response
     for response in stream:
         print(response)
+
 
 # [END spanner_v1_generated_Spanner_StreamingRead_sync]

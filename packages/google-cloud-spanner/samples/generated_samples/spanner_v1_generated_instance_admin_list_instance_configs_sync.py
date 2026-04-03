@@ -50,4 +50,5 @@ def sample_list_instance_configs():
     for response in page_result:
         print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_ListInstanceConfigs_sync]

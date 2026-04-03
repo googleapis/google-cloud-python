@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import spanner_admin_database_v1
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
+from google.cloud import spanner_admin_database_v1
 
 
 async def sample_get_iam_policy():
@@ -49,5 +50,6 @@ async def sample_get_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_DatabaseAdmin_GetIamPolicy_async]

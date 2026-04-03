@@ -56,4 +56,5 @@ async def sample_update_database():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_UpdateDatabase_async]

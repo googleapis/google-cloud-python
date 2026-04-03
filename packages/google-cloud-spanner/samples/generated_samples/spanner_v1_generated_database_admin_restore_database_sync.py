@@ -55,4 +55,5 @@ def sample_restore_database():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_DatabaseAdmin_RestoreDatabase_sync]

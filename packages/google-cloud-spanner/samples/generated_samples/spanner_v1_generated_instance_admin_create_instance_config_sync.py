@@ -54,4 +54,5 @@ def sample_create_instance_config():
     # Handle the response
     print(response)
 
+
 # [END spanner_v1_generated_InstanceAdmin_CreateInstanceConfig_sync]
