@@ -933,9 +933,9 @@ class TestSystem:
         temp_rows.add_row(b"row_key_1", value=cell_value)
         query = ReadRowsQuery(row_filter=f)
         row_list = target.read_rows(query)
-        assert len(row_list) == bool(
-            expect_match
-        ), f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        assert len(row_list) == bool(expect_match), (
+            f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't support SQL"

@@ -172,9 +172,9 @@ class TestBigtableDataClient:
                 wrapped_user_agent_sorted = " ".join(
                     sorted(client_info.to_user_agent().split(" "))
                 )
-                assert VENEER_HEADER_REGEX.match(
-                    wrapped_user_agent_sorted
-                ), f"'{wrapped_user_agent_sorted}' does not match {VENEER_HEADER_REGEX}"
+                assert VENEER_HEADER_REGEX.match(wrapped_user_agent_sorted), (
+                    f"'{wrapped_user_agent_sorted}' does not match {VENEER_HEADER_REGEX}"
+                )
             client.close()
 
     def test__start_background_channel_refresh_task_exists(self):
@@ -301,9 +301,9 @@ class TestBigtableDataClient:
                     pass
                 sleep.assert_called_once()
                 call_time = sleep.call_args[0][1]
-                assert (
-                    abs(call_time - expected_sleep) < 0.1
-                ), f"refresh_interval: {refresh_interval}, wait_time: {wait_time}, expected_sleep: {expected_sleep}"
+                assert abs(call_time - expected_sleep) < 0.1, (
+                    f"refresh_interval: {refresh_interval}, wait_time: {wait_time}, expected_sleep: {expected_sleep}"
+                )
                 client.close()
 
     def test__manage_channel_ping_and_warm(self):
@@ -319,9 +319,9 @@ class TestBigtableDataClient:
         )
         with mock.patch.object(*sleep_tuple) as sleep_mock:
             sleep_mock.side_effect = [None, asyncio.CancelledError]
-            ping_and_warm = (
-                client._ping_and_warm_instances
-            ) = CrossSync._Sync_Impl.Mock()
+            ping_and_warm = client._ping_and_warm_instances = (
+                CrossSync._Sync_Impl.Mock()
+            )
             try:
                 client._manage_channel(10)
             except asyncio.CancelledError:
@@ -363,9 +363,9 @@ class TestBigtableDataClient:
                             pass
                     assert sleep.call_count == num_cycles
                     total_sleep = sum([call[0][1] for call in sleep.call_args_list])
-                    assert (
-                        abs(total_sleep - expected_sleep) < 0.5
-                    ), f"refresh_interval={refresh_interval}, num_cycles={num_cycles}, expected_sleep={expected_sleep}"
+                    assert abs(total_sleep - expected_sleep) < 0.5, (
+                        f"refresh_interval={refresh_interval}, num_cycles={num_cycles}, expected_sleep={expected_sleep}"
+                    )
         client.close()
 
     def test__manage_channel_random(self):
@@ -1772,11 +1772,14 @@ class TestReadRowsSharded:
                 with mock.patch.object(
                     table.client._gapic_client, "read_rows"
                 ) as read_rows:
-                    read_rows.side_effect = lambda *args, **kwargs: CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
-                        [
-                            CrossSync._Sync_Impl.TestReadRows._make_chunk(row_key=k)
-                            for k in args[0].rows.row_keys
-                        ]
+                    read_rows.side_effect = (
+                        lambda *args,
+                        **kwargs: CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
+                            [
+                                CrossSync._Sync_Impl.TestReadRows._make_chunk(row_key=k)
+                                for k in args[0].rows.row_keys
+                            ]
+                        )
                     )
                     query_1 = ReadRowsQuery(b"test_1")
                     query_2 = ReadRowsQuery(b"test_2")
