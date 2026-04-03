@@ -13,37 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
-import json  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import gapic_v1
-import google.protobuf
-
-from google.protobuf import json_format
-from google.api_core import operations_v1
-
-from requests import __version__ as requests_version
 import dataclasses
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+import json  # type: ignore
+import logging
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin
-from google.cloud.bigtable_admin_v2.types import instance
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,
+)
+from requests import __version__ as requests_version
 
+from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin, instance
 
-from .rest_base import _BaseBigtableInstanceAdminRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseBigtableInstanceAdminRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -1874,9 +1870,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_create_app_profile(
                 request, metadata
@@ -2033,9 +2027,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_transcoded_request(
@@ -2186,9 +2178,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_transcoded_request(
@@ -2339,9 +2329,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_http_options()
 
             request, metadata = self._interceptor.pre_create_logical_view(
                 request, metadata
@@ -2496,9 +2484,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_http_options()
 
             request, metadata = self._interceptor.pre_create_materialized_view(
                 request, metadata
@@ -2643,9 +2629,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_app_profile(
                 request, metadata
@@ -2755,9 +2739,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
@@ -2863,9 +2845,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
@@ -2971,9 +2951,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_logical_view(
                 request, metadata
@@ -3083,9 +3061,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_materialized_view(
                 request, metadata
@@ -3200,9 +3176,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_app_profile(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_transcoded_request(
@@ -3350,9 +3324,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_transcoded_request(
@@ -3571,9 +3543,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -3728,9 +3698,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_transcoded_request(
@@ -3876,9 +3844,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_logical_view(
                 request, metadata
@@ -4026,9 +3992,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_materialized_view(
                 request, metadata
@@ -4178,9 +4142,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_app_profiles(
                 request, metadata
@@ -4334,9 +4296,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_transcoded_request(
@@ -4484,9 +4444,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_hot_tablets(
                 request, metadata
@@ -4636,9 +4594,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_transcoded_request(
@@ -4786,9 +4742,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_logical_views(
                 request, metadata
@@ -4942,9 +4896,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_materialized_views(
                 request, metadata
@@ -5100,9 +5052,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_partial_update_cluster(
                 request, metadata
@@ -5257,9 +5207,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_partial_update_instance(
                 request, metadata
@@ -5485,9 +5433,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -5636,9 +5582,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5795,9 +5739,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_update_app_profile(
                 request, metadata
@@ -5954,9 +5896,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
@@ -6114,9 +6054,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
@@ -6269,9 +6207,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_http_options()
 
             request, metadata = self._interceptor.pre_update_logical_view(
                 request, metadata
@@ -6426,9 +6362,7 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
 
             """
 
-            http_options = (
-                _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_http_options()
-            )
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_http_options()
 
             request, metadata = self._interceptor.pre_update_materialized_view(
                 request, metadata
@@ -6570,7 +6504,9 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMaterializedView(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMaterializedView(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_app_profile(
@@ -6612,7 +6548,9 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMaterializedView(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMaterializedView(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_app_profile(
@@ -6812,7 +6750,9 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMaterializedView(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMaterializedView(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

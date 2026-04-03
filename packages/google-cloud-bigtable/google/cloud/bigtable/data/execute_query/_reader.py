@@ -13,29 +13,27 @@
 # limitations under the License.
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import (
-    List,
-    TypeVar,
     Generic,
     Iterable,
+    List,
     Optional,
     Sequence,
+    TypeVar,
 )
-from abc import ABC, abstractmethod
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 
-from google.cloud.bigtable_v2 import ProtoRows, Value as PBValue
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
 
 from google.cloud.bigtable.data.execute_query._query_result_parsing_utils import (
     _parse_pb_value_to_python_value,
 )
-
-from google.cloud.bigtable.helpers import batched
-
-from google.cloud.bigtable.data.execute_query.values import QueryResultRow
 from google.cloud.bigtable.data.execute_query.metadata import Metadata
-
+from google.cloud.bigtable.data.execute_query.values import QueryResultRow
+from google.cloud.bigtable.helpers import batched
+from google.cloud.bigtable_v2 import ProtoRows
+from google.cloud.bigtable_v2 import Value as PBValue
 
 T = TypeVar("T")
 
@@ -105,9 +103,9 @@ class _QueryResultRowReader(_Reader[QueryResultRow]):
         result = QueryResultRow()
         columns = metadata.columns
 
-        assert len(values) == len(
-            columns
-        ), "This function should be called only when count of values matches count of columns."
+        assert len(values) == len(columns), (
+            "This function should be called only when count of values matches count of columns."
+        )
 
         for column, value in zip(columns, values):
             parsed_value = _parse_pb_value_to_python_value(

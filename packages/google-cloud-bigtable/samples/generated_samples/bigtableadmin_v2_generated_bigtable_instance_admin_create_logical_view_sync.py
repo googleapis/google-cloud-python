@@ -58,4 +58,5 @@ def sample_create_logical_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_CreateLogicalView_sync]

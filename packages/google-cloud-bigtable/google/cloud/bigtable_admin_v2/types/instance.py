@@ -18,10 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
-from google.cloud.bigtable_admin_v2.types import common
 from google.protobuf import timestamp_pb2  # type: ignore
 
+from google.cloud.bigtable_admin_v2.types import common
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -120,6 +119,7 @@ class Instance(proto.Message):
                 may be destroyed if the creation process
                 encounters an error.
         """
+
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
@@ -141,6 +141,7 @@ class Instance(proto.Message):
                 cases, as it no longer enforces a higher minimum
                 node count than DEVELOPMENT.
         """
+
         TYPE_UNSPECIFIED = 0
         PRODUCTION = 1
         DEVELOPMENT = 2
@@ -313,6 +314,7 @@ class Cluster(proto.Message):
                 (tables) still exist, but no operations can be
                 performed on the cluster.
         """
+
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
@@ -337,6 +339,7 @@ class Cluster(proto.Message):
                 factor enabled, otherwise an INVALID_ARGUMENT error will be
                 returned.
         """
+
         NODE_SCALING_FACTOR_UNSPECIFIED = 0
         NODE_SCALING_FACTOR_1X = 1
         NODE_SCALING_FACTOR_2X = 2
@@ -517,6 +520,7 @@ class AppProfile(proto.Message):
             PRIORITY_HIGH (3):
                 No description available.
         """
+
         PRIORITY_UNSPECIFIED = 0
         PRIORITY_LOW = 1
         PRIORITY_MEDIUM = 2
@@ -643,6 +647,7 @@ class AppProfile(proto.Message):
                     targeted Bigtable Instance / Table pays for
                     compute.
             """
+
             COMPUTE_BILLING_OWNER_UNSPECIFIED = 0
             HOST_PAYS = 1
 

@@ -50,4 +50,5 @@ def sample_list_app_profiles():
     for response in page_result:
         print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_ListAppProfiles_sync]

@@ -13,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -32,20 +33,19 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
-from google.cloud.bigtable_admin_v2 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
+
+from google.cloud.bigtable_admin_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,18 +61,24 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+from google.api_core import (
+    operation,  # type: ignore
+    operation_async,  # type: ignore
+)
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table, types
 from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.cloud.bigtable_admin_v2.types import types
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, BigtableTableAdminTransport
 from .transports.grpc import BigtableTableAdminGrpcTransport
 from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
 from .transports.rest import BigtableTableAdminRestTransport
@@ -86,9 +92,7 @@ class BaseBigtableTableAdminClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[BigtableTableAdminTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[BigtableTableAdminTransport]]
     _transport_registry["grpc"] = BigtableTableAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = BigtableTableAdminGrpcAsyncIOTransport
     _transport_registry["rest"] = BigtableTableAdminRestTransport
@@ -839,8 +843,7 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(BigtableTableAdminTransport, transport)
             self._api_endpoint = self._transport.host

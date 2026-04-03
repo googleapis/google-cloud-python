@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Awaitable, Union, Callable
+from typing import Awaitable, Callable, Union
 
-from google.api_core.future import async_future
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.future import async_future
+
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 try:
@@ -64,7 +65,7 @@ class _AsyncCheckConsistencyPollingFuture(async_future.AsyncFuture):
             [OptionalRetry], Awaitable[bigtable_table_admin.CheckConsistencyResponse]
         ],
         retry: retries.AsyncRetry = DEFAULT_RETRY,
-        **kwargs
+        **kwargs,
     ):
         super(_AsyncCheckConsistencyPollingFuture, self).__init__(retry=retry, **kwargs)
 

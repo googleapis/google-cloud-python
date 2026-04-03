@@ -15,33 +15,32 @@
 #
 import inspect
 import json
-import pickle
 import logging as std_logging
+import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry_async as retries
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
-from grpc.experimental import aio  # type: ignore
-
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
-from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-from .base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
+from google.protobuf.json_format import MessageToJson
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
+from google.cloud.bigtable_admin_v2.types import table as gba_table
+
+from .base import DEFAULT_CLIENT_INFO, BigtableTableAdminTransport
 from .grpc import BigtableTableAdminGrpcTransport
 
 try:
@@ -419,12 +418,12 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_table_from_snapshot" not in self._stubs:
-            self._stubs[
-                "create_table_from_snapshot"
-            ] = self._logged_channel.unary_unary(
-                "/google.bigtable.admin.v2.BigtableTableAdmin/CreateTableFromSnapshot",
-                request_serializer=bigtable_table_admin.CreateTableFromSnapshotRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_table_from_snapshot"] = (
+                self._logged_channel.unary_unary(
+                    "/google.bigtable.admin.v2.BigtableTableAdmin/CreateTableFromSnapshot",
+                    request_serializer=bigtable_table_admin.CreateTableFromSnapshotRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_table_from_snapshot"]
 
@@ -801,12 +800,12 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_consistency_token" not in self._stubs:
-            self._stubs[
-                "generate_consistency_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.bigtable.admin.v2.BigtableTableAdmin/GenerateConsistencyToken",
-                request_serializer=bigtable_table_admin.GenerateConsistencyTokenRequest.serialize,
-                response_deserializer=bigtable_table_admin.GenerateConsistencyTokenResponse.deserialize,
+            self._stubs["generate_consistency_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.bigtable.admin.v2.BigtableTableAdmin/GenerateConsistencyToken",
+                    request_serializer=bigtable_table_admin.GenerateConsistencyTokenRequest.serialize,
+                    response_deserializer=bigtable_table_admin.GenerateConsistencyTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_consistency_token"]
 

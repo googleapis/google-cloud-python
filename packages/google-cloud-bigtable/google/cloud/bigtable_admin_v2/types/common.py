@@ -18,9 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -42,6 +40,7 @@ class StorageType(proto.Enum):
         HDD (2):
             Magnetic drive (HDD) storage should be used.
     """
+
     STORAGE_TYPE_UNSPECIFIED = 0
     SSD = 1
     HDD = 2

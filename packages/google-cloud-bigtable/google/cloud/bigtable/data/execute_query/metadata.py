@@ -20,8 +20,8 @@ The SqlTypes are used in Metadata returned by the ExecuteQuery operation as well
 as for specifying query parameter types explicitly.
 """
 
-from collections import defaultdict
 import datetime
+from collections import defaultdict
 from typing import Any, Dict, List, Optional, Set, Tuple, Type, Union
 
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds

@@ -21,7 +21,6 @@ import os
 
 import setuptools
 
-
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 # Package metadata.

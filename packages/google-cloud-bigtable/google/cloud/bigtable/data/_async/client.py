@@ -15,115 +15,126 @@
 
 from __future__ import annotations
 
+import abc
+import concurrent.futures
+import os
+import random
+import time
+import warnings
+from functools import partial
 from typing import (
-    cast,
+    TYPE_CHECKING,
     Any,
     AsyncIterable,
     Callable,
     Optional,
-    Set,
     Sequence,
-    TYPE_CHECKING,
+    Set,
+    cast,
 )
 
-import abc
-import time
-import warnings
-import random
-import os
-import concurrent.futures
-
-from functools import partial
+import google.auth._default
+import google.auth.credentials
+from google.api_core import client_options as client_options_lib
+from google.api_core import retry as retries
+from google.api_core.exceptions import (
+    Aborted,
+    Cancelled,
+    DeadlineExceeded,
+    ServiceUnavailable,
+)
+from google.cloud.client import ClientWithProject
+from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
 from grpc import Channel
 
-from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
-from google.cloud.bigtable.data.execute_query.metadata import (
-    SqlType,
-    _pb_metadata_to_metadata_types,
+from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
+from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._helpers import (
+    _CONCURRENCY_LIMIT,
+    TABLE_DEFAULT,
+    _align_timeouts,
+    _attempt_timeout_generator,
+    _get_error_type,
+    _get_retryable_errors,
+    _get_timeouts,
+    _retry_exception_factory,
+    _validate_timeouts,
+    _WarmedInstanceKey,
+)
+from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
+from google.cloud.bigtable.data.exceptions import (
+    FailedQueryShardError,
+    ShardedReadRowsExceptionGroup,
 )
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
     _to_param_types,
 )
+from google.cloud.bigtable.data.execute_query.metadata import (
+    SqlType,
+    _pb_metadata_to_metadata_types,
+)
+from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
+from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
+from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.row import Row
+from google.cloud.bigtable.data.row_filters import (
+    CellsRowLimitFilter,
+    RowFilter,
+    RowFilterChain,
+    StripValueTransformerFilter,
+)
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
-from google.cloud.bigtable_v2.types.bigtable import PingAndWarmRequest
-from google.cloud.bigtable_v2.types.bigtable import SampleRowKeysRequest
-from google.cloud.bigtable_v2.types.bigtable import MutateRowRequest
-from google.cloud.bigtable_v2.types.bigtable import CheckAndMutateRowRequest
-from google.cloud.bigtable_v2.types.bigtable import ReadModifyWriteRowRequest
-from google.cloud.client import ClientWithProject
-from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
-from google.api_core import retry as retries
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import Cancelled
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
-
-import google.auth.credentials
-import google.auth._default
-from google.api_core import client_options as client_options_lib
-from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-from google.cloud.bigtable.data.row import Row
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-from google.cloud.bigtable.data.exceptions import FailedQueryShardError
-from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
-
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT, _align_timeouts
-from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
-from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
-from google.cloud.bigtable.data._helpers import _retry_exception_factory
-from google.cloud.bigtable.data._helpers import _validate_timeouts
-from google.cloud.bigtable.data._helpers import _get_error_type
-from google.cloud.bigtable.data._helpers import _get_retryable_errors
-from google.cloud.bigtable.data._helpers import _get_timeouts
-from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
-
-from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
-from google.cloud.bigtable.data.row_filters import RowFilter
-from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
-from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-from google.cloud.bigtable.data.row_filters import RowFilterChain
-from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
-
-from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable_v2.types.bigtable import (
+    CheckAndMutateRowRequest,
+    MutateRowRequest,
+    PingAndWarmRequest,
+    ReadModifyWriteRowRequest,
+    SampleRowKeysRequest,
+)
 
 if CrossSync.is_async:
     from grpc.aio import insecure_channel
-    from google.cloud.bigtable_v2.services.bigtable.transports import (
-        BigtableGrpcAsyncIOTransport as TransportType,
-    )
-    from google.cloud.bigtable_v2.services.bigtable import (
-        BigtableAsyncClient as GapicClient,
-    )
-    from google.cloud.bigtable.data._async.mutations_batcher import _MB_SIZE
+
     from google.cloud.bigtable.data._async._swappable_channel import (
         AsyncSwappableChannel as SwappableChannelType,
     )
     from google.cloud.bigtable.data._async.metrics_interceptor import (
         AsyncBigtableMetricsInterceptor as MetricsInterceptorType,
     )
+    from google.cloud.bigtable.data._async.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable_v2.services.bigtable import (
+        BigtableAsyncClient as GapicClient,
+    )
+    from google.cloud.bigtable_v2.services.bigtable.transports import (
+        BigtableGrpcAsyncIOTransport as TransportType,
+    )
 else:
     from typing import Iterable  # noqa: F401
-    from grpc import insecure_channel
-    from grpc import intercept_channel
-    from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport as TransportType  # type: ignore
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient as GapicClient  # type: ignore
-    from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
+
+    from grpc import insecure_channel, intercept_channel
+
     from google.cloud.bigtable.data._sync_autogen._swappable_channel import (  # noqa: F401
         SwappableChannel as SwappableChannelType,
     )
     from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (  # noqa: F401
         BigtableMetricsInterceptor as MetricsInterceptorType,
     )
+    from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable_v2.services.bigtable import (
+        BigtableClient as GapicClient,  # type: ignore
+    )
+    from google.cloud.bigtable_v2.services.bigtable.transports import (
+        BigtableGrpcTransport as TransportType,  # type: ignore
+    )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data._helpers import RowKeySamples
-    from google.cloud.bigtable.data._helpers import ShardedQuery
+    from google.cloud.bigtable.data._helpers import RowKeySamples, ShardedQuery
 
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.mutations_batcher import (
