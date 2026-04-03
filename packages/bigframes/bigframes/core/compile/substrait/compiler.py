@@ -53,12 +53,15 @@ class SubstraitCompiler:
             ("sub", 2),
             ("mul", 3),
             ("div", 4),
-            ("eq", 5),
+            ("equal", 5),
             ("ne", 6),
             ("lt", 7),
             ("gt", 8),
             ("le", 9),
             ("ge", 10),
+            ("sum", 11),
+            ("max", 12),
+            ("and", 13),
         ]
         for name, anchor in extensions:
              ext = pb_plan.extensions.add()
@@ -90,8 +93,6 @@ class SubstraitCompiler:
             return self._compile_selection(node)
         elif isinstance(node, nodes.FilterNode):
             return self._compile_filter(node)
-        elif isinstance(node, nodes.SliceNode):
-            return self._compile_slice(node)
         elif isinstance(node, nodes.ProjectionNode):
             return self._compile_projection(node)
         elif isinstance(node, nodes.JoinNode):
@@ -114,24 +115,28 @@ class SubstraitCompiler:
         return json_format.MessageToDict(rel, preserving_proto_field_name=True)
 
     def _compile_selection(self, node: nodes.SelectionNode) -> Dict[str, Any]:
-        # Selection usually maps to ProjectRel or FilterRel depending on if it filters or just selects columns.
-        # If it's just column selection (Projection), it's a ProjectRel.
-        # Let's assume it's a ProjectRel for now.
         input_rel = self._compile_node(node.child)
+        expressions = []
+        child_ids = list(node.child.ids)
+        for aliased_ref in node.input_output_pairs:
+             source_id = aliased_ref.ref.id
+             idx = child_ids.index(source_id)
+             expressions.append({"selection": {"direct_reference": {"struct_field": {"field": idx}}}})
         return {
             "project": {
+                "common": {
+                    "emit": {
+                        "outputMapping": [len(child_ids) + i for i in range(len(expressions))]
+                    }
+                },
                 "input": input_rel,
-                "expressions": [
-                    # Skeletal expression mapping
-                    {"selection": {"direct_reference": {"struct_field": {"field": i}}}} 
-                    for i in range(len(node.schema))
-                ]
+                "expressions": expressions
             }
         }
 
     def _compile_filter(self, node: nodes.FilterNode) -> Dict[str, Any]:
         input_rel = self._compile_node(node.child)
-        condition_rel = self._compile_expression(node.condition, node.child)
+        condition_rel = self._compile_expression(node.predicate, node.child)
         return {
             "filter": {
                 "input": input_rel,
@@ -139,18 +144,6 @@ class SubstraitCompiler:
             }
         }
 
-    def _compile_slice(self, node: nodes.SliceNode) -> Dict[str, Any]:
-        input_rel = self._compile_node(node.child)
-        count = node.stop if node.stop is not None else -1
-        offset = node.start if node.start is not None else 0
-        
-        return {
-            "fetch": {
-                "input": input_rel,
-                "offset": offset,
-                "count": count
-            }
-        }
 
     def _compile_projection(self, node: nodes.ProjectionNode) -> Dict[str, Any]:
         input_rel_dict = self._compile_node(node.child)
@@ -193,7 +186,7 @@ class SubstraitCompiler:
              
              eq_expressions.append({
                  "scalar_function": {
-                     "function_reference": 0,
+                     "function_reference": 5, # eq
                      "arguments": [
                          {"value": {"selection": {"direct_reference": {"struct_field": {"field": left_idx}}}}},
                          {"value": {"selection": {"direct_reference": {"struct_field": {"field": right_idx}}}}}
@@ -203,6 +196,13 @@ class SubstraitCompiler:
              
         if len(eq_expressions) > 1:
              expr = eq_expressions[0]
+             for e in eq_expressions[1:]:
+                  expr = {
+                      "scalar_function": {
+                          "function_reference": 13, # and
+                          "arguments": [{"value": expr}, {"value": e}]
+                      }
+                  }
         elif len(eq_expressions) == 1:
              expr = eq_expressions[0]
         else:
@@ -229,8 +229,14 @@ class SubstraitCompiler:
              groupings.append({"grouping_expressions": grouping_expressions})
              
         measures = []
+        import bigframes.operations.aggregations as agg_ops
         for agg, _ in node.aggregations:
-             func_ref = 1 if "Sum" in type(agg).__name__ else 2
+             if isinstance(agg.op, agg_ops.SumOp):
+                  func_ref = 11
+             elif isinstance(agg.op, agg_ops.MaxOp):
+                  func_ref = 12
+             else:
+                  raise NotImplementedError(f"Aggregation {type(agg.op)} not supported in Substrait compiler yet")
              args = []
              if hasattr(agg, "column_references"):
                   for col_id in agg.column_references:

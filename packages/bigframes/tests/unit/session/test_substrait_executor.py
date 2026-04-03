@@ -133,3 +133,184 @@ def test_execute_projection_add_with_datafusion():
     assert "b" in result_table.column_names
     assert "a" in result_table.column_names
     assert result_table.column("b").to_pylist() == [43, 44, 45]
+
+
+def test_execute_filter_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    from bigframes.operations.comparison_ops import gt_op
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    read_node = create_read_local_node()
+    
+    # a > 1
+    filter_expr = ex.OpExpression(
+        op=gt_op,
+        inputs=(
+            ex.DerefOp(identifiers.ColumnId("a")),
+            ex.ScalarConstantExpression(1),
+        ),
+    )
+    plan = nodes.FilterNode(
+        child=read_node,
+        predicate=filter_expr,
+    )
+    
+    result = executor.execute(plan, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 2
+    assert "a" in result_table.column_names
+    assert result_table.column("a").to_pylist() == [2, 3]
+
+
+def test_execute_aggregate_sum_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    from bigframes.operations.aggregations import sum_op
+    from bigframes.core.agg_expressions import UnaryAggregation
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    read_node = create_read_local_node()
+    
+    # sum(a)
+    sum_agg = UnaryAggregation(
+        op=sum_op,
+        arg=ex.DerefOp(identifiers.ColumnId("a")),
+    )
+    
+    plan = nodes.AggregateNode(
+        child=read_node,
+        aggregations=((sum_agg, identifiers.ColumnId("sum_a")),),
+        by_column_ids=(),
+    )
+    
+    result = executor.execute(plan, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 1
+    assert "sum_a" in result_table.column_names
+    assert result_table.column("sum_a").to_pylist() == [6]
+
+
+def test_execute_aggregate_max_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    from bigframes.operations.aggregations import max_op
+    from bigframes.core.agg_expressions import UnaryAggregation
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    read_node = create_read_local_node()
+    
+    # max(a)
+    max_agg = UnaryAggregation(
+        op=max_op,
+        arg=ex.DerefOp(identifiers.ColumnId("a")),
+    )
+    
+    plan = nodes.AggregateNode(
+        child=read_node,
+        aggregations=((max_agg, identifiers.ColumnId("max_a")),),
+        by_column_ids=(),
+    )
+    
+    result = executor.execute(plan, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 1
+    assert "max_a" in result_table.column_names
+    assert result_table.column("max_a").to_pylist() == [3]
+
+
+def test_execute_join_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    # Table 1: a
+    session1 = mocks.create_bigquery_session()
+    table1 = pa.Table.from_pydict({"a": [1, 2, 3]})
+    source1 = local_data.ManagedArrowTable.from_pyarrow(table1)
+    col_id_a = identifiers.ColumnId("a")
+    read_node1 = nodes.ReadLocalNode(
+        local_data_source=source1,
+        session=session1,
+        scan_list=nodes.ScanList(items=(nodes.ScanItem(id=col_id_a, source_id="a"),)),
+    )
+    
+    # Table 2: b
+    session2 = mocks.create_bigquery_session()
+    table2 = pa.Table.from_pydict({"b": [2, 3, 4]})
+    source2 = local_data.ManagedArrowTable.from_pyarrow(table2)
+    col_id_b = identifiers.ColumnId("b")
+    read_node2 = nodes.ReadLocalNode(
+        local_data_source=source2,
+        session=session2,
+        scan_list=nodes.ScanList(items=(nodes.ScanItem(id=col_id_b, source_id="b"),)),
+    )
+    
+    # Join on a = b
+    join_node = nodes.JoinNode(
+        left_child=read_node1,
+        right_child=read_node2,
+        conditions=((ex.DerefOp(col_id_a), ex.DerefOp(col_id_b)),),
+        type="inner",
+        propogate_order=False,
+    )
+    
+    result = executor.execute(join_node, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 2
+    assert "a" in result_table.column_names
+    assert "b" in result_table.column_names
+    assert result_table.column("a").to_pylist() == [2, 3]
+    assert result_table.column("b").to_pylist() == [2, 3]
+
+
+def test_execute_selection_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    from bigframes.core.nodes import AliasedRef
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    # Table with a and b
+    session = mocks.create_bigquery_session()
+    table = pa.Table.from_pydict({"a": [1, 2, 3], "b": [4, 5, 6]})
+    source = local_data.ManagedArrowTable.from_pyarrow(table)
+    col_id_a = identifiers.ColumnId("a")
+    col_id_b = identifiers.ColumnId("b")
+    read_node = nodes.ReadLocalNode(
+        local_data_source=source,
+        session=session,
+        scan_list=nodes.ScanList(
+            items=(
+                nodes.ScanItem(id=col_id_a, source_id="a"),
+                nodes.ScanItem(id=col_id_b, source_id="b"),
+            )
+        ),
+    )
+    
+    # Select only a, and rename it to c
+    col_id_c = identifiers.ColumnId("c")
+    selection_node = nodes.SelectionNode(
+        child=read_node,
+        input_output_pairs=(AliasedRef(ex.DerefOp(col_id_a), col_id_c),),
+    )
+    
+    result = executor.execute(selection_node, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 3
+    assert result_table.column_names == ["c"]
+    assert result_table.column("c").to_pylist() == [1, 2, 3]
