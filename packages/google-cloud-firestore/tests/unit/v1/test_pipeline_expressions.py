@@ -942,7 +942,10 @@ class TestExpressionessionMethods:
         instance = Expression.switch_on(arg1, arg2, arg3, arg4, arg5)
         assert instance.name == "switch_on"
         assert instance.params == [arg1, arg2, arg3, arg4, arg5]
-        assert repr(instance) == "Condition1.switch_on(Result1, Condition2, Result2, Default)"
+        assert (
+            repr(instance)
+            == "Condition1.switch_on(Result1, Condition2, Result2, Default)"
+        )
         infix_instance = arg1.switch_on(arg2, arg3, arg4, arg5)
         assert infix_instance == instance
 

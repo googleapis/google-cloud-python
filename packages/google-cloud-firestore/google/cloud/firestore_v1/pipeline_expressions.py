@@ -1098,7 +1098,6 @@ class Expression(ABC):
         """
         return FunctionExpression("parent", [self])
 
-
     @expose_as_static
     def sum(self) -> "Expression":
         """Creates an aggregation that calculates the sum of a numeric field across multiple stage inputs.
