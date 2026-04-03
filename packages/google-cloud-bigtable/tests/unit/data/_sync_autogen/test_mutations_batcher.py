@@ -17,12 +17,10 @@
 
 import asyncio
 import time
-
 import google.api_core.exceptions as core_exceptions
 import google.api_core.retry
 import mock
 import pytest
-
 from google.cloud.bigtable.data import TABLE_DEFAULT
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
@@ -445,7 +443,7 @@ class TestMutationsBatcher:
             self._get_target_class(), "_schedule_flush"
         ) as flush_mock:
             with self._make_one() as instance:
-                (sleep_obj, sleep_method) = (instance._closed, "wait")
+                sleep_obj, sleep_method = (instance._closed, "wait")
                 with mock.patch.object(sleep_obj, sleep_method) as sleep_mock:
                     result = instance._timer_routine(input_val)
                     assert sleep_mock.call_count == 0
@@ -461,7 +459,7 @@ class TestMutationsBatcher:
             with self._make_one() as instance:
                 instance.close()
                 flush_mock.reset_mock()
-                (sleep_obj, sleep_method) = (instance._closed, "wait")
+                sleep_obj, sleep_method = (instance._closed, "wait")
                 with mock.patch.object(sleep_obj, sleep_method) as sleep_mock:
                     instance._timer_routine(10)
                     assert sleep_mock.call_count == 0
@@ -771,7 +769,6 @@ class TestMutationsBatcher:
 
     def _mock_gapic_return(self, num=5):
         from google.rpc import status_pb2
-
         from google.cloud.bigtable_v2.types import MutateRowsResponse
 
         def gen(num):
@@ -818,7 +815,7 @@ class TestMutationsBatcher:
                 batch = [self._make_mutation()]
                 result = instance._execute_mutate_rows(batch)
                 assert start_operation.call_count == 1
-                (args, kwargs) = mutate_rows.call_args
+                args, kwargs = mutate_rows.call_args
                 assert args[0] == table.client._gapic_client
                 assert args[1] == table
                 assert args[2] == batch
@@ -867,7 +864,7 @@ class TestMutationsBatcher:
                 assert list(exc.exceptions) == expected_exceptions
                 assert str(expected_total) in str(exc)
             assert instance._entries_processed_since_last_raise == 0
-            (instance._oldest_exceptions, instance._newest_exceptions) = ([], [])
+            instance._oldest_exceptions, instance._newest_exceptions = ([], [])
             instance._raise_exceptions()
 
     def test___enter__(self):
@@ -909,7 +906,7 @@ class TestMutationsBatcher:
                 assert list(exc.exceptions) == expected_exceptions
                 assert str(expected_total) in str(exc)
             assert instance._entries_processed_since_last_raise == 0
-            (instance._oldest_exceptions, instance._newest_exceptions) = ([], [])
+            instance._oldest_exceptions, instance._newest_exceptions = ([], [])
 
     def test__on_exit(self, recwarn):
         """Should raise warnings if unflushed mutations exist"""

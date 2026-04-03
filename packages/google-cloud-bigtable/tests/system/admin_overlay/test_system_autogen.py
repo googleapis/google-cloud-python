@@ -18,15 +18,11 @@
 import os
 from datetime import datetime, timedelta
 from typing import Tuple
-
 import pytest
-from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
-
 from google.cloud import bigtable_admin_v2 as admin_v2
 from google.cloud.bigtable.data import mutations, read_rows_query
 from google.cloud.bigtable.data._cross_sync import CrossSync
-
 from .conftest import (
     BACKUP_PREFIX,
     DEFAULT_CLUSTER_LOCATIONS,
@@ -42,6 +38,7 @@ from .conftest import (
     TEST_TABLE_NAME,
     generate_unique_suffix,
 )
+from google.api_core import operation as api_core_operation
 
 if os.getenv(BIGTABLE_EMULATOR):
     pytest.skip(
@@ -227,7 +224,7 @@ def test_optimize_restored_table(
     second_instance_storage_type,
     expect_optimize_operation,
 ):
-    (instance_with_backup, table_to_backup) = create_instance(
+    instance_with_backup, table_to_backup = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
@@ -235,7 +232,7 @@ def test_optimize_restored_table(
         instances_to_delete,
         admin_v2.StorageType.HDD,
     )
-    (instance_to_restore, _) = create_instance(
+    instance_to_restore, _ = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
@@ -285,7 +282,7 @@ def test_wait_for_consistency(
     instances_to_delete,
     admin_overlay_project_id,
 ):
-    (instance, table) = create_instance(
+    instance, table = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
