@@ -559,7 +559,11 @@ def generate_sync(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source,
     rather than pulling the dependencies from PyPI.
     """

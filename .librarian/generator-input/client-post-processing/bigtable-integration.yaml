@@ -962,6 +962,5 @@ replacements:
           ["python", "upb"],
       )
       def core_deps_from_source(session, protobuf_implementation):
-      def core_deps_from_source(session):
           """Run all tests with core dependencies installed from source,
     count: 1
