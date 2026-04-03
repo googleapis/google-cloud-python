@@ -904,7 +904,7 @@ tests:
             - FunctionExpression.array_filter:
                 - Field: tags
                 - FunctionExpression.equal:
-                    - Field: tag
+                    - Variable: tag
                     - Constant: comedy
                 - "tag"
             - "comedyTag"
@@ -950,7 +950,7 @@ tests:
             - FunctionExpression.array_transform:
                 - Field: tags
                 - FunctionExpression.to_upper:
-                    - Field: tag
+                    - Variable: tag
                 - "tag"
             - "upperTags"
     assert_results:
@@ -993,7 +993,7 @@ tests:
         - AliasedExpression:
             - FunctionExpression.array_transform:
                 - Field: tags
-                - Field: "i"
+                - Variable: "i"
                 - "tag"
                 - "i"
             - "indexedTags"
