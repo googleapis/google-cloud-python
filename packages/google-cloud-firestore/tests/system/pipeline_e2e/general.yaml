@@ -821,3 +821,115 @@ tests:
                     - fieldReferenceValue: __path__
                     name: parent
           name: select
+  - description: testStorageSize
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.storage_size:
+                - Field: __path__
+            - res
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __path__
+                    name: storage_size
+          name: select
+  - description: testNamespace
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.namespace:
+                - Field: __path__
+            - res
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __path__
+                    name: namespace
+          name: select
+  - description: testHasAncestor
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.has_ancestor:
+                - Field: __path__
+                - Constant: "projects/test/databases/(default)/documents"
+            - res
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __path__
+                    - stringValue: "projects/test/databases/(default)/documents"
+                    name: has_ancestor
+          name: select
+  - description: testReferenceSlice
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.reference_slice:
+                - Field: __path__
+                - Constant: 1
+            - res
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __path__
+                    - integerValue: '1'
+                    name: reference_slice
+          name: select

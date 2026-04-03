@@ -188,7 +188,7 @@ class Expression(ABC):
     """Represents an expression that can be evaluated to a value within the
     execution of a pipeline.
 
-    Expressionessions are the building blocks for creating complex queries and
+    Expressions are the building blocks for creating complex queries and
     transformations in Firestore pipelines. They can represent:
 
     - **Field references:** Access values from document fields.
@@ -901,6 +901,68 @@ class Expression(ABC):
         return FunctionExpression("array_reverse", [self])
 
     @expose_as_static
+    def array_filter(
+        self,
+        filter_expr: "BooleanExpression",
+        element_alias: str | Constant[str],
+        index_alias: str | Constant[str] | None = None,
+    ) -> "Expression":
+        """Filters an array based on a predicate.
+
+        Example:
+            >>> # Filter the 'tags' array to only include the tag "comedy"
+            >>> Field.of("tags").array_filter(Field.of("tag").equal("comedy"), "tag")
+            >>> # Filter the 'tags' array to only include elements after the first element (index > 0)
+            >>> Field.of("tags").array_filter(Field.of("i").greater_than(0), element_alias="tag", index_alias="i")
+
+        Args:
+            filter_expr: The predicate boolean expression used to filter the elements.
+            element_alias: A string or string constant used to refer to the current array
+                element within the filter expression.
+            index_alias: An optional string or string constant used to refer to the index
+                of the current array element within the filter expression.
+
+        Returns:
+            A new `Expression` representing the filtered array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        if index_alias is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
+        args.append(filter_expr)
+
+        return FunctionExpression("array_filter", args)
+
+    @expose_as_static
+    def array_transform(
+        self,
+        transform_expr: "Expression",
+        element_alias: str | Constant[str],
+        index_alias: str | Constant[str] | None = None,
+    ) -> "Expression":
+        """Creates an expression that applies a provided transformation to each element in an array.
+
+        Example:
+            >>> # Convert each tag in the 'tags' array to uppercase
+            >>> Field.of("tags").array_transform(Field.of("tag").to_upper(), "tag")
+            >>> # Append the index to each tag in the 'tags' array
+            >>> Field.of("tags").array_transform(Field.of("tag").string_concat(Field.of("i")), element_alias="tag", index_alias="i")
+
+        Args:
+            transform_expr: The expression used to transform the elements.
+            element_alias: A string or string constant used to refer to the current array element within the transform expression.
+            index_alias: An optional string or string constant used to refer to the index of the current array element within the transform expression.
+
+        Returns:
+            A new `Expression` representing the transformed array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        if index_alias is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
+        args.append(transform_expr)
+
+        return FunctionExpression("array_transform", args)
+
+    @expose_as_static
     def array_concat(
         self, *other_arrays: Array | list[Expression | CONSTANT_TYPE] | Expression
     ) -> "Expression":
@@ -961,7 +1023,7 @@ class Expression(ABC):
             >>> Field.of("email").is_absent()
 
         Returns:
-            A new `BooleanExpressionession` representing the isAbsent operation.
+            A new `BooleanExpression` representing the isAbsent operation.
         """
         return BooleanExpression("is_absent", [self])
 
@@ -1097,6 +1159,70 @@ class Expression(ABC):
             An Expression representing the parent operation.
         """
         return FunctionExpression("parent", [self])
+
+    @expose_as_static
+    def storage_size(self) -> "Expression":
+        """Calculates the Firestore storage size of a given value.
+
+        Mirrors the sizing rules detailed in Firebase/Firestore documentation.
+
+        Example:
+            >>> Field.of("content").storage_size()
+
+        Returns:
+            A new `Expression` representing the storage size.
+        """
+        return FunctionExpression("storage_size", [self])
+
+    @expose_as_static
+    def namespace(self) -> "Expression":
+        """Extracts the namespace from a document reference.
+
+        Example:
+            >>> Field.of("__path__").namespace()
+
+        Returns:
+            A new `Expression` representing the namespace extraction.
+        """
+        return FunctionExpression("namespace", [self])
+
+    @expose_as_static
+    def has_ancestor(self, ancestor: Expression | CONSTANT_TYPE) -> "BooleanExpression":
+        """Checks if the current document has the specified ancestor.
+
+        Example:
+            >>> Field.of("__path__").has_ancestor("projects/my-project/databases/(default)/documents/users/user1")
+
+        Args:
+            ancestor: The DocumentReference of the potential ancestor.
+
+        Returns:
+            A new `BooleanExpression` representing the has_ancestor check.
+        """
+        return BooleanExpression(
+            "has_ancestor", [self, self._cast_to_expr_or_convert_to_constant(ancestor)]
+        )
+
+    @expose_as_static
+    def reference_slice(
+        self, start: int | Expression, end: int | Expression | None = None
+    ) -> "Expression":
+        """Extracts a slice of the path segments from a document reference.
+
+        Example:
+            >>> Field.of("__path__").reference_slice(1, 3)
+
+        Args:
+            start: The starting index of the path segment.
+            end: The ending index (exclusive) of the path segment. If None, slices to the end.
+
+        Returns:
+            A new `Expression` representing the sliced path.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(start)]
+        if end is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(end))
+        return FunctionExpression("reference_slice", args)
 
     @expose_as_static
     def sum(self) -> "Expression":

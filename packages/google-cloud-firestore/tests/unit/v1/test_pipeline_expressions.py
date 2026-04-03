@@ -958,6 +958,45 @@ class TestExpressionessionMethods:
         infix_instance = arg1.parent()
         assert infix_instance == instance
 
+    def test_storage_size(self):
+        arg1 = self._make_arg("Input")
+        instance = Expression.storage_size(arg1)
+        assert instance.name == "storage_size"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Input.storage_size()"
+        infix_instance = arg1.storage_size()
+        assert infix_instance == instance
+
+    def test_namespace(self):
+        arg1 = self._make_arg("Input")
+        instance = Expression.namespace(arg1)
+        assert instance.name == "namespace"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Input.namespace()"
+        infix_instance = arg1.namespace()
+        assert infix_instance == instance
+
+    def test_has_ancestor(self):
+        arg1 = self._make_arg("Input")
+        arg2 = self._make_arg("Ancestor")
+        instance = Expression.has_ancestor(arg1, arg2)
+        assert instance.name == "has_ancestor"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Input.has_ancestor(Ancestor)"
+        infix_instance = arg1.has_ancestor(arg2)
+        assert infix_instance == instance
+
+    def test_reference_slice(self):
+        arg1 = self._make_arg("Input")
+        arg2 = self._make_arg("Start")
+        arg3 = self._make_arg("End")
+        instance = Expression.reference_slice(arg1, arg2, arg3)
+        assert instance.name == "reference_slice"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Input.reference_slice(Start, End)"
+        infix_instance = arg1.reference_slice(arg2, arg3)
+        assert infix_instance == instance
+
     def test_not(self):
         arg1 = self._make_arg("Condition")
         instance = expr.Not(arg1)
@@ -1649,13 +1688,73 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_array_reverse(self):
-        arg1 = self._make_arg("Array")
+        arg1 = self._make_arg("ArrayField")
         instance = Expression.array_reverse(arg1)
         assert instance.name == "array_reverse"
         assert instance.params == [arg1]
-        assert repr(instance) == "Array.array_reverse()"
-        infix_instance = arg1.array_reverse()
+        assert repr(instance) == "ArrayField.array_reverse()"
+        infix_istance = arg1.array_reverse()
+        assert infix_istance == instance
+
+    def test_array_filter(self):
+        arg1 = self._make_arg("ArrayField")
+        arg2 = "element_alias"
+        arg3 = self._make_arg("FilterExpr", expr_type=BooleanExpression)
+        instance = Expression.array_filter(arg1, arg3, arg2)
+        assert instance.name == "array_filter"
+        assert instance.params == [arg1, Constant.of(arg2), arg3]
+        assert (
+            repr(instance)
+            == "ArrayField.array_filter(Constant.of('element_alias'), FilterExpr)"
+        )
+        infix_instance = arg1.array_filter(arg3, arg2)
         assert infix_instance == instance
+
+        arg4 = "index_alias"
+        instance_with_idx = Expression.array_filter(arg1, arg3, arg2, arg4)
+        assert instance_with_idx.name == "array_filter"
+        assert instance_with_idx.params == [
+            arg1,
+            Constant.of(arg2),
+            Constant.of(arg4),
+            arg3,
+        ]
+        assert (
+            repr(instance_with_idx)
+            == "ArrayField.array_filter(Constant.of('element_alias'), FilterExpr, Constant.of('index_alias'))"
+        )
+        infix_instance_with_idx = arg1.array_filter(arg3, arg2, arg4)
+        assert infix_instance_with_idx == instance_with_idx
+
+    def test_array_transform(self):
+        arg1 = self._make_arg("ArrayField")
+        arg2 = "element_alias"
+        arg3 = self._make_arg("TransformExpr")
+        instance = Expression.array_transform(arg1, arg3, arg2)
+        assert instance.name == "array_transform"
+        assert instance.params == [arg1, Constant.of(arg2), arg3]
+        assert (
+            repr(instance)
+            == "ArrayField.array_transform(Constant.of('element_alias'), TransformExpr)"
+        )
+        infix_instance = arg1.array_transform(arg3, arg2)
+        assert infix_instance == instance
+
+        arg4 = "index_alias"
+        instance_with_idx = Expression.array_transform(arg1, arg3, arg2, arg4)
+        assert instance_with_idx.name == "array_transform"
+        assert instance_with_idx.params == [
+            arg1,
+            Constant.of(arg2),
+            Constant.of(arg4),
+            arg3,
+        ]
+        assert (
+            repr(instance_with_idx)
+            == "ArrayField.array_transform(Constant.of('element_alias'), TransformExpr, Constant.of('index_alias'))"
+        )
+        infix_instance_with_idx = arg1.array_transform(arg3, arg2, arg4)
+        assert infix_instance_with_idx == instance_with_idx
 
     def test_array_concat(self):
         arg1 = self._make_arg("ArrayRef1")

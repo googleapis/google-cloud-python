@@ -892,3 +892,135 @@ tests:
                     - stringValue: "Science Fiction"
                     name: array_index_of_all
           name: select
+  - description: testArrayFilter
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_filter:
+                - Field: tags
+                - "tag"
+                - FunctionExpression.equal:
+                    - Field: tag
+                    - Constant: comedy
+            - "comedyTag"
+    assert_results:
+      - comedyTag: ["comedy"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                comedyTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: tag
+                        - stringValue: "comedy"
+                        name: equal
+                    name: array_filter
+          name: select
+  - description: testArrayTransform
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_transform:
+                - Field: tags
+                - "tag"
+                - FunctionExpression.to_upper:
+                    - Field: tag
+            - "upperTags"
+    assert_results:
+      - upperTags: ["COMEDY", "SPACE", "ADVENTURE"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                upperTags:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: tag
+                        name: to_upper
+                    name: array_transform
+          name: select
+  - description: testArrayTransformWithIndex
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_transform:
+                - Field: tags
+                - "tag"
+                - Field: i
+                - index_alias: "i"
+            - "indexedTags"
+    assert_results:
+      - indexedTags: [0, 1, 2]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                indexedTags:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - stringValue: "i"
+                    - fieldReferenceValue: i
+                    name: array_transform
+          name: select
