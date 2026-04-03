@@ -1007,6 +1007,76 @@ class Expression(ABC):
         return BooleanExpression("exists", [self])
 
     @expose_as_static
+    def coalesce(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that evaluates to the first non-null, non-error value.
+
+        Example:
+            >>> # Return the "preferredName" field if it exists.
+            >>> # Otherwise, check the "fullName" field.
+            >>> # Otherwise, return the literal string "Anonymous".
+            >>> Field.of("preferredName").coalesce(Field.of("fullName"), "Anonymous")
+
+            >>> # Equivalent static call:
+            >>> Expression.coalesce(Field.of("preferredName"), Field.of("fullName"), "Anonymous")
+
+        Args:
+            *others: Additional expressions or constants to evaluate if the current
+                expression evaluates to null or error.
+
+        Returns:
+            An Expression representing the coalesce operation.
+        """
+        args = [self]
+        args.extend(
+            [Expression._cast_to_expr_or_convert_to_constant(x) for x in others]
+        )
+        return FunctionExpression("coalesce", args)
+
+    @expose_as_static
+    def switch_on(
+        self, result: Expression | CONSTANT_TYPE, *others: Expression | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that evaluates to the result corresponding to the first true condition.
+
+        This function behaves like a `switch` statement. It accepts an alternating sequence of
+        conditions and their corresponding results. If an odd number of arguments is provided, the
+        final argument serves as a default fallback result. If no default is provided and no condition
+        evaluates to true, it throws an error.
+
+        Example:
+            >>> # Return "Pending" if status is 1, "Active" if status is 2, otherwise "Unknown"
+            >>> Field.of("status").equal(1).switch_on(
+            ...     "Pending", Field.of("status").equal(2), "Active", "Unknown"
+            ... )
+
+        Args:
+            result: The result to return if this condition is true.
+            *others: Additional alternating conditions and results, optionally followed by a default value.
+
+        Returns:
+            An Expression representing the switchOn operation.
+        """
+        args = [self, Expression._cast_to_expr_or_convert_to_constant(result)]
+        args.extend(
+            [Expression._cast_to_expr_or_convert_to_constant(x) for x in others]
+        )
+        return FunctionExpression("switch_on", args)
+
+    @expose_as_static
+    def parent(self) -> "Expression":
+        """Creates an expression that returns the parent document of a document reference.
+
+        Example:
+            >>> # Get the parent document of a document reference.
+            >>> Field.of("__path__").parent()
+
+        Returns:
+            An Expression representing the parent operation.
+        """
+        return FunctionExpression("parent", [self])
+
+
+    @expose_as_static
     def sum(self) -> "Expression":
         """Creates an aggregation that calculates the sum of a numeric field across multiple stage inputs.
 
@@ -2806,6 +2876,22 @@ class Or(BooleanExpression):
 
     def __init__(self, *conditions: "BooleanExpression"):
         super().__init__("or", conditions, use_infix_repr=False)
+
+
+class Nor(BooleanExpression):
+    """
+    Represents an expression that performs a logical 'NOR' operation on multiple filter conditions.
+
+    Example:
+        >>> # Check if neither the 'age' field is greater than 18 nor the 'city' field is "London"
+        >>> Nor(Field.of("age").greater_than(18), Field.of("city").equal("London"))
+
+    Args:
+        *conditions: The filter conditions to 'NOR' together.
+    """
+
+    def __init__(self, *conditions: "BooleanExpression"):
+        super().__init__("nor", conditions, use_infix_repr=False)
 
 
 class Xor(BooleanExpression):

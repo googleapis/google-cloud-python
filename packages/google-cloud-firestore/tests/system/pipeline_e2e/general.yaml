@@ -765,3 +765,59 @@ tests:
                 res:
                   fieldReferenceValue: res
           name: select
+  - description: testCoalesce
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.coalesce:
+              - Constant: null
+              - Constant: "B"
+      - Select:
+        - res
+    assert_results:
+      - res: "B"
+  - description: testSwitchOn
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 1
+              - Constant: "B"
+              - Constant: "C"
+      - Select:
+        - res
+    assert_results:
+      - res: "B"
+  - description: testParent
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.parent:
+                - Field: __path__
+            - res
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: 1
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __path__
+                    name: parent
+          name: select

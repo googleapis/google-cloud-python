@@ -759,3 +759,35 @@ tests:
             - "value_or_default"
     assert_results:
       - value_or_default: "1984"
+  - description: whereByNorCondition
+    pipeline:
+      - Collection: books
+      - Where:
+          - Nor:
+              - FunctionExpression.greater_than:
+                  - Field: rating
+                  - Constant: 4.5
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Science Fiction
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: rating
+                  - doubleValue: 4.5
+                  name: greater_than
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Science Fiction
+                  name: equal
+              name: nor
+          name: where

@@ -735,6 +735,14 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "Or(Arg1, Arg2)"
 
+    def test_nor(self):
+        arg1 = self._make_arg("Arg1")
+        arg2 = self._make_arg("Arg2")
+        instance = expr.Nor(arg1, arg2)
+        assert instance.name == "nor"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Nor(Arg1, Arg2)"
+
     def test_array_get(self):
         arg1 = self._make_arg("ArrayField")
         arg2 = self._make_arg("Offset")
@@ -902,6 +910,39 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "Value.if_error(ThenExpression)"
         infix_instance = arg1.if_error(arg2)
+        assert infix_instance == instance
+
+    def test_coalesce(self):
+        arg1 = self._make_arg("Arg1")
+        arg2 = self._make_arg("Arg2")
+        arg3 = self._make_arg("Arg3")
+        instance = Expression.coalesce(arg1, arg2, arg3)
+        assert instance.name == "coalesce"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Arg1.coalesce(Arg2, Arg3)"
+        infix_instance = arg1.coalesce(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_switch_on(self):
+        arg1 = self._make_arg("Condition1")
+        arg2 = self._make_arg("Result1")
+        arg3 = self._make_arg("Condition2")
+        arg4 = self._make_arg("Result2")
+        arg5 = self._make_arg("Default")
+        instance = Expression.switch_on(arg1, arg2, arg3, arg4, arg5)
+        assert instance.name == "switch_on"
+        assert instance.params == [arg1, arg2, arg3, arg4, arg5]
+        assert repr(instance) == "Condition1.switch_on(Result1, Condition2, Result2, Default)"
+        infix_instance = arg1.switch_on(arg2, arg3, arg4, arg5)
+        assert infix_instance == instance
+
+    def test_parent(self):
+        arg1 = self._make_arg("Input")
+        instance = Expression.parent(arg1)
+        assert instance.name == "parent"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Input.parent()"
+        infix_instance = arg1.parent()
         assert infix_instance == instance
 
     def test_not(self):
