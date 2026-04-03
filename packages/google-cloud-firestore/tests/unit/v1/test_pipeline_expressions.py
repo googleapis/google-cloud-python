@@ -967,25 +967,6 @@ class TestExpressionessionMethods:
         infix_instance = arg1.storage_size()
         assert infix_instance == instance
 
-    def test_namespace(self):
-        arg1 = self._make_arg("Input")
-        instance = Expression.namespace(arg1)
-        assert instance.name == "namespace"
-        assert instance.params == [arg1]
-        assert repr(instance) == "Input.namespace()"
-        infix_instance = arg1.namespace()
-        assert infix_instance == instance
-
-    def test_has_ancestor(self):
-        arg1 = self._make_arg("Input")
-        arg2 = self._make_arg("Ancestor")
-        instance = Expression.has_ancestor(arg1, arg2)
-        assert instance.name == "has_ancestor"
-        assert instance.params == [arg1, arg2]
-        assert repr(instance) == "Input.has_ancestor(Ancestor)"
-        infix_instance = arg1.has_ancestor(arg2)
-        assert infix_instance == instance
-
     def test_reference_slice(self):
         arg1 = self._make_arg("Input")
         arg2 = self._make_arg("Start")
@@ -1751,7 +1732,7 @@ class TestExpressionessionMethods:
         ]
         assert (
             repr(instance_with_idx)
-            == "ArrayField.array_transform(Constant.of('element_alias'), TransformExpr, Constant.of('index_alias'))"
+            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
         )
         infix_instance_with_idx = arg1.array_transform(arg3, arg2, arg4)
         assert infix_instance_with_idx == instance_with_idx

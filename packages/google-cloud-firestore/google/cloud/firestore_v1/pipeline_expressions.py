@@ -1177,35 +1177,6 @@ class Expression(ABC):
         return FunctionExpression("storage_size", [self])
 
     @expose_as_static
-    def namespace(self) -> "Expression":
-        """Extracts the namespace from a document reference.
-
-        Example:
-            >>> Field.of("__path__").namespace()
-
-        Returns:
-            A new `Expression` representing the namespace extraction.
-        """
-        return FunctionExpression("namespace", [self])
-
-    @expose_as_static
-    def has_ancestor(self, ancestor: Expression | CONSTANT_TYPE) -> "BooleanExpression":
-        """Checks if the current document has the specified ancestor.
-
-        Example:
-            >>> Field.of("__path__").has_ancestor("projects/my-project/databases/(default)/documents/users/user1")
-
-        Args:
-            ancestor: The DocumentReference of the potential ancestor.
-
-        Returns:
-            A new `BooleanExpression` representing the has_ancestor check.
-        """
-        return BooleanExpression(
-            "has_ancestor", [self, self._cast_to_expr_or_convert_to_constant(ancestor)]
-        )
-
-    @expose_as_static
     def reference_slice(
         self, start: int | Expression, end: int | Expression | None = None
     ) -> "Expression":
