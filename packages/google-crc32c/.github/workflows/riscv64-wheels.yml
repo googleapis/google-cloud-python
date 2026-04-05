@@ -1,0 +1,47 @@
+name: "Build riscv64 wheels"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/google-crc32c/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/google-crc32c/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build-riscv64:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up QEMU
+        # v4.0.0
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a
+        with:
+          platforms: riscv64
+
+      - name: Build riscv64 wheels
+        env:
+          WORKSPACE: ${{ github.workspace }}
+        run: |
+          IMAGE=quay.io/pypa/manylinux_2_39_riscv64
+          VOLUME="${WORKSPACE}/packages/google-crc32c:/var/code/python-crc32c/"
+          docker pull "${IMAGE}"
+          docker run --rm --volume "${VOLUME}" "${IMAGE}" \
+            /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: riscv64-wheels
+          path: packages/google-crc32c/wheels/
