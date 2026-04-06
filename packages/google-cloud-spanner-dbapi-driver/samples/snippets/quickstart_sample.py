@@ -11,3 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
+from google.cloud.spanner_driver import connect
+
+class QuickstartSample:
+
+    def run(self, connection_string: str):
+        with connect(connection_string) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 'Hello World' as Message")
+                row = cursor.fetchone()
+                print(f"Greeting from Spanner: {row[0]}")

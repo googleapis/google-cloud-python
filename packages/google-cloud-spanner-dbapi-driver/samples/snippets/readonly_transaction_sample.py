@@ -12,11 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from snippets.quickstart import Quickstart
+from google.cloud.spanner_driver import connect
 
-connection_string = (
-    "projects/my-project/instances/my-instance/databases/my-database"
-    "?autoConfigEmulator=true"
-)
+class ReadonlyTransactionSample:
 
-Quickstart.run(connection_string)
+    def run(self, connection_string: str):
+        with connect(connection_string) as connection:
+            pass

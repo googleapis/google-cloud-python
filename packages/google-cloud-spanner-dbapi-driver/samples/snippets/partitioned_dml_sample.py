@@ -14,12 +14,8 @@
 
 from google.cloud.spanner_driver import connect
 
-class Quickstart:
+class PartitionedDmlSample:
 
-    def run(connection_string: str):
+    def run(self, connection_string: str):
         with connect(connection_string) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT 'Hello World' as Message")
-                row = cursor.fetchone()
-                print(f"Greeting from Spanner: {row[0]}")
-
+            pass
