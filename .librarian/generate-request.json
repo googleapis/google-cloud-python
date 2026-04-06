@@ -1,0 +1,25 @@
+{
+  "id": "google-cloud-dialogflow",
+  "version": "2.47.0",
+  "apis": [
+    {
+      "path": "google/cloud/dialogflow/v2beta1",
+      "service_config": "dialogflow_v2beta1.yaml"
+    },
+    {
+      "path": "google/cloud/dialogflow/v2",
+      "service_config": "dialogflow_v2.yaml"
+    }
+  ],
+  "source_roots": [
+    "packages/google-cloud-dialogflow"
+  ],
+  "preserve_regex": [
+    "packages/google-cloud-dialogflow/CHANGELOG.md",
+    "docs/CHANGELOG.md"
+  ],
+  "remove_regex": [
+    "packages/google-cloud-dialogflow/"
+  ],
+  "tag_format": "{id}-v{version}"
+}
