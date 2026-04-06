@@ -2253,15 +2253,10 @@ class Service:
 
     @utils.cached_property
     def resource_path_method_names(self) -> Dict[str, str]:
-        """Returns a mapping of resource_type_full_path to its disambiguated Python method base name.
-        
-        e.g., 'ces.googleapis.com/Tool' -> 'ces_tool'
-              'dialogflow.googleapis.com/Tool' -> 'dialogflow_tool'
-        """
+        """Returns a mapping of resource_type_full_path to its disambiguated Python method base name."""
         import collections
         from gapic import utils
 
-        # 1. Count occurrences of the short resource type (e.g., 'Tool') across ALL resources
         type_counts = collections.Counter(
             r.resource_type for r in self.resource_messages_dict.values() if r.resource_type
         )
@@ -2271,16 +2266,16 @@ class Service:
             if not resource.resource_type:
                 continue
 
-            # Standard base name (e.g., "Tool" -> "tool")
             base_name = utils.to_snake_case(resource.resource_type)
 
-            # 2. Collision detection: If multiple resources share the same short type name
+            # Collision detection
             if type_counts[resource.resource_type] > 1:
-                # Extract the domain and prepend it (e.g., 'ces' from 'ces.googleapis.com/Tool')
                 domain = full_path.split(".")[0]
-                # Replace dashes with underscores for valid python method names (e.g., 'foo-bar' -> 'foo_bar')
-                domain_prefix = domain.replace("-", "_") 
-                base_name = f"{domain_prefix}_{base_name}"
+                
+                # THE MAGIC FIX: Only prefix if the resource belongs to a foreign API
+                if domain != self.shortname:
+                    domain_prefix = domain.replace("-", "_") 
+                    base_name = f"{domain_prefix}_{base_name}"
 
             method_names[full_path] = base_name
 
