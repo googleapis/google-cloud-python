@@ -354,7 +354,7 @@ def _parse_yaml_types(data):
         return {key: _parse_yaml_types(value) for key, value in data.items()}
     if isinstance(data, list):
         # detect vectors
-        if all([isinstance(d, float) for d in data]):
+        if len(data) > 0 and all([isinstance(d, float) for d in data]):
             return Vector(data)
         else:
             return [_parse_yaml_types(value) for value in data]

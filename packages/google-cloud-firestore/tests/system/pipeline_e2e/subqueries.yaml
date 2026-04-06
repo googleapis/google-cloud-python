@@ -189,3 +189,96 @@ tests:
                   - Collection: books
               - bad_scalar
     assert_error: ".*multiple results.*"
+
+  - description: subcollection_array_subquery_missing
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Define:
+          - AliasedExpression:
+              - CurrentDocument:
+              - p
+      - Select:
+          - AliasedExpression:
+              - Pipeline.to_array_expression:
+                  - Subcollection: does_not_exist
+                  - Select:
+                      - AliasedExpression:
+                          - Variable: p
+                          - sub_p
+              - missing_data
+    assert_results:
+      - missing_data: []
+
+  - description: subcollection_array_subquery_landmarks
+    pipeline:
+      - Collection: cities
+      - Where:
+          - FunctionExpression.equal:
+              - Field: name
+              - Constant: "San Francisco"
+      - Select:
+          - Field: name
+          - AliasedExpression:
+              - Pipeline.to_array_expression:
+                  - Subcollection: landmarks
+                  - Select:
+                      - Field: name
+                      - Field: type
+                  - Sort:
+                      - Ordering:
+                          - Field: name
+                          - ASCENDING
+              - landmarks_data
+    assert_results:
+      - name: "San Francisco"
+        landmarks_data:
+          - name: "Alcatraz"
+            type: "Island"
+          - name: "Golden Gate Bridge"
+            type: "Bridge"
+
+  - description: subcollection_array_subquery_reviews
+    pipeline:
+      - Collection: cities
+      - Where:
+          - FunctionExpression.equal:
+              - Field: name
+              - Constant: "San Francisco"
+      - Limit: 1
+      - Define:
+          - AliasedExpression:
+              - CurrentDocument:
+              - city_doc
+      - Select:
+          - Field: name
+          - AliasedExpression:
+              - Pipeline.to_array_expression:
+                  - Subcollection: landmarks
+                  - Where:
+                      - FunctionExpression.equal:
+                          - Field: name
+                          - Constant: "Golden Gate Bridge"
+                  - Select:
+                      - Field: name
+                      - AliasedExpression:
+                          - Pipeline.to_array_expression:
+                              - Subcollection: reviews
+                              - Select:
+                                  - Field: author
+                                  - Field: rating
+                              - Sort:
+                                  - Ordering:
+                                      - Field: author
+                                      - ASCENDING
+                          - review_data
+              - landmark_with_reviews
+    assert_results:
+      - name: "San Francisco"
+        landmark_with_reviews:
+          - name: "Golden Gate Bridge"
+            review_data:
+              - author: "Alice"
+                rating: 5
+              - author: "Bob"
+                rating: 4
