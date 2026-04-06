@@ -5,12 +5,12 @@ WITH `bfcte_0` AS (
     `L_COMMITDATE` AS `bfcol_2`,
     `L_RECEIPTDATE` AS `bfcol_3`,
     `L_SHIPMODE` AS `bfcol_4`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
 ), `bfcte_1` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_5`,
     `O_ORDERPRIORITY` AS `bfcol_6`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_0`
 ), `bfcte_2` AS (
   SELECT
     `bfcol_5`,

@@ -41,10 +41,7 @@ def test_tpch_query(tpch_session, query_num, snapshot):
     exec(modified_code, exec_globals)
     q_func = exec_globals["q"]
 
-    with freezegun.freeze_time("2026-04-05 18:00:00"):
-        result = q_func(project_id, dataset_id, tpch_session)
+    result = q_func(project_id, dataset_id, tpch_session)
 
-        # result should be a DataFrame
-        sql = result.sql
-
-        snapshot.assert_match(sql, "out.sql")
+    # result should be a DataFrame
+    snapshot.assert_match(result.sql, "out.sql")

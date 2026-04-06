@@ -2,18 +2,18 @@ WITH `bfcte_0` AS (
   SELECT
     `R_REGIONKEY` AS `bfcol_0`,
     `R_NAME` AS `bfcol_1`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`REGION` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`REGION` AS `bft_4`
 ), `bfcte_1` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_2`,
     `N_NAME` AS `bfcol_3`,
     `N_REGIONKEY` AS `bfcol_4`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3`
 ), `bfcte_2` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_19`,
     `N_REGIONKEY` AS `bfcol_20`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3`
 ), `bfcte_3` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_5`,
@@ -23,31 +23,31 @@ WITH `bfcte_0` AS (
     `S_PHONE` AS `bfcol_9`,
     `S_ACCTBAL` AS `bfcol_10`,
     `S_COMMENT` AS `bfcol_11`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2`
 ), `bfcte_4` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_21`,
     `S_NATIONKEY` AS `bfcol_22`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2`
 ), `bfcte_5` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_12`,
     `PS_SUPPKEY` AS `bfcol_13`,
     `PS_SUPPLYCOST` AS `bfcol_14`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_1`
 ), `bfcte_6` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_15`,
     `P_MFGR` AS `bfcol_16`,
     `P_TYPE` AS `bfcol_17`,
     `P_SIZE` AS `bfcol_18`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_7` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_23`,
     `P_TYPE` AS `bfcol_24`,
     `P_SIZE` AS `bfcol_25`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_8` AS (
   SELECT
     `bfcol_15` AS `bfcol_26`,

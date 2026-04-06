@@ -2,29 +2,29 @@ WITH `bfcte_0` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_0`,
     `S_NATIONKEY` AS `bfcol_1`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_5` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_5`
 ), `bfcte_1` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_2`,
     `C_NATIONKEY` AS `bfcol_3`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_4`
 ), `bfcte_2` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_4`,
     `N_NAME` AS `bfcol_5`,
     `N_REGIONKEY` AS `bfcol_6`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3`
 ), `bfcte_3` AS (
   SELECT
     `R_REGIONKEY` AS `bfcol_32`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`REGION` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`REGION` AS `bft_2`
   WHERE
     `R_NAME` = 'ASIA'
 ), `bfcte_4` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_33`,
     `O_CUSTKEY` AS `bfcol_34`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
   WHERE
     (
       `O_ORDERDATE` >= CAST('1994-01-01' AS DATE)
@@ -39,7 +39,7 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` * (
       1.0 - `L_DISCOUNT`
     ) AS `bfcol_31`
-  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
 ), `bfcte_6` AS (
   SELECT
     `bfcol_4` AS `bfcol_35`,
