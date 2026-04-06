@@ -252,21 +252,18 @@ def test_col_dt_accessor(scalars_dfs):
 def test_col_numpy_ufunc(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    bf_kwargs = {
-        "sqrt": np.sqrt(bpd.col("float64_col")),  # type: ignore
-        "add_const": np.add(bpd.col("float64_col"), 2.4),  # type: ignore
-        "radd_const": np.add(2.4, bpd.col("float64_col")),  # type: ignore
-        "add_cols": np.add(bpd.col("float64_col"), bpd.col("int64_col")),  # type: ignore
-    }
-    pd_kwargs = {
-        "sqrt": np.sqrt(pd.col("float64_col")),  # type: ignore
-        "add_const": np.add(pd.col("float64_col"), 2.4),  # type: ignore
-        "radd_const": np.add(2.4, pd.col("float64_col")),  # type: ignore
-        "add_cols": np.add(pd.col("float64_col"), pd.col("int64_col")),  # type: ignore
-    }
-
-    bf_result = scalars_df.assign(**bf_kwargs).to_pandas()
-    pd_result = scalars_pandas_df.assign(**pd_kwargs)  # type: ignore
+    bf_result = scalars_df.assign(
+        sqrt=np.sqrt(bpd.col("float64_col")),  # type: ignore
+        add_const=np.add(bpd.col("float64_col"), 2.4),  # type: ignore
+        radd_const=np.add(2.4, bpd.col("float64_col")),  # type: ignore
+        add_cols=np.add(bpd.col("float64_col"), bpd.col("int64_col")),  # type: ignore
+    ).to_pandas()
+    pd_result = scalars_pandas_df.assign(
+        sqrt=np.sqrt(pd.col("float64_col")),  # type: ignore
+        add_const=np.add(pd.col("float64_col"), 2.4),  # type: ignore
+        radd_const=np.add(2.4, pd.col("float64_col")),  # type: ignore
+        add_cols=np.add(pd.col("float64_col"), pd.col("int64_col")),  # type: ignore
+    )
 
     # int64[pyarrow] vs Int64
     assert_frame_equal(bf_result, pd_result, check_dtype=False)

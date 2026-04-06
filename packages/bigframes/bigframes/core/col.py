@@ -161,14 +161,8 @@ class Expression:
 
         return datetimes.DatetimeSimpleMethods(self)
 
-    @property
-    def str(self) -> strings.StringMethods:
-        import bigframes.operations.strings as strings
-
-        return strings.StringMethods(self)
-
     def __array_ufunc__(
-        self, ufunc: numpy.ufunc, method: __builtins__.str, *inputs, **kwargs
+        self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
     ) -> Expression:
         """Used to support numpy ufuncs.
         See: https://numpy.org/doc/stable/reference/ufuncs.html
@@ -188,6 +182,13 @@ class Expression:
                 return Expression(binop.as_expr(_as_bf_expr(inputs[0]), self._value))
 
         return NotImplemented
+
+    # keep this last as str declaration can shadow builtins.str
+    @property
+    def str(self) -> strings.StringMethods:
+        import bigframes.operations.strings as strings
+
+        return strings.StringMethods(self)
 
 
 def _as_bf_expr(arg: Any) -> bf_expression.Expression:
