@@ -2318,14 +2318,13 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence[MessageType]:
         """Returns all the resource message types used in all
-        request and response fields in the service."""
+        request and response fields in the service in a deterministic order."""
 
         def gen_resources(message):
             if message.resource_path:
                 yield message
-
             for type_ in message.recursive_field_types:
                 if type_.resource_path:
                     yield type_
@@ -2334,14 +2333,12 @@ class Service:
             for field in message.recursive_resource_fields:
                 resource = field.options.Extensions[resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
-                # The resource may not be visible if the resource type is one of
-                # the common_resources (see the class var in class definition)
-                # or if it's something unhelpful like '*'.
                 resource = self.visible_resources.get(resource_type)
                 if resource:
                     yield resource
 
-        return frozenset(
+        # Collect all resources into an unordered set to remove duplicates
+        unsorted_resources = set(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2353,6 +2350,14 @@ class Service:
                 gen_indirect_resources_used(
                     method.lro.response_type if method.lro else method.output
                 ),
+            )
+        )
+        
+        # Return them deterministically sorted by their full path
+        return tuple(
+            sorted(
+                unsorted_resources,
+                key=lambda r: r.resource_type_full_path or r.name
             )
         )
 
