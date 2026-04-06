@@ -2140,6 +2140,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-iam-logging/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-iamconnectorcredentials
+    version: 0.0.0
+    last_generated_commit: 13b86d1d083c314bf51e42c19f9f6ed941e0553b
+    apis:
+      - path: google/cloud/iamconnectorcredentials/v1alpha
+        service_config: iamconnectorcredentials_v1alpha.yaml
+    source_roots:
+      - packages/google-cloud-iamconnectorcredentials
+    preserve_regex:
+      - packages/google-cloud-iamconnectorcredentials/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-iamconnectorcredentials
+    tag_format: '{id}-v{version}'
   - id: google-cloud-iap
     version: 1.21.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
