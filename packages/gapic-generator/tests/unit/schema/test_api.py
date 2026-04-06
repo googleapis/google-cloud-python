@@ -1767,7 +1767,14 @@ def test_file_level_resources():
     # The service doesn't own any method that owns a message that references
     # Phylum, so the service doesn't count it among its resource messages.
     expected.pop("nomenclature.linnaen.com/Phylum")
-    expected = frozenset(expected.values())
+    
+    # Update test to expect the new deterministically sorted tuple
+    expected = tuple(
+        sorted(
+            expected.values(),
+            key=lambda r: r.resource_type_full_path or r.name
+        )
+    )
     actual = service.resource_messages
 
     assert actual == expected
@@ -1822,7 +1829,9 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
         name_resource_opts.child_type = species_resource_opts.type
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
-    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
+    
+    # Update test to expect a tuple instead of a set
+    expected = tuple([api_schema.messages["nomenclature.linneaen.v1.Species"]])
     actual = api_schema.services[
         "nomenclature.linneaen.v1.SpeciesService"
     ].resource_messages

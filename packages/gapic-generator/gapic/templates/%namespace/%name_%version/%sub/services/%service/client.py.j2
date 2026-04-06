@@ -262,7 +262,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return self._transport
 
 
-    {% for message in service.deterministic_resource_messages %}
+    {% for message in service.resource_messages %}
     {% set method_base_name = service.resource_path_method_names[message.resource_type_full_path] %}
     
     @staticmethod
