@@ -45,8 +45,6 @@ WITH `bfcte_0` AS (
     `bfcol_23`,
     COALESCE(SUM(`bfcol_24`), 0) AS `bfcol_27`
   FROM `bfcte_1`
-  WHERE
-    NOT `bfcol_23` IS NULL
   GROUP BY
     `bfcol_23`
 ), `bfcte_5` AS (
@@ -92,8 +90,6 @@ WITH `bfcte_0` AS (
     `bfcol_6`,
     ANY_VALUE(`bfcol_45`) AS `bfcol_49`
   FROM `bfcte_9`
-  WHERE
-    NOT `bfcol_5` IS NULL AND NOT `bfcol_6` IS NULL
   GROUP BY
     `bfcol_5`,
     `bfcol_6`

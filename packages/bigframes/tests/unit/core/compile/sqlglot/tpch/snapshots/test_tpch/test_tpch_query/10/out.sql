@@ -39,8 +39,7 @@ WITH `bfcte_0` AS (
     `bfcol_8` AS `bfcol_24`
   FROM `bfcte_3`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_9`, 0) = COALESCE(`bfcol_7`, 0)
-    AND COALESCE(`bfcol_9`, 1) = COALESCE(`bfcol_7`, 1)
+    ON `bfcol_9` = `bfcol_7`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_16` AS `bfcol_25`,
@@ -56,8 +55,7 @@ WITH `bfcte_0` AS (
     `bfcol_5` AS `bfcol_35`
   FROM `bfcte_4`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_23`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_23`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_23` = `bfcol_2`
 ), `bfcte_6` AS (
   SELECT
     `bfcol_25`,
@@ -107,8 +105,7 @@ WITH `bfcte_0` AS (
     ), 2) AS `bfcol_83`
   FROM `bfcte_5`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_28`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_28`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_28` = `bfcol_0`
   WHERE
     (
       (
@@ -133,13 +130,7 @@ WITH `bfcte_0` AS (
     COALESCE(SUM(`bfcol_83`), 0) AS `bfcol_92`
   FROM `bfcte_6`
   WHERE
-    NOT `bfcol_76` IS NULL
-    AND NOT `bfcol_77` IS NULL
-    AND NOT `bfcol_80` IS NULL
-    AND NOT `bfcol_79` IS NULL
-    AND NOT `bfcol_82` IS NULL
-    AND NOT `bfcol_78` IS NULL
-    AND NOT `bfcol_81` IS NULL
+    NOT `bfcol_81` IS NULL
   GROUP BY
     `bfcol_76`,
     `bfcol_77`,

@@ -17,10 +17,7 @@ WITH `bfcte_0` AS (
     COUNT(`bfcol_10`) AS `bfcol_14`
   FROM `bfcte_1`
   LEFT JOIN `bfcte_0`
-    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_11`, 0)
-    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_11`, 1)
-  WHERE
-    NOT `bfcol_3` IS NULL
+    ON `bfcol_3` = `bfcol_11`
   GROUP BY
     `bfcol_3`
 ), `bfcte_3` AS (

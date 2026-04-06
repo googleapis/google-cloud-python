@@ -73,8 +73,6 @@ WITH `bfcte_0` AS (
     `bfcol_4`,
     ANY_VALUE(`bfcol_47`) AS `bfcol_51`
   FROM `bfcte_8`
-  WHERE
-    NOT `bfcol_3` IS NULL AND NOT `bfcol_4` IS NULL
   GROUP BY
     `bfcol_3`,
     `bfcol_4`
@@ -94,13 +92,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_12` AS (
   SELECT
     *,
-    STRUCT(COALESCE(`bfcol_61`, 0) AS `bfpart1`, COALESCE(`bfcol_61`, 1) AS `bfpart2`) IN (
-      (
+    `bfcol_61` IN ((
         SELECT
-          STRUCT(COALESCE(`bfcol_0`, 0) AS `bfpart1`, COALESCE(`bfcol_0`, 1) AS `bfpart2`)
+          *
         FROM `bfcte_6`
-      )
-    ) AS `bfcol_64`
+    )) AS `bfcol_64`
   FROM `bfcte_11`
 ), `bfcte_13` AS (
   SELECT

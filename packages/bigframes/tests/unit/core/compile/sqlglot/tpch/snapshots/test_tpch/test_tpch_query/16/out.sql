@@ -37,8 +37,7 @@ WITH `bfcte_0` AS (
     `bfcol_3` AS `bfcol_58`
   FROM `bfcte_2`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_4`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_4`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_4` = `bfcol_2`
   WHERE
     `bfcol_5` <> 'Brand#45'
     AND NOT (
@@ -52,13 +51,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_6` AS (
   SELECT
     *,
-    STRUCT(COALESCE(`bfcol_58`, 0) AS `bfpart1`, COALESCE(`bfcol_58`, 1) AS `bfpart2`) IN (
-      (
+    `bfcol_58` IN ((
         SELECT
-          STRUCT(COALESCE(`bfcol_21`, 0) AS `bfpart1`, COALESCE(`bfcol_21`, 1) AS `bfpart2`)
+          *
         FROM `bfcte_5`
-      )
-    ) AS `bfcol_59`
+    )) AS `bfcol_59`
   FROM `bfcte_4`
 ), `bfcte_7` AS (
   SELECT
@@ -73,8 +70,6 @@ WITH `bfcte_0` AS (
     `bfcol_57`,
     COUNT(DISTINCT `bfcol_58`) AS `bfcol_69`
   FROM `bfcte_7`
-  WHERE
-    NOT `bfcol_55` IS NULL AND NOT `bfcol_56` IS NULL AND NOT `bfcol_57` IS NULL
   GROUP BY
     `bfcol_55`,
     `bfcol_56`,

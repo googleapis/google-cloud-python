@@ -204,6 +204,8 @@ class InNode(BigFrameNode, AdditiveNode):
     right_child: BigFrameNode
     left_col: ex.DerefOp
     indicator_col: identifiers.ColumnId
+    # For matching left_col to right_child[0], if true, nulls match nulls, if false, nulls don't match nulls
+    nulls_equal: bool = True
 
     def _validate(self):
         assert len(self.right_child.fields) == 1
@@ -271,10 +273,7 @@ class InNode(BigFrameNode, AdditiveNode):
 
     @property
     def joins_nulls(self) -> bool:
-        left_nullable = self.left_child.field_by_id[self.left_col.id].nullable
-        # assumption: right side has one column
-        right_nullable = self.right_child.fields[0].nullable
-        return left_nullable or right_nullable
+        return self.nulls_equal
 
     @property
     def _node_expressions(self):
@@ -316,6 +315,9 @@ class JoinNode(BigFrameNode):
     right_child: BigFrameNode
     conditions: typing.Tuple[typing.Tuple[ex.DerefOp, ex.DerefOp], ...]
     type: typing.Literal["inner", "outer", "left", "right", "cross"]
+    # choose to treat nulls as equal or not for purposes of the join
+    # pandas treats nulls as equal, sql does not
+    nulls_equal: bool
     propogate_order: bool
 
     def _validate(self):
@@ -355,13 +357,7 @@ class JoinNode(BigFrameNode):
 
     @property
     def joins_nulls(self) -> bool:
-        for left_ref, right_ref in self.conditions:
-            if (
-                self.left_child.field_by_id[left_ref.id].nullable
-                and self.right_child.field_by_id[right_ref.id].nullable
-            ):
-                return True
-        return False
+        return self.nulls_equal
 
     @functools.cached_property
     def variables_introduced(self) -> int:
@@ -675,7 +671,11 @@ class ReadLocalNode(LeafNode):
     @property
     def fields(self) -> Sequence[Field]:
         fields = tuple(
-            Field(col_id, self.local_data_source.schema.get_type(source_id))
+            Field(
+                col_id,
+                self.local_data_source.schema.get_type(source_id),
+                nullable=self.local_data_source.is_nullable(source_id),
+            )
             for col_id, source_id in self.scan_list.items
         )
 
