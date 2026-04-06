@@ -14,16 +14,20 @@
 
 from __future__ import annotations
 
+from functools import singledispatchmethod
 import json
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sequence
 
 import substrait.algebra_pb2 as algebra_pb2
 import substrait.plan_pb2 as plan_pb2
+import substrait.type_pb2 as type_pb2
 from google.protobuf import json_format
 
 from bigframes.core import bigframe_node, nodes
 import bigframes.core.expression as ex
 import pandas as pd
+import bigframes.operations.numeric_ops as numeric_ops
+import bigframes.operations.comparison_ops as comparison_ops
 
 
 class SubstraitCompiler:
@@ -38,37 +42,22 @@ class SubstraitCompiler:
         if not self.can_compile(plan):
             return None
 
-        plan_dict = self._compile_node(plan)
+        pb_rel = self._compile_node(plan)
         
         pb_plan = plan_pb2.Plan()
         pb_plan.version.minor_number = 42
         
         plan_rel = pb_plan.relations.add()
-        json_format.ParseDict(plan_dict, plan_rel.root.input)
+        plan_rel.root.input.CopyFrom(pb_rel)
         
         plan_rel.root.names.extend([item.column for item in plan.schema.items])
         
-        extensions = [
-            ("add", 1),
-            ("sub", 2),
-            ("mul", 3),
-            ("div", 4),
-            ("equal", 5),
-            ("ne", 6),
-            ("lt", 7),
-            ("gt", 8),
-            ("le", 9),
-            ("ge", 10),
-            ("sum", 11),
-            ("max", 12),
-            ("and", 13),
-        ]
-        for name, anchor in extensions:
+        for name, anchor in self._EXTENSIONS.items():
              ext = pb_plan.extensions.add()
              ext.extension_function.function_anchor = anchor
              ext.extension_function.name = name
              
-        return json_format.MessageToJson(pb_plan).encode('utf-8')
+        return pb_plan.SerializeToString()
 
     def can_compile(self, plan: bigframe_node.BigFrameNode) -> bool:
         """
@@ -84,25 +73,25 @@ class SubstraitCompiler:
             nodes.JoinNode,
             nodes.AggregateNode,
         )
-        return all(isinstance(node, supported_nodes) for node in plan.unique_nodes())
+        return isinstance(plan, supported_nodes)
 
-    def _compile_node(self, node: bigframe_node.BigFrameNode) -> Dict[str, Any]:
+    def _compile_node(self, node: bigframe_node.BigFrameNode) -> algebra_pb2.Rel:
         if isinstance(node, nodes.ReadLocalNode):
-            return self._compile_read(node)
+             return self._compile_read(node)
         elif isinstance(node, nodes.SelectionNode):
-            return self._compile_selection(node)
+             return self._compile_selection(node)
         elif isinstance(node, nodes.FilterNode):
-            return self._compile_filter(node)
+             return self._compile_filter(node)
         elif isinstance(node, nodes.ProjectionNode):
-            return self._compile_projection(node)
+             return self._compile_projection(node)
         elif isinstance(node, nodes.JoinNode):
-            return self._compile_join(node)
+             return self._compile_join(node)
         elif isinstance(node, nodes.AggregateNode):
-            return self._compile_aggregate(node)
+             return self._compile_aggregate(node)
         else:
-            raise NotImplementedError(f"Node type {type(node)} not supported in Substrait compiler yet")
+             raise NotImplementedError(f"Node type {type(node)} not supported in Substrait compiler yet")
 
-    def _compile_read(self, node: nodes.ReadLocalNode) -> Dict[str, Any]:
+    def _compile_read(self, node: nodes.ReadLocalNode) -> algebra_pb2.Rel:
         table_name = f"table_{node.local_data_source.id.hex}"
         
         rel = algebra_pb2.Rel()
@@ -112,70 +101,71 @@ class SubstraitCompiler:
         schema_dict = self._convert_schema(node.local_data_source.schema)
         json_format.ParseDict(schema_dict, read_rel.base_schema)
         
-        return json_format.MessageToDict(rel, preserving_proto_field_name=True)
+        return rel
 
-    def _compile_selection(self, node: nodes.SelectionNode) -> Dict[str, Any]:
+    def _compile_selection(self, node: nodes.SelectionNode) -> algebra_pb2.Rel:
         input_rel = self._compile_node(node.child)
-        expressions = []
-        child_ids = list(node.child.ids)
-        for aliased_ref in node.input_output_pairs:
-             source_id = aliased_ref.ref.id
-             idx = child_ids.index(source_id)
-             expressions.append({"selection": {"direct_reference": {"struct_field": {"field": idx}}}})
-        return {
-            "project": {
-                "common": {
-                    "emit": {
-                        "outputMapping": [len(child_ids) + i for i in range(len(expressions))]
-                    }
-                },
-                "input": input_rel,
-                "expressions": expressions
-            }
-        }
-
-    def _compile_filter(self, node: nodes.FilterNode) -> Dict[str, Any]:
-        input_rel = self._compile_node(node.child)
-        condition_rel = self._compile_expression(node.predicate, node.child)
-        return {
-            "filter": {
-                "input": input_rel,
-                "condition": condition_rel
-            }
-        }
-
-
-    def _compile_projection(self, node: nodes.ProjectionNode) -> Dict[str, Any]:
-        input_rel_dict = self._compile_node(node.child)
         
         rel = algebra_pb2.Rel()
         project_rel = rel.project
+        project_rel.input.CopyFrom(input_rel)
         
-        json_format.ParseDict(input_rel_dict, project_rel.input)
-        
-        # DataFusion ProjectRel seems to be additive (appends to input).
-        # So we don't need to add passthrough expressions for input fields.
-        
-        # Add new assignments
-        for expr, _ in node.assignments:
-             expr_dict = self._compile_expression(expr, node.child)
-             expr_pb = project_rel.expressions.add()
-             json_format.ParseDict(expr_dict, expr_pb)
+        child_ids = list(node.child.ids)
+        num_exprs = 0
+        for aliased_ref in node.input_output_pairs:
+             source_id = aliased_ref.ref.id
+             idx = child_ids.index(source_id)
+             expr = project_rel.expressions.add()
+             expr.selection.direct_reference.struct_field.field = idx
+             num_exprs += 1
              
-        return json_format.MessageToDict(rel, preserving_proto_field_name=True)
+        project_rel.common.emit.output_mapping.extend([len(child_ids) + i for i in range(num_exprs)])
+        
+        return rel
 
-    def _compile_join(self, node: nodes.JoinNode) -> Dict[str, Any]:
+    def _compile_filter(self, node: nodes.FilterNode) -> algebra_pb2.Rel:
+        input_rel = self._compile_node(node.child)
+        
+        rel = algebra_pb2.Rel()
+        filter_rel = rel.filter
+        filter_rel.input.CopyFrom(input_rel)
+        
+        condition_expr = self._compile_expression(node.predicate, node.child)
+        filter_rel.condition.CopyFrom(condition_expr)
+        
+        return rel
+
+
+    def _compile_projection(self, node: nodes.ProjectionNode) -> algebra_pb2.Rel:
+        input_rel = self._compile_node(node.child)
+        
+        rel = algebra_pb2.Rel()
+        project_rel = rel.project
+        project_rel.input.CopyFrom(input_rel)
+        
+        for expr, _ in node.assignments:
+             expr_pb = self._compile_expression(expr, node.child)
+             project_rel.expressions.add().CopyFrom(expr_pb)
+             
+        return rel
+
+    def _compile_join(self, node: nodes.JoinNode) -> algebra_pb2.Rel:
         left_rel = self._compile_node(node.left_child)
         right_rel = self._compile_node(node.right_child)
         
+        rel = algebra_pb2.Rel()
+        join_rel = rel.join
+        
+        join_rel.left.CopyFrom(left_rel)
+        join_rel.right.CopyFrom(right_rel)
+        
         type_map = {
-            "inner": "JOIN_TYPE_INNER",
-            "left": "JOIN_TYPE_LEFT",
-            "right": "JOIN_TYPE_RIGHT",
-            "outer": "JOIN_TYPE_OUTER",
-            "cross": "JOIN_TYPE_CROSS",
+            "inner": algebra_pb2.JoinRel.JOIN_TYPE_INNER,
+            "left": algebra_pb2.JoinRel.JOIN_TYPE_LEFT,
+            "right": algebra_pb2.JoinRel.JOIN_TYPE_RIGHT,
+            "outer": algebra_pb2.JoinRel.JOIN_TYPE_OUTER,
         }
-        join_type = type_map.get(node.type, "JOIN_TYPE_UNSPECIFIED")
+        join_rel.type = type_map.get(node.type, algebra_pb2.JoinRel.JOIN_TYPE_UNSPECIFIED)
         
         left_len = len(node.left_child.schema)
         
@@ -184,51 +174,49 @@ class SubstraitCompiler:
              left_idx = list(node.left_child.ids).index(left_deref.id)
              right_idx = list(node.right_child.ids).index(right_deref.id) + left_len
              
-             eq_expressions.append({
-                 "scalar_function": {
-                     "function_reference": 5, # eq
-                     "arguments": [
-                         {"value": {"selection": {"direct_reference": {"struct_field": {"field": left_idx}}}}},
-                         {"value": {"selection": {"direct_reference": {"struct_field": {"field": right_idx}}}}}
-                     ]
-                 }
-             })
+             eq_expr = algebra_pb2.Expression()
+             eq_expr.scalar_function.function_reference = 5 # equal
+             
+             arg1 = eq_expr.scalar_function.arguments.add()
+             arg1.value.selection.direct_reference.struct_field.field = left_idx
+             
+             arg2 = eq_expr.scalar_function.arguments.add()
+             arg2.value.selection.direct_reference.struct_field.field = right_idx
+             
+             eq_expressions.append(eq_expr)
              
         if len(eq_expressions) > 1:
              expr = eq_expressions[0]
              for e in eq_expressions[1:]:
-                  expr = {
-                      "scalar_function": {
-                          "function_reference": 13, # and
-                          "arguments": [{"value": expr}, {"value": e}]
-                      }
-                  }
+                  and_expr = algebra_pb2.Expression()
+                  and_expr.scalar_function.function_reference = 13 # and
+                  and_expr.scalar_function.arguments.add().value.CopyFrom(expr)
+                  and_expr.scalar_function.arguments.add().value.CopyFrom(e)
+                  expr = and_expr
         elif len(eq_expressions) == 1:
              expr = eq_expressions[0]
         else:
-             expr = {"literal": {"boolean": True}}
+             expr = algebra_pb2.Expression()
+             expr.literal.boolean = True
              
-        return {
-            "join": {
-                "left": left_rel,
-                "right": right_rel,
-                "expression": expr,
-                "type": join_type
-            }
-        }
+        join_rel.expression.CopyFrom(expr)
+        
+        return rel
 
-    def _compile_aggregate(self, node: nodes.AggregateNode) -> Dict[str, Any]:
+    def _compile_aggregate(self, node: nodes.AggregateNode) -> algebra_pb2.Rel:
         input_rel = self._compile_node(node.child)
         
-        groupings = []
-        grouping_expressions = []
-        for deref in node.by_column_ids:
-             idx = list(node.child.ids).index(deref.id)
-             grouping_expressions.append({"selection": {"direct_reference": {"struct_field": {"field": idx}}}})
-        if grouping_expressions:
-             groupings.append({"grouping_expressions": grouping_expressions})
-             
-        measures = []
+        rel = algebra_pb2.Rel()
+        agg_rel = rel.aggregate
+        agg_rel.input.CopyFrom(input_rel)
+        
+        if node.by_column_ids:
+             grouping = agg_rel.groupings.add()
+             for deref in node.by_column_ids:
+                  idx = list(node.child.ids).index(deref.id)
+                  expr = grouping.grouping_expressions.add()
+                  expr.selection.direct_reference.struct_field.field = idx
+                  
         import bigframes.operations.aggregations as agg_ops
         for agg, _ in node.aggregations:
              if isinstance(agg.op, agg_ops.SumOp):
@@ -237,78 +225,110 @@ class SubstraitCompiler:
                   func_ref = 12
              else:
                   raise NotImplementedError(f"Aggregation {type(agg.op)} not supported in Substrait compiler yet")
-             args = []
+                  
+             measure = agg_rel.measures.add()
+             measure.measure.function_reference = func_ref
+             
              if hasattr(agg, "column_references"):
                   for col_id in agg.column_references:
                        try:
                            idx = list(node.child.ids).index(col_id)
-                           args.append({"value": {"selection": {"direct_reference": {"struct_field": {"field": idx}}}}})
+                           arg = measure.measure.arguments.add()
+                           arg.value.selection.direct_reference.struct_field.field = idx
                        except ValueError:
                            pass
-             measures.append({
-                 "measure": {
-                     "function_reference": func_ref,
-                     "arguments": args
-                 }
-             })
-             
-        return {
-            "aggregate": {
-                "input": input_rel,
-                "groupings": groupings,
-                "measures": measures
-            }
-        }
+                           
+        return rel
 
-    def _compile_expression(self, expr: ex.Expression, child: nodes.BigFrameNode) -> Dict[str, Any]:
-        if isinstance(expr, ex.ScalarConstantExpression):
-             val = expr.value
-             if isinstance(val, int):
-                  return {"literal": {"i64": val}}
-             elif isinstance(val, float):
-                  return {"literal": {"fp64": val}}
-             elif isinstance(val, str):
-                  return {"literal": {"string": val}}
-             elif pd.isna(val):
-                  return {"literal": {"null": {"varchar": {"length": 0}}}}
-             else:
-                  return {"literal": {"string": str(val)}}
-                  
-        elif isinstance(expr, ex.DerefOp):
-             try:
-                  # print(f"DerefOp: id={expr.id}, child.ids={list(child.ids)}") # Debug
-                  idx = list(child.ids).index(expr.id)
-                  return {"selection": {"direct_reference": {"struct_field": {"field": idx}}}}
-             except ValueError:
-                  raise ValueError(f"Column {expr.id} not found in child schema")
-                  
-        elif isinstance(expr, ex.OpExpression):
-             op_name = expr.op.name
-             op_mapping = {
-                 "add": 1,
-                 "sub": 2,
-                 "mul": 3,
-                 "div": 4,
-                 "eq": 5,
-                 "ne": 6,
-                 "lt": 7,
-                 "gt": 8,
-                 "le": 9,
-                 "ge": 10,
-             }
-             if op_name not in op_mapping:
-                  raise NotImplementedError(f"Operation {op_name} not supported in Substrait compiler yet")
-             func_ref = op_mapping[op_name]
-             
-             args = [self._compile_expression(arg, child) for arg in expr.inputs]
-             return {
-                 "scalar_function": {
-                     "function_reference": func_ref,
-                     "arguments": [{"value": arg} for arg in args]
-                 }
-             }
-        else:
-             raise NotImplementedError(f"Expression type {type(expr)} not supported in Substrait compiler yet")
+    _EXTENSIONS = {
+        "add": 1,
+        "subtract": 2,
+        "multiply": 3,
+        "divide": 4,
+        "equal": 5,
+        "ne": 6,
+        "lt": 7,
+        "gt": 8,
+        "lte": 9,
+        "gte": 10,
+        "sum": 11,
+        "max": 12,
+        "and": 13,
+    }
+
+    _OP_TO_EXTENSION = {
+        numeric_ops.AddOp: "add",
+        numeric_ops.SubOp: "subtract",
+        numeric_ops.MulOp: "multiply",
+        numeric_ops.DivOp: "divide",
+        comparison_ops.EqOp: "equal",
+        comparison_ops.NeOp: "ne",
+        comparison_ops.LtOp: "lt",
+        comparison_ops.GtOp: "gt",
+        comparison_ops.LeOp: "lte",
+        comparison_ops.GeOp: "gte",
+    }
+
+    @singledispatchmethod
+    def _compile_expression(self, expr: ex.Expression, child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         raise NotImplementedError(f"Expression type {type(expr)} not supported in Substrait compiler yet")
+
+    @_compile_expression.register
+    def _compile_scalar_constant(self, expr: ex.ScalarConstantExpression, child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         pb_expr = algebra_pb2.Expression()
+         val = expr.value
+         if isinstance(val, int):
+              pb_expr.literal.i64 = val
+         elif isinstance(val, float):
+              pb_expr.literal.fp64 = val
+         elif isinstance(val, str):
+              pb_expr.literal.string = val
+         elif pd.isna(val):
+              pb_expr.literal.null.varchar.length = 0
+         else:
+              pb_expr.literal.string = str(val)
+         return pb_expr
+
+    @_compile_expression.register
+    def _compile_deref(self, expr: ex.DerefOp, child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         pb_expr = algebra_pb2.Expression()
+         try:
+              idx = list(child.ids).index(expr.id)
+              pb_expr.selection.direct_reference.struct_field.field = idx
+              return pb_expr
+         except ValueError:
+              raise ValueError(f"Column {expr.id} not found in child schema")
+
+    @_compile_expression.register
+    def _compile_op_expr(self, expr: ex.OpExpression, child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         return self._compile_op(expr.op, expr.inputs, child)
+
+    @singledispatchmethod
+    def _compile_op(self, op: Any, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         raise NotImplementedError(f"Op type {type(op)} not supported in Substrait compiler yet")
+
+    @_compile_op.register(numeric_ops.AddOp)
+    @_compile_op.register(numeric_ops.SubOp)
+    @_compile_op.register(numeric_ops.MulOp)
+    @_compile_op.register(numeric_ops.DivOp)
+    @_compile_op.register(comparison_ops.EqOp)
+    @_compile_op.register(comparison_ops.NeOp)
+    @_compile_op.register(comparison_ops.LtOp)
+    @_compile_op.register(comparison_ops.GtOp)
+    @_compile_op.register(comparison_ops.LeOp)
+    @_compile_op.register(comparison_ops.GeOp)
+    def _compile_basic_binops(self, op: Any, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         op_class = type(op)
+         ext_name = self._OP_TO_EXTENSION[op_class]
+         return self._compile_basic_binop(ext_name, inputs, child)
+
+    def _compile_basic_binop(self, ext_name: str, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode) -> algebra_pb2.Expression:
+         pb_expr = algebra_pb2.Expression()
+         pb_expr.scalar_function.function_reference = self._EXTENSIONS[ext_name]
+         for arg in inputs:
+              arg_expr = self._compile_expression(arg, child)
+              pb_expr.scalar_function.arguments.add().value.CopyFrom(arg_expr)
+         return pb_expr
 
     def _convert_schema(self, schema: Any) -> Dict[str, Any]:
         # Convert bigframes schema to Substrait Type.NamedStruct
@@ -335,6 +355,22 @@ class SubstraitCompiler:
              return {"bool": {}}
         elif dtype == bigframes.dtypes.STRING_DTYPE:
              return {"string": {}}
+        elif dtype == bigframes.dtypes.BYTES_DTYPE:
+             return {"binary": {}}
+        elif dtype == bigframes.dtypes.DATE_DTYPE:
+             return {"date": {}}
+        elif dtype == bigframes.dtypes.DATETIME_DTYPE:
+             return {"precision_timestamp": {"precision": 6}}
+        elif dtype == bigframes.dtypes.TIMESTAMP_DTYPE:
+             return {"precision_timestamp_tz": {"precision": 6}}
+        elif dtype == bigframes.dtypes.TIME_DTYPE:
+             # type_variation_reference 1 is for time64, precision 6 is for microseconds
+             return {"precision_time": {"precision": 6, "type_variation_reference": 1}}
+        elif dtype in (bigframes.dtypes.NUMERIC_DTYPE, bigframes.dtypes.BIGNUMERIC_DTYPE):
+             arrow_dtype = dtype.pyarrow_dtype
+             return {"decimal": {"precision": arrow_dtype.precision, "scale": arrow_dtype.scale}}
+        elif dtype == bigframes.dtypes.TIMEDELTA_DTYPE:
+             return {"interval_day": {"precision": 6, "type_variation_reference": 1}}
         else:
              # Fallback to string for now
              return {"string": {}}

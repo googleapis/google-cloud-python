@@ -314,3 +314,37 @@ def test_execute_selection_with_datafusion():
     assert result_table.num_rows == 3
     assert result_table.column_names == ["c"]
     assert result_table.column("c").to_pylist() == [1, 2, 3]
+
+
+def test_execute_various_types_with_datafusion():
+    from bigframes.session.substrait_executor import DataFusionSubstraitConsumer
+    import datetime
+    import pandas as pd
+    
+    consumer = DataFusionSubstraitConsumer()
+    executor = substrait_executor.SubstraitExecutor(consumer)
+    
+    session = mocks.create_bigquery_session()
+    table = pa.Table.from_pydict({
+        "bin": [b"a", b"b"],
+        "dat": [datetime.date(2023, 1, 1), datetime.date(2023, 1, 2)],
+        "dt": [datetime.datetime(2023, 1, 1, 12, 0), datetime.datetime(2023, 1, 2, 12, 0)],
+    })
+    source = local_data.ManagedArrowTable.from_pyarrow(table)
+    
+    scan_items = []
+    for name in table.column_names:
+         scan_items.append(nodes.ScanItem(id=identifiers.ColumnId(name), source_id=name))
+         
+    read_node = nodes.ReadLocalNode(
+        local_data_source=source,
+        session=session,
+        scan_list=nodes.ScanList(items=tuple(scan_items)),
+    )
+    
+    result = executor.execute(read_node, ordered=True)
+    assert result is not None
+    
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 2
+    assert result_table.column_names == ["bin", "dat", "dt"]

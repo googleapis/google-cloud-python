@@ -52,7 +52,7 @@ class DataFusionSubstraitConsumer(SubstraitConsumer):
     Executes Substrait plans using Apache DataFusion.
     """
 
-    def consume(self, plan: bytes, tables: dict[str, pa.Table]) -> pa.Table:
+    def consume(self, plan_proto: bytes, tables: dict[str, pa.Table]) -> pa.Table:
         # Import datafusion lazily to avoid hard dependency
         try:
             import datafusion
@@ -76,11 +76,11 @@ class DataFusionSubstraitConsumer(SubstraitConsumer):
         
         import datafusion.substrait
 
-        json_str = plan.decode('utf-8')
-        plan_obj = datafusion.substrait.Plan.from_json(json_str)
-        print("DEBUG RE-SERIALIZED JSON SUBSTRAIT PLAN:")
-        print(plan_obj.to_json())
-        logical_plan = datafusion.substrait.Consumer.from_substrait_plan(ctx, plan_obj)
+        #json_str = plan.decode('utf-8')
+        #print("DEBUG RE-SERIALIZED JSON SUBSTRAIT PLAN:")
+        #print(plan_obj.to_json())
+        datafusion_substrait_plan = datafusion.substrait.Serde.deserialize_bytes(plan_proto)
+        logical_plan = datafusion.substrait.Consumer.from_substrait_plan(ctx, datafusion_substrait_plan)
         df = ctx.create_dataframe_from_logical_plan(logical_plan)
         return df.to_arrow_table()
 
@@ -107,9 +107,9 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
         if not self._can_execute(rewritten_plan):
             return None
 
-        substrait_plan = self._compiler.compile(rewritten_plan)
+        substrait_plan_proto = self._compiler.compile(rewritten_plan)
 
-        if substrait_plan is None:
+        if substrait_plan_proto is None:
             return None
 
         tables = {}
@@ -118,7 +118,7 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
                   table_name = f"table_{node.local_data_source.id.hex}"
                   tables[table_name] = node.local_data_source.data
 
-        pa_table = self._consumer.consume(substrait_plan, tables)
+        pa_table = self._consumer.consume(substrait_plan_proto, tables)
 
         if peek is not None:
             pa_table = pa_table.slice(0, peek)
