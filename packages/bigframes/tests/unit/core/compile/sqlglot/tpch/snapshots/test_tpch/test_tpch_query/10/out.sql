@@ -2,20 +2,20 @@ WITH `bfcte_0` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_0`,
     `N_NAME` AS `bfcol_1`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3`
 ), `bfcte_1` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_2`,
     `L_EXTENDEDPRICE` AS `bfcol_3`,
     `L_DISCOUNT` AS `bfcol_4`,
     `L_RETURNFLAG` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_2`
 ), `bfcte_2` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_6`,
     `O_CUSTKEY` AS `bfcol_7`,
     `O_ORDERDATE` AS `bfcol_8`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
 ), `bfcte_3` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_9`,
@@ -25,7 +25,7 @@ WITH `bfcte_0` AS (
     `C_PHONE` AS `bfcol_13`,
     `C_ACCTBAL` AS `bfcol_14`,
     `C_COMMENT` AS `bfcol_15`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0`
 ), `bfcte_4` AS (
   SELECT
     `bfcol_9` AS `bfcol_16`,

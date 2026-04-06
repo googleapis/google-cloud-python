@@ -13,14 +13,20 @@
 # limitations under the License.
 
 import datetime
+import functools
 import unittest.mock as mock
 
 import pytest
 from google.cloud import bigquery
 
 import bigframes.testing.mocks as mocks
+from bigframes.testing import compiler_session
 
 freezegun = pytest.importorskip("freezegun")
+
+PROJECT_NAME = "bigframes-dev-perf"
+DATASET_NAME = "tpch_0001t"
+LOCATION_NAME = "test-region"
 
 TPCH_SCHEMAS = {
     "LINEITEM": [
@@ -103,46 +109,55 @@ TPCH_SCHEMAS = {
 }
 
 
+def _create_mock_bqclient():
+    """Helper function to create a compiler session."""
+
+    bqclient = mock.create_autospec(bigquery.Client, instance=True)
+    bqclient.project = DATASET_NAME
+    bqclient.location = LOCATION_NAME
+    table_create_time = datetime.datetime.now()
+
+    def get_table_mock(table_ref):
+        if isinstance(table_ref, str):
+            table_ref = bigquery.TableReference.from_string(table_ref)
+
+        table_id = table_ref.table_id
+        schema = TPCH_SCHEMAS.get(table_id, [])
+
+        table = mock.create_autospec(bigquery.Table, instance=True)
+        table._properties = {}
+        type(table).created = mock.PropertyMock(return_value=table_create_time)
+        type(table).location = mock.PropertyMock(return_value=LOCATION_NAME)
+        type(table).schema = mock.PropertyMock(return_value=schema)
+        type(table).project = table_ref.project
+        type(table).dataset_id = table_ref.dataset_id
+        type(table).table_id = table_id
+        type(table).num_rows = mock.PropertyMock(return_value=1000000000)
+        return table
+
+    bqclient.get_table.side_effect = get_table_mock
+    return bqclient
+
+
 @pytest.fixture(scope="session")
 def tpch_session():
-    from bigframes.testing import compiler_session
+    anonymous_dataset = bigquery.DatasetReference.from_string(
+        f"{PROJECT_NAME}.{DATASET_NAME}"
+    )
+    session = mocks.create_bigquery_session(
+        bqclient=_create_mock_bqclient(),
+        anonymous_dataset=anonymous_dataset,
+    )
 
-    anonymous_dataset = bigquery.DatasetReference.from_string("bigframes-dev.tpch")
-    location = "us-central1"
+    # Disable snapshotting for TPC-H tests to keep snapshots clean
+    original_read_gbq_table = session._loader.read_gbq_table
 
-    with freezegun.freeze_time("2026-03-10 18:00:00"):
-        session = mocks.create_bigquery_session(
-            anonymous_dataset=anonymous_dataset,
-            location=location,
-        )
+    @functools.wraps(original_read_gbq_table)
+    def read_gbq_table_no_snapshot(*args, **kwargs):
+        kwargs["enable_snapshot"] = False
+        return original_read_gbq_table(*args, **kwargs)
 
-        def get_table_mock(table_ref):
-            if isinstance(table_ref, str):
-                table_ref = bigquery.TableReference.from_string(table_ref)
+    session._loader.read_gbq_table = read_gbq_table_no_snapshot
 
-            table_id = table_ref.table_id
-            schema = TPCH_SCHEMAS.get(table_id, [])
-
-            table = mock.create_autospec(bigquery.Table, instance=True)
-            table._properties = {}
-            # mocks.create_bigquery_session's CURRENT_TIMESTAMP() returns offset-naive datetime.now()
-            # So we should also use offset-naive here to avoid comparison errors.
-            now = datetime.datetime.now()
-            type(table).schema = mock.PropertyMock(return_value=schema)
-            type(table).project = table_ref.project
-            type(table).dataset_id = table_ref.dataset_id
-            type(table).table_id = table_id
-            type(table).num_rows = mock.PropertyMock(return_value=1000000)
-            type(table).num_bytes = mock.PropertyMock(return_value=1000000)
-            type(table).location = mock.PropertyMock(return_value=location)
-            type(table).table_type = mock.PropertyMock(return_value="TABLE")
-            type(table).created = mock.PropertyMock(return_value=now)
-            type(table).modified = mock.PropertyMock(return_value=now)
-            type(table).range_partitioning = mock.PropertyMock(return_value=None)
-            type(table).time_partitioning = mock.PropertyMock(return_value=None)
-            type(table).clustering_fields = mock.PropertyMock(return_value=None)
-            return table
-
-        session.bqclient.get_table.side_effect = get_table_mock
-        session._executor = compiler_session.SQLCompilerExecutor()
-        return session
+    session._executor = compiler_session.SQLCompilerExecutor()
+    return session

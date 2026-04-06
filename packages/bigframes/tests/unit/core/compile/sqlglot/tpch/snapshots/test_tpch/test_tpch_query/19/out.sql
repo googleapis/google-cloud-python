@@ -10,14 +10,14 @@ WITH `bfcte_0` AS (
     `L_DISCOUNT` AS `bfcol_4`,
     `L_SHIPINSTRUCT` AS `bfcol_5`,
     `L_SHIPMODE` AS `bfcol_6`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
 ), `bfcte_2` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_7`,
     `P_BRAND` AS `bfcol_8`,
     `P_SIZE` AS `bfcol_9`,
     `P_CONTAINER` AS `bfcol_10`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_3` AS (
   SELECT
     `bfcol_7`,

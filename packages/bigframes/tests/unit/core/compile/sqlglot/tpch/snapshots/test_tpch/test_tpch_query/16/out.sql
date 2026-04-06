@@ -6,7 +6,7 @@ WITH `bfcte_0` AS (
     NOT (
       REGEXP_CONTAINS(`S_COMMENT`, 'Customer.*Complaints')
     ) AS `bfcol_9`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2`
   WHERE
     NOT (
       REGEXP_CONTAINS(`S_COMMENT`, 'Customer.*Complaints')
@@ -15,14 +15,14 @@ WITH `bfcte_0` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_2`,
     `PS_SUPPKEY` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_1`
 ), `bfcte_2` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_4`,
     `P_BRAND` AS `bfcol_5`,
     `P_TYPE` AS `bfcol_6`,
     `P_SIZE` AS `bfcol_7`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_3` AS (
   SELECT
     `bfcol_8`
