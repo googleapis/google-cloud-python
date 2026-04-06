@@ -3,14 +3,14 @@ WITH `bfcte_0` AS (
     `N_NATIONKEY` AS `bfcol_22`,
     `N_NAME` AS `bfcol_23`,
     COALESCE(COALESCE(`N_NAME` IN ('FRANCE', 'GERMANY'), FALSE), FALSE) AS `bfcol_24`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     COALESCE(COALESCE(`N_NAME` IN ('FRANCE', 'GERMANY'), FALSE), FALSE)
 ), `bfcte_1` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_2`,
     `S_NATIONKEY` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_31`,
@@ -18,7 +18,7 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` AS `bfcol_33`,
     `L_DISCOUNT` AS `bfcol_34`,
     `L_SHIPDATE` AS `bfcol_35`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     (
       `L_SHIPDATE` >= CAST('1995-01-01' AS DATE)
@@ -30,12 +30,12 @@ WITH `bfcte_0` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_9`,
     `O_CUSTKEY` AS `bfcol_10`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_4` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_11`,
     `C_NATIONKEY` AS `bfcol_12`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_5` AS (
   SELECT
     `bfcol_22` AS `bfcol_36`,

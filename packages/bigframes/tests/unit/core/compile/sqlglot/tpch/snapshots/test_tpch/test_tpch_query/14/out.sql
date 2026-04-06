@@ -12,16 +12,16 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` AS `bfcol_1`,
     `L_DISCOUNT` AS `bfcol_2`,
     `L_SHIPDATE` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_3` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_4` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_8`,
     `P_TYPE` AS `bfcol_9`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_5` AS (
   SELECT
     `bfcol_4`,

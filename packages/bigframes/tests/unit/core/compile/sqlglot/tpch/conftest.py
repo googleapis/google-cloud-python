@@ -107,10 +107,12 @@ TPCH_SCHEMAS = {
 def tpch_session():
     from bigframes.testing import compiler_session
 
-    anonymous_dataset = bigquery.DatasetReference.from_string("bigframes-dev.tpch")
+    anonymous_dataset = bigquery.DatasetReference.from_string(
+        "bigframes-dev-perf.tpch_0001t"
+    )
     location = "us-central1"
 
-    with freezegun.freeze_time("2026-03-10 18:00:00"):
+    with freezegun.freeze_time("2026-04-05 18:00:00"):
         session = mocks.create_bigquery_session(
             anonymous_dataset=anonymous_dataset,
             location=location,

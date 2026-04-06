@@ -7,23 +7,23 @@ WITH `bfcte_0` AS (
     `PS_SUPPKEY` AS `bfcol_0`,
     `PS_AVAILQTY` AS `bfcol_1`,
     `PS_SUPPLYCOST` AS `bfcol_2`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_10`,
     `PS_SUPPKEY` AS `bfcol_11`,
     `PS_AVAILQTY` AS `bfcol_12`,
     `PS_SUPPLYCOST` AS `bfcol_13`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_3` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_3`,
     `S_NATIONKEY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_4` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_18`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     `N_NAME` = 'GERMANY'
 ), `bfcte_5` AS (

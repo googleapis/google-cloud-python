@@ -31,7 +31,7 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` AS `bfcol_35`,
     `L_DISCOUNT` AS `bfcol_36`,
     `L_EXTENDEDPRICE` * `L_DISCOUNT` AS `bfcol_39`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     (
       `L_SHIPDATE` >= CAST('1994-01-01' AS DATE)

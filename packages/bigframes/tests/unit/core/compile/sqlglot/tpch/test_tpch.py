@@ -22,8 +22,8 @@ pytest.importorskip("pytest_snapshot")
 
 @pytest.mark.parametrize("query_num", range(1, 23))
 def test_tpch_query(tpch_session, query_num, snapshot):
-    project_id = "bigframes-dev"
-    dataset_id = "tpch"
+    project_id = "bigframes-dev-perf"
+    dataset_id = "tpch_0001t"
 
     query_file_path = f"third_party/bigframes_vendored/tpch/queries/q{query_num}.py"
 
@@ -41,7 +41,7 @@ def test_tpch_query(tpch_session, query_num, snapshot):
     exec(modified_code, exec_globals)
     q_func = exec_globals["q"]
 
-    with freezegun.freeze_time("2026-03-10 18:00:00"):
+    with freezegun.freeze_time("2026-04-05 18:00:00"):
         result = q_func(project_id, dataset_id, tpch_session)
 
         # result should be a DataFrame

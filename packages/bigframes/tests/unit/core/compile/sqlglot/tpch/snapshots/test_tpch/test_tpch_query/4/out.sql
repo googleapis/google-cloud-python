@@ -3,13 +3,13 @@ WITH `bfcte_0` AS (
     `O_ORDERKEY` AS `bfcol_0`,
     `O_ORDERDATE` AS `bfcol_1`,
     `O_ORDERPRIORITY` AS `bfcol_2`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_1` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_3`,
     `L_COMMITDATE` AS `bfcol_4`,
     `L_RECEIPTDATE` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `bfcol_3`,

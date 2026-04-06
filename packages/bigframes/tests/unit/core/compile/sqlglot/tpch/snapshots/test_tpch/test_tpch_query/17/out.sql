@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_15`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     (
       `P_BRAND` = 'Brand#23'
@@ -17,12 +17,12 @@ WITH `bfcte_0` AS (
     `L_PARTKEY` AS `bfcol_3`,
     `L_QUANTITY` AS `bfcol_4`,
     `L_EXTENDEDPRICE` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_3` AS (
   SELECT
     `L_PARTKEY` AS `bfcol_6`,
     `L_QUANTITY` AS `bfcol_7`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_4` AS (
   SELECT
     `bfcol_4` AS `bfcol_16`,

@@ -4,7 +4,7 @@ WITH `bfcte_0` AS (
     `P_NAME`,
     `P_PARTKEY` AS `bfcol_15`,
     STARTS_WITH(`P_NAME`, 'forest') AS `bfcol_16`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     STARTS_WITH(`P_NAME`, 'forest')
 ), `bfcte_1` AS (
@@ -12,7 +12,7 @@ WITH `bfcte_0` AS (
     `PS_PARTKEY` AS `bfcol_2`,
     `PS_SUPPKEY` AS `bfcol_3`,
     `PS_AVAILQTY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `L_PARTKEY`,
@@ -28,7 +28,7 @@ WITH `bfcte_0` AS (
     AND (
       `L_SHIPDATE` < CAST('1995-01-01' AS DATE)
     ) AS `bfcol_20`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     (
       `L_SHIPDATE` >= CAST('1994-01-01' AS DATE)
@@ -39,7 +39,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_3` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_35`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     `N_NAME` = 'CANADA'
 ), `bfcte_4` AS (
@@ -48,7 +48,7 @@ WITH `bfcte_0` AS (
     `S_NAME` AS `bfcol_12`,
     `S_ADDRESS` AS `bfcol_13`,
     `S_NATIONKEY` AS `bfcol_14`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_5` AS (
   SELECT
     `bfcol_15`

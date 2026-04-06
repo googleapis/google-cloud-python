@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     `O_CUSTKEY`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `C_PHONE`,
@@ -19,7 +19,7 @@ WITH `bfcte_0` AS (
     ) AS `bfcol_20`,
     `C_ACCTBAL` AS `bfcol_35`,
     `C_ACCTBAL` > 0.0 AS `bfcol_36`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     COALESCE(
       COALESCE(SUBSTRING(`C_PHONE`, 1, 2) IN ('13', '31', '23', '29', '30', '18', '17'), FALSE),
@@ -31,7 +31,7 @@ WITH `bfcte_0` AS (
     `C_CUSTKEY` AS `bfcol_32`,
     `C_ACCTBAL` AS `bfcol_33`,
     SUBSTRING(`C_PHONE`, 1, 2) AS `bfcol_34`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     COALESCE(
       COALESCE(SUBSTRING(`C_PHONE`, 1, 2) IN ('13', '31', '23', '29', '30', '18', '17'), FALSE),

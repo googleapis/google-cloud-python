@@ -4,7 +4,7 @@ WITH `bfcte_0` AS (
     `O_CUSTKEY` AS `bfcol_33`,
     `O_ORDERDATE` AS `bfcol_34`,
     `O_SHIPPRIORITY` AS `bfcol_35`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     `O_ORDERDATE` < CAST('1995-03-15' AS DATE)
 ), `bfcte_1` AS (
@@ -12,13 +12,13 @@ WITH `bfcte_0` AS (
     `L_ORDERKEY` AS `bfcol_36`,
     `L_EXTENDEDPRICE` AS `bfcol_37`,
     `L_DISCOUNT` AS `bfcol_38`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     `L_SHIPDATE` > CAST('1995-03-15' AS DATE)
 ), `bfcte_2` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_39`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
   WHERE
     `C_MKTSEGMENT` = 'BUILDING'
 ), `bfcte_3` AS (

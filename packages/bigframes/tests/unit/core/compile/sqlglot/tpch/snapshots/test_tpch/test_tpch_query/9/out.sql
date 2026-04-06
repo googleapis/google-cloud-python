@@ -2,23 +2,23 @@ WITH `bfcte_0` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_0`,
     `N_NAME` AS `bfcol_1`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_5` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_5` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_1` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_2`,
     `O_ORDERDATE` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_2` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_4`,
     `S_NATIONKEY` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_3` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_6`,
     `PS_SUPPKEY` AS `bfcol_7`,
     `PS_SUPPLYCOST` AS `bfcol_8`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_4` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_9`,
@@ -27,12 +27,12 @@ WITH `bfcte_0` AS (
     `L_QUANTITY` AS `bfcol_12`,
     `L_EXTENDEDPRICE` AS `bfcol_13`,
     `L_DISCOUNT` AS `bfcol_14`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_5` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_15`,
     `P_NAME` AS `bfcol_16`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-04-05T18:00:00'
 ), `bfcte_6` AS (
   SELECT
     `bfcol_16` AS `bfcol_17`,
