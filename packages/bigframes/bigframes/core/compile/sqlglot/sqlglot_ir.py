@@ -178,6 +178,7 @@ class SQLGlotIR:
         dataset_id: str,
         table_id: str,
         uid_gen: guid.SequentialUIDGenerator,
+        columns: typing.Sequence[str] = (),
         sql_predicate: typing.Optional[str] = None,
         system_time: typing.Optional[datetime.datetime] = None,
     ) -> SQLGlotIR:
@@ -187,9 +188,8 @@ class SQLGlotIR:
             project_id (str): The project ID of the BigQuery table.
             dataset_id (str): The dataset ID of the BigQuery table.
             table_id (str): The table ID of the BigQuery table.
-            col_names (typing.Sequence[str]): The names of the columns to select.
-            alias_names (typing.Sequence[str]): The aliases for the selected columns.
             uid_gen (guid.SequentialUIDGenerator): A generator for unique identifiers.
+            columns (typing.Sequence[str]): The names of the columns to select.
             sql_predicate (typing.Optional[str]): An optional SQL predicate for filtering.
             system_time (typing.Optional[str]): An optional system time for time-travel queries.
         """
@@ -210,14 +210,21 @@ class SQLGlotIR:
             version=version,
             alias=sql.identifier(table_alias),
         )
+
+        if not columns and not sql_predicate:
+            return cls.from_expr(expr=table_expr, uid_gen=uid_gen)
+
+        select_items: list[sge.Identifier | sge.Star] = (
+            [sql.identifier(col) for col in columns] if columns else [sge.Star()]
+        )
+        select_expr = sge.Select().select(*select_items).from_(table_expr)
+
         if sql_predicate:
-            select_expr = sge.Select().select(sge.Star()).from_(table_expr)
             select_expr = select_expr.where(
                 sg.parse_one(sql_predicate, dialect=sql.base.DIALECT), append=False
             )
-            return cls.from_expr(expr=select_expr, uid_gen=uid_gen)
 
-        return cls.from_expr(expr=table_expr, uid_gen=uid_gen)
+        return cls.from_expr(expr=select_expr, uid_gen=uid_gen)
 
     @classmethod
     def from_cte_ref(
