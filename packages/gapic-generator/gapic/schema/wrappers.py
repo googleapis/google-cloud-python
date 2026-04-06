@@ -2240,6 +2240,51 @@ class Service:
             for i in self.options.Extensions[client_pb2.oauth_scopes].split(",")
             if i
         )
+    
+    @utils.cached_property
+    def deterministic_resource_messages(self) -> Sequence[MessageType]:
+        """Returns a sorted sequence of resource messages to guarantee deterministic output order."""
+        return tuple(
+            sorted(
+                self.resource_messages,
+                key=lambda r: r.resource_type_full_path or r.name
+            )
+        )
+
+    @utils.cached_property
+    def resource_path_method_names(self) -> Dict[str, str]:
+        """Returns a mapping of resource_type_full_path to its disambiguated Python method base name.
+        
+        e.g., 'ces.googleapis.com/Tool' -> 'ces_tool'
+              'dialogflow.googleapis.com/Tool' -> 'dialogflow_tool'
+        """
+        import collections
+        from gapic import utils
+
+        # 1. Count occurrences of the short resource type (e.g., 'Tool') across ALL resources
+        type_counts = collections.Counter(
+            r.resource_type for r in self.resource_messages_dict.values() if r.resource_type
+        )
+
+        method_names = {}
+        for full_path, resource in self.resource_messages_dict.items():
+            if not resource.resource_type:
+                continue
+
+            # Standard base name (e.g., "Tool" -> "tool")
+            base_name = utils.to_snake_case(resource.resource_type)
+
+            # 2. Collision detection: If multiple resources share the same short type name
+            if type_counts[resource.resource_type] > 1:
+                # Extract the domain and prepend it (e.g., 'ces' from 'ces.googleapis.com/Tool')
+                domain = full_path.split(".")[0]
+                # Replace dashes with underscores for valid python method names (e.g., 'foo-bar' -> 'foo_bar')
+                domain_prefix = domain.replace("-", "_") 
+                base_name = f"{domain_prefix}_{base_name}"
+
+            method_names[full_path] = base_name
+
+        return method_names
 
     @property
     def module_name(self) -> str:
