@@ -46,6 +46,12 @@ class SqlDataSource(nodes.LeafNode):
         )
 
     @property
+    def is_star_selection(self) -> bool:
+        return tuple(self.source.schema.names) == tuple(
+            field.name for field in self.source.table.physical_schema
+        )
+
+    @property
     def variables_introduced(self) -> int:
         # This operation only renames variables, doesn't actually create new ones
         return 0

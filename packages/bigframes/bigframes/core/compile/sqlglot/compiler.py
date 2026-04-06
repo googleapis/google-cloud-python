@@ -203,11 +203,13 @@ def compile_readlocal(
 @_compile_node.register
 def compile_readtable(node: sql_nodes.SqlDataSource, child: sqlglot_ir.SQLGlotIR):
     table_obj = node.source.table
+    columns = () if node.is_star_selection else node.source.schema.names
     return sqlglot_ir.SQLGlotIR.from_table(
         table_obj.project_id,
         table_obj.dataset_id,
         table_obj.table_id,
         uid_gen=child.uid_gen,
+        columns=columns,
         sql_predicate=node.source.sql_predicate,
         system_time=node.source.at_time,
     )
