@@ -172,7 +172,8 @@ class PipelineSource(Generic[PipelineType]):
         """
         return self._create_pipeline(stages.Literals(*documents))
 
-    def subcollection(self, path: str) -> SubPipeline:
+    @staticmethod
+    def subcollection(path: str) -> SubPipeline:
         """
         Initializes a pipeline scoped to a subcollection.
 
@@ -184,7 +185,7 @@ class PipelineSource(Generic[PipelineType]):
 
         Example:
             >>> db.pipeline().collection("books").add_fields(
-            ...     db.pipeline().subcollection("reviews")
+            ...     PipelineSource.subcollection("reviews")
             ...         .aggregate(AggregateFunction.average("rating").as_("avg_rating"))
             ...         .to_scalar_expression().as_("average_rating")
             ... )
