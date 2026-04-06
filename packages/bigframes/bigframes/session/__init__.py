@@ -1344,7 +1344,7 @@ class Session(
                     "The provided path contains a wildcard character (*), which is not "
                     "supported by the current engine. To read files from wildcard paths, "
                     "please use the 'bigquery' engine by setting `engine='bigquery'` in "
-                    "your configuration."
+                    "the function call."
                 )
 
             read_parquet_kwargs: Dict[str, Any] = {}

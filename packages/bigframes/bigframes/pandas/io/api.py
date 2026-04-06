@@ -94,6 +94,21 @@ def read_arrow(pa_table: pa.Table) -> bigframes.dataframe.DataFrame:
     return session.read_arrow(pa_table=pa_table)
 
 
+def read_avro(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_avro,
+        path,
+        engine=engine,
+    )
+
+
+read_avro.__doc__ = inspect.getdoc(bigframes.session.Session.read_avro)
+
+
 def read_csv(
     filepath_or_buffer: str | IO["bytes"],
     *,
@@ -514,6 +529,23 @@ def read_gbq_table(
 read_gbq_table.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_table)
 
 
+def read_orc(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+    write_engine: constants.WriteEngineType = "default",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_orc,
+        path,
+        engine=engine,
+        write_engine=write_engine,
+    )
+
+
+read_orc.__doc__ = inspect.getdoc(bigframes.session.Session.read_orc)
+
+
 @typing.overload
 def read_pandas(
     pandas_dataframe: pandas.DataFrame,
@@ -587,38 +619,6 @@ def read_parquet(
 
 
 read_parquet.__doc__ = inspect.getdoc(bigframes.session.Session.read_parquet)
-
-
-def read_orc(
-    path: str | IO["bytes"],
-    *,
-    engine: str = "auto",
-    write_engine: constants.WriteEngineType = "default",
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.read_orc,
-        path,
-        engine=engine,
-        write_engine=write_engine,
-    )
-
-
-read_orc.__doc__ = inspect.getdoc(bigframes.session.Session.read_orc)
-
-
-def read_avro(
-    path: str | IO["bytes"],
-    *,
-    engine: str = "auto",
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.read_avro,
-        path,
-        engine=engine,
-    )
-
-
-read_avro.__doc__ = inspect.getdoc(bigframes.session.Session.read_avro)
 
 
 def read_gbq_function(
