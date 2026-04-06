@@ -121,7 +121,7 @@ def _field_to_template_value(
         contains_biglake = value._block.expr.node.reduce_up(is_biglake)
 
         if contains_biglake:
-            sql_query, _, _ = value._to_sql_query(include_index=False)
+            sql_query, _, _ = value._to_sql_query(include_index=True)
             return f"({sql_query})"
 
         return _table_to_sql(value._to_placeholder_table(dry_run=dry_run))
