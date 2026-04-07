@@ -14,8 +14,8 @@
 
 import pytest
 
-import bigquery_magics.config
 from bigquery_magics import bigquery as magics
+import bigquery_magics.config
 
 
 def test_config_engine_setter_warning():
@@ -23,9 +23,11 @@ def test_config_engine_setter_warning():
     with pytest.warns(FutureWarning, match="The bigframes engine is deprecated"):
         context.engine = "bigframes"
 
+
 def test_query_with_bigframes_warning(mock_ipython):
     # Mocking bigframes.pandas since it might not be installed
     from unittest import mock
+
     with mock.patch("bigquery_magics.bigquery.bpd") as mock_bpd:
         mock_bpd.read_gbq_query.return_value = mock.MagicMock()
 
@@ -39,12 +41,16 @@ def test_query_with_bigframes_warning(mock_ipython):
         with pytest.warns(FutureWarning, match="The bigframes engine is deprecated"):
             magics._query_with_bigframes("SELECT 1", [], args)
 
+
 def test_cell_magic_engine_bigframes_warning(mock_ipython):
     from unittest import mock
+
     from IPython.testing.globalipapp import get_ipython
+
     ip = get_ipython()
     if ip is None:
         from IPython.testing.globalipapp import start_ipython
+
         ip = start_ipython()
 
     ip.extension_manager.load_extension("bigquery_magics")
@@ -55,8 +61,10 @@ def test_cell_magic_engine_bigframes_warning(mock_ipython):
         with pytest.warns(FutureWarning, match="The bigframes engine is deprecated"):
             ip.run_cell_magic("bigquery", "--engine bigframes", "SELECT 1")
 
+
 @pytest.fixture
 def mock_ipython():
     from unittest import mock
+
     with mock.patch("bigquery_magics.bigquery.get_ipython") as mock_get_ipython:
         yield mock_get_ipython
