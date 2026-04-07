@@ -15,23 +15,17 @@
 """User-friendly container for Google Cloud Bigtable Instance."""
 
 import re
+import warnings
+
+from google.api_core.exceptions import NotFound
+from google.iam.v1 import options_pb2  # type: ignore
+from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable.app_profile import AppProfile
 from google.cloud.bigtable.cluster import Cluster
-from google.cloud.bigtable.table import Table
-
-from google.protobuf import field_mask_pb2
-
-from google.cloud.bigtable_admin_v2.types import instance
-
-from google.iam.v1 import options_pb2  # type: ignore
-
-from google.api_core.exceptions import NotFound
-
 from google.cloud.bigtable.policy import Policy
-
-import warnings
-
+from google.cloud.bigtable.table import Table
+from google.cloud.bigtable_admin_v2.types import instance
 
 _INSTANCE_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/" r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$"

@@ -18,8 +18,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
 
-import pytest
 from grpc import ChannelConnectivity
+import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 

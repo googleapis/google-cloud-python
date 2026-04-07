@@ -23,14 +23,13 @@ from __future__ import annotations
 
 from typing import Callable, List, Optional, Tuple, TypeVar
 
-from grpc import StatusCode
 from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.retry import RetryFailureReason
-from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-from google.cloud.bigtable.data._helpers import _retry_exception_factory
-from google.cloud.bigtable.data._metrics import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics import OperationState
+from grpc import StatusCode
 
+from google.cloud.bigtable.data._helpers import _retry_exception_factory
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationState
+from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
 
 T = TypeVar("T")
 

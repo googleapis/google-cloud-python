@@ -271,8 +271,8 @@ def install_systemtest_dependencies(session, *constraints):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def system_emulated(session):
-    import subprocess
     import signal
+    import subprocess
 
     try:
         subprocess.call(["gcloud", "--version"])

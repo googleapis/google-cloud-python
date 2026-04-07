@@ -14,38 +14,42 @@
 #
 from __future__ import annotations
 
-from typing import Sequence, TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.cloud.bigtable_v2.types.bigtable as types_pb
-import google.cloud.bigtable.data.exceptions as bt_exceptions
-from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data._helpers import _retry_exception_factory
-
-# mutate_rows requests are limited to this number of mutations
-from google.cloud.bigtable.data.mutations import _MUTATE_ROWS_REQUEST_MUTATION_LIMIT
-from google.cloud.bigtable.data.mutations import _EntryWithProto
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._helpers import (
+    _attempt_timeout_generator,
+    _retry_exception_factory,
+)
+import google.cloud.bigtable.data.exceptions as bt_exceptions
+
+# mutate_rows requests are limited to this number of mutations
+from google.cloud.bigtable.data.mutations import (
+    _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
+    _EntryWithProto,
+)
+import google.cloud.bigtable_v2.types.bigtable as types_pb
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
+        from google.cloud.bigtable.data._async.client import (
+            _DataApiTargetAsync as TargetType,
+        )  # type: ignore
         from google.cloud.bigtable_v2.services.bigtable.async_client import (
             BigtableAsyncClient as GapicClientType,
         )
-        from google.cloud.bigtable.data._async.client import (  # type: ignore
-            _DataApiTargetAsync as TargetType,
-        )
     else:
-        from google.cloud.bigtable_v2.services.bigtable.client import (  # type: ignore
-            BigtableClient as GapicClientType,
-        )
-        from google.cloud.bigtable.data._sync_autogen.client import (  # type: ignore
+        from google.cloud.bigtable.data._sync_autogen.client import (
             _DataApiTarget as TargetType,
-        )
+        )  # type: ignore
+        from google.cloud.bigtable_v2.services.bigtable.client import (
+            BigtableClient as GapicClientType,
+        )  # type: ignore
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._mutate_rows"
 

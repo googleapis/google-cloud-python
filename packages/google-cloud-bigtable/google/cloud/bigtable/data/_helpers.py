@@ -16,19 +16,20 @@ Helper functions used in various places in the library.
 """
 from __future__ import annotations
 
-from typing import Sequence, List, Tuple, TYPE_CHECKING, Union
-import time
-import enum
 from collections import namedtuple
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+import enum
+import time
+from typing import TYPE_CHECKING, List, Sequence, Tuple, Union
 
 from google.api_core import exceptions as core_exceptions
-from google.api_core.retry import exponential_sleep_generator
-from google.api_core.retry import RetryFailureReason
+from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
 if TYPE_CHECKING:
     import grpc
+
     from google.cloud.bigtable.data._async.client import _DataApiTargetAsync
     from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget
 

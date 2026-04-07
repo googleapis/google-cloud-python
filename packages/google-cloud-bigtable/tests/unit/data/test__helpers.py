@@ -12,13 +12,13 @@
 # limitations under the License.
 #
 
-import pytest
-import grpc
 from google.api_core import exceptions as core_exceptions
+import grpc
+import mock
+import pytest
+
 import google.cloud.bigtable.data._helpers as _helpers
 from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-
-import mock
 
 
 class TestAttemptTimeoutGenerator:

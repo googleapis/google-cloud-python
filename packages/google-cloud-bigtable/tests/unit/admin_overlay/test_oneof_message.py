@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.bigtable_admin_v2.types import GcRule
 from google.protobuf import duration_pb2
-
 import my_oneof_message
-
 import pytest
 
+from google.cloud.bigtable_admin_v2.types import GcRule
 
 # The following proto bytestring was constructed running printproto in
 # text-to-binary mode on the following textproto for GcRule:

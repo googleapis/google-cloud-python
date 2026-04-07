@@ -26,10 +26,10 @@ from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence
 from google.cloud.firestore_v1._helpers import encode_value
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.pipeline_expressions import (
+    CONSTANT_TYPE,
     AggregateFunction,
     AliasedExpression,
     BooleanExpression,
-    CONSTANT_TYPE,
     Expression,
     Field,
     Ordering,

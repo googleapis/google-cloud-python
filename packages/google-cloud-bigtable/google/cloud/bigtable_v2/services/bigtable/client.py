@@ -20,13 +20,13 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Dict,
     Callable,
+    Dict,
+    Iterable,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    Iterable,
     Sequence,
     Tuple,
     Type,
@@ -35,18 +35,18 @@ from typing import (
 )
 import warnings
 
-from google.cloud.bigtable_v2 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
+
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,11 +62,11 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.bigtable_v2.types import bigtable
-from google.cloud.bigtable_v2.types import data
-from google.cloud.bigtable_v2.types import request_stats
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BigtableTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.bigtable_v2.types import bigtable, data, request_stats
+
+from .transports.base import DEFAULT_CLIENT_INFO, BigtableTransport
 from .transports.grpc import BigtableGrpcTransport
 from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport
 from .transports.rest import BigtableRestTransport

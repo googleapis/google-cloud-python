@@ -22,20 +22,19 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable, AsyncIterable
-from google.protobuf import json_format
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
-import pytest
+
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
 from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -44,28 +43,24 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
 from google.api_core import retry as retries
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigtable_v2.services.bigtable import BigtableAsyncClient
-from google.cloud.bigtable_v2.services.bigtable import BigtableClient
-from google.cloud.bigtable_v2.services.bigtable import transports
-from google.cloud.bigtable_v2.types import bigtable
-from google.cloud.bigtable_v2.types import data
-from google.cloud.bigtable_v2.types import request_stats
-from google.cloud.bigtable_v2.types import types
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
-import google.auth
 
+from google.cloud.bigtable_v2.services.bigtable import (
+    BigtableAsyncClient,
+    BigtableClient,
+    transports,
+)
+from google.cloud.bigtable_v2.types import bigtable, data, request_stats, types
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",

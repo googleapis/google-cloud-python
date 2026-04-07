@@ -109,6 +109,7 @@ def _make_client(*args, **kwargs):
 @mock.patch("os.environ", {})
 def test_client_constructor_defaults():
     from google.api_core import client_info
+
     from google.cloud.bigtable import __version__
     from google.cloud.bigtable.client import DATA_SCOPE
 
@@ -131,8 +132,8 @@ def test_client_constructor_defaults():
 
 def test_client_constructor_explicit():
     import warnings
-    from google.cloud.bigtable.client import ADMIN_SCOPE
-    from google.cloud.bigtable.client import DATA_SCOPE
+
+    from google.cloud.bigtable.client import ADMIN_SCOPE, DATA_SCOPE
 
     credentials = _make_credentials()
     client_info = mock.Mock()
@@ -171,9 +172,12 @@ def test_client_constructor_w_both_admin_and_read_only():
 
 def test_client_constructor_w_emulator_host():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
     import grpc
+
+    from google.cloud.bigtable.client import (
+        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
+        _GRPC_CHANNEL_OPTIONS,
+    )
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
@@ -197,8 +201,9 @@ def test_client_constructor_w_emulator_host():
 
 def test_client_constructor_w_emulator_host_w_project():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
     import grpc
+
+    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
@@ -219,9 +224,12 @@ def test_client_constructor_w_emulator_host_w_project():
 
 def test_client_constructor_w_emulator_host_w_credentials():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
     import grpc
+
+    from google.cloud.bigtable.client import (
+        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
+        _GRPC_CHANNEL_OPTIONS,
+    )
 
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
@@ -249,8 +257,7 @@ def test_client__get_scopes_default():
 
 
 def test_client__get_scopes_w_admin():
-    from google.cloud.bigtable.client import ADMIN_SCOPE
-    from google.cloud.bigtable.client import DATA_SCOPE
+    from google.cloud.bigtable.client import ADMIN_SCOPE, DATA_SCOPE
 
     client = _make_client(project=PROJECT, credentials=_make_credentials(), admin=True)
     expected_scopes = (DATA_SCOPE, ADMIN_SCOPE)
@@ -597,8 +604,8 @@ def test_client_instance_factory_defaults():
 
 
 def test_client_instance_factory_non_defaults():
-    from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable import enums
+    from google.cloud.bigtable.instance import Instance
 
     instance_type = enums.Instance.Type.DEVELOPMENT
     labels = {"foo": "bar"}
@@ -621,14 +628,14 @@ def test_client_instance_factory_non_defaults():
 
 
 def test_client_list_instances():
-    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-    from google.cloud.bigtable_admin_v2.types import (
-        bigtable_instance_admin as messages_v2_pb2,
-    )
+    from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
         BigtableInstanceAdminClient,
     )
-    from google.cloud.bigtable.instance import Instance
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_instance_admin as messages_v2_pb2,
+    )
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
 
     FAILED_LOCATION = "FAILED"
     INSTANCE_ID1 = "instance-id1"
@@ -673,6 +680,7 @@ def test_client_list_instances():
 
 
 def test_client_list_clusters():
+    from google.cloud.bigtable.instance import Cluster
     from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
         BigtableInstanceAdminClient,
     )
@@ -680,7 +688,6 @@ def test_client_list_clusters():
         bigtable_instance_admin as messages_v2_pb2,
     )
     from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-    from google.cloud.bigtable.instance import Cluster
 
     instance_api = mock.create_autospec(BigtableInstanceAdminClient)
 

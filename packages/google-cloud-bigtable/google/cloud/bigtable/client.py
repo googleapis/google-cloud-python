@@ -29,31 +29,24 @@ In the hierarchy of API concepts
 """
 import os
 import warnings
-import grpc  # type: ignore
 
 from google.api_core.gapic_v1 import client_info as client_info_lib
 from google.auth.credentials import AnonymousCredentials  # type: ignore
+from google.cloud.client import ClientWithProject  # type: ignore
+from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
+import grpc  # type: ignore
 
-from google.cloud import bigtable_v2
-from google.cloud import bigtable_admin_v2
-from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport
+from google.cloud import bigtable, bigtable_admin_v2, bigtable_v2
+from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
+from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
 )
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports import (
     BigtableTableAdminGrpcTransport,
 )
-
-from google.cloud import bigtable
-from google.cloud.bigtable.instance import Instance
-from google.cloud.bigtable.cluster import Cluster
-
-from google.cloud.client import ClientWithProject  # type: ignore
-
 from google.cloud.bigtable_admin_v2.types import instance
-from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
-from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
-
+from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport
 
 INSTANCE_TYPE_PRODUCTION = instance.Instance.Type.PRODUCTION
 INSTANCE_TYPE_DEVELOPMENT = instance.Instance.Type.DEVELOPMENT

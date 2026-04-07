@@ -1,6 +1,7 @@
-from enum import Enum
 from collections import OrderedDict
-from google.cloud.bigtable.row import Cell, PartialRowData, InvalidChunk
+from enum import Enum
+
+from google.cloud.bigtable.row import Cell, InvalidChunk, PartialRowData
 
 _MISSING_COLUMN_FAMILY = "Column family {} is not among the cells stored in this row."
 _MISSING_COLUMN = (

@@ -13,25 +13,22 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import ClassVar, Tuple, cast, TYPE_CHECKING
-
-import time
-import re
-import logging
 import contextvars
-
+from dataclasses import dataclass, field
 from enum import Enum
 from functools import lru_cache
-from dataclasses import dataclass
-from dataclasses import field
-from grpc import StatusCode
-from grpc import RpcError
+import logging
+import re
+import time
+from typing import TYPE_CHECKING, ClassVar, Tuple, cast
+
+from google.protobuf.message import DecodeError
+from grpc import RpcError, StatusCode
 from grpc.aio import AioRpcError
 
+from google.cloud.bigtable.data._helpers import TrackedBackoffGenerator
 import google.cloud.bigtable.data.exceptions as bt_exceptions
 from google.cloud.bigtable_v2.types.response_params import ResponseParams
-from google.cloud.bigtable.data._helpers import TrackedBackoffGenerator
-from google.protobuf.message import DecodeError
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler

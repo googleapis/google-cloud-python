@@ -15,11 +15,7 @@ import pytest
 
 from google.cloud.bigtable.data.execute_query._byte_cursor import _ByteCursor
 
-from .sql_helpers import (
-    batch_response,
-    checksum,
-    token_only_response,
-)
+from .sql_helpers import batch_response, checksum, token_only_response
 
 
 def pass_values_to_byte_cursor(byte_cursor, iterable):

@@ -16,22 +16,21 @@
 import json
 import logging as std_logging
 import pickle
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigtable_v2.types import bigtable
-from .base import BigtableTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, BigtableTransport
 
 try:
     from google.api_core import client_logging  # type: ignore

@@ -112,10 +112,7 @@ from .bigtable_table_admin import (
     UpdateTableMetadata,
     UpdateTableRequest,
 )
-from .common import (
-    OperationProgress,
-    StorageType,
-)
+from .common import OperationProgress, StorageType
 from .instance import (
     AppProfile,
     AutoscalingLimits,
@@ -136,16 +133,14 @@ from .table import (
     GcRule,
     ProtoSchema,
     RestoreInfo,
+    RestoreSourceType,
     SchemaBundle,
     Snapshot,
     Table,
     TieredStorageConfig,
     TieredStorageRule,
-    RestoreSourceType,
 )
-from .types import (
-    Type,
-)
+from .types import Type
 
 __all__ = (
     "CreateAppProfileRequest",

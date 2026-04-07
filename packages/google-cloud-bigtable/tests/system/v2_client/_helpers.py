@@ -14,11 +14,11 @@
 
 from datetime import datetime, timezone
 
-import grpc
 from google.api_core import exceptions
-from google.cloud import exceptions as core_exceptions
+import grpc
 from test_utils import retry
 
+from google.cloud import exceptions as core_exceptions
 
 retry_429 = retry.RetryErrors(exceptions.TooManyRequests, max_tries=9)
 retry_504 = retry.RetryErrors(exceptions.DeadlineExceeded)

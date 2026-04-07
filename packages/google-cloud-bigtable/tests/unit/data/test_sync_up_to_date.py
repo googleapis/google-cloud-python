@@ -11,13 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os
-import sys
-import hashlib
-import pytest
 import ast
-import re
 from difflib import unified_diff
+import hashlib
+import os
+import re
+import sys
+
+import pytest
 
 if sys.version_info < (3, 9):
     pytest.skip("ast.unparse is only available in 3.9+", allow_module_level=True)
@@ -28,7 +29,7 @@ repo_root = os.path.join(test_dir_name, "..", "..", "..")
 cross_sync_path = os.path.join(repo_root, ".cross_sync")
 sys.path.append(cross_sync_path)
 
-from generate import convert_files_in_dir, CrossSyncOutputFile  # noqa: E402
+from generate import CrossSyncOutputFile, convert_files_in_dir  # noqa: E402
 
 sync_files = list(convert_files_in_dir(repo_root))
 

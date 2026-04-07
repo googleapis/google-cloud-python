@@ -16,8 +16,8 @@ import datetime
 import operator
 import time
 
-import pytest
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+import pytest
 
 from . import _helpers
 
@@ -219,8 +219,7 @@ def test_table_get_iam_policy(
 def test_table_set_iam_policy(
     service_account, data_instance_populated, tables_to_delete, skip_on_emulator
 ):
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
 
     temp_table_id = "test-set-iam-policy-table"
     temp_table = data_instance_populated.table(temp_table_id)
@@ -264,6 +263,7 @@ def test_table_backup(
     skip_on_emulator,
 ):
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
     from google.cloud.bigtable import enums
 
     temp_table_id = "test-backup-table"

@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.api_core.exceptions import DeadlineExceeded, Forbidden
+from google.rpc import status_pb2
 import pytest
 
-from google.cloud.bigtable_v2.types import MutateRowsResponse
-from google.cloud.bigtable.data.mutations import RowMutationEntry
-from google.cloud.bigtable.data.mutations import DeleteAllFromRow
-from google.rpc import status_pb2
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import Forbidden
-
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow, RowMutationEntry
+from google.cloud.bigtable_v2.types import MutateRowsResponse
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -80,10 +77,10 @@ class TestMutateRowsOperationAsync:
         """
         test that constructor sets all the attributes correctly
         """
+        from google.api_core.exceptions import Aborted, DeadlineExceeded
+
         from google.cloud.bigtable.data._async._mutate_rows import _EntryWithProto
         from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-        from google.api_core.exceptions import DeadlineExceeded
-        from google.api_core.exceptions import Aborted
 
         client = mock.Mock()
         table = mock.Mock()
@@ -198,8 +195,10 @@ class TestMutateRowsOperationAsync:
         """
         exceptions raised from retryable should be raised in MutationsExceptionGroup
         """
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-        from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
 
         client = mock.Mock()
         table = mock.Mock()
@@ -265,9 +264,12 @@ class TestMutateRowsOperationAsync:
         """
         MutateRowsIncomplete exceptions should not be added to error list
         """
-        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
         from google.api_core.exceptions import DeadlineExceeded
+
+        from google.cloud.bigtable.data.exceptions import (
+            MutationsExceptionGroup,
+            _MutateRowsIncomplete,
+        )
 
         client = mock.Mock()
         table = mock.Mock()

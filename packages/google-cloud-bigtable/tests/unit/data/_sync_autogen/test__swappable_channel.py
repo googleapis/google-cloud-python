@@ -20,8 +20,10 @@ try:
     from unittest import mock
 except ImportError:
     import mock
-import pytest
+
 from grpc import ChannelConnectivity
+import pytest
+
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as TargetType,
 )

@@ -15,13 +15,13 @@
 """Filters for Google Cloud Bigtable Row classes."""
 from __future__ import annotations
 
-import struct
-
-from typing import Any, Sequence, TYPE_CHECKING, overload
 from abc import ABC, abstractmethod
+import struct
+from typing import TYPE_CHECKING, Any, Sequence, overload
 
 from google.cloud._helpers import _microseconds_from_datetime  # type: ignore
 from google.cloud._helpers import _to_bytes  # type: ignore
+
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 if TYPE_CHECKING:

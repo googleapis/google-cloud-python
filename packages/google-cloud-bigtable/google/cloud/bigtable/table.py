@@ -18,40 +18,41 @@ from typing import Set
 import warnings
 
 from google.api_core import timeout
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import NotFound
-from google.api_core.exceptions import RetryError
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import (
+    Aborted,
+    DeadlineExceeded,
+    InternalServerError,
+    NotFound,
+    RetryError,
+    ServiceUnavailable,
+)
 from google.api_core.gapic_v1.method import DEFAULT
-from google.api_core.retry import if_exception_type
-from google.api_core.retry import Retry
+from google.api_core.retry import Retry, if_exception_type
 from google.cloud._helpers import _to_bytes  # type: ignore
+
+from google.cloud.bigtable import enums
 from google.cloud.bigtable.backup import Backup
-from google.cloud.bigtable.column_family import _gc_rule_from_pb
-from google.cloud.bigtable.column_family import ColumnFamily
-from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_MUTATION_SIZE
+from google.cloud.bigtable.batcher import (
+    FLUSH_COUNT,
+    MAX_MUTATION_SIZE,
+    MutationsBatcher,
+)
+from google.cloud.bigtable.column_family import ColumnFamily, _gc_rule_from_pb
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
-from google.cloud.bigtable.row import AppendRow
-from google.cloud.bigtable.row import ConditionalRow
-from google.cloud.bigtable.row import DirectRow
+from google.cloud.bigtable.row import AppendRow, ConditionalRow, DirectRow
 from google.cloud.bigtable.row_data import (
+    DEFAULT_RETRY_READ_ROWS,
     PartialRowsData,
     _retriable_internal_server_error,
 )
-from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
-from google.cloud.bigtable.row_set import RowSet
-from google.cloud.bigtable.row_set import RowRange
-from google.cloud.bigtable import enums
-from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
+from google.cloud.bigtable.row_set import RowRange, RowSet
 from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
-from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
 from google.cloud.bigtable_admin_v2.types import (
     bigtable_table_admin as table_admin_messages_v2_pb2,
 )
+from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
+from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/

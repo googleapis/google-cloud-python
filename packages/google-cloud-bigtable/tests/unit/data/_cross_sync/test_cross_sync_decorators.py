@@ -12,18 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-import pytest_asyncio
 import ast
 from unittest import mock
-from google.cloud.bigtable.data._cross_sync.cross_sync import CrossSync
+
+import pytest
+import pytest_asyncio
+
 from google.cloud.bigtable.data._cross_sync._decorators import (
-    ConvertClass,
     Convert,
+    ConvertClass,
     Drop,
     Pytest,
     PytestFixture,
 )
+from google.cloud.bigtable.data._cross_sync.cross_sync import CrossSync
 
 
 @pytest.fixture

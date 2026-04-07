@@ -13,19 +13,10 @@
 # limitations under the License.
 
 from collections import defaultdict
-from typing import (
-    Optional,
-    List,
-    Dict,
-    Set,
-    Union,
-    TypeVar,
-    Generic,
-    Tuple,
-    Mapping,
-)
-from google.type import date_pb2  # type: ignore
+from typing import Dict, Generic, List, Mapping, Optional, Set, Tuple, TypeVar, Union
+
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.type import date_pb2  # type: ignore
 
 T = TypeVar("T")
 

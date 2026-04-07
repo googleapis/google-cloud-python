@@ -14,19 +14,13 @@
 
 from __future__ import annotations
 
-from typing import (
-    Any,
-    Dict,
-    Optional,
-    Sequence,
-    Tuple,
-    TYPE_CHECKING,
-)
-from google.api_core import retry as retries
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple
 
-from google.cloud.bigtable.data.execute_query._byte_cursor import _ByteCursor
+from google.api_core import retry as retries
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
+
+from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _retry_exception_factory,
@@ -35,18 +29,17 @@ from google.cloud.bigtable.data.exceptions import (
     EarlyMetadataCallError,
     InvalidExecuteQueryResponse,
 )
-from google.cloud.bigtable.data.execute_query.values import QueryResultRow
-from google.cloud.bigtable.data.execute_query.metadata import Metadata
+from google.cloud.bigtable.data.execute_query._byte_cursor import _ByteCursor
 from google.cloud.bigtable.data.execute_query._reader import (
     _QueryResultRowReader,
     _Reader,
 )
+from google.cloud.bigtable.data.execute_query.metadata import Metadata
+from google.cloud.bigtable.data.execute_query.values import QueryResultRow
+from google.cloud.bigtable_v2.types.bigtable import ExecuteQueryResponse
 from google.cloud.bigtable_v2.types.bigtable import (
     ExecuteQueryRequest as ExecuteQueryRequestPB,
-    ExecuteQueryResponse,
 )
-
-from google.cloud.bigtable.data._cross_sync import CrossSync
 
 if TYPE_CHECKING:
     if CrossSync.is_async:

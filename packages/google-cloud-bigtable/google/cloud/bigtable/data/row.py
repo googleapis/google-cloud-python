@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import Generator, overload, Any
 from functools import total_ordering
+from typing import Any, Generator, overload
 
 from google.cloud.bigtable_v2.types import Row as RowPB
 

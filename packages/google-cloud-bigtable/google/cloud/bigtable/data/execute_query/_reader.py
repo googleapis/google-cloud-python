@@ -13,29 +13,20 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import (
-    List,
-    TypeVar,
-    Generic,
-    Iterable,
-    Optional,
-    Sequence,
-)
 from abc import ABC, abstractmethod
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from typing import Generic, Iterable, List, Optional, Sequence, TypeVar
 
-from google.cloud.bigtable_v2 import ProtoRows, Value as PBValue
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
 
 from google.cloud.bigtable.data.execute_query._query_result_parsing_utils import (
     _parse_pb_value_to_python_value,
 )
-
-from google.cloud.bigtable.helpers import batched
-
-from google.cloud.bigtable.data.execute_query.values import QueryResultRow
 from google.cloud.bigtable.data.execute_query.metadata import Metadata
-
+from google.cloud.bigtable.data.execute_query.values import QueryResultRow
+from google.cloud.bigtable.helpers import batched
+from google.cloud.bigtable_v2 import ProtoRows
+from google.cloud.bigtable_v2 import Value as PBValue
 
 T = TypeVar("T")
 

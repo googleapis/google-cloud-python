@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import BigtableTableAdminTransport
 from .grpc import BigtableTableAdminGrpcTransport
 from .grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
-from .rest import BigtableTableAdminRestTransport
-from .rest import BigtableTableAdminRestInterceptor
-
+from .rest import BigtableTableAdminRestInterceptor, BigtableTableAdminRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (

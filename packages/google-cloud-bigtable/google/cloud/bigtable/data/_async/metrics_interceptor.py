@@ -13,24 +13,25 @@
 # limitations under the License.
 from __future__ import annotations
 
+from functools import wraps
+import time
 from typing import Sequence
 
-import time
-from functools import wraps
-
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import OperationState
-from google.cloud.bigtable.data._metrics.data_model import OperationType
-
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveOperationMetric,
+    OperationState,
+    OperationType,
+)
 
 if CrossSync.is_async:
-    from grpc.aio import UnaryUnaryClientInterceptor
-    from grpc.aio import UnaryStreamClientInterceptor
-    from grpc.aio import AioRpcError
+    from grpc.aio import (
+        AioRpcError,
+        UnaryStreamClientInterceptor,
+        UnaryUnaryClientInterceptor,
+    )
 else:
-    from grpc import UnaryUnaryClientInterceptor
-    from grpc import UnaryStreamClientInterceptor
+    from grpc import UnaryStreamClientInterceptor, UnaryUnaryClientInterceptor
 
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.metrics_interceptor"

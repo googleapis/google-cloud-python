@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from grpc import ClientCallDetails, RpcError
 import pytest
-from grpc import RpcError
-from grpc import ClientCallDetails
 
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import OperationState
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveOperationMetric,
+    OperationState,
+)
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -31,9 +32,9 @@ if CrossSync.is_async:
         AsyncBigtableMetricsInterceptor,
     )
 else:
-    from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (  # noqa: F401
+    from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (
         BigtableMetricsInterceptor,
-    )
+    )  # noqa: F401
 
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_metrics_interceptor"

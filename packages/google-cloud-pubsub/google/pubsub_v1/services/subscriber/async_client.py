@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 import logging as std_logging
-import warnings
 import re
+import warnings
 from collections import OrderedDict
 from typing import (
     AsyncIterable,

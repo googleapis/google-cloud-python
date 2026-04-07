@@ -12,19 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 from unittest import mock
-from google.cloud.bigtable_v2.types.data import Value as PBValue
-from google.cloud.bigtable.data.execute_query._reader import _QueryResultRowReader
 
+import pytest
+
+import google.cloud.bigtable.data.execute_query._reader
+from google.cloud.bigtable.data.execute_query._reader import _QueryResultRowReader
 from google.cloud.bigtable.data.execute_query.metadata import (
     Metadata,
     SqlType,
     _pb_metadata_to_metadata_types,
 )
-
-import google.cloud.bigtable.data.execute_query._reader
+from google.cloud.bigtable_v2.types.data import Value as PBValue
 from tests.unit.data.execute_query.sql_helpers import (
+    bytes_val,
     chunked_responses,
     column,
     int64_type,
@@ -32,8 +33,8 @@ from tests.unit.data.execute_query.sql_helpers import (
     metadata,
     proto_rows_bytes,
     str_val,
-    bytes_val,
 )
+
 from .resources import singer_pb2
 
 

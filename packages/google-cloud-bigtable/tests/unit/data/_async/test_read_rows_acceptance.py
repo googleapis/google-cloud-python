@@ -13,22 +13,19 @@
 # limitations under the License.
 from __future__ import annotations
 
+from itertools import zip_longest
 import os
 import warnings
-import pytest
+
 import mock
-
-from itertools import zip_longest
-
-from google.cloud.bigtable_v2 import ReadRowsResponse
-
-from google.cloud.bigtable.data.exceptions import InvalidChunk
-from google.cloud.bigtable.data.row import Row
-
-from ...v2_client.test_row_merger import ReadRowsTest, TestFile
+import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data.exceptions import InvalidChunk
+from google.cloud.bigtable.data.row import Row
+from google.cloud.bigtable_v2 import ReadRowsResponse
 
+from ...v2_client.test_row_merger import ReadRowsTest, TestFile
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_read_rows_acceptance"
 

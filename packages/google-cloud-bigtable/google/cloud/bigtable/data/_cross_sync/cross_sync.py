@@ -38,34 +38,29 @@ Usage Example:
 
 from __future__ import annotations
 
+import asyncio
+import concurrent.futures
+import queue
+import sys
+import threading
+import time
+import typing
 from typing import (
-    TypeVar,
+    TYPE_CHECKING,
     Any,
+    AsyncGenerator,
+    AsyncIterable,
+    AsyncIterator,
     Callable,
     Coroutine,
     Sequence,
+    TypeVar,
     Union,
-    AsyncIterable,
-    AsyncIterator,
-    AsyncGenerator,
-    TYPE_CHECKING,
 )
-import typing
 
-import asyncio
-import sys
-import concurrent.futures
 import google.api_core.retry as retries
-import queue
-import threading
-import time
-from ._decorators import (
-    ConvertClass,
-    Convert,
-    Drop,
-    Pytest,
-    PytestFixture,
-)
+
+from ._decorators import Convert, ConvertClass, Drop, Pytest, PytestFixture
 from ._mapping_meta import MappingMeta
 
 if TYPE_CHECKING:

@@ -16,11 +16,12 @@ Contains a set of AstDecorator classes, which define the behavior of CrossSync d
 Each AstDecorator class is used through @CrossSync.<decorator_name>
 """
 from __future__ import annotations
+
 from typing import TYPE_CHECKING, Iterable
 
 if TYPE_CHECKING:
     import ast
-    from typing import Callable, Any
+    from typing import Any, Callable
 
 
 class AstDecorator:

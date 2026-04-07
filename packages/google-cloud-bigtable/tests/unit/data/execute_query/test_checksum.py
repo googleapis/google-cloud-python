@@ -11,11 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import pytest
-
 import sys
 from unittest import mock
 import warnings
+
+import pytest
 
 with warnings.catch_warnings(record=True) as suppressed_warning:
     warnings.warn("Supressed warning", RuntimeWarning)
