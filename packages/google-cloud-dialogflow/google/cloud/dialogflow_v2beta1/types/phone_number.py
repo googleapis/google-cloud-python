@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -38,6 +39,9 @@ class PhoneNumber(proto.Message):
     calls to be answered by Dialogflow services and are added to a
     project through a
     [PhoneNumberOrder][google.cloud.dialogflow.v2beta1.PhoneNumberOrder].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -66,6 +70,14 @@ class PhoneNumber(proto.Message):
             ``ACTIVE``. ``PhoneNumber`` objects set to
             ``DELETE_REQUESTED`` always decline incoming calls and can
             be removed completely within 30 days.
+        allowed_sip_trunks (google.cloud.dialogflow_v2beta1.types.PhoneNumber.AllowedSipTrunks):
+            Optional. Only allow calls from the specified
+            SIP trunks.
+
+            This field is a member of `oneof`_ ``inbound_restriction``.
+        purge_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this resource
+            will be purged.
     """
 
     class LifecycleState(proto.Enum):
@@ -85,6 +97,31 @@ class PhoneNumber(proto.Message):
         ACTIVE = 1
         DELETE_REQUESTED = 2
 
+    class AllowedSipTrunks(proto.Message):
+        r"""List of SIP trunks that are allowed to make calls to this
+        phone number.
+
+        Attributes:
+            sip_trunks (MutableSequence[str]):
+                List of SIP trunks that are allowed to make
+                calls to this phone number. If empty, any SIP
+                trunk is allowed.
+            carrier_ids (MutableSequence[str]):
+                Optional. List of GTP carrier IDs allowed to
+                make calls to this phone number. Used for
+                private interconnects where standard SIP trunks
+                aren't applicable.
+        """
+
+        sip_trunks: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        carrier_ids: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -101,6 +138,17 @@ class PhoneNumber(proto.Message):
         proto.ENUM,
         number=4,
         enum=LifecycleState,
+    )
+    allowed_sip_trunks: AllowedSipTrunks = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="inbound_restriction",
+        message=AllowedSipTrunks,
+    )
+    purge_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
 
 

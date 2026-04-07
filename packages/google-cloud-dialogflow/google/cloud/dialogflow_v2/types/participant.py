@@ -29,6 +29,7 @@ from google.cloud.dialogflow_v2.types import generator, session
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
     manifest={
+        "DatastoreResponseReason",
         "Participant",
         "Message",
         "CreateParticipantRequest",
@@ -64,9 +65,55 @@ __protobuf__ = proto.module(
         "AssistQueryParameters",
         "SuggestKnowledgeAssistRequest",
         "SuggestKnowledgeAssistResponse",
+        "IngestedContextReferenceDebugInfo",
+        "ServiceLatency",
+        "KnowledgeAssistDebugInfo",
         "KnowledgeAssistAnswer",
     },
 )
+
+
+class DatastoreResponseReason(proto.Enum):
+    r"""Response reason from datastore which indicates data serving
+    status or answer quality degradation.
+
+    Values:
+        DATASTORE_RESPONSE_REASON_UNSPECIFIED (0):
+            Default value.
+        NONE (1):
+            No specific response reason from datastore.
+        SEARCH_OUT_OF_QUOTA (2):
+            Search is blocked due to out of quota.
+        SEARCH_EMPTY_RESULTS (3):
+            Search returns empty results.
+        ANSWER_GENERATION_GEN_AI_DISABLED (4):
+            Generative AI is disabled.
+        ANSWER_GENERATION_OUT_OF_QUOTA (5):
+            Answer generation is blocked due to out of
+            quota.
+        ANSWER_GENERATION_ERROR (6):
+            Answer generation encounters an error.
+        ANSWER_GENERATION_NOT_ENOUGH_INFO (7):
+            Answer generation does not have enough
+            information to generate answer.
+        ANSWER_GENERATION_RAI_FAILED (8):
+            Answer generation is blocked by RAI
+            (Responsible AI) failure.
+        ANSWER_GENERATION_NOT_GROUNDED (9):
+            Answer generation is not grounded on reliable
+            sources.
+    """
+
+    DATASTORE_RESPONSE_REASON_UNSPECIFIED = 0
+    NONE = 1
+    SEARCH_OUT_OF_QUOTA = 2
+    SEARCH_EMPTY_RESULTS = 3
+    ANSWER_GENERATION_GEN_AI_DISABLED = 4
+    ANSWER_GENERATION_OUT_OF_QUOTA = 5
+    ANSWER_GENERATION_ERROR = 6
+    ANSWER_GENERATION_NOT_ENOUGH_INFO = 7
+    ANSWER_GENERATION_RAI_FAILED = 8
+    ANSWER_GENERATION_NOT_GROUNDED = 9
 
 
 class Participant(proto.Message):
@@ -794,6 +841,11 @@ class StreamingAnalyzeContentRequest(proto.Message):
             only one final response even if some ``Fulfillment``\ s in
             Dialogflow CX agent have been configured to return partial
             responses.
+        output_multiple_utterances (bool):
+            Optional. If multiple uttereances are
+            detected in the audio stream, process them
+            individually instead of stitching them together
+            to form a single utterance.
         enable_debugging_info (bool):
             If true, ``StreamingAnalyzeContentResponse.debugging_info``
             will get populated.
@@ -858,6 +910,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
     enable_partial_automated_agent_reply: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    output_multiple_utterances: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
     enable_debugging_info: bool = proto.Field(
         proto.BOOL,
@@ -1989,6 +2045,406 @@ class SuggestKnowledgeAssistResponse(proto.Message):
     )
 
 
+class IngestedContextReferenceDebugInfo(proto.Message):
+    r"""Debug information related to ingested context reference.
+
+    Attributes:
+        project_not_allowlisted (bool):
+            Indicates if the project is allowlisted to
+            use ingested context reference.
+        context_reference_retrieved (bool):
+            The status of context_reference retrieval from database.
+        ingested_parameters_debug_info (MutableSequence[google.cloud.dialogflow_v2.types.IngestedContextReferenceDebugInfo.IngestedParameterDebugInfo]):
+            Parameters ingested from the context
+            reference.
+    """
+
+    class IngestedParameterDebugInfo(proto.Message):
+        r"""Debug information related to ingested parameters from context
+        reference.
+
+        Attributes:
+            parameter (str):
+                The name of the parameter in the context
+                reference.
+            ingestion_status (google.cloud.dialogflow_v2.types.IngestedContextReferenceDebugInfo.IngestedParameterDebugInfo.IngestionStatus):
+                The ingestion status for this specific
+                parameter.
+        """
+
+        class IngestionStatus(proto.Enum):
+            r"""Enum representing the various states of parameter ingestion.
+
+            Values:
+                INGESTION_STATUS_UNSPECIFIED (0):
+                    Default value, indicates that the ingestion
+                    status is not specified.
+                INGESTION_STATUS_SUCCEEDED (1):
+                    Indicates that the parameter was successfully
+                    ingested.
+                INGESTION_STATUS_CONTEXT_NOT_AVAILABLE (2):
+                    Indicates that the parameter was not
+                    available for ingestion.
+                INGESTION_STATUS_PARSE_FAILED (3):
+                    Indicates that there was a failure parsing
+                    the parameter content.
+                INGESTION_STATUS_INVALID_ENTRY (4):
+                    Indicates that the context reference had an
+                    unexpected number of content entries as Context
+                    reference should only have one entry.
+                INGESTION_STATUS_INVALID_FORMAT (5):
+                    Indicates that the context reference content
+                    was not in the expected format (e.g., JSON).
+                INGESTION_STATUS_LANGUAGE_MISMATCH (6):
+                    Indicates that the context reference language
+                    does not match the conversation language.
+            """
+
+            INGESTION_STATUS_UNSPECIFIED = 0
+            INGESTION_STATUS_SUCCEEDED = 1
+            INGESTION_STATUS_CONTEXT_NOT_AVAILABLE = 2
+            INGESTION_STATUS_PARSE_FAILED = 3
+            INGESTION_STATUS_INVALID_ENTRY = 4
+            INGESTION_STATUS_INVALID_FORMAT = 5
+            INGESTION_STATUS_LANGUAGE_MISMATCH = 6
+
+        parameter: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        ingestion_status: "IngestedContextReferenceDebugInfo.IngestedParameterDebugInfo.IngestionStatus" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="IngestedContextReferenceDebugInfo.IngestedParameterDebugInfo.IngestionStatus",
+        )
+
+    project_not_allowlisted: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    context_reference_retrieved: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    ingested_parameters_debug_info: MutableSequence[IngestedParameterDebugInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=IngestedParameterDebugInfo,
+        )
+    )
+
+
+class ServiceLatency(proto.Message):
+    r"""Message to represent the latency of the service.
+
+    Attributes:
+        internal_service_latencies (MutableSequence[google.cloud.dialogflow_v2.types.ServiceLatency.InternalServiceLatency]):
+            A list of internal service latencies.
+    """
+
+    class InternalServiceLatency(proto.Message):
+        r"""Message to represent the latency of an internal service.
+
+        Attributes:
+            step (str):
+                The name of the internal service.
+            latency_ms (float):
+                The latency of the internal service in
+                milliseconds.
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                The start time of the internal service.
+            complete_time (google.protobuf.timestamp_pb2.Timestamp):
+                The completion time of the internal service.
+        """
+
+        step: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        latency_ms: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        complete_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    internal_service_latencies: MutableSequence[InternalServiceLatency] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=InternalServiceLatency,
+        )
+    )
+
+
+class KnowledgeAssistDebugInfo(proto.Message):
+    r"""Debug information related to Knowledge Assist feature.
+
+    Attributes:
+        query_generation_failure_reason (google.cloud.dialogflow_v2.types.KnowledgeAssistDebugInfo.QueryGenerationFailureReason):
+            Reason for query generation.
+        query_categorization_failure_reason (google.cloud.dialogflow_v2.types.KnowledgeAssistDebugInfo.QueryCategorizationFailureReason):
+            Reason for query categorization.
+        datastore_response_reason (google.cloud.dialogflow_v2.types.DatastoreResponseReason):
+            Response reason from datastore which
+            indicates data serving status or answer quality
+            degradation.
+        knowledge_assist_behavior (google.cloud.dialogflow_v2.types.KnowledgeAssistDebugInfo.KnowledgeAssistBehavior):
+            Configured behaviors for Knowedge Assist.
+        ingested_context_reference_debug_info (google.cloud.dialogflow_v2.types.IngestedContextReferenceDebugInfo):
+            Information about parameters ingested for
+            search knowledge.
+        service_latency (google.cloud.dialogflow_v2.types.ServiceLatency):
+            The latency of the service.
+    """
+
+    class QueryGenerationFailureReason(proto.Enum):
+        r"""Reason for query generation failure.
+
+        Values:
+            QUERY_GENERATION_FAILURE_REASON_UNSPECIFIED (0):
+                Default value.
+            QUERY_GENERATION_OUT_OF_QUOTA (1):
+                Query generation is blocked due to out of
+                quota.
+            QUERY_GENERATION_FAILED (2):
+                Call to Knowedge Assist query generation
+                model fails.
+            QUERY_GENERATION_NO_QUERY_GENERATED (3):
+                Query generation model decides that there is
+                no new topic change or there has been similar
+                queries generated in the previous turns.
+            QUERY_GENERATION_RAI_FAILED (4):
+                Knowedge Assist generated query is blocked by
+                RAI (Responsible AI).
+            NOT_IN_ALLOWLIST (5):
+                Query generation is blocked by Knowledge
+                Assist conversation profile level / agent id
+                level filtering.
+            QUERY_GENERATION_QUERY_REDACTED (6):
+                The generated query is blocked due to
+                redaction.
+            QUERY_GENERATION_LLM_RESPONSE_PARSE_FAILED (10):
+                Query generation failed due to LLM response
+                parse failure.
+            QUERY_GENERATION_EMPTY_CONVERSATION (11):
+                The conversation has no messages.
+            QUERY_GENERATION_EMPTY_LAST_MESSAGE (12):
+                The last message in the conversation is
+                empty.
+            QUERY_GENERATION_TRIGGERING_EVENT_CONDITION_NOT_MET (13):
+                The trigger event condition is not met. This occurs in the
+                following scenarios:
+
+                1. The trigger_event is CUSTOMER_MESSAGE or UNSPECIFIED, but
+                   the last message is not from the customer.
+                2. The trigger_event is AGENT_MESSAGE, but the last message
+                   is not from the agent.
+        """
+
+        QUERY_GENERATION_FAILURE_REASON_UNSPECIFIED = 0
+        QUERY_GENERATION_OUT_OF_QUOTA = 1
+        QUERY_GENERATION_FAILED = 2
+        QUERY_GENERATION_NO_QUERY_GENERATED = 3
+        QUERY_GENERATION_RAI_FAILED = 4
+        NOT_IN_ALLOWLIST = 5
+        QUERY_GENERATION_QUERY_REDACTED = 6
+        QUERY_GENERATION_LLM_RESPONSE_PARSE_FAILED = 10
+        QUERY_GENERATION_EMPTY_CONVERSATION = 11
+        QUERY_GENERATION_EMPTY_LAST_MESSAGE = 12
+        QUERY_GENERATION_TRIGGERING_EVENT_CONDITION_NOT_MET = 13
+
+    class QueryCategorizationFailureReason(proto.Enum):
+        r"""Reason for query categorization failure.
+
+        Values:
+            QUERY_CATEGORIZATION_FAILURE_REASON_UNSPECIFIED (0):
+                Default value.
+            QUERY_CATEGORIZATION_INVALID_CONFIG (1):
+                Vertex AI Search config supplied for query
+                categorization is invalid.
+            QUERY_CATEGORIZATION_RESULT_NOT_FOUND (2):
+                Vertex AI Search result does not contain a
+                query categorization result.
+            QUERY_CATEGORIZATION_FAILED (3):
+                Vertex AI Search call fails.
+        """
+
+        QUERY_CATEGORIZATION_FAILURE_REASON_UNSPECIFIED = 0
+        QUERY_CATEGORIZATION_INVALID_CONFIG = 1
+        QUERY_CATEGORIZATION_RESULT_NOT_FOUND = 2
+        QUERY_CATEGORIZATION_FAILED = 3
+
+    class KnowledgeAssistBehavior(proto.Message):
+        r"""Configured behaviors for Knowedge Assist.
+
+        Attributes:
+            answer_generation_rewriter_on (bool):
+                Whether data store agent rewriter was turned
+                off for the request.
+            end_user_metadata_included (bool):
+                Whether end_user_metadata is included in the data store
+                agent call.
+            return_query_only (bool):
+                Whether customers configured to return query
+                only in the conversation profile.
+            use_pubsub_delivery (bool):
+                Whether customers configured to use pubsub to
+                deliver.
+            disable_sync_delivery (bool):
+                Whether customers configured to disable the
+                synchronous delivery of Knowedge Assist
+                response.
+            previous_queries_included (bool):
+                Whether previously suggested queries are
+                included in the query generation process.
+            use_translated_message (bool):
+                Translated message is included in query
+                generation process.
+            use_custom_safety_filter_level (bool):
+                Safety filter is adjusted by user.
+            conversation_transcript_has_mixed_languages (bool):
+                Conversation transcript has mixed languages.
+            query_generation_agent_language_mismatch (bool):
+                Whether the agent language from the
+                translation generator mismatches the end-user
+                language.
+            query_generation_end_user_language_mismatch (bool):
+                Whether the end-user language from the
+                translation generator mismatches the end-user
+                language.
+            third_party_connector_allowed (bool):
+                This field indicates whether third party
+                connectors are enabled for the project
+            multiple_queries_generated (bool):
+                Indicates that the query generation model
+                generated multiple queries.
+            query_contained_search_context (bool):
+                Indicates that the generated query contains
+                search context.
+            invalid_items_query_suggestion_skipped (bool):
+                Indicates that invalid items were skipped
+                when parsing the LLM response.
+            primary_query_redacted_and_replaced (bool):
+                True if the primary suggested query was
+                redacted and replaced by an additional query.
+            appended_search_context_count (int):
+                The number of search contexts appended to the
+                query.
+        """
+
+        answer_generation_rewriter_on: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        end_user_metadata_included: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        return_query_only: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        use_pubsub_delivery: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        disable_sync_delivery: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
+        previous_queries_included: bool = proto.Field(
+            proto.BOOL,
+            number=7,
+        )
+        use_translated_message: bool = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
+        use_custom_safety_filter_level: bool = proto.Field(
+            proto.BOOL,
+            number=9,
+        )
+        conversation_transcript_has_mixed_languages: bool = proto.Field(
+            proto.BOOL,
+            number=10,
+        )
+        query_generation_agent_language_mismatch: bool = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
+        query_generation_end_user_language_mismatch: bool = proto.Field(
+            proto.BOOL,
+            number=12,
+        )
+        third_party_connector_allowed: bool = proto.Field(
+            proto.BOOL,
+            number=13,
+        )
+        multiple_queries_generated: bool = proto.Field(
+            proto.BOOL,
+            number=14,
+        )
+        query_contained_search_context: bool = proto.Field(
+            proto.BOOL,
+            number=15,
+        )
+        invalid_items_query_suggestion_skipped: bool = proto.Field(
+            proto.BOOL,
+            number=16,
+        )
+        primary_query_redacted_and_replaced: bool = proto.Field(
+            proto.BOOL,
+            number=17,
+        )
+        appended_search_context_count: int = proto.Field(
+            proto.INT32,
+            number=18,
+        )
+
+    query_generation_failure_reason: QueryGenerationFailureReason = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=QueryGenerationFailureReason,
+    )
+    query_categorization_failure_reason: QueryCategorizationFailureReason = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=QueryCategorizationFailureReason,
+    )
+    datastore_response_reason: "DatastoreResponseReason" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="DatastoreResponseReason",
+    )
+    knowledge_assist_behavior: KnowledgeAssistBehavior = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=KnowledgeAssistBehavior,
+    )
+    ingested_context_reference_debug_info: "IngestedContextReferenceDebugInfo" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="IngestedContextReferenceDebugInfo",
+        )
+    )
+    service_latency: "ServiceLatency" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ServiceLatency",
+    )
+
+
 class KnowledgeAssistAnswer(proto.Message):
     r"""Represents a Knowledge Assist answer.
 
@@ -2004,6 +2460,9 @@ class KnowledgeAssistAnswer(proto.Message):
         answer_record (str):
             The name of the answer record. Format:
             ``projects/<Project ID>/locations/<location ID>/answer Records/<Answer Record ID>``.
+        knowledge_assist_debug_info (google.cloud.dialogflow_v2.types.KnowledgeAssistDebugInfo):
+            Debug information related to Knowledge Assist
+            feature.
     """
 
     class SuggestedQuery(proto.Message):
@@ -2138,6 +2597,11 @@ class KnowledgeAssistAnswer(proto.Message):
     answer_record: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    knowledge_assist_debug_info: "KnowledgeAssistDebugInfo" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="KnowledgeAssistDebugInfo",
     )
 
 

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -210,6 +211,10 @@ class FieldOperationMetadata(proto.Message):
             change_type (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.TtlConfigDelta.ChangeType):
                 Specifies how the TTL configuration is
                 changing.
+            expiration_offset (google.protobuf.duration_pb2.Duration):
+                The offset, relative to the timestamp value
+                in the TTL-enabled field, used determine the
+                document's expiration time.
         """
 
         class ChangeType(proto.Enum):
@@ -232,6 +237,11 @@ class FieldOperationMetadata(proto.Message):
             proto.ENUM,
             number=1,
             enum="FieldOperationMetadata.TtlConfigDelta.ChangeType",
+        )
+        expiration_offset: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
 
     start_time: timestamp_pb2.Timestamp = proto.Field(

@@ -45,6 +45,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -82,6 +83,8 @@ class PhoneNumbersAsyncClient:
 
     phone_number_path = staticmethod(PhoneNumbersClient.phone_number_path)
     parse_phone_number_path = staticmethod(PhoneNumbersClient.parse_phone_number_path)
+    sip_trunk_path = staticmethod(PhoneNumbersClient.sip_trunk_path)
+    parse_sip_trunk_path = staticmethod(PhoneNumbersClient.parse_sip_trunk_path)
     common_billing_account_path = staticmethod(
         PhoneNumbersClient.common_billing_account_path
     )

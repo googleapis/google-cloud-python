@@ -7,6 +7,6 @@
     "name": "gcp-sphinx-docfx-yaml",
     "name_pretty": "Sphinx DocFX YAML Generator",
     "product_documentation": "https://github.com/googleapis/sphinx-docfx-yaml",
-    "release_level": "preview",
+    "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }
