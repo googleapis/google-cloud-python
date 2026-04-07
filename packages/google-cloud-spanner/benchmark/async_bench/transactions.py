@@ -15,8 +15,7 @@ async def update_row_callback(transaction, row_id):
     """Callback for read-write transaction."""
     # Read the row
     results = await transaction.execute_sql(f"SELECT * FROM {TABLE_NAME} WHERE id = @id", 
-                                        params={"id": row_id},
-                                        param_types={"id": "STRING"})
+                                        params={"id": row_id})
     async for _ in results:
         pass  # Just iterate to consume
         

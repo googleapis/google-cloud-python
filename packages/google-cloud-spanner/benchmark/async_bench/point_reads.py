@@ -21,8 +21,7 @@ async def read_worker(database, metrics, operation_count, worker_id):
         # Test execute_sql
         async with database.snapshot() as snapshot:
             results = await snapshot.execute_sql(f"SELECT * FROM {TABLE_NAME} WHERE id = @id", 
-                                                params={"id": row_id},
-                                                param_types={"id": "STRING"})
+                                                params={"id": row_id})
             async for _ in results:
                 pass  # Just iterate
                 

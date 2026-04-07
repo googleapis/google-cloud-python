@@ -17,13 +17,10 @@ async def check_table_exists(database) -> bool:
         results = await snapshot.execute_sql(
             "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @table_name",
             params={"table_name": TABLE_NAME},
-            param_types={"table_name": "STRING"},
         )
-        try:
-            row = await results.__anext__()
+        async for row in results:
             return True
-        except StopAsyncIteration:
-            return False
+        return False
 
 
 async def check_row_count(database) -> int:
