@@ -62,6 +62,9 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 
 _marker = object()
 
+# FOR TESTING PURPOSES
+def fake_function():
+    return None
 
 def _buckets_page_start(iterator, page, response):
     """Grab unreachable buckets after a :class:`~google.cloud.iterator.Page` started."""
