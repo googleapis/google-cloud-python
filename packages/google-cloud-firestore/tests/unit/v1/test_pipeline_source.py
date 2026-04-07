@@ -132,7 +132,6 @@ class TestPipelineSource:
         assert first_stage.path == expected_path
 
 
-
 class TestPipelineSourceWithAsyncClient(TestPipelineSource):
     """
     When an async client is used, it should produce async pipelines
