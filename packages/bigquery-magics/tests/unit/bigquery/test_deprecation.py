@@ -18,6 +18,15 @@ from bigquery_magics import bigquery as magics
 import bigquery_magics.config
 
 
+@pytest.fixture(autouse=True)
+def mock_bq_client_and_credentials(mock_credentials):
+    from unittest import mock
+
+    with mock.patch("google.cloud.bigquery.Client", autospec=True):
+        with mock.patch("bigquery_magics.core.create_bq_client", autospec=True):
+            yield
+
+
 def test_config_engine_setter_warning():
     context = bigquery_magics.config.Context()
     with pytest.warns(FutureWarning, match="The bigframes engine is deprecated"):
