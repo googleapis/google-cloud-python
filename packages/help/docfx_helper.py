@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import argparse
 import pathlib
 import shutil
-import sys
+from typing import Dict, Union
 import yaml
 import pypandoc
 
-def build_docfx(current_dir, repo_root, docs_map):
+def build_docfx(
+    current_dir: Union[str, pathlib.Path],
+    docs_map: Dict[str, str],
+) -> None:
     current_dir = pathlib.Path(current_dir)
-    repo_root = pathlib.Path(repo_root)
     output_dir = current_dir / "docs" / "_build"
 
     if output_dir.exists():
@@ -35,7 +37,7 @@ def build_docfx(current_dir, repo_root, docs_map):
         print("Pandoc not found. Downloading...")
         pypandoc.download_pandoc()
 
-    toc = []
+    doc_items = []
 
     for title, source in docs_map.items():
         source_path = pathlib.Path(source)
@@ -54,7 +56,7 @@ def build_docfx(current_dir, repo_root, docs_map):
                     'gfm',
                     format='rst'
                 )
-                (output_dir / target_filename).write_text(output)
+                (output_dir / target_filename).write_text(output, encoding="utf-8")
             else:
                 print(f"Warning: Source {source_path} not found.")
                 (output_dir / target_filename).write_text(f"# {title}\n\nContent missing.")
@@ -68,22 +70,32 @@ def build_docfx(current_dir, repo_root, docs_map):
                 (output_dir / filename).write_text(f"# {title}\n\nContent missing.")
             href = filename
 
-        toc.append({"name": title, "href": href})
+        doc_items.append({"name": title, "href": href})
+
+    # Create the structured TOC
+    toc = [
+        {
+            "uid": "product-neutral-guides",
+            "name": "Client library help",
+            "items": doc_items
+        }
+    ]
 
     # Write toc.yaml
     toc_path = output_dir / "toc.yaml"
-    with open(toc_path, "w") as f:
+    with open(toc_path, "w", encoding="utf-8") as f:
+        # Using block style for YAML as requested
         yaml.dump(toc, f, default_flow_style=False)
 
     print(f"DocFX build complete in {output_dir}")
     print(f"Generated TOC: {toc}")
 
 if __name__ == "__main__":
-    # Simple argument parsing: current_dir, repo_root, then pairs of Title,Source
-    curr = sys.argv[1]
-    root = sys.argv[2]
-    d_map = {}
-    for i in range(3, len(sys.argv), 2):
-        d_map[sys.argv[i]] = sys.argv[i+1]
+    parser = argparse.ArgumentParser(description="Build DocFX documentation.")
+    parser.add_argument("--current-dir", required=True, help="Current package directory")
+    parser.add_argument("--doc", action="append", nargs=2, metavar=("TITLE", "PATH"), help="Add a document title and its source path")
 
-    build_docfx(curr, root, d_map)
+    args = parser.parse_args()
+
+    docs_map = {title: path for title, path in args.doc} if args.doc else {}
+    build_docfx(args.current_dir, docs_map)

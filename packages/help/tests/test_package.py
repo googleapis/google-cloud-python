@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "1.0.0"
+from help import version
 
-# {x-release-please-start-date}
-__release_date__ = "2026-04-07"
-# {x-release-please-end}
+def test_version() -> None:
+    assert version.__version__ is not None

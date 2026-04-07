@@ -67,7 +67,7 @@ setuptools.setup(
         "Topic :: Internet",
     ],
     install_requires=dependencies,
-    python_requires=">=3.10",
+    python_requires=">=3.9",
     include_package_data=True,
     zip_safe=False,
     packages=["help"],
