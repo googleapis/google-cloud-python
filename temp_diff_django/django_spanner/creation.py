@@ -27,16 +27,12 @@ class DatabaseCreation(BaseDatabaseCreation):
             # Importing a test app that isn't installed raises RuntimeError.
             if test_app in settings.INSTALLED_APPS:
                 test_case = import_string(test_case_name)
-                try:
-                    method = getattr(test_case, method_name)
-                    setattr(
-                        test_case,
-                        method_name,
-                        skip("unsupported by Spanner")(method),
-                    )
-                except AttributeError:
-                    # The test method might not exist in this version of Django.
-                    pass
+                method = getattr(test_case, method_name)
+                setattr(
+                    test_case,
+                    method_name,
+                    skip("unsupported by Spanner")(method),
+                )
 
     def create_test_db(self, *args, **kwargs):
         """Create a test database.
@@ -90,7 +86,9 @@ class DatabaseCreation(BaseDatabaseCreation):
                     self._destroy_test_db(test_database_name, verbosity)
                     self._execute_create_test_db(None, test_db_params, keepdb)
                 except Exception as e:
-                    self.log("Got an error recreating the test database: %s" % e)
+                    self.log(
+                        "Got an error recreating the test database: %s" % e
+                    )
                     sys.exit(2)
             else:
                 self.log("Tests cancelled.")

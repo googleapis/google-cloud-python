@@ -8,7 +8,6 @@ from django.core.exceptions import EmptyResultSet
 from django.db.models.query import QuerySet
 from django.db.utils import DatabaseError
 
-from django_spanner import USING_DJANGO_3
 from django_spanner.compiler import SQLCompiler
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
@@ -41,24 +40,14 @@ class TestCompiler(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         sql_compiled, params = compiler.get_combinator_sql("union", True)
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION ALL SELECT tests_number.num "
-                    + "FROM tests_number WHERE tests_number.num >= %s"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION ALL SELECT tests_number.num "
-                    + "AS col1 FROM tests_number WHERE tests_number.num >= %s"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s UNION ALL SELECT tests_number.num "
+                + "AS num FROM tests_number WHERE tests_number.num >= %s"
+            ],
+        )
         self.assertEqual(params, [1, 8])
 
     def test_get_combinator_sql_distinct_union_sql_generated(self):
@@ -72,26 +61,15 @@ class TestCompiler(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         sql_compiled, params = compiler.get_combinator_sql("union", False)
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT "
-                    + "tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num >= %s"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT "
-                    + "tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num >= %s"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s UNION DISTINCT SELECT "
+                + "tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num >= %s"
+            ],
+        )
         self.assertEqual(params, [1, 8])
 
     def test_get_combinator_sql_difference_all_sql_generated(self):
@@ -105,24 +83,14 @@ class TestCompiler(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         sql_compiled, params = compiler.get_combinator_sql("difference", True)
 
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s EXCEPT ALL SELECT tests_number.num "
-                    + "FROM tests_number WHERE tests_number.num >= %s"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s EXCEPT ALL SELECT tests_number.num "
-                    + "AS col1 FROM tests_number WHERE tests_number.num >= %s"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s EXCEPT ALL SELECT tests_number.num "
+                + "AS num FROM tests_number WHERE tests_number.num >= %s"
+            ],
+        )
         self.assertEqual(params, [1, 8])
 
     def test_get_combinator_sql_difference_distinct_sql_generated(self):
@@ -136,26 +104,15 @@ class TestCompiler(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         sql_compiled, params = compiler.get_combinator_sql("difference", False)
 
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s EXCEPT DISTINCT SELECT "
-                    + "tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num >= %s"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s EXCEPT DISTINCT SELECT "
-                    + "tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num >= %s"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s EXCEPT DISTINCT SELECT "
+                + "tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num >= %s"
+            ],
+        )
         self.assertEqual(params, [1, 8])
 
     def test_get_combinator_sql_union_and_difference_query_together(self):
@@ -169,30 +126,17 @@ class TestCompiler(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         sql_compiled, params = compiler.get_combinator_sql("union", False)
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
-                    + "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num >= %s EXCEPT DISTINCT "
-                    + "SELECT tests_number.num FROM tests_number "
-                    + "WHERE tests_number.num = %s)"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
-                    + "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num >= %s EXCEPT DISTINCT "
-                    + "SELECT tests_number.num AS col1 FROM tests_number "
-                    + "WHERE tests_number.num = %s)"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
+                + "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num >= %s EXCEPT DISTINCT "
+                + "SELECT tests_number.num AS num FROM tests_number "
+                + "WHERE tests_number.num = %s)"
+            ],
+        )
         self.assertEqual(params, [1, 8, 10])
 
     def test_get_combinator_sql_parentheses_in_compound_not_supported(self):
@@ -209,30 +153,17 @@ class TestCompiler(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs4.query, self.connection, "default")
         compiler.connection.features.supports_parentheses_in_compound = False
         sql_compiled, params = compiler.get_combinator_sql("union", False)
-        if USING_DJANGO_3:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
-                    + "SELECT tests_number.num FROM tests_number WHERE "
-                    + "tests_number.num >= %s EXCEPT DISTINCT "
-                    + "SELECT tests_number.num FROM tests_number "
-                    + "WHERE tests_number.num = %s)"
-                ],
-            )
-        else:
-            self.assertEqual(
-                sql_compiled,
-                [
-                    "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
-                    + "SELECT tests_number.num AS col1 FROM tests_number WHERE "
-                    + "tests_number.num >= %s EXCEPT DISTINCT "
-                    + "SELECT tests_number.num AS col1 FROM tests_number "
-                    + "WHERE tests_number.num = %s)"
-                ],
-            )
+        self.assertEqual(
+            sql_compiled,
+            [
+                "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
+                + "SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num >= %s EXCEPT DISTINCT "
+                + "SELECT tests_number.num AS num FROM tests_number "
+                + "WHERE tests_number.num = %s)"
+            ],
+        )
         self.assertEqual(params, [1, 8, 10])
 
     def test_get_combinator_sql_empty_queryset_raises_exception(self):

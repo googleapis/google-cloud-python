@@ -1,4 +1,3 @@
-# flake8: noqa: E402
 # Copyright 2020 Google LLC
 #
 # Use of this source code is governed by a BSD-style
@@ -7,53 +6,61 @@
 
 import datetime
 import os
+import django
 
 # Monkey-patch AutoField to generate a random value since Cloud Spanner can't
 # do that.
 from uuid import uuid4
 
-import django
-
 RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
 
-
-from django.db import DEFAULT_DB_ALIAS  # noqa: E402
-from django.db.models import JSONField  # noqa: E402
-from django.db.models.fields import (  # noqa: E402  # noqa: E402
+import pkg_resources
+from django.conf.global_settings import DATABASES
+from django.db import DEFAULT_DB_ALIAS
+from google.cloud.spanner_v1 import JsonObject
+from django.db.models.fields import (
     NOT_PROVIDED,
     AutoField,
-    BigAutoField,
     Field,
-    SmallAutoField,
 )
+
+from .functions import register_functions
+from .lookups import register_lookups
+from .utils import check_django_compatability
+from .version import __version__
 
 # Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
 # datetime.datetime.
-from google.api_core.datetime_helpers import (
-    DatetimeWithNanoseconds,
-)  # noqa: E402
-from google.cloud.spanner_v1 import JsonObject  # noqa: E402
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
-from .functions import register_functions  # noqa: E402
-from .lookups import register_lookups  # noqa: E402
-from .utils import check_django_compatability  # noqa: E402
-from .version import __version__  # noqa: E402
+
+USING_DJANGO_3 = False
+if django.VERSION[:2] == (3, 2):
+    USING_DJANGO_3 = True
+
+USING_DJANGO_4 = False
+if django.VERSION[:2] == (4, 2):
+    USING_DJANGO_4 = True
+
+from django.db.models.fields import (
+    SmallAutoField,
+    BigAutoField,
+)
+from django.db.models import JSONField
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
-SUPPORTED_DJANGO_VERSIONS = [(5, 2)]
+# Only active LTS django versions (3.2.*, 4.2.*) are supported by this library right now.
+SUPPORTED_DJANGO_VERSIONS = [(3, 2), (4, 2)]
 
 check_django_compatability(SUPPORTED_DJANGO_VERSIONS)
-
-__all__ = ["__version__", "USE_EMULATOR"]
 register_functions()
 register_lookups()
 
 
 def gen_rand_int64():
     # Credit to https://stackoverflow.com/a/3530326.
-    # Use 32-bit integer for Emulator compatibility (High-bit issues observed).
-    return uuid4().int & 0xFFFFFFFF
+    return uuid4().int & 0x7FFFFFFFFFFFFFFF
 
 
 def autofield_init(self, *args, **kwargs):
@@ -78,15 +85,19 @@ def autofield_init(self, *args, **kwargs):
             == "true"
         ):
             self.default = gen_rand_int64
-            self.db_returning = False
-            self.validators = []
             break
 
 
 AutoField.__init__ = autofield_init
+AutoField.db_returning = False
+AutoField.validators = []
 
 SmallAutoField.__init__ = autofield_init
 BigAutoField.__init__ = autofield_init
+SmallAutoField.db_returning = False
+BigAutoField.db_returning = False
+SmallAutoField.validators = []
+BigAutoField.validators = []
 
 
 def get_prep_value(self, value):
@@ -99,7 +110,9 @@ def get_prep_value(self, value):
 
 JSONField.get_prep_value = get_prep_value
 
-old_datetimewithnanoseconds_eq = getattr(DatetimeWithNanoseconds, "__eq__", None)
+old_datetimewithnanoseconds_eq = getattr(
+    DatetimeWithNanoseconds, "__eq__", None
+)
 
 
 def datetimewithnanoseconds_eq(self, other):

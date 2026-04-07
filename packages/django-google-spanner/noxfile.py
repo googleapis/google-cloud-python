@@ -24,12 +24,10 @@ LINT_PATHS = [
     "setup.py",
 ]
 
-MOCKSERVER_TEST_PYTHON_VERSION = "3.12"
+MOCKSERVER_TEST_PYTHON_VERSION = "3.14"
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -37,7 +35,6 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.14",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 
 SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
 
@@ -89,7 +86,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, django_version="3.2"):
+def default(session, django_version="5.2"):
     # Install all test dependencies, then install this package in-place.
     session.install(
         "setuptools",
@@ -125,17 +122,10 @@ def default(session, django_version="3.2"):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
-    # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
     if session.python == "3.14":
         session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
-    # Django 3.2 is End-Of-Life and fundamentally incompatible with Python 3.13+
-    if session.python != "3.13":
-        print("Unit tests with django 3.2")
-        default(session)
-    print("Unit tests with django 4.2")
-    default(session, django_version="4.2")
+    print("Unit tests with django 5.2")
+    default(session)
 
 
 @nox.session(python=MOCKSERVER_TEST_PYTHON_VERSION)
@@ -143,7 +133,7 @@ def mockserver(session):
     # Install all test dependencies, then install this package in-place.
     session.install(
         "setuptools",
-        "django~=4.2",
+        "django~=5.2",
         "mock",
         "mock-import",
         "pytest",
@@ -164,7 +154,7 @@ def mockserver(session):
     )
 
 
-def system_test(session, django_version="3.2"):
+def system_test(session, django_version="5.2"):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -217,12 +207,8 @@ def system(session):
     # See: https://github.com/googleapis/python-spanner-django/pull/929.
     session.skip("System tests are temporarily disabled.")
 
-    if session.python == "3.7":
-        session.skip("Python 3.7 is no longer supported")
-    print("System tests with django 3.2")
+    print("System tests with django 5.2")
     system_test(session)
-    print("System tests with django 4.2")
-    system_test(session, django_version="4.2")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

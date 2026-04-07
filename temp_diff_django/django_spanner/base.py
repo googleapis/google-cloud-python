@@ -6,8 +6,10 @@
 
 import os
 
+from google.cloud import spanner
+
 from django.db.backends.base.base import BaseDatabaseWrapper
-from google.cloud import spanner, spanner_dbapi
+from google.cloud import spanner_dbapi
 
 from .client import DatabaseClient
 from .creation import DatabaseCreation
@@ -15,10 +17,7 @@ from .features import DatabaseFeatures
 from .introspection import DatabaseIntrospection
 from .operations import DatabaseOperations
 from .schema import DatabaseSchemaEditor
-
-# Global cache for Spanner client to prevent multiple initializations
-# which can cause OpenTelemetry 'MeterProvider override' crashes.
-_SPANNER_CLIENT_CACHE = None
+from django_spanner import USING_DJANGO_3
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -87,9 +86,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # expression or the result of a bilateral transformation). In those cases,
     # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
     # escaped on database side.
-    pattern_esc = (
-        r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
-    )
+    pattern_esc = r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
 
     # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
     # lookups.
@@ -123,29 +120,26 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: A new instance owned by the existing Spanner Client.
         """
-        global _SPANNER_CLIENT_CACHE
-
         if "client" in self.settings_dict["OPTIONS"]:
-            return self.settings_dict["OPTIONS"]["client"].instance(
-                self.settings_dict["INSTANCE"]
-            )
-
-        if _SPANNER_CLIENT_CACHE is None:
-            _SPANNER_CLIENT_CACHE = spanner.Client(
-                project=os.environ["GOOGLE_CLOUD_PROJECT"]
-            )
-
-        return _SPANNER_CLIENT_CACHE.instance(self.settings_dict["INSTANCE"])
+            client = self.settings_dict["OPTIONS"]["client"]
+        else:
+            client = spanner.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
+        return client.instance(self.settings_dict["INSTANCE"])
 
     @property
     def allow_transactions_in_auto_commit(self):
         if "ALLOW_TRANSACTIONS_IN_AUTO_COMMIT" in self.settings_dict:
             return self.settings_dict["ALLOW_TRANSACTIONS_IN_AUTO_COMMIT"]
-        return True
+        if USING_DJANGO_3:
+            return False
+        else:
+            return True
 
     @property
     def _nodb_connection(self):
-        raise NotImplementedError('Spanner does not have a "no db" connection.')
+        raise NotImplementedError(
+            'Spanner does not have a "no db" connection.'
+        )
 
     def get_connection_params(self):
         """Retrieve the connection parameters.
@@ -176,16 +170,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :raises: :class:`ValueError` in case the given instance/database
                  doesn't exist.
         """
-        conn_params.pop("instance", None)
-        conn_params.pop("instance_id", None)
-        conn_params.pop("client", None)
-        # Ensure client is initialized
-        instance = self.instance
-        return self.Database.connect(
-            instance.instance_id,
-            client=instance._client,
-            **conn_params,
-        )
+        return self.Database.connect(**conn_params)
 
     def init_connection_state(self):
         """Initialize the state of the existing connection."""
@@ -239,5 +224,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         if self.allow_transactions_in_auto_commit:
             self.connection.cursor().execute("BEGIN")
         else:
+            # This won't start a transaction and was a bug in Spanner Django 3.2 version.
+            # Set ALLOW_TRANSACTIONS_IN_AUTO_COMMIT = True in your settings.py file to enable
             # transactions in autocommit mode for Django 3.2.
             self.connection.cursor().execute("SELECT 1")
