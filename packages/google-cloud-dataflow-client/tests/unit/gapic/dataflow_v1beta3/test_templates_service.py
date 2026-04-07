@@ -1385,6 +1385,7 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
         response = client.create_job_from_template(request)
 
@@ -1411,6 +1412,7 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 def test_create_job_from_template_non_empty_request_with_auto_populated_field():
@@ -1566,6 +1568,7 @@ async def test_create_job_from_template_async(
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         response = await client.create_job_from_template(request)
@@ -1593,6 +1596,7 @@ async def test_create_job_from_template_async(
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.asyncio
@@ -2482,6 +2486,7 @@ async def test_create_job_from_template_empty_call_grpc_asyncio():
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         await client.create_job_from_template(request=None)
@@ -2614,6 +2619,7 @@ def test_create_job_from_template_rest_call_success(request_type):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -2645,6 +2651,7 @@ def test_create_job_from_template_rest_call_success(request_type):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2775,6 +2782,10 @@ def test_launch_template_rest_call_success(request_type):
             "enable_streaming_engine": True,
             "disk_size_gb": 1261,
             "streaming_mode": 1,
+            "additional_pipeline_options": [
+                "additional_pipeline_options_value1",
+                "additional_pipeline_options_value2",
+            ],
         },
         "update": True,
         "transform_name_mapping": {},
