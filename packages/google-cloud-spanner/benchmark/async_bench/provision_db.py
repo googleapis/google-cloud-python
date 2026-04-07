@@ -28,7 +28,15 @@ async def provision_database():
             f"CREATE TABLE {TABLE_NAME} ("
             f"  id STRING(36) NOT NULL,"
             f"  field0 STRING(100),"
-            f"  field1 STRING(100)"
+            f"  field1 STRING(100),"
+            f"  field2 STRING(100),"
+            f"  field3 STRING(100),"
+            f"  field4 STRING(100),"
+            f"  field5 STRING(100),"
+            f"  field6 STRING(100),"
+            f"  field7 STRING(100),"
+            f"  field8 STRING(100),"
+            f"  field9 STRING(100)"
             f") PRIMARY KEY(id)"
         ]
         
