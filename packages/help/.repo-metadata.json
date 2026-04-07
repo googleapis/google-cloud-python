@@ -1,0 +1,10 @@
+{
+    "name": "help",
+    "name_pretty": "Client libraries help",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/help/latest",
+    "language": "python",
+    "library_type": "OTHER",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "help",
+    "codeowner_team": "@googleapis/cloud-sdk-python-team"
+}
