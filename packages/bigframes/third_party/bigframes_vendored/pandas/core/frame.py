@@ -552,7 +552,7 @@ class DataFrame(generic.NDFrame):
                 ``None``, ``snappy``, or ``gzip``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
-    
+
     def to_csv(
         self,
         path_or_buf=None,
@@ -575,10 +575,10 @@ class DataFrame(generic.NDFrame):
 
         Args:
             path_or_buf (str, path object, file-like object, or None, default None):
-                String, path object (implementing os.PathLike[str]), or file-like object 
-                implementing a write() function. If None, the result is returned as a string. 
-                If a non-binary file object is passed, it should be opened with newline='', 
-                disabling universal newlines. If a binary file object is passed, 
+                String, path object (implementing os.PathLike[str]), or file-like object
+                implementing a write() function. If None, the result is returned as a string.
+                If a non-binary file object is passed, it should be opened with newline='',
+                disabling universal newlines. If a binary file object is passed,
                 mode might need to contain a 'b'.
                 Must contain a wildcard character '*' if this is a GCS path.
             sep (str, default ','):
