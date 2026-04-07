@@ -55,6 +55,11 @@
                 "get_instance"
               ]
             },
+            "GetSharedRegionalCertificateAuthority": {
+              "methods": [
+                "get_shared_regional_certificate_authority"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"

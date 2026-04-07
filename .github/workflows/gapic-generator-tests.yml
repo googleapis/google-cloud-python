@@ -181,8 +181,6 @@ jobs:
           path: ~/.cache/bazel
           # Ensure CACHE_VERSION is defined in the mono-repo secrets!
           key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-bazel-20210105-
 
       - name: Run Bazel Integration Tests
         run: |

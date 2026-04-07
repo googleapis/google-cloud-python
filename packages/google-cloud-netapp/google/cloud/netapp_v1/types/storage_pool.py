@@ -26,6 +26,7 @@ from google.cloud.netapp_v1.types import common
 __protobuf__ = proto.module(
     package="google.cloud.netapp.v1",
     manifest={
+        "Mode",
         "GetStoragePoolRequest",
         "ListStoragePoolsRequest",
         "ListStoragePoolsResponse",
@@ -37,6 +38,26 @@ __protobuf__ = proto.module(
         "ValidateDirectoryServiceRequest",
     },
 )
+
+
+class Mode(proto.Enum):
+    r"""``Mode`` of the storage pool or volume. This field is used to
+    control whether the resource is managed by the GCNV APIs or the GCNV
+    ONTAP Mode APIs.
+
+    Values:
+        MODE_UNSPECIFIED (0):
+            The ``Mode`` is not specified.
+        DEFAULT (1):
+            The resource is managed by the GCNV APIs.
+        ONTAP (2):
+            The resource is managed by the GCNV ONTAP
+            Mode APIs.
+    """
+
+    MODE_UNSPECIFIED = 0
+    DEFAULT = 1
+    ONTAP = 2
 
 
 class GetStoragePoolRequest(proto.Message):
@@ -329,12 +350,17 @@ class StoragePool(proto.Message):
         type_ (google.cloud.netapp_v1.types.StoragePoolType):
             Optional. Type of the storage pool. This field is used to
             control whether the pool supports ``FILE`` based volumes
-            only or ``UNIFIED`` (both ``FILE`` and ``BLOCK``) volumes or
-            ``UNIFIED_LARGE_CAPACITY`` (both ``FILE`` and ``BLOCK``)
-            volumes with large capacity. If not specified during
-            creation, it defaults to ``FILE``.
+            only or ``UNIFIED`` (both ``FILE`` and ``BLOCK``) volumes.
+            If not specified during creation, it defaults to ``FILE``.
 
             This field is a member of `oneof`_ ``_type``.
+        mode (google.cloud.netapp_v1.types.Mode):
+            Optional. Mode of the storage pool. This field is used to
+            control whether the user can perform the ONTAP operations on
+            the storage pool using the GCNV ONTAP Mode APIs. If not
+            specified during creation, it defaults to ``DEFAULT``.
+
+            This field is a member of `oneof`_ ``_mode``.
     """
 
     class State(proto.Enum):
@@ -505,6 +531,12 @@ class StoragePool(proto.Message):
         number=35,
         optional=True,
         enum=common.StoragePoolType,
+    )
+    mode: "Mode" = proto.Field(
+        proto.ENUM,
+        number=36,
+        optional=True,
+        enum="Mode",
     )
 
 

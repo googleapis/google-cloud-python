@@ -147,8 +147,8 @@ class MessagesV1Beta3RestStub:
 class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
     """REST backend synchronous transport for MessagesV1Beta3.
 
-    The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

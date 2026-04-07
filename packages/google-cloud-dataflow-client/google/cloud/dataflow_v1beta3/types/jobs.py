@@ -177,6 +177,10 @@ class JobState(proto.Enum):
             after a successful run. Currently, this is an opt-in
             feature, please reach out to Cloud support team if you are
             interested.
+        JOB_STATE_PAUSING (13):
+            ``JOB_STATE_PAUSING`` is not implemented yet.
+        JOB_STATE_PAUSED (14):
+            ``JOB_STATE_PAUSED`` is not implemented yet.
     """
 
     JOB_STATE_UNKNOWN = 0
@@ -192,6 +196,8 @@ class JobState(proto.Enum):
     JOB_STATE_CANCELLING = 10
     JOB_STATE_QUEUED = 11
     JOB_STATE_RESOURCE_CLEANING_UP = 12
+    JOB_STATE_PAUSING = 13
+    JOB_STATE_PAUSED = 14
 
 
 class JobView(proto.Enum):
@@ -407,6 +413,9 @@ class Job(proto.Message):
             Service to run the job.
 
             This field is a member of `oneof`_ ``_service_resources``.
+        pausable (bool):
+            Output only. Indicates whether the job can be
+            paused.
     """
 
     id: str = proto.Field(
@@ -540,6 +549,10 @@ class Job(proto.Message):
         optional=True,
         message="ServiceResources",
     )
+    pausable: bool = proto.Field(
+        proto.BOOL,
+        number=29,
+    )
 
 
 class ServiceResources(proto.Message):
@@ -587,6 +600,18 @@ class RuntimeUpdatableParams(proto.Message):
             pipeline <https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline>`__.
 
             This field is a member of `oneof`_ ``_worker_utilization_hint``.
+        acceptable_backlog_duration (google.protobuf.duration_pb2.Duration):
+            Optional. Deprecated: Use ``autoscaling_tier`` instead. The
+            backlog threshold duration in seconds for autoscaling. Value
+            must be non-negative.
+
+            This field is a member of `oneof`_ ``_acceptable_backlog_duration``.
+        autoscaling_tier (str):
+            Optional. The backlog threshold tier for
+            autoscaling. Value must be one of "low-latency",
+            "medium-latency", or "high-latency".
+
+            This field is a member of `oneof`_ ``_autoscaling_tier``.
     """
 
     max_num_workers: int = proto.Field(
@@ -602,6 +627,17 @@ class RuntimeUpdatableParams(proto.Message):
     worker_utilization_hint: float = proto.Field(
         proto.DOUBLE,
         number=3,
+        optional=True,
+    )
+    acceptable_backlog_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    autoscaling_tier: str = proto.Field(
+        proto.STRING,
+        number=5,
         optional=True,
     )
 
