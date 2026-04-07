@@ -265,8 +265,6 @@ class Query(BaseQuery):
             transaction, retry, timeout, explain_options, read_time
         )
 
-        print(f"Query Request: {request}")
-
         response_iterator = self._client._firestore_api.run_query(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -435,7 +433,6 @@ class Query(BaseQuery):
         while True:
             try:
                 response = next(response_iterator, None)
-                print(f"Query Response: {response}")
             except exceptions.GoogleAPICallError as exc:
                 if self._retry_query_after_exception(exc, retry, transaction):
                     new_query = self.start_after(last_snapshot)

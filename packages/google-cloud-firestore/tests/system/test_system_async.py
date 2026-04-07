@@ -182,7 +182,6 @@ def verify_pipeline(subtests):
 
         with subtests.test(msg="verify_pipeline"):
             client = query._client
-            print(f"verify_pipeline async: Client project: {client.project}, Database: {client._database}, Enterprise DB Name: {FIRESTORE_ENTERPRISE_DB}")
             if FIRESTORE_EMULATOR:
                 pytest.skip("skip pipeline verification on emulator")
             if client._database != FIRESTORE_ENTERPRISE_DB:

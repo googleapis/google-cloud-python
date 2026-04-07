@@ -134,9 +134,6 @@ def test_pipeline_results(test_dict, client):
     pipeline = parse_pipeline(client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() for snapshot in pipeline.stream()]
-    print(f"Pipeline Test: {test_dict.get('file_name')} - {test_dict.get('description')}")
-    print(f"Expected Results: {expected_results}")
-    print(f"Got Results: {got_results}")
     if expected_results:
         assert got_results == expected_results
     if expected_approximate_results:
@@ -195,9 +192,6 @@ async def test_pipeline_results_async(test_dict, async_client):
     pipeline = parse_pipeline(async_client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() async for snapshot in pipeline.stream()]
-    print(f"Async Pipeline Test: {test_dict.get('file_name')} - {test_dict.get('description')}")
-    print(f"Expected Results: {expected_results}")
-    print(f"Got Results: {got_results}")
     if expected_results:
         assert got_results == expected_results
     if expected_approximate_results:
@@ -368,24 +362,18 @@ def client():
     Build a client to use for requests
     """
     client = Client(project=FIRESTORE_PROJECT, database=FIRESTORE_ENTERPRISE_DB)
-    print(f"\n--- test_pipeline_acceptance client initialized ---\nProject: {client.project}\nDatabase: {client._database}\n---------------------------------------------------")
     data = yaml_loader("data", attach_file_name=False)
     to_delete = []
     try:
         # setup data
         batch = client.batch()
-        print(f"Populating test data for pipeline tests...")
         for collection_name, documents in data.items():
             collection_ref = client.collection(collection_name)
             for document_id, document_data in documents.items():
                 document_ref = collection_ref.document(document_id)
                 to_delete.append(document_ref)
-                parsed_data = _parse_yaml_types(document_data)
-                print(f"Adding document: {document_ref.path} -> {parsed_data}")
-                batch.set(document_ref, parsed_data)
-        print(f"Committing batch setup...")
+                batch.set(document_ref, _parse_yaml_types(document_data))
         batch.commit()
-        print(f"Batch commit successful!")
         yield client
     finally:
         # clear data
