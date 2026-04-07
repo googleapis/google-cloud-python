@@ -548,6 +548,49 @@ class Series(NDFrame):  # type: ignore[misc]
                 Series in Markdown-friendly format.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+    
+    def to_csv(
+        self,
+        path_or_buf=None,
+        sep=",",
+        *,
+        header: bool = True,
+        index: bool = True,
+        allow_large_results: Optional[bool] = None,
+    ) -> dict | list[dict]:
+        """
+        Write object to a comma-separated values (csv) file.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+
+            >>> s = bpd.Series([1,2,3], name='my_series')
+            >>> s.to_csv()
+            \',my_series\\n0,1\\n1,2\\n2,3\\n\'
+
+        Args:
+            path_or_buf (str, path object, file-like object, or None, default None):
+                String, path object (implementing os.PathLike[str]), or file-like object 
+                implementing a write() function. If None, the result is returned as a string. 
+                If a non-binary file object is passed, it should be opened with newline='', 
+                disabling universal newlines. If a binary file object is passed, 
+                mode might need to contain a 'b'.
+                Must contain a wildcard character '*' if this is a GCS path.
+            sep (str, default ','):
+                String of length 1. Field delimiter for the output file.
+            header (bool, default True):
+                Write out the column names.
+            index (bool, default True):
+                Write row names (index).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
+
+        Returns:
+            If path_or_buf is None, returns the resulting csv format as a string. Otherwise returns None.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_dict(
         self,
