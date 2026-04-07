@@ -1,14 +1,12 @@
 {
-    "name": "python-ndb",
-    "name_pretty": "NDB Client Library for Google Cloud Datastore",
+    "api_shortname": "datastore",
     "client_documentation": "https://googleapis.dev/python/python-ndb/latest",
+    "distribution_name": "google-cloud-ndb",
     "issue_tracker": "https://github.com/googleapis/python-ndb/issues",
-    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_MANUAL",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-ndb",
-    "default_version": "",
-    "codeowner_team": "@googleapis/firestore-dpe @googleapis/gcs-sdk-team",
-    "api_shortname": "datastore"
+    "name": "python-ndb",
+    "name_pretty": "NDB Client Library for Google Cloud Datastore",
+    "release_level": "stable",
+    "repo": "googleapis/google-cloud-python"
 }
