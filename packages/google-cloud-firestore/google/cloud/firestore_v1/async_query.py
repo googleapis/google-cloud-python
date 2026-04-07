@@ -408,6 +408,7 @@ class AsyncQuery(BaseQuery):
             read_time,
         )
 
+        print(f"Async Query Request: {request}")
         response_iterator = await self._client._firestore_api.run_query(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -415,6 +416,7 @@ class AsyncQuery(BaseQuery):
         )
 
         async for response in response_iterator:
+            print(f"Async Query Response: {response}")
             if self._all_descendants:
                 snapshot = _collection_group_query_response_to_snapshot(
                     response, self._parent

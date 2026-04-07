@@ -283,8 +283,10 @@ class PipelineStream(_PipelineResultContainer[T], Iterable[T]):
             raise RuntimeError(f"{self.__class__.__name__} can only be iterated once")
         self._started = True
         request = self._build_request()
+        print(f"Pipeline Request: {request}")
         stream = self._client._firestore_api.execute_pipeline(request)
         for response in stream:
+            print(f"Pipeline Response: {response}")
             yield from self._process_response(response)
 
 
@@ -298,7 +300,9 @@ class AsyncPipelineStream(_PipelineResultContainer[T], AsyncIterable[T]):
             raise RuntimeError(f"{self.__class__.__name__} can only be iterated once")
         self._started = True
         request = self._build_request()
+        print(f"Async Pipeline Request: {request}")
         stream = await self._client._firestore_api.execute_pipeline(request)
         async for response in stream:
+            print(f"Async Pipeline Response: {response}")
             for result in self._process_response(response):
                 yield result
