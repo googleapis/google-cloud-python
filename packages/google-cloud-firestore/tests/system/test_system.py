@@ -2438,7 +2438,7 @@ def test_watch_query(client, cleanup, database):
 
 @pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
 def test_array_union(client, cleanup, database):
-    doc_ref = client.document("gcp-7523", "test-document")
+    doc_ref = client.document(f"gcp-7523-{UNIQUE_RESOURCE_ID}", "test-document")
     cleanup(doc_ref.delete)
     doc_ref.delete()
     tree_1 = {"forest": {"tree-1": "oak"}}
