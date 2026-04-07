@@ -398,7 +398,7 @@ class Credentials(
         project_number = self.project_number or self._workforce_pool_user_project
         if project_number and scopes:
             headers = {}
-            url = self._cloud_resource_manager_url + project_number
+            url = "{}{}".format(self._cloud_resource_manager_url, project_number)
             self.before_request(request, "GET", url, headers)
             response = request(url=url, method="GET", headers=headers)
 
