@@ -52,7 +52,9 @@ def system_test_lock(client, lock_name="system_test_lock", max_wait_minutes=65):
                         lock_ref.delete()
                         continue
                     else:
-                        print(f"Waiting for {lock_name}. Lock is {age:.0f}s old. Sleeping for 15s...")
+                        print(
+                            f"Waiting for {lock_name}. Lock is {age:.0f}s old. Sleeping for 15s..."
+                        )
             time.sleep(15)
     else:
         raise TimeoutError(f"Timed out waiting for {lock_name}")
