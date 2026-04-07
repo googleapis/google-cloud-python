@@ -295,6 +295,18 @@ def _parse_expressions(client, yaml_element: Any):
             # find Pipeline objects for Union expressions
             other_ppl = yaml_element["Pipeline"]
             return parse_pipeline(client, other_ppl)
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_array_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_array_expression"]
+            return parse_pipeline(client, other_ppl).to_array_expression()
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_scalar_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_scalar_expression"]
+            return parse_pipeline(client, other_ppl).to_scalar_expression()
         else:
             # otherwise, return dict
             return {
@@ -376,7 +388,7 @@ def _parse_yaml_types(data):
         return {key: _parse_yaml_types(value) for key, value in data.items()}
     if isinstance(data, list):
         # detect vectors
-        if all([isinstance(d, float) for d in data]):
+        if len(data) > 0 and all([isinstance(d, float) for d in data]):
             return Vector(data)
         else:
             return [_parse_yaml_types(value) for value in data]
