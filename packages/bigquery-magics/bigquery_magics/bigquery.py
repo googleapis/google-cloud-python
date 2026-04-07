@@ -78,8 +78,10 @@
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
     * ``--engine <engine>`` (Optional[line argument]):
-          Set the execution engine, either 'pandas' (default) or 'bigframes'
-          (experimental).
+          [Deprecated] Set the execution engine, either 'pandas' (default) or
+          'bigframes'.
+          Please use ``%load_ext bigframes`` and the ``%%bqsql`` magic instead.
+          See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html
     * ``--pyformat`` (Optional[line argument]):
           Warning! Do not use with user-provided values.
           This doesn't escape values. Use --params instead for proper SQL escaping.
@@ -397,8 +399,10 @@ def _create_dataset_if_necessary(client, dataset_id):
     type=str,
     default=None,
     help=(
-        "Set the execution engine, either 'pandas' or 'bigframes'."
+        "[Deprecated] Set the execution engine, either 'pandas' or 'bigframes'."
         "Defaults to engine set in the query setting in console."
+        "Please use %%load_ext bigframes and the %%%%bqsql magic instead. "
+        "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html"
     ),
 )
 @magic_arguments.argument(
@@ -510,6 +514,13 @@ def _split_args_line(line: str) -> Tuple[str, str]:
 
 
 def _query_with_bigframes(query: str, params: List[Any], args: Any):
+    warnings.warn(
+        "The bigframes engine is deprecated. Please use %load_ext bigframes "
+        "and the %%bqsql magic instead. "
+        "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html",
+        FutureWarning,
+        stacklevel=2,
+    )
     if args.dry_run:
         raise ValueError("Dry run is not supported by bigframes engine.")
 
