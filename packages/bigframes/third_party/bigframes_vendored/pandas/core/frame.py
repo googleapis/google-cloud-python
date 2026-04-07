@@ -561,7 +561,7 @@ class DataFrame(generic.NDFrame):
         header: bool = True,
         index: bool = True,
         allow_large_results: Optional[bool] = None,
-    ) -> dict | list[dict]:
+    ) -> Optional[str]:
         """
         Write object to a comma-separated values (csv) file.
 
