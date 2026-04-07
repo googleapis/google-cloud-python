@@ -87,9 +87,9 @@ def cleanup():
 @pytest.fixture
 def verify_pipeline(subtests):
     """
-    This fixture provide a subtest function which
+    This fixture provides a subtest function which
     ensures a pipeline produces the same results as the query it is derived
-    from
+    from.
 
     It can be attached to existing query tests to check both
     modalities at the same time
