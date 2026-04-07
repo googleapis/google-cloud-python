@@ -399,8 +399,8 @@ def _create_dataset_if_necessary(client, dataset_id):
     type=str,
     default=None,
     help=(
-        "[Deprecated] Set the execution engine, either 'pandas' or 'bigframes'."
-        "Defaults to engine set in the query setting in console."
+        "[Deprecated] Set the execution engine, either 'pandas' or 'bigframes'. "
+        "Defaults to engine set in the query setting in console. "
         "Please use %%load_ext bigframes and the %%%%bqsql magic instead. "
         "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html"
     ),
