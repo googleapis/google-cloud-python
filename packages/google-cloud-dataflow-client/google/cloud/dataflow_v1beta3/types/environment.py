@@ -279,8 +279,8 @@ class Environment(proto.Message):
             worker pool must be specified in order for the
             job to have workers.
         user_agent (google.protobuf.struct_pb2.Struct):
-            A description of the process that generated
-            the request.
+            Optional. A description of the process that
+            generated the request.
         version (google.protobuf.struct_pb2.Struct):
             A structure describing which components and
             their versions of the service are required in
@@ -342,6 +342,9 @@ class Environment(proto.Message):
             canonical use case. For more information, see `Set the
             pipeline streaming
             mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
+        use_public_ips (bool):
+            Optional. True when any worker pool that uses
+            public IPs is present.
     """
 
     temp_storage_prefix: str = proto.Field(
@@ -429,6 +432,10 @@ class Environment(proto.Message):
         number=19,
         enum="StreamingMode",
     )
+    use_public_ips: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
 
 
 class Package(proto.Message):
@@ -452,6 +459,12 @@ class Package(proto.Message):
 
               storage.googleapis.com/{bucket}
               bucket.storage.googleapis.com/
+        sha256 (str):
+            Optional. The hex-encoded SHA256 checksum of
+            the package. If the checksum is provided, the
+            worker will verify the checksum of the package
+            before using it. If the checksum does not match,
+            the worker will fail to start.
     """
 
     name: str = proto.Field(
@@ -461,6 +474,10 @@ class Package(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    sha256: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -859,6 +876,12 @@ class WorkerPool(proto.Message):
             Type of root disk for VMs.  If empty or
             unspecified, the service will attempt to choose
             a reasonable default.
+        disk_provisioned_iops (int):
+            Optional. IOPS provisioned for the root disk
+            for VMs.
+        disk_provisioned_throughput_mibps (int):
+            Optional. Throughput provisioned for the root
+            disk for VMs.
         disk_source_image (str):
             Fully qualified source image for disks.
         zone (str):
@@ -948,6 +971,14 @@ class WorkerPool(proto.Message):
     disk_type: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    disk_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=23,
+    )
+    disk_provisioned_throughput_mibps: int = proto.Field(
+        proto.INT64,
+        number=24,
     )
     disk_source_image: str = proto.Field(
         proto.STRING,

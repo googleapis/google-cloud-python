@@ -426,6 +426,9 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
 
             This field is a member of `oneof`_ ``_streaming_mode``.
+        additional_pipeline_options (MutableSequence[str]):
+            Optional. Additional pipeline option flags
+            for the job.
     """
 
     num_workers: int = proto.Field(
@@ -533,6 +536,10 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         number=26,
         optional=True,
         enum=gd_environment.StreamingMode,
+    )
+    additional_pipeline_options: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=27,
     )
 
 
@@ -671,6 +678,9 @@ class RuntimeEnvironment(proto.Message):
             mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
 
             This field is a member of `oneof`_ ``_streaming_mode``.
+        additional_pipeline_options (MutableSequence[str]):
+            Optional. Additional pipeline option flags
+            for the job.
     """
 
     num_workers: int = proto.Field(
@@ -748,6 +758,10 @@ class RuntimeEnvironment(proto.Message):
         number=19,
         optional=True,
         enum=gd_environment.StreamingMode,
+    )
+    additional_pipeline_options: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=20,
     )
 
 
@@ -969,12 +983,15 @@ class SDKInfo(proto.Message):
                 Python.
             GO (3):
                 Go.
+            YAML (4):
+                YAML.
         """
 
         UNKNOWN = 0
         JAVA = 1
         PYTHON = 2
         GO = 3
+        YAML = 4
 
     language: Language = proto.Field(
         proto.ENUM,

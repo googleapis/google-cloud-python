@@ -116,8 +116,8 @@ class _LoggingClientAIOInterceptor(
 class MessagesV1Beta3GrpcAsyncIOTransport(MessagesV1Beta3Transport):
     """gRPC AsyncIO backend transport for MessagesV1Beta3.
 
-    The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

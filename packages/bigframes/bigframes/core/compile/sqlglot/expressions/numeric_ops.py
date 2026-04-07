@@ -1,0 +1,677 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from __future__ import annotations
+
+import bigframes_vendored.constants as bf_constants
+import bigframes_vendored.sqlglot.expressions as sge
+
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+import bigframes.core.compile.sqlglot.expressions.constants as constants
+from bigframes import dtypes
+from bigframes import operations as ops
+from bigframes.core.compile.sqlglot import sql
+from bigframes.core.compile.sqlglot.expressions.common import round_towards_zero
+from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
+from bigframes.operations import numeric_ops
+
+register_unary_op = expression_compiler.expression_compiler.register_unary_op
+register_binary_op = expression_compiler.expression_compiler.register_binary_op
+
+
+@register_unary_op(ops.abs_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Abs(this=expr.expr)
+
+
+@register_unary_op(ops.arccosh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(1),
+                true=constants._NAN,
+            )
+        ],
+        default=sge.func("ACOSH", expr.expr),
+    )
+
+
+@register_unary_op(ops.arccos_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(1),
+                true=constants._NAN,
+            )
+        ],
+        default=sge.func("ACOS", expr.expr),
+    )
+
+
+@register_unary_op(ops.arcsin_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(1),
+                true=constants._NAN,
+            )
+        ],
+        default=sge.func("ASIN", expr.expr),
+    )
+
+
+@register_unary_op(ops.arcsinh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("ASINH", expr.expr)
+
+
+@register_binary_op(ops.arctan2_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.func("ATAN2", left_expr, right_expr)
+
+
+@register_unary_op(ops.arctan_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("ATAN", expr.expr)
+
+
+@register_unary_op(ops.arctanh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            # |x| < 1: The standard formula
+            sge.If(
+                this=sge.func("ABS", expr.expr) < sge.convert(1),
+                true=sge.func("ATANH", expr.expr),
+            ),
+            # |x| > 1: Returns NaN
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(1),
+                true=constants._NAN,
+            ),
+        ],
+        # |x| = 1: Returns Infinity or -Infinity
+        default=sge.Mul(this=constants._INF, expression=expr.expr),
+    )
+
+
+@register_unary_op(ops.ceil_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Ceil(this=expr.expr)
+
+
+@register_unary_op(ops.cos_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("COS", expr.expr)
+
+
+@register_unary_op(ops.cosh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(709.78),
+                true=constants._INF,
+            )
+        ],
+        default=sge.func("COSH", expr.expr),
+    )
+
+
+@register_binary_op(ops.cosine_distance_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("ML.DISTANCE", left.expr, right.expr, sge.Literal.string("COSINE"))
+
+
+@register_unary_op(ops.exp_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr > constants._FLOAT64_EXP_BOUND,
+                true=constants._INF,
+            )
+        ],
+        default=sge.func("EXP", expr.expr),
+    )
+
+
+@register_unary_op(ops.expm1_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.If(
+        this=expr.expr > constants._FLOAT64_EXP_BOUND,
+        true=constants._INF,
+        false=sge.func("EXP", expr.expr) - sge.convert(1),
+    )
+
+
+@register_unary_op(ops.floor_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Floor(this=expr.expr)
+
+
+@register_unary_op(ops.ln_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.Is(this=expr.expr, expression=sge.Null()),
+                true=sge.null(),
+            ),
+            # |x| > 0: The standard formula
+            sge.If(
+                this=expr.expr > sge.convert(0),
+                true=sge.Ln(this=expr.expr),
+            ),
+            # |x| < 0: Returns NaN
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=constants._NAN,
+            ),
+        ],
+        # |x| == 0: Returns -Infinity
+        default=constants._NEG_INF,
+    )
+
+
+@register_unary_op(ops.log10_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.Is(this=expr.expr, expression=sge.Null()),
+                true=sge.null(),
+            ),
+            # |x| > 0: The standard formula
+            sge.If(
+                this=expr.expr > sge.convert(0),
+                true=sge.Log(this=sge.convert(10), expression=expr.expr),
+            ),
+            # |x| < 0: Returns NaN
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=constants._NAN,
+            ),
+        ],
+        # |x| == 0: Returns -Infinity
+        default=constants._NEG_INF,
+    )
+
+
+@register_unary_op(ops.log1p_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.Is(this=expr.expr, expression=sge.Null()),
+                true=sge.null(),
+            ),
+            # Domain: |x| > -1 (The standard formula)
+            sge.If(
+                this=expr.expr > sge.convert(-1),
+                true=sge.Ln(this=sge.convert(1) + expr.expr),
+            ),
+            # Out of Domain: |x| < -1 (Returns NaN)
+            sge.If(
+                this=expr.expr < sge.convert(-1),
+                true=constants._NAN,
+            ),
+        ],
+        # Boundary: |x| == -1 (Returns -Infinity)
+        default=constants._NEG_INF,
+    )
+
+
+@register_unary_op(ops.neg_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Neg(this=sge.paren(expr.expr))
+
+
+@register_unary_op(ops.pos_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return expr.expr
+
+
+@register_binary_op(ops.pow_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    if left.dtype == dtypes.INT_DTYPE and right.dtype == dtypes.INT_DTYPE:
+        return _int_pow_op(left_expr, right_expr)
+    else:
+        return _float_pow_op(left_expr, right_expr)
+
+
+def _int_pow_op(
+    left_expr: sge.Expression, right_expr: sge.Expression
+) -> sge.Expression:
+    if sql.is_null_literal(left_expr) or sql.is_null_literal(right_expr):
+        return sge.null()
+
+    overflow_cond = sge.and_(
+        sge.NEQ(this=left_expr, expression=sge.convert(0)),
+        sge.GT(
+            this=sge.Mul(
+                this=right_expr, expression=sge.Ln(this=sge.Abs(this=left_expr))
+            ),
+            expression=sge.convert(constants._INT64_LOG_BOUND),
+        ),
+    )
+
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=overflow_cond,
+                true=sge.Null(),
+            )
+        ],
+        default=sge.Cast(
+            this=sge.Pow(
+                this=sge.Cast(
+                    this=left_expr, to=sge.DataType(this=sge.DataType.Type.DECIMAL)
+                ),
+                expression=right_expr,
+            ),
+            to="INT64",
+        ),
+    )
+
+
+def _float_pow_op(
+    left_expr: sge.Expression, right_expr: sge.Expression
+) -> sge.Expression:
+    if sql.is_null_literal(left_expr) or sql.is_null_literal(right_expr):
+        return sge.null()
+
+    # Most conditions here seek to prevent calling BQ POW with inputs that would generate errors.
+    # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions#pow
+    overflow_cond = sge.and_(
+        sge.NEQ(this=left_expr, expression=constants._ZERO),
+        sge.GT(
+            this=sge.Mul(
+                this=right_expr, expression=sge.Ln(this=sge.Abs(this=left_expr))
+            ),
+            expression=constants._FLOAT64_EXP_BOUND,
+        ),
+    )
+
+    # Float64 lose integer precision beyond 2**53, beyond this insufficient precision to get parity
+    exp_too_big = sge.GT(
+        this=sge.Abs(this=right_expr),
+        expression=sge.convert(constants._FLOAT64_MAX_INT_PRECISION),
+    )
+    # Treat very large exponents as +=INF
+    norm_exp = sge.Case(
+        ifs=[
+            sge.If(
+                this=exp_too_big,
+                true=sge.Mul(this=constants._INF, expression=sge.Sign(this=right_expr)),
+            )
+        ],
+        default=right_expr,
+    )
+
+    pow_result = sge.Pow(this=left_expr, expression=norm_exp)
+
+    # This cast is dangerous, need to only excuted where y_val has been bounds-checked
+    # Ibis needs try_cast binding to bq safe_cast
+    exponent_is_whole = sge.EQ(
+        this=sge.Cast(this=right_expr, to="INT64"), expression=right_expr
+    )
+    odd_exponent = sge.and_(
+        sge.LT(this=left_expr, expression=constants._ZERO),
+        sge.EQ(
+            this=sge.Mod(
+                this=sge.Cast(this=right_expr, to="INT64"), expression=sge.convert(2)
+            ),
+            expression=sge.convert(1),
+        ),
+    )
+    infinite_base = sge.EQ(this=sge.Abs(this=left_expr), expression=constants._INF)
+
+    return sge.Case(
+        ifs=[
+            # Might be able to do something more clever with x_val==0 case
+            sge.If(
+                this=sge.EQ(this=right_expr, expression=constants._ZERO),
+                true=sge.convert(1),
+            ),
+            sge.If(
+                this=sge.EQ(this=left_expr, expression=sge.convert(1)),
+                true=sge.convert(1),
+            ),  # Need to ignore exponent, even if it is NA
+            sge.If(
+                this=sge.and_(
+                    sge.EQ(this=left_expr, expression=constants._ZERO),
+                    sge.LT(this=right_expr, expression=constants._ZERO),
+                ),
+                true=constants._INF,
+            ),  # This case would error POW function in BQ
+            sge.If(this=infinite_base, true=pow_result),
+            sge.If(
+                this=exp_too_big, true=pow_result
+            ),  # Bigquery can actually handle the +-inf cases gracefully
+            sge.If(
+                this=sge.and_(
+                    sge.LT(this=left_expr, expression=constants._ZERO),
+                    sge.Not(this=sge.paren(exponent_is_whole)),
+                ),
+                true=constants._NAN,
+            ),
+            sge.If(
+                this=overflow_cond,
+                true=sge.Mul(
+                    this=constants._INF,
+                    expression=sge.Case(
+                        ifs=[sge.If(this=odd_exponent, true=sge.convert(-1))],
+                        default=sge.convert(1),
+                    ),
+                ),
+            ),  # finite overflows would cause bq to error
+        ],
+        default=pow_result,
+    )
+
+
+@register_unary_op(ops.sqrt_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=constants._NAN,
+            )
+        ],
+        default=sge.Sqrt(this=expr.expr),
+    )
+
+
+@register_unary_op(ops.sin_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("SIN", expr.expr)
+
+
+@register_unary_op(ops.sinh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > constants._FLOAT64_EXP_BOUND,
+                true=sge.func("SIGN", expr.expr) * constants._INF,
+            )
+        ],
+        default=sge.func("SINH", expr.expr),
+    )
+
+
+@register_unary_op(ops.tan_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("TAN", expr.expr)
+
+
+@register_unary_op(ops.tanh_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("TANH", expr.expr)
+
+
+@register_binary_op(ops.add_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
+        # String addition
+        return sge.Concat(expressions=[left.expr, right.expr])
+
+    if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
+        left_expr = _coerce_bool_to_int(left)
+        right_expr = _coerce_bool_to_int(right)
+        return sge.Add(this=left_expr, expression=right_expr)
+
+    if (
+        dtypes.is_time_or_date_like(left.dtype)
+        and right.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        left_expr = _coerce_date_to_datetime(left)
+        return sge.TimestampAdd(
+            this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if (
+        dtypes.is_time_or_date_like(right.dtype)
+        and left.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        right_expr = _coerce_date_to_datetime(right)
+        return sge.TimestampAdd(
+            this=right_expr, expression=left.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and right.dtype == dtypes.TIMEDELTA_DTYPE:
+        return sge.Add(this=left.expr, expression=right.expr)
+
+    raise TypeError(
+        f"Cannot add type {left.dtype} and {right.dtype}. {bf_constants.FEEDBACK_LINK}"
+    )
+
+
+@register_binary_op(ops.div_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+
+    result = sge.func("IEEE_DIVIDE", left_expr, right_expr)
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
+        return round_towards_zero(result)
+    else:
+        return result
+
+
+@register_binary_op(ops.euclidean_distance_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func(
+        "ML.DISTANCE", left.expr, right.expr, sge.Literal.string("EUCLIDEAN")
+    )
+
+
+@register_binary_op(ops.floordiv_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+
+    result: sge.Expression = sge.Cast(
+        this=sge.Floor(this=sge.func("IEEE_DIVIDE", left_expr, right_expr)), to="INT64"
+    )
+
+    # DIV(N, 0) will error in bigquery, but needs to return `0` for int, and
+    # `inf`` for float in BQ so we short-circuit in this case.
+    # Multiplying left by zero propogates nulls.
+    zero_result = (
+        constants._INF
+        if (left.dtype == dtypes.FLOAT_DTYPE or right.dtype == dtypes.FLOAT_DTYPE)
+        else constants._ZERO
+    )
+    result = sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.EQ(this=right_expr, expression=constants._ZERO),
+                true=zero_result * left_expr,
+            )
+        ],
+        default=result,
+    )
+
+    if dtypes.is_numeric(right.dtype) and left.dtype == dtypes.TIMEDELTA_DTYPE:
+        result = round_towards_zero(sge.func("IEEE_DIVIDE", left_expr, right_expr))
+
+    return result
+
+
+@register_binary_op(ops.manhattan_distance_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func(
+        "ML.DISTANCE", left.expr, right.expr, sge.Literal.string("MANHATTAN")
+    )
+
+
+@register_binary_op(ops.mod_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    # In BigQuery returned value has the same sign as X. In pandas, the sign of y is used, so we need to flip the result if sign(x) != sign(y)
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+
+    # BigQuery MOD function doesn't support float types, so cast to BIGNUMERIC
+    if left.dtype == dtypes.FLOAT_DTYPE or right.dtype == dtypes.FLOAT_DTYPE:
+        left_expr = sge.Cast(this=left_expr, to="BIGNUMERIC")
+        right_expr = sge.Cast(this=right_expr, to="BIGNUMERIC")
+
+    # MOD(N, 0) will error in bigquery, but needs to return null
+    bq_mod = sge.Mod(this=left_expr, expression=right_expr)
+    zero_result = (
+        constants._NAN
+        if (left.dtype == dtypes.FLOAT_DTYPE or right.dtype == dtypes.FLOAT_DTYPE)
+        else constants._ZERO
+    )
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.EQ(this=right_expr, expression=constants._ZERO),
+                true=zero_result * left_expr,
+            ),
+            sge.If(
+                this=sge.and_(
+                    right_expr < constants._ZERO,
+                    bq_mod > constants._ZERO,
+                ),
+                true=right_expr + bq_mod,
+            ),
+            sge.If(
+                this=sge.and_(
+                    right_expr > constants._ZERO,
+                    bq_mod < constants._ZERO,
+                ),
+                true=right_expr + bq_mod,
+            ),
+        ],
+        default=bq_mod,
+    )
+
+
+@register_binary_op(ops.mul_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+
+    result = sge.Mul(this=left_expr, expression=right_expr)
+
+    if (dtypes.is_numeric(left.dtype) and right.dtype == dtypes.TIMEDELTA_DTYPE) or (
+        left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype)
+    ):
+        return round_towards_zero(result)
+    else:
+        return result
+
+
+@register_binary_op(ops.round_op)
+def _(expr: TypedExpr, n_digits: TypedExpr) -> sge.Expression:
+    rounded = sge.Round(this=expr.expr, decimals=n_digits.expr)
+    if expr.dtype == dtypes.INT_DTYPE:
+        return sge.Cast(this=rounded, to="INT64")
+    return rounded
+
+
+@register_binary_op(ops.sub_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sql.is_null_literal(left.expr) or sql.is_null_literal(right.expr):
+        return sge.null()
+
+    if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
+        left_expr = _coerce_bool_to_int(left)
+        right_expr = _coerce_bool_to_int(right)
+        return sge.Sub(this=left_expr, expression=right_expr)
+
+    if (
+        dtypes.is_time_or_date_like(left.dtype)
+        and right.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        left_expr = _coerce_date_to_datetime(left)
+        return sge.TimestampSub(
+            this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if dtypes.is_time_or_date_like(left.dtype) and dtypes.is_time_or_date_like(
+        right.dtype
+    ):
+        left_expr = _coerce_date_to_datetime(left)
+        right_expr = _coerce_date_to_datetime(right)
+        return sge.TimestampDiff(
+            this=left_expr, expression=right_expr, unit=sge.Var(this="MICROSECOND")
+        )
+
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and right.dtype == dtypes.TIMEDELTA_DTYPE:
+        return sge.Sub(this=left.expr, expression=right.expr)
+
+    raise TypeError(
+        f"Cannot subtract type {left.dtype} and {right.dtype}. {bf_constants.FEEDBACK_LINK}"
+    )
+
+
+@register_binary_op(ops.unsafe_pow_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    """For internal use only - where domain and overflow checks are not needed."""
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.Pow(this=left_expr, expression=right_expr)
+
+
+@register_unary_op(numeric_ops.isnan_op)
+def isnan(arg: TypedExpr) -> sge.Expression:
+    return sge.IsNan(this=arg.expr)
+
+
+@register_unary_op(numeric_ops.isfinite_op)
+def isfinite(arg: TypedExpr) -> sge.Expression:
+    return sge.Not(
+        this=sge.Or(
+            this=sge.IsInf(this=arg.expr),
+            expression=sge.IsNan(this=arg.expr),
+        ),
+    )
+
+
+def _coerce_bool_to_int(typed_expr: TypedExpr) -> sge.Expression:
+    """Coerce boolean expression to integer."""
+    if typed_expr.dtype == dtypes.BOOL_DTYPE:
+        return sge.Cast(this=typed_expr.expr, to="INT64")
+    return typed_expr.expr
+
+
+def _coerce_date_to_datetime(typed_expr: TypedExpr) -> sge.Expression:
+    """Coerce date expression to datetime."""
+    if typed_expr.dtype == dtypes.DATE_DTYPE:
+        return sge.Cast(this=typed_expr.expr, to="DATETIME")
+    return typed_expr.expr

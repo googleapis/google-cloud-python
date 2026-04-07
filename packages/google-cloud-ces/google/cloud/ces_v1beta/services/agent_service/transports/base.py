@@ -410,6 +410,11 @@ class AgentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.generate_app_resource: gapic_v1.method.wrap_method(
+                self.generate_app_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_changelogs: gapic_v1.method.wrap_method(
                 self.list_changelogs,
                 default_timeout=None,
@@ -919,6 +924,15 @@ class AgentServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [agent_service.RestoreAppVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_app_resource(
+        self,
+    ) -> Callable[
+        [agent_service.GenerateAppResourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

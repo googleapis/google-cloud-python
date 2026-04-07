@@ -120,14 +120,11 @@ class StoragePoolType(proto.Enum):
             Storage pool type is file.
         UNIFIED (2):
             Storage pool type is unified.
-        UNIFIED_LARGE_CAPACITY (3):
-            Storage pool type is unified large capacity.
     """
 
     STORAGE_POOL_TYPE_UNSPECIFIED = 0
     FILE = 1
     UNIFIED = 2
-    UNIFIED_LARGE_CAPACITY = 3
 
 
 class HybridReplicationSchedule(proto.Enum):

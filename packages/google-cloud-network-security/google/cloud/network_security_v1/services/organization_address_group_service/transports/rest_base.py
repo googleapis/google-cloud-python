@@ -638,11 +638,11 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:getIamPolicy",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:getIamPolicy",
+                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
                 },
                 {
                     "method": "get",
@@ -655,6 +655,10 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
                 {
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/authzPolicies/*}:getIamPolicy",
                 },
             ]
             return http_options
@@ -679,12 +683,12 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:setIamPolicy",
+                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -700,6 +704,11 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/authzPolicies/*}:setIamPolicy",
                     "body": "*",
                 },
             ]
@@ -730,12 +739,12 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:testIamPermissions",
+                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
@@ -751,6 +760,11 @@ class _BaseOrganizationAddressGroupServiceRestTransport(
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/authzPolicies/*}:testIamPermissions",
                     "body": "*",
                 },
             ]

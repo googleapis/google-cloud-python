@@ -201,6 +201,11 @@ class MemorystoreTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_shared_regional_certificate_authority: gapic_v1.method.wrap_method(
+                self.get_shared_regional_certificate_authority,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.reschedule_maintenance: gapic_v1.method.wrap_method(
                 self.reschedule_maintenance,
                 default_timeout=None,
@@ -343,6 +348,18 @@ class MemorystoreTransport(abc.ABC):
         Union[
             memorystore.CertificateAuthority,
             Awaitable[memorystore.CertificateAuthority],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_shared_regional_certificate_authority(
+        self,
+    ) -> Callable[
+        [memorystore.GetSharedRegionalCertificateAuthorityRequest],
+        Union[
+            memorystore.SharedRegionalCertificateAuthority,
+            Awaitable[memorystore.SharedRegionalCertificateAuthority],
         ],
     ]:
         raise NotImplementedError()

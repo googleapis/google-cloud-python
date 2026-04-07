@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-network-security/#history
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.12.0...google-cloud-network-security-v0.13.0) (2026-04-02)
+
+
+### Documentation
+
+* Update and cleanup docs ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* Publish proto definitions for Intercept, Mirroring and SecurityProfileGroup ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Publish proto definitions for AuthzPolicy, TlsInspectionPolicy, GatewaySecurityPolicy, GatewaySecurityPolicyRule, and UrlList ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Publish proto definitions for SSG ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.11.0...google-cloud-network-security-v0.12.0) (2026-03-26)
 
 

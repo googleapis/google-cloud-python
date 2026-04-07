@@ -9025,9 +9025,7 @@ def test_get_iam_policy_rest_bad_request(
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
-        },
+        {"resource": "projects/sample1/locations/sample2/addressGroups/sample3"},
         request,
     )
 
@@ -9061,7 +9059,7 @@ def test_get_iam_policy_rest(request_type):
     )
 
     request_init = {
-        "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
+        "resource": "projects/sample1/locations/sample2/addressGroups/sample3"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -9093,9 +9091,7 @@ def test_set_iam_policy_rest_bad_request(
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
-        },
+        {"resource": "projects/sample1/locations/sample2/addressGroups/sample3"},
         request,
     )
 
@@ -9129,7 +9125,7 @@ def test_set_iam_policy_rest(request_type):
     )
 
     request_init = {
-        "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
+        "resource": "projects/sample1/locations/sample2/addressGroups/sample3"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -9161,9 +9157,7 @@ def test_test_iam_permissions_rest_bad_request(
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
-        },
+        {"resource": "projects/sample1/locations/sample2/addressGroups/sample3"},
         request,
     )
 
@@ -9197,7 +9191,7 @@ def test_test_iam_permissions_rest(request_type):
     )
 
     request_init = {
-        "resource": "projects/sample1/locations/sample2/authorizationPolicies/sample3"
+        "resource": "projects/sample1/locations/sample2/addressGroups/sample3"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.

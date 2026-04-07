@@ -19,12 +19,18 @@ from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.ces_v1beta.types import agent as gcc_agent
 from google.cloud.ces_v1beta.types import app as gcc_app
 from google.cloud.ces_v1beta.types import app_version as gcc_app_version
-from google.cloud.ces_v1beta.types import changelog, conversation, evaluation
+from google.cloud.ces_v1beta.types import (
+    changelog,
+    conversation,
+    evaluation,
+    file_context,
+)
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
@@ -95,8 +101,10 @@ __protobuf__ = proto.module(
         "CreateAppVersionRequest",
         "RestoreAppVersionRequest",
         "RestoreAppVersionResponse",
+        "GenerateAppResourceRequest",
         "GenerateAppResourceResponse",
         "QualityReport",
+        "GenerateAppResourceOperationMetadata",
         "ListChangelogsRequest",
         "ListChangelogsResponse",
         "GetChangelogRequest",
@@ -2094,6 +2102,357 @@ class RestoreAppVersionResponse(proto.Message):
     """
 
 
+class GenerateAppResourceRequest(proto.Message):
+    r"""Request message for
+    [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        agent (google.cloud.ces_v1beta.types.Agent):
+            The agent resource to be used by the LLM
+            assistant, can be empty for generating a new
+            agent.
+
+            This field is a member of `oneof`_ ``resource``.
+        tool (google.cloud.ces_v1beta.types.Tool):
+            The tool resource to be used by the LLM
+            assistant, can be empty for generating a new
+            tool.
+
+            This field is a member of `oneof`_ ``resource``.
+        toolset (google.cloud.ces_v1beta.types.Toolset):
+            The toolset resource to be used by the LLM
+            assistant, can be empty for generating a new
+            toolset.
+
+            This field is a member of `oneof`_ ``resource``.
+        parent (str):
+            Required. The resource name of the app to
+            generate the resource for.
+        refine_instructions (MutableSequence[google.cloud.ces_v1beta.types.GenerateAppResourceRequest.RefineInstructions]):
+            Optional. List of refine instructions to be
+            used to refine the resource.
+        tool_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.ToolGenerationConfig):
+            Optional. The configuration to be used to
+            generate the tool.
+        app_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.AppGenerationConfig):
+            Optional. The configuration to be used to
+            generate the agents and tools.
+        evaluation_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.EvaluationGenerationConfig):
+            Optional. The configuration to be used to
+            generate the evaluations.
+        evaluation_personas_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.EvaluationPersonasGenerationConfig):
+            Optional. The configuration to be used to
+            generate the evaluation personas.
+        quality_report_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.QualityReportGenerationConfig):
+            Optional. The configuration to be used for
+            quality report generation.
+        hill_climbing_fix_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.HillClimbingFixConfig):
+            Optional. The configuration to be used for
+            hill climbing fixes.
+    """
+
+    class RefineInstructions(proto.Message):
+        r"""The instructions to be used to refine a part of the resource.
+        The part of the resource can be specified  with a start index,
+        end index and a field mask. For example, if you want to refine a
+        part of the agent instructions you can specify the index of the
+        first character of the instructions, the index of the last
+        character of the instructions and the field mask as
+        "instructions".
+
+        Attributes:
+            start_index (int):
+                Required. The first character (inclusive) of
+                the text to refine.
+            end_index (int):
+                Required. The last character (inclusive) of
+                the text to refine.
+            field_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The field of the resource being
+                refined. Only one field is allowed per
+                RefineInstructions. If refining agent
+                instructions, the field mask should be
+                "instructions".
+            instructions (str):
+                Required. The instructions to refine the
+                resource.
+        """
+
+        start_index: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        end_index: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        field_mask: field_mask_pb2.FieldMask = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=field_mask_pb2.FieldMask,
+        )
+        instructions: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class ToolGenerationConfig(proto.Message):
+        r"""The configuration to be used to generate a tool.
+
+        Attributes:
+            context (str):
+                Optional. The context which describes the
+                tool to be generated. This can be empty if the
+                tool request & response are provided.
+            file_contexts (MutableSequence[google.cloud.ces_v1beta.types.FileContext]):
+                Optional. The files to be used as context.
+            open_api_toolset_generation_config (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig):
+                Optional. The configuration to be used to
+                generate an Open API schema.
+        """
+
+        class OpenApiToolsetGenerationConfig(proto.Message):
+            r"""The configuration to be used to generate an Open API schema.
+
+            Attributes:
+                uri (str):
+                    Required. The base uri of the tool.
+                operation_generation_configs (MutableSequence[google.cloud.ces_v1beta.types.GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig.OperationGenerationConfig]):
+                    Required. The list of operations to be added
+                    to the Open API schema.
+            """
+
+            class OperationGenerationConfig(proto.Message):
+                r"""The configuration to be used to generate an operation in the
+                Open API schema.
+
+                Attributes:
+                    method (str):
+                        Required. The uri of the tool. This should
+                        include query and path parameters if any.
+                    path (str):
+                        Required. The path of the tool to be appended
+                        to the base uri. This should include query and
+                        path parameters if any.
+                    request_json (str):
+                        Required. A sample request to the tool in
+                        JSON format. Skip if the tool does not support
+                        request body.
+                    response_json (str):
+                        Required. A sample response from the tool in
+                        JSON format.
+                """
+
+                method: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                path: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                request_json: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                )
+                response_json: str = proto.Field(
+                    proto.STRING,
+                    number=4,
+                )
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            operation_generation_configs: MutableSequence[
+                "GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig.OperationGenerationConfig"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig.OperationGenerationConfig",
+            )
+
+        context: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        file_contexts: MutableSequence[file_context.FileContext] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=file_context.FileContext,
+        )
+        open_api_toolset_generation_config: "GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="GenerateAppResourceRequest.ToolGenerationConfig.OpenApiToolsetGenerationConfig",
+        )
+
+    class AppGenerationConfig(proto.Message):
+        r"""The configuration to be used to generate the app.
+
+        Attributes:
+            context (str):
+                Optional. The context which describes the
+                requirements of the agents & tools to be
+                generated.
+            file_contexts (MutableSequence[google.cloud.ces_v1beta.types.FileContext]):
+                Optional. The files to be used as context.
+            dataset_id (str):
+                Optional. The insights dataset to be used to fetch
+                conversation data for generating the agents & tools. Format:
+                ``projects/{project}/locations/{location}/datasets/{dataset}``.
+            generate_evaluations (bool):
+                Optional. Whether to generate the evaluations
+                for the app. If true, the provided context will
+                be used to generate the evaluations data.
+            gcs_location (str):
+                Optional. The Cloud Storage location to store the generated
+                question answer data to be used by the Datastore tool. This
+                data is generated only when using conversation data as an
+                input source. The location must be in the same project as
+                the app. Format: ``gs://...``.
+        """
+
+        context: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        file_contexts: MutableSequence[file_context.FileContext] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=file_context.FileContext,
+        )
+        dataset_id: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        generate_evaluations: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        gcs_location: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    class EvaluationGenerationConfig(proto.Message):
+        r"""The configuration to be used to generate the evaluations.
+
+        Attributes:
+            dataset_id (str):
+                Optional. The insights dataset to be used to fetch
+                conversation data for generating the evaluations. Format:
+                ``projects/{project}/locations/{location}/datasets/{dataset}``.
+        """
+
+        dataset_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class EvaluationPersonasGenerationConfig(proto.Message):
+        r"""The configuration to be used to generate the evaluation
+        personas.
+
+        """
+
+    class QualityReportGenerationConfig(proto.Message):
+        r"""The configuration to be used for quality report generation.
+
+        Attributes:
+            evaluation_run (str):
+                Required. The evaluation run used to inform
+                quality report analysis.
+        """
+
+        evaluation_run: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class HillClimbingFixConfig(proto.Message):
+        r"""The configuration to be used for hill climbing fixes.
+
+        Attributes:
+            quality_report (google.cloud.ces_v1beta.types.QualityReport):
+                Required. The quality report used to inform
+                the instruction following fix.
+        """
+
+        quality_report: "QualityReport" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="QualityReport",
+        )
+
+    agent: gcc_agent.Agent = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="resource",
+        message=gcc_agent.Agent,
+    )
+    tool: gcc_tool.Tool = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="resource",
+        message=gcc_tool.Tool,
+    )
+    toolset: gcc_toolset.Toolset = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="resource",
+        message=gcc_toolset.Toolset,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    refine_instructions: MutableSequence[RefineInstructions] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=RefineInstructions,
+    )
+    tool_generation_config: ToolGenerationConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=ToolGenerationConfig,
+    )
+    app_generation_config: AppGenerationConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=AppGenerationConfig,
+    )
+    evaluation_generation_config: EvaluationGenerationConfig = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=EvaluationGenerationConfig,
+    )
+    evaluation_personas_generation_config: EvaluationPersonasGenerationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=EvaluationPersonasGenerationConfig,
+        )
+    )
+    quality_report_generation_config: QualityReportGenerationConfig = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=QualityReportGenerationConfig,
+    )
+    hill_climbing_fix_config: HillClimbingFixConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=HillClimbingFixConfig,
+    )
+
+
 class GenerateAppResourceResponse(proto.Message):
     r"""Response message for
     [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
@@ -2340,6 +2699,99 @@ class QualityReport(proto.Message):
         proto.MESSAGE,
         number=3,
         message=Issue,
+    )
+
+
+class GenerateAppResourceOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+
+    Attributes:
+        generation_type (google.cloud.ces_v1beta.types.GenerateAppResourceOperationMetadata.GenerationType):
+            Output only. The type of the operation.
+        message (str):
+            Output only. Human-readable status of the
+            operation, if any.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. The resource name of the app that the operation
+            is associated with. Format:
+            ``projects/{project}/locations/{location}/apps/{app}``.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. Error messages from the resource
+            generation process.
+    """
+
+    class GenerationType(proto.Enum):
+        r"""The type of the generation operation.
+
+        Values:
+            GENERATION_TYPE_UNSPECIFIED (0):
+                Unspecified operation type.
+            AGENT_RESTRUCTURE (1):
+                Agent instruction restructure type.
+            AGENT_REFINE (2):
+                Agent instruction refinement type.
+            AGENT_CREATE (3):
+                Agent creation from type.
+            TOOL_CREATE (4):
+                Tool creation type.
+            SCENARIO_CREATE (5):
+                Scenario creation type.
+            SCENARIO_CREATE_FROM_TRANSCRIPTS (7):
+                Scenario creation from transcripts type.
+            EVALUATION_PERSONA_CREATE (6):
+                Evaluation persona generation type.
+            QUALITY_REPORT_CREATE (8):
+                Quality report generation type.
+            INSTRUCTION_FOLLOWING_FIX (9):
+                Instruction following fix type (used for hill
+                climbing fixes).
+        """
+
+        GENERATION_TYPE_UNSPECIFIED = 0
+        AGENT_RESTRUCTURE = 1
+        AGENT_REFINE = 2
+        AGENT_CREATE = 3
+        TOOL_CREATE = 4
+        SCENARIO_CREATE = 5
+        SCENARIO_CREATE_FROM_TRANSCRIPTS = 7
+        EVALUATION_PERSONA_CREATE = 6
+        QUALITY_REPORT_CREATE = 8
+        INSTRUCTION_FOLLOWING_FIX = 9
+
+    generation_type: GenerationType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=GenerationType,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=status_pb2.Status,
     )
 
 

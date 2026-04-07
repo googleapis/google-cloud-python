@@ -105,6 +105,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -360,6 +365,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -613,6 +623,11 @@
             "ExportApp": {
               "methods": [
                 "export_app"
+              ]
+            },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
               ]
             },
             "GetAgent": {
