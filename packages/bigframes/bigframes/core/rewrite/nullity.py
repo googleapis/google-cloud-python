@@ -14,8 +14,9 @@
 
 from __future__ import annotations
 
-from bigframes.core import nodes
 import dataclasses
+
+from bigframes.core import nodes
 
 
 def simplify_join(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
