@@ -712,7 +712,8 @@ tests:
       - Where:
           - FunctionExpression.equal:
               - Field: value
-              - Constant: null
+              - Constant:
+                  value: null
       - Select:
         - AliasedExpression:
             - FunctionExpression.if_null:
