@@ -65,7 +65,9 @@ __protobuf__ = proto.module(
         "InspectConfig",
         "ByteContentItem",
         "ContentItem",
+        "ContentMetadata",
         "Table",
+        "KeyValueMetadataProperty",
         "InspectResult",
         "Finding",
         "Location",
@@ -684,11 +686,14 @@ class MetadataType(proto.Enum):
             Storage.
         CONTENT_METADATA (3):
             Metadata extracted from the files.
+        CLIENT_PROVIDED_METADATA (4):
+            Metadata provided by the client.
     """
 
     METADATATYPE_UNSPECIFIED = 0
     STORAGE_METADATA = 2
     CONTENT_METADATA = 3
+    CLIENT_PROVIDED_METADATA = 4
 
 
 class InfoTypeSupportedBy(proto.Enum):
@@ -1630,6 +1635,8 @@ class ContentItem(proto.Message):
             ``data``.
 
             This field is a member of `oneof`_ ``data_item``.
+        content_metadata (google.cloud.dlp_v2.types.ContentMetadata):
+            User provided metadata for the content.
     """
 
     value: str = proto.Field(
@@ -1648,6 +1655,27 @@ class ContentItem(proto.Message):
         number=5,
         oneof="data_item",
         message="ByteContentItem",
+    )
+    content_metadata: "ContentMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ContentMetadata",
+    )
+
+
+class ContentMetadata(proto.Message):
+    r"""Metadata on content to be scanned.
+
+    Attributes:
+        properties (MutableSequence[google.cloud.dlp_v2.types.KeyValueMetadataProperty]):
+            User provided key-value pairs of content
+            metadata.
+    """
+
+    properties: MutableSequence["KeyValueMetadataProperty"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="KeyValueMetadataProperty",
     )
 
 
@@ -1687,6 +1715,26 @@ class Table(proto.Message):
         proto.MESSAGE,
         number=2,
         message=Row,
+    )
+
+
+class KeyValueMetadataProperty(proto.Message):
+    r"""A key-value pair in the Metadata.
+
+    Attributes:
+        key (str):
+            The key of the property.
+        value (str):
+            The value of the property.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
