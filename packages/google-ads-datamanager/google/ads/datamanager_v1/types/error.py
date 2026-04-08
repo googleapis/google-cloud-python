@@ -296,6 +296,12 @@ class ErrorReason(proto.Enum):
         MEMBERSHIP_DURATION_TOO_LONG (99):
             The user list membership duration is too
             long.
+        INVALID_MERCHANT_ID (100):
+            The ``merchant_id`` field is not valid.
+        EU_POLITICAL_ADVERTISING_DECLARATION_REQUIRED (101):
+            The customer contains non-exempt campaigns
+            without the EU political advertising
+            declaration.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -398,6 +404,8 @@ class ErrorReason(proto.Enum):
     UNSUPPORTED_ACCOUNT_TYPES_FOR_USER_LIST_TYPE = 97
     UNSUPPORTED_ACCOUNT_TYPE_FOR_PARTNER_LINK = 98
     MEMBERSHIP_DURATION_TOO_LONG = 99
+    INVALID_MERCHANT_ID = 100
+    EU_POLITICAL_ADVERTISING_DECLARATION_REQUIRED = 101
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

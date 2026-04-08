@@ -14,7 +14,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Sequence, TypeVar, Type
+
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
@@ -25,6 +26,8 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Expression,
     Field,
     Selectable,
+    FunctionExpression,
+    _PipelineValueExpression,
 )
 from google.cloud.firestore_v1.types.pipeline import (
     StructuredPipeline as StructuredPipeline_pb,
@@ -35,6 +38,8 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient
     from google.cloud.firestore_v1.client import Client
 
+_T = TypeVar("_T", bound="_BasePipeline")
+
 
 class _BasePipeline:
     """
@@ -44,7 +49,7 @@ class _BasePipeline:
     Use `client.pipeline()` to create pipeline instances.
     """
 
-    def __init__(self, client: Client | AsyncClient):
+    def __init__(self, client: Client | AsyncClient | None):
         """
         Initializes a new pipeline.
 
@@ -59,8 +64,8 @@ class _BasePipeline:
 
     @classmethod
     def _create_with_stages(
-        cls, client: Client | AsyncClient, *stages
-    ) -> _BasePipeline:
+        cls: Type[_T], client: Client | AsyncClient | None, *stages
+    ) -> _T:
         """
         Initializes a new pipeline with the given stages.
 
@@ -89,6 +94,51 @@ class _BasePipeline:
             pipeline={"stages": [s._to_pb() for s in self.stages]},
             options=options,
         )
+
+    def to_array_expression(self) -> Expression:
+        """
+        Converts this Pipeline into an expression that evaluates to an array of results.
+        Used for embedding 1:N subqueries into stages like `addFields`.
+
+        Example:
+            >>> # Get a list of all reviewer names for each book
+            >>> db.pipeline().collection("books").define(Field.of("id").as_("book_id")).add_fields(
+            ...     db.pipeline().collection("reviews")
+            ...         .where(Field.of("book_id").equal(Variable("book_id")))
+            ...         .select(Field.of("reviewer").as_("name"))
+            ...         .to_array_expression().as_("reviewers")
+            ... )
+
+        Returns:
+            An :class:`Expression` representing the execution of this pipeline.
+        """
+        return FunctionExpression("array", [_PipelineValueExpression(self)])
+
+    def to_scalar_expression(self) -> Expression:
+        """
+        Converts this Pipeline into an expression that evaluates to a single scalar result.
+        Used for 1:1 lookups or Aggregations when the subquery is expected to return a single value or object.
+
+        **Result Unwrapping:**
+        For simpler access, scalar subqueries producing a single field automatically unwrap that value to the
+        top level, ignoring the inner alias. If the subquery returns multiple fields, they are preserved as a map.
+
+        Example:
+            >>> # Calculate average rating for each restaurant using a subquery
+            >>> db.pipeline().collection("restaurants").define(Field.of("id").as_("rid")).add_fields(
+            ...     db.pipeline().collection("reviews")
+            ...         .where(Field.of("restaurant_id").equal(Variable("rid")))
+            ...         .aggregate(AggregateFunction.average("rating").as_("value"))
+            ...         .to_scalar_expression().as_("average_rating")
+            ... )
+
+        **Runtime Validation:**
+        The runtime will validate that the result set contains exactly one item. It returns an error if the result has more than one item, and evaluates to `null` if the pipeline has zero results.
+
+        Returns:
+            An :class:`Expression` representing the execution of this pipeline.
+        """
+        return FunctionExpression("scalar", [_PipelineValueExpression(self)])
 
     def _append(self, new_stage):
         """
@@ -391,9 +441,17 @@ class _BasePipeline:
         Args:
             other: The other `Pipeline` whose results will be unioned with this one.
 
+        Raises:
+            ValueError: If the `other` pipeline is a relative pipeline (e.g. created without a client).
+
         Returns:
             A new Pipeline object with this stage appended to the stage list
         """
+        if other._client is None:
+            raise ValueError(
+                "Union only supports combining root pipelines, doesn't support relative scope Pipeline "
+                "like relative subcollection pipeline"
+            )
         return self._append(stages.Union(other))
 
     def unnest(
@@ -610,3 +668,53 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.Distinct(*fields))
+
+    def define(self, *aliased_expressions: AliasedExpression) -> "_BasePipeline":
+        """
+        Binds one or more expressions to Variables that can be accessed in subsequent stages
+        or inner subqueries using `Variable`.
+
+        Each Variable is defined using an :class:`AliasedExpression`, which pairs an expression with
+        a name (alias).
+
+        Example:
+            >>> db.pipeline().collection("products").define(
+            ...     Field.of("price").multiply(0.9).as_("discountedPrice"),
+            ...     Field.of("stock").add(10).as_("newStock")
+            ... ).where(
+            ...     Variable("discountedPrice").less_than(100)
+            ... ).select(Field.of("name"), Variable("newStock"))
+
+        Args:
+            *aliased_expressions: One or more :class:`AliasedExpression` defining the Variable names and values.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list.
+        """
+        return self._append(stages.Define(*aliased_expressions))
+
+
+class SubPipeline(_BasePipeline):
+    """
+    A pipeline scoped to a subcollection, created without a database client.
+    Cannot be executed directly; it must be used as a subquery within another pipeline.
+    """
+
+    _EXECUTE_ERROR_MSG = (
+        "This pipeline was created without a database (e.g., as a subcollection pipeline) and "
+        "cannot be executed directly. It can only be used as part of another pipeline."
+    )
+
+    def execute(self, *args, **kwargs):
+        """
+        Raises:
+            RuntimeError: Always, as a subcollection pipeline cannot be executed directly.
+        """
+        raise RuntimeError(self._EXECUTE_ERROR_MSG)
+
+    def stream(self, *args, **kwargs):
+        """
+        Raises:
+            RuntimeError: Always, as a subcollection pipeline cannot be streamed directly.
+        """
+        raise RuntimeError(self._EXECUTE_ERROR_MSG)

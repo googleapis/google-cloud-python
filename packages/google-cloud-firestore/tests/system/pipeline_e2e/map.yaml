@@ -162,7 +162,8 @@ tests:
             - FunctionExpression.map_set:
                 - Field: awards
                 - "hugo"
-                - Constant: null
+                - Constant:
+                    value: null
             - "awards_set"
     assert_results:
       - awards_set:
@@ -450,37 +451,55 @@ tests:
       - award_entries:
           k: nebula
           v: true
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - args:
-          - functionValue:
-              args:
-              - fieldReferenceValue: title
-              - stringValue: "Dune"
-              name: equal
-          name: where
-        - args:
-          - mapValue:
-              fields:
-                award_entries:
-                  functionValue:
-                    name: map_entries
-                    args:
-                    - fieldReferenceValue: awards
-          name: select
-        - args:
-          - fieldReferenceValue: award_entries
-          - fieldReferenceValue: award_entries
-          name: unnest
-        - args:
-          - mapValue:
-              fields:
-                direction:
-                  stringValue: ascending
-                expression:
-                  fieldReferenceValue: award_entries.k
-          name: sort
+  - description: testGetField
+    pipeline:
+      - Collection: books
+      - Sort:
+        - Ordering:
+          - Field: published
+          - DESCENDING
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Field: awards
+                  - hugo
+              - "hugoAward"
+          - Field: title
+      - Where:
+          - FunctionExpression.equal:
+              - Field: hugoAward
+              - Constant: true
+  - description: testGetFieldWithField
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - AddFields:
+        - AliasedExpression:
+            - Constant: "hugo"
+            - "award_name"
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Field: awards
+                  - Field: award_name
+              - "hugoAward"
+          - Field: title
+    assert_results:
+      - hugoAward: true
+        title: Dune
+  - description: testGetFieldWithMap
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.get_field:
+                  - Map:
+                      elements: {"foo": "bar"}
+                  - "foo"
+              - "foo_value"
+    assert_results:
+      - foo_value: "bar"

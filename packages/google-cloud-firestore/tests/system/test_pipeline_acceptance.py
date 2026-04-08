@@ -26,7 +26,7 @@ import pytest
 import yaml
 from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
-from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB
+from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
 from google.cloud.firestore import AsyncClient, Client
 from google.cloud.firestore_v1 import pipeline_expressions
@@ -260,6 +260,18 @@ def _parse_expressions(client, yaml_element: Any):
             # find Pipeline objects for Union expressions
             other_ppl = yaml_element["Pipeline"]
             return parse_pipeline(client, other_ppl)
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_array_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_array_expression"]
+            return parse_pipeline(client, other_ppl).to_array_expression()
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_scalar_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_scalar_expression"]
+            return parse_pipeline(client, other_ppl).to_scalar_expression()
         else:
             # otherwise, return dict
             return {
@@ -288,6 +300,8 @@ def _apply_yaml_args_to_callable(callable_obj, client, yaml_args):
     ):
         # yaml has an array of arguments. Treat as args
         return callable_obj(*_parse_expressions(client, yaml_args))
+    elif yaml_args is None:
+        return callable_obj()
     else:
         # yaml has a single argument
         return callable_obj(_parse_expressions(client, yaml_args))
@@ -340,7 +354,7 @@ def _parse_yaml_types(data):
         return {key: _parse_yaml_types(value) for key, value in data.items()}
     if isinstance(data, list):
         # detect vectors
-        if all([isinstance(d, float) for d in data]):
+        if len(data) > 0 and all([isinstance(d, float) for d in data]):
             return Vector(data)
         else:
             return [_parse_yaml_types(value) for value in data]
@@ -364,21 +378,23 @@ def client():
     client = Client(project=FIRESTORE_PROJECT, database=FIRESTORE_ENTERPRISE_DB)
     data = yaml_loader("data", attach_file_name=False)
     to_delete = []
-    try:
-        # setup data
-        batch = client.batch()
-        for collection_name, documents in data.items():
-            collection_ref = client.collection(collection_name)
-            for document_id, document_data in documents.items():
-                document_ref = collection_ref.document(document_id)
-                to_delete.append(document_ref)
-                batch.set(document_ref, _parse_yaml_types(document_data))
-        batch.commit()
-        yield client
-    finally:
-        # clear data
-        for document_ref in to_delete:
-            document_ref.delete()
+
+    with system_test_lock(client, lock_name="pipeline_e2e_lock"):
+        try:
+            # setup data
+            batch = client.batch()
+            for collection_name, documents in data.items():
+                collection_ref = client.collection(collection_name)
+                for document_id, document_data in documents.items():
+                    document_ref = collection_ref.document(document_id)
+                    to_delete.append(document_ref)
+                    batch.set(document_ref, _parse_yaml_types(document_data))
+            batch.commit()
+            yield client
+        finally:
+            # clear data
+            for document_ref in to_delete:
+                document_ref.delete()
 
 
 @pytest.fixture(scope="module")

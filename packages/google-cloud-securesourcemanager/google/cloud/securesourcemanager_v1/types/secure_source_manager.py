@@ -107,7 +107,7 @@ class Instance(proto.Message):
 
     Attributes:
         name (str):
-            Optional. A unique identifier for an instance. The name
+            Identifier. A unique identifier for an instance. The name
             should be of the format:
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``
 
@@ -125,7 +125,11 @@ class Instance(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update timestamp.
         labels (MutableMapping[str, str]):
-            Optional. Labels as key value pairs.
+            Optional. Labels as key value pairs. Keys and values can
+            contain only lowercase letters, numeric characters,
+            underscores, and dashes. For more information, see
+            `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/best-practices-labels#label_encoding>`__.
         private_config (google.cloud.securesourcemanager_v1.types.Instance.PrivateConfig):
             Optional. Private settings for private
             instance.
@@ -247,7 +251,49 @@ class Instance(proto.Message):
                 setting up PSC connections. Instance host
                 project is automatically allowed and does not
                 need to be included in this list.
+            custom_host_config (google.cloud.securesourcemanager_v1.types.Instance.PrivateConfig.CustomHostConfig):
+                Optional. Custom host config for the
+                instance.
         """
+
+        class CustomHostConfig(proto.Message):
+            r"""Custom host config for the instance.
+
+            Attributes:
+                html (str):
+                    Required. The custom UI hostname for the
+                    instance, e.g.,
+                    "git.source.internal.mycompany.com".
+                api (str):
+                    Required. The custom API hostname for the
+                    instance, e.g.,
+                    "api.source.internal.mycompany.com".
+                git_ssh (str):
+                    Required. The custom git ssh hostname for the
+                    instance, e.g.,
+                    "ssh.source.internal.mycompany.com".
+                git_http (str):
+                    Required. The custom git http hostname for
+                    the instance, e.g.,
+                    "git.source.internal.mycompany.com".
+            """
+
+            html: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            api: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            git_ssh: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            git_http: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
 
         is_private: bool = proto.Field(
             proto.BOOL,
@@ -268,6 +314,11 @@ class Instance(proto.Message):
         psc_allowed_projects: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=6,
+        )
+        custom_host_config: "Instance.PrivateConfig.CustomHostConfig" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message="Instance.PrivateConfig.CustomHostConfig",
         )
 
     class WorkforceIdentityFederationConfig(proto.Message):
@@ -342,7 +393,7 @@ class Repository(proto.Message):
 
     Attributes:
         name (str):
-            Optional. A unique identifier for a repository. The name
+            Identifier. A unique identifier for a repository. The name
             should be of the format:
             ``projects/{project}/locations/{location_id}/repositories/{repository_id}``
         description (str):
@@ -787,7 +838,7 @@ class BranchRule(proto.Message):
 
     Attributes:
         name (str):
-            Optional. A unique identifier for a BranchRule. The name
+            Identifier. A unique identifier for a BranchRule. The name
             should be of the format:
             ``projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}``
         uid (str):
@@ -825,6 +876,9 @@ class BranchRule(proto.Message):
         minimum_approvals_count (int):
             Optional. The minimum number of approvals
             required for the branch rule to be matched.
+        require_code_owner_approval (bool):
+            Optional. Determines if code owners must
+            approve before merging to the branch.
         require_comments_resolved (bool):
             Optional. Determines if require comments
             resolved before merging to the branch.
@@ -899,6 +953,10 @@ class BranchRule(proto.Message):
         proto.INT32,
         number=11,
     )
+    require_code_owner_approval: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
     require_comments_resolved: bool = proto.Field(
         proto.BOOL,
         number=12,
@@ -924,9 +982,9 @@ class PullRequest(proto.Message):
 
     Attributes:
         name (str):
-            Output only. A unique identifier for a PullRequest. The
-            number appended at the end is generated by the server.
-            Format:
+            Output only. Identifier. A unique identifier for a
+            PullRequest. The number appended at the end is generated by
+            the server. Format:
             ``projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request_id}``
         title (str):
             Required. The pull request title.
@@ -1412,16 +1470,17 @@ class ListInstancesRequest(proto.Message):
             Required. Parent value for
             ListInstancesRequest.
         page_size (int):
-            Requested page size. Server may return fewer
-            items than requested. If unspecified, server
-            will pick an appropriate default.
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
         page_token (str):
-            A token identifying a page of results the
-            server should return.
+            Optional. A token identifying a page of
+            results the server should return.
         filter (str):
-            Filter for filtering results.
+            Optional. Filter for filtering results.
         order_by (str):
-            Hint for how to order the results.
+            Optional. Hint for how to order the results.
     """
 
     parent: str = proto.Field(
@@ -1571,6 +1630,9 @@ class DeleteInstanceRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, will force the
+            deletion of the instance.
     """
 
     name: str = proto.Field(
@@ -1580,6 +1642,10 @@ class DeleteInstanceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -1654,13 +1720,13 @@ class ListRepositoriesRequest(proto.Message):
             Required. Parent value for
             ListRepositoriesRequest.
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
-            A token identifying a page of results the
-            server should return.
+            Optional. A token identifying a page of
+            results the server should return.
         filter (str):
             Optional. Filter results.
         instance (str):
@@ -1837,10 +1903,10 @@ class ListHooksRequest(proto.Message):
         parent (str):
             Required. Parent value for ListHooksRequest.
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -1940,7 +2006,7 @@ class UpdateHookRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
+            Optional. Field mask is used to specify the fields to be
             overwritten in the hook resource by the update. The fields
             specified in the update_mask are relative to the resource,
             not the full request. A field will be overwritten if it is
@@ -2027,9 +2093,13 @@ class ListBranchRulesRequest(proto.Message):
         parent (str):
 
         page_size (int):
-
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
-
+            Optional. A token identifying a page of
+            results the server should return.
     """
 
     parent: str = proto.Field(
@@ -2082,7 +2152,7 @@ class UpdateBranchRuleRequest(proto.Message):
             (https://google.aip.dev/163, for declarative
             friendly)
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
+            Optional. Field mask is used to specify the fields to be
             overwritten in the branchRule resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
@@ -2182,10 +2252,10 @@ class ListPullRequestsRequest(proto.Message):
             Format:
             ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -2316,10 +2386,10 @@ class ListPullRequestFileDiffsRequest(proto.Message):
             Required. The pull request to list file diffs for. Format:
             ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -2412,10 +2482,10 @@ class ListIssuesRequest(proto.Message):
             Required. The repository in which to list issues. Format:
             ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -2762,9 +2832,9 @@ class ListPullRequestCommentsRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
         page_size (int):
             Optional. Requested page size. If
-            unspecified, at most 100 pull request comments
-            will be returned. The maximum value is 100;
-            values above 100 will be coerced to 100.
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -3082,10 +3152,10 @@ class ListIssueCommentsRequest(proto.Message):
             Required. The issue in which to list the comments. Format:
             ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. If
-            unspecified, server will pick an appropriate
-            default.
+            Optional. Requested page size. If
+            unspecified, a default size of 30 will be used.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.

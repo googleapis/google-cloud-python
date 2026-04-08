@@ -1520,6 +1520,16 @@ class TestExpressionessionMethods:
         infix_instance = arg1.vector_length()
         assert infix_instance == instance
 
+    def test_get_field(self):
+        arg1 = self._make_arg("Map")
+        arg2 = self._make_arg("Key")
+        instance = Expression.get_field(arg1, arg2)
+        assert instance.name == "get_field"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Map.get_field(Key)"
+        infix_instance = arg1.get_field(arg2)
+        assert infix_instance == instance
+
     def test_add(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")

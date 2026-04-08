@@ -263,13 +263,10 @@ class GeocodeResult(proto.Message):
 
     Attributes:
         place (str):
-            The fully qualified place identifier for this
-            result. In the format of
-            "//places.googleapis.com/places/{placeID}". See
-            https://developers.google.com/maps/documentation/places/web-service/place-id.
-            for more details.
+            This Place's resource name, in ``places/{placeId}`` format.
+            Can be used to look up the Place.
         place_id (str):
-            The place ID for this result.
+            The unique identifier of a place.
         location (google.type.latlng_pb2.LatLng):
             The latlng of this address.
         granularity (google.maps.geocode_v4.types.GeocodeResult.Granularity):

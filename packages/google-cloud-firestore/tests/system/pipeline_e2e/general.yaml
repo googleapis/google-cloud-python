@@ -776,3 +776,10 @@ tests:
                     - fieldReferenceValue: __name__
                     name: storage_size
           name: select
+  - description: union_subpipeline_error
+    pipeline:
+      - Collection: books
+      - Union:
+        - Pipeline:
+          - Subcollection: reviews
+    assert_error: ".*start of a nested pipeline.*"

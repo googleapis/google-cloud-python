@@ -38,6 +38,8 @@ from .agent_service import (
     DeleteToolsetRequest,
     ExportAppRequest,
     ExportAppResponse,
+    GenerateAppResourceOperationMetadata,
+    GenerateAppResourceRequest,
     GenerateAppResourceResponse,
     GetAgentRequest,
     GetAppRequest,
@@ -241,6 +243,9 @@ from .fakes import (
     EvaluationToolCallBehaviour,
     ToolFakeConfig,
 )
+from .file_context import (
+    FileContext,
+)
 from .file_search_tool import (
     FileSearchTool,
 )
@@ -357,6 +362,8 @@ __all__ = (
     "DeleteToolsetRequest",
     "ExportAppRequest",
     "ExportAppResponse",
+    "GenerateAppResourceOperationMetadata",
+    "GenerateAppResourceRequest",
     "GenerateAppResourceResponse",
     "GetAgentRequest",
     "GetAppRequest",
@@ -521,6 +528,7 @@ __all__ = (
     "CodeBlock",
     "ToolFakeConfig",
     "EvaluationToolCallBehaviour",
+    "FileContext",
     "FileSearchTool",
     "GoldenRunMethod",
     "GoogleSearchTool",

@@ -1,5 +1,15 @@
 # Code owners file.
 # This file controls who is tagged for review for any given pull request.
+#
+# To add a new package or team:
+# 1. Add the directory path below the default catch-all rule (`*`).
+# 2. Append the new team AFTER the default cloud-sdk teams.
+# 3. The new team must have "Write" access to google-cloud-python
+#    See go/cloud-sdk-googleapis#aod for instructions on requesting
+#    access to modify repo settings.
 
 # Default owner for all directories not owned by others
 *                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
+
+/packages/bigframes/                          @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-auth/                        @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/cloud-sdk-auth-team @googleapis/aion-team
