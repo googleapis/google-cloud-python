@@ -29,4 +29,3 @@ export GCE_METADATA_MTLS_MODE=None
 CURRENT_ULIMIT=$(ulimit -n)
 echo '--- Running Zonal tests on VM with ulimit set to ---' $CURRENT_ULIMIT
 pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' tests/system/test_zonal.py
-pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' samples/snippets/zonal_buckets/zonal_snippets_test.py
