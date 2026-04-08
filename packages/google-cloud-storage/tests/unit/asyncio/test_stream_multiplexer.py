@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import grpc
 from unittest.mock import AsyncMock
 
 import pytest
@@ -196,7 +197,7 @@ class TestRecvLoop:
         mock_stream = AsyncMock()
         resp1 = _make_response(read_id=10, data=b"hello")
         resp2 = _make_response(read_id=20, data=b"world")
-        mock_stream.recv = AsyncMock(side_effect=[resp1, resp2, None])
+        mock_stream.recv = AsyncMock(side_effect=[resp1, resp2, grpc.aio.EOF])
 
         mux = _StreamMultiplexer(mock_stream)
         q1 = mux.register({10})
@@ -222,7 +223,7 @@ class TestRecvLoop:
         # Given a multiplexer with multiple read IDs mapped to the same queue
         mock_stream = AsyncMock()
         resp = _make_multi_range_response([10, 11])
-        mock_stream.recv = AsyncMock(side_effect=[resp, None])
+        mock_stream.recv = AsyncMock(side_effect=[resp, grpc.aio.EOF])
 
         mux = _StreamMultiplexer(mock_stream)
         queue = mux.register({10, 11})
@@ -244,7 +245,7 @@ class TestRecvLoop:
         metadata_resp = _storage_v2.BidiReadObjectResponse(
             read_handle=_storage_v2.BidiReadHandle(handle=b"handle")
         )
-        mock_stream.recv = AsyncMock(side_effect=[metadata_resp, None])
+        mock_stream.recv = AsyncMock(side_effect=[metadata_resp, grpc.aio.EOF])
 
         mux = _StreamMultiplexer(mock_stream)
         q1 = mux.register({10})
@@ -263,7 +264,7 @@ class TestRecvLoop:
     async def test_stream_end_sends_sentinel_to_all_queues(self):
         # Given a multiplexer with multiple registered queues and a stream that ends immediately
         mock_stream = AsyncMock()
-        mock_stream.recv = AsyncMock(return_value=None)
+        mock_stream.recv = AsyncMock(return_value=grpc.aio.EOF)
 
         mux = _StreamMultiplexer(mock_stream)
         q1 = mux.register({10})
@@ -328,7 +329,7 @@ class TestRecvLoop:
         # Given a multiplexer and a response with an unknown read ID
         mock_stream = AsyncMock()
         resp = _make_response(read_id=999)
-        mock_stream.recv = AsyncMock(side_effect=[resp, None])
+        mock_stream.recv = AsyncMock(side_effect=[resp, grpc.aio.EOF])
 
         mux = _StreamMultiplexer(mock_stream)
         queue = mux.register({10})

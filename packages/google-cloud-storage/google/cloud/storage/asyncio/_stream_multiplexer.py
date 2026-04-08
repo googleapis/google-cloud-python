@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import asyncio
+import grpc
 import logging
 from typing import Awaitable, Callable, Dict, Optional, Set
 
@@ -121,7 +122,7 @@ class _StreamMultiplexer:
         try:
             while True:
                 response = await self._stream.recv()
-                if response is None:
+                if response == grpc.aio.EOF:
                     sentinel = _StreamEnd()
                     await asyncio.gather(
                         *(
