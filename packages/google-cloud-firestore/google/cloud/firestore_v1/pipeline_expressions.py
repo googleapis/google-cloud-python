@@ -3012,6 +3012,8 @@ class DocumentMatches(BooleanExpression):
             [Expression._cast_to_expr_or_convert_to_constant(query)],
             use_infix_repr=False,
         )
+
+
 class Variable(Expression):
     """
     Creates an expression that retrieves the value of a variable bound via `Pipeline.define`.
