@@ -24,6 +24,7 @@ from google.rpc import status_pb2
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
@@ -107,6 +108,7 @@ class AsyncAppendableObjectWriter:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
+        blob: Optional[Blob] = None,
         generation: Optional[int] = None,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
@@ -185,6 +187,7 @@ class AsyncAppendableObjectWriter:
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
+        self.blob = blob
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -297,6 +300,7 @@ class AsyncAppendableObjectWriter:
                 client=self.client.grpc_client,
                 bucket_name=self.bucket_name,
                 object_name=self.object_name,
+                blob=self.blob,
                 generation_number=self.generation,
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
