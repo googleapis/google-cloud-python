@@ -23,7 +23,7 @@ from typing import Generic, TypeVar, TYPE_CHECKING
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1._helpers import DOCUMENT_PATH_DELIMITER
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline, SubPipeline
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient
@@ -168,6 +168,32 @@ class PipelineSource(Generic[PipelineType]):
             *documents: One or more documents to be returned by this stage. Each can be a `dict`
                        of values of `Expression` or `CONSTANT_TYPE` types.
         Returns:
-            A new Pipeline object with this stage appended to the stage list.
+            A new pipeline instance targeting the specified literal documents
         """
         return self._create_pipeline(stages.Literals(*documents))
+
+    @staticmethod
+    def subcollection(path: str) -> SubPipeline:
+        """
+        Initializes a pipeline scoped to a subcollection.
+
+        This method allows you to start a new pipeline that operates on a subcollection of the
+        current document. It is intended to be used as a subquery.
+
+        **Note:** A pipeline created with `subcollection` cannot be executed directly using
+        `execute()`. It must be used within a parent pipeline.
+
+        Example:
+            >>> db.pipeline().collection("books").add_fields(
+            ...     PipelineSource.subcollection("reviews")
+            ...         .aggregate(AggregateFunction.average("rating").as_("avg_rating"))
+            ...         .to_scalar_expression().as_("average_rating")
+            ... )
+
+        Args:
+            path: The path of the subcollection.
+
+        Returns:
+            A new pipeline instance targeting the specified subcollection
+        """
+        return SubPipeline._create_with_stages(None, stages.Subcollection(path))

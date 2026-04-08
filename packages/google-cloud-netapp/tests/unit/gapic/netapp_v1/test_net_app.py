@@ -48,6 +48,7 @@ import google.auth
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
     client_options,
@@ -82,6 +83,7 @@ from google.cloud.netapp_v1.types import (
     common,
     host_group,
     kms,
+    ontap,
     quota_rule,
     replication,
     snapshot,
@@ -2248,6 +2250,7 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
             cold_tier_size_used_gib=2416,
             hot_tier_size_used_gib=2329,
             type_=common.StoragePoolType.FILE,
+            mode=storage_pool.Mode.DEFAULT,
         )
         response = client.get_storage_pool(request)
 
@@ -2289,6 +2292,7 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
     assert response.cold_tier_size_used_gib == 2416
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
+    assert response.mode == storage_pool.Mode.DEFAULT
 
 
 def test_get_storage_pool_non_empty_request_with_auto_populated_field():
@@ -2446,6 +2450,7 @@ async def test_get_storage_pool_async(
                 cold_tier_size_used_gib=2416,
                 hot_tier_size_used_gib=2329,
                 type_=common.StoragePoolType.FILE,
+                mode=storage_pool.Mode.DEFAULT,
             )
         )
         response = await client.get_storage_pool(request)
@@ -2488,6 +2493,7 @@ async def test_get_storage_pool_async(
     assert response.cold_tier_size_used_gib == 2416
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
+    assert response.mode == storage_pool.Mode.DEFAULT
 
 
 @pytest.mark.asyncio
@@ -6063,6 +6069,272 @@ async def test_revert_volume_field_headers_async():
             operations_pb2.Operation(name="operations/op")
         )
         await client.revert_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.EstablishVolumePeeringRequest,
+        dict,
+    ],
+)
+def test_establish_volume_peering(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = volume.EstablishVolumePeeringRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_establish_volume_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = volume.EstablishVolumePeeringRequest(
+        name="name_value",
+        peer_cluster_name="peer_cluster_name_value",
+        peer_svm_name="peer_svm_name_value",
+        peer_volume_name="peer_volume_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.establish_volume_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.EstablishVolumePeeringRequest(
+            name="name_value",
+            peer_cluster_name="peer_cluster_name_value",
+            peer_svm_name="peer_svm_name_value",
+            peer_volume_name="peer_volume_name_value",
+        )
+
+
+def test_establish_volume_peering_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.establish_volume_peering
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.establish_volume_peering
+        ] = mock_rpc
+        request = {}
+        client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.establish_volume_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_establish_volume_peering_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.establish_volume_peering
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.establish_volume_peering
+        ] = mock_rpc
+
+        request = {}
+        await client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.establish_volume_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_establish_volume_peering_async(
+    transport: str = "grpc_asyncio", request_type=volume.EstablishVolumePeeringRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = volume.EstablishVolumePeeringRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_establish_volume_peering_async_from_dict():
+    await test_establish_volume_peering_async(request_type=dict)
+
+
+def test_establish_volume_peering_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.EstablishVolumePeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_establish_volume_peering_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.EstablishVolumePeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.establish_volume_peering(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -25699,6 +25971,1000 @@ async def test_delete_host_group_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapPostRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_post(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ontap.ExecuteOntapPostResponse()
+        response = client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapPostRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPostResponse)
+
+
+def test_execute_ontap_post_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ontap.ExecuteOntapPostRequest(
+        ontap_path="ontap_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.execute_ontap_post(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ontap.ExecuteOntapPostRequest(
+            ontap_path="ontap_path_value",
+        )
+
+
+def test_execute_ontap_post_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_post in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_post] = (
+            mock_rpc
+        )
+        request = {}
+        client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_post(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_post_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.execute_ontap_post
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.execute_ontap_post
+        ] = mock_rpc
+
+        request = {}
+        await client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.execute_ontap_post(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_post_async(
+    transport: str = "grpc_asyncio", request_type=ontap.ExecuteOntapPostRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPostResponse()
+        )
+        response = await client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapPostRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPostResponse)
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_post_async_from_dict():
+    await test_execute_ontap_post_async(request_type=dict)
+
+
+def test_execute_ontap_post_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapPostRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapPostResponse()
+        client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_post_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapPostRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPostResponse()
+        )
+        await client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapGetRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_get(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ontap.ExecuteOntapGetResponse()
+        response = client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapGetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapGetResponse)
+
+
+def test_execute_ontap_get_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ontap.ExecuteOntapGetRequest(
+        ontap_path="ontap_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.execute_ontap_get(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ontap.ExecuteOntapGetRequest(
+            ontap_path="ontap_path_value",
+        )
+
+
+def test_execute_ontap_get_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.execute_ontap_get in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_get] = (
+            mock_rpc
+        )
+        request = {}
+        client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_get(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_get_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.execute_ontap_get
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.execute_ontap_get
+        ] = mock_rpc
+
+        request = {}
+        await client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.execute_ontap_get(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_get_async(
+    transport: str = "grpc_asyncio", request_type=ontap.ExecuteOntapGetRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapGetResponse()
+        )
+        response = await client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapGetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapGetResponse)
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_get_async_from_dict():
+    await test_execute_ontap_get_async(request_type=dict)
+
+
+def test_execute_ontap_get_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapGetRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapGetResponse()
+        client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_get_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapGetRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapGetResponse()
+        )
+        await client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapDeleteRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_delete(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ontap.ExecuteOntapDeleteResponse()
+        response = client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapDeleteRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapDeleteResponse)
+
+
+def test_execute_ontap_delete_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ontap.ExecuteOntapDeleteRequest(
+        ontap_path="ontap_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.execute_ontap_delete(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ontap.ExecuteOntapDeleteRequest(
+            ontap_path="ontap_path_value",
+        )
+
+
+def test_execute_ontap_delete_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_delete in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_delete] = (
+            mock_rpc
+        )
+        request = {}
+        client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_delete(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_delete_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.execute_ontap_delete
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.execute_ontap_delete
+        ] = mock_rpc
+
+        request = {}
+        await client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.execute_ontap_delete(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_delete_async(
+    transport: str = "grpc_asyncio", request_type=ontap.ExecuteOntapDeleteRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapDeleteResponse()
+        )
+        response = await client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapDeleteRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapDeleteResponse)
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_delete_async_from_dict():
+    await test_execute_ontap_delete_async(request_type=dict)
+
+
+def test_execute_ontap_delete_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapDeleteRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapDeleteResponse()
+        client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_delete_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapDeleteRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapDeleteResponse()
+        )
+        await client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapPatchRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_patch(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ontap.ExecuteOntapPatchResponse()
+        response = client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapPatchRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPatchResponse)
+
+
+def test_execute_ontap_patch_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ontap.ExecuteOntapPatchRequest(
+        ontap_path="ontap_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.execute_ontap_patch(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ontap.ExecuteOntapPatchRequest(
+            ontap_path="ontap_path_value",
+        )
+
+
+def test_execute_ontap_patch_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_patch in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_patch] = (
+            mock_rpc
+        )
+        request = {}
+        client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_patch(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_patch_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.execute_ontap_patch
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.execute_ontap_patch
+        ] = mock_rpc
+
+        request = {}
+        await client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.execute_ontap_patch(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_patch_async(
+    transport: str = "grpc_asyncio", request_type=ontap.ExecuteOntapPatchRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPatchResponse()
+        )
+        response = await client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = ontap.ExecuteOntapPatchRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPatchResponse)
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_patch_async_from_dict():
+    await test_execute_ontap_patch_async(request_type=dict)
+
+
+def test_execute_ontap_patch_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapPatchRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapPatchResponse()
+        client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_execute_ontap_patch_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ontap.ExecuteOntapPatchRequest()
+
+    request.ontap_path = "ontap_path_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPatchResponse()
+        )
+        await client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "ontap_path=ontap_path_value",
+    ) in kw["metadata"]
+
+
 def test_list_storage_pools_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -28110,6 +29376,155 @@ def test_revert_volume_rest_unset_required_fields():
             (
                 "name",
                 "snapshotId",
+            )
+        )
+    )
+
+
+def test_establish_volume_peering_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.establish_volume_peering
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.establish_volume_peering
+        ] = mock_rpc
+
+        request = {}
+        client.establish_volume_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.establish_volume_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_establish_volume_peering_rest_required_fields(
+    request_type=volume.EstablishVolumePeeringRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["peer_cluster_name"] = ""
+    request_init["peer_svm_name"] = ""
+    request_init["peer_volume_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).establish_volume_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["peerClusterName"] = "peer_cluster_name_value"
+    jsonified_request["peerSvmName"] = "peer_svm_name_value"
+    jsonified_request["peerVolumeName"] = "peer_volume_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).establish_volume_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "peerClusterName" in jsonified_request
+    assert jsonified_request["peerClusterName"] == "peer_cluster_name_value"
+    assert "peerSvmName" in jsonified_request
+    assert jsonified_request["peerSvmName"] == "peer_svm_name_value"
+    assert "peerVolumeName" in jsonified_request
+    assert jsonified_request["peerVolumeName"] == "peer_volume_name_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.establish_volume_peering(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_establish_volume_peering_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.establish_volume_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "peerClusterName",
+                "peerSvmName",
+                "peerVolumeName",
             )
         )
     )
@@ -38354,6 +39769,518 @@ def test_delete_host_group_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_execute_ontap_post_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_post in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_post] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.execute_ontap_post(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_post(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_execute_ontap_post_rest_required_fields(
+    request_type=ontap.ExecuteOntapPostRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["ontap_path"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_post._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["ontapPath"] = "ontap_path_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_post._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "ontapPath" in jsonified_request
+    assert jsonified_request["ontapPath"] == "ontap_path_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = ontap.ExecuteOntapPostResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = ontap.ExecuteOntapPostResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.execute_ontap_post(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_ontap_post_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_ontap_post._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "body",
+                "ontapPath",
+            )
+        )
+    )
+
+
+def test_execute_ontap_get_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.execute_ontap_get in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_get] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.execute_ontap_get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_get(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_execute_ontap_get_rest_required_fields(
+    request_type=ontap.ExecuteOntapGetRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["ontap_path"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["ontapPath"] = "ontap_path_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "ontapPath" in jsonified_request
+    assert jsonified_request["ontapPath"] == "ontap_path_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = ontap.ExecuteOntapGetResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = ontap.ExecuteOntapGetResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.execute_ontap_get(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_ontap_get_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_ontap_get._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("ontapPath",)))
+
+
+def test_execute_ontap_delete_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_delete in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_delete] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.execute_ontap_delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_delete(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_execute_ontap_delete_rest_required_fields(
+    request_type=ontap.ExecuteOntapDeleteRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["ontap_path"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["ontapPath"] = "ontap_path_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "ontapPath" in jsonified_request
+    assert jsonified_request["ontapPath"] == "ontap_path_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = ontap.ExecuteOntapDeleteResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = ontap.ExecuteOntapDeleteResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.execute_ontap_delete(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_ontap_delete_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_ontap_delete._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("ontapPath",)))
+
+
+def test_execute_ontap_patch_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.execute_ontap_patch in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.execute_ontap_patch] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.execute_ontap_patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.execute_ontap_patch(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_execute_ontap_patch_rest_required_fields(
+    request_type=ontap.ExecuteOntapPatchRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["ontap_path"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["ontapPath"] = "ontap_path_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_ontap_patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "ontapPath" in jsonified_request
+    assert jsonified_request["ontapPath"] == "ontap_path_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = ontap.ExecuteOntapPatchResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = ontap.ExecuteOntapPatchResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.execute_ontap_patch(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_ontap_patch_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_ontap_patch._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "body",
+                "ontapPath",
+            )
+        )
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.NetAppGrpcTransport(
@@ -38741,6 +40668,29 @@ def test_revert_volume_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = volume.RevertVolumeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_establish_volume_peering_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.establish_volume_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = volume.EstablishVolumePeeringRequest()
 
         assert args[0] == request_msg
 
@@ -39922,6 +41872,98 @@ def test_delete_host_group_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_post_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapPostResponse()
+        client.execute_ontap_post(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPostRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_get_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapGetResponse()
+        client.execute_ontap_get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapGetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_delete_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapDeleteResponse()
+        client.execute_ontap_delete(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapDeleteRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_patch_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        call.return_value = ontap.ExecuteOntapPatchResponse()
+        client.execute_ontap_patch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPatchRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = NetAppAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -40037,6 +42079,7 @@ async def test_get_storage_pool_empty_call_grpc_asyncio():
                 cold_tier_size_used_gib=2416,
                 hot_tier_size_used_gib=2329,
                 type_=common.StoragePoolType.FILE,
+                mode=storage_pool.Mode.DEFAULT,
             )
         )
         await client.get_storage_pool(request=None)
@@ -40338,6 +42381,33 @@ async def test_revert_volume_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = volume.RevertVolumeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_establish_volume_peering_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.establish_volume_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = volume.EstablishVolumePeeringRequest()
 
         assert args[0] == request_msg
 
@@ -41859,6 +43929,114 @@ async def test_delete_host_group_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_ontap_post_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPostResponse()
+        )
+        await client.execute_ontap_post(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPostRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_ontap_get_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapGetResponse()
+        )
+        await client.execute_ontap_get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapGetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_ontap_delete_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapDeleteResponse()
+        )
+        await client.execute_ontap_delete(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapDeleteRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_ontap_patch_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ontap.ExecuteOntapPatchResponse()
+        )
+        await client.execute_ontap_patch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPatchRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_rest():
     transport = NetAppClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
@@ -42074,6 +44252,7 @@ def test_create_storage_pool_rest_call_success(request_type):
         "cold_tier_size_used_gib": 2416,
         "hot_tier_size_used_gib": 2329,
         "type_": 1,
+        "mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -42301,6 +44480,7 @@ def test_get_storage_pool_rest_call_success(request_type):
             cold_tier_size_used_gib=2416,
             hot_tier_size_used_gib=2329,
             type_=common.StoragePoolType.FILE,
+            mode=storage_pool.Mode.DEFAULT,
         )
 
         # Wrap the value into a proper Response obj
@@ -42347,6 +44527,7 @@ def test_get_storage_pool_rest_call_success(request_type):
     assert response.cold_tier_size_used_gib == 2416
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
+    assert response.mode == storage_pool.Mode.DEFAULT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -42492,6 +44673,7 @@ def test_update_storage_pool_rest_call_success(request_type):
         "cold_tier_size_used_gib": 2416,
         "hot_tier_size_used_gib": 2329,
         "type_": 1,
+        "mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -43510,6 +45692,11 @@ def test_create_volume_rest_call_success(request_type):
                 "os_type": 1,
             }
         ],
+        "clone_details": {
+            "source_snapshot": "source_snapshot_value",
+            "source_volume": "source_volume_value",
+            "shared_space_gib": 1651,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -43853,6 +46040,11 @@ def test_update_volume_rest_call_success(request_type):
                 "os_type": 1,
             }
         ],
+        "clone_details": {
+            "source_snapshot": "source_snapshot_value",
+            "source_volume": "source_volume_value",
+            "shared_space_gib": 1651,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44222,6 +46414,130 @@ def test_revert_volume_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.revert_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_establish_volume_peering_rest_bad_request(
+    request_type=volume.EstablishVolumePeeringRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.establish_volume_peering(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.EstablishVolumePeeringRequest,
+        dict,
+    ],
+)
+def test_establish_volume_peering_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.establish_volume_peering(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_establish_volume_peering_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_establish_volume_peering"
+        ) as post,
+        mock.patch.object(
+            transports.NetAppRestInterceptor,
+            "post_establish_volume_peering_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "pre_establish_volume_peering"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = volume.EstablishVolumePeeringRequest.pb(
+            volume.EstablishVolumePeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = volume.EstablishVolumePeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.establish_volume_peering(
             request,
             metadata=[
                 ("key", "val"),
@@ -52666,6 +54982,522 @@ def test_delete_host_group_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_execute_ontap_post_rest_bad_request(
+    request_type=ontap.ExecuteOntapPostRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.execute_ontap_post(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapPostRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_post_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ontap.ExecuteOntapPostResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = ontap.ExecuteOntapPostResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.execute_ontap_post(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPostResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_ontap_post_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_post"
+        ) as post,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_post_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "pre_execute_ontap_post"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = ontap.ExecuteOntapPostRequest.pb(ontap.ExecuteOntapPostRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = ontap.ExecuteOntapPostResponse.to_json(
+            ontap.ExecuteOntapPostResponse()
+        )
+        req.return_value.content = return_value
+
+        request = ontap.ExecuteOntapPostRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ontap.ExecuteOntapPostResponse()
+        post_with_metadata.return_value = ontap.ExecuteOntapPostResponse(), metadata
+
+        client.execute_ontap_post(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_execute_ontap_get_rest_bad_request(request_type=ontap.ExecuteOntapGetRequest):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.execute_ontap_get(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapGetRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_get_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ontap.ExecuteOntapGetResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = ontap.ExecuteOntapGetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.execute_ontap_get(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapGetResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_ontap_get_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_get"
+        ) as post,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "pre_execute_ontap_get"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = ontap.ExecuteOntapGetRequest.pb(ontap.ExecuteOntapGetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = ontap.ExecuteOntapGetResponse.to_json(
+            ontap.ExecuteOntapGetResponse()
+        )
+        req.return_value.content = return_value
+
+        request = ontap.ExecuteOntapGetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ontap.ExecuteOntapGetResponse()
+        post_with_metadata.return_value = ontap.ExecuteOntapGetResponse(), metadata
+
+        client.execute_ontap_get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_execute_ontap_delete_rest_bad_request(
+    request_type=ontap.ExecuteOntapDeleteRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.execute_ontap_delete(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapDeleteRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_delete_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ontap.ExecuteOntapDeleteResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = ontap.ExecuteOntapDeleteResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.execute_ontap_delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapDeleteResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_ontap_delete_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_delete"
+        ) as post,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_delete_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "pre_execute_ontap_delete"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = ontap.ExecuteOntapDeleteRequest.pb(
+            ontap.ExecuteOntapDeleteRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = ontap.ExecuteOntapDeleteResponse.to_json(
+            ontap.ExecuteOntapDeleteResponse()
+        )
+        req.return_value.content = return_value
+
+        request = ontap.ExecuteOntapDeleteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ontap.ExecuteOntapDeleteResponse()
+        post_with_metadata.return_value = ontap.ExecuteOntapDeleteResponse(), metadata
+
+        client.execute_ontap_delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_execute_ontap_patch_rest_bad_request(
+    request_type=ontap.ExecuteOntapPatchRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.execute_ontap_patch(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ontap.ExecuteOntapPatchRequest,
+        dict,
+    ],
+)
+def test_execute_ontap_patch_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ontap_path": "projects/sample1/locations/sample2/storagePools/sample3/ontap/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ontap.ExecuteOntapPatchResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = ontap.ExecuteOntapPatchResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.execute_ontap_patch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ontap.ExecuteOntapPatchResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_ontap_patch_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_patch"
+        ) as post,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "post_execute_ontap_patch_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetAppRestInterceptor, "pre_execute_ontap_patch"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = ontap.ExecuteOntapPatchRequest.pb(ontap.ExecuteOntapPatchRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = ontap.ExecuteOntapPatchResponse.to_json(
+            ontap.ExecuteOntapPatchResponse()
+        )
+        req.return_value.content = return_value
+
+        request = ontap.ExecuteOntapPatchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ontap.ExecuteOntapPatchResponse()
+        post_with_metadata.return_value = ontap.ExecuteOntapPatchResponse(), metadata
+
+        client.execute_ontap_patch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = NetAppClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -53315,6 +56147,28 @@ def test_revert_volume_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = volume.RevertVolumeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_establish_volume_peering_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_volume_peering), "__call__"
+    ) as call:
+        client.establish_volume_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = volume.EstablishVolumePeeringRequest()
 
         assert args[0] == request_msg
 
@@ -54443,6 +57297,94 @@ def test_delete_host_group_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_post_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_post), "__call__"
+    ) as call:
+        client.execute_ontap_post(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPostRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_get_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_get), "__call__"
+    ) as call:
+        client.execute_ontap_get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapGetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_delete_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_delete), "__call__"
+    ) as call:
+        client.execute_ontap_delete(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapDeleteRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_ontap_patch_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_ontap_patch), "__call__"
+    ) as call:
+        client.execute_ontap_patch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ontap.ExecuteOntapPatchRequest()
+
+        assert args[0] == request_msg
+
+
 def test_net_app_rest_lro_client():
     client = NetAppClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -54506,6 +57448,7 @@ def test_net_app_base_transport():
         "update_volume",
         "delete_volume",
         "revert_volume",
+        "establish_volume_peering",
         "list_snapshots",
         "get_snapshot",
         "create_snapshot",
@@ -54559,6 +57502,10 @@ def test_net_app_base_transport():
         "create_host_group",
         "update_host_group",
         "delete_host_group",
+        "execute_ontap_post",
+        "execute_ontap_get",
+        "execute_ontap_delete",
+        "execute_ontap_patch",
         "get_location",
         "list_locations",
         "get_operation",
@@ -54871,6 +57818,9 @@ def test_net_app_client_transport_session_collision(transport_name):
     session1 = client1.transport.revert_volume._session
     session2 = client2.transport.revert_volume._session
     assert session1 != session2
+    session1 = client1.transport.establish_volume_peering._session
+    session2 = client2.transport.establish_volume_peering._session
+    assert session1 != session2
     session1 = client1.transport.list_snapshots._session
     session2 = client2.transport.list_snapshots._session
     assert session1 != session2
@@ -55029,6 +57979,18 @@ def test_net_app_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_host_group._session
     session2 = client2.transport.delete_host_group._session
+    assert session1 != session2
+    session1 = client1.transport.execute_ontap_post._session
+    session2 = client2.transport.execute_ontap_post._session
+    assert session1 != session2
+    session1 = client1.transport.execute_ontap_get._session
+    session2 = client2.transport.execute_ontap_get._session
+    assert session1 != session2
+    session1 = client1.transport.execute_ontap_delete._session
+    session2 = client2.transport.execute_ontap_delete._session
+    assert session1 != session2
+    session1 = client1.transport.execute_ontap_patch._session
+    session2 = client2.transport.execute_ontap_patch._session
     assert session1 != session2
 
 

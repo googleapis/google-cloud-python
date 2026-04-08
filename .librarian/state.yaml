@@ -1,5 +1,27 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
+  - id: bigframes
+    version: 2.39.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/bigframes
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: bigquery-magics
     version: 0.12.2
     last_generated_commit: ""
@@ -27,8 +49,17 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: gapic-generator
+    version: 1.30.14
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/gapic-generator
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
-    version: 3.2.4
+    version: 3.2.5
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -51,8 +82,8 @@ libraries:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
-    version: 0.7.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    version: 0.8.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -133,7 +164,7 @@ libraries:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
   - id: google-api-core
-    version: 2.30.1
+    version: 2.30.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -146,7 +177,6 @@ libraries:
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/apps/card/v1
-        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -158,7 +188,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
     version: 0.7.0
-    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/chat/v1
         service_config: chat_v1.yaml
@@ -207,19 +237,12 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/apps/script/type
-        service_config: ""
       - path: google/apps/script/type/gmail
-        service_config: ""
       - path: google/apps/script/type/docs
-        service_config: ""
       - path: google/apps/script/type/drive
-        service_config: ""
       - path: google/apps/script/type/sheets
-        service_config: ""
       - path: google/apps/script/type/calendar
-        service_config: ""
       - path: google/apps/script/type/slides
-        service_config: ""
     source_roots:
       - packages/google-apps-script-type
     preserve_regex:
@@ -298,7 +321,6 @@ libraries:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
       - path: google/identity/accesscontextmanager/type
-        service_config: ""
     source_roots:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
@@ -466,7 +488,6 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/appengine/logging/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-appengine-logging
     preserve_regex:
@@ -489,6 +510,24 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-apphub/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-appoptimize
+    version: 0.0.0
+    last_generated_commit: cd090841ab172574e740c214c99df00aef9c0dee
+    apis:
+      - path: google/cloud/appoptimize/v1beta
+        service_config: appoptimize_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-appoptimize
+    preserve_regex:
+      - packages/google-cloud-appoptimize/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-appoptimize
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.21.0
@@ -851,7 +890,6 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/bigquery/logging/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-bigquery-logging
     preserve_regex:
@@ -933,6 +971,15 @@ libraries:
       - tests/unit/test_.*.py
     remove_regex:
       - packages/google-cloud-bigquery-storage
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigtable
+    version: 2.36.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-bigtable
+    preserve_regex: []
+    remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.19.0
@@ -1025,8 +1072,8 @@ libraries:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
-    version: 0.3.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    version: 0.4.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/ces/v1
         service_config: ces_v1.yaml
@@ -1369,8 +1416,8 @@ libraries:
       - packages/google-cloud-datacatalog-lineage-configmanagement
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataflow-client
-    version: 0.12.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    version: 0.13.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/dataflow/v1beta3
         service_config: dataflow_v1beta3.yaml
@@ -1630,7 +1677,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.35.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -1667,8 +1714,8 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
-    version: 3.13.0
-    last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
+    version: 3.14.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/documentai/v1beta3
         service_config: documentai_v1beta3.yaml
@@ -1683,7 +1730,7 @@ libraries:
       - packages/google-cloud-documentai/
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai-toolbox
-    version: 0.15.1-alpha.1
+    version: 0.15.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1857,13 +1904,12 @@ libraries:
       - packages/google-cloud-financialservices/
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
-    version: 2.27.0
+    version: 2.26.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
       - path: google/firestore/bundle
-        service_config: ""
       - path: google/firestore/v1
         service_config: firestore_v1.yaml
     source_roots:
@@ -2103,7 +2149,6 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/iam/v1/logging
-        service_config: ""
     source_roots:
       - packages/google-cloud-iam-logging
     preserve_regex:
@@ -2112,6 +2157,24 @@ libraries:
       - tests/unit/gapic/iam_logging_v1/test_iam_logging.py
     remove_regex:
       - packages/google-cloud-iam-logging/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-iamconnectorcredentials
+    version: 0.0.0
+    last_generated_commit: 13b86d1d083c314bf51e42c19f9f6ed941e0553b
+    apis:
+      - path: google/cloud/iamconnectorcredentials/v1alpha
+        service_config: iamconnectorcredentials_v1alpha.yaml
+    source_roots:
+      - packages/google-cloud-iamconnectorcredentials
+    preserve_regex:
+      - packages/google-cloud-iamconnectorcredentials/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-iamconnectorcredentials
     tag_format: '{id}-v{version}'
   - id: google-cloud-iap
     version: 1.21.0
@@ -2379,7 +2442,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/memorystore/v1beta
         service_config: memorystore_v1beta.yaml
@@ -2474,7 +2537,7 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ndb
-    version: 2.4.1
+    version: 2.4.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2483,8 +2546,8 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.8.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    version: 0.9.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/netapp/v1
         service_config: netapp_v1.yaml
@@ -2529,8 +2592,8 @@ libraries:
       - packages/google-cloud-network-management/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
-    version: 0.12.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    version: 0.13.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/networksecurity/v1alpha1
         service_config: networksecurity_v1alpha1.yaml
@@ -2627,7 +2690,6 @@ libraries:
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
-        service_config: ""
       - path: google/cloud/orgpolicy/v2
         service_config: orgpolicy_v2.yaml
     source_roots:
@@ -2806,7 +2868,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
     version: 2.36.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/pubsub/v1
         service_config: pubsub_v1.yaml
@@ -2932,7 +2994,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
     version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/redis/cluster/v1
         service_config: redis_v1.yaml
@@ -3051,8 +3113,8 @@ libraries:
       - packages/google-cloud-secret-manager
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
-    version: 0.4.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    version: 0.5.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/securesourcemanager/v1
         service_config: securesourcemanager_v1.yaml
@@ -3207,7 +3269,6 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/devtools/source/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-source-context
     preserve_regex:
@@ -3216,6 +3277,88 @@ libraries:
       - tests/unit/gapic/source_context_v1/test_source_context_v1.py
     remove_regex:
       - packages/google-cloud-source-context/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-spanner
+    version: 3.64.0
+    last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
+    apis:
+      - path: google/spanner/admin/instance/v1
+        service_config: spanner.yaml
+      - path: google/spanner/admin/database/v1
+        service_config: spanner.yaml
+      - path: google/spanner/v1
+        service_config: spanner.yaml
+    source_roots:
+      - packages/google-cloud-spanner
+    preserve_regex:
+      - packages/google-cloud-spanner/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-spanner/.coveragerc
+      - ^packages/google-cloud-spanner/.flake8
+      - ^packages/google-cloud-spanner/.repo-metadata.json
+      - ^packages/google-cloud-spanner/LICENSE
+      - ^packages/google-cloud-spanner/MANIFEST.in
+      - ^packages/google-cloud-spanner/README.rst
+      - ^packages/google-cloud-spanner/mypy.ini
+      - ^packages/google-cloud-spanner/noxfile.py
+      - ^packages/google-cloud-spanner/setup.py
+      - ^packages/google-cloud-spanner/docs/conf.py
+      - ^packages/google-cloud-spanner/docs/index.rst
+      - ^packages/google-cloud-spanner/docs/summary_overview.md
+      - ^packages/google-cloud-spanner/docs/README.rst
+      - ^packages/google-cloud-spanner/docs/_static
+      - ^packages/google-cloud-spanner/docs/_templates
+      - ^packages/google-cloud-spanner/docs/multiprocessing.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/spanner.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/database_admin.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/spanner_admin_database.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/instance_admin.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/spanner_admin_instance.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/types_.rst
+      - ^packages/google-cloud-spanner/google/cloud/spanner/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/types
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/types
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/types
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/py.typed
+      - ^packages/google-cloud-spanner/testing
+      - ^packages/google-cloud-spanner/tests/__init__.py
+      - ^packages/google-cloud-spanner/tests/unit/__init__.py
+      - ^packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1
+      - ^packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1
+      - ^packages/google-cloud-spanner/tests/unit/gapic/spanner_v1
+      - ^packages/google-cloud-spanner/tests/unit/gapic/__init__.py
+      - ^packages/google-cloud-spanner/samples/generated_samples
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.38.0
@@ -3237,6 +3380,42 @@ libraries:
       - tests/unit/test_helpers.py
     remove_regex:
       - packages/google-cloud-speech/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-storage
+    version: 3.10.1
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
+    apis:
+      - path: google/storage/v2
+        service_config: storage_v2.yaml
+    source_roots:
+      - packages/google-cloud-storage
+    preserve_regex:
+      - packages/google-cloud-storage/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-storage/.coveragerc
+      - ^packages/google-cloud-storage/.flake8
+      - ^packages/google-cloud-storage/.repo-metadata.json
+      - ^packages/google-cloud-storage/LICENSE
+      - ^packages/google-cloud-storage/MANIFEST.in
+      - ^packages/google-cloud-storage/README.rst
+      - ^packages/google-cloud-storage/mypy.ini
+      - ^packages/google-cloud-storage/noxfile.py
+      - ^packages/google-cloud-storage/setup.py
+      - ^packages/google-cloud-storage/google/cloud/_storage
+      - ^packages/google-cloud-storage/samples/generated_samples
+      - ^packages/google-cloud-storage/testing
+      - ^packages/google-cloud-storage/tests/__init__.py
+      - ^packages/google-cloud-storage/tests/unit/__init__.py
+      - ^packages/google-cloud-storage/tests/unit/gapic
+      - ^packages/google-cloud-storage/docs/conf.py
+      - ^packages/google-cloud-storage/docs/index.rst
+      - ^packages/google-cloud-storage/docs/README.rst
+      - ^packages/google-cloud-storage/docs/_static
+      - ^packages/google-cloud-storage/docs/_templates
+      - ^packages/google-cloud-storage/docs/_storage
+      - ^packages/google-cloud-storage/docs/summary_overview.md
+      - ^packages/google-cloud-storage/docs/multiprocessing.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.11.0
@@ -3373,8 +3552,8 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
-    version: 2.35.0
-    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
+    version: 2.36.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/texttospeech/v1
         service_config: texttospeech_v1.yaml
@@ -3425,7 +3604,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
     version: 3.25.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/translate/v3beta1
         service_config: translate_v3beta1.yaml
@@ -3697,6 +3876,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-workstations/
     tag_format: '{id}-v{version}'
+  - id: google-crc32c
+    version: 1.8.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-crc32c
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-geo-type
     version: 0.6.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
@@ -3769,8 +3957,8 @@ libraries:
       - packages/google-maps-fleetengine-delivery
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
-    version: 0.1.0
-    last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
+    version: 0.2.0
+    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/maps/geocode/v4
         service_config: geocoding_backend_v4.yaml
@@ -4124,7 +4312,6 @@ libraries:
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/type
-        service_config: ""
     source_roots:
       - packages/google-shopping-type
     preserve_regex:
@@ -4135,21 +4322,18 @@ libraries:
       - packages/google-shopping-type/
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
-    version: 1.73.1
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    version: 1.74.0
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
       - path: google/cloud
-        service_config: ""
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
-        service_config: ""
       - path: google/rpc
         service_config: rpc_publish.yaml
       - path: google/rpc/context
-        service_config: ""
       - path: google/type
         service_config: type.yaml
     source_roots:
@@ -4179,7 +4363,7 @@ libraries:
       - packages/grafeas
     tag_format: '{id}-v{version}'
   - id: grpc-google-iam-v1
-    version: 0.14.2
+    version: 0.14.4
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/iam/v1
@@ -4226,15 +4410,6 @@ libraries:
     apis: []
     source_roots:
       - packages/sqlalchemy-spanner
-    preserve_regex: []
-    remove_regex: []
-    tag_format: '{id}-v{version}'
-  - id: gapic-generator
-    version: 1.30.13
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/gapic-generator
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'

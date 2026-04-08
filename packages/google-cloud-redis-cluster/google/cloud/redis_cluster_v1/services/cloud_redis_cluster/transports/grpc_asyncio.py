@@ -570,6 +570,39 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["get_cluster_certificate_authority"]
 
     @property
+    def get_shared_regional_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest],
+        Awaitable[cloud_redis_cluster.SharedRegionalCertificateAuthority],
+    ]:
+        r"""Return a callable for the get shared regional
+        certificate authority method over gRPC.
+
+        Gets the details of regional certificate authority
+        information for Redis cluster.
+
+        Returns:
+            Callable[[~.GetSharedRegionalCertificateAuthorityRequest],
+                    Awaitable[~.SharedRegionalCertificateAuthority]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_shared_regional_certificate_authority" not in self._stubs:
+            self._stubs["get_shared_regional_certificate_authority"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.redis.cluster.v1.CloudRedisCluster/GetSharedRegionalCertificateAuthority",
+                    request_serializer=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest.serialize,
+                    response_deserializer=cloud_redis_cluster.SharedRegionalCertificateAuthority.deserialize,
+                )
+            )
+        return self._stubs["get_shared_regional_certificate_authority"]
+
+    @property
     def reschedule_cluster_maintenance(
         self,
     ) -> Callable[
@@ -850,6 +883,11 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
             self.get_cluster_certificate_authority: self._wrap_method(
                 self.get_cluster_certificate_authority,
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_shared_regional_certificate_authority: self._wrap_method(
+                self.get_shared_regional_certificate_authority,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.reschedule_cluster_maintenance: self._wrap_method(
