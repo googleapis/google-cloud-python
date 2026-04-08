@@ -20,9 +20,9 @@ import os
 from typing import Any, Mapping, Optional, Tuple, Union
 
 import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.table as bq_table
 from google.cloud.bigquery.job.load import LoadJob
 from google.cloud.bigquery.job.query import QueryJob
-import google.cloud.bigquery.table as bq_table
 
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 

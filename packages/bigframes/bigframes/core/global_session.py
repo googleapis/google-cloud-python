@@ -27,6 +27,7 @@ import bigframes.exceptions as bfe
 
 if TYPE_CHECKING:
     import pandas
+
     import bigframes.session
 
 _global_session: Optional[bigframes.session.Session] = None

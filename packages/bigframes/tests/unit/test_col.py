@@ -16,13 +16,13 @@ import operator
 import pathlib
 from typing import Generator
 
+import numpy as np
 import pandas as pd
 import pytest
 
 import bigframes
 import bigframes.pandas as bpd
 from bigframes.testing.utils import assert_frame_equal, convert_pandas_dtypes
-import numpy as np
 
 pytest.importorskip("polars")
 pytest.importorskip("pandas", minversion="3.0.0")
