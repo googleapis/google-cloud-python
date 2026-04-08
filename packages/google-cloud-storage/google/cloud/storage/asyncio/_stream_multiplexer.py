@@ -87,7 +87,9 @@ class _StreamMultiplexer:
 
     async def _put_with_timeout(self, queue: asyncio.Queue, item) -> None:
         try:
-            await asyncio.wait_for(queue.put(item), timeout=_DEFAULT_PUT_TIMEOUT_SECONDS)
+            await asyncio.wait_for(
+                queue.put(item), timeout=_DEFAULT_PUT_TIMEOUT_SECONDS
+            )
         except asyncio.TimeoutError:
             if queue not in self._get_unique_queues():
                 logger.debug("Dropped item for unregistered queue.")
