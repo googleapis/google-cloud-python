@@ -173,3 +173,7 @@ data:
     rev2:
       author: "Bob"
       rating: 4
+  "cities/city3/landmarks":
+    lm4:
+      name: "Western Development Museum"
+      type: "Museum"

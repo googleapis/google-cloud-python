@@ -223,7 +223,7 @@ tests:
           name: sort
   - description: expression_geo_distance
     pipeline:
-      - Collection: geopoints
+      - Collection: cities
       - Search:
           - SearchOptions:
               query:
@@ -239,12 +239,12 @@ tests:
           - Field: name
           - ASCENDING
     assert_results:
-      - name: SF
+      - name: "San Francisco"
     assert_proto:
       pipeline:
         stages:
         - args:
-          - referenceValue: /geopoints
+          - referenceValue: /cities
           name: collection
         - name: search
           options:
@@ -306,3 +306,4 @@ tests:
                   search_score:
                     functionValue:
                       name: score
+    name: score
