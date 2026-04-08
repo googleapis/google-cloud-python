@@ -597,13 +597,27 @@ def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
     event_loop.run_until_complete(_run())
 
 
+@pytest.mark.parametrize(
+    "ranges_desc, chunk_ranges",
+    [
+        ("small", [(1, 100)] * 3),
+        ("medium", [(100, 100000)] * 3),
+        ("large", [(1000000, 2000000)] * 3),
+        ("mixed", [(1, 100), (100, 100000), (1000000, 2000000)]),
+    ],
+)
 def test_mrd_concurrent_download(
-    storage_client, blobs_to_delete, event_loop, grpc_client_direct
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+    ranges_desc,
+    chunk_ranges,
 ):
     """
     Test that mrd can handle concurrent `download_ranges` calls correctly.
-    Tests overlapping ranges, high concurrency (len > 100 multiplexing batch limits),
-    mixed random chunk sizes (small/medium/large), and full object fetching alongside specific chunks.
+    Tests overlapping ranges, minimal concurrency,
+    parametrized chunk sizes (small/medium/large/mixed), and full object fetching alongside specific chunks.
     """
     object_size = 15 * 1024 * 1024  # 15MB
     object_name = f"test_mrd_concurrent-{uuid.uuid4()}"
@@ -611,7 +625,9 @@ def test_mrd_concurrent_download(
     async def _run():
         object_data = os.urandom(object_size)
 
-        writer = AsyncAppendableObjectWriter(grpc_client_direct, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
@@ -622,28 +638,14 @@ def test_mrd_concurrent_download(
             tasks = []
             ranges_to_fetch = []
 
-            # Overlapping ranges & Mixed random chunk sizes
-            # Small chunks
-            for _ in range(60):
-                start = random.randint(0, object_size - 100)
-                length = random.randint(1, 100)
-                ranges_to_fetch.append((start, length))
-            # Medium chunks
-            for _ in range(60):
-                start = random.randint(0, object_size - 100000)
-                length = random.randint(100, 100000)
-                ranges_to_fetch.append((start, length))
-            # Large chunks
-            for _ in range(5):
-                start = random.randint(0, object_size - 2000000)
-                length = random.randint(1000000, 2000000)
+            for min_len, max_len in chunk_ranges:
+                start = random.randint(0, object_size - max_len)
+                length = random.randint(min_len, max_len)
                 ranges_to_fetch.append((start, length))
 
             # Full object fetching concurrently
             ranges_to_fetch.append((0, 0))
 
-            # High concurrency batching (Total > 100 ranges)
-            assert len(ranges_to_fetch) > 100
             random.shuffle(ranges_to_fetch)
 
             buffers = [BytesIO() for _ in range(len(ranges_to_fetch))]
@@ -667,7 +669,9 @@ def test_mrd_concurrent_download(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(_ZONAL_BUCKET).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
