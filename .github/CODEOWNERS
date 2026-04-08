@@ -12,13 +12,10 @@
 *                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
 
 /packages/bigframes/                          @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
-<<<<<<< update-codeowners-bq-dataframes-4709133254732906551
 /packages/bigquery-magics/                    @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/django-google-spanner/              @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/spanner-team
+/packages/google-auth/                        @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/cloud-sdk-auth-team @googleapis/aion-team
 /packages/google-cloud-bigquery*/             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-spanner/               @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/spanner-team
 /packages/pandas-gbq/                         @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
 /packages/sqlalchemy-bigquery/                @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
-=======
-/packages/django-google-spanner/              @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/spanner-team
->>>>>>> main
-/packages/google-auth/                        @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/cloud-sdk-auth-team @googleapis/aion-team
-/packages/google-cloud-spanner/               @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/spanner-team
