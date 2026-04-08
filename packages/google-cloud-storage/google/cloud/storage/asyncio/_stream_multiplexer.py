@@ -154,6 +154,7 @@ class _StreamMultiplexer:
         except asyncio.CancelledError:
             raise
         except Exception as e:
+            logger.warning(f"Stream multiplexer recv loop failed: {e}", exc_info=True)
             error = _StreamError(e, self._stream_generation)
             for queue in self._get_unique_queues():
                 self._put_error_nowait(queue, error)
