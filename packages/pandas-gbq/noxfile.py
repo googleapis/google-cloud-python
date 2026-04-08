@@ -34,7 +34,7 @@ LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -54,7 +54,7 @@ UNIT_TEST_EXTRAS = [
     "geopandas",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON = {
-    "3.9": [],
+    "3.10": [],
 }
 
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
