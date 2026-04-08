@@ -119,6 +119,7 @@ def test_pipeline_expected_errors(test_dict, client):
         if "assert_results" in t
         or "assert_count" in t
         or "assert_results_approximate" in t
+        or "assert_end_state" in t
     ],
     ids=id_format,
 )
@@ -131,6 +132,7 @@ def test_pipeline_results(test_dict, client):
         test_dict.get("assert_results_approximate", None)
     )
     expected_count = test_dict.get("assert_count", None)
+    expected_end_state = _parse_yaml_types(test_dict.get("assert_end_state", {}))
     pipeline = parse_pipeline(client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() for snapshot in pipeline.stream()]
@@ -146,6 +148,19 @@ def test_pipeline_results(test_dict, client):
             )
     if expected_count is not None:
         assert len(got_results) == expected_count
+    if expected_end_state:
+        for doc_path, expected_content in expected_end_state.items():
+            doc_ref = client.document(doc_path)
+            snapshot = doc_ref.get()
+            if expected_content is None:
+                assert not snapshot.exists, (
+                    f"Expected {doc_path} to be absent, but it exists"
+                )
+            else:
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
+                assert snapshot.to_dict() == expected_content
 
 
 @pytest.mark.parametrize(
@@ -176,6 +191,7 @@ async def test_pipeline_expected_errors_async(test_dict, async_client):
         if "assert_results" in t
         or "assert_count" in t
         or "assert_results_approximate" in t
+        or "assert_end_state" in t
     ],
     ids=id_format,
 )
@@ -189,6 +205,7 @@ async def test_pipeline_results_async(test_dict, async_client):
         test_dict.get("assert_results_approximate", None)
     )
     expected_count = test_dict.get("assert_count", None)
+    expected_end_state = _parse_yaml_types(test_dict.get("assert_end_state", {}))
     pipeline = parse_pipeline(async_client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() async for snapshot in pipeline.stream()]
@@ -204,6 +221,19 @@ async def test_pipeline_results_async(test_dict, async_client):
             )
     if expected_count is not None:
         assert len(got_results) == expected_count
+    if expected_end_state:
+        for doc_path, expected_content in expected_end_state.items():
+            doc_ref = async_client.document(doc_path)
+            snapshot = await doc_ref.get()
+            if expected_content is None:
+                assert not snapshot.exists, (
+                    f"Expected {doc_path} to be absent, but it exists"
+                )
+            else:
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
+                assert snapshot.to_dict() == expected_content
 
 
 #################################################################################
@@ -223,7 +253,12 @@ def parse_pipeline(client, pipeline: list[dict[str, Any], str]):
         # find arguments if given
         if isinstance(stage, dict):
             stage_yaml_args = stage[stage_name]
-            stage_obj = _apply_yaml_args_to_callable(stage_cls, client, stage_yaml_args)
+            if stage_yaml_args is None:
+                stage_obj = stage_cls()
+            else:
+                stage_obj = _apply_yaml_args_to_callable(
+                    stage_cls, client, stage_yaml_args
+                )
         else:
             # yaml has no arguments
             stage_obj = stage_cls()
@@ -291,20 +326,21 @@ def _apply_yaml_args_to_callable(callable_obj, client, yaml_args):
     Helper to instantiate a class with yaml arguments. The arguments will be applied
     as positional or keyword arguments, based on type
     """
-    if isinstance(yaml_args, dict):
-        return callable_obj(**_parse_expressions(client, yaml_args))
+    parsed = _parse_expressions(client, yaml_args)
+    if isinstance(yaml_args, dict) and isinstance(parsed, dict):
+        return callable_obj(**parsed)
     elif isinstance(yaml_args, list) and not (
         callable_obj == expr.Constant
         or callable_obj == Vector
         or callable_obj == expr.Array
     ):
         # yaml has an array of arguments. Treat as args
-        return callable_obj(*_parse_expressions(client, yaml_args))
-    elif yaml_args is None:
+        return callable_obj(*parsed)
+    elif yaml_args is None and callable_obj != expr.Constant:
         return callable_obj()
     else:
         # yaml has a single argument
-        return callable_obj(_parse_expressions(client, yaml_args))
+        return callable_obj(parsed)
 
 
 def _is_expr_string(yaml_str):

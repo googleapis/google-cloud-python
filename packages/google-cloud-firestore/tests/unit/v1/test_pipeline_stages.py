@@ -960,3 +960,39 @@ class TestWhere:
         assert got_fn.args[0].field_reference_value == "city"
         assert got_fn.args[1].string_value == "SF"
         assert len(result.options) == 0
+
+
+class TestDelete:
+    def _make_one(self):
+        return stages.Delete()
+
+    def test_to_pb(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "delete"
+        assert len(result.args) == 0
+        assert len(result.options) == 0
+
+
+class TestUpdate:
+    def _make_one(self, *args):
+        return stages.Update(*args)
+
+    def test_to_pb_empty(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert result.args[0].map_value.fields == {}
+        assert len(result.options) == 0
+
+    def test_to_pb_with_fields(self):
+        instance = self._make_one(
+            Field.of("score").add(10).as_("score"), Constant.of("active").as_("status")
+        )
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert "score" in result.args[0].map_value.fields
+        assert "status" in result.args[0].map_value.fields
+        assert len(result.options) == 0
