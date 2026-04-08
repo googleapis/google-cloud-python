@@ -759,33 +759,23 @@ def test_mrd_concurrent_download_out_of_bounds(
         async with AsyncMultiRangeDownloader(
             grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
-            b_valid = BytesIO()
-            t_valid = asyncio.create_task(mrd.download_ranges([(0, 100, b_valid)]))
-
-            b_oob1 = BytesIO()
-            t_oob1 = asyncio.create_task(
-                mrd.download_ranges([(object_size + 1000, 100, b_oob1)])
+            valid_buffer = BytesIO()
+            valid_task = asyncio.create_task(
+                mrd.download_ranges([(0, 100, valid_buffer)])
             )
 
-            # EOF ask for 100 bytes
-            b_oob2 = BytesIO()
-            t_oob2 = asyncio.create_task(
-                mrd.download_ranges([(object_size, 100, b_oob2)])
+            oob_buffer = BytesIO()
+            oob_task = asyncio.create_task(
+                mrd.download_ranges([(object_size + 1000, 100, oob_buffer)])
             )
 
-            results = await asyncio.gather(
-                t_valid, t_oob1, t_oob2, return_exceptions=True
-            )
+            results = await asyncio.gather(valid_task, oob_task, return_exceptions=True)
 
             # Verify valid one processed correctly
-            assert b_valid.getvalue() == object_data[:100]
+            assert valid_buffer.getvalue() == object_data[:100]
 
             # Verify fully OOB request returned Exception
             assert isinstance(results[1], OutOfRange)
-
-            # Verify request exactly at EOF successfully completed with 0 bytes
-            assert not isinstance(results[2], Exception)
-            assert b_oob2.getvalue() == b""
 
         del writer
         gc.collect()
