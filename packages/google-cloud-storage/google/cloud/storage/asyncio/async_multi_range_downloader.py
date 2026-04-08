@@ -469,7 +469,7 @@ class AsyncMultiRangeDownloader:
                             broken_gen, stream_factory
                         )
 
-                    my_generation = self._multiplexer.stream_generation
+                    stream_generation = self._multiplexer.stream_generation
 
                     # Send Requests
                     pending_read_ids = {r.read_id for r in requests}
@@ -482,7 +482,7 @@ class AsyncMultiRangeDownloader:
                                 _storage_v2.BidiReadObjectRequest(read_ranges=batch)
                             )
                         except Exception:
-                            last_broken_generation = my_generation
+                            last_broken_generation = stream_generation
                             raise
 
                     # Receive Responses
@@ -491,14 +491,14 @@ class AsyncMultiRangeDownloader:
 
                         if isinstance(item, _StreamEnd):
                             if pending_read_ids:
-                                last_broken_generation = my_generation
+                                last_broken_generation = stream_generation
                                 raise exceptions.ServiceUnavailable(
                                     "Stream ended with pending read_ids"
                                 )
                             break
 
                         if isinstance(item, _StreamError):
-                            if item.generation < my_generation:
+                            if item.generation < stream_generation:
                                 continue  # stale error, skip
                             last_broken_generation = item.generation
                             raise item.exception
