@@ -515,9 +515,13 @@ def to_query(
     time_travel_timestamp: Optional[datetime.datetime] = None,
 ) -> str:
     """Compile query_or_table with conditions(filters, wildcards) to query."""
-    sub_query = (
-        f"({query_or_table})" if is_query(query_or_table) else f"`{query_or_table}`"
-    )
+    if is_query(query_or_table):
+        sub_query = f"({query_or_table})"
+    else:
+        # Table ID can have 1, 2, 3, or 4 parts. Quoting all parts to be safe.
+        # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
+        parts = query_or_table.split(".")
+        sub_query = ".".join(f"`{part}`" for part in parts)
 
     # TODO(b/338111344): Generate an index based on DefaultIndexKind if we
     # don't have index columns specified.
