@@ -35,7 +35,11 @@ LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.10", "3.11", "3.12", "3.13", "3.14",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
     # Not supported, but included so that we can explicitly skip the session
     # from here. Keep unsupported versions last so that they don't conflict with
     # the prerelease_deps session.
@@ -232,7 +236,7 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     if session.python == "3.9":
-       session.skip("Python 3.9 is not supported.")
+        session.skip("Python 3.9 is not supported.")
     default(session)
 
 

@@ -18,7 +18,6 @@ import google.cloud.bigquery
 
 import pandas_gbq.core.resource_references
 
-
 _DRY_RUN_TEMPLATE = """
 SELECT *
 FROM `{project}.{catalog}.{namespace}.{table}`
