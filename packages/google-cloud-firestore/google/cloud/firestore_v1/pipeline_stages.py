@@ -515,6 +515,8 @@ class Update(Stage):
 
     def _pb_args(self) -> list[Value]:
         return [Selectable._to_value(self.transformed_fields)]
+
+
 class Define(Stage):
     """Binds one or more expressions to variables."""
 

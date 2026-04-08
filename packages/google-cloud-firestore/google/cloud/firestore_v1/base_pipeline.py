@@ -724,6 +724,7 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.Update(*transformed_fields))
+
     def define(self, *aliased_expressions: AliasedExpression) -> "_BasePipeline":
         """
         Binds one or more expressions to Variables that can be accessed in subsequent stages
