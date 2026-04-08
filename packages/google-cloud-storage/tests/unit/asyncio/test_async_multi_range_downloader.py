@@ -431,6 +431,8 @@ class TestAsyncMultiRangeDownloader:
 
         # Assert
         assert mrd.generation == _TEST_GENERATION_NUMBER
+        assert mrd.read_handle == _TEST_READ_HANDLE
+        assert mrd.persisted_size == _TEST_OBJECT_SIZE
         assert "'generation_number' is deprecated" in caplog.text
 
     @pytest.mark.asyncio
