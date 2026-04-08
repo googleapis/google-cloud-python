@@ -55,6 +55,7 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
+    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: A unified Python API in BigQuery
@@ -91,6 +92,7 @@ libraries:
       issue_tracker_override: https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open
   - name: gapic-generator
     version: 1.30.14
+    skip_generate: true
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
@@ -326,12 +328,14 @@ libraries:
       skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
+    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth httplib2
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
   - name: google-auth-oauthlib
     version: 1.3.1
+    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth OAuthlib
@@ -360,6 +364,7 @@ libraries:
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
+    skip_generate: true
     python:
       proto_only_apis:
         - google/identity/accesscontextmanager/v1
@@ -1234,6 +1239,7 @@ libraries:
       default_version: v1
   - name: google-cloud-bigtable
     version: 2.36.0
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       name_pretty_override: Cloud Bigtable
@@ -1864,6 +1870,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       product_documentation_override: https://www.dialogflow.com/
       issue_tracker_override: https://issuetracker.google.com/savedsearches/5300385
@@ -1942,6 +1949,7 @@ libraries:
   - name: google-cloud-dns
     version: 0.36.1
     description_override: provides methods that you can use to manage DNS for your applications.
+    skip_generate: true
     python:
       library_type: REST
       name_pretty_override: Cloud DNS
@@ -2133,6 +2141,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2272,6 +2281,7 @@ libraries:
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/__init__.py
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/rbacrolebindingactuation.py
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/gkehub/v1:
@@ -3006,6 +3016,7 @@ libraries:
       - google/cloud/oslogin_v1/common/types
       - google/cloud/oslogin_v1/common/types/__init__.py
       - google/cloud/oslogin_v1/common/types/common.py
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/oslogin/v1:
@@ -3097,6 +3108,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/policytroubleshooter/iam/v3:
@@ -3162,6 +3174,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3328,6 +3341,7 @@ libraries:
       default_version: v2
   - name: google-cloud-runtimeconfig
     version: 0.36.1
+    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: Google Cloud Runtime Configurator
@@ -3616,6 +3630,7 @@ libraries:
       - tests/system/__init__.py
       - tests/system/smoke_test.py
       - tests/unit/test_helpers.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       name_pretty_override: Cloud Speech
@@ -3843,6 +3858,7 @@ libraries:
       - tests/unit/v2
       - tests/unit/v2/test__http.py
       - tests/unit/v2/test_client.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3964,6 +3980,7 @@ libraries:
       - tests/system/smoke_test.py
       - tests/unit/test_decorators.py
       - tests/unit/test_helpers.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       product_documentation_override: https://cloud.google.com/vision/docs/
@@ -4655,6 +4672,7 @@ libraries:
       - path: google/cloud/location
       - path: google/logging/type
       - path: google/rpc/context
+    skip_generate: true
     python:
       library_type: CORE
       proto_only_apis:
@@ -4693,6 +4711,7 @@ libraries:
     version: 0.14.4
     apis:
       - path: google/iam/v1
+    skip_generate: true
     python:
       proto_only_apis:
         - google/iam/v1
@@ -4705,6 +4724,7 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.34.1
+    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
