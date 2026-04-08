@@ -60,9 +60,6 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
-        mock_stream.is_stream_open = True
-        # Default recv blocks forever (tests override with specific side_effect)
-        mock_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             mock_client, bucket_name, object_name, generation, read_handle
@@ -422,8 +419,6 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
-        mock_stream.is_stream_open = True
-        mock_stream.recv = AsyncMock(side_effect=asyncio.Event().wait)
 
         # Act
         mrd = await AsyncMultiRangeDownloader.create_mrd(
@@ -561,7 +556,6 @@ class TestAsyncMultiRangeDownloader:
             return None
 
         mock_mrd.read_obj_str.recv = AsyncMock(side_effect=staged_recv)
-        mock_mrd.read_obj_str.is_stream_open = True
 
         mock_random_int.return_value = 123
 
