@@ -500,6 +500,15 @@ def test_pyformat_with_query_string_replaces_variables(session):
             ),
             "SELECT * FROM `ListedProject`.`ListedDataset`.`ListedTable`",
         ),
+        (
+            google.cloud.bigquery.TableReference(
+                google.cloud.bigquery.DatasetReference(
+                    "my-project", "my-catalog.my-namespace"
+                ),
+                "my-table",
+            ),
+            "SELECT * FROM `my-project`.`my-catalog`.`my-namespace`.`my-table`",
+        ),
     ),
 )
 def test_pyformat_with_table_replaces_variables(table, expected_sql, session=session):
@@ -511,3 +520,51 @@ def test_pyformat_with_table_replaces_variables(table, expected_sql, session=ses
     sql = "SELECT * FROM {table}"
     got_sql = pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
     assert got_sql == expected_sql
+
+
+def test_pyformat_with_bigframes_dataframe_biglake_table(session):
+    # Create a real BigFrames DataFrame that points to a BigLake table.
+    import bigframes.core.array_value as array_value
+    import bigframes.core.blocks as blocks
+    import bigframes.core.bq_data as bq_data
+    import bigframes.dataframe
+
+    # Define the BigLake table
+    project_id = "my-project"
+    catalog_id = "my-catalog"
+    namespace_id = "my-namespace"
+    table_id = "my-table"
+    schema = (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
+
+    biglake_table = bq_data.BiglakeIcebergTable(
+        project_id=project_id,
+        catalog_id=catalog_id,
+        namespace_id=namespace_id,
+        table_id=table_id,
+        physical_schema=schema,
+        cluster_cols=(),
+        metadata=bq_data.TableMetadata(
+            location=bq_data.BigQueryRegion("us-central1"),
+            type="TABLE",
+        ),
+    )
+
+    # ArrayValue.from_table is what read_gbq uses.
+    av = array_value.ArrayValue.from_table(biglake_table, session)
+    block = blocks.Block(av, index_columns=[], column_labels=["col"])
+    df = bigframes.dataframe.DataFrame(block)
+
+    pyformat_args = {"df": df}
+    sql = "SELECT * FROM {df}"
+
+    got_sql = pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
+
+    # For BigLake, we now expect a SUBQUERY, not a view reference.
+    # The subquery should have correctly quoted 4-part ID.
+    assert "SELECT" in got_sql
+    assert project_id in got_sql
+    assert catalog_id in got_sql
+    assert namespace_id in got_sql
+    assert table_id in got_sql
+    assert got_sql.startswith("SELECT * FROM (SELECT")
+    assert got_sql.endswith(")")
