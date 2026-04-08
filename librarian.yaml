@@ -806,6 +806,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/biglake/hive/v1beta:
@@ -1688,6 +1689,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/datacatalog/lineage/configmanagement/v1:
@@ -2774,6 +2776,7 @@ libraries:
       - tests/unit/gapic/dashboard_v1
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
+    skip_generate: true
     python:
       opt_args_by_api:
         google/monitoring/dashboard/v1:
@@ -3600,6 +3603,7 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
