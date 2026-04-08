@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.10.1...google-cloud-storage-v3.11.0) (2026-04-08)
+
+
+### Documentation
+
+* Updated documentation for `BidiReadObject`, `ReadObjectRequest`, and `ObjectContexts` ([1230e1743c1aac8d810864fb09f33aafec098a7d](https://github.com/googleapis/google-cloud-python/commit/1230e1743c1aac8d810864fb09f33aafec098a7d))
+
+
+### Features
+
+* generate libraries ([796450786a565e1c2c731f88d9b12b5ee077f219](https://github.com/googleapis/google-cloud-python/commit/796450786a565e1c2c731f88d9b12b5ee077f219))
+* Added a new field `ComposeObjectRequest.delete_source_objects` field ([1230e1743c1aac8d810864fb09f33aafec098a7d](https://github.com/googleapis/google-cloud-python/commit/1230e1743c1aac8d810864fb09f33aafec098a7d))
+
+
+### Bug Fixes
+
+* updates typing for python 3.8 ([87b7ba97c95587d213a9ebe91e41cc9e5316f392](https://github.com/googleapis/google-cloud-python/commit/87b7ba97c95587d213a9ebe91e41cc9e5316f392))
+
 ## [3.10.1](https://github.com/googleapis/python-storage/compare/v3.10.0...v3.10.1) (2026-03-23)
 
 

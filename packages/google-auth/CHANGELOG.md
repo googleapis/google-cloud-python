@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.49.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.1...google-auth-v2.49.2) (2026-04-08)
+
+
+### Bug Fixes
+
+* use requests transport for GCE MDS (#16480) ([614a3d0472d118c78b3b0accf0de0b7cdf3b9e91](https://github.com/googleapis/google-cloud-python/commit/614a3d0472d118c78b3b0accf0de0b7cdf3b9e91))
+
 ## [2.49.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.0...google-auth-v2.49.1) (2026-03-12)
 
 

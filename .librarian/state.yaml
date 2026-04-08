@@ -268,7 +268,7 @@ libraries:
       - packages/google-area120-tables/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.49.1
+    version: 2.49.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2141,7 +2141,7 @@ libraries:
       - packages/google-cloud-iam-logging/
     tag_format: '{id}-v{version}'
   - id: google-cloud-iamconnectorcredentials
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 13b86d1d083c314bf51e42c19f9f6ed941e0553b
     apis:
       - path: google/cloud/iamconnectorcredentials/v1alpha
@@ -3366,7 +3366,7 @@ libraries:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
-    version: 3.10.1
+    version: 3.11.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
