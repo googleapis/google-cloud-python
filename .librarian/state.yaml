@@ -176,7 +176,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
     version: 0.7.0
-    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/chat/v1
         service_config: chat_v1.yaml
@@ -1657,7 +1657,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.35.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -2424,7 +2424,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
     version: 0.4.0
-    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/memorystore/v1beta
         service_config: memorystore_v1beta.yaml
@@ -2851,7 +2851,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
     version: 2.36.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/pubsub/v1
         service_config: pubsub_v1.yaml
@@ -3367,7 +3367,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
     version: 3.10.1
-    last_generated_commit: 280bed6c219637610d09cebf696958dd99fd2f76
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
         service_config: storage_v2.yaml
@@ -3588,7 +3588,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
     version: 3.25.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/translate/v3beta1
         service_config: translate_v3beta1.yaml
@@ -4308,7 +4308,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.74.0
-    last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
