@@ -26,7 +26,7 @@ from google.cloud.storage.asyncio.async_read_object_stream import (
 logger = logging.getLogger(__name__)
 
 _DEFAULT_QUEUE_MAX_SIZE = 100
-_DEFAULT_PUT_TIMEOUT = 20.0
+_DEFAULT_PUT_TIMEOUT_SECONDS = 20.0
 
 
 class _StreamError:
@@ -87,7 +87,7 @@ class _StreamMultiplexer:
 
     async def _put_with_timeout(self, queue: asyncio.Queue, item) -> None:
         try:
-            await asyncio.wait_for(queue.put(item), timeout=_DEFAULT_PUT_TIMEOUT)
+            await asyncio.wait_for(queue.put(item), timeout=_DEFAULT_PUT_TIMEOUT_SECONDS)
         except asyncio.TimeoutError:
             if queue not in self._get_unique_queues():
                 logger.debug("Dropped item for unregistered queue.")
