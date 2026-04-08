@@ -617,6 +617,27 @@ class Where(Stage):
         return [self.condition._to_pb()]
 
 
+class Delete(Stage):
+    """Deletes documents matching the pipeline criteria."""
+
+    def __init__(self):
+        super().__init__("delete")
+
+    def _pb_args(self) -> list[Value]:
+        return []
+
+
+class Update(Stage):
+    """Updates documents with transformed fields."""
+
+    def __init__(self, *transformed_fields: Selectable):
+        super().__init__("update")
+        self.transformed_fields = list(transformed_fields)
+
+    def _pb_args(self) -> list[Value]:
+        return [Selectable._to_value(self.transformed_fields)]
+
+
 class Define(Stage):
     """Binds one or more expressions to variables."""
 
