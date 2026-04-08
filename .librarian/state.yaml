@@ -3367,7 +3367,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
     version: 3.10.1
-    last_generated_commit: 280bed6c219637610d09cebf696958dd99fd2f76
+    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
         service_config: storage_v2.yaml
