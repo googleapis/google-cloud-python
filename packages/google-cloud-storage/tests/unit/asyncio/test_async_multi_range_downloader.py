@@ -105,47 +105,6 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_download_ranges(
-        self, mock_cls_async_read_object_stream, mock_random_int
-    ):
-        data = b"these_are_18_chars"
-        crc32c = Checksum(data).digest()
-        crc32c_int = int.from_bytes(crc32c, "big")
-
-        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
-        mock_random_int.side_effect = [456]
-
-        mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock(
-            side_effect=[
-                _storage_v2.BidiReadObjectResponse(
-                    object_data_ranges=[
-                        _storage_v2.ObjectRangeData(
-                            checksummed_data=_storage_v2.ChecksummedData(
-                                content=data, crc32c=crc32c_int
-                            ),
-                            range_end=True,
-                            read_range=_storage_v2.ReadRange(
-                                read_offset=0, read_length=18, read_id=456
-                            ),
-                        )
-                    ],
-                ),
-                None,
-            ]
-        )
-
-        buffer = BytesIO()
-        await mock_mrd.download_ranges([(0, 18, buffer)])
-        assert buffer.getvalue() == data
-
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
-    )
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
-    )
-    @pytest.mark.asyncio
     async def test_download_ranges_via_async_gather(
         self, mock_cls_async_read_object_stream, mock_random_int
     ):
@@ -218,6 +177,47 @@ class TestAsyncMultiRangeDownloader:
 
         assert buffer.getvalue() == data
         assert second_buffer.getvalue() == data[10:16]
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges(
+        self, mock_cls_async_read_object_stream, mock_random_int
+    ):
+        data = b"these_are_18_chars"
+        crc32c = Checksum(data).digest()
+        crc32c_int = int.from_bytes(crc32c, "big")
+
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        mock_random_int.side_effect = [456]
+
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock(
+            side_effect=[
+                _storage_v2.BidiReadObjectResponse(
+                    object_data_ranges=[
+                        _storage_v2.ObjectRangeData(
+                            checksummed_data=_storage_v2.ChecksummedData(
+                                content=data, crc32c=crc32c_int
+                            ),
+                            range_end=True,
+                            read_range=_storage_v2.ReadRange(
+                                read_offset=0, read_length=18, read_id=456
+                            ),
+                        )
+                    ],
+                ),
+                None,
+            ]
+        )
+
+        buffer = BytesIO()
+        await mock_mrd.download_ranges([(0, 18, buffer)])
+        assert buffer.getvalue() == data
 
     @pytest.mark.asyncio
     async def test_downloading_ranges_with_more_than_1000_should_throw_error(self):
