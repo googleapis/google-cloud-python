@@ -336,6 +336,8 @@ def _apply_yaml_args_to_callable(callable_obj, client, yaml_args):
     ):
         # yaml has an array of arguments. Treat as args
         return callable_obj(*parsed)
+    elif yaml_args is None and callable_obj != expr.Constant:
+        return callable_obj()
     else:
         # yaml has a single argument
         return callable_obj(parsed)
