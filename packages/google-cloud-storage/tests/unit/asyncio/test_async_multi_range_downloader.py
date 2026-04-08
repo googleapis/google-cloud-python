@@ -185,6 +185,7 @@ class TestAsyncMultiRangeDownloader:
     async def test_download_ranges(
         self, mock_cls_async_read_object_stream, mock_random_int
     ):
+        # Arrange
         data = b"these_are_18_chars"
         crc32c = Checksum(data).digest()
         crc32c_int = int.from_bytes(crc32c, "big")
@@ -193,27 +194,36 @@ class TestAsyncMultiRangeDownloader:
         mock_random_int.side_effect = [456]
 
         mock_mrd.read_obj_str.send = AsyncMock()
-        mock_mrd.read_obj_str.recv = AsyncMock(
-            side_effect=[
-                _storage_v2.BidiReadObjectResponse(
-                    object_data_ranges=[
-                        _storage_v2.ObjectRangeData(
-                            checksummed_data=_storage_v2.ChecksummedData(
-                                content=data, crc32c=crc32c_int
-                            ),
-                            range_end=True,
-                            read_range=_storage_v2.ReadRange(
-                                read_offset=0, read_length=18, read_id=456
-                            ),
-                        )
-                    ],
-                ),
-                None,
-            ]
-        )
-
+        mock_mrd.read_obj_str.recv = AsyncMock()
+        mock_mrd.read_obj_str.recv.side_effect = [
+            _storage_v2.BidiReadObjectResponse(
+                object_data_ranges=[
+                    _storage_v2.ObjectRangeData(
+                        checksummed_data=_storage_v2.ChecksummedData(
+                            content=data, crc32c=crc32c_int
+                        ),
+                        range_end=True,
+                        read_range=_storage_v2.ReadRange(
+                            read_offset=0, read_length=18, read_id=456
+                        ),
+                    )
+                ],
+            ),
+            None,
+        ]
+        # Act
         buffer = BytesIO()
+
         await mock_mrd.download_ranges([(0, 18, buffer)])
+
+        # Assert
+        mock_mrd.read_obj_str.send.assert_called_once_with(
+            _storage_v2.BidiReadObjectRequest(
+                read_ranges=[
+                    _storage_v2.ReadRange(read_offset=0, read_length=18, read_id=456)
+                ]
+            )
+        )
         assert buffer.getvalue() == data
 
     @pytest.mark.asyncio
@@ -523,6 +533,7 @@ class TestAsyncMultiRangeDownloader:
     async def test_download_ranges_resumption_logging(
         self, mock_cls_async_read_object_stream, mock_random_int, mock_logger
     ):
+        # Arrange
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
 
         from google.api_core import exceptions as core_exceptions
@@ -561,11 +572,22 @@ class TestAsyncMultiRangeDownloader:
 
         mock_random_int.return_value = 123
 
+        # Act
         buffer = BytesIO()
+
+        # Patch Checksum where it is likely used (reads_resumption_strategy or similar),
+        # but actually if we use google_crc32c directly, we should patch that or provide valid CRC.
+        # Since we can't reliably predict where Checksum is imported/used without more digging,
+        # let's provide a valid CRC for b"data".
+        # Checksum(b"data").digest() -> needs to match crc32c=123.
+        # But we can't force b"data" to have crc=123.
+        # So we MUST patch Checksum.
+        # It is used in google.cloud.storage.asyncio.retry.reads_resumption_strategy
         with mock.patch(
             "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
         ) as mock_chk:
             mock_chk.return_value.digest.return_value = (123).to_bytes(4, "big")
             await mock_mrd.download_ranges([(0, 4, buffer)])
 
+        # Assert
         mock_logger.info.assert_any_call("Resuming download (attempt 2) for 1 ranges.")
