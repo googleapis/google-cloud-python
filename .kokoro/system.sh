@@ -96,15 +96,16 @@ packages_with_system_tests=(
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
-  "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
   "google-cloud-ndb"
   "google-cloud-pubsub"
   "google-cloud-spanner"
+  "google-cloud-storage"
   "google-cloud-testutils"
-  "sqlalchemy-bigquery"
   "pandas-gbq"
+  "sqlalchemy-bigquery"
+  "sqlalchemy-spanner"
 )
 
 # A file for running system tests
