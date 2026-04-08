@@ -118,8 +118,6 @@ async def _download_time_based_async(client, filename, params):
     mrd = AsyncMultiRangeDownloader(client, params.bucket_name, filename)
     await mrd.open()
 
-    shared_lock = asyncio.Lock()
-
     async def _worker_coro():
         total_bytes_downloaded = 0
         offset = 0
@@ -148,7 +146,7 @@ async def _download_time_based_async(client, filename, params):
                     if offset + params.chunk_size_bytes > params.file_size_bytes:
                         offset = 0  # Reset offset if end of file is reached
 
-            await mrd.download_ranges(ranges, lock=shared_lock)
+            await mrd.download_ranges(ranges)
 
             bytes_in_buffers = sum(r[2].getbuffer().nbytes for r in ranges)
             assert bytes_in_buffers == params.chunk_size_bytes * params.num_ranges
