@@ -598,7 +598,7 @@ def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
 
 
 def test_mrd_concurrent_download(
-    storage_client, blobs_to_delete, event_loop, grpc_client
+    storage_client, blobs_to_delete, event_loop, grpc_client_direct
 ):
     """
     Test that mrd can handle concurrent `download_ranges` calls correctly.
@@ -611,13 +611,13 @@ def test_mrd_concurrent_download(
     async def _run():
         object_data = os.urandom(object_size)
 
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(grpc_client_direct, _ZONAL_BUCKET, object_name)
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client, _ZONAL_BUCKET, object_name
+            grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             tasks = []
             ranges_to_fetch = []
@@ -673,7 +673,7 @@ def test_mrd_concurrent_download(
 
 
 def test_mrd_concurrent_download_cancellation(
-    storage_client, blobs_to_delete, event_loop, grpc_client
+    storage_client, blobs_to_delete, event_loop, grpc_client_direct
 ):
     """
     Test task cancellation / abort mid-stream.
@@ -686,13 +686,13 @@ def test_mrd_concurrent_download_cancellation(
     async def _run():
         object_data = os.urandom(object_size)
 
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(grpc_client_direct, _ZONAL_BUCKET, object_name)
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client, _ZONAL_BUCKET, object_name
+            grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             tasks = []
             num_chunks = 100
@@ -732,7 +732,7 @@ def test_mrd_concurrent_download_cancellation(
 
 
 def test_mrd_concurrent_download_out_of_bounds(
-    storage_client, blobs_to_delete, event_loop, grpc_client
+    storage_client, blobs_to_delete, event_loop, grpc_client_direct
 ):
     """
     Test out-of-bounds & edge ranges concurrent with valid requests.
@@ -745,13 +745,13 @@ def test_mrd_concurrent_download_out_of_bounds(
     async def _run():
         object_data = os.urandom(object_size)
 
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(grpc_client_direct, _ZONAL_BUCKET, object_name)
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client, _ZONAL_BUCKET, object_name
+            grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             b_valid = BytesIO()
             t_valid = asyncio.create_task(mrd.download_ranges([(0, 100, b_valid)]))
