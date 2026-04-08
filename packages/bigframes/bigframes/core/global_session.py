@@ -26,6 +26,7 @@ import google.auth.exceptions
 import bigframes.exceptions as bfe
 
 if TYPE_CHECKING:
+    import pandas
     import bigframes.session
 
 _global_session: Optional[bigframes.session.Session] = None
@@ -122,6 +123,14 @@ _T = TypeVar("_T")
 
 def with_default_session(func_: Callable[..., _T], *args, **kwargs) -> _T:
     return func_(get_global_session(), *args, **kwargs)
+
+
+def execution_history() -> "pandas.DataFrame":
+    import pandas  # noqa: F401
+
+    import bigframes.session
+
+    return with_default_session(bigframes.session.Session.execution_history)
 
 
 class _GlobalSessionContext:

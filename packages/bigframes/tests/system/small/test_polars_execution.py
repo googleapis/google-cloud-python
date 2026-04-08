@@ -72,3 +72,26 @@ def test_polar_execution_unsupported_sql_fallback(
     # geo fns not supported by polar engine yet, so falls back to bq execution
     assert session_w_polars._metrics.execution_count == (execution_count_before + 1)
     assert math.isclose(bf_result.geo_area.sum(), 70.52332050, rel_tol=0.00001)
+
+
+def test_polars_execution_history(session_w_polars):
+    import pandas as pd
+
+    # Create a small local DataFrame
+    pdf = pd.DataFrame({"col_a": [1, 2, 3], "col_b": ["x", "y", "z"]})
+
+    # Read simple local data
+    df = session_w_polars.read_pandas(pdf)
+
+    # Trigger execution
+    _ = df.to_pandas()
+
+    # Verify the execution history captured the local job
+    history = session_w_polars.execution_history()
+
+    # Verify we have at least one job and logged as polars
+    assert len(history) > 0
+    last_job = history.iloc[-1]
+
+    assert last_job["job_type"] == "polars"
+    assert last_job["status"] == "DONE"
