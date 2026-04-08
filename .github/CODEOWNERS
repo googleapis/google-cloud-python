@@ -12,4 +12,18 @@
 *                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
 
 /packages/bigframes/                          @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/bigquery-magics/                    @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery/              @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-analyticshub/ @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-biglake/      @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-connection/   @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-data-exchange/ @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-datapolicies/ @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-datatransfer/ @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-logging/      @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-migration/    @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-reservation/  @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/google-cloud-bigquery-storage/      @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/pandas-gbq/                         @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
+/packages/sqlalchemy-bigquery/                @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/bigquery-dataframe-team
 /packages/google-auth/                        @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team @googleapis/cloud-sdk-auth-team @googleapis/aion-team
