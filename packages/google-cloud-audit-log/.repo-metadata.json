@@ -1,4 +1,5 @@
 {
+    "api_id": "cloudaudit.googleapis.com",
     "api_shortname": "auditlog",
     "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log",
     "default_version": "apiVersion",

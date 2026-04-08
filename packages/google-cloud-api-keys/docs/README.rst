@@ -3,7 +3,7 @@ Python Client for API Keys
 
 |preview| |pypi| |versions|
 
-`API Keys`_: 
+`API Keys`_: Manages the API keys associated with developer projects.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

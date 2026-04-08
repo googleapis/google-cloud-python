@@ -1,14 +1,14 @@
 Python Client for iamconnectorcredentials.googleapis.com API
 ============================================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `iamconnectorcredentials.googleapis.com API`_: iamconnectorcredentials.googleapis.com API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iamconnectorcredentials.svg
    :target: https://pypi.org/project/google-cloud-iamconnectorcredentials/
