@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [Unreleased]
+
+### New Features
+
+* Drop support for Python 3.8. (57114cb)
+
+### Bug Fixes
+
+* deps: Require protobuf >= 4.25.8, < 8.0.0 (57114cb)
+
 ## [3.10.1](https://github.com/googleapis/python-storage/compare/v3.10.0...v3.10.1) (2026-03-23)
 
 
