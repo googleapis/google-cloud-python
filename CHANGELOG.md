@@ -172,6 +172,7 @@ Changelogs
 - [google-cloud-shell==1.15.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-shell/CHANGELOG.md)
 - [google-cloud-source-context==1.10.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-source-context/CHANGELOG.md)
 - [google-cloud-speech==2.38.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-speech/CHANGELOG.md)
+- [google-cloud-storage==3.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage/CHANGELOG.md)
 - [google-cloud-storage-control==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-control/CHANGELOG.md)
 - [google-cloud-storage-transfer==1.20.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-transfer/CHANGELOG.md)
 - [google-cloud-storagebatchoperations==0.6.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storagebatchoperations/CHANGELOG.md)

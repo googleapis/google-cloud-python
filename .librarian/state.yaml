@@ -3382,7 +3382,7 @@ libraries:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
-    version: 3.10.1
+    version: 3.11.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
