@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.64.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.64.0...google-cloud-spanner-v3.64.1) (2026-04-09)
+
+
+### Bug Fixes
+
+* catch recursion and decode errors in proto parsing to p… (#16561) ([70dc6bfc328de37abe96afbf5555e484fdc80058](https://github.com/googleapis/google-cloud-python/commit/70dc6bfc328de37abe96afbf5555e484fdc80058))
+
 ## [3.64.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.63.0...google-cloud-spanner-v3.64.0) (2026-04-01)
 
 
