@@ -1822,7 +1822,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
         name_resource_opts.child_type = species_resource_opts.type
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
-    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"],}
+    expected = (api_schema.messages["nomenclature.linneaen.v1.Species"],)
     actual = api_schema.services[
         "nomenclature.linneaen.v1.SpeciesService"
     ].resource_messages
