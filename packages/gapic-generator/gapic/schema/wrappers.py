@@ -2240,46 +2240,6 @@ class Service:
             for i in self.options.Extensions[client_pb2.oauth_scopes].split(",")
             if i
         )
-    
-    @utils.cached_property
-    def deterministic_resource_messages(self) -> Sequence[MessageType]:
-        """Returns a sorted sequence of resource messages to guarantee deterministic output order."""
-        return tuple(
-            sorted(
-                self.resource_messages,
-                key=lambda r: r.resource_type_full_path or r.name
-            )
-        )
-
-    @utils.cached_property
-    def resource_path_method_names(self) -> Dict[str, str]:
-        """Returns a mapping of resource_type_full_path to its disambiguated Python method base name."""
-        import collections
-        from gapic import utils
-
-        type_counts = collections.Counter(
-            r.resource_type for r in self.resource_messages_dict.values() if r.resource_type
-        )
-
-        method_names = {}
-        for full_path, resource in self.resource_messages_dict.items():
-            if not resource.resource_type:
-                continue
-
-            base_name = utils.to_snake_case(resource.resource_type)
-
-            # Collision detection
-            if type_counts[resource.resource_type] > 1:
-                domain = full_path.split(".")[0]
-                
-                # THE MAGIC FIX: Only prefix if the resource belongs to a foreign API
-                if domain != self.shortname:
-                    domain_prefix = domain.replace("-", "_") 
-                    base_name = f"{domain_prefix}_{base_name}"
-
-            method_names[full_path] = base_name
-
-        return method_names
 
     @property
     def module_name(self) -> str:
@@ -2318,13 +2278,14 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> Sequence[MessageType]:
+    def resource_messages(self) -> FrozenSet[MessageType]:
         """Returns all the resource message types used in all
-        request and response fields in the service in a deterministic order."""
+        request and response fields in the service."""
 
         def gen_resources(message):
             if message.resource_path:
                 yield message
+
             for type_ in message.recursive_field_types:
                 if type_.resource_path:
                     yield type_
@@ -2333,12 +2294,14 @@ class Service:
             for field in message.recursive_resource_fields:
                 resource = field.options.Extensions[resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
+                # The resource may not be visible if the resource type is one of
+                # the common_resources (see the class var in class definition)
+                # or if it's something unhelpful like '*'.
                 resource = self.visible_resources.get(resource_type)
                 if resource:
                     yield resource
 
-        # Collect all resources into an unordered set to remove duplicates
-        unsorted_resources = set(
+        return frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2350,14 +2313,6 @@ class Service:
                 gen_indirect_resources_used(
                     method.lro.response_type if method.lro else method.output
                 ),
-            )
-        )
-        
-        # Return them deterministically sorted by their full path
-        return tuple(
-            sorted(
-                unsorted_resources,
-                key=lambda r: r.resource_type_full_path or r.name
             )
         )
 

@@ -157,7 +157,7 @@ class Proto:
 
     @cached_property
     def resource_messages(self) -> Mapping[str, wrappers.MessageType]:
-        """Return the file level resources of the proto in a deterministic order."""
+        """Return the file level resources of the proto."""
         file_resource_messages = (
             (res.type, wrappers.CommonResource.build(res).message_type)
             for res in self.file_pb2.options.Extensions[
@@ -169,12 +169,10 @@ class Proto:
             for msg in self.messages.values()
             if msg.options.Extensions[resource_pb2.resource].type
         )
-        
-        # Sort the chained generator by the resource path (item[0]) to ensure determinism
         return collections.OrderedDict(
-            sorted(
-                itertools.chain(file_resource_messages, resource_messages),
-                key=lambda item: item[0]
+            itertools.chain(
+                file_resource_messages,
+                resource_messages,
             )
         )
 
