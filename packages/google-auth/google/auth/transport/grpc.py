@@ -362,8 +362,7 @@ class SslCredentials:
         return self._is_mtls
 
 class _MTLSCallInterceptor(grpc.UnaryUnaryClientInterceptor):
-    def __init__(self, cached_cert):
-        self._cached_cert = cached_cert
+    def __init__(self):
         self._wrapper = None
         self._max_retries = 2 # Set your desired limit here
 
