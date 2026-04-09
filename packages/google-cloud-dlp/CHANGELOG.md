@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.35.0...google-cloud-dlp-v3.36.0) (2026-04-09)
+
+
+### Features
+
+* added support for detecting key-value pairs in client provided metadata ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
 ## [3.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.34.0...google-cloud-dlp-v3.35.0) (2026-03-26)
 
 
