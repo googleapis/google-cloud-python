@@ -267,9 +267,9 @@ def secure_authorized_channel(
             cached_cert = cert   
         elif use_client_cert:
             # Use application default SSL credentials.
-            adc_ssl_credentils = SslCredentials()
-            ssl_credentials = adc_ssl_credentils.ssl_credentials
-            cached_cert = adc_ssl_credentils._cached_cert
+            adc_ssl_credentials = SslCredentials()
+            ssl_credentials = adc_ssl_credentials.ssl_credentials
+            cached_cert = adc_ssl_credentials._cached_cert
         else:
             ssl_credentials = grpc.ssl_channel_credentials()
 
