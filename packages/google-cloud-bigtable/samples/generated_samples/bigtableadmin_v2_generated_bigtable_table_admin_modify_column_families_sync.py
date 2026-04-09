@@ -49,4 +49,5 @@ def sample_modify_column_families():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_ModifyColumnFamilies_sync]

@@ -1798,6 +1798,9 @@ class WriteObjectResponse(proto.Message):
             finalized.
 
             This field is a member of `oneof`_ ``write_status``.
+        persisted_data_checksums (google.cloud._storage_v2.types.ObjectChecksums):
+            If persisted_size is set, contains checksums of persisted
+            data.
     """
 
     persisted_size: int = proto.Field(
@@ -1810,6 +1813,11 @@ class WriteObjectResponse(proto.Message):
         number=2,
         oneof="write_status",
         message="Object",
+    )
+    persisted_data_checksums: "ObjectChecksums" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ObjectChecksums",
     )
 
 
@@ -1950,8 +1958,9 @@ class BidiWriteObjectRequest(proto.Message):
         object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. Checksums for the complete object. If the
             checksums computed by the service don't match the specified
-            checksums the call fails. Might only be provided in the
-            first request or the last request (with finish_write set).
+            checksums the call fails. May be provided in the last
+            request (with finish_write set). For non-appendable objects
+            only, may also be provided in the first request.
         state_lookup (bool):
             Optional. For each ``BidiWriteObjectRequest`` where
             ``state_lookup`` is ``true`` or the client closes the
@@ -2058,6 +2067,9 @@ class BidiWriteObjectResponse(proto.Message):
             finalized.
 
             This field is a member of `oneof`_ ``write_status``.
+        persisted_data_checksums (google.cloud._storage_v2.types.ObjectChecksums):
+            If persisted_size is set, contains checksums of persisted
+            data.
         write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
             An optional write handle that is returned
             periodically in response messages. Clients
@@ -2077,6 +2089,11 @@ class BidiWriteObjectResponse(proto.Message):
         number=2,
         oneof="write_status",
         message="Object",
+    )
+    persisted_data_checksums: "ObjectChecksums" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ObjectChecksums",
     )
     write_handle: "BidiWriteHandle" = proto.Field(
         proto.MESSAGE,
@@ -2276,6 +2293,9 @@ class QueryWriteStatusResponse(proto.Message):
             finalized.
 
             This field is a member of `oneof`_ ``write_status``.
+        persisted_data_checksums (google.cloud._storage_v2.types.ObjectChecksums):
+            If persisted_size is set, contains checksums of persisted
+            data.
     """
 
     persisted_size: int = proto.Field(
@@ -2288,6 +2308,11 @@ class QueryWriteStatusResponse(proto.Message):
         number=2,
         oneof="write_status",
         message="Object",
+    )
+    persisted_data_checksums: "ObjectChecksums" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ObjectChecksums",
     )
 
 

@@ -49,4 +49,5 @@ async def sample_list_clusters():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_ListClusters_async]

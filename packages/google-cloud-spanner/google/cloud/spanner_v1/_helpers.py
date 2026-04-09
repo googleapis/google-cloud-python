@@ -28,7 +28,7 @@ from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
 from google.cloud._helpers import _date_from_iso8601_date
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
-from google.protobuf.message import Message
+from google.protobuf.message import DecodeError, Message
 from google.protobuf.struct_pb2 import ListValue, Value
 from google.rpc.error_details_pb2 import RetryInfo
 
@@ -76,7 +76,7 @@ NUMERIC_MAX_PRECISION_ERR_MSG = (
 
 GOOGLE_CLOUD_REGION_GLOBAL = "global"
 
-log = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 _cloud_region: str = None
 
@@ -122,7 +122,7 @@ def _get_cloud_region() -> str:
         else:
             _cloud_region = GOOGLE_CLOUD_REGION_GLOBAL
     except Exception as e:
-        log.warning(
+        _LOGGER.warning(
             "Failed to detect GCP resource location for Spanner metrics, defaulting to 'global'. Error: %s",
             e,
         )
@@ -603,8 +603,14 @@ def _parse_proto(value_pb, column_info, field_name):
         default_proto_message = column_info.get(field_name)
         if isinstance(default_proto_message, Message):
             proto_message = type(default_proto_message)()
-            proto_message.ParseFromString(bytes_value)
-            return proto_message
+            try:
+                proto_message.ParseFromString(bytes_value)
+                return proto_message
+            except (DecodeError, RecursionError):
+                _LOGGER.warning(
+                    "Field could not be parsed as Proto due to excessive nesting/corruption. Returning raw bytes."
+                )
+                return bytes_value
     return bytes_value
 
 

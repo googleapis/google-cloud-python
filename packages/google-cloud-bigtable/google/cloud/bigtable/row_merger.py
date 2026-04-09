@@ -1,6 +1,7 @@
-from enum import Enum
 from collections import OrderedDict
-from google.cloud.bigtable.row import Cell, PartialRowData, InvalidChunk
+from enum import Enum
+
+from google.cloud.bigtable.row import Cell, InvalidChunk, PartialRowData
 
 _MISSING_COLUMN_FAMILY = "Column family {} is not among the cells stored in this row."
 _MISSING_COLUMN = (
@@ -204,15 +205,15 @@ class _RowMerger(object):
         if self.row.last_family != self.row.cell.family:
             family_changed = True
             self.row.last_family = self.row.cell.family
-            self.row.cells[
-                self.row.cell.family
-            ] = self.row.last_family_cells = OrderedDict()
+            self.row.cells[self.row.cell.family] = self.row.last_family_cells = (
+                OrderedDict()
+            )
 
         if family_changed or self.row.last_qualifier != self.row.cell.qualifier:
             self.row.last_qualifier = self.row.cell.qualifier
-            self.row.last_family_cells[
-                self.row.cell.qualifier
-            ] = self.row.last_qualifier_cells = []
+            self.row.last_family_cells[self.row.cell.qualifier] = (
+                self.row.last_qualifier_cells
+            ) = []
 
         self.row.last_qualifier_cells.append(
             Cell(

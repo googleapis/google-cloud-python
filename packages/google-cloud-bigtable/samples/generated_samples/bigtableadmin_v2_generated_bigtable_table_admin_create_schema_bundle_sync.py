@@ -40,7 +40,7 @@ def sample_create_schema_bundle():
 
     # Initialize request argument(s)
     schema_bundle = bigtable_admin_v2.SchemaBundle()
-    schema_bundle.proto_schema.proto_descriptors = b'proto_descriptors_blob'
+    schema_bundle.proto_schema.proto_descriptors = b"proto_descriptors_blob"
 
     request = bigtable_admin_v2.CreateSchemaBundleRequest(
         parent="parent_value",
@@ -57,5 +57,6 @@ def sample_create_schema_bundle():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_CreateSchemaBundle_sync]

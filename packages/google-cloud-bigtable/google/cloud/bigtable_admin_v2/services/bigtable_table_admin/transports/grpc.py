@@ -19,26 +19,23 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
-from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from .base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
+from google.protobuf.json_format import MessageToJson
+
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
+from google.cloud.bigtable_admin_v2.types import table as gba_table
+
+from .base import DEFAULT_CLIENT_INFO, BigtableTableAdminTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -62,7 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -97,7 +94,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -196,6 +193,10 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -408,12 +409,12 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_table_from_snapshot" not in self._stubs:
-            self._stubs[
-                "create_table_from_snapshot"
-            ] = self._logged_channel.unary_unary(
-                "/google.bigtable.admin.v2.BigtableTableAdmin/CreateTableFromSnapshot",
-                request_serializer=bigtable_table_admin.CreateTableFromSnapshotRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_table_from_snapshot"] = (
+                self._logged_channel.unary_unary(
+                    "/google.bigtable.admin.v2.BigtableTableAdmin/CreateTableFromSnapshot",
+                    request_serializer=bigtable_table_admin.CreateTableFromSnapshotRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_table_from_snapshot"]
 
@@ -778,12 +779,12 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_consistency_token" not in self._stubs:
-            self._stubs[
-                "generate_consistency_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.bigtable.admin.v2.BigtableTableAdmin/GenerateConsistencyToken",
-                request_serializer=bigtable_table_admin.GenerateConsistencyTokenRequest.serialize,
-                response_deserializer=bigtable_table_admin.GenerateConsistencyTokenResponse.deserialize,
+            self._stubs["generate_consistency_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.bigtable.admin.v2.BigtableTableAdmin/GenerateConsistencyToken",
+                    request_serializer=bigtable_table_admin.GenerateConsistencyTokenRequest.serialize,
+                    response_deserializer=bigtable_table_admin.GenerateConsistencyTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_consistency_token"]
 

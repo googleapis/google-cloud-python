@@ -50,4 +50,5 @@ async def sample_list_logical_views():
     async for response in page_result:
         print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_ListLogicalViews_async]
