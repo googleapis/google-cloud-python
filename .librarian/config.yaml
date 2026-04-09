@@ -24,11 +24,6 @@ libraries:
 # Allow releases for bigframes once the bug above is fixed.
   - id: "bigframes"
     release_blocked: true
-# TODO(https://github.com/googleapis/google-cloud-python/issues/16506):
-# Allow generation/release for google-cloud-firestore once this bug is fixed.
-  - id: "google-cloud-firestore"
-    generate_blocked: true
-    release_blocked: true
 # TODO(https://github.com/googleapis/google-cloud-python/issues/16165):
 # Allow generation for google-cloud-dialogflow once this bug is fixed.
   - id: "google-cloud-dialogflow"
