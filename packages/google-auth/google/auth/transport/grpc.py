@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Authorization support for gRPC."""
-    
+
 from __future__ import absolute_import
 
 import logging
@@ -30,6 +30,7 @@ except ImportError as caught_exc:  # pragma: NO COVER
     ) from caught_exc
 
 _LOGGER = logging.getLogger(__name__)
+
 
 class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
     """A `gRPC AuthMetadataPlugin`_ that inserts the credentials into each
@@ -59,13 +60,13 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
-    
+
         Returns:
             Sequence[Tuple[str, str]]: A list of request headers (key, value)
                 to add to the request.
         """
         headers = {}
- 
+
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
         # A default host must be explicitly provided since it cannot always
@@ -107,17 +108,17 @@ def secure_authorized_channel(
     Users can configure client certificate or rely on device certificates to
     establish a mutual TLS channel, if the `GOOGLE_API_USE_CLIENT_CERTIFICATE`
     variable is explicitly set to `true`.
-            
+
     Example::
-  
+
         import google.auth
         import google.auth.transport.grpc
         import google.auth.transport.requests
         from google.cloud.speech.v1 import cloud_speech_pb2
-   
+
         # Get credentials.
         credentials, _ = google.auth.default()
-            
+
         # Get an HTTP request function to refresh credentials.
         request = google.auth.transport.requests.Request()
 
@@ -186,9 +187,9 @@ def secure_authorized_channel(
             endpoint_to_use = regular_endpoint
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, endpoint_to_use,
-            ssl_credentials=default_ssl_credentials) 
+            ssl_credentials=default_ssl_credentials)
 
-    Option 4: not setting ssl_credentials and client_cert_callback. For devices  
+    Option 4: not setting ssl_credentials and client_cert_callback. For devices
     without endpoint verification support or `GOOGLE_API_USE_CLIENT_CERTIFICATE`
     environment variable is not `true`, a regular TLS channel is created;
     otherwise, a mutual TLS channel is created, however, the call should be
@@ -217,7 +218,7 @@ def secure_authorized_channel(
             without using a standard http transport.
         target (str): The host and port of the service.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
-            credentials. This can be used to specify different certificates. 
+            credentials. This can be used to specify different certificates.
             This argument is mutually exclusive with client_cert_callback;
             providing both will raise an exception.
             If ssl_credentials and client_cert_callback are None, application
@@ -231,7 +232,7 @@ def secure_authorized_channel(
             This argument does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE`
             environment variable is explicitly set to `true`.
         kwargs: Additional arguments to pass to :func:`grpc.secure_channel`.
-     
+
     Returns:
         grpc.Channel: The created gRPC channel.
 
@@ -244,7 +245,7 @@ def secure_authorized_channel(
 
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
-   
+
     if ssl_credentials and client_cert_callback:
         raise exceptions.MalformedError(
             "Received both ssl_credentials and client_cert_callback; "
