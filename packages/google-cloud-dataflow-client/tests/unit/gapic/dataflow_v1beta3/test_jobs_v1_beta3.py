@@ -1319,6 +1319,7 @@ def test_create_job(request_type, transport: str = "grpc"):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
         response = client.create_job(request)
 
@@ -1345,6 +1346,7 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 def test_create_job_non_empty_request_with_auto_populated_field():
@@ -1487,6 +1489,7 @@ async def test_create_job_async(
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         response = await client.create_job(request)
@@ -1514,6 +1517,7 @@ async def test_create_job_async(
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.asyncio
@@ -1618,6 +1622,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
         response = client.get_job(request)
 
@@ -1644,6 +1649,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 def test_get_job_non_empty_request_with_auto_populated_field():
@@ -1786,6 +1792,7 @@ async def test_get_job_async(
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         response = await client.get_job(request)
@@ -1813,6 +1820,7 @@ async def test_get_job_async(
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.asyncio
@@ -1919,6 +1927,7 @@ def test_update_job(request_type, transport: str = "grpc"):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
         response = client.update_job(request)
 
@@ -1945,6 +1954,7 @@ def test_update_job(request_type, transport: str = "grpc"):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 def test_update_job_non_empty_request_with_auto_populated_field():
@@ -2087,6 +2097,7 @@ async def test_update_job_async(
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         response = await client.update_job(request)
@@ -2114,6 +2125,7 @@ async def test_update_job_async(
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.asyncio
@@ -4219,6 +4231,7 @@ async def test_create_job_empty_call_grpc_asyncio():
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         await client.create_job(request=None)
@@ -4260,6 +4273,7 @@ async def test_get_job_empty_call_grpc_asyncio():
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         await client.get_job(request=None)
@@ -4301,6 +4315,7 @@ async def test_update_job_empty_call_grpc_asyncio():
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                pausable=True,
             )
         )
         await client.update_job(request=None)
@@ -4491,12 +4506,20 @@ def test_create_job_rest_call_success(request_type):
                 {
                     "kind": "kind_value",
                     "num_workers": 1212,
-                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "packages": [
+                        {
+                            "name": "name_value",
+                            "location": "location_value",
+                            "sha256": "sha256_value",
+                        }
+                    ],
                     "default_package_set": 1,
                     "machine_type": "machine_type_value",
                     "teardown_policy": 1,
                     "disk_size_gb": 1261,
                     "disk_type": "disk_type_value",
+                    "disk_provisioned_iops": 2262,
+                    "disk_provisioned_throughput_mibps": 3567,
                     "disk_source_image": "disk_source_image_value",
                     "zone": "zone_value",
                     "taskrunner_settings": {
@@ -4575,6 +4598,7 @@ def test_create_job_rest_call_success(request_type):
             },
             "use_streaming_engine_resource_based_billing": True,
             "streaming_mode": 1,
+            "use_public_ips": True,
         },
         "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
         "steps_location": "steps_location_value",
@@ -4711,9 +4735,12 @@ def test_create_job_rest_call_success(request_type):
             "max_num_workers": 1633,
             "min_num_workers": 1631,
             "worker_utilization_hint": 0.2503,
+            "acceptable_backlog_duration": {},
+            "autoscaling_tier": "autoscaling_tier_value",
         },
         "satisfies_pzi": True,
         "service_resources": {"zones": ["zones_value1", "zones_value2"]},
+        "pausable": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4803,6 +4830,7 @@ def test_create_job_rest_call_success(request_type):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4834,6 +4862,7 @@ def test_create_job_rest_call_success(request_type):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4957,6 +4986,7 @@ def test_get_job_rest_call_success(request_type):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4988,6 +5018,7 @@ def test_get_job_rest_call_success(request_type):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5103,12 +5134,20 @@ def test_update_job_rest_call_success(request_type):
                 {
                     "kind": "kind_value",
                     "num_workers": 1212,
-                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "packages": [
+                        {
+                            "name": "name_value",
+                            "location": "location_value",
+                            "sha256": "sha256_value",
+                        }
+                    ],
                     "default_package_set": 1,
                     "machine_type": "machine_type_value",
                     "teardown_policy": 1,
                     "disk_size_gb": 1261,
                     "disk_type": "disk_type_value",
+                    "disk_provisioned_iops": 2262,
+                    "disk_provisioned_throughput_mibps": 3567,
                     "disk_source_image": "disk_source_image_value",
                     "zone": "zone_value",
                     "taskrunner_settings": {
@@ -5187,6 +5226,7 @@ def test_update_job_rest_call_success(request_type):
             },
             "use_streaming_engine_resource_based_billing": True,
             "streaming_mode": 1,
+            "use_public_ips": True,
         },
         "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
         "steps_location": "steps_location_value",
@@ -5323,9 +5363,12 @@ def test_update_job_rest_call_success(request_type):
             "max_num_workers": 1633,
             "min_num_workers": 1631,
             "worker_utilization_hint": 0.2503,
+            "acceptable_backlog_duration": {},
+            "autoscaling_tier": "autoscaling_tier_value",
         },
         "satisfies_pzi": True,
         "service_resources": {"zones": ["zones_value1", "zones_value2"]},
+        "pausable": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5415,6 +5458,7 @@ def test_update_job_rest_call_success(request_type):
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            pausable=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5446,6 +5490,7 @@ def test_update_job_rest_call_success(request_type):
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.pausable is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

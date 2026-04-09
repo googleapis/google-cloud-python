@@ -1,0 +1,17 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "parsed_date",
+      "type": "TIMESTAMP"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "id",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "total_visits",
+      "type": "INTEGER"
+    }
+  ]

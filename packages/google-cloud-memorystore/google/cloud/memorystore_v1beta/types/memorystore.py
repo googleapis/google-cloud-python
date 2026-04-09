@@ -41,6 +41,8 @@ __protobuf__ = proto.module(
         "DeleteInstanceRequest",
         "GetCertificateAuthorityRequest",
         "CertificateAuthority",
+        "SharedRegionalCertificateAuthority",
+        "GetSharedRegionalCertificateAuthorityRequest",
         "OperationMetadata",
     },
 )
@@ -161,6 +163,23 @@ class Instance(proto.Message):
             Optional. Endpoints for the instance.
         mode (google.cloud.memorystore_v1beta.types.Instance.Mode):
             Optional. The mode config for the instance.
+        server_ca_mode (google.cloud.memorystore_v1beta.types.Instance.ServerCaMode):
+            Optional. Immutable. The Server CA mode for
+            the instance.
+
+            This field is a member of `oneof`_ ``_server_ca_mode``.
+        server_ca_pool (str):
+            Optional. Immutable. The customer-managed CA pool for the
+            instance. Only applicable if the Server CA mode is
+            CUSTOMER_MANAGED_CAS_CA. Format:
+            "projects/{project}/locations/{region}/caPools/{ca_pool}".
+
+            This field is a member of `oneof`_ ``_server_ca_pool``.
+        rotate_server_certificate (bool):
+            Optional. Input only. Rotate the server
+            certificates.
+
+            This field is a member of `oneof`_ ``_rotate_server_certificate``.
     """
 
     class State(proto.Enum):
@@ -261,6 +280,37 @@ class Instance(proto.Message):
         STANDALONE = 1
         CLUSTER = 2
         CLUSTER_DISABLED = 4
+
+    class ServerCaMode(proto.Enum):
+        r"""The Server CA mode for the instance.
+
+        Values:
+            SERVER_CA_MODE_UNSPECIFIED (0):
+                Server CA mode not specified.
+            GOOGLE_MANAGED_PER_INSTANCE_CA (1):
+                Each instance has its own Google-managed CA.
+            GOOGLE_MANAGED_SHARED_CA (2):
+                The instance uses a Google-managed shared CA
+                for the instance's region.
+            CUSTOMER_MANAGED_CAS_CA (3):
+                The instance uses a customer-managed CA from
+                CAS.
+            SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA (1):
+                Deprecated: Use GOOGLE_MANAGED_PER_INSTANCE_CA instead.
+            SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA (2):
+                Deprecated: Use GOOGLE_MANAGED_SHARED_CA instead.
+            SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA (3):
+                Deprecated: Use CUSTOMER_MANAGED_CAS_CA instead.
+        """
+
+        _pb_options = {"allow_alias": True}
+        SERVER_CA_MODE_UNSPECIFIED = 0
+        GOOGLE_MANAGED_PER_INSTANCE_CA = 1
+        GOOGLE_MANAGED_SHARED_CA = 2
+        CUSTOMER_MANAGED_CAS_CA = 3
+        SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA = 1
+        SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA = 2
+        SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA = 3
 
     class StateInfo(proto.Message):
         r"""Additional information about the state of the instance.
@@ -472,6 +522,22 @@ class Instance(proto.Message):
         proto.ENUM,
         number=26,
         enum=Mode,
+    )
+    server_ca_mode: ServerCaMode = proto.Field(
+        proto.ENUM,
+        number=56,
+        optional=True,
+        enum=ServerCaMode,
+    )
+    server_ca_pool: str = proto.Field(
+        proto.STRING,
+        number=57,
+        optional=True,
+    )
+    rotate_server_certificate: bool = proto.Field(
+        proto.BOOL,
+        number=58,
+        optional=True,
     )
 
 
@@ -1173,6 +1239,86 @@ class CertificateAuthority(proto.Message):
         oneof="server_ca",
         message=ManagedCertificateAuthority,
     )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SharedRegionalCertificateAuthority(proto.Message):
+    r"""Shared regional certificate authority for an instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_server_ca (google.cloud.memorystore_v1beta.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority):
+            CA certificate chains for memorystore managed
+            server authentication.
+
+            This field is a member of `oneof`_ ``server_ca``.
+        name (str):
+            Identifier. Unique name of the resource in this scope
+            including project and location using the form:
+            ``projects/{project}/locations/{location}/sharedRegionalCertificateAuthority``
+    """
+
+    class RegionalManagedCertificateAuthority(proto.Message):
+        r"""CA certificate chains for memorystore managed server
+        authentication.
+
+        Attributes:
+            ca_certs (MutableSequence[google.cloud.memorystore_v1beta.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain]):
+                The PEM encoded CA certificate chains for
+                memorystore managed server authentication
+        """
+
+        class RegionalCertChain(proto.Message):
+            r"""The certificates that form the CA chain, from leaf to root
+            order.
+
+            Attributes:
+                certificates (MutableSequence[str]):
+                    The certificates that form the CA chain, from
+                    leaf to root order.
+            """
+
+            certificates: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        ca_certs: MutableSequence[
+            "SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain",
+        )
+
+    managed_server_ca: RegionalManagedCertificateAuthority = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="server_ca",
+        message=RegionalManagedCertificateAuthority,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetSharedRegionalCertificateAuthorityRequest(proto.Message):
+    r"""Request for
+    [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1beta.Memorystore.GetSharedRegionalCertificateAuthority].
+
+    Attributes:
+        name (str):
+            Required. Regional certificate authority resource name using
+            the form:
+            ``projects/{project}/locations/{location}/sharedRegionalCertificateAuthority``
+            where ``location_id`` refers to a Google Cloud region.
+    """
+
     name: str = proto.Field(
         proto.STRING,
         number=1,

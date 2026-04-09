@@ -451,3 +451,32 @@ def test_pipeline_raw_stage_with_options():
     assert len(result_ppl.stages) == 1
     assert isinstance(result_ppl.stages[0], RawStage)
     assert result_ppl.stages[0].options == {"key": "val"}
+
+
+def test_pipeline_union_relative_error():
+    start_ppl = _make_pipeline(client=mock.Mock())
+    other_ppl = _make_pipeline(client=None)
+    with pytest.raises(
+        ValueError, match="Union only supports combining root pipelines"
+    ):
+        start_ppl.union(other_ppl)
+
+
+def test_subpipeline_execute_error():
+    from google.cloud.firestore_v1.base_pipeline import SubPipeline
+
+    ppl = SubPipeline._create_with_stages(None)
+    with pytest.raises(
+        RuntimeError, match="This pipeline was created without a database"
+    ):
+        ppl.execute()
+
+
+def test_subpipeline_stream_error():
+    from google.cloud.firestore_v1.base_pipeline import SubPipeline
+
+    ppl = SubPipeline._create_with_stages(None)
+    with pytest.raises(
+        RuntimeError, match="This pipeline was created without a database"
+    ):
+        ppl.stream()

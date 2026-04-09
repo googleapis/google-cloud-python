@@ -18,14 +18,19 @@ import datetime
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
     Generic,
     Sequence,
     TypeVar,
 )
 
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
 from google.cloud.firestore_v1.types.document import Value
+from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
 from google.cloud.firestore_v1.types.query import StructuredQuery as Query_pb
 from google.cloud.firestore_v1.vector import Vector
 
@@ -252,6 +257,26 @@ class Expression(ABC):
                 return self.static_func
             else:
                 return self.instance_func.__get__(instance, owner)
+
+    @expose_as_static
+    def get_field(self, key: Expression | str) -> "Expression":
+        """Accesses a field/property of the expression that evaluates to a Map or Document.
+
+        Example:
+            >>> # Access the 'city' field from the 'address' map field.
+            >>> Field.of("address").get_field("city")
+            >>> # Create a map and access a field from it.
+            >>> Map({"foo": "bar"}).get_field("foo")
+
+        Args:
+            key: The key of the field to access.
+
+        Returns:
+            A new `Expression` representing the value of the field.
+        """
+        return FunctionExpression(
+            "get_field", [self, self._cast_to_expr_or_convert_to_constant(key)]
+        )
 
     @expose_as_static
     def add(self, other: Expression | float) -> "Expression":
@@ -2688,6 +2713,17 @@ class BooleanExpression(FunctionExpression):
             raise TypeError(f"Unexpected filter type: {type(filter_pb)}")
 
 
+class _PipelineValueExpression(Expression):
+    """Internal wrapper to represent a pipeline as an expression."""
+
+    def __init__(self, pipeline: "_BasePipeline"):
+        self.pipeline = pipeline
+
+    def _to_pb(self) -> Value:
+        pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
+        return Value(pipeline_value=pipeline_pb)
+
+
 class Array(FunctionExpression):
     """
     Creates an expression that creates a Firestore array value from an input list.
@@ -2868,3 +2904,42 @@ class Rand(FunctionExpression):
 
     def __init__(self):
         super().__init__("rand", [], use_infix_repr=False)
+
+
+class Variable(Expression):
+    """
+    Creates an expression that retrieves the value of a variable bound via `Pipeline.define`.
+
+    Example:
+        >>> # Define a variable "discountedPrice" and use it in a filter
+        >>> db.pipeline().collection("products").define(
+        ...     Field.of("price").multiply(0.9).as_("discountedPrice")
+        ... ).where(Variable("discountedPrice").less_than(100))
+
+    Args:
+        name: The name of the variable to retrieve.
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def _to_pb(self) -> Value:
+        return Value(variable_reference_value=self.name)
+
+
+class CurrentDocument(FunctionExpression):
+    """
+    Creates an expression that represents the current document being processed.
+
+    This acts as a handle, allowing you to bind the entire document to a variable or pass the
+    document itself to a function or subquery.
+
+    Example:
+        >>> # Define the current document as a variable "doc"
+        >>> db.pipeline().collection("books").define(
+        ...     CurrentDocument().as_("doc")
+        ... ).select(Variable("doc").get_field("title"))
+    """
+
+    def __init__(self):
+        super().__init__("current_document", [])

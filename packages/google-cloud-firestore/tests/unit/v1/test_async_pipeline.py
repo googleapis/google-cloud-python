@@ -462,3 +462,12 @@ def test_async_pipeline_raw_stage_with_options():
     assert len(result_ppl.stages) == 1
     assert isinstance(result_ppl.stages[0], RawStage)
     assert result_ppl.stages[0].options == {"key": "val"}
+
+
+def test_async_pipeline_union_relative_error():
+    start_ppl = _make_async_pipeline(client=mock.Mock())
+    other_ppl = _make_async_pipeline(client=None)
+    with pytest.raises(
+        ValueError, match="Union only supports combining root pipelines"
+    ):
+        start_ppl.union(other_ppl)

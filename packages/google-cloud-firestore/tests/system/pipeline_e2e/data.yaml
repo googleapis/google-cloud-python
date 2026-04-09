@@ -145,3 +145,26 @@ data:
       value: "NaN"
     doc_with_null:
       value: null
+  cities:
+    city1:
+      name: "San Francisco"
+    city2:
+      name: "New York"
+  "cities/city1/landmarks":
+    lm1:
+      name: "Golden Gate Bridge"
+      type: "Bridge"
+    lm2:
+      name: "Alcatraz"
+      type: "Island"
+  "cities/city2/landmarks":
+    lm3:
+      name: "Statue of Liberty"
+      type: "Monument"
+  "cities/city1/landmarks/lm1/reviews":
+    rev1:
+      author: "Alice"
+      rating: 5
+    rev2:
+      author: "Bob"
+      rating: 4

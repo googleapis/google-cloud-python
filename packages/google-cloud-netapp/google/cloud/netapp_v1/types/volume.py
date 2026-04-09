@@ -57,6 +57,7 @@ __protobuf__ = proto.module(
         "BlockDevice",
         "RestoreBackupFilesRequest",
         "RestoreBackupFilesResponse",
+        "EstablishVolumePeeringRequest",
     },
 )
 
@@ -498,6 +499,9 @@ class Volume(proto.Message):
             Optional. Block devices for the volume.
             Currently, only one block device is permitted
             per Volume.
+        clone_details (google.cloud.netapp_v1.types.Volume.CloneDetails):
+            Output only. If this volume is a clone, this
+            field contains details about the clone.
     """
 
     class State(proto.Enum):
@@ -540,6 +544,40 @@ class Volume(proto.Message):
         ERROR = 7
         PREPARING = 8
         READ_ONLY = 9
+
+    class CloneDetails(proto.Message):
+        r"""Details about a clone volume.
+
+        Attributes:
+            source_snapshot (str):
+                Output only. Specifies the full resource name
+                of the source snapshot from which this volume
+                was cloned. Format:
+
+                projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+            source_volume (str):
+                Output only. Full name of the source volume
+                resource. Format:
+
+                projects/{project}/locations/{location}/volumes/{volume}
+            shared_space_gib (int):
+                Output only. Shared space in GiB. Determined
+                at volume creation time based on size of source
+                snapshot.
+        """
+
+        source_snapshot: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        source_volume: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        shared_space_gib: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -728,6 +766,11 @@ class Volume(proto.Message):
         proto.MESSAGE,
         number=45,
         message="BlockDevice",
+    )
+    clone_details: CloneDetails = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message=CloneDetails,
     )
 
 
@@ -1231,8 +1274,11 @@ class RestoreParameters(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         source_backup (str):
-            Full name of the backup resource. Format:
+            Full name of the backup resource. Format for standard
+            backup:
             projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+            Format for BackupDR backup:
+            projects/{project}/locations/{location}/backupVaults/{backup_vault}/dataSources/{data_source}/backups/{backup}
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -1812,6 +1858,52 @@ class RestoreBackupFilesResponse(proto.Message):
     RestoreBackupFilesRequest.
 
     """
+
+
+class EstablishVolumePeeringRequest(proto.Message):
+    r"""EstablishVolumePeeringRequest establishes cluster and svm
+    peerings between the source and destination clusters.
+
+    Attributes:
+        name (str):
+            Required. The volume resource name, in the format
+            ``projects/{project_id}/locations/{location}/volumes/{volume_id}``
+        peer_cluster_name (str):
+            Required. Name of the user's local source
+            cluster to be peered with the destination
+            cluster.
+        peer_svm_name (str):
+            Required. Name of the user's local source
+            vserver svm to be peered with the destination
+            vserver svm.
+        peer_ip_addresses (MutableSequence[str]):
+            Optional. List of IPv4 ip addresses to be
+            used for peering.
+        peer_volume_name (str):
+            Required. Name of the user's local source
+            volume to be peered with the destination volume.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_cluster_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    peer_svm_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    peer_ip_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    peer_volume_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

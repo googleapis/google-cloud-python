@@ -44,7 +44,6 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_transaction import AsyncTransaction
     from google.cloud.firestore_v1.base_client import BaseClient
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
-    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
     from google.cloud.firestore_v1.client import Client
     from google.cloud.firestore_v1.pipeline import Pipeline
     from google.cloud.firestore_v1.pipeline_expressions import Constant
@@ -185,7 +184,7 @@ class _PipelineResultContainer(Generic[T]):
     ):
         # public
         self.transaction = transaction
-        self.pipeline: _BasePipeline = pipeline
+        self.pipeline: Pipeline | AsyncPipeline = pipeline
         self.execution_time: Timestamp | None = None
         # private
         self._client: Client | AsyncClient = pipeline._client

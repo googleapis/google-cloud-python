@@ -346,10 +346,6 @@ class PartnerLinkServiceGrpcTransport(PartnerLinkServiceTransport):
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         Returns:
             Callable[[~.CreatePartnerLinkRequest],
@@ -386,10 +382,6 @@ class PartnerLinkServiceGrpcTransport(PartnerLinkServiceTransport):
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         Returns:
             Callable[[~.DeletePartnerLinkRequest],
@@ -429,10 +421,6 @@ class PartnerLinkServiceGrpcTransport(PartnerLinkServiceTransport):
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         Returns:
             Callable[[~.SearchPartnerLinksRequest],

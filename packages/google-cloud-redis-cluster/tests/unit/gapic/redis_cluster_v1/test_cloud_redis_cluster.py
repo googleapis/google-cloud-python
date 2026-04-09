@@ -1923,6 +1923,9 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
+            server_ca_pool="server_ca_pool_value",
+            rotate_server_certificate=True,
         )
         response = client.get_cluster(request)
 
@@ -1953,6 +1956,12 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert (
+        response.server_ca_mode
+        == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
+    )
+    assert response.server_ca_pool == "server_ca_pool_value"
+    assert response.rotate_server_certificate is True
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -2091,6 +2100,9 @@ async def test_get_cluster_async(
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
+                server_ca_pool="server_ca_pool_value",
+                rotate_server_certificate=True,
             )
         )
         response = await client.get_cluster(request)
@@ -2122,6 +2134,12 @@ async def test_get_cluster_async(
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert (
+        response.server_ca_mode
+        == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
+    )
+    assert response.server_ca_pool == "server_ca_pool_value"
+    assert response.rotate_server_certificate is True
 
 
 @pytest.mark.asyncio
@@ -3671,6 +3689,353 @@ async def test_get_cluster_certificate_authority_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_cluster_certificate_authority(
             cloud_redis_cluster.GetClusterCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_get_shared_regional_certificate_authority(
+    request_type, transport: str = "grpc"
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority(
+            name="name_value",
+        )
+        response = client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.SharedRegionalCertificateAuthority)
+    assert response.name == "name_value"
+
+
+def test_get_shared_regional_certificate_authority_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_shared_regional_certificate_authority(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(
+            name="name_value",
+        )
+
+
+def test_get_shared_regional_certificate_authority_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_shared_regional_certificate_authority
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_shared_regional_certificate_authority
+        ] = mock_rpc
+        request = {}
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_shared_regional_certificate_authority
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_shared_regional_certificate_authority
+        ] = mock_rpc
+
+        request = {}
+        await client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_shared_regional_certificate_authority(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.SharedRegionalCertificateAuthority(
+                name="name_value",
+            )
+        )
+        response = await client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.SharedRegionalCertificateAuthority)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_async_from_dict():
+    await test_get_shared_regional_certificate_authority_async(request_type=dict)
+
+
+def test_get_shared_regional_certificate_authority_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        )
+        await client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_shared_regional_certificate_authority_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_shared_regional_certificate_authority(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_shared_regional_certificate_authority_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_shared_regional_certificate_authority(
+            cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_shared_regional_certificate_authority(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_shared_regional_certificate_authority(
+            cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(),
             name="name_value",
         )
 
@@ -7971,6 +8336,205 @@ def test_get_cluster_certificate_authority_rest_flattened_error(
         )
 
 
+def test_get_shared_regional_certificate_authority_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_shared_regional_certificate_authority
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_shared_regional_certificate_authority
+        ] = mock_rpc
+
+        request = {}
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_shared_regional_certificate_authority(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_shared_regional_certificate_authority_rest_required_fields(
+    request_type=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shared_regional_certificate_authority._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shared_regional_certificate_authority._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_shared_regional_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_shared_regional_certificate_authority_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_shared_regional_certificate_authority._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_shared_regional_certificate_authority_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_shared_regional_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sharedRegionalCertificateAuthority}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_shared_regional_certificate_authority_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_shared_regional_certificate_authority(
+            cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
 def test_reschedule_cluster_maintenance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9776,6 +10340,29 @@ def test_get_cluster_certificate_authority_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_shared_regional_certificate_authority_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        client.get_shared_regional_certificate_authority(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_reschedule_cluster_maintenance_empty_call_grpc():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10017,6 +10604,9 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
+                server_ca_pool="server_ca_pool_value",
+                rotate_server_certificate=True,
             )
         )
         await client.get_cluster(request=None)
@@ -10129,6 +10719,35 @@ async def test_get_cluster_certificate_authority_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_shared_regional_certificate_authority_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.SharedRegionalCertificateAuthority(
+                name="name_value",
+            )
+        )
+        await client.get_shared_regional_certificate_authority(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
 
         assert args[0] == request_msg
 
@@ -10567,6 +11186,9 @@ def test_get_cluster_rest_call_success(request_type):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
+            server_ca_pool="server_ca_pool_value",
+            rotate_server_certificate=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -10602,6 +11224,12 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert (
+        response.server_ca_mode
+        == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
+    )
+    assert response.server_ca_pool == "server_ca_pool_value"
+    assert response.rotate_server_certificate is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10814,6 +11442,9 @@ def test_update_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "server_ca_mode": 1,
+        "server_ca_pool": "server_ca_pool_value",
+        "rotate_server_certificate": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11233,6 +11864,9 @@ def test_create_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "server_ca_mode": 1,
+        "server_ca_pool": "server_ca_pool_value",
+        "rotate_server_certificate": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11517,6 +12151,152 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
         )
 
         client.get_cluster_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_shared_regional_certificate_authority_rest_bad_request(
+    request_type=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_shared_regional_certificate_authority(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_get_shared_regional_certificate_authority_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sharedRegionalCertificateAuthority"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_shared_regional_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.SharedRegionalCertificateAuthority)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_shared_regional_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_shared_regional_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_shared_regional_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "pre_get_shared_regional_certificate_authority",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest.pb(
+                cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority.to_json(
+            cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.SharedRegionalCertificateAuthority()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.SharedRegionalCertificateAuthority(),
+            metadata,
+        )
+
+        client.get_shared_regional_certificate_authority(
             request,
             metadata=[
                 ("key", "val"),
@@ -13130,6 +13910,28 @@ def test_get_cluster_certificate_authority_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_shared_regional_certificate_authority_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_shared_regional_certificate_authority), "__call__"
+    ) as call:
+        client.get_shared_regional_certificate_authority(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_reschedule_cluster_maintenance_empty_call_rest():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13350,6 +14152,7 @@ def test_cloud_redis_cluster_base_transport():
         "delete_cluster",
         "create_cluster",
         "get_cluster_certificate_authority",
+        "get_shared_regional_certificate_authority",
         "reschedule_cluster_maintenance",
         "list_backup_collections",
         "get_backup_collection",
@@ -13654,6 +14457,9 @@ def test_cloud_redis_cluster_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_cluster_certificate_authority._session
     session2 = client2.transport.get_cluster_certificate_authority._session
     assert session1 != session2
+    session1 = client1.transport.get_shared_regional_certificate_authority._session
+    session2 = client2.transport.get_shared_regional_certificate_authority._session
+    assert session1 != session2
     session1 = client1.transport.reschedule_cluster_maintenance._session
     session2 = client2.transport.reschedule_cluster_maintenance._session
     assert session1 != session2
@@ -13900,10 +14706,36 @@ def test_parse_backup_collection_path():
     assert expected == actual
 
 
-def test_certificate_authority_path():
+def test_ca_pool_path():
     project = "whelk"
     location = "octopus"
-    cluster = "oyster"
+    ca_pool = "oyster"
+    expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+        project=project,
+        location=location,
+        ca_pool=ca_pool,
+    )
+    actual = CloudRedisClusterClient.ca_pool_path(project, location, ca_pool)
+    assert expected == actual
+
+
+def test_parse_ca_pool_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "ca_pool": "mussel",
+    }
+    path = CloudRedisClusterClient.ca_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_ca_pool_path(path)
+    assert expected == actual
+
+
+def test_certificate_authority_path():
+    project = "winkle"
+    location = "nautilus"
+    cluster = "scallop"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority".format(
         project=project,
         location=location,
@@ -13917,9 +14749,9 @@ def test_certificate_authority_path():
 
 def test_parse_certificate_authority_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "cluster": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "cluster": "clam",
     }
     path = CloudRedisClusterClient.certificate_authority_path(**expected)
 
@@ -13929,9 +14761,9 @@ def test_parse_certificate_authority_path():
 
 
 def test_cluster_path():
-    project = "winkle"
-    location = "nautilus"
-    cluster = "scallop"
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
         project=project,
         location=location,
@@ -13943,9 +14775,9 @@ def test_cluster_path():
 
 def test_parse_cluster_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "cluster": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "cluster": "mussel",
     }
     path = CloudRedisClusterClient.cluster_path(**expected)
 
@@ -13955,10 +14787,10 @@ def test_parse_cluster_path():
 
 
 def test_crypto_key_path():
-    project = "whelk"
-    location = "octopus"
-    key_ring = "oyster"
-    crypto_key = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
+    key_ring = "scallop"
+    crypto_key = "abalone"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -13973,10 +14805,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "key_ring": "winkle",
-        "crypto_key": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "key_ring": "whelk",
+        "crypto_key": "octopus",
     }
     path = CloudRedisClusterClient.crypto_key_path(**expected)
 
@@ -13986,11 +14818,11 @@ def test_parse_crypto_key_path():
 
 
 def test_crypto_key_version_path():
-    project = "scallop"
-    location = "abalone"
-    key_ring = "squid"
-    crypto_key = "clam"
-    crypto_key_version = "whelk"
+    project = "oyster"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    crypto_key_version = "winkle"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -14006,11 +14838,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "key_ring": "nudibranch",
-        "crypto_key": "cuttlefish",
-        "crypto_key_version": "mussel",
+        "project": "nautilus",
+        "location": "scallop",
+        "key_ring": "abalone",
+        "crypto_key": "squid",
+        "crypto_key_version": "clam",
     }
     path = CloudRedisClusterClient.crypto_key_version_path(**expected)
 
@@ -14020,9 +14852,9 @@ def test_parse_crypto_key_version_path():
 
 
 def test_forwarding_rule_path():
-    project = "winkle"
-    region = "nautilus"
-    forwarding_rule = "scallop"
+    project = "whelk"
+    region = "octopus"
+    forwarding_rule = "oyster"
     expected = (
         "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
             project=project,
@@ -14038,9 +14870,9 @@ def test_forwarding_rule_path():
 
 def test_parse_forwarding_rule_path():
     expected = {
-        "project": "abalone",
-        "region": "squid",
-        "forwarding_rule": "clam",
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "forwarding_rule": "mussel",
     }
     path = CloudRedisClusterClient.forwarding_rule_path(**expected)
 
@@ -14050,8 +14882,8 @@ def test_parse_forwarding_rule_path():
 
 
 def test_network_path():
-    project = "whelk"
-    network = "octopus"
+    project = "winkle"
+    network = "nautilus"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -14062,8 +14894,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "oyster",
-        "network": "nudibranch",
+        "project": "scallop",
+        "network": "abalone",
     }
     path = CloudRedisClusterClient.network_path(**expected)
 
@@ -14073,9 +14905,9 @@ def test_parse_network_path():
 
 
 def test_service_attachment_path():
-    project = "cuttlefish"
-    region = "mussel"
-    service_attachment = "winkle"
+    project = "squid"
+    region = "clam"
+    service_attachment = "whelk"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -14089,9 +14921,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "nautilus",
-        "region": "scallop",
-        "service_attachment": "abalone",
+        "project": "octopus",
+        "region": "oyster",
+        "service_attachment": "nudibranch",
     }
     path = CloudRedisClusterClient.service_attachment_path(**expected)
 
@@ -14100,8 +14932,37 @@ def test_parse_service_attachment_path():
     assert expected == actual
 
 
+def test_shared_regional_certificate_authority_path():
+    project = "cuttlefish"
+    location = "mussel"
+    expected = "projects/{project}/locations/{location}/sharedRegionalCertificateAuthority".format(
+        project=project,
+        location=location,
+    )
+    actual = CloudRedisClusterClient.shared_regional_certificate_authority_path(
+        project, location
+    )
+    assert expected == actual
+
+
+def test_parse_shared_regional_certificate_authority_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = CloudRedisClusterClient.shared_regional_certificate_authority_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_shared_regional_certificate_authority_path(
+        path
+    )
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -14111,7 +14972,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = CloudRedisClusterClient.common_billing_account_path(**expected)
 
@@ -14121,7 +14982,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -14131,7 +14992,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = CloudRedisClusterClient.common_folder_path(**expected)
 
@@ -14141,7 +15002,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -14151,7 +15012,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = CloudRedisClusterClient.common_organization_path(**expected)
 
@@ -14161,7 +15022,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -14171,7 +15032,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = CloudRedisClusterClient.common_project_path(**expected)
 
@@ -14181,8 +15042,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -14193,8 +15054,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = CloudRedisClusterClient.common_location_path(**expected)
 
