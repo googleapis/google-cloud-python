@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.2...bigquery-magics-v0.13.0) (2026-04-09)
+
+
+### Features
+
+* drop support for Python 3.9 (#16587) ([961eacd039a2583bc019e0502bc4c1c1d88ab410](https://github.com/googleapis/google-cloud-python/commit/961eacd039a2583bc019e0502bc4c1c1d88ab410))
+* deprecate `--engine=bigframes`, run `%load_ext bigframes` and use `%%bqsql` magics instead (#16573) ([dbaf8f54db13d66bc0a2311bff6085615ee38958](https://github.com/googleapis/google-cloud-python/commit/dbaf8f54db13d66bc0a2311bff6085615ee38958))
+
 ## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.1...bigquery-magics-v0.12.2) (2026-03-26)
 
 

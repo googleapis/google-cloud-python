@@ -23,7 +23,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: bigquery-magics
-    version: 0.12.2
+    version: 0.13.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -164,7 +164,7 @@ libraries:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
   - id: google-api-core
-    version: 2.30.2
+    version: 2.30.3
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -187,7 +187,7 @@ libraries:
       - packages/google-apps-card/
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/chat/v1
@@ -273,7 +273,7 @@ libraries:
       - packages/google-area120-tables/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.49.1
+    version: 2.49.2
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -512,7 +512,7 @@ libraries:
       - packages/google-cloud-apphub/
     tag_format: '{id}-v{version}'
   - id: google-cloud-appoptimize
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: cd090841ab172574e740c214c99df00aef9c0dee
     apis:
       - path: google/cloud/appoptimize/v1beta
@@ -1714,7 +1714,7 @@ libraries:
       - packages/google-cloud-discoveryengine/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
-    version: 3.35.0
+    version: 3.36.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/privacy/dlp/v2
@@ -2197,7 +2197,7 @@ libraries:
       - packages/google-cloud-iam-logging/
     tag_format: '{id}-v{version}'
   - id: google-cloud-iamconnectorcredentials
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 13b86d1d083c314bf51e42c19f9f6ed941e0553b
     apis:
       - path: google/cloud/iamconnectorcredentials/v1alpha
@@ -2905,7 +2905,7 @@ libraries:
       - packages/google-cloud-privilegedaccessmanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
-    version: 2.36.0
+    version: 2.37.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/pubsub/v1
@@ -3641,7 +3641,7 @@ libraries:
       - packages/google-cloud-trace/
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
-    version: 3.25.0
+    version: 3.26.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/translate/v3beta1
@@ -4416,7 +4416,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: pandas-gbq
-    version: 0.34.1
+    version: 0.35.0
     last_generated_commit: ""
     apis: []
     source_roots:
