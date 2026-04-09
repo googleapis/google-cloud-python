@@ -1,16 +1,3 @@
-# Copyright 2026 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
@@ -177,6 +164,7 @@ libraries:
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/apps/card/v1
+        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -237,12 +225,19 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/apps/script/type
+        service_config: ""
       - path: google/apps/script/type/gmail
+        service_config: ""
       - path: google/apps/script/type/docs
+        service_config: ""
       - path: google/apps/script/type/drive
+        service_config: ""
       - path: google/apps/script/type/sheets
+        service_config: ""
       - path: google/apps/script/type/calendar
+        service_config: ""
       - path: google/apps/script/type/slides
+        service_config: ""
     source_roots:
       - packages/google-apps-script-type
     preserve_regex:
@@ -321,6 +316,7 @@ libraries:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
       - path: google/identity/accesscontextmanager/type
+        service_config: ""
     source_roots:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
@@ -488,6 +484,7 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/appengine/logging/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-appengine-logging
     preserve_regex:
@@ -890,6 +887,7 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/bigquery/logging/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-bigquery-logging
     preserve_regex:
@@ -1910,6 +1908,7 @@ libraries:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
       - path: google/firestore/bundle
+        service_config: ""
       - path: google/firestore/v1
         service_config: firestore_v1.yaml
     source_roots:
@@ -2149,6 +2148,7 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/iam/v1/logging
+        service_config: ""
     source_roots:
       - packages/google-cloud-iam-logging
     preserve_regex:
@@ -2690,6 +2690,7 @@ libraries:
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
+        service_config: ""
       - path: google/cloud/orgpolicy/v2
         service_config: orgpolicy_v2.yaml
     source_roots:
@@ -3269,6 +3270,7 @@ libraries:
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/devtools/source/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-source-context
     preserve_regex:
@@ -3382,7 +3384,7 @@ libraries:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
-    version: 3.10.1
+    version: 3.11.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
@@ -4312,6 +4314,7 @@ libraries:
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/type
+        service_config: ""
     source_roots:
       - packages/google-shopping-type
     preserve_regex:
@@ -4328,12 +4331,15 @@ libraries:
       - path: google/api
         service_config: serviceconfig.yaml
       - path: google/cloud
+        service_config: ""
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
+        service_config: ""
       - path: google/rpc
         service_config: rpc_publish.yaml
       - path: google/rpc/context
+        service_config: ""
       - path: google/type
         service_config: type.yaml
     source_roots:
