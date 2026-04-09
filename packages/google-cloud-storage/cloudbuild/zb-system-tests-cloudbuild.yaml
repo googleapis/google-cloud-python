@@ -36,24 +36,24 @@ steps:
         echo "Removing all keys."
         echo "---------------------------------------------------------------------"
 
-        FINGERPRINTS_TO_DELETE=$(gcloud compute os-login ssh-keys list \
+        FINGERPRINTS_TO_DELETE=$$(gcloud compute os-login ssh-keys list \
           --format="value(fingerprint)")
 
-        echo "Keys to delete: $FINGERPRINTS_TO_DELETE"
+        echo "Keys to delete: $$FINGERPRINTS_TO_DELETE"
 
-        if [ -z "$FINGERPRINTS_TO_DELETE" ]; then
+        if [ -z "$$FINGERPRINTS_TO_DELETE" ]; then
           echo "No keys found to delete. Nothing to do."
           exit 0
         fi
 
         while IFS= read -r FINGERPRINT; do
-          if [ -n "$FINGERPRINT" ]; then
-            echo "Deleting key with fingerprint: ${FINGERPRINT}"
+          if [ -n "$$FINGERPRINT" ]; then
+            echo "Deleting key with fingerprint: $$FINGERPRINT"
             gcloud compute os-login ssh-keys remove \
-              --key="${FINGERPRINT}" \
+              --key="$$FINGERPRINT" \
               --quiet || true
           fi
-        done <<< "$FINGERPRINTS_TO_DELETE"
+        done <<< "$$FINGERPRINTS_TO_DELETE"
 
         echo "---------------------------------------------------------------------"
         echo "Cleanup complete."
