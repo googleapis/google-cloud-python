@@ -407,9 +407,10 @@ class _BasePipeline:
             >>> pipeline = client.pipeline().collection("restaurants").search(
             ...     SearchOptions(
             ...         query=And(
-            ...             DocumentMatches("waffles"),
+            ...             DocumentMatches("waffles OR pancakes"),
             ...             Field.of("location").geo_distance(GeoPoint(38.9, -107.0)).less_than(1000)
-            ...         )
+            ...         ),
+            ...         sort=Score().descending()
             ...     )
             ... )
 

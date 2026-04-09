@@ -2997,7 +2997,9 @@ class DocumentMatches(BooleanExpression):
 
     Example:
         >>> # Find documents matching the query string
-        >>> DocumentMatches("search query")
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query=DocumentMatches("pizza OR pasta")
+        ... )
 
     Args:
         query: The search query string or expression.
