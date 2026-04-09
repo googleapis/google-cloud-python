@@ -11,17 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+        
 """Authorization support for gRPC."""
-
+            
 from __future__ import absolute_import
 
 import logging
-
+import threading
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
-
+    
 try:
     import grpc  # type: ignore
 except ImportError as caught_exc:  # pragma: NO COVER
@@ -30,17 +30,17 @@ except ImportError as caught_exc:  # pragma: NO COVER
     ) from caught_exc
 
 _LOGGER = logging.getLogger(__name__)
-
+    
 
 class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
     """A `gRPC AuthMetadataPlugin`_ that inserts the credentials into each
     request.
-
+            
     .. _gRPC AuthMetadataPlugin:
         http://www.grpc.io/grpc/python/grpc.html#grpc.AuthMetadataPlugin
-
+    
     Args:
-        credentials (google.auth.credentials.Credentials): The credentials to
+        credentials (google.auth.credentials.Credentials): The credentials to  
             add to requests.
         request (google.auth.transport.Request): A HTTP transport request
             object used to refresh credentials as needed.
@@ -57,16 +57,16 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials = credentials
         self._request = request
         self._default_host = default_host
-
+    
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
-
+    
         Returns:
             Sequence[Tuple[str, str]]: A list of request headers (key, value)
                 to add to the request.
         """
         headers = {}
-
+            
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
         # A default host must be explicitly provided since it cannot always
@@ -75,24 +75,24 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             self._credentials._create_self_signed_jwt(
                 "https://{}/".format(self._default_host) if self._default_host else None
             )
-
+            
         self._credentials.before_request(
             self._request, context.method_name, context.service_url, headers
         )
-
+    
         return list(headers.items())
-
+    
     def __call__(self, context, callback):
         """Passes authorization metadata into the given callback.
-
+    
         Args:
             context (grpc.AuthMetadataContext): The RPC context.
             callback (grpc.AuthMetadataPluginCallback): The callback that will
                 be invoked to pass in the authorization metadata.
         """
         callback(self._get_authorization_headers(context), None)
-
-
+    
+    
 def secure_authorized_channel(
     credentials,
     request,
@@ -102,23 +102,23 @@ def secure_authorized_channel(
     **kwargs
 ):
     """Creates a secure authorized gRPC channel.
-
+            
     This creates a channel with SSL and :class:`AuthMetadataPlugin`. This
     channel can be used to create a stub that can make authorized requests.
     Users can configure client certificate or rely on device certificates to
     establish a mutual TLS channel, if the `GOOGLE_API_USE_CLIENT_CERTIFICATE`
     variable is explicitly set to `true`.
-
+            
     Example::
-
+            
         import google.auth
         import google.auth.transport.grpc
         import google.auth.transport.requests
         from google.cloud.speech.v1 import cloud_speech_pb2
-
+            
         # Get credentials.
         credentials, _ = google.auth.default()
-
+            
         # Get an HTTP request function to refresh credentials.
         request = google.auth.transport.requests.Request()
 
@@ -126,34 +126,34 @@ def secure_authorized_channel(
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, regular_endpoint, request,
             ssl_credentials=grpc.ssl_channel_credentials())
-
+        
         # Use the channel to create a stub.
         cloud_speech.create_Speech_stub(channel)
-
+    
     Usage:
 
     There are actually a couple of options to create a channel, depending on if
     you want to create a regular or mutual TLS channel.
 
     First let's list the endpoints (regular vs mutual TLS) to choose from::
-
+        
         regular_endpoint = 'speech.googleapis.com:443'
         mtls_endpoint = 'speech.mtls.googleapis.com:443'
-
+         
     Option 1: create a regular (non-mutual) TLS channel by explicitly setting
     the ssl_credentials::
-
+    
         regular_ssl_credentials = grpc.ssl_channel_credentials()
-
+        
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, regular_endpoint,
             ssl_credentials=regular_ssl_credentials)
-
+            
     Option 2: create a mutual TLS channel by calling a callback which returns
     the client side certificate and the key (Note that
     `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable must be explicitly
     set to `true`)::
-
+            
         def my_client_cert_callback():
             code_to_load_client_cert_and_key()
             if loaded:
@@ -164,16 +164,16 @@ def secure_authorized_channel(
             channel = google.auth.transport.grpc.secure_authorized_channel(
                 credentials, request, mtls_endpoint,
                 client_cert_callback=my_client_cert_callback)
-        except MyClientCertFailureException:
+        except MyClientCertFailureException: 
             # handle the exception
-
+    
     Option 3: use application default SSL credentials. It searches and uses
     the command in a context aware metadata file, which is available on devices
     with endpoint verification support (Note that
     `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable must be explicitly
     set to `true`).
     See https://cloud.google.com/endpoint-verification/docs/overview::
-
+            
         try:
             default_ssl_credentials = SslCredentials()
         except:
@@ -187,28 +187,28 @@ def secure_authorized_channel(
             endpoint_to_use = regular_endpoint
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, endpoint_to_use,
-            ssl_credentials=default_ssl_credentials)
+            ssl_credentials=default_ssl_credentials) 
 
-    Option 4: not setting ssl_credentials and client_cert_callback. For devices
+    Option 4: not setting ssl_credentials and client_cert_callback. For devices  
     without endpoint verification support or `GOOGLE_API_USE_CLIENT_CERTIFICATE`
     environment variable is not `true`, a regular TLS channel is created;
     otherwise, a mutual TLS channel is created, however, the call should be
     wrapped in a try/except block in case of malformed context aware metadata.
-
+    
     The following code uses regular_endpoint, it works the same no matter the
     created channle is regular or mutual TLS. Regular endpoint ignores client
     certificate and key::
-
+       
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, regular_endpoint)
-
+        
     The following code uses mtls_endpoint, if the created channle is regular,
     and API mtls_endpoint is confgured to require client SSL credentials, API
     calls using this channel will be rejected::
-
+        
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, mtls_endpoint)
-
+                
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
             add to requests.
@@ -218,7 +218,7 @@ def secure_authorized_channel(
             without using a standard http transport.
         target (str): The host and port of the service.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
-            credentials. This can be used to specify different certificates.
+            credentials. This can be used to specify different certificates. 
             This argument is mutually exclusive with client_cert_callback;
             providing both will raise an exception.
             If ssl_credentials and client_cert_callback are None, application
@@ -232,10 +232,10 @@ def secure_authorized_channel(
             This argument does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE`
             environment variable is explicitly set to `true`.
         kwargs: Additional arguments to pass to :func:`grpc.secure_channel`.
-
+                    
     Returns:
         grpc.Channel: The created gRPC channel.
-
+            
     Raises:
         google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
             creation failed for any reason.
@@ -245,14 +245,15 @@ def secure_authorized_channel(
 
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
-
+        
     if ssl_credentials and client_cert_callback:
         raise exceptions.MalformedError(
             "Received both ssl_credentials and client_cert_callback; "
             "these are mutually exclusive."
         )
-
+        
     # If SSL credentials are not explicitly set, try client_cert_callback and ADC.
+    cached_cert = None
     if not ssl_credentials:
         use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert and client_cert_callback:
@@ -261,29 +262,49 @@ def secure_authorized_channel(
             ssl_credentials = grpc.ssl_channel_credentials(
                 certificate_chain=cert, private_key=key
             )
+            cached_cert = cert   
         elif use_client_cert:
             # Use application default SSL credentials.
             adc_ssl_credentils = SslCredentials()
             ssl_credentials = adc_ssl_credentils.ssl_credentials
+            cached_cert = adc_ssl_credentils._cached_cert
         else:
             ssl_credentials = grpc.ssl_channel_credentials()
-
+            
     # Combine the ssl credentials and the authorization credentials.
     composite_credentials = grpc.composite_channel_credentials(
         ssl_credentials, google_auth_credentials
     )
+    is_retry = kwargs.pop("_is_retry", False)
+    channel = grpc.secure_channel(target, composite_credentials, **kwargs)
+    # Check if we are already inside a retry to avoid infinite recursion
+    if cached_cert and not is_retry:
+        # Package arguments to recreate the channel if rotation occurs
+        factory_args = {
+            "credentials": credentials,
+            "request": request, 
+            "target": target,
+            "ssl_credentials": None,
+            "client_cert_callback": client_cert_callback,
+            "_is_retry": True, # Hidden flag to stop recursion
+            **kwargs
+        }
+        interceptor = _MTLSCallInterceptor(cached_cert)
 
-    return grpc.secure_channel(target, composite_credentials, **kwargs)
-
-
+        wrapper = _MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
+        
+        interceptor._wrapper = wrapper   
+        return grpc.intercept_channel(wrapper, interceptor)
+    return channel
+        
 class SslCredentials:
     """Class for application default SSL credentials.
-
+        
     The behavior is controlled by `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment
     variable whose default value is `false`. Client certificate will not be used
     unless the environment variable is explicitly set to `true`. See
     https://google.aip.dev/auth/4114
-
+                
     If the environment variable is `true`, then for devices with endpoint verification
     support, a device certificate will be automatically loaded and mutual TLS will
     be established.
@@ -292,6 +313,7 @@ class SslCredentials:
 
     def __init__(self):
         use_client_cert = _mtls_helper.check_use_client_cert()
+        self._cached_cert = None
         if not use_client_cert:
             self._is_mtls = False
         else:
@@ -323,6 +345,7 @@ class SslCredentials:
                 self._ssl_credentials = grpc.ssl_channel_credentials(
                     certificate_chain=cert, private_key=key
                 )
+                self._cached_cert = cert
             except exceptions.ClientCertError as caught_exc:
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
                 raise new_exc from caught_exc
@@ -335,3 +358,94 @@ class SslCredentials:
     def is_mtls(self):
         """Indicates if the created SSL channel credentials is mutual TLS."""
         return self._is_mtls
+
+class _MTLSCallInterceptor(grpc.UnaryUnaryClientInterceptor):
+    def __init__(self, cached_cert):
+        self._cached_cert = cached_cert
+        self._wrapper = None
+        self._max_retries = 2 # Set your desired limit here
+
+    def _should_retry(self, code, retry_count):
+        if code != grpc.StatusCode.UNAUTHENTICATED or not self._wrapper:
+            return False
+
+        if retry_count >= self._max_retries:
+            _LOGGER.debug("Max retries reached (%d/%d).", retry_count, self._max_retries)
+            return False
+
+        # Fingerprint check logic
+        _, _, cached_fp, current_fp = _mtls_helper.check_parameters_for_unauthorized_response(self._wrapper._cached_cert)
+        return cached_fp != current_fp
+
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        retry_count = 0
+
+        while True:
+            try:
+                # Every time we call continuation(), our Wrapper (which is the channel
+                # being intercepted) will point to its CURRENT active raw channel.
+                response = continuation(client_call_details, request)
+                status_code = response.code()
+            except grpc.RpcError as e:
+                status_code = e.code()
+                if not self._should_retry(status_code, retry_count):
+                    raise e
+                # If we should retry, we fall through to the refresh logic below
+
+            if self._should_retry(status_code, retry_count):
+                retry_count += 1
+                # Tell the wrapper to swap the channel.
+                # We don't need the wrapper to execute the retry; the loop does it!
+                self._wrapper.refresh_logic(retry_count)
+                continue # Jump back to the start of the while loop
+
+            return response
+
+class _MTLSRefreshingChannel(grpc.Channel):
+    def __init__(self, target, factory_args, initial_channel, initial_cert):
+        self._target = target
+        self._factory_args = factory_args
+        self._channel = initial_channel
+        self._cached_cert = initial_cert
+        self._lock = threading.Lock()
+
+    def refresh_logic(self, count):
+        with self._lock:
+            # Re-check inside lock to prevent race conditions
+            _, _, cached_fp, current_fp = _mtls_helper.check_parameters_for_unauthorized_response(self._cached_cert)
+            if cached_fp != current_fp:
+                print(f"Wrapper: Refreshing mTLS channel. Retry count: {count}")
+                old_channel = self._channel
+                self._channel = secure_authorized_channel(**self._factory_args)
+
+                creds = _mtls_helper.get_client_ssl_credentials()
+                self._cached_cert = creds[1]
+                old_channel.close()
+
+    def unary_unary(self, method, *args, **kwargs):
+        # Always return a callable from the CURRENT channel
+        return self._channel.unary_unary(method, *args, **kwargs)
+
+    # Mandatory passthroughs
+    def unary_stream(self, method, *args, **kwargs): return self._channel.unary_stream(method, *args, **kwargs)
+    def stream_unary(self, method, *args, **kwargs): return self._channel.stream_unary(method, *args, **kwargs)
+    def stream_stream(self, method, *args, **kwargs): return self._channel.stream_stream(method, *args, **kwargs)
+    def subscribe(self, *args, **kwargs): return self._channel.subscribe(*args, **kwargs)
+    def unsubscribe(self, *args, **kwargs): return self._channel.unsubscribe(*args, **kwargs)
+    def close(self): self._channel.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
