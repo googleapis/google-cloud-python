@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [4.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.10.1...google-cloud-storage-v4.0.0) (2026-04-09)
+
+
+### Features
+
+* drop support for Python 3.8 ([222a7123f3b0d20abc66b56d12cdf65841fb7211](https://github.com/googleapis/google-cloud-python/commit/222a7123f3b0d20abc66b56d12cdf65841fb7211))
+
+
+### Bug Fixes
+
+* require protobuf >= 4.25.8, < 8.0.0 ([222a7123f3b0d20abc66b56d12cdf65841fb7211](https://github.com/googleapis/google-cloud-python/commit/222a7123f3b0d20abc66b56d12cdf65841fb7211))
+
 ## [3.10.1](https://github.com/googleapis/python-storage/compare/v3.10.0...v3.10.1) (2026-03-23)
 
 
