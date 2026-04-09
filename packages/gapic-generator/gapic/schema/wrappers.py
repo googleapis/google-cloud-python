@@ -2278,9 +2278,9 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
-        request and response fields in the service."""
+        request and response fields in the service, deterministically sorted."""
 
         def gen_resources(message):
             if message.resource_path:
@@ -2301,7 +2301,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2313,6 +2313,13 @@ class Service:
                 gen_indirect_resources_used(
                     method.lro.response_type if method.lro else method.output
                 ),
+            )
+        )
+
+        return tuple(
+            sorted(
+                unique_messages,
+                key=lambda m: m.resource_type_full_path or m.name
             )
         )
 

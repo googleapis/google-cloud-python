@@ -170,9 +170,12 @@ class Proto:
             if msg.options.Extensions[resource_pb2.resource].type
         )
         return collections.OrderedDict(
-            itertools.chain(
-                file_resource_messages,
-                resource_messages,
+            sorted(
+                itertools.chain(
+                    file_resource_messages,
+                    resource_messages,
+                ),
+                key=lambda item: item[0]
             )
         )
 
