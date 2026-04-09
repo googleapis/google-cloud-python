@@ -415,7 +415,7 @@ class _MTLSRefreshingChannel(grpc.Channel):
             # Re-check inside lock to prevent race conditions
             _, _, cached_fp, current_fp = _mtls_helper.check_parameters_for_unauthorized_response(self._cached_cert)
             if cached_fp != current_fp:
-                print(f"Wrapper: Refreshing mTLS channel. Retry count: {count}")
+                _LOGGER.debug("Wrapper: Refreshing mTLS channel. Retry count: %d", count)
                 old_channel = self._channel
                 self._channel = secure_authorized_channel(**self._factory_args)
 
