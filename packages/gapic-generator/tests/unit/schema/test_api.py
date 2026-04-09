@@ -1767,7 +1767,7 @@ def test_file_level_resources():
     # The service doesn't own any method that owns a message that references
     # Phylum, so the service doesn't count it among its resource messages.
     expected.pop("nomenclature.linnaen.com/Phylum")
-    expected = frozenset(expected.values())
+    expected = tuple(expected.values())
     actual = service.resource_messages
 
     assert actual == expected
