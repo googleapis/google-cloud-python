@@ -17,12 +17,15 @@ from __future__ import annotations
 import concurrent.futures
 import math
 import threading
+import uuid
+import warnings
 from typing import Literal, Mapping, Optional, Sequence, Tuple
 
 import google.api_core.exceptions
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
+import google.cloud.exceptions
 from google.cloud import bigquery
 
 import bigframes
@@ -124,9 +127,7 @@ class BigQueryCachingExecutor(executor.Executor):
             else array_value.node
         )
         node = self._substitute_large_local_sources(node)
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(node, sort_rows=ordered)
-        )
+        compiled = self._compile(node, ordered=ordered)
         return compiled.sql
 
     def execute(
@@ -242,46 +243,55 @@ class BigQueryCachingExecutor(executor.Executor):
         # validate destination table
         existing_table = self._maybe_find_existing_table(spec)
 
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(plan, sort_rows=False)
-        )
-        sql = compiled.sql
+        def run_with_compiler(compiler_name, compiler_id=None):
+            compiled = self._compile(plan, ordered=False, compiler_name=compiler_name)
+            sql = compiled.sql
 
-        if (existing_table is not None) and _is_schema_match(
-            existing_table.schema, array_value.schema
-        ):
-            # b/409086472: Uses DML for table appends and replacements to avoid
-            # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
-            # https://cloud.google.com/bigquery/quotas#standard_tables
-            job_config = bigquery.QueryJobConfig()
+            if (existing_table is not None) and _is_schema_match(
+                existing_table.schema, array_value.schema
+            ):
+                # b/409086472: Uses DML for table appends and replacements to avoid
+                # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
+                # https://cloud.google.com/bigquery/quotas#standard_tables
+                job_config = bigquery.QueryJobConfig()
 
-            ir = sqlglot_ir.SQLGlotIR.from_unparsed_query(sql)
-            if spec.if_exists == "append":
-                sql = sg_sql.to_sql(sg_sql.insert(ir.expr.as_select_all(), spec.table))
-            else:  # for "replace"
-                assert spec.if_exists == "replace"
-                sql = sg_sql.to_sql(sg_sql.replace(ir.expr.as_select_all(), spec.table))
-        else:
-            dispositions = {
-                "fail": bigquery.WriteDisposition.WRITE_EMPTY,
-                "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
-                "append": bigquery.WriteDisposition.WRITE_APPEND,
-            }
-            job_config = bigquery.QueryJobConfig(
-                write_disposition=dispositions[spec.if_exists],
-                destination=spec.table,
-                clustering_fields=spec.cluster_cols if spec.cluster_cols else None,
+                ir = sqlglot_ir.SQLGlotIR.from_unparsed_query(sql)
+                if spec.if_exists == "append":
+                    sql = sg_sql.to_sql(
+                        sg_sql.insert(ir.expr.as_select_all(), spec.table)
+                    )
+                else:  # for "replace"
+                    assert spec.if_exists == "replace"
+                    sql = sg_sql.to_sql(
+                        sg_sql.replace(ir.expr.as_select_all(), spec.table)
+                    )
+            else:
+                dispositions = {
+                    "fail": bigquery.WriteDisposition.WRITE_EMPTY,
+                    "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
+                    "append": bigquery.WriteDisposition.WRITE_APPEND,
+                }
+                job_config = bigquery.QueryJobConfig(
+                    write_disposition=dispositions[spec.if_exists],
+                    destination=spec.table,
+                    clustering_fields=spec.cluster_cols if spec.cluster_cols else None,
+                )
+
+            # Attach data type usage to the job labels
+            job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
+            job_config.labels["bigframes-compiler"] = (
+                f"{compiler_name}-{compiler_id}" if compiler_id else compiler_name
             )
+            # TODO(swast): plumb through the api_name of the user-facing api that
+            # caused this query.
+            iterator, job = self._run_execute_query(
+                sql=sql,
+                job_config=job_config,
+                session=array_value.session,
+            )
+            return iterator, job
 
-        # Attach data type usage to the job labels
-        job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
-        # TODO(swast): plumb through the api_name of the user-facing api that
-        # caused this query.
-        iterator, job = self._run_execute_query(
-            sql=sql,
-            job_config=job_config,
-            session=array_value.session,
-        )
+        iterator, job = self._compile_with_fallback(run_with_compiler)
 
         has_special_dtype_col = any(
             t in (bigframes.dtypes.TIMEDELTA_DTYPE, bigframes.dtypes.OBJ_REF_DTYPE)
@@ -409,6 +419,43 @@ class BigQueryCachingExecutor(executor.Executor):
         return tree_properties.is_trivially_executable(
             self.prepare_plan(array_value.node)
         )
+
+    def _compile(
+        self,
+        node: nodes.BigFrameNode,
+        *,
+        ordered: bool = False,
+        peek: Optional[int] = None,
+        materialize_all_order_keys: bool = False,
+        compiler_name: Literal["sqlglot", "ibis"] = "sqlglot",
+    ) -> compile.CompileResult:
+        return compile.compile_sql(
+            compile.CompileRequest(
+                node,
+                sort_rows=ordered,
+                peek_count=peek,
+                materialize_all_order_keys=materialize_all_order_keys,
+            ),
+            compiler_name=compiler_name,
+        )
+
+    def _compile_with_fallback(self, run_fn):
+        compiler_option = bigframes.options.experiments.sql_compiler
+        if compiler_option == "legacy":
+            return run_fn("ibis")
+        elif compiler_option == "experimental":
+            return run_fn("sqlglot")
+        else:  # stable
+            compiler_id = f"{uuid.uuid1().hex[:12]}"
+            try:
+                return run_fn("sqlglot", compiler_id=compiler_id)
+            except google.cloud.exceptions.BadRequest as e:
+                msg = bfe.format_message(
+                    f"Compiler ID {compiler_id}: BadRequest on sqlglot. "
+                    f"Falling back to ibis. Details: {e.message}"
+                )
+                warnings.warn(msg, category=UserWarning)
+                return run_fn("ibis", compiler_id=compiler_id)
 
     def prepare_plan(
         self,
@@ -604,34 +651,43 @@ class BigQueryCachingExecutor(executor.Executor):
                 ]
                 cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
 
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(
+        def run_with_compiler(compiler_name, compiler_id=None):
+            compiled = self._compile(
                 plan,
-                sort_rows=ordered,
-                peek_count=peek,
+                ordered=ordered,
+                peek=peek,
                 materialize_all_order_keys=(cache_spec is not None),
+                compiler_name=compiler_name,
             )
-        )
+            # might have more columns than og schema, for hidden ordering columns
+            compiled_schema = compiled.sql_schema
+
+            destination_table: Optional[bigquery.TableReference] = None
+
+            job_config = bigquery.QueryJobConfig()
+            if create_table:
+                destination_table = self.storage_manager.create_temp_table(
+                    compiled_schema, cluster_cols
+                )
+                job_config.destination = destination_table
+
+            # Attach data type usage to the job labels
+            job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
+            job_config.labels["bigframes-compiler"] = (
+                f"{compiler_name}-{compiler_id}" if compiler_id else compiler_name
+            )
+            iterator, query_job = self._run_execute_query(
+                sql=compiled.sql,
+                job_config=job_config,
+                query_with_job=(destination_table is not None),
+                session=plan.session,
+            )
+            return iterator, query_job, compiled
+
+        iterator, query_job, compiled = self._compile_with_fallback(run_with_compiler)
+
         # might have more columns than og schema, for hidden ordering columns
         compiled_schema = compiled.sql_schema
-
-        destination_table: Optional[bigquery.TableReference] = None
-
-        job_config = bigquery.QueryJobConfig()
-        if create_table:
-            destination_table = self.storage_manager.create_temp_table(
-                compiled_schema, cluster_cols
-            )
-            job_config.destination = destination_table
-
-        # Attach data type usage to the job labels
-        job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
-        iterator, query_job = self._run_execute_query(
-            sql=compiled.sql,
-            job_config=job_config,
-            query_with_job=(destination_table is not None),
-            session=plan.session,
-        )
 
         # we could actually cache even when caching is not explicitly requested, but being conservative for now
         result_bq_data = None
