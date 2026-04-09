@@ -513,7 +513,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-appoptimize
     version: 0.0.0
-    last_generated_commit: cd090841ab172574e740c214c99df00aef9c0dee
+    last_generated_commit: 2aba48492ae471bfb717f5e9c5a190b7cc1c6636
     apis:
       - path: google/cloud/appoptimize/v1beta
         service_config: appoptimize_v1beta.yaml
@@ -1263,7 +1263,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-config
     version: 0.5.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 2aba48492ae471bfb717f5e9c5a190b7cc1c6636
     apis:
       - path: google/cloud/config/v1
         service_config: config_v1.yaml
@@ -4253,7 +4253,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
     version: 1.5.0
-    last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
+    last_generated_commit: 2aba48492ae471bfb717f5e9c5a190b7cc1c6636
     apis:
       - path: google/shopping/merchant/products/v1
         service_config: merchantapi_v1.yaml
@@ -4361,7 +4361,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.74.0
-    last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
+    last_generated_commit: 2aba48492ae471bfb717f5e9c5a190b7cc1c6636
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

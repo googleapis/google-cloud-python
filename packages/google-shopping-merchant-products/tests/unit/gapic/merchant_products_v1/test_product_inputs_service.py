@@ -1400,7 +1400,9 @@ def test_insert_product_input(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = productinputs.ProductInput(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             product="product_value",
+            base64_encoded_product="base64_encoded_product_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -1418,7 +1420,9 @@ def test_insert_product_input(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -1561,7 +1565,9 @@ async def test_insert_product_input_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             productinputs.ProductInput(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 product="product_value",
+                base64_encoded_product="base64_encoded_product_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -1580,7 +1586,9 @@ async def test_insert_product_input_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -1682,7 +1690,9 @@ def test_update_product_input(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = productinputs.ProductInput(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             product="product_value",
+            base64_encoded_product="base64_encoded_product_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -1700,7 +1710,9 @@ def test_update_product_input(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -1841,7 +1853,9 @@ async def test_update_product_input_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             productinputs.ProductInput(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 product="product_value",
+                base64_encoded_product="base64_encoded_product_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -1860,7 +1874,9 @@ async def test_update_product_input_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -3136,7 +3152,9 @@ async def test_insert_product_input_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             productinputs.ProductInput(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 product="product_value",
+                base64_encoded_product="base64_encoded_product_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -3171,7 +3189,9 @@ async def test_update_product_input_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             productinputs.ProductInput(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 product="product_value",
+                base64_encoded_product="base64_encoded_product_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -3263,7 +3283,9 @@ def test_insert_product_input_rest_call_success(request_type):
     request_init = {"parent": "accounts/sample1"}
     request_init["product_input"] = {
         "name": "name_value",
+        "base64_encoded_name": "base64_encoded_name_value",
         "product": "product_value",
+        "base64_encoded_product": "base64_encoded_product_value",
         "legacy_local": True,
         "offer_id": "offer_id_value",
         "content_language": "content_language_value",
@@ -3387,6 +3409,7 @@ def test_insert_product_input_rest_call_success(request_type):
                 }
             ],
             "shipping_label": "shipping_label_value",
+            "return_policy_label": "return_policy_label_value",
             "transit_time_label": "transit_time_label_value",
             "size": "size_value",
             "size_system": 1,
@@ -3551,7 +3574,9 @@ def test_insert_product_input_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = productinputs.ProductInput(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             product="product_value",
+            base64_encoded_product="base64_encoded_product_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -3574,7 +3599,9 @@ def test_insert_product_input_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -3689,7 +3716,9 @@ def test_update_product_input_rest_call_success(request_type):
     request_init = {"product_input": {"name": "accounts/sample1/productInputs/sample2"}}
     request_init["product_input"] = {
         "name": "accounts/sample1/productInputs/sample2",
+        "base64_encoded_name": "base64_encoded_name_value",
         "product": "product_value",
+        "base64_encoded_product": "base64_encoded_product_value",
         "legacy_local": True,
         "offer_id": "offer_id_value",
         "content_language": "content_language_value",
@@ -3813,6 +3842,7 @@ def test_update_product_input_rest_call_success(request_type):
                 }
             ],
             "shipping_label": "shipping_label_value",
+            "return_policy_label": "return_policy_label_value",
             "transit_time_label": "transit_time_label_value",
             "size": "size_value",
             "size_system": 1,
@@ -3977,7 +4007,9 @@ def test_update_product_input_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = productinputs.ProductInput(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             product="product_value",
+            base64_encoded_product="base64_encoded_product_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -4000,7 +4032,9 @@ def test_update_product_input_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.product == "product_value"
+    assert response.base64_encoded_product == "base64_encoded_product_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"

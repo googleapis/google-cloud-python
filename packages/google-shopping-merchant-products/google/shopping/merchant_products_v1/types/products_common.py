@@ -862,10 +862,19 @@ class ProductAttributes(proto.Message):
         handling_cutoff_times (MutableSequence[google.shopping.merchant_products_v1.types.HandlingCutoffTime]):
             The handling cutoff times for shipping.
         shipping_label (str):
-            The shipping label of the product, used to
-            group product in account-level shipping rules.
+            The shipping label of the product, used to group products in
+            account-level shipping rules. Max. 100 characters. For more
+            information, see `Shipping
+            label <https://support.google.com/merchants/answer/6324504>`__.
 
             This field is a member of `oneof`_ ``_shipping_label``.
+        return_policy_label (str):
+            The return label of the product, used to group products in
+            account-level return policies. Max. 100 characters. For more
+            information, see `Return policy
+            label <https://support.google.com/merchants/answer/9445425>`__.
+
+            This field is a member of `oneof`_ ``_return_policy_label``.
         transit_time_label (str):
             The transit time label of the product, used
             to group product in account-level transit time
@@ -1824,6 +1833,11 @@ class ProductAttributes(proto.Message):
     shipping_label: str = proto.Field(
         proto.STRING,
         number=46,
+        optional=True,
+    )
+    return_policy_label: str = proto.Field(
+        proto.STRING,
+        number=170,
         optional=True,
     )
     transit_time_label: str = proto.Field(
