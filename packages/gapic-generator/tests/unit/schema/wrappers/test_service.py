@@ -267,12 +267,12 @@ def test_resource_messages():
         ),
     )
 
-    expected = {
-        squid_resource,
+    expected = (
         clam_resource,
-        whelk_resource,
         squamosa_message,
-    }
+        squid_resource,
+        whelk_resource,
+    )
     actual = service.resource_messages
     assert expected == actual
 
@@ -557,7 +557,7 @@ def test_resource_response():
         ),
     )
 
-    expected = {squid_resource, clam_resource}
+    expected = (clam_resource, squid_resource)
     actual = mollusc_service.resource_messages
     assert expected == actual
 
