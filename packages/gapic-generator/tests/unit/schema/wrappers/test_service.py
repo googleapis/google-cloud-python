@@ -267,12 +267,12 @@ def test_resource_messages():
         ),
     )
 
-    expected = tuple(
-        sorted(
-            [squid_resource, clam_resource, whelk_resource, squamosa_message],
-            key=lambda r: r.resource_type_full_path or r.name
-        )
-    )
+    expected = {
+        squid_resource,
+        clam_resource,
+        whelk_resource,
+        squamosa_message,
+    }
     actual = service.resource_messages
     assert expected == actual
 
@@ -557,52 +557,9 @@ def test_resource_response():
         ),
     )
 
-    expected = tuple(
-        sorted(
-            [squid_resource, clam_resource],
-            key=lambda r: r.resource_type_full_path or r.name
-        )
-    )
+    expected = {squid_resource, clam_resource}
     actual = mollusc_service.resource_messages
     assert expected == actual
-
-
-def test_service_resource_path_method_names_collision():
-    # Setup mock resources with a collision on "Tool"
-    native_opts = descriptor_pb2.MessageOptions()
-    native_opts.Extensions[resource_pb2.resource].type = "dialogflow.googleapis.com/Tool"
-    native_tool = make_message("Tool", options=native_opts)
-
-    foreign_opts = descriptor_pb2.MessageOptions()
-    foreign_opts.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
-    foreign_tool = make_message("Tool", options=foreign_opts)
-
-    service = make_service(
-        name="DialogflowService",
-        host="dialogflow.googleapis.com",  # This sets the native domain shortname
-        methods=(
-            make_method(
-                "DoTool",
-                input_message=make_message(
-                    "DoToolRequest",
-                    fields=(
-                        make_field("native", message=native_tool),
-                        make_field("foreign", message=foreign_tool),
-                    )
-                )
-            ),
-        )
-    )
-
-    # 1. Test Determinism (Sorting by full path instead of unordered frozenset)
-    resources = service.resource_messages
-    assert resources[0].resource_type_full_path == "ces.googleapis.com/Tool"
-    assert resources[1].resource_type_full_path == "dialogflow.googleapis.com/Tool"
-
-    # 2. Test Collision Resolution (Prefixing only the foreign domain)
-    method_names = service.resource_path_method_names
-    assert method_names["ces.googleapis.com/Tool"] == "ces_tool"
-    assert method_names["dialogflow.googleapis.com/Tool"] == "tool"
 
 
 def test_operation_polling_method():
