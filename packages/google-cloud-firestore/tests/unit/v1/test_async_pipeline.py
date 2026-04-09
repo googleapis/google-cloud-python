@@ -451,7 +451,6 @@ def test_async_pipeline_aggregate_with_groups():
 
 
 def test_async_pipeline_raw_stage_with_options():
-    from google.cloud.firestore_v1.base_vector_query import Field
     from google.cloud.firestore_v1.pipeline_stages import RawStage
 
     start_ppl = _make_async_pipeline()
