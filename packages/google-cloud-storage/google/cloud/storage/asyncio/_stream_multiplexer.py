@@ -15,9 +15,10 @@
 from __future__ import annotations
 
 import asyncio
-import grpc
 import logging
 from typing import Awaitable, Callable, Dict, Optional, Set
+
+import grpc
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio.async_read_object_stream import (
@@ -139,6 +140,10 @@ class _StreamMultiplexer:
                         queue = self._queues.get(read_id)
                         if queue:
                             queues_to_notify.add(queue)
+                        else:
+                            logger.warning(
+                                f"Received data for unregistered read_id: {read_id}"
+                            )
                     await asyncio.gather(
                         *(
                             self._put_with_timeout(queue, response)

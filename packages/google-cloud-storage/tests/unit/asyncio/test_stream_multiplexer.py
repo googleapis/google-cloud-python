@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import asyncio
-import grpc
 from unittest.mock import AsyncMock
 
+import grpc
 import pytest
 
 from google.cloud import _storage_v2
@@ -325,7 +325,7 @@ class TestRecvLoop:
         assert err.exception is exc
 
     @pytest.mark.asyncio
-    async def test_unknown_read_id_is_dropped(self):
+    async def test_unknown_read_id_is_dropped(self, caplog):
         # Given a multiplexer and a response with an unknown read ID
         mock_stream = AsyncMock()
         resp = _make_response(read_id=999)
@@ -340,6 +340,9 @@ class TestRecvLoop:
         # Then the response is dropped and only StreamEnd is received
         end = await asyncio.wait_for(queue.get(), timeout=1)
         assert isinstance(end, _StreamEnd)
+
+        # And a warning is logged
+        assert "Received data for unregistered read_id: 999" in caplog.text
 
 
 class TestSend:
