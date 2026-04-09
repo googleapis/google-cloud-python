@@ -291,7 +291,7 @@ def secure_authorized_channel(
             "_is_retry": True, # Hidden flag to stop recursion
             **kwargs
         }
-        interceptor = _MTLSCallInterceptor(cached_cert)
+        interceptor = _MTLSCallInterceptor()
 
         wrapper = _MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
      
