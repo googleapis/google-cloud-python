@@ -97,6 +97,20 @@ def test_create_model_list_option(snapshot):
     snapshot.assert_match(sql, "create_model_list_option.sql")
 
 
+def test_create_model_expression_option(snapshot):
+    import bigframes.core.expression as ex
+
+    sql = bigframes.core.sql.ml.create_model_ddl(
+        model_name="my_model",
+        options={
+            "l2_reg": ex.ScalarConstantExpression(0.1, None),
+            "booster_type": "gbtree",
+        },
+        training_data="SELECT * FROM t",
+    )
+    snapshot.assert_match(sql, "create_model_expression_option.sql")
+
+
 def test_evaluate_model_basic(snapshot):
     sql = bigframes.core.sql.ml.evaluate(
         model_name="my_project.my_dataset.my_model",
