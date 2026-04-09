@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.bigtable_v2.types import data
+from google.cloud.bigtable_v2.types import data, types
 from google.cloud.bigtable_v2.types import request_stats as gb_request_stats
-from google.cloud.bigtable_v2.types import types
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.v2",
@@ -133,6 +131,7 @@ class ReadRowsRequest(proto.Message):
                 RequestStats in the response, applicable to this
                 read.
         """
+
         REQUEST_STATS_VIEW_UNSPECIFIED = 0
         REQUEST_STATS_NONE = 1
         REQUEST_STATS_FULL = 2
@@ -1145,6 +1144,7 @@ class ReadChangeStreamResponse(proto.Message):
                     This is a continuation of a multi-message
                     change.
             """
+
             TYPE_UNSPECIFIED = 0
             USER = 1
             GARBAGE_COLLECTION = 2
@@ -1172,12 +1172,12 @@ class ReadChangeStreamResponse(proto.Message):
             proto.INT32,
             number=5,
         )
-        chunks: MutableSequence[
-            "ReadChangeStreamResponse.MutationChunk"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="ReadChangeStreamResponse.MutationChunk",
+        chunks: MutableSequence["ReadChangeStreamResponse.MutationChunk"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="ReadChangeStreamResponse.MutationChunk",
+            )
         )
         done: bool = proto.Field(
             proto.BOOL,
@@ -1268,12 +1268,12 @@ class ReadChangeStreamResponse(proto.Message):
             number=1,
             message=status_pb2.Status,
         )
-        continuation_tokens: MutableSequence[
-            data.StreamContinuationToken
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=data.StreamContinuationToken,
+        continuation_tokens: MutableSequence[data.StreamContinuationToken] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=data.StreamContinuationToken,
+            )
         )
         new_partitions: MutableSequence[data.StreamPartition] = proto.RepeatedField(
             proto.MESSAGE,

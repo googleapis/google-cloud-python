@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import datetime
-import uuid
 import os
+import uuid
+
+import pytest
 from google.api_core import retry
 from google.api_core.exceptions import ClientError, PermissionDenied
-
-from google.cloud.bigtable.data.execute_query.metadata import SqlType
-from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.type import date_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data.execute_query.metadata import SqlType
+from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 
-from . import TEST_FAMILY, TEST_FAMILY_2, TEST_AGGREGATE_FAMILY
+from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2
 
 if CrossSync.is_async:
     from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
@@ -413,9 +413,11 @@ class TestSystemAsync:
         """
         If an invalid mutation is passed, an exception should be raised
         """
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
         from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-        from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
 
         row_key = uuid.uuid4().hex.encode()
         mutation = SetCell(
@@ -723,8 +725,10 @@ class TestSystemAsync:
         """
         test read_modify_write_row with multiple rules
         """
-        from google.cloud.bigtable.data.read_modify_write_rules import AppendValueRule
-        from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
+        from google.cloud.bigtable.data.read_modify_write_rules import (
+            AppendValueRule,
+            IncrementRule,
+        )
 
         row_key = b"test-row-key"
         family = TEST_FAMILY
@@ -893,8 +897,7 @@ class TestSystemAsync:
         """
         Test end-to-end sharding
         """
-        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -949,8 +952,7 @@ class TestSystemAsync:
         """
         Ensure that the read_rows method works
         """
-        from google.cloud.bigtable.data import ReadRowsQuery
-        from google.cloud.bigtable.data import RowRange
+        from google.cloud.bigtable.data import ReadRowsQuery, RowRange
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -1143,16 +1145,16 @@ class TestSystemAsync:
         Literal value filter does complex escaping on re2 strings.
         Make sure inputs are properly interpreted by the server
         """
-        from google.cloud.bigtable.data.row_filters import LiteralValueFilter
         from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import LiteralValueFilter
 
         f = LiteralValueFilter(filter_input)
         await temp_rows.add_row(b"row_key_1", value=cell_value)
         query = ReadRowsQuery(row_filter=f)
         row_list = await target.read_rows(query)
-        assert len(row_list) == bool(
-            expect_match
-        ), f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        assert len(row_list) == bool(expect_match), (
+            f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)),

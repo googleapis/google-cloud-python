@@ -974,12 +974,50 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
     version: 2.36.0
-    last_generated_commit: ""
-    apis: []
+    last_generated_commit: a6cbf809c4c165e618ee23a059442af90a80a0f5
+    apis:
+      - path: google/bigtable/admin/v2
+        service_config: bigtableadmin_v2.yaml
+      - path: google/bigtable/v2
+        service_config: bigtable_v2.yaml
     source_roots:
       - packages/google-cloud-bigtable
-    preserve_regex: []
-    remove_regex: []
+    preserve_regex:
+      - packages/google-cloud-bigtable/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-bigtable/.coveragerc
+      - ^packages/google-cloud-bigtable/.flake8
+      - ^packages/google-cloud-bigtable/.repo-metadata.json
+      - ^packages/google-cloud-bigtable/LICENSE
+      - ^packages/google-cloud-bigtable/MANIFEST.in
+      - ^packages/google-cloud-bigtable/README.rst
+      - ^packages/google-cloud-bigtable/mypy.ini
+      - ^packages/google-cloud-bigtable/noxfile.py
+      - ^packages/google-cloud-bigtable/setup.py
+      - ^packages/google-cloud-bigtable/docs/conf.py
+      - ^packages/google-cloud-bigtable/docs/index.rst
+      - ^packages/google-cloud-bigtable/docs/multiprocessing.rst
+      - ^packages/google-cloud-bigtable/docs/summary_overview.md
+      - ^packages/google-cloud-bigtable/docs/README.rst
+      - ^packages/google-cloud-bigtable/docs/_static/custom.css
+      - ^packages/google-cloud-bigtable/docs/_templates
+      - ^packages/google-cloud-bigtable/docs/bigtable
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable/__init__.py
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable/gapic_version.py
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable/py.typed
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_v2
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin/
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/services
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/types
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/__init__.py
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/gapic
+      - ^packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/py.typed
+      - ^packages/google-cloud-bigtable/samples/generated_samples
+      - ^packages/google-cloud-bigtable/testing
+      - ^packages/google-cloud-bigtable/tests/__init__.py
+      - ^packages/google-cloud-bigtable/tests/unit/__init__.py
+      - ^packages/google-cloud-bigtable/tests/unit/gapic
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.19.0

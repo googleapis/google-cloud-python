@@ -15,25 +15,27 @@
 
 from __future__ import annotations
 
-from typing import Sequence, TYPE_CHECKING
-
-from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
-from google.cloud.bigtable_v2.types import ReadRowsResponse as ReadRowsResponsePB
-from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-from google.cloud.bigtable_v2.types import RowRange as RowRangePB
-
-from google.cloud.bigtable.data.row import Row, Cell
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-from google.cloud.bigtable.data.exceptions import InvalidChunk
-from google.cloud.bigtable.data.exceptions import _RowSetComplete
-from google.cloud.bigtable.data.exceptions import _ResetRow
-from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data._helpers import _retry_exception_factory
+from typing import TYPE_CHECKING, Sequence
 
 from google.api_core import retry as retries
 from google.api_core.retry import exponential_sleep_generator
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._helpers import (
+    _attempt_timeout_generator,
+    _retry_exception_factory,
+)
+from google.cloud.bigtable.data.exceptions import (
+    InvalidChunk,
+    _ResetRow,
+    _RowSetComplete,
+)
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.row import Cell, Row
+from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
+from google.cloud.bigtable_v2.types import ReadRowsResponse as ReadRowsResponsePB
+from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
 if TYPE_CHECKING:
     if CrossSync.is_async:
@@ -41,7 +43,9 @@ if TYPE_CHECKING:
             _DataApiTargetAsync as TargetType,
         )
     else:
-        from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget as TargetType  # type: ignore
+        from google.cloud.bigtable.data._sync_autogen.client import (
+            _DataApiTarget as TargetType,  # type: ignore
+        )
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._read_rows"
 

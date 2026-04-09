@@ -50,4 +50,5 @@ async def sample_check_consistency():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_CheckConsistency_async]

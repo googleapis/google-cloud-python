@@ -1,6 +1,7 @@
 import ast
-import sys
 import os
+import sys
+
 import black
 import pytest
 import yaml
@@ -11,11 +12,11 @@ cross_sync_path = os.path.join(test_dir_name, "..", "..", "..", ".cross_sync")
 sys.path.append(cross_sync_path)
 
 from transformers import (  # noqa: F401 E402
-    SymbolReplacer,
     AsyncToSync,
+    CrossSyncFileProcessor,
     RmAioFunctions,
     StripAsyncConditionalBranches,
-    CrossSyncFileProcessor,
+    SymbolReplacer,
 )
 
 

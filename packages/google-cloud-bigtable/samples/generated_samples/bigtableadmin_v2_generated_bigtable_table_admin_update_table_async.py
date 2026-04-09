@@ -39,8 +39,7 @@ async def sample_update_table():
     client = bigtable_admin_v2.BigtableTableAdminAsyncClient()
 
     # Initialize request argument(s)
-    request = bigtable_admin_v2.UpdateTableRequest(
-    )
+    request = bigtable_admin_v2.UpdateTableRequest()
 
     # Make the request
     operation = client.update_table(request=request)
@@ -51,5 +50,6 @@ async def sample_update_table():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_UpdateTable_async]
