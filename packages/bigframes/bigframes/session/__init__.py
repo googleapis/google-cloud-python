@@ -115,29 +115,27 @@ class _ExecutionHistory(pandas.DataFrame):
         return _ExecutionHistory
 
     def _repr_html_(self) -> str | None:
+        import bigframes.formatting_helpers as formatter
+
+        if self.empty:
+            return "<div>No executions found.</div>"
+
+        cols = ["job_id", "status", "total_bytes_processed", "job_url"]
+
+        def format_url(url):
+            return f'<a target="_blank" href="{url}">Open Job</a>' if url else ""
+
         try:
-            import bigframes.formatting_helpers as formatter
-
-            if self.empty:
-                return "<div>No executions found.</div>"
-
-            cols = ["job_id", "status", "total_bytes_processed", "job_url"]
             df_display = self[cols].copy()
             df_display["total_bytes_processed"] = df_display[
                 "total_bytes_processed"
             ].apply(formatter.get_formatted_bytes)
-
-            def format_url(url):
-                return f'<a target="_blank" href="{url}">Open Job</a>' if url else ""
-
             df_display["job_url"] = df_display["job_url"].apply(format_url)
 
             # Rename job_id to query_id to match user expectations
             df_display = df_display.rename(columns={"job_id": "query_id"})
 
-            compact_html = df_display.to_html(escape=False, index=False)
-
-            return compact_html
+            return df_display.to_html(escape=False, index=False)
         except Exception:
             return super()._repr_html_()  # type: ignore
 
@@ -470,7 +468,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq(
@@ -486,7 +485,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq(
         self,
@@ -558,7 +558,8 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def _read_gbq_colab(
@@ -567,7 +568,8 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     @log_adapter.log_name_override("read_gbq_colab")
     def _read_gbq_colab(
@@ -628,7 +630,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_query(
@@ -644,7 +647,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_query(
         self,
@@ -791,7 +795,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_table(
@@ -805,7 +810,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_table(
         self,
@@ -956,7 +962,8 @@ class Session(
         pandas_dataframe: pandas.Index,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.core.indexes.Index: ...
+    ) -> bigframes.core.indexes.Index:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -964,7 +971,8 @@ class Session(
         pandas_dataframe: pandas.Series,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.series.Series: ...
+    ) -> bigframes.series.Series:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -972,7 +980,8 @@ class Session(
         pandas_dataframe: pandas.DataFrame,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     def read_pandas(
         self,

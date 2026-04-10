@@ -195,8 +195,6 @@ class ExecutionMetrics:
                 self.execution_secs += exec_seconds or 0
 
                 metadata = JobMetadata.from_job(query_job, exec_seconds=exec_seconds)
-                metadata.total_bytes_processed = bytes_processed
-                metadata.total_slot_ms = slot_millis
                 self.jobs.append(metadata)
 
         else:
@@ -249,6 +247,7 @@ class ExecutionMetrics:
             if event.result and isinstance(event.result, LocalExecuteResult):
                 self.execution_count += 1
                 bytes_processed = event.result.total_bytes_processed or 0
+                self.bytes_processed += bytes_processed
 
                 metadata = JobMetadata(
                     job_type="polars",
