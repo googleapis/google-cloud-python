@@ -15,6 +15,7 @@
 # - @googleapis/bigquery-team
 # - @googleapis/bigtable-team
 # - @googleapis/cloud-sdk-auth-team
+# - @googleapis/cloud-sdk-python-team
 # - @googleapis/dkp-team
 # - @googleapis/firestore-team
 # - @googleapis/gcs-team
