@@ -786,6 +786,51 @@ tests:
     assert_results:
       - title: "Crime and Punishment"
       - title: "The Great Gatsby"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Romance
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Dystopian
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Fantasy
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1949'
+                  name: greater_than
+              name: nor
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
   - description: expression_between
     pipeline:
     - Collection: restaurants

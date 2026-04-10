@@ -3241,7 +3241,9 @@ class Score(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("score", [], use_infix_repr=False)
+        super().__init__(
+            "score", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class DocumentMatches(BooleanExpression):
@@ -3266,7 +3268,7 @@ class DocumentMatches(BooleanExpression):
         super().__init__(
             "document_matches",
             [Expression._cast_to_expr_or_convert_to_constant(query)],
-            use_infix_repr=False,
+            repr_function=FunctionExpression._build_standalone_repr(),
         )
 
 
