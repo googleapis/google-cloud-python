@@ -17,10 +17,12 @@ import pytest
 
 
 def test_abstract_class_constructors():
-    from google.cloud.bigtable.data.row_filters import RowFilter
-    from google.cloud.bigtable.data.row_filters import _BoolFilter
-    from google.cloud.bigtable.data.row_filters import _FilterCombination
-    from google.cloud.bigtable.data.row_filters import _CellCountFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilter,
+        _BoolFilter,
+        _CellCountFilter,
+        _FilterCombination,
+    )
 
     with pytest.raises(TypeError):
         RowFilter()
@@ -392,7 +394,9 @@ def test_timestamp_range___ne__same_value():
 
 def _timestamp_range_to_pb_helper(pb_kwargs, start=None, end=None):
     import datetime
+
     from google.cloud._helpers import _EPOCH
+
     from google.cloud.bigtable.data.row_filters import TimestampRange
 
     if start is not None:
@@ -421,9 +425,10 @@ def test_timestamp_range_to_pb():
 
 
 def test_timestamp_range_to_dict():
+    import datetime
+
     from google.cloud.bigtable.data.row_filters import TimestampRange
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
-    import datetime
 
     row_filter = TimestampRange(
         start=datetime.datetime(2019, 1, 1), end=datetime.datetime(2019, 1, 2)
@@ -448,9 +453,10 @@ def test_timestamp_range_to_pb_start_only():
 
 
 def test_timestamp_range_to_dict_start_only():
+    import datetime
+
     from google.cloud.bigtable.data.row_filters import TimestampRange
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
-    import datetime
 
     row_filter = TimestampRange(start=datetime.datetime(2019, 1, 1))
     expected_dict = {"start_timestamp_micros": 1546300800000000}
@@ -470,9 +476,10 @@ def test_timestamp_range_to_pb_end_only():
 
 
 def test_timestamp_range_to_dict_end_only():
+    import datetime
+
     from google.cloud.bigtable.data.row_filters import TimestampRange
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
-    import datetime
 
     row_filter = TimestampRange(end=datetime.datetime(2019, 1, 2))
     expected_dict = {"end_timestamp_micros": 1546387200000000}
@@ -530,9 +537,10 @@ def test_timestamp_range_filter_to_pb():
 
 
 def test_timestamp_range_filter_to_dict():
+    import datetime
+
     from google.cloud.bigtable.data.row_filters import TimestampRangeFilter
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
-    import datetime
 
     row_filter = TimestampRangeFilter(
         start=datetime.datetime(2019, 1, 1), end=datetime.datetime(2019, 1, 2)
@@ -560,8 +568,9 @@ def test_timestamp_range_filter_empty_to_dict():
 
 
 def test_timestamp_range_filter___repr__():
-    from google.cloud.bigtable.data.row_filters import TimestampRangeFilter
     import datetime
+
+    from google.cloud.bigtable.data.row_filters import TimestampRangeFilter
 
     start = datetime.datetime(2019, 1, 1)
     end = datetime.datetime(2019, 1, 2)
@@ -944,8 +953,9 @@ def test_value_range_filter_constructor_explicit():
 
 
 def test_value_range_filter_constructor_w_int_values():
-    from google.cloud.bigtable.data.row_filters import ValueRangeFilter
     import struct
+
+    from google.cloud.bigtable.data.row_filters import ValueRangeFilter
 
     start_value = 1
     end_value = 10
@@ -1411,9 +1421,11 @@ def test_filter_combination___str__():
 
 
 def test_row_filter_chain_to_pb():
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1._to_pb()
@@ -1431,9 +1443,11 @@ def test_row_filter_chain_to_pb():
 
 
 def test_row_filter_chain_to_dict():
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1452,10 +1466,12 @@ def test_row_filter_chain_to_dict():
 
 
 def test_row_filter_chain_to_pb_nested():
-    from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1476,10 +1492,12 @@ def test_row_filter_chain_to_pb_nested():
 
 
 def test_row_filter_chain_to_dict_nested():
-    from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1502,9 +1520,11 @@ def test_row_filter_chain_to_dict_nested():
 
 
 def test_row_filter_chain___repr__():
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1516,9 +1536,11 @@ def test_row_filter_chain___repr__():
 
 
 def test_row_filter_chain___str__():
-    from google.cloud.bigtable.data.row_filters import RowFilterChain
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1533,9 +1555,11 @@ def test_row_filter_chain___str__():
 
 
 def test_row_filter_union_to_pb():
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1._to_pb()
@@ -1553,9 +1577,11 @@ def test_row_filter_union_to_pb():
 
 
 def test_row_filter_union_to_dict():
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1574,10 +1600,12 @@ def test_row_filter_union_to_dict():
 
 
 def test_row_filter_union_to_pb_nested():
-    from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1598,10 +1626,12 @@ def test_row_filter_union_to_pb_nested():
 
 
 def test_row_filter_union_to_dict_nested():
-    from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1624,9 +1654,11 @@ def test_row_filter_union_to_dict_nested():
 
 
 def test_row_filter_union___repr__():
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1638,9 +1670,11 @@ def test_row_filter_union___repr__():
 
 
 def test_row_filter_union___str__():
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1713,10 +1747,12 @@ def test_conditional_row_filter___ne__():
 
 
 def test_conditional_row_filter_to_pb():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import CellsRowOffsetFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowOffsetFilter,
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1._to_pb()
@@ -1743,10 +1779,12 @@ def test_conditional_row_filter_to_pb():
 
 
 def test_conditional_row_filter_to_dict():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import CellsRowOffsetFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        CellsRowOffsetFilter,
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1776,9 +1814,11 @@ def test_conditional_row_filter_to_dict():
 
 
 def test_conditional_row_filter_to_pb_true_only():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1._to_pb()
@@ -1798,9 +1838,11 @@ def test_conditional_row_filter_to_pb_true_only():
 
 
 def test_conditional_row_filter_to_dict_true_only():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1824,9 +1866,11 @@ def test_conditional_row_filter_to_dict_true_only():
 
 
 def test_conditional_row_filter_to_pb_false_only():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1._to_pb()
@@ -1846,9 +1890,11 @@ def test_conditional_row_filter_to_pb_false_only():
 
 
 def test_conditional_row_filter_to_dict_false_only():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     row_filter1 = StripValueTransformerFilter(True)
@@ -1872,9 +1918,11 @@ def test_conditional_row_filter_to_dict_false_only():
 
 
 def test_conditional_row_filter___repr__():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1893,10 +1941,12 @@ def test_conditional_row_filter___repr__():
 
 
 def test_conditional_row_filter___str__():
-    from google.cloud.bigtable.data.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.data.row_filters import RowSampleFilter
-    from google.cloud.bigtable.data.row_filters import RowFilterUnion
-    from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.data.row_filters import (
+        ConditionalRowFilter,
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1981,11 +2031,11 @@ def _ValueRangePB(*args, **kw):
 
 def _get_regex_filters():
     from google.cloud.bigtable.data.row_filters import (
-        RowKeyRegexFilter,
-        FamilyNameRegexFilter,
         ColumnQualifierRegexFilter,
-        ValueRegexFilter,
+        FamilyNameRegexFilter,
         LiteralValueFilter,
+        RowKeyRegexFilter,
+        ValueRegexFilter,
     )
 
     return [
@@ -1999,9 +2049,9 @@ def _get_regex_filters():
 
 def _get_bool_filters():
     from google.cloud.bigtable.data.row_filters import (
-        SinkFilter,
-        PassAllFilter,
         BlockAllFilter,
+        PassAllFilter,
+        SinkFilter,
         StripValueTransformerFilter,
     )
 
@@ -2015,9 +2065,9 @@ def _get_bool_filters():
 
 def _get_cell_count_filters():
     from google.cloud.bigtable.data.row_filters import (
+        CellsColumnLimitFilter,
         CellsRowLimitFilter,
         CellsRowOffsetFilter,
-        CellsColumnLimitFilter,
     )
 
     return [

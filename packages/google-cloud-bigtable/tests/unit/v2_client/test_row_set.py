@@ -22,8 +22,7 @@ def test_row_set_constructor():
 
 
 def test_row_set__eq__():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_key1 = b"row_key1"
     row_key2 = b"row_key1"
@@ -66,8 +65,7 @@ def test_row_set__eq__len_row_keys_differ():
 
 
 def test_row_set__eq__len_row_ranges_differ():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_range1 = RowRange(b"row_key4", b"row_key9")
     row_range2 = RowRange(b"row_key4", b"row_key9")
@@ -99,8 +97,7 @@ def test_row_set__eq__row_keys_differ():
 
 
 def test_row_set__eq__row_ranges_differ():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_range1 = RowRange(b"row_key4", b"row_key9")
     row_range2 = RowRange(b"row_key14", b"row_key19")
@@ -119,8 +116,7 @@ def test_row_set__eq__row_ranges_differ():
 
 
 def test_row_set__ne__():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_key1 = b"row_key1"
     row_key2 = b"row_key1"
@@ -139,8 +135,7 @@ def test_row_set__ne__():
 
 
 def test_row_set__ne__same_value():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_key1 = b"row_key1"
     row_key2 = b"row_key1"
@@ -168,8 +163,7 @@ def test_row_set_add_row_key():
 
 
 def test_row_set_add_row_range():
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_set = RowSet()
     row_range1 = RowRange(b"row_key1", b"row_key9")
@@ -203,8 +197,8 @@ def test_row_set_add_row_range_with_prefix():
 
 def test_row_set__update_message_request():
     from google.cloud._helpers import _to_bytes
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.row_set import RowSet
+
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_set = RowSet()
     table_name = "table_name"

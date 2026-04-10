@@ -394,6 +394,37 @@ class _BasePipeline:
         """
         return self._append(stages.Sort(*orders))
 
+    def search(
+        self, query_or_options: str | BooleanExpression | stages.SearchOptions
+    ) -> "_BasePipeline":
+        """
+        Adds a search stage to the pipeline.
+
+        This stage filters documents based on the provided query expression.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_stages import SearchOptions
+            >>> from google.cloud.firestore_v1.pipeline_expressions import And, DocumentMatches, Field, GeoPoint
+            >>> # Search for restaurants matching either "waffles" or "pancakes" near a location
+            >>> pipeline = client.pipeline().collection("restaurants").search(
+            ...     SearchOptions(
+            ...         query=And(
+            ...             DocumentMatches("waffles OR pancakes"),
+            ...             Field.of("location").geo_distance(GeoPoint(38.9, -107.0)).less_than(1000)
+            ...         ),
+            ...         sort=Score().descending()
+            ...     )
+            ... )
+
+        Args:
+            options: Either a string or expression representing the search query, or
+                A `SearchOptions` instance configuring the search.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Search(query_or_options))
+
     def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
         """
         Performs a pseudo-random sampling of the documents from the previous stage.
@@ -668,6 +699,62 @@ class _BasePipeline:
             A new Pipeline object with this stage appended to the stage list
         """
         return self._append(stages.Distinct(*fields))
+
+    def delete(self) -> "_BasePipeline":
+        """
+        Deletes the documents from the current pipeline stage.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field
+            >>> pipeline = client.pipeline().collection("logs")
+            >>> # Delete all documents in the "logs" collection where "status" is "archived"
+            >>> pipeline = pipeline.where(Field.of("status").equal("archived")).delete()
+            >>> pipeline.execute()
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Delete())
+
+    def update(self, *transformed_fields: "Selectable") -> "_BasePipeline":
+        """
+        Performs an update operation using documents from previous stages.
+
+        If called without `transformed_fields`, this method updates the documents in
+        place based on the data flowing through the pipeline.
+
+        To update specific fields with new values, provide `Selectable` expressions that define the
+        transformations to apply.
+
+        Example 1: Update a collection's schema by adding a new field and removing an old one.
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> pipeline = client.pipeline().collection("books")
+            >>> pipeline = pipeline.add_fields(Constant.of("Fiction").as_("genre"))
+            >>> pipeline = pipeline.remove_fields("old_genre").update()
+            >>> pipeline.execute()
+
+        Example 2: Update documents in place with data from literals.
+            >>> pipeline = client.pipeline().literals(
+            ...     {"__name__": client.collection("books").document("book1"), "status": "Updated"}
+            ... ).update()
+            >>> pipeline.execute()
+
+        Example 3: Update documents from previous stages with specified transformations.
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field, Constant
+            >>> pipeline = client.pipeline().collection("books")
+            >>> # Update the "status" field to "Discounted" for all books where price > 50
+            >>> pipeline = pipeline.where(Field.of("price").greater_than(50))
+            >>> pipeline = pipeline.update(Constant.of("Discounted").as_("status"))
+            >>> pipeline.execute()
+
+        Args:
+            *transformed_fields: Optional. The transformations to apply. If not provided,
+                the update is performed in place based on the data flowing through the pipeline.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Update(*transformed_fields))
 
     def define(self, *aliased_expressions: AliasedExpression) -> "_BasePipeline":
         """

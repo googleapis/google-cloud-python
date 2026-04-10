@@ -14,18 +14,19 @@
 
 from collections import defaultdict
 from typing import (
-    Optional,
-    List,
     Dict,
-    Set,
-    Union,
-    TypeVar,
     Generic,
-    Tuple,
+    List,
     Mapping,
+    Optional,
+    Set,
+    Tuple,
+    TypeVar,
+    Union,
 )
-from google.type import date_pb2  # type: ignore
+
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.type import date_pb2  # type: ignore
 
 T = TypeVar("T")
 

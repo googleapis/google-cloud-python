@@ -808,6 +808,62 @@ class TestExpressionessionMethods:
         infix_instance = arg1.equal(arg2)
         assert infix_instance == instance
 
+    def test_between(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Lower")
+        arg3 = self._make_arg("Upper")
+        instance = Expression.between(arg1, arg2, arg3)
+        assert instance.name == "and"
+        assert len(instance.params) == 2
+        assert instance.params[0].name == "greater_than_or_equal"
+        assert instance.params[1].name == "less_than_or_equal"
+        assert (
+            repr(instance)
+            == "And(Left.greater_than_or_equal(Lower), Left.less_than_or_equal(Upper))"
+        )
+        infix_instance = arg1.between(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_geo_distance(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Right")
+        instance = Expression.geo_distance(arg1, arg2)
+        assert instance.name == "geo_distance"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Left.geo_distance(Right)"
+        infix_instance = arg1.geo_distance(arg2)
+        assert infix_instance == instance
+
+    def test_geo_distance_with_tuple(self):
+        from google.cloud.firestore_v1._helpers import GeoPoint
+        from google.cloud.firestore_v1.pipeline_expressions import Constant
+
+        arg1 = self._make_arg("Left")
+        instance = Expression.geo_distance(arg1, (1.2, 3.4))
+        assert instance.name == "geo_distance"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == GeoPoint(1.2, 3.4)
+
+        infix_instance = arg1.geo_distance((1.2, 3.4))
+        assert infix_instance.name == "geo_distance"
+        assert infix_instance.params[0] == arg1
+        assert isinstance(infix_instance.params[1], Constant)
+        assert infix_instance.params[1].value == GeoPoint(1.2, 3.4)
+
+    def test_document_matches(self):
+        arg1 = self._make_arg("Query")
+        instance = expr.DocumentMatches(arg1)
+        assert instance.name == "document_matches"
+        assert instance.params == [arg1]
+        assert repr(instance) == "DocumentMatches(Query)"
+
+    def test_score(self):
+        instance = expr.Score()
+        assert instance.name == "score"
+        assert instance.params == []
+        assert repr(instance) == "Score()"
+
     def test_greater_than_or_equal(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")

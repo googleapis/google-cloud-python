@@ -19,30 +19,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from google.api_core import exceptions
-from google.api_core import gapic_v1
+import pytest
+from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
 from google.auth.credentials import AnonymousCredentials
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import transports
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.overlay.services.bigtable_table_admin.client import (
-    BigtableTableAdminClient,
-    DEFAULT_CLIENT_INFO,
-)
-from google.cloud.bigtable_admin_v2.overlay.types import (
-    restore_table,
-    wait_for_consistency_request,
-)
-
-from google.cloud.bigtable import __version__ as bigtable_version
-
 from test_consistency import (
     FALSE_CONSISTENCY_RESPONSE,
     TRUE_CONSISTENCY_RESPONSE,
 )
 
-import pytest
-
+from google.cloud.bigtable import __version__ as bigtable_version
+from google.cloud.bigtable_admin_v2.overlay.services.bigtable_table_admin.client import (
+    DEFAULT_CLIENT_INFO,
+    BigtableTableAdminClient,
+)
+from google.cloud.bigtable_admin_v2.overlay.types import (
+    restore_table,
+    wait_for_consistency_request,
+)
+from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import transports
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 PARENT_NAME = "my_parent"
 TABLE_NAME = "my_table"

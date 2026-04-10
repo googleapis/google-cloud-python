@@ -39,8 +39,7 @@ def sample_update_authorized_view():
     client = bigtable_admin_v2.BigtableTableAdminClient()
 
     # Initialize request argument(s)
-    request = bigtable_admin_v2.UpdateAuthorizedViewRequest(
-    )
+    request = bigtable_admin_v2.UpdateAuthorizedViewRequest()
 
     # Make the request
     operation = client.update_authorized_view(request=request)
@@ -51,5 +50,6 @@ def sample_update_authorized_view():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_UpdateAuthorizedView_sync]

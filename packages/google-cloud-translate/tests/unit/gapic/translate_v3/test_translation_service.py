@@ -10742,6 +10742,7 @@ def test_adaptive_mt_translate_non_empty_request_with_auto_populated_field():
     request = adaptive_mt.AdaptiveMtTranslateRequest(
         parent="parent_value",
         dataset="dataset_value",
+        mime_type="mime_type_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10757,6 +10758,7 @@ def test_adaptive_mt_translate_non_empty_request_with_auto_populated_field():
         assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest(
             parent="parent_value",
             dataset="dataset_value",
+            mime_type="mime_type_value",
         )
 
 

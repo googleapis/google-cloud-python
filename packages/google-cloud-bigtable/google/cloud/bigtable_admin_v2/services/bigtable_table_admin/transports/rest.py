@@ -13,38 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
-import json  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import gapic_v1
-import google.protobuf
-
-from google.protobuf import json_format
-from google.api_core import operations_v1
-
-from requests import __version__ as requests_version
 import dataclasses
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+import json  # type: ignore
+import logging
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
-from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
+from google.cloud.bigtable_admin_v2.types import table as gba_table
 
-from .rest_base import _BaseBigtableTableAdminRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseBigtableTableAdminRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -1917,6 +1909,12 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[BigtableTableAdminRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -2050,9 +2048,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCheckConsistency._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCheckConsistency._get_http_options()
 
             request, metadata = self._interceptor.pre_check_consistency(
                 request, metadata
@@ -2234,7 +2230,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2361,9 +2357,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCreateAuthorizedView._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCreateAuthorizedView._get_http_options()
 
             request, metadata = self._interceptor.pre_create_authorized_view(
                 request, metadata
@@ -2389,7 +2383,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2518,9 +2512,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseCreateBackup._get_transcoded_request(
@@ -2544,7 +2536,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2671,9 +2663,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCreateSchemaBundle._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCreateSchemaBundle._get_http_options()
 
             request, metadata = self._interceptor.pre_create_schema_bundle(
                 request, metadata
@@ -2699,7 +2689,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2829,9 +2819,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCreateTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCreateTable._get_http_options()
 
             request, metadata = self._interceptor.pre_create_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseCreateTable._get_transcoded_request(
@@ -2992,9 +2980,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseCreateTableFromSnapshot._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseCreateTableFromSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_create_table_from_snapshot(
                 request, metadata
@@ -3020,7 +3006,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3141,9 +3127,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDeleteAuthorizedView._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDeleteAuthorizedView._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_authorized_view(
                 request, metadata
@@ -3165,7 +3149,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3253,9 +3237,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -3275,7 +3257,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3361,9 +3343,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDeleteSchemaBundle._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDeleteSchemaBundle._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_schema_bundle(
                 request, metadata
@@ -3385,7 +3365,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3480,9 +3460,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDeleteSnapshot._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDeleteSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseDeleteSnapshot._get_transcoded_request(
@@ -3502,7 +3480,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3588,9 +3566,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDeleteTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDeleteTable._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseDeleteTable._get_transcoded_request(
@@ -3610,7 +3586,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3697,9 +3673,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseDropRowRange._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseDropRowRange._get_http_options()
 
             request, metadata = self._interceptor.pre_drop_row_range(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseDropRowRange._get_transcoded_request(
@@ -3723,7 +3697,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3818,9 +3792,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseGenerateConsistencyToken._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseGenerateConsistencyToken._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_consistency_token(
                 request, metadata
@@ -3983,9 +3955,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseGetAuthorizedView._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseGetAuthorizedView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_authorized_view(
                 request, metadata
@@ -4351,9 +4321,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -4504,9 +4472,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseGetSchemaBundle._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseGetSchemaBundle._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema_bundle(
                 request, metadata
@@ -4672,9 +4638,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseGetSnapshot._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseGetSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseGetSnapshot._get_transcoded_request(
@@ -4969,9 +4933,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseListAuthorizedViews._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseListAuthorizedViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_authorized_views(
                 request, metadata
@@ -5125,9 +5087,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseListBackups._get_transcoded_request(
@@ -5275,9 +5235,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseListSchemaBundles._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseListSchemaBundles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_schema_bundles(
                 request, metadata
@@ -5441,9 +5399,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseListSnapshots._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseListSnapshots._get_http_options()
 
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseListSnapshots._get_transcoded_request(
@@ -5743,9 +5699,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseModifyColumnFamilies._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseModifyColumnFamilies._get_http_options()
 
             request, metadata = self._interceptor.pre_modify_column_families(
                 request, metadata
@@ -5902,9 +5856,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseRestoreTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseRestoreTable._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseRestoreTable._get_transcoded_request(
@@ -5928,7 +5880,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6126,9 +6078,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -6288,9 +6238,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseSnapshotTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseSnapshotTable._get_http_options()
 
             request, metadata = self._interceptor.pre_snapshot_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseSnapshotTable._get_transcoded_request(
@@ -6314,7 +6262,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6437,9 +6385,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -6596,9 +6542,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseUndeleteTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseUndeleteTable._get_http_options()
 
             request, metadata = self._interceptor.pre_undelete_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseUndeleteTable._get_transcoded_request(
@@ -6622,7 +6566,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6749,9 +6693,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseUpdateAuthorizedView._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseUpdateAuthorizedView._get_http_options()
 
             request, metadata = self._interceptor.pre_update_authorized_view(
                 request, metadata
@@ -6777,7 +6719,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6903,9 +6845,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     A backup of a Cloud Bigtable table.
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseUpdateBackup._get_transcoded_request(
@@ -7058,9 +6998,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseUpdateSchemaBundle._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseUpdateSchemaBundle._get_http_options()
 
             request, metadata = self._interceptor.pre_update_schema_bundle(
                 request, metadata
@@ -7086,7 +7024,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7215,9 +7153,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseBigtableTableAdminRestTransport._BaseUpdateTable._get_http_options()
-            )
+            http_options = _BaseBigtableTableAdminRestTransport._BaseUpdateTable._get_http_options()
 
             request, metadata = self._interceptor.pre_update_table(request, metadata)
             transcoded_request = _BaseBigtableTableAdminRestTransport._BaseUpdateTable._get_transcoded_request(
@@ -7241,7 +7177,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7371,7 +7307,9 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTableFromSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateTableFromSnapshot(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_authorized_view(
@@ -7430,7 +7368,9 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateConsistencyToken(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateConsistencyToken(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_authorized_view(

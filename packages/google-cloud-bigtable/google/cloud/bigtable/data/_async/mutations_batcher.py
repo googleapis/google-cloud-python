@@ -14,24 +14,26 @@
 #
 from __future__ import annotations
 
-from typing import Sequence, TYPE_CHECKING, cast
 import atexit
+import concurrent.futures
 import warnings
 from collections import deque
-import concurrent.futures
-
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
-from google.cloud.bigtable.data._helpers import _get_retryable_errors
-from google.cloud.bigtable.data._helpers import _get_timeouts
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-
-from google.cloud.bigtable.data.mutations import (
-    _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
-)
-from google.cloud.bigtable.data.mutations import Mutation
+from typing import TYPE_CHECKING, Sequence, cast
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._helpers import (
+    TABLE_DEFAULT,
+    _get_retryable_errors,
+    _get_timeouts,
+)
+from google.cloud.bigtable.data.exceptions import (
+    FailedMutationEntryError,
+    MutationsExceptionGroup,
+)
+from google.cloud.bigtable.data.mutations import (
+    _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
+    Mutation,
+)
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data.mutations import RowMutationEntry
@@ -41,7 +43,9 @@ if TYPE_CHECKING:
             _DataApiTargetAsync as TargetType,
         )
     else:
-        from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget as TargetType  # type: ignore
+        from google.cloud.bigtable.data._sync_autogen.client import (
+            _DataApiTarget as TargetType,  # type: ignore
+        )
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.mutations_batcher"
 

@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import bigtable_admin_v2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -49,5 +50,6 @@ def sample_set_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_SetIamPolicy_sync]

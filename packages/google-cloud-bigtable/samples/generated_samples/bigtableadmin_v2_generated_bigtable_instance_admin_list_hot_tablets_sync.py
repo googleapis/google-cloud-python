@@ -50,4 +50,5 @@ def sample_list_hot_tablets():
     for response in page_result:
         print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_ListHotTablets_sync]

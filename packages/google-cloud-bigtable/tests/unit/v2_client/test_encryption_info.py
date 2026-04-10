@@ -16,7 +16,6 @@ import mock
 
 from google.cloud.bigtable import enums
 
-
 EncryptionType = enums.EncryptionInfo.EncryptionType
 _STATUS_CODE = 123
 _STATUS_MESSAGE = "message"

@@ -14,22 +14,19 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import BigtableInstanceAdminTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin
-from google.cloud.bigtable_admin_v2.types import instance
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+
+from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin, instance
+
+from .base import DEFAULT_CLIENT_INFO, BigtableInstanceAdminTransport
 
 
 class _BaseBigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):

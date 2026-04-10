@@ -73,12 +73,12 @@ Libraries
      - API Issues
      - File an API Issue
      - Client Library Issues
-   * - `A python wrapper of the C library 'CRC32C' <https://github.com/googleapis/python-crc32c>`_
+   * - `A python wrapper of the C library 'CRC32C' <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-crc32c>`_
      - stable
      - |PyPI-google-crc32c|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-crc32c/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - stable
      - |PyPI-google-cloud-aiplatform|
@@ -229,12 +229,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
+   * - `Bigtable <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigtable>`_
      - stable
      - |PyPI-google-cloud-bigtable|
      - `API Issues <https://issuetracker.google.com/savedsearches/559777>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187206>`_
-     - `Client Library Issues <https://github.com/googleapis/python-bigtable/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Billing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing>`_
      - stable
      - |PyPI-google-cloud-billing|
@@ -757,12 +757,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Spanner <https://github.com/googleapis/python-spanner>`_
+   * - `Spanner <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner>`_
      - stable
      - |PyPI-google-cloud-spanner|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
-     - `Client Library Issues <https://github.com/googleapis/python-spanner/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Spanner Django <https://github.com/googleapis/google-cloud-python/tree/main/packages/django-google-spanner>`_
      - stable
      - |PyPI-django-google-spanner|
@@ -787,12 +787,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559785>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187228>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Storage <https://github.com/googleapis/python-storage>`_
+   * - `Storage <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage>`_
      - stable
      - |PyPI-google-cloud-storage|
      - `API Issues <https://issuetracker.google.com/savedsearches/559782>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187243>`_
-     - `Client Library Issues <https://github.com/googleapis/python-storage/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage Control API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-control>`_
      - stable
      - |PyPI-google-cloud-storage-control|
@@ -889,12 +889,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `A unified Python API in BigQuery <https://github.com/googleapis/python-bigquery-dataframes>`_
+   * - `A unified Python API in BigQuery <https://github.com/googleapis/google-cloud-python/tree/main/packages/bigframes>`_
      - preview
      - |PyPI-bigframes|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-dataframes/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `API Hub API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apihub>`_
      - preview
      - |PyPI-google-cloud-apihub|

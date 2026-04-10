@@ -732,6 +732,61 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def between(
+        self, lower: Expression | float, upper: Expression | float
+    ) -> "BooleanExpression":
+        """Evaluates if the result of this expression is between
+        the lower bound (inclusive) and upper bound (inclusive).
+
+        This is functionally equivalent to performing an `And` operation with
+        `greater_than_or_equal` and `less_than_or_equal`.
+
+        Example:
+            >>> # Check if the 'age' field is between 18 and 65
+            >>> Field.of("age").between(18, 65)
+
+        Args:
+            lower: Lower bound (inclusive) of the range.
+            upper: Upper bound (inclusive) of the range.
+
+        Returns:
+            A new `BooleanExpression` representing the between comparison.
+        """
+        return And(
+            self.greater_than_or_equal(lower),
+            self.less_than_or_equal(upper),
+        )
+
+    @expose_as_static
+    def geo_distance(
+        self, other: Expression | GeoPoint | tuple[float, float]
+    ) -> "FunctionExpression":
+        """Evaluates to the distance in meters between the location in the specified
+        field and the query location.
+
+        Note: This Expression can only be used within a `Search` stage.
+
+        Example:
+            >>> # Calculate distance between the 'location' field and a target GeoPoint
+            >>> Field.of("location").geo_distance(target_point)
+            >>> # Calculate distance between the 'location' field and a (latitude, longitude) tuple
+            >>> Field.of("location").geo_distance((37.7749, -122.4194))
+
+        Args:
+            other: target point used to calculate distance. Can be a GeoPoint, an
+                Expression resolving to a GeoPoint, or a (latitude, longitude) tuple.
+
+        Returns:
+            A new `FunctionExpression` representing the distance.
+        """
+        if isinstance(other, tuple) and len(other) == 2:
+            other = GeoPoint(other[0], other[1])
+
+        return FunctionExpression(
+            "geo_distance", [self, self._cast_to_expr_or_convert_to_constant(other)]
+        )
+
+    @expose_as_static
     def equal_any(
         self, array: Array | Sequence[Expression | CONSTANT_TYPE] | Expression
     ) -> "BooleanExpression":
@@ -3162,6 +3217,56 @@ class Rand(FunctionExpression):
     def __init__(self):
         super().__init__(
             "rand", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
+
+
+class Score(FunctionExpression):
+    """Evaluates to the search score that reflects the topicality of the document
+    to all of the text predicates (`queryMatch`)
+    in the search query. If `SearchOptions.query` is not set or does not contain
+    any text predicates, then this topicality score will always be `0`.
+
+    Note: This Expression can only be used within a `Search` stage.
+
+    Example:
+        >>> # Sort by search score and retrieve it via add_fields
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query="tacos",
+        ...     sort=Score().descending(),
+        ...     add_fields=[Score().as_("search_score")]
+        ... )
+
+    Returns:
+        A new `Expression` representing the score operation.
+    """
+
+    def __init__(self):
+        super().__init__("score", [], use_infix_repr=False)
+
+
+class DocumentMatches(BooleanExpression):
+    """Creates a boolean expression for a document match query.
+
+    Note: This Expression can only be used within a `Search` stage.
+
+    Example:
+        >>> # Find documents matching the query string
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query=DocumentMatches("pizza OR pasta")
+        ... )
+
+    Args:
+        query: The search query string or expression.
+
+    Returns:
+        A new `BooleanExpression` representing the document match.
+    """
+
+    def __init__(self, query: Expression | str):
+        super().__init__(
+            "document_matches",
+            [Expression._cast_to_expr_or_convert_to_constant(query)],
+            use_infix_repr=False,
         )
 
 

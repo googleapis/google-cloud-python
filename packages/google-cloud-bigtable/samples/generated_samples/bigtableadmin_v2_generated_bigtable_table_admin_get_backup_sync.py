@@ -49,4 +49,5 @@ def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GetBackup_sync]

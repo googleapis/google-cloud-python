@@ -22,20 +22,19 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable, AsyncIterable
-from google.protobuf import json_format
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+
+import grpc
 import pytest
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
 from google.protobuf import json_format
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -44,44 +43,42 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import client_options
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
-from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-    BaseBigtableTableAdminAsyncClient,
-)
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-    BaseBigtableTableAdminClient,
-)
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import transports
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
-from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.cloud.bigtable_admin_v2.types import types
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
-import google.auth
 
+from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+    BaseBigtableTableAdminAsyncClient,
+    BaseBigtableTableAdminClient,
+    pagers,
+    transports,
+)
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table, types
+from google.cloud.bigtable_admin_v2.types import table as gba_table
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -137,6 +134,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert BaseBigtableTableAdminClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -158,6 +156,10 @@ def test__get_default_mtls_endpoint():
     assert (
         BaseBigtableTableAdminClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        BaseBigtableTableAdminClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1021,10 +1023,9 @@ def test_base_bigtable_table_admin_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1069,10 +1070,9 @@ def test_base_bigtable_table_admin_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1108,10 +1108,9 @@ def test_base_bigtable_table_admin_client_get_mtls_endpoint_and_cert_source(
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1367,13 +1366,13 @@ def test_base_bigtable_table_admin_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4032,9 +4031,9 @@ def test_create_authorized_view_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_authorized_view] = (
+            mock_rpc
+        )
         request = {}
         client.create_authorized_view(request)
 
@@ -4404,9 +4403,9 @@ def test_list_authorized_views_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_authorized_views
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_authorized_views] = (
+            mock_rpc
+        )
         request = {}
         client.list_authorized_views(request)
 
@@ -4952,9 +4951,9 @@ def test_get_authorized_view_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_authorized_view] = (
+            mock_rpc
+        )
         request = {}
         client.get_authorized_view(request)
 
@@ -5292,9 +5291,9 @@ def test_update_authorized_view_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_authorized_view] = (
+            mock_rpc
+        )
         request = {}
         client.update_authorized_view(request)
 
@@ -5651,9 +5650,9 @@ def test_delete_authorized_view_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_authorized_view] = (
+            mock_rpc
+        )
         request = {}
         client.delete_authorized_view(request)
 
@@ -5989,9 +5988,9 @@ def test_modify_column_families_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.modify_column_families
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.modify_column_families] = (
+            mock_rpc
+        )
         request = {}
         client.modify_column_families(request)
 
@@ -6936,9 +6935,9 @@ def test_check_consistency_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_consistency
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_consistency] = (
+            mock_rpc
+        )
         request = {}
         client.check_consistency(request)
 
@@ -11977,9 +11976,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -12347,9 +12346,9 @@ def test_create_schema_bundle_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_schema_bundle] = (
+            mock_rpc
+        )
         request = {}
         client.create_schema_bundle(request)
 
@@ -12709,9 +12708,9 @@ def test_update_schema_bundle_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_bundle] = (
+            mock_rpc
+        )
         request = {}
         client.update_schema_bundle(request)
 
@@ -13068,9 +13067,9 @@ def test_get_schema_bundle_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_bundle] = (
+            mock_rpc
+        )
         request = {}
         client.get_schema_bundle(request)
 
@@ -13410,9 +13409,9 @@ def test_list_schema_bundles_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_bundles
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_bundles] = (
+            mock_rpc
+        )
         request = {}
         client.list_schema_bundles(request)
 
@@ -13953,9 +13952,9 @@ def test_delete_schema_bundle_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_bundle] = (
+            mock_rpc
+        )
         request = {}
         client.delete_schema_bundle(request)
 
@@ -15601,9 +15600,9 @@ def test_create_authorized_view_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_authorized_view] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_authorized_view(request)
@@ -15812,9 +15811,9 @@ def test_list_authorized_views_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_authorized_views
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_authorized_views] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_authorized_views(request)
@@ -16077,9 +16076,9 @@ def test_get_authorized_view_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_authorized_view] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_authorized_view(request)
@@ -16264,9 +16263,9 @@ def test_update_authorized_view_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_authorized_view] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_authorized_view(request)
@@ -16463,9 +16462,9 @@ def test_delete_authorized_view_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_authorized_view
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_authorized_view] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_authorized_view(request)
@@ -16645,9 +16644,9 @@ def test_modify_column_families_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.modify_column_families
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.modify_column_families] = (
+            mock_rpc
+        )
 
         request = {}
         client.modify_column_families(request)
@@ -17150,9 +17149,9 @@ def test_check_consistency_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_consistency
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_consistency] = (
+            mock_rpc
+        )
 
         request = {}
         client.check_consistency(request)
@@ -19882,9 +19881,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -20077,9 +20076,9 @@ def test_create_schema_bundle_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_schema_bundle] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_schema_bundle(request)
@@ -20287,9 +20286,9 @@ def test_update_schema_bundle_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_bundle] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_schema_bundle(request)
@@ -20483,9 +20482,9 @@ def test_get_schema_bundle_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_bundle] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_schema_bundle(request)
@@ -20667,9 +20666,9 @@ def test_list_schema_bundles_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_bundles
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_bundles] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_schema_bundles(request)
@@ -20929,9 +20928,9 @@ def test_delete_schema_bundle_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_bundle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_bundle] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_schema_bundle(request)
@@ -22943,8 +22942,9 @@ def test_create_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23011,17 +23011,20 @@ def test_create_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_table_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_create_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_table_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_create_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23074,8 +23077,9 @@ def test_create_table_from_snapshot_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23132,20 +23136,23 @@ def test_create_table_from_snapshot_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_table_from_snapshot"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_create_table_from_snapshot_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_table_from_snapshot"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_table_from_snapshot",
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_table_from_snapshot_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "pre_create_table_from_snapshot",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23198,8 +23205,9 @@ def test_list_tables_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23262,17 +23270,20 @@ def test_list_tables_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_tables"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_tables_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_tables"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_list_tables"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_list_tables_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_list_tables"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23328,8 +23339,9 @@ def test_get_table_rest_bad_request(request_type=bigtable_table_admin.GetTableRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23396,17 +23408,19 @@ def test_get_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_table_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_table_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23461,8 +23475,9 @@ def test_update_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23654,19 +23669,21 @@ def test_update_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_table_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_update_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_update_table_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_update_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23719,8 +23736,9 @@ def test_delete_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23777,13 +23795,13 @@ def test_delete_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_delete_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DeleteTableRequest.pb(
             bigtable_table_admin.DeleteTableRequest()
@@ -23828,8 +23846,9 @@ def test_undelete_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23886,20 +23905,21 @@ def test_undelete_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_undelete_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_undelete_table_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_undelete_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_undelete_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_undelete_table_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_undelete_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23952,8 +23972,9 @@ def test_create_authorized_view_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24088,20 +24109,21 @@ def test_create_authorized_view_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_create_authorized_view_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_authorized_view"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_create_authorized_view"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_authorized_view_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_create_authorized_view"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24154,8 +24176,9 @@ def test_list_authorized_views_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24218,18 +24241,20 @@ def test_list_authorized_views_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_authorized_views"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_list_authorized_views_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_authorized_views"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_list_authorized_views"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_list_authorized_views_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_list_authorized_views"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24289,8 +24314,9 @@ def test_get_authorized_view_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24359,18 +24385,20 @@ def test_get_authorized_view_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_get_authorized_view_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_authorized_view"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_authorized_view"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_get_authorized_view_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_authorized_view"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24427,8 +24455,9 @@ def test_update_authorized_view_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24567,20 +24596,21 @@ def test_update_authorized_view_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_update_authorized_view_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_authorized_view"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_update_authorized_view"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_update_authorized_view_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_update_authorized_view"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24635,8 +24665,9 @@ def test_delete_authorized_view_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24695,13 +24726,13 @@ def test_delete_authorized_view_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_authorized_view"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_delete_authorized_view"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DeleteAuthorizedViewRequest.pb(
             bigtable_table_admin.DeleteAuthorizedViewRequest()
@@ -24746,8 +24777,9 @@ def test_modify_column_families_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24814,18 +24846,20 @@ def test_modify_column_families_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_modify_column_families"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_modify_column_families_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_modify_column_families"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_modify_column_families"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_modify_column_families_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_modify_column_families"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24878,8 +24912,9 @@ def test_drop_row_range_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24936,13 +24971,13 @@ def test_drop_row_range_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_drop_row_range"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_drop_row_range"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DropRowRangeRequest.pb(
             bigtable_table_admin.DropRowRangeRequest()
@@ -24987,8 +25022,9 @@ def test_generate_consistency_token_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25053,18 +25089,22 @@ def test_generate_consistency_token_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_generate_consistency_token"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_generate_consistency_token_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_generate_consistency_token"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_generate_consistency_token",
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_generate_consistency_token_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "pre_generate_consistency_token",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25122,8 +25162,9 @@ def test_check_consistency_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25186,18 +25227,20 @@ def test_check_consistency_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_check_consistency"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_check_consistency_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_check_consistency"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_check_consistency"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_check_consistency_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_check_consistency"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25255,8 +25298,9 @@ def test_snapshot_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25313,20 +25357,21 @@ def test_snapshot_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_snapshot_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_snapshot_table_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_snapshot_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_snapshot_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_snapshot_table_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_snapshot_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25381,8 +25426,9 @@ def test_get_snapshot_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25453,17 +25499,20 @@ def test_get_snapshot_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_snapshot"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_snapshot_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_snapshot"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_snapshot"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_get_snapshot_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_snapshot"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25516,8 +25565,9 @@ def test_list_snapshots_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25580,18 +25630,20 @@ def test_list_snapshots_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_snapshots"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_list_snapshots_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_snapshots"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_list_snapshots"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_list_snapshots_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_list_snapshots"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25651,8 +25703,9 @@ def test_delete_snapshot_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25711,13 +25764,13 @@ def test_delete_snapshot_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_snapshot"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_delete_snapshot"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DeleteSnapshotRequest.pb(
             bigtable_table_admin.DeleteSnapshotRequest()
@@ -25762,8 +25815,9 @@ def test_create_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25913,19 +25967,21 @@ def test_create_backup_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_create_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_create_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25980,8 +26036,9 @@ def test_get_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26056,17 +26113,20 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_get_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26123,8 +26183,9 @@ def test_update_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26294,17 +26355,20 @@ def test_update_backup_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_update_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_update_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_update_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26359,8 +26423,9 @@ def test_delete_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26419,13 +26484,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DeleteBackupRequest.pb(
             bigtable_table_admin.DeleteBackupRequest()
@@ -26470,8 +26535,9 @@ def test_list_backups_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26534,17 +26600,20 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_list_backups_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26602,8 +26671,9 @@ def test__restore_table_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26660,19 +26730,21 @@ def test__restore_table_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_restore_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_restore_table_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_restore_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_restore_table"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_restore_table_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_restore_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26725,8 +26797,9 @@ def test_copy_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26783,19 +26856,21 @@ def test_copy_backup_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_copy_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_copy_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_copy_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_copy_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_copy_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_copy_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26848,8 +26923,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26911,18 +26987,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_get_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26973,8 +27051,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27036,18 +27115,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_set_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27098,8 +27179,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27159,18 +27241,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27226,8 +27310,9 @@ def test_create_schema_bundle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27358,20 +27443,21 @@ def test_create_schema_bundle_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_schema_bundle"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_create_schema_bundle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_schema_bundle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_create_schema_bundle"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_create_schema_bundle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_create_schema_bundle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27428,8 +27514,9 @@ def test_update_schema_bundle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27564,20 +27651,21 @@ def test_update_schema_bundle_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_schema_bundle"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_update_schema_bundle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_schema_bundle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_update_schema_bundle"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_update_schema_bundle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_update_schema_bundle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27632,8 +27720,9 @@ def test_get_schema_bundle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27700,18 +27789,20 @@ def test_get_schema_bundle_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_schema_bundle"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_get_schema_bundle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_schema_bundle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_get_schema_bundle"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_get_schema_bundle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_get_schema_bundle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27764,8 +27855,9 @@ def test_list_schema_bundles_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27828,18 +27920,20 @@ def test_list_schema_bundles_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_schema_bundles"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor,
-        "post_list_schema_bundles_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_schema_bundles"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "post_list_schema_bundles"
+        ) as post,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor,
+            "post_list_schema_bundles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_list_schema_bundles"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27899,8 +27993,9 @@ def test_delete_schema_bundle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27959,13 +28054,13 @@ def test_delete_schema_bundle_rest_interceptors(null_interceptor):
     )
     client = BaseBigtableTableAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_schema_bundle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BigtableTableAdminRestInterceptor, "pre_delete_schema_bundle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = bigtable_table_admin.DeleteSchemaBundleRequest.pb(
             bigtable_table_admin.DeleteSchemaBundleRequest()
@@ -28845,11 +28940,14 @@ def test_bigtable_table_admin_base_transport():
 
 def test_bigtable_table_admin_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports.BigtableTableAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports.BigtableTableAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BigtableTableAdminTransport(
@@ -28873,9 +28971,12 @@ def test_bigtable_table_admin_base_transport_with_credentials_file():
 
 def test_bigtable_table_admin_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports.BigtableTableAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports.BigtableTableAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BigtableTableAdminTransport()
@@ -28961,11 +29062,12 @@ def test_bigtable_table_admin_transport_auth_gdch_credentials(transport_class):
 def test_bigtable_table_admin_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

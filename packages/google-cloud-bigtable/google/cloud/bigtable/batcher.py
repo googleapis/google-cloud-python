@@ -13,15 +13,14 @@
 # limitations under the License.
 
 """User friendly container for Google Cloud Bigtable MutationBatcher."""
-import threading
-import queue
-import concurrent.futures
+
 import atexit
-
-
-from google.api_core.exceptions import from_grpc_status
+import concurrent.futures
+import queue
+import threading
 from dataclasses import dataclass
 
+from google.api_core.exceptions import from_grpc_status
 
 FLUSH_COUNT = 100  # after this many elements, send out the batch
 

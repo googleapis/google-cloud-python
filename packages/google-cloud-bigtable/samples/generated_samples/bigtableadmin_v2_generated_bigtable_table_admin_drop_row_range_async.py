@@ -40,7 +40,7 @@ async def sample_drop_row_range():
 
     # Initialize request argument(s)
     request = bigtable_admin_v2.DropRowRangeRequest(
-        row_key_prefix=b'row_key_prefix_blob',
+        row_key_prefix=b"row_key_prefix_blob",
         name="name_value",
     )
 

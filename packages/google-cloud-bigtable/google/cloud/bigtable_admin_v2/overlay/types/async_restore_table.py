@@ -14,8 +14,7 @@
 
 from typing import Optional
 
-from google.api_core import exceptions
-from google.api_core import operation_async
+from google.api_core import exceptions, operation_async
 from google.protobuf import empty_pb2
 
 from google.cloud.bigtable_admin_v2.types import OptimizeRestoredTableMetadata
