@@ -109,35 +109,44 @@ MAX_INLINE_DF_BYTES = 5000
 logger = logging.getLogger(__name__)
 
 
-class _ExecutionHistory(pandas.DataFrame):
-    @property
-    def _constructor(self):
-        return _ExecutionHistory
+class _ExecutionHistory:
+    def __init__(self, jobs: list[dict]):
+        self._df = pandas.DataFrame(jobs)
+
+    def to_dataframe(self) -> pandas.DataFrame:
+        """Returns the execution history as a pandas DataFrame."""
+        return self._df
 
     def _repr_html_(self) -> str | None:
         import bigframes.formatting_helpers as formatter
 
-        if self.empty:
+        if self._df.empty:
             return "<div>No executions found.</div>"
 
-        cols = ["job_id", "status", "total_bytes_processed", "job_url"]
+        cols = ["job_type", "job_id", "status", "total_bytes_processed", "job_url"]
+
+        # Filter columns to only those that exist in the dataframe
+        available_cols = [c for c in cols if c in self._df.columns]
 
         def format_url(url):
             return f'<a target="_blank" href="{url}">Open Job</a>' if url else ""
 
         try:
-            df_display = self[cols].copy()
-            df_display["total_bytes_processed"] = df_display[
-                "total_bytes_processed"
-            ].apply(formatter.get_formatted_bytes)
-            df_display["job_url"] = df_display["job_url"].apply(format_url)
+            df_display = self._df[available_cols].copy()
+            if "total_bytes_processed" in df_display.columns:
+                df_display["total_bytes_processed"] = df_display[
+                    "total_bytes_processed"
+                ].apply(formatter.get_formatted_bytes)
+            if "job_url" in df_display.columns:
+                df_display["job_url"] = df_display["job_url"].apply(format_url)
 
             # Rename job_id to query_id to match user expectations
-            df_display = df_display.rename(columns={"job_id": "query_id"})
+            if "job_id" in df_display.columns:
+                df_display = df_display.rename(columns={"job_id": "query_id"})
 
             return df_display.to_html(escape=False, index=False)
         except Exception:
-            return super()._repr_html_()  # type: ignore
+            return self._df._repr_html_()
 
 
 @log_adapter.class_logger
@@ -403,8 +412,11 @@ class Session(
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
 
-    def execution_history(self) -> pandas.DataFrame:
-        """Returns a list of underlying BigQuery executions initiated by BigFrames in the current session."""
+    def execution_history(self) -> _ExecutionHistory:
+        """Returns the history of executions initiated by BigFrames in the current session.
+
+        Use `.to_dataframe()` on the result to get a pandas DataFrame.
+        """
         return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
 
     @property
@@ -468,8 +480,7 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq(
@@ -485,8 +496,7 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq(
         self,
@@ -558,8 +568,7 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def _read_gbq_colab(
@@ -568,8 +577,7 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     @log_adapter.log_name_override("read_gbq_colab")
     def _read_gbq_colab(
@@ -630,8 +638,7 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_query(
@@ -647,8 +654,7 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_query(
         self,
@@ -795,8 +801,7 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_table(
@@ -810,8 +815,7 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_table(
         self,
@@ -962,8 +966,7 @@ class Session(
         pandas_dataframe: pandas.Index,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.core.indexes.Index:
-        ...
+    ) -> bigframes.core.indexes.Index: ...
 
     @typing.overload
     def read_pandas(
@@ -971,8 +974,7 @@ class Session(
         pandas_dataframe: pandas.Series,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.series.Series:
-        ...
+    ) -> bigframes.series.Series: ...
 
     @typing.overload
     def read_pandas(
@@ -980,8 +982,7 @@ class Session(
         pandas_dataframe: pandas.DataFrame,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     def read_pandas(
         self,
