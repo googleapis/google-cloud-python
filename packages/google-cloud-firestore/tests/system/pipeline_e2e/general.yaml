@@ -720,13 +720,14 @@ tests:
           name: select
   - description: testCoalesce
     pipeline:
-      - Literals:
-        - res:
-            FunctionExpression.coalesce:
-              - Constant: null
-              - Constant: "B"
+      - Collection: books
+      - Limit: 1
       - Select:
-        - res
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - Constant: "B"
+            - "res"
     assert_results:
       - res: "B"
   - description: testSwitchOn

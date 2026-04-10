@@ -1681,24 +1681,6 @@ class TestExpressionessionMethods:
         infix_instance = arr.array_filter(filter_expr, elm_alias)
         assert infix_instance == instance
 
-        idx_alias = "index_alias"
-        instance_with_idx = Expression.array_filter(
-            arr, filter_expr, elm_alias, idx_alias
-        )
-        assert instance_with_idx.name == "array_filter"
-        assert instance_with_idx.params == [
-            arr,
-            Constant.of(elm_alias),
-            Constant.of(idx_alias),
-            filter_expr,
-        ]
-        assert (
-            repr(instance_with_idx)
-            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
-        )
-        infix_instance_with_idx = arr.array_filter(filter_expr, elm_alias, idx_alias)
-        assert infix_instance_with_idx == instance_with_idx
-
     def test_array_transform(self):
         arr = self._make_arg("ArrayField")
         transform_expr = self._make_arg("TransformExpr")

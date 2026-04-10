@@ -931,33 +931,27 @@ class Expression(ABC):
         self,
         filter_expr: "BooleanExpression",
         element_alias: str | Constant[str],
-        index_alias: str | Constant[str] | None = None,
     ) -> "Expression":
         """Filters an array based on a predicate.
 
         Example:
             >>> # Filter the 'tags' array to only include the tag "comedy"
             >>> Field.of("tags").array_filter(Variable("tag").equal("comedy"), "tag")
-            >>> # Filter the 'tags' array to only include elements after the first element (index > 0)
-            >>> Field.of("tags").array_filter(Variable("i").greater_than(0), element_alias="tag", index_alias="i")
 
         Args:
             filter_expr: The predicate boolean expression used to filter the elements.
             element_alias: A string or string constant used to refer to the current array
                 element as a variable within the filter expression.
-            index_alias: An optional string or string constant used to refer to the index
-                of the current array element as a variable within the filter expression.
+
 
         Returns:
             A new `Expression` representing the filtered array.
         """
         args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
-        if index_alias is not None:
-            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
         args.append(filter_expr)
 
         repr_func = (
-            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[-1]!r}, {expr.params[1]!r}{', ' + repr(expr.params[2]) if len(expr.params) == 4 else ''})"
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[2]!r}, {expr.params[1]!r})"
         )
         return FunctionExpression("array_filter", args, repr_function=repr_func)
 
@@ -974,7 +968,10 @@ class Expression(ABC):
             >>> # Convert each tag in the 'tags' array to uppercase
             >>> Field.of("tags").array_transform(Variable("tag").to_upper(), "tag")
             >>> # Append the index to each tag in the 'tags' array
-            >>> Field.of("tags").array_transform(Variable("tag").string_concat(Variable("i")), element_alias="tag", index_alias="i")
+            >>> Field.of("tags").array_transform(
+            ...     Variable("tag").string_concat(Variable("i")),
+            ...     element_alias="tag", index_alias="i"
+            ... )
 
         Args:
             transform_expr: The expression used to transform the elements.
