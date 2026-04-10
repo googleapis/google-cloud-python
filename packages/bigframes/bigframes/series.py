@@ -375,8 +375,7 @@ class Series:
     def rename(
         self,
         index: Union[blocks.Label, Mapping[Any, Any]] = None,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @overload
     def rename(
@@ -385,8 +384,7 @@ class Series:
         *,
         inplace: Literal[False],
         **kwargs,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @overload
     def rename(
@@ -395,8 +393,7 @@ class Series:
         *,
         inplace: Literal[True],
         **kwargs,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def rename(
         self,
@@ -457,8 +454,7 @@ class Series:
     def rename_axis(
         self,
         mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @overload
     def rename_axis(
@@ -467,8 +463,7 @@ class Series:
         *,
         inplace: Literal[False],
         **kwargs,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @overload
     def rename_axis(
@@ -477,8 +472,7 @@ class Series:
         *,
         inplace: Literal[True],
         **kwargs,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @validations.requires_index
     def rename_axis(
@@ -522,8 +516,7 @@ class Series:
         drop: Literal[False] = ...,
         inplace: Literal[False] = ...,
         allow_duplicates: Optional[bool] = ...,
-    ) -> bigframes.dataframe.DataFrame:
-        ...
+    ) -> bigframes.dataframe.DataFrame: ...
 
     @overload
     def reset_index(
@@ -534,8 +527,7 @@ class Series:
         drop: Literal[True] = ...,
         inplace: Literal[False] = ...,
         allow_duplicates: Optional[bool] = ...,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @overload
     def reset_index(
@@ -546,8 +538,7 @@ class Series:
         drop: bool = ...,
         inplace: Literal[True] = ...,
         allow_duplicates: Optional[bool] = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @validations.requires_ordering()
     def reset_index(
@@ -1540,9 +1531,9 @@ class Series:
 
     def items(self):
         for batch_df in self._block.to_pandas_batches():
-            assert (
-                batch_df.shape[1] == 1
-            ), f"Expected 1 column in the dataframe, but got {batch_df.shape[1]}."
+            assert batch_df.shape[1] == 1, (
+                f"Expected 1 column in the dataframe, but got {batch_df.shape[1]}."
+            )
             for item in batch_df.squeeze(axis=1).items():
                 yield item
 
@@ -1772,8 +1763,7 @@ class Series:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @typing.overload
     def sort_values(
@@ -1784,8 +1774,7 @@ class Series:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     def sort_values(
         self,
@@ -1816,14 +1805,12 @@ class Series:
     @typing.overload  # type: ignore[override]
     def sort_index(
         self, *, axis=..., inplace: Literal[False] = ..., ascending=..., na_position=...
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @typing.overload
     def sort_index(
         self, *, axis=0, inplace: Literal[True] = ..., ascending=..., na_position=...
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @validations.requires_index
     def sort_index(
@@ -2698,18 +2685,28 @@ class Series:
     @typing.overload
     def _align(
         self, other: Series, how="outer"
-    ) -> tuple[ex.DerefOp, ex.DerefOp, blocks.Block,]:
-        ...
+    ) -> tuple[
+        ex.DerefOp,
+        ex.DerefOp,
+        blocks.Block,
+    ]: ...
 
     @typing.overload
     def _align(
         self, other: typing.Union[Series, scalars.Scalar], how="outer"
-    ) -> tuple[ex.DerefOp, AlignedExprT, blocks.Block,]:
-        ...
+    ) -> tuple[
+        ex.DerefOp,
+        AlignedExprT,
+        blocks.Block,
+    ]: ...
 
     def _align(
         self, other: typing.Union[Series, scalars.Scalar], how="outer"
-    ) -> tuple[ex.DerefOp, AlignedExprT, blocks.Block,]:
+    ) -> tuple[
+        ex.DerefOp,
+        AlignedExprT,
+        blocks.Block,
+    ]:
         """Aligns the series value with another scalar or series object. Returns new left column id, right column id and joined tabled expression."""
         values, block = self._align_n(
             [
