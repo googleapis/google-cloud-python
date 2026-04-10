@@ -27,6 +27,7 @@
 /packages/bigquery-magics/                    @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/db-dtypes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/django-google-spanner/              @googleapis/spanner-team
+/packages/gcp-sphinx-docfx-yaml/              @googleapis/dkp-team
 /packages/google-auth/                        @googleapis/cloud-sdk-auth-team @googleapis/aion-team
 /packages/google-cloud-bigquery*/             @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/google-cloud-bigtable/              @googleapis/bigtable-team
@@ -36,6 +37,5 @@
 /packages/google-cloud-storage/               @googleapis/gcs-team
 /packages/google-resumable-media/             @googleapis/gcs-team @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/pandas-gbq/                         @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
-/packages/sqlalchemy-spanner/                 @googleapis/spanner-team
 /packages/sqlalchemy-bigquery/                @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
-/packages/gcp-sphinx-docfx-yaml/              @googleapis/dkp-team
+/packages/sqlalchemy-spanner/                 @googleapis/spanner-team
