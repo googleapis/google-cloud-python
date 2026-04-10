@@ -119,6 +119,7 @@ nox.options.sessions = [
     # from GitHub actions.
     "unit_noextras",
     "system-3.10",  # No extras.
+    "system-3.12",  # No extras.
     f"system-{DEFAULT_PYTHON_VERSION}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
@@ -362,6 +363,7 @@ def run_system(
         *session.posargs,
         test_folder,
     )
+
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
