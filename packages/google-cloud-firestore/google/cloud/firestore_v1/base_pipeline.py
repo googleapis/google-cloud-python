@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING, Sequence, TypeVar, Type
 
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
+from google.cloud.firestore_v1 import pipeline_types as types
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.pipeline_expressions import (
     AggregateFunction,
@@ -275,7 +276,7 @@ class _BasePipeline:
         field: str | Expression,
         vector: Sequence[float] | "Vector",
         distance_measure: "DistanceMeasure",
-        options: stages.FindNearestOptions | None = None,
+        options: types.FindNearestOptions | None = None,
     ) -> "_BasePipeline":
         """
         Performs vector distance (similarity) search with given parameters on the
@@ -396,7 +397,7 @@ class _BasePipeline:
         return self._append(stages.Sort(*orders))
 
     def search(
-        self, query_or_options: str | BooleanExpression | stages.SearchOptions
+        self, query_or_options: str | BooleanExpression | types.SearchOptions
     ) -> "_BasePipeline":
         """
         Adds a search stage to the pipeline.
@@ -426,7 +427,7 @@ class _BasePipeline:
         """
         return self._append(stages.Search(query_or_options))
 
-    def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
+    def sample(self, limit_or_options: int | types.SampleOptions) -> "_BasePipeline":
         """
         Performs a pseudo-random sampling of the documents from the previous stage.
 
@@ -490,7 +491,7 @@ class _BasePipeline:
         self,
         field: str | Selectable,
         alias: str | Field | None = None,
-        options: stages.UnnestOptions | None = None,
+        options: types.UnnestOptions | None = None,
     ) -> "_BasePipeline":
         """
         Produces a document for each element in an array field from the previous stage document.
