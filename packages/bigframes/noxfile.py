@@ -447,6 +447,10 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the test runs
     (including system test runs), and then erases coverage data.
     """
+    # TODO: Remove this skip when the issue is resolved.
+    # https://github.com/googleapis/google-cloud-python/issues/16635
+    session.skip("Temporarily skip coverage session")
+
     session.install("coverage", "pytest-cov")
 
     # Create a coverage report that includes only the product code.
