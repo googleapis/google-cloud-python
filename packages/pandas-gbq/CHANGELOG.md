@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.1...pandas-gbq-v0.35.0) (2026-04-09)
+
+
+### Features
+
+* drop support for Python 3.9 (#16476) ([f38cd44be98acb9a51c30b47ac9688a44e19c2fb](https://github.com/googleapis/google-cloud-python/commit/f38cd44be98acb9a51c30b47ac9688a44e19c2fb))
+
 ## [0.34.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.0...pandas-gbq-v0.34.1) (2026-03-26)
 
 
