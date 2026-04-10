@@ -7,5 +7,5 @@
     "name": "google-auth",
     "name_pretty": "Google Auth Python Library",
     "release_level": "stable",
-    "repo": "googleapis/google-auth-library-python"
+    "repo": "googleapis/google-cloud-python"
 }
