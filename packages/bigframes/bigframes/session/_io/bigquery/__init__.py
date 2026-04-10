@@ -528,7 +528,9 @@ def to_query(
     if columns:
         # We only reduce the selection if columns is set, but we always
         # want to make sure index_cols is also included.
-        select_clause = "SELECT " + ", ".join(f"`_bf_source`.`{column}`" for column in columns)
+        select_clause = "SELECT " + ", ".join(
+            f"`_bf_source`.`{column}`" for column in columns
+        )
     else:
         select_clause = "SELECT *"
 
