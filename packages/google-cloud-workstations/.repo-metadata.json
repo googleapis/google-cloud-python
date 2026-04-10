@@ -1,4 +1,5 @@
 {
+    "api_description": "Allows administrators to create managed developer environments in the cloud.",
     "api_id": "workstations.googleapis.com",
     "api_shortname": "workstations",
     "client_documentation": "https://cloud.google.com/python/docs/reference/workstations/latest",

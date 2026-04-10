@@ -5,6 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/notebooks/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-notebooks",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1392625",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "notebooks",

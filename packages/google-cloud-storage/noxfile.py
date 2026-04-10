@@ -334,7 +334,7 @@ def system(session, test_type):
         session.skip(
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
-    # Install pyopenssl for mTLS testing.
+    # mTLS tests requires pyopenssl.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
         session.install("pyopenssl")
     # Check if endpoint is being overriden for rerun_count
