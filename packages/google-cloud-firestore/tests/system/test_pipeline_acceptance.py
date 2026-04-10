@@ -72,6 +72,28 @@ def yaml_loader(field="tests", dir_name="pipeline_e2e", attach_file_name=True):
                 combined_yaml.update(extracted)
             elif isinstance(combined_yaml, list) and extracted:
                 combined_yaml.extend(extracted)
+
+    # Validate test keys
+    allowed_keys = {
+        "description",
+        "pipeline",
+        "assert_proto",
+        "assert_error",
+        "assert_results",
+        "assert_count",
+        "assert_results_approximate",
+        "assert_end_state",
+        "file_name",
+    }
+    if field == "tests" and isinstance(combined_yaml, list):
+        for item in combined_yaml:
+            if isinstance(item, dict):
+                for key in item:
+                    if key not in allowed_keys:
+                        raise ValueError(
+                            f"Unrecognized key '{key}' in test '{item.get('description', 'Unknown')}' in file '{item.get('file_name', 'Unknown')}'"
+                        )
+
     return combined_yaml
 
 
