@@ -938,8 +938,9 @@ def prerelease_deps(session):
     system_prerelease(session)
 
 
-# NOTE: this is the mypy session that came directly from the bigframes split repo
-@nox.session(python="3.10")
+# NOTE: this is based on mypy session that came directly from the bigframes split repo
+# the split repo used 3.10, the monorepo uses 3.14
+@nox.session(python="3.14")
 def mypy(session):
     """Run type checks with mypy."""
     # Editable mode is not compatible with mypy when there are multiple
