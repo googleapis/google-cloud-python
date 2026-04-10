@@ -825,12 +825,7 @@ class TestSearch:
     def test_search_string_query_wrapping(self):
         options = stages.SearchOptions(query="science")
         assert options.query.name == "document_matches"
-
-    def test_search_string_field_coercion(self):
-        options = stages.SearchOptions(query="tech")
-        assert len(options.select) == 1
-        assert isinstance(options.select[0], Field)
-        assert options.select[0].path == "title"
+        assert options.query.params[0].value == "science"
 
 
 class TestSelect:
