@@ -2982,6 +2982,14 @@ class Score(FunctionExpression):
 
     Note: This Expression can only be used within a `Search` stage.
 
+    Example:
+        >>> # Sort by search score and retrieve it via add_fields
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query="tacos",
+        ...     sort=Score().descending(),
+        ...     add_fields=[Score().as_("search_score")]
+        ... )
+
     Returns:
         A new `Expression` representing the score operation.
     """
