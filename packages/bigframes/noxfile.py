@@ -61,6 +61,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-timeout",
 ]
+UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
@@ -254,10 +255,14 @@ def run_unit(session, install_test_extra):
 
 
 @nox.session(python=ALL_PYTHON)
-def unit(session):
+@nox.parametrize("test_extra", [True, False])
+def unit(session, test_extra):
     if session.python in ("3.7", "3.8", "3.9"):
         session.skip("Python 3.9 and below are not supported")
-    run_unit(session, install_test_extra=True)
+    if test_extra:
+        run_unit(session, install_test_extra=test_extra)
+    else:
+        unit_noextras(session)
 
 
 @nox.session(python=ALL_PYTHON[-1])
