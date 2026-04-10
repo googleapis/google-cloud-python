@@ -25,7 +25,7 @@ import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base
 import bigframes.session
-import bigframes.core.expression as ex
+import bigframes.core.col as col
 from bigframes.bigquery._operations import utils
 
 
@@ -52,7 +52,7 @@ def create_model(
     output_schema: Optional[Mapping[str, str]] = None,
     connection_name: Optional[str] = None,
     options: Optional[
-        Mapping[str, Union[str, int, float, bool, list, "ex.Expression"]]
+        Mapping[str, Union[str, int, float, bool, list, "col.Expression"]]
     ] = None,
     training_data: Optional[Union[pd.DataFrame, dataframe.DataFrame, str]] = None,
     custom_holiday: Optional[Union[pd.DataFrame, dataframe.DataFrame, str]] = None,
@@ -81,7 +81,7 @@ def create_model(
             The OUTPUT clause, which specifies the schema of the output data.
         connection_name (str, optional):
             The connection to use for the model.
-        options (Mapping[str, Union[str, int, float, bool, list, bigframes.core.expression.Expression]], optional):
+        options (Mapping[str, Union[str, int, float, bool, list, bigframes.core.col.Expression]], optional):
             The OPTIONS clause, which specifies the model options.
         training_data (Union[bigframes.pandas.DataFrame, str], optional):
             The query or DataFrame to use for training the model.

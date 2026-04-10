@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping, Optional, Union
 
-import bigframes.core.expression as ex
+import bigframes.core.col as col
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot.expression_compiler import expression_compiler
 
@@ -31,7 +31,7 @@ def create_model_ddl(
     output_schema: Optional[Mapping[str, str]] = None,
     connection_name: Optional[str] = None,
     options: Optional[
-        Mapping[str, Union[str, int, float, bool, list, "ex.Expression"]]
+        Mapping[str, Union[str, int, float, bool, list, "col.Expression"]]
     ] = None,
     training_data: Optional[str] = None,
     custom_holiday: Optional[str] = None,
@@ -74,8 +74,8 @@ def create_model_ddl(
     if options:
         rendered_options = []
         for option_name, option_value in options.items():
-            if isinstance(option_value, ex.Expression):
-                sg_expr = expression_compiler.compile_expression(option_value)
+            if isinstance(option_value, col.Expression):
+                sg_expr = expression_compiler.compile_expression(option_value._value)
                 rendered_val = sg_sql.to_sql(sg_expr)
             elif isinstance(option_value, (list, tuple)):
                 # Handle list options like model_registry="vertex_ai"
