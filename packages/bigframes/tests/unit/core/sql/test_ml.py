@@ -14,7 +14,10 @@
 
 import pytest
 
+import bigframes.core.expression as ex
 import bigframes.core.sql.ml
+import bigframes.dtypes as dtypes
+import bigframes.operations.numeric_ops as numeric_ops
 
 pytest.importorskip("pytest_snapshot")
 
@@ -98,10 +101,6 @@ def test_create_model_list_option(snapshot):
 
 
 def test_create_model_expression_option(snapshot):
-    import bigframes.core.expression as ex
-    import bigframes.operations.numeric_ops as numeric_ops
-    import bigframes.dtypes as dtypes
-
     # An expression that calls a function on a literal value
     # e.g. 0.1 * 10
     literal_expr = ex.ScalarConstantExpression(0.1, dtypes.FLOAT_DTYPE)
