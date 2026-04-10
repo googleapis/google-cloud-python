@@ -28,7 +28,7 @@ from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
 from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
-from google.cloud.firestore import AsyncClient, Client
+from google.cloud.firestore import AsyncClient, Client, GeoPoint
 from google.cloud.firestore_v1 import pipeline_expressions
 from google.cloud.firestore_v1 import pipeline_expressions as expr
 from google.cloud.firestore_v1 import pipeline_stages as stages
@@ -401,6 +401,10 @@ def _parse_yaml_types(data):
             return parsed_datetime
         except ValueError:
             pass
+    if isinstance(data, str) and data.startswith("GEOPOINT("):
+        match = re.match(r"GEOPOINT\(([^,]+),\s*([^)]+)\)", data)
+        if match:
+            return GeoPoint(float(match.group(1)), float(match.group(2)))
     if data == "NaN":
         return float("NaN")
     return data

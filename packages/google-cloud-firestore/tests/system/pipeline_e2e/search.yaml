@@ -1,309 +1,542 @@
 tests:
-  - description: search_stage_basic
+- description: search_stage_basic
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query: waffles
+        limit: 2
+  assert_results:
+  - name: The Golden Waffle
+    description: Specializing exclusively in Belgian-style waffles. Open daily from
+      6:00 AM to 11:00 AM.
+    location: GEOPOINT(39.7183, -104.9621)
+    menu: <h3>Signature Waffles</h3><ul><li>Strawberry Delight - $11</li><li>Chicken
+      and Waffles - $14</li><li>Chocolate Chip Crunch - $10</li></ul><h3>Drinks</h3><ul><li>Fresh
+      OJ - $4</li><li>Artisan Coffee - $3</li></ul>
+    average_price_per_person: 13
+  assert_proto:
     pipeline:
-      - Collection: books
-      - Search:
-          - SearchOptions:
-              query: "science"
-              limit: 2
-    assert_results:
-      - title: "Dune"
-        author: "Frank Herbert"
-        genre: "Science Fiction"
-        published: 1965
-        rating: 4.6
-        tags:
-          - politics
-          - desert
-          - adventure
-        awards:
-          hugo: true
-          nebula: true
-      - title: "The Hitchhiker's Guide to the Galaxy"
-        author: "Douglas Adams"
-        genre: "Science Fiction"
-        published: 1979
-        rating: 4.2
-        tags:
-          - comedy
-          - space
-          - adventure
-        awards:
-          hugo: true
-          nebula: false
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - name: search
-          options:
-            limit:
-              integerValue: '2'
-            query:
-              functionValue:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          limit:
+            integerValue: '2'
+          query:
+            functionValue:
+              args:
+              - stringValue: waffles
+              name: document_matches
+- description: search_stage_full_options
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          DocumentMatches:
+          - Constant: tacos
+        limit: 5
+        retrieval_depth: 10
+        offset: 1
+        query_enhancement: disabled
+        language_code: en
+  assert_results:
+  - name: El Sol Tacos
+    description: A vibrant street-side taco stand serving up quick, delicious, and
+      traditional Mexican street food.
+    location: GEOPOINT(39.6952, -105.0274)
+    menu: <h3>Tacos ($3.50 each)</h3><ul><li>Al Pastor</li><li>Carne Asada</li><li>Pollo
+      Asado</li><li>Nopales (Cactus)</li></ul><h3>Beverages</h3><ul><li>Horchata -
+      $4</li><li>Mexican Coke - $3</li></ul>
+    average_price_per_person: 12
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          limit:
+            integerValue: '5'
+          retrieval_depth:
+            integerValue: '10'
+          offset:
+            integerValue: '1'
+          query_enhancement:
+            stringValue: disabled
+          language_code:
+            stringValue: en
+          query:
+            functionValue:
+              args:
+              - stringValue: tacos
+              name: document_matches
+- description: search_stage_with_sort_and_add_fields
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query: tacos
+        sort:
+          Ordering:
+          - Score: []
+          - DESCENDING
+        add_fields:
+        - AliasedExpression:
+          - Score: []
+          - search_score
+  assert_results_approximate:
+  - name: Eastside Cantina
+    description: Authentic street tacos and hand-shaken margaritas on the vibrant
+      east side of the city.
+    location: GEOPOINT(39.735, -104.885)
+    menu: <h3>Tacos</h3><ul><li>Carnitas Tacos - $4</li><li>Barbacoa Tacos - $4.50</li><li>Shrimp
+      Tacos - $5</li></ul><h3>Drinks</h3><ul><li>House Margarita - $9</li><li>Jarritos
+      - $3</li></ul>
+    average_price_per_person: 18
+    search_score: 0.5137
+  - name: El Sol Tacos
+    description: A vibrant street-side taco stand serving up quick, delicious, and
+      traditional Mexican street food.
+    location: GEOPOINT(39.6952, -105.0274)
+    menu: <h3>Tacos ($3.50 each)</h3><ul><li>Al Pastor</li><li>Carne Asada</li><li>Pollo
+      Asado</li><li>Nopales (Cactus)</li></ul><h3>Beverages</h3><ul><li>Horchata -
+      $4</li><li>Mexican Coke - $3</li></ul>
+    average_price_per_person: 12
+    search_score: 0.4731
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: tacos
+              name: document_matches
+          sort:
+            arrayValue:
+              values:
+              - mapValue:
+                  fields:
+                    direction:
+                      stringValue: descending
+                    expression:
+                      functionValue:
+                        name: score
+          add_fields:
+            mapValue:
+              fields:
+                search_score:
+                  functionValue:
+                    name: score
+- description: expression_between
+  pipeline:
+  - Collection: restaurants
+  - Where:
+    - FunctionExpression.between:
+      - Field: average_price_per_person
+      - Constant: 15
+      - Constant: 20
+  - Select:
+    - name
+  - Sort:
+    - Ordering:
+      - Field: name
+      - ASCENDING
+  assert_results:
+  - name: Eastside Cantina
+  - name: Peak Burgers
+  - name: The Sunny Side Up
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - args:
+        - functionValue:
+            args:
+            - functionValue:
                 args:
-                - stringValue: "science"
-                name: document_matches
-  - description: search_stage_full_options
-    pipeline:
-      - Collection: books
-      - Search:
-          - SearchOptions:
-              query:
-                DocumentMatches:
-                  - Constant: "science"
-              limit: 5
-              retrieval_depth: 10
-              offset: 1
-              query_enhancement: disabled
-              language_code: en
-    assert_results:
-      - title: "The Hitchhiker's Guide to the Galaxy"
-        author: "Douglas Adams"
-        genre: "Science Fiction"
-        published: 1979
-        rating: 4.2
-        tags:
-          - comedy
-          - space
-          - adventure
-        awards:
-          hugo: true
-          nebula: false
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - name: search
-          options:
-            limit:
-              integerValue: '5'
-            retrieval_depth:
-              integerValue: '10'
-            offset:
-              integerValue: '1'
-            query_enhancement:
-              stringValue: "disabled"
-            language_code:
-              stringValue: "en"
-            query:
-              functionValue:
+                - fieldReferenceValue: average_price_per_person
+                - integerValue: '15'
+                name: greater_than_or_equal
+            - functionValue:
                 args:
-                - stringValue: "science"
-                name: document_matches
-  - description: search_stage_with_sort_and_add_fields
+                - fieldReferenceValue: average_price_per_person
+                - integerValue: '20'
+                name: less_than_or_equal
+            name: and
+        name: where
+      - args:
+        - mapValue:
+            fields:
+              name:
+                fieldReferenceValue: name
+        name: select
+      - args:
+        - mapValue:
+            fields:
+              direction:
+                stringValue: ascending
+              expression:
+                fieldReferenceValue: name
+        name: sort
+- description: expression_geo_distance
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          FunctionExpression.less_than_or_equal:
+          - FunctionExpression.geo_distance:
+            - Field: location
+            - GeoPoint:
+              - 39.6985
+              - -105.024
+          - Constant: 1000.0
+  - Select:
+    - name
+  - Sort:
+    - Ordering:
+      - Field: name
+      - ASCENDING
+  assert_results:
+  - name: El Sol Tacos
+  assert_proto:
     pipeline:
-      - Collection: books
-      - Search:
-          - SearchOptions:
-              query: "science"
-              sort:
-                Ordering:
-                  - Score: []
-                  - DESCENDING
-              add_fields:
-                - AliasedExpression:
-                  - Score: []
-                  - "search_score"
-    assert_results:
-      - title: "Dune"
-        author: "Frank Herbert"
-        genre: "Science Fiction"
-        published: 1965
-        rating: 4.6
-        tags:
-          - politics
-          - desert
-          - adventure
-        awards:
-          hugo: true
-          nebula: true
-        title_selected: "Dune - Selected"
-        search_score: 0.0
-      - title: "The Hitchhiker's Guide to the Galaxy"
-        author: "Douglas Adams"
-        genre: "Science Fiction"
-        published: 1979
-        rating: 4.2
-        tags:
-          - comedy
-          - space
-          - adventure
-        awards:
-          hugo: true
-          nebula: false
-        title_selected: "The Hitchhiker's Guide to the Galaxy - Selected"
-        search_score: 0.0
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - name: search
-          options:
-            query:
-              functionValue:
-                args:
-                - stringValue: "science"
-                name: document_matches
-            sort:
-              arrayValue:
-                values:
-                - mapValue:
-                    fields:
-                      direction:
-                        stringValue: descending
-                      expression:
-                        functionValue:
-                          name: score
-            add_fields:
-              mapValue:
-                fields:
-                  search_score:
-                    functionValue:
-                      name: score
-  - description: expression_between
-    pipeline:
-      - Collection: books
-      - Where:
-          - FunctionExpression.between:
-              - Field: published
-              - Constant: 1950
-              - Constant: 1970
-      - Select:
-        - title
-      - Sort:
-        - Ordering:
-          - Field: title
-          - ASCENDING
-    assert_results:
-      - title: Dune
-      - title: One Hundred Years of Solitude
-      - title: The Lord of the Rings
-      - title: To Kill a Mockingbird
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - args:
-          - functionValue:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
               args:
               - functionValue:
                   args:
-                  - fieldReferenceValue: published
-                  - integerValue: '1950'
-                  name: greater_than_or_equal
+                  - fieldReferenceValue: location
+                  - geoPointValue:
+                      latitude: 39.6985
+                      longitude: -105.024
+                  name: geo_distance
+              - doubleValue: 1000.0
+              name: less_than_or_equal
+      - args:
+        - mapValue:
+            fields:
+              name:
+                fieldReferenceValue: name
+        name: select
+      - args:
+        - mapValue:
+            fields:
+              direction:
+                stringValue: ascending
+              expression:
+                fieldReferenceValue: name
+        name: sort
+- description: search_stage_with_select_score
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query: tacos
+        select:
+        - AliasedExpression:
+          - Score: []
+          - search_score
+  assert_results_approximate:
+  - search_score: 0.5137
+  - search_score: 0.4732
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: tacos
+              name: document_matches
+          select:
+            mapValue:
+              fields:
+                search_score:
+                  functionValue:
+                    name: score
+- description: search_full_document
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query: waffles
+  assert_results:
+  - name: The Golden Waffle
+    description: Specializing exclusively in Belgian-style waffles. Open daily from
+      6:00 AM to 11:00 AM.
+    location: GEOPOINT(39.7183, -104.9621)
+    menu: <h3>Signature Waffles</h3><ul><li>Strawberry Delight - $11</li><li>Chicken
+      and Waffles - $14</li><li>Chocolate Chip Crunch - $10</li></ul><h3>Drinks</h3><ul><li>Fresh
+      OJ - $4</li><li>Artisan Coffee - $3</li></ul>
+    average_price_per_person: 13
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: waffles
+              name: document_matches
+- description: search_negate_match
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          DocumentMatches:
+          - Constant: coffee -waffles
+  assert_results:
+  - name: The Sunny Side Up
+    description: A cozy neighborhood diner serving classic breakfast favorites all
+      day long, from fluffy pancakes to savory omelets.
+    location: GEOPOINT(39.7541, -105.0002)
+    menu: <h3>Breakfast Classics</h3><ul><li>Denver Omelet - $12</li><li>Buttermilk
+      Pancakes - $10</li><li>Steak and Eggs - $16</li></ul><h3>Sides</h3><ul><li>Hash
+      Browns - $4</li><li>Thick-cut Bacon - $5</li><li>Drip Coffee - $2</li></ul>
+    average_price_per_person: 15
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: coffee -waffles
+              name: document_matches
+- description: search_rquery_as_query_param
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query: chicken wings
+  assert_results:
+  - name: Eastside Chicken
+    description: Fried chicken to go - next to Eastside Cantina.
+    location: GEOPOINT(39.735, -104.885)
+    menu: <h3>Fried Chicken</h3><ul><li>Drumstick - $4</li><li>Wings - $1</li><li>Sandwich
+      - $9</li></ul><h3>Drinks</h3><ul><li>House Margarita - $9</li><li>Jarritos -
+      $3</li></ul>
+    average_price_per_person: 12
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: chicken wings
+              name: document_matches
+- description: search_sort_by_distance
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          FunctionExpression.less_than_or_equal:
+          - FunctionExpression.geo_distance:
+            - Field: location
+            - GeoPoint:
+              - 39.6985
+              - -105.024
+          - Constant: 5600.0
+        sort:
+          Ordering:
+          - FunctionExpression.geo_distance:
+            - Field: location
+            - GeoPoint:
+              - 39.6985
+              - -105.024
+          - ASCENDING
+  assert_results:
+  - name: El Sol Tacos
+    description: A vibrant street-side taco stand serving up quick, delicious, and
+      traditional Mexican street food.
+    location: GEOPOINT(39.6952, -105.0274)
+    menu: <h3>Tacos ($3.50 each)</h3><ul><li>Al Pastor</li><li>Carne Asada</li><li>Pollo
+      Asado</li><li>Nopales (Cactus)</li></ul><h3>Beverages</h3><ul><li>Horchata -
+      $4</li><li>Mexican Coke - $3</li></ul>
+    average_price_per_person: 12
+  - name: Lotus Blossom Thai
+    description: Authentic Thai cuisine featuring hand-crushed spices and traditional
+      family recipes from the Chiang Mai region.
+    location: GEOPOINT(39.7315, -104.9847)
+    menu: <h3>Appetizers</h3><ul><li>Spring Rolls - $7</li><li>Chicken Satay - $9</li></ul><h3>Main
+      Course</h3><ul><li>Pad Thai - $15</li><li>Green Curry - $16</li><li>Drunken
+      Noodles - $15</li></ul>
+    average_price_per_person: 22
+  - name: Mile High Catch
+    description: Freshly sourced seafood offering a wide variety of Pacific fish and
+      Atlantic shellfish in an upscale atmosphere.
+    location: GEOPOINT(39.7401, -104.9903)
+    menu: <h3>From the Raw Bar</h3><ul><li>Oysters (Half Dozen) - $18</li><li>Lobster
+      Cocktail - $22</li></ul><h3>Entrees</h3><ul><li>Pan-Seared Salmon - $28</li><li>King
+      Crab Legs - $45</li><li>Fish and Chips - $19</li></ul>
+    average_price_per_person: 45
+  assert_proto:
+    pipeline:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
               - functionValue:
                   args:
-                  - fieldReferenceValue: published
-                  - integerValue: '1970'
-                  name: less_than_or_equal
-              name: and
-          name: where
-        - args:
-          - mapValue:
-              fields:
-                title:
-                  fieldReferenceValue: title
-          name: select
-        - args:
-          - mapValue:
-              fields:
-                direction:
-                  stringValue: ascending
-                expression:
-                  fieldReferenceValue: title
-          name: sort
-  - description: expression_geo_distance
+                  - fieldReferenceValue: location
+                  - geoPointValue:
+                      latitude: 39.6985
+                      longitude: -105.024
+                  name: geo_distance
+              - doubleValue: 5600.0
+              name: less_than_or_equal
+          sort:
+            arrayValue:
+              values:
+              - mapValue:
+                  fields:
+                    direction:
+                      stringValue: ascending
+                    expression:
+                      functionValue:
+                        args:
+                        - fieldReferenceValue: location
+                        - geoPointValue:
+                            latitude: 39.6985
+                            longitude: -105.024
+                        name: geo_distance
+- description: search_add_fields_score
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          DocumentMatches:
+          - Constant: waffles
+        add_fields:
+        - AliasedExpression:
+          - Score: []
+          - searchScore
+  - Select:
+    - name
+    - searchScore
+  assert_results_approximate:
+  - name: The Golden Waffle
+    searchScore: 0.5919
+  assert_proto:
     pipeline:
-      - Collection: cities
-      - Search:
-          - SearchOptions:
-              query:
-                FunctionExpression.less_than_or_equal:
-                  - FunctionExpression.geo_distance:
-                     - Field: location
-                     - GeoPoint: [37.0, -122.0]
-                  - Constant: 150000.0
-      - Select:
-        - name
-      - Sort:
-        - Ordering:
-          - Field: name
-          - ASCENDING
-    assert_results:
-      - name: "San Francisco"
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /cities
-          name: collection
-        - name: search
-          options:
-            query:
-              functionValue:
-                args:
-                - functionValue:
-                    args:
-                    - fieldReferenceValue: location
-                    - geoPointValue:
-                        latitude: 37.0
-                        longitude: -122.0
-                    name: geo_distance
-                - doubleValue: 150000.0
-                name: less_than_or_equal
-        - args:
-          - mapValue:
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: waffles
+              name: document_matches
+          add_fields:
+            mapValue:
               fields:
-                name:
-                  fieldReferenceValue: name
-          name: select
-        - args:
-          - mapValue:
-              fields:
-                direction:
-                  stringValue: ascending
-                expression:
-                  fieldReferenceValue: name
-          name: sort
-  - description: search_stage_with_select_score
+                searchScore:
+                  functionValue:
+                    name: score
+      - args:
+        - mapValue:
+            fields:
+              name:
+                fieldReferenceValue: name
+              searchScore:
+                fieldReferenceValue: searchScore
+        name: select
+- description: search_sort_by_score
+  pipeline:
+  - Collection: restaurants
+  - Search:
+    - SearchOptions:
+        query:
+          DocumentMatches:
+          - Constant: tacos
+        sort:
+          Ordering:
+          - Score: []
+          - DESCENDING
+  assert_results:
+  - name: Eastside Cantina
+    description: Authentic street tacos and hand-shaken margaritas on the vibrant
+      east side of the city.
+    location: GEOPOINT(39.735, -104.885)
+    menu: <h3>Tacos</h3><ul><li>Carnitas Tacos - $4</li><li>Barbacoa Tacos - $4.50</li><li>Shrimp
+      Tacos - $5</li></ul><h3>Drinks</h3><ul><li>House Margarita - $9</li><li>Jarritos
+      - $3</li></ul>
+    average_price_per_person: 18
+  - name: El Sol Tacos
+    description: A vibrant street-side taco stand serving up quick, delicious, and
+      traditional Mexican street food.
+    location: GEOPOINT(39.6952, -105.0274)
+    menu: <h3>Tacos ($3.50 each)</h3><ul><li>Al Pastor</li><li>Carne Asada</li><li>Pollo
+      Asado</li><li>Nopales (Cactus)</li></ul><h3>Beverages</h3><ul><li>Horchata -
+      $4</li><li>Mexican Coke - $3</li></ul>
+    average_price_per_person: 12
+  assert_proto:
     pipeline:
-      - Collection: books
-      - Search:
-          - SearchOptions:
-              query: "science"
-              select:
-                - AliasedExpression:
-                  - Score: []
-                  - "search_score"
-    assert_results:
-      - search_score: 1.0
-      - search_score: 0.5
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - name: search
-          options:
-            query:
-              functionValue:
-                args:
-                - stringValue: "science"
-                name: document_matches
-            select:
-              mapValue:
-                fields:
-                  search_score:
-                    functionValue:
-                      name: score
-    name: score
+      stages:
+      - args:
+        - referenceValue: /restaurants
+        name: collection
+      - name: search
+        options:
+          query:
+            functionValue:
+              args:
+              - stringValue: tacos
+              name: document_matches
+          sort:
+            arrayValue:
+              values:
+              - mapValue:
+                  fields:
+                    direction:
+                      stringValue: descending
+                    expression:
+                      functionValue:
+                        name: score
