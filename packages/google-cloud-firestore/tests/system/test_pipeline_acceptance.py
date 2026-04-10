@@ -28,7 +28,7 @@ from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
 from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
-from google.cloud.firestore import AsyncClient, Client
+from google.cloud.firestore import AsyncClient, Client, GeoPoint
 from google.cloud.firestore_v1 import pipeline_expressions
 from google.cloud.firestore_v1 import pipeline_expressions as expr
 from google.cloud.firestore_v1 import pipeline_stages as stages
@@ -72,6 +72,28 @@ def yaml_loader(field="tests", dir_name="pipeline_e2e", attach_file_name=True):
                 combined_yaml.update(extracted)
             elif isinstance(combined_yaml, list) and extracted:
                 combined_yaml.extend(extracted)
+
+    # Validate test keys
+    allowed_keys = {
+        "description",
+        "pipeline",
+        "assert_proto",
+        "assert_error",
+        "assert_results",
+        "assert_count",
+        "assert_results_approximate",
+        "assert_end_state",
+        "file_name",
+    }
+    if field == "tests" and isinstance(combined_yaml, list):
+        for item in combined_yaml:
+            if isinstance(item, dict):
+                for key in item:
+                    if key not in allowed_keys:
+                        raise ValueError(
+                            f"Unrecognized key '{key}' in test '{item.get('description', 'Unknown')}' in file '{item.get('file_name', 'Unknown')}'"
+                        )
+
     return combined_yaml
 
 
@@ -111,6 +133,34 @@ def test_pipeline_expected_errors(test_dict, client):
     assert match, f"error '{found_error}' does not match '{error_regex}'"
 
 
+def _assert_pipeline_results(
+    got_results, expected_results, expected_approximate_results, expected_count
+):
+    if expected_results:
+        assert got_results == expected_results
+    if expected_approximate_results is not None:
+        tolerance = 1e-4
+        if (
+            isinstance(expected_approximate_results, dict)
+            and "data" in expected_approximate_results
+        ):
+            if (
+                "config" in expected_approximate_results
+                and "absolute_tolerance" in expected_approximate_results["config"]
+            ):
+                tolerance = expected_approximate_results["config"]["absolute_tolerance"]
+            expected_approximate_results = expected_approximate_results["data"]
+
+        assert len(got_results) == len(expected_approximate_results), (
+            "got unexpected result count"
+        )
+        for idx in range(len(got_results)):
+            expected = expected_approximate_results[idx]
+            assert got_results[idx] == pytest.approx(expected, abs=tolerance)
+    if expected_count is not None:
+        assert len(got_results) == expected_count
+
+
 @pytest.mark.parametrize(
     "test_dict",
     [
@@ -136,18 +186,9 @@ def test_pipeline_results(test_dict, client):
     pipeline = parse_pipeline(client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() for snapshot in pipeline.stream()]
-    if expected_results:
-        assert got_results == expected_results
-    if expected_approximate_results:
-        assert len(got_results) == len(expected_approximate_results), (
-            "got unexpected result count"
-        )
-        for idx in range(len(got_results)):
-            assert got_results[idx] == pytest.approx(
-                expected_approximate_results[idx], abs=1e-4
-            )
-    if expected_count is not None:
-        assert len(got_results) == expected_count
+    _assert_pipeline_results(
+        got_results, expected_results, expected_approximate_results, expected_count
+    )
     if expected_end_state:
         for doc_path, expected_content in expected_end_state.items():
             doc_ref = client.document(doc_path)
@@ -209,18 +250,9 @@ async def test_pipeline_results_async(test_dict, async_client):
     pipeline = parse_pipeline(async_client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() async for snapshot in pipeline.stream()]
-    if expected_results:
-        assert got_results == expected_results
-    if expected_approximate_results:
-        assert len(got_results) == len(expected_approximate_results), (
-            "got unexpected result count"
-        )
-        for idx in range(len(got_results)):
-            assert got_results[idx] == pytest.approx(
-                expected_approximate_results[idx], abs=1e-4
-            )
-    if expected_count is not None:
-        assert len(got_results) == expected_count
+    _assert_pipeline_results(
+        got_results, expected_results, expected_approximate_results, expected_count
+    )
     if expected_end_state:
         for doc_path, expected_content in expected_end_state.items():
             doc_ref = async_client.document(doc_path)
@@ -395,12 +427,16 @@ def _parse_yaml_types(data):
         else:
             return [_parse_yaml_types(value) for value in data]
     # detect timestamps
-    if isinstance(data, str) and ":" in data:
+    if isinstance(data, str) and ":" in data and not data.startswith("GEOPOINT("):
         try:
             parsed_datetime = datetime.datetime.fromisoformat(data)
             return parsed_datetime
         except ValueError:
             pass
+    if isinstance(data, str) and data.startswith("GEOPOINT("):
+        match = re.match(r"GEOPOINT\(([^,]+),\s*([^)]+)\)", data)
+        if match:
+            return GeoPoint(float(match.group(1)), float(match.group(2)))
     if data == "NaN":
         return float("NaN")
     return data
