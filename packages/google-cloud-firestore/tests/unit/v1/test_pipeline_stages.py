@@ -843,6 +843,7 @@ class TestSearch:
         pb_opts = stage._pb_options()
         assert "query" in pb_opts
 
+
 class TestSelect:
     def _make_one(self, *args, **kwargs):
         return stages.Select(*args, **kwargs)

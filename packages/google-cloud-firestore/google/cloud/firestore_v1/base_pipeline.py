@@ -394,7 +394,9 @@ class _BasePipeline:
         """
         return self._append(stages.Sort(*orders))
 
-    def search(self, query_or_options: str | BooleanExpression | stages.SearchOptions) -> "_BasePipeline":
+    def search(
+        self, query_or_options: str | BooleanExpression | stages.SearchOptions
+    ) -> "_BasePipeline":
         """
         Adds a search stage to the pipeline.
 
