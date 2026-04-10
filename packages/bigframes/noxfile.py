@@ -966,11 +966,13 @@ def core_deps_from_source(session, protobuf_implementation):
         constraints_text = constraints_file.read()
 
     # Ignore leading whitespace and comment lines.
+    # Fiona fails to build on GitHub CI because gdal-config is missing and no Python 3.14 wheels are available.
     constraints_deps = [
         match.group(1)
         for match in re.finditer(
             r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
         )
+        if match.group(1) != "fiona"
     ]
 
     # Install dependencies specified in `testing/constraints-X.txt`.
