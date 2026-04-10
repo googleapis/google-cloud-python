@@ -11,8 +11,8 @@
 
 # List of teams in this repo
 # - @googleapis/aion-team
-# - @googleapis/bigquery-team
 # - @googleapis/bigquery-dataframe-team
+# - @googleapis/bigquery-team
 # - @googleapis/bigtable-team
 # - @googleapis/cloud-sdk-auth-team
 # - @googleapis/dkp-team
