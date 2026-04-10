@@ -30,6 +30,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     AliasedExpression,
     BooleanExpression,
     CONSTANT_TYPE,
+    DocumentMatches,
     Expression,
     Field,
     Ordering,
@@ -107,6 +108,79 @@ class SampleOptions:
             value: percentage of documents to return
         """
         return SampleOptions(value, mode=SampleOptions.Mode.PERCENT)
+
+
+class SearchOptions:
+    """Options for configuring the `Search` pipeline stage."""
+
+    def __init__(
+        self,
+        query: str | BooleanExpression,
+        *,
+        limit: Optional[int] = None,
+        retrieval_depth: Optional[int] = None,
+        sort: Optional[Sequence[Ordering] | Ordering] = None,
+        add_fields: Optional[Sequence[Selectable]] = None,
+        offset: Optional[int] = None,
+        language_code: Optional[str] = None,
+    ):
+        """
+        Initializes a SearchOptions instance.
+
+        Args:
+            query (str | BooleanExpression): Specifies the search query that will be used to query and score documents
+                by the search stage. The query can be expressed as an `Expression`, which will be used to score
+                and filter the results. Not all expressions supported by Pipelines are supported in the Search query.
+                The query can also be expressed as a string in the Search DSL.
+            limit (Optional[int]): The maximum number of documents to return from the Search stage.
+            retrieval_depth (Optional[int]): The maximum number of documents for the search stage to score. Documents
+                will be processed in the pre-sort order specified by the search index.
+            sort (Optional[Sequence[Ordering] | Ordering]): Orderings specify how the input documents are sorted.
+            add_fields (Optional[Sequence[Selectable]]): The fields to add to each document, specified as a `Selectable`.
+            offset (Optional[int]): The number of documents to skip.
+            language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
+        """
+        self.query = DocumentMatches(query) if isinstance(query, str) else query
+        self.limit = limit
+        self.retrieval_depth = retrieval_depth
+        self.sort = [sort] if isinstance(sort, Ordering) else sort
+        self.add_fields = add_fields
+        self.offset = offset
+        self.language_code = language_code
+
+    def __repr__(self):
+        args = [f"query={self.query!r}"]
+        if self.limit is not None:
+            args.append(f"limit={self.limit}")
+        if self.retrieval_depth is not None:
+            args.append(f"retrieval_depth={self.retrieval_depth}")
+        if self.sort is not None:
+            args.append(f"sort={self.sort}")
+        if self.add_fields is not None:
+            args.append(f"add_fields={self.add_fields}")
+        if self.offset is not None:
+            args.append(f"offset={self.offset}")
+        if self.language_code is not None:
+            args.append(f"language_code={self.language_code!r}")
+        return f"{self.__class__.__name__}({', '.join(args)})"
+
+    def _to_dict(self) -> dict[str, Value]:
+        options = {"query": self.query._to_pb()}
+        if self.limit is not None:
+            options["limit"] = Value(integer_value=self.limit)
+        if self.retrieval_depth is not None:
+            options["retrieval_depth"] = Value(integer_value=self.retrieval_depth)
+        if self.sort is not None:
+            options["sort"] = Value(
+                array_value={"values": [s._to_pb() for s in self.sort]}
+            )
+        if self.add_fields is not None:
+            options["add_fields"] = Selectable._to_value(self.add_fields)
+        if self.offset is not None:
+            options["offset"] = Value(integer_value=self.offset)
+        if self.language_code is not None:
+            options["language_code"] = Value(string_value=self.language_code)
+        return options
 
 
 class UnnestOptions:
@@ -421,6 +495,24 @@ class Sample(Stage):
                 Value(double_value=self.options.value),
                 Value(string_value="percent"),
             ]
+
+
+class Search(Stage):
+    """Search stage."""
+
+    def __init__(self, query_or_options: str | BooleanExpression | SearchOptions):
+        super().__init__("search")
+        if isinstance(query_or_options, SearchOptions):
+            options = query_or_options
+        else:
+            options = SearchOptions(query=query_or_options)
+        self.options = options
+
+    def _pb_args(self) -> list[Value]:
+        return []
+
+    def _pb_options(self) -> dict[str, Value]:
+        return self.options._to_dict()
 
 
 class Select(Stage):

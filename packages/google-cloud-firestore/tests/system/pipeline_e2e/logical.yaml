@@ -760,3 +760,56 @@ tests:
             - "value_or_default"
     assert_results:
       - value_or_default: "1984"
+  - description: expression_between
+    pipeline:
+    - Collection: restaurants
+    - Where:
+      - FunctionExpression.between:
+        - Field: average_price_per_person
+        - Constant: 15
+        - Constant: 20
+    - Select:
+      - name
+    - Sort:
+      - Ordering:
+        - Field: name
+        - ASCENDING
+    assert_results:
+    - name: Eastside Cantina
+    - name: Peak Burgers
+    - name: The Sunny Side Up
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /restaurants
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: average_price_per_person
+                  - integerValue: '15'
+                  name: greater_than_or_equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: average_price_per_person
+                  - integerValue: '20'
+                  name: less_than_or_equal
+              name: and
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                name:
+                  fieldReferenceValue: name
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: name
+          name: sort
