@@ -395,6 +395,37 @@ class _BasePipeline:
         """
         return self._append(stages.Sort(*orders))
 
+    def search(
+        self, query_or_options: str | BooleanExpression | stages.SearchOptions
+    ) -> "_BasePipeline":
+        """
+        Adds a search stage to the pipeline.
+
+        This stage filters documents based on the provided query expression.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_stages import SearchOptions
+            >>> from google.cloud.firestore_v1.pipeline_expressions import And, DocumentMatches, Field, GeoPoint
+            >>> # Search for restaurants matching either "waffles" or "pancakes" near a location
+            >>> pipeline = client.pipeline().collection("restaurants").search(
+            ...     SearchOptions(
+            ...         query=And(
+            ...             DocumentMatches("waffles OR pancakes"),
+            ...             Field.of("location").geo_distance(GeoPoint(38.9, -107.0)).less_than(1000)
+            ...         ),
+            ...         sort=Score().descending()
+            ...     )
+            ... )
+
+        Args:
+            options: Either a string or expression representing the search query, or
+                A `SearchOptions` instance configuring the search.
+
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Search(query_or_options))
+
     def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
         """
         Performs a pseudo-random sampling of the documents from the previous stage.

@@ -403,6 +403,8 @@ def test_pipeline_execute_stream_equivalence():
         ("replace_with", (Field.of("n"),), stages.ReplaceWith),
         ("sort", (Field.of("n").descending(),), stages.Sort),
         ("sort", (Field.of("n").descending(), Field.of("m").ascending()), stages.Sort),
+        ("search", ("my query",), stages.Search),
+        ("search", (stages.SearchOptions(query="my query"),), stages.Search),
         ("sample", (10,), stages.Sample),
         ("sample", (stages.SampleOptions.doc_limit(10),), stages.Sample),
         ("union", (_make_pipeline(),), stages.Union),

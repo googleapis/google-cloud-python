@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.36.0...google-cloud-pubsub-v2.37.0) (2026-04-09)
+
+
+### Documentation
+
+* Fix documentation URL AIInference MessageTransform service_account_email field ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.35.0...google-cloud-pubsub-v2.36.0) (2026-03-12)
 
 
