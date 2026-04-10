@@ -271,6 +271,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-area120-tables/
+    release_exclude_paths:
+      - packages/google-area120-tables/.repo-metadata.json
+      - packages/google-area120-tables/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-auth
     version: 2.49.2
