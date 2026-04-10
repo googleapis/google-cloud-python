@@ -14,18 +14,10 @@
 
 from __future__ import annotations
 
-import os
-import warnings
-from typing import Literal, Optional, Union, cast
-
-import pandas as pd
-import requests
 
 import bigframes.dataframe
-import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.series
-from bigframes import clients, dtypes
 from bigframes.core.logging import log_adapter
 
 FILE_FOLDER_REGEX = r"^.*\/(.*)$"

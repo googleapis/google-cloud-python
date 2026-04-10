@@ -122,7 +122,7 @@ def _is_node_polars_executable(node: nodes.BigFrameNode):
         return False
     for expr in node._node_expressions:
         if isinstance(expr, agg_expressions.Aggregation):
-            if not type(expr.op) in _COMPATIBLE_AGG_OPS:
+            if type(expr.op) not in _COMPATIBLE_AGG_OPS:
                 return False
         if isinstance(expr, expression.Expression):
             if not set(map(type, _get_expr_ops(expr))).issubset(_COMPATIBLE_SCALAR_OPS):
