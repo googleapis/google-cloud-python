@@ -65,3 +65,17 @@ libraries:
       name_pretty_override: Area 120 Tables
       metadata_name_override: area120tables
       default_version: v1alpha1
+  - name: google-cloud-config
+    version: 0.5.0
+    apis:
+      - path: google/cloud/config/v1
+    description_override: Infrastructure Manager API
+    keep:
+      - CHANGELOG.md
+      - docs/CHANGELOG.md
+    python:
+      name_pretty_override: Infrastructure Manager API
+      product_documentation_override: https://cloud.google.com/infrastructure-manager/docs/overview
+      api_shortname_override: config
+      metadata_name_override: config
+      default_version: v1

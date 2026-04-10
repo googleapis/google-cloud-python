@@ -24,3 +24,5 @@ libraries:
     release_blocked: true
   - generate_blocked: true
     id: google-area120-tables
+  - generate_blocked: true
+    id: google-cloud-config

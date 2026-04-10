@@ -1277,6 +1277,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-config/
+    release_exclude_paths:
+      - packages/google-cloud-config/.repo-metadata.json
+      - packages/google-cloud-config/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-configdelivery
     version: 0.4.0
