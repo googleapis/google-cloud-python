@@ -99,11 +99,19 @@ def test_create_model_list_option(snapshot):
 
 def test_create_model_expression_option(snapshot):
     import bigframes.core.expression as ex
+    import bigframes.operations.numeric_ops as numeric_ops
+    import bigframes.dtypes as dtypes
+
+    # An expression that calls a function on a literal value
+    # e.g. 0.1 * 10
+    literal_expr = ex.ScalarConstantExpression(0.1, dtypes.FLOAT_DTYPE)
+    multiplier_expr = ex.ScalarConstantExpression(10, dtypes.INT_DTYPE)
+    math_expr = ex.OpExpression(op=numeric_ops.mul_op, inputs=(literal_expr, multiplier_expr))
 
     sql = bigframes.core.sql.ml.create_model_ddl(
         model_name="my_model",
         options={
-            "l2_reg": ex.ScalarConstantExpression(0.1, None),
+            "l2_reg": math_expr,
             "booster_type": "gbtree",
         },
         training_data="SELECT * FROM t",
