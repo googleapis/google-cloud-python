@@ -816,6 +816,23 @@ class TestExpressionessionMethods:
         infix_instance = arg1.geo_distance(arg2)
         assert infix_instance == instance
 
+    def test_geo_distance_with_tuple(self):
+        from google.cloud.firestore_v1._helpers import GeoPoint
+        from google.cloud.firestore_v1.pipeline_expressions import Constant
+
+        arg1 = self._make_arg("Left")
+        instance = Expression.geo_distance(arg1, (1.2, 3.4))
+        assert instance.name == "geo_distance"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == GeoPoint(1.2, 3.4)
+
+        infix_instance = arg1.geo_distance((1.2, 3.4))
+        assert infix_instance.name == "geo_distance"
+        assert infix_instance.params[0] == arg1
+        assert isinstance(infix_instance.params[1], Constant)
+        assert infix_instance.params[1].value == GeoPoint(1.2, 3.4)
+
     def test_document_matches(self):
         arg1 = self._make_arg("Query")
         instance = expr.DocumentMatches(arg1)

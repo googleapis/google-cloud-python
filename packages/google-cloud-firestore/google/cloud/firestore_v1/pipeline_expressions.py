@@ -757,7 +757,9 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def geo_distance(self, other: Expression | GeoPoint) -> "FunctionExpression":
+    def geo_distance(
+        self, other: Expression | GeoPoint | tuple[float, float]
+    ) -> "FunctionExpression":
         """Evaluates to the distance in meters between the location in the specified
         field and the query location.
 
@@ -766,13 +768,19 @@ class Expression(ABC):
         Example:
             >>> # Calculate distance between the 'location' field and a target GeoPoint
             >>> Field.of("location").geo_distance(target_point)
+            >>> # Calculate distance between the 'location' field and a (latitude, longitude) tuple
+            >>> Field.of("location").geo_distance((37.7749, -122.4194))
 
         Args:
-            other: Compute distance to this GeoPoint expression or constant value.
+            other: target point used to calculate distance. Can be a GeoPoint, an
+                Expression resolving to a GeoPoint, or a (latitude, longitude) tuple.
 
         Returns:
             A new `FunctionExpression` representing the distance.
         """
+        if isinstance(other, tuple) and len(other) == 2:
+            other = GeoPoint(other[0], other[1])
+
         return FunctionExpression(
             "geo_distance", [self, self._cast_to_expr_or_convert_to_constant(other)]
         )
