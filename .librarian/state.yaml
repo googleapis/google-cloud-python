@@ -271,6 +271,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-area120-tables/
+    release_exclude_paths:
+      - packages/google-area120-tables/.repo-metadata.json
+      - packages/google-area120-tables/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-auth
     version: 2.49.2
@@ -1274,6 +1277,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-config/
+    release_exclude_paths:
+      - packages/google-cloud-config/.repo-metadata.json
+      - packages/google-cloud-config/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-configdelivery
     version: 0.4.0
