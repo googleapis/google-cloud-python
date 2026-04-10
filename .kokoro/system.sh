@@ -139,11 +139,11 @@ for path in `find 'packages' \
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
 
-  if [[ "${package_modified}" -gt 0 ]]; then
+  if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
       # Call the function - its internal exports won't affect the next loop
       run_package_test "$package_name" || RETVAL=$?
   else
-      echo "No changes in ${package_name}, skipping."
+      echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
 exit ${RETVAL}
