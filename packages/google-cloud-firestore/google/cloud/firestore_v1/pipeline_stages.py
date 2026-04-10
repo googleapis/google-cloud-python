@@ -110,27 +110,18 @@ class SampleOptions:
         return SampleOptions(value, mode=SampleOptions.Mode.PERCENT)
 
 
-class QueryEnhancement(Enum):
-    """Define the query expansion behavior used by full-text search expressions."""
-
-    DISABLED = "disabled"
-    REQUIRED = "required"
-    PREFERRED = "preferred"
-
-
 class SearchOptions:
     """Options for configuring the `Search` pipeline stage."""
 
     def __init__(
         self,
         query: str | BooleanExpression,
+        *,
         limit: Optional[int] = None,
         retrieval_depth: Optional[int] = None,
         sort: Optional[Sequence[Ordering] | Ordering] = None,
         add_fields: Optional[Sequence[Selectable]] = None,
-        select: Optional[Sequence[Selectable | str]] = None,
         offset: Optional[int] = None,
-        query_enhancement: Optional[str | QueryEnhancement] = None,
         language_code: Optional[str] = None,
     ):
         """
@@ -146,11 +137,7 @@ class SearchOptions:
                 will be processed in the pre-sort order specified by the search index.
             sort (Optional[Sequence[Ordering] | Ordering]): Orderings specify how the input documents are sorted.
             add_fields (Optional[Sequence[Selectable]]): The fields to add to each document, specified as a `Selectable`.
-            select (Optional[Sequence[Selectable | str]]): The fields to keep or add to each document,
-                specified as an array of `Selectable` or strings.
             offset (Optional[int]): The number of documents to skip.
-            query_enhancement (Optional[str | QueryEnhancement]): Define the query expansion behavior used by full-text search expressions
-                in this search stage.
             language_code (Optional[str]): The BCP-47 language code of text in the search query, such as "en-US" or "sr-Latn".
         """
         self.query = DocumentMatches(query) if isinstance(query, str) else query
@@ -158,17 +145,7 @@ class SearchOptions:
         self.retrieval_depth = retrieval_depth
         self.sort = [sort] if isinstance(sort, Ordering) else sort
         self.add_fields = add_fields
-        self.select = (
-            [Field(s) if isinstance(s, str) else s for s in select]
-            if select is not None
-            else None
-        )
         self.offset = offset
-        self.query_enhancement = (
-            QueryEnhancement(query_enhancement.lower())
-            if isinstance(query_enhancement, str)
-            else query_enhancement
-        )
         self.language_code = language_code
 
     def __repr__(self):
@@ -181,12 +158,8 @@ class SearchOptions:
             args.append(f"sort={self.sort}")
         if self.add_fields is not None:
             args.append(f"add_fields={self.add_fields}")
-        if self.select is not None:
-            args.append(f"select={self.select}")
         if self.offset is not None:
             args.append(f"offset={self.offset}")
-        if self.query_enhancement is not None:
-            args.append(f"query_enhancement={self.query_enhancement!r}")
         if self.language_code is not None:
             args.append(f"language_code={self.language_code!r}")
         return f"{self.__class__.__name__}({', '.join(args)})"
@@ -203,14 +176,8 @@ class SearchOptions:
             )
         if self.add_fields is not None:
             options["add_fields"] = Selectable._to_value(self.add_fields)
-        if self.select is not None:
-            options["select"] = Selectable._to_value(self.select)
         if self.offset is not None:
             options["offset"] = Value(integer_value=self.offset)
-        if self.query_enhancement is not None:
-            options["query_enhancement"] = Value(
-                string_value=self.query_enhancement.value
-            )
         if self.language_code is not None:
             options["language_code"] = Value(string_value=self.language_code)
         return options

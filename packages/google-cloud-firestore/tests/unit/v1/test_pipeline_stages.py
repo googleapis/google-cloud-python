@@ -787,9 +787,7 @@ class TestSearch:
         assert options.retrieval_depth is None
         assert options.sort is None
         assert options.add_fields is None
-        assert options.select is None
         assert options.offset is None
-        assert options.query_enhancement is None
         assert options.language_code is None
 
         stage = stages.Search(options)
@@ -805,16 +803,13 @@ class TestSearch:
             retrieval_depth=2,
             sort=Ordering("score", Ordering.Direction.DESCENDING),
             add_fields=[Field("extra")],
-            select=[Field("name")],
             offset=5,
-            query_enhancement="disabled",
             language_code="en",
         )
         assert options.limit == 10
         assert options.retrieval_depth == 2
         assert len(options.sort) == 1
         assert options.offset == 5
-        assert options.query_enhancement == stages.QueryEnhancement.DISABLED
         assert options.language_code == "en"
 
         stage = stages.Search(options)
@@ -824,7 +819,6 @@ class TestSearch:
         assert pb_opts["retrieval_depth"].integer_value == 2
         assert len(pb_opts["sort"].array_value.values) == 1
         assert pb_opts["offset"].integer_value == 5
-        assert pb_opts["query_enhancement"].string_value == "disabled"
         assert pb_opts["language_code"].string_value == "en"
         assert "query" in pb_opts
 
@@ -832,18 +826,8 @@ class TestSearch:
         options = stages.SearchOptions(query="science")
         assert options.query.name == "document_matches"
 
-    def test_search_query_enhancement_enum(self):
-        options = stages.SearchOptions(
-            query="q", query_enhancement=stages.QueryEnhancement.REQUIRED
-        )
-        assert options.query_enhancement == stages.QueryEnhancement.REQUIRED
-
-        stage = stages.Search(options)
-        pb_opts = stage._pb_options()
-        assert pb_opts["query_enhancement"].string_value == "required"
-
     def test_search_string_field_coercion(self):
-        options = stages.SearchOptions(query="tech", select=["title"])
+        options = stages.SearchOptions(query="tech")
         assert len(options.select) == 1
         assert isinstance(options.select[0], Field)
         assert options.select[0].path == "title"

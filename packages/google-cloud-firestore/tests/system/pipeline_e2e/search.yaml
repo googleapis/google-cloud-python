@@ -41,7 +41,6 @@ tests:
         limit: 5
         retrieval_depth: 10
         offset: 1
-        query_enhancement: disabled
         language_code: en
   assert_proto:
     pipeline:
@@ -57,8 +56,6 @@ tests:
             integerValue: '10'
           offset:
             integerValue: '1'
-          query_enhancement:
-            stringValue: disabled
           language_code:
             stringValue: en
           query:
@@ -238,41 +235,6 @@ tests:
               expression:
                 fieldReferenceValue: name
         name: sort
-- description: search_stage_with_select_score
-  pipeline:
-  - Collection: restaurants
-  - Search:
-    - SearchOptions:
-        query: tacos
-        select:
-        - AliasedExpression:
-          - Score: []
-          - search_score
-  assert_proto:
-    pipeline:
-      stages:
-      - name: collection
-        args:
-        - referenceValue: /restaurants
-      - name: search
-        options:
-          query:
-            functionValue:
-              name: document_matches
-              args:
-              - stringValue: tacos
-          select:
-            mapValue:
-              fields:
-                search_score:
-                  functionValue:
-                    name: score
-  assert_results_approximate:
-    config:
-      absolute_tolerance: 0.99
-    data:
-    - search_score: 1.0
-    - search_score: 1.0
 - description: search_full_document
   pipeline:
   - Collection: restaurants
