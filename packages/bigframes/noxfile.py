@@ -55,7 +55,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
@@ -369,6 +369,8 @@ def run_system(
 @nox.parametrize("test_extra", [True, False])
 def system(session: nox.sessions.Session, test_extra):
     """Run the system test suite."""
+    if session.python in ("3.7", "3.8", "3.9"):
+        session.skip("Python 3.9 and below are not supported")
     if test_extra:    
         run_system(
             session=session,
@@ -958,7 +960,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / "constraints-3.10.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
