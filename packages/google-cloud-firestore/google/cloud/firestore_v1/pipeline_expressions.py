@@ -1124,7 +1124,7 @@ class Expression(ABC):
 
     @expose_as_static
     def coalesce(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
-        """Creates an expression that evaluates to the first non-null, non-error value.
+        """Creates an expression that evaluates to the first non-null/non-missing value.
 
         Example:
             >>> # Return the "preferredName" field if it exists.
@@ -1137,7 +1137,7 @@ class Expression(ABC):
 
         Args:
             *others: Additional expressions or constants to evaluate if the current
-                expression evaluates to null or error.
+                expression evaluates to null or is missing.
 
         Returns:
             An Expression representing the coalesce operation.

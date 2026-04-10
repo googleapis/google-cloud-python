@@ -730,6 +730,84 @@ tests:
             - "res"
     assert_results:
       - res: "B"
+  - description: testCoalesceMultipleFailures
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field1
+                - Field: non_existent_field2
+                - Field: non_existent_field3
+                - Constant: "Found"
+            - "res"
+    assert_results:
+      - res: "Found"
+  - description: testCoalesceShortCircuit
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - "Hello"
+                - "Never Reaches"
+            - "res"
+    assert_results:
+      - res: "Hello"
+  - description: testCoalesceNumber
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - 42
+            - "res"
+    assert_results:
+      - res: 42
+  - description: testCoalesceNoResult
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field1
+                - Field: non_existent_field2
+            - "res"
+    assert_results:
+      - {}
+  - description: testCoalesceFieldResult
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - Field: title
+            - "res"
+    assert_results:
+      - res: "1984"
+  - description: testCoalesceNull
+    pipeline:
+      - Documents:
+          - /errors/doc_with_null
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: value
+                - Constant: "Success"
+            - "res"
+    assert_results:
+      - res: "Success"
   - description: testSwitchOn
     pipeline:
       - Literals:
