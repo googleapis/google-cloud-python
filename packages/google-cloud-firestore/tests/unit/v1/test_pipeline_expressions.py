@@ -1668,63 +1668,63 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_array_filter(self):
-        arg1 = self._make_arg("ArrayField")
-        arg2 = "element_alias"
-        arg3 = self._make_arg("FilterExpr", expr_type=BooleanExpression)
-        instance = Expression.array_filter(arg1, arg3, arg2)
+        arr = self._make_arg("ArrayField")
+        filter_expr = self._make_arg("FilterExpr", expr_type=BooleanExpression)
+        elm_alias = "element_alias"
+        instance = Expression.array_filter(arr, filter_expr, elm_alias)
         assert instance.name == "array_filter"
-        assert instance.params == [arg1, Constant.of(arg2), arg3]
+        assert instance.params == [arr, Constant.of(elm_alias), filter_expr]
         assert (
             repr(instance)
-            == "ArrayField.array_filter(Constant.of('element_alias'), FilterExpr)"
+            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'))"
         )
-        infix_instance = arg1.array_filter(arg3, arg2)
+        infix_instance = arr.array_filter(filter_expr, elm_alias)
         assert infix_instance == instance
 
-        arg4 = "index_alias"
-        instance_with_idx = Expression.array_filter(arg1, arg3, arg2, arg4)
+        idx_alias = "index_alias"
+        instance_with_idx = Expression.array_filter(arr, filter_expr, elm_alias, idx_alias)
         assert instance_with_idx.name == "array_filter"
         assert instance_with_idx.params == [
-            arg1,
-            Constant.of(arg2),
-            Constant.of(arg4),
-            arg3,
+            arr,
+            Constant.of(elm_alias),
+            Constant.of(idx_alias),
+            filter_expr,
         ]
         assert (
             repr(instance_with_idx)
-            == "ArrayField.array_filter(Constant.of('element_alias'), FilterExpr, Constant.of('index_alias'))"
+            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'), Constant.of('index_alias'), None)"
         )
-        infix_instance_with_idx = arg1.array_filter(arg3, arg2, arg4)
+        infix_instance_with_idx = arr.array_filter(filter_expr, elm_alias, idx_alias)
         assert infix_instance_with_idx == instance_with_idx
 
     def test_array_transform(self):
-        arg1 = self._make_arg("ArrayField")
-        arg2 = "element_alias"
-        arg3 = self._make_arg("TransformExpr")
-        instance = Expression.array_transform(arg1, arg3, arg2)
+        arr = self._make_arg("ArrayField")
+        transform_expr = self._make_arg("TransformExpr")
+        elm_alias = "element_alias"
+        instance = Expression.array_transform(arr, transform_expr, elm_alias)
         assert instance.name == "array_transform"
-        assert instance.params == [arg1, Constant.of(arg2), arg3]
+        assert instance.params == [arr, Constant.of(elm_alias), transform_expr]
         assert (
             repr(instance)
-            == "ArrayField.array_transform(Constant.of('element_alias'), TransformExpr)"
+            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), None)"
         )
-        infix_instance = arg1.array_transform(arg3, arg2)
+        infix_instance = arr.array_transform(transform_expr, elm_alias)
         assert infix_instance == instance
 
-        arg4 = "index_alias"
-        instance_with_idx = Expression.array_transform(arg1, arg3, arg2, arg4)
+        idx_alias = "index_alias"
+        instance_with_idx = Expression.array_transform(arr, transform_expr, elm_alias, idx_alias)
         assert instance_with_idx.name == "array_transform"
         assert instance_with_idx.params == [
-            arg1,
-            Constant.of(arg2),
-            Constant.of(arg4),
-            arg3,
+            arr,
+            Constant.of(elm_alias),
+            Constant.of(idx_alias),
+            transform_expr,
         ]
         assert (
             repr(instance_with_idx)
             == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
         )
-        infix_instance_with_idx = arg1.array_transform(arg3, arg2, arg4)
+        infix_instance_with_idx = arr.array_transform(transform_expr, elm_alias, idx_alias)
         assert infix_instance_with_idx == instance_with_idx
 
     def test_array_concat(self):
