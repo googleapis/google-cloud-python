@@ -827,6 +827,21 @@ class TestSearch:
         assert options.query.name == "document_matches"
         assert options.query.params[0].value == "science"
 
+    def test_search_with_string(self):
+        stage = stages.Search("technology")
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query.name == "document_matches"
+        assert stage.options.query.params[0].value == "technology"
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+
+    def test_search_with_boolean_expression(self):
+        expr = DocumentMatches("tech")
+        stage = stages.Search(expr)
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query is expr
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
 
 class TestSelect:
     def _make_one(self, *args, **kwargs):

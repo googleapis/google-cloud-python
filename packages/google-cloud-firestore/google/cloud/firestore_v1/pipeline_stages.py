@@ -500,8 +500,12 @@ class Sample(Stage):
 class Search(Stage):
     """Search stage."""
 
-    def __init__(self, options: SearchOptions):
+    def __init__(self, query_or_options: str | BooleanExpression | SearchOptions):
         super().__init__("search")
+        if isinstance(query_or_options, SearchOptions):
+            options = query_or_options
+        else:
+            options = SearchOptions(query=query_or_options)
         self.options = options
 
     def _pb_args(self) -> list[Value]:

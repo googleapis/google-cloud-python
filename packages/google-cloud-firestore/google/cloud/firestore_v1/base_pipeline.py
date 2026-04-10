@@ -394,7 +394,7 @@ class _BasePipeline:
         """
         return self._append(stages.Sort(*orders))
 
-    def search(self, options: stages.SearchOptions) -> "_BasePipeline":
+    def search(self, query_or_options: str | BooleanExpression | stages.SearchOptions) -> "_BasePipeline":
         """
         Adds a search stage to the pipeline.
 
@@ -403,7 +403,7 @@ class _BasePipeline:
         Example:
             >>> from google.cloud.firestore_v1.pipeline_stages import SearchOptions
             >>> from google.cloud.firestore_v1.pipeline_expressions import And, DocumentMatches, Field, GeoPoint
-            >>> # Search for restaurants matching "waffles" within 1000m of a location
+            >>> # Search for restaurants matching either "waffles" or "pancakes" near a location
             >>> pipeline = client.pipeline().collection("restaurants").search(
             ...     SearchOptions(
             ...         query=And(
@@ -415,12 +415,13 @@ class _BasePipeline:
             ... )
 
         Args:
-            options: A SearchOptions instance configuring the search.
+            options: Either a string or expression representing the search query, or
+                A `SearchOptions` instance configuring the search.
 
         Returns:
             A new Pipeline object with this stage appended to the stage list
         """
-        return self._append(stages.Search(options))
+        return self._append(stages.Search(query_or_options))
 
     def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
         """
