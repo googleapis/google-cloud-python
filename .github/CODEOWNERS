@@ -25,7 +25,7 @@
 # As per the above, the following list is only used for notifications, not for approvals.
 # Googlers see b/477912165 and corresponding design doc
 
-# Catch all. @googleapis/cloud-sdk-python-team is notified on every change
+# Catch all. @googleapis/cloud-sdk-python-team is notified on every change for packages not owned by other teams.
 *                                             @googleapis/cloud-sdk-python-team
 
 /packages/bigframes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
