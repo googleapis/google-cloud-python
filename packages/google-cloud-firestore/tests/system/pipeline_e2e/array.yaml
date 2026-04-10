@@ -554,6 +554,78 @@ tests:
                     - integerValue: '-1'
                     name: offset
           name: select
+  - description: testOffset_LiteralArray
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Array: [10, 20, 30]
+                - Constant: 1
+            - "element"
+    assert_results:
+      - element: 20
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                element:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - integerValue: '10'
+                        - integerValue: '20'
+                        - integerValue: '30'
+                        name: array
+                    - integerValue: '1'
+                    name: offset
+          name: select
+  - description: testOffset_LiteralArray_Negative
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Array: [10, 20, 30]
+                - Constant: -1
+            - "element"
+    assert_results:
+      - element: 30
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                element:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - integerValue: '10'
+                        - integerValue: '20'
+                        - integerValue: '30'
+                        name: array
+                    - integerValue: '-1'
+                    name: offset
+          name: select
   - description: testArrayFirst
     pipeline:
       - Collection: books

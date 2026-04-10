@@ -826,6 +826,40 @@ tests:
         - res
     assert_results:
       - res: "B"
+  - description: testSwitchOn_Default
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 3
+              - Constant: "B"
+              - Constant: "C"
+      - Select:
+        - res
+    assert_results:
+      - res: "C"
+  - description: testSwitchOn_Error
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 3
+              - Constant: "B"
+      - Select:
+        - res
+    assert_error: ".*all switch cases evaluate to false, and no default provided"
   - description: testStorageSize
     pipeline:
       - Collection: books
