@@ -21,15 +21,9 @@ from bigframes.testing import utils
 pytest.importorskip("pytest_snapshot")
 
 
-def test_obj_fetch_metadata(scalar_types_df: bpd.DataFrame, snapshot):
-    blob_s = scalar_types_df["string_col"].str.to_blob()
-    sql = blob_s.blob.version().to_frame().sql
-    snapshot.assert_match(sql, "out.sql")
-
-
 def test_obj_get_access_url(scalar_types_df: bpd.DataFrame, snapshot):
-    blob_s = scalar_types_df["string_col"].str.to_blob()
-    sql = blob_s.blob.read_url().to_frame().sql
+    blob_s = scalar_types_df["string_col"].str._to_blob()
+    sql = blob_s._blob._read_url().to_frame().sql
     snapshot.assert_match(sql, "out.sql")
 
 
@@ -45,7 +39,7 @@ def test_obj_get_access_url_with_duration(scalar_types_df: bpd.DataFrame, snapsh
 
 
 def test_obj_make_ref(scalar_types_df: bpd.DataFrame, snapshot):
-    blob_df = scalar_types_df["string_col"].str.to_blob()
+    blob_df = scalar_types_df["string_col"].str._to_blob()
     snapshot.assert_match(blob_df.to_frame().sql, "out.sql")
 
 

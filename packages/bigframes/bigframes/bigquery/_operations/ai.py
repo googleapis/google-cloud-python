@@ -1003,7 +1003,7 @@ def _separate_context_and_series(
     if isinstance(prompt, series.Series):
         if prompt.dtype == dtypes.OBJ_REF_DTYPE:
             # Multi-model support
-            return [None], [prompt.blob.read_url()]
+            return [None], [prompt._blob._read_url()]
         return [None], [prompt]
 
     prompt_context: List[str | None] = []
@@ -1040,7 +1040,7 @@ def _convert_series(
 
     if result.dtype == dtypes.OBJ_REF_DTYPE:
         # Support multimodel
-        return result.blob.read_url()
+        return result._blob._read_url()
     return result
 
 

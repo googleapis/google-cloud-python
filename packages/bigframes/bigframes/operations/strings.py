@@ -305,6 +305,18 @@ class StringMethods(Generic[T]):
             ops.ArrayReduceOp(aggregation=agg_ops.StringAggOp(sep=sep))
         )
 
+    def _to_blob(self, connection: Optional[str] = None) -> T:
+        import bigframes.core.blocks
+
+        if hasattr(self._data, "_block") and isinstance(
+            self._data._block, bigframes.core.blocks.Block
+        ):
+            session = self._data._block.session
+        else:
+            raise ValueError("to_blob is only supported via Series.str")
+        connection = session._create_bq_connection(connection=connection)
+        return self._data._apply_binary_op(connection, ops.obj_make_ref_op)
+
     def to_blob(self, connection: Optional[str] = None) -> T:
         """Create a BigFrames Blob series from a series of URIs.
 
@@ -325,16 +337,15 @@ class StringMethods(Generic[T]):
             bigframes.series.Series: Blob Series.
 
         """
-        import bigframes.core.blocks
+        import warnings
+        import bigframes.exceptions as bfe
 
-        if hasattr(self._data, "_block") and isinstance(
-            self._data._block, bigframes.core.blocks.Block
-        ):
-            session = self._data._block.session
-        else:
-            raise ValueError("to_blob is only supported via Series.str")
-        connection = session._create_bq_connection(connection=connection)
-        return self._data._apply_binary_op(connection, ops.obj_make_ref_op)
+        warnings.warn(
+            "Series.str.to_blob is deprecated and will be removed in a future release. Use bigframes.bigquery.obj functions instead.",
+            category=bfe.ApiDeprecationWarning,
+            stacklevel=2,
+        )
+        return self._to_blob(connection)
 
 
 def _parse_flags(flags: int) -> Optional[str]:
