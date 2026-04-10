@@ -4469,6 +4469,14 @@ class Parser(metaclass=_Parser):
         if schema:
             return self._parse_schema(this=this)
 
+        # see: https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#from_clause
+        # from_item, then alias, then time travel, then sample.
+        alias = self._parse_table_alias(
+            alias_tokens=alias_tokens or self.TABLE_ALIAS_TOKENS
+        )
+        if alias:
+            this.set("alias", alias)
+
         version = self._parse_version()
 
         if version:
@@ -4477,11 +4485,6 @@ class Parser(metaclass=_Parser):
         if self.dialect.ALIAS_POST_TABLESAMPLE:
             this.set("sample", self._parse_table_sample())
 
-        alias = self._parse_table_alias(
-            alias_tokens=alias_tokens or self.TABLE_ALIAS_TOKENS
-        )
-        if alias:
-            this.set("alias", alias)
 
         if self._match(TokenType.INDEXED_BY):
             this.set("indexed", self._parse_table_parts())

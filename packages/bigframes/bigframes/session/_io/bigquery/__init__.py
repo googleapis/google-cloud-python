@@ -516,19 +516,19 @@ def to_query(
 ) -> str:
     """Compile query_or_table with conditions(filters, wildcards) to query."""
     if is_query(query_or_table):
-        sub_query = f"({query_or_table})"
+        from_item = f"({query_or_table})"
     else:
         # Table ID can have 1, 2, 3, or 4 parts. Quoting all parts to be safe.
         # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
         parts = query_or_table.split(".")
-        sub_query = ".".join(f"`{part}`" for part in parts)
+        from_item = ".".join(f"`{part}`" for part in parts)
 
     # TODO(b/338111344): Generate an index based on DefaultIndexKind if we
     # don't have index columns specified.
     if columns:
         # We only reduce the selection if columns is set, but we always
         # want to make sure index_cols is also included.
-        select_clause = "SELECT " + ", ".join(f"`{column}`" for column in columns)
+        select_clause = "SELECT " + ", ".join(f"`_bf_source`.`{column}`" for column in columns)
     else:
         select_clause = "SELECT *"
 
@@ -545,7 +545,7 @@ def to_query(
 
     return (
         f"{select_clause} "
-        f"FROM {sub_query}"
+        f"FROM {from_item} AS _bf_source"
         f"{time_travel_clause}{where_clause}{limit_clause}"
     )
 
