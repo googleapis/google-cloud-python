@@ -1,15 +1,14 @@
 {
-  "api_id": "networksecurity.googleapis.com",
-  "api_shortname": "networksecurity",
-  "client_documentation": "https://cloud.google.com/python/docs/reference/networksecurity/latest",
-  "default_version": "v1",
-  "distribution_name": "google-cloud-network-security",
-  "issue_tracker": "",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "name": "networksecurity",
-  "name_pretty": "Network Security",
-  "product_documentation": "https://cloud.google.com/traffic-director/docs/reference/network-security/rest",
-  "release_level": "preview",
-  "repo": "googleapis/google-cloud-python"
+    "api_id": "networksecurity.googleapis.com",
+    "api_shortname": "networksecurity",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/networksecurity/latest",
+    "default_version": "v1",
+    "distribution_name": "google-cloud-network-security",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "name": "networksecurity",
+    "name_pretty": "Network Security",
+    "product_documentation": "https://cloud.google.com/traffic-director/docs/reference/network-security/rest",
+    "release_level": "preview",
+    "repo": "googleapis/google-cloud-python"
 }
