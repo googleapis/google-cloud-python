@@ -938,6 +938,54 @@ tests:
                         name: equal
                     name: array_filter
           name: select
+  - description: testArrayFilterWithIndex
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_filter:
+                - Field: tags
+                - FunctionExpression.equal:
+                    - Variable: i
+                    - Constant: 1
+                - "tag"
+                - "i"
+            - "comedyTag"
+    assert_results:
+      - comedyTag: ["space"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                comedyTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - stringValue: "i"
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: i
+                        - integerValue: 1
+                        name: equal
+                    name: array_filter
+          name: select
   - description: testArrayTransform
     pipeline:
       - Collection: books
