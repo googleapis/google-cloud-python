@@ -1947,16 +1947,16 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_type_enum(self):
-        from google.cloud.firestore_v1.pipeline_expressions import Type
+        from google.cloud.firestore_v1.pipeline_expressions import PipelineDataType
 
         arg1 = self._make_arg("Value")
-        instance = Expression.is_type(arg1, Type.STRING)
+        instance = Expression.is_type(arg1, PipelineDataType.STRING)
         assert instance.name == "is_type"
         assert instance.params[0] == arg1
         assert isinstance(instance.params[1], Constant)
-        assert instance.params[1].value == Type.STRING.value
+        assert instance.params[1].value == PipelineDataType.STRING.value
         assert repr(instance) == "Value.is_type(Constant.of('string'))"
-        infix_instance = arg1.is_type(Type.STRING)
+        infix_instance = arg1.is_type(PipelineDataType.STRING)
         assert infix_instance == instance
 
     def test_timestamp_enums(self):
