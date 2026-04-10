@@ -25,6 +25,7 @@ from enum import Enum
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     Generic,
     Sequence,
     TypeVar,
@@ -569,7 +570,7 @@ class Expression(ABC):
         return FunctionExpression(
             "maximum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_maximum",
+            repr_function=FunctionExpression._build_infix_repr("logical_maximum"),
         )
 
     @expose_as_static
@@ -595,7 +596,7 @@ class Expression(ABC):
         return FunctionExpression(
             "minimum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_minimum",
+            repr_function=FunctionExpression._build_infix_repr("logical_minimum"),
         )
 
     @expose_as_static
@@ -955,7 +956,10 @@ class Expression(ABC):
             args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
         args.append(filter_expr)
 
-        return FunctionExpression("array_filter", args)
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[-1]!r}, {expr.params[1]!r}{', ' + repr(expr.params[2]) if len(expr.params) == 4 else ''})"
+        )
+        return FunctionExpression("array_filter", args, repr_function=repr_func)
 
     @expose_as_static
     def array_transform(
@@ -987,7 +991,10 @@ class Expression(ABC):
             args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
         args.append(transform_expr)
 
-        return FunctionExpression("array_transform", args)
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[-1]!r}, {expr.params[1]!r}{', ' + repr(expr.params[2]) if len(expr.params) == 4 else ''})"
+        )
+        return FunctionExpression("array_transform", args, repr_function=repr_func)
 
     @expose_as_static
     def array_concat(
@@ -2154,7 +2161,9 @@ class Expression(ABC):
             A new `Expression` representing the maximum element of the array.
         """
         return FunctionExpression(
-            "maximum", [self], infix_name_override="array_maximum"
+            "maximum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_maximum"),
         )
 
     @expose_as_static
@@ -2169,7 +2178,9 @@ class Expression(ABC):
             A new `Expression` representing the minimum element of the array.
         """
         return FunctionExpression(
-            "minimum", [self], infix_name_override="array_minimum"
+            "minimum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_minimum"),
         )
 
     @expose_as_static
@@ -2191,7 +2202,7 @@ class Expression(ABC):
         return FunctionExpression(
             "maximum_n",
             [self, self._cast_to_expr_or_convert_to_constant(n)],
-            infix_name_override="array_maximum_n",
+            repr_function=FunctionExpression._build_infix_repr("array_maximum_n"),
         )
 
     @expose_as_static
@@ -2213,7 +2224,7 @@ class Expression(ABC):
         return FunctionExpression(
             "minimum_n",
             [self, self._cast_to_expr_or_convert_to_constant(n)],
-            infix_name_override="array_minimum_n",
+            repr_function=FunctionExpression._build_infix_repr("array_minimum_n"),
         )
 
     @expose_as_static
@@ -2683,13 +2694,11 @@ class FunctionExpression(Expression):
         name: str,
         params: Sequence[Expression],
         *,
-        use_infix_repr: bool = True,
-        infix_name_override: str | None = None,
+        repr_function: Callable[["FunctionExpression"], str] | None = None,
     ):
         self.name = name
         self.params = list(params)
-        self._use_infix_repr = use_infix_repr
-        self._infix_name_override = infix_name_override
+        self._repr_function = repr_function or self._build_infix_repr()
 
     def __repr__(self):
         """
@@ -2697,21 +2706,53 @@ class FunctionExpression(Expression):
 
         Display them this way in the repr string where possible
         """
-        if self._use_infix_repr:
-            infix_name = self._infix_name_override or self.name
-            if len(self.params) == 1:
-                return f"{self.params[0]!r}.{infix_name}()"
-            elif len(self.params) == 2:
-                return f"{self.params[0]!r}.{infix_name}({self.params[1]!r})"
-            else:
-                return f"{self.params[0]!r}.{infix_name}({', '.join([repr(p) for p in self.params[1:]])})"
-        return f"{self.__class__.__name__}({', '.join([repr(p) for p in self.params])})"
+        return self._repr_function(self)
 
     def __eq__(self, other):
         if not isinstance(other, FunctionExpression):
             return False
         else:
             return other.name == self.name and other.params == self.params
+
+    @staticmethod
+    def _build_infix_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using infix notation.
+
+        Example:
+            `value.greater_than(18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.name
+            args = expr.params
+            if len(args) == 0:
+                return f"{final_name}()"
+            elif len(args) == 1:
+                return f"{args[0]!r}.{final_name}()"
+            elif len(args) == 2:
+                return f"{args[0]!r}.{final_name}({args[1]!r})"
+            else:
+                return f"{args[0]!r}.{final_name}({', '.join([repr(a) for a in args[1:]])})"
+
+        return build_repr
+
+    @staticmethod
+    def _build_standalone_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using standalone function notation.
+
+        Example:
+            `GreaterThan(value, 18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.__class__.__name__
+            return f"{final_name}({', '.join([repr(a) for a in expr.params])})"
+
+        return build_repr
 
     def _to_pb(self):
         return Value(
@@ -2966,7 +3007,9 @@ class And(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("and", conditions, use_infix_repr=False)
+        super().__init__(
+            "and", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Not(BooleanExpression):
@@ -2982,7 +3025,11 @@ class Not(BooleanExpression):
     """
 
     def __init__(self, condition: BooleanExpression):
-        super().__init__("not", [condition], use_infix_repr=False)
+        super().__init__(
+            "not",
+            [condition],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Or(BooleanExpression):
@@ -2999,7 +3046,9 @@ class Or(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("or", conditions, use_infix_repr=False)
+        super().__init__(
+            "or", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Nor(BooleanExpression):
@@ -3015,7 +3064,9 @@ class Nor(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("nor", conditions, use_infix_repr=False)
+        super().__init__(
+            "nor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Xor(BooleanExpression):
@@ -3032,7 +3083,9 @@ class Xor(BooleanExpression):
     """
 
     def __init__(self, conditions: Sequence["BooleanExpression"]):
-        super().__init__("xor", conditions, use_infix_repr=False)
+        super().__init__(
+            "xor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Conditional(BooleanExpression):
@@ -3054,7 +3107,9 @@ class Conditional(BooleanExpression):
         self, condition: BooleanExpression, then_expr: Expression, else_expr: Expression
     ):
         super().__init__(
-            "conditional", [condition, then_expr, else_expr], use_infix_repr=False
+            "conditional",
+            [condition, then_expr, else_expr],
+            repr_function=FunctionExpression._build_standalone_repr(),
         )
 
 
@@ -3075,7 +3130,13 @@ class Count(AggregateFunction):
 
     def __init__(self, expression: Expression | None = None):
         expression_list = [expression] if expression else []
-        super().__init__("count", expression_list, use_infix_repr=bool(expression_list))
+        super().__init__(
+            "count",
+            expression_list,
+            repr_function=FunctionExpression._build_infix_repr()
+            if expression_list
+            else FunctionExpression._build_standalone_repr(),
+        )
 
 
 class CurrentTimestamp(FunctionExpression):
@@ -3086,7 +3147,11 @@ class CurrentTimestamp(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("current_timestamp", [], use_infix_repr=False)
+        super().__init__(
+            "current_timestamp",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Rand(FunctionExpression):
@@ -3098,7 +3163,9 @@ class Rand(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("rand", [], use_infix_repr=False)
+        super().__init__(
+            "rand", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Variable(Expression):
@@ -3137,4 +3204,8 @@ class CurrentDocument(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("current_document", [])
+        super().__init__(
+            "current_document",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )

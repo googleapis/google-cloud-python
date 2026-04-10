@@ -1669,7 +1669,7 @@ class TestExpressionessionMethods:
 
     def test_array_filter(self):
         arr = self._make_arg("ArrayField")
-        filter_expr = self._make_arg("FilterExpr", expr_type=BooleanExpression)
+        filter_expr = self._make_arg("FilterExpr")
         elm_alias = "element_alias"
         instance = Expression.array_filter(arr, filter_expr, elm_alias)
         assert instance.name == "array_filter"
@@ -1682,7 +1682,9 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
         idx_alias = "index_alias"
-        instance_with_idx = Expression.array_filter(arr, filter_expr, elm_alias, idx_alias)
+        instance_with_idx = Expression.array_filter(
+            arr, filter_expr, elm_alias, idx_alias
+        )
         assert instance_with_idx.name == "array_filter"
         assert instance_with_idx.params == [
             arr,
@@ -1692,7 +1694,7 @@ class TestExpressionessionMethods:
         ]
         assert (
             repr(instance_with_idx)
-            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'), Constant.of('index_alias'), None)"
+            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
         )
         infix_instance_with_idx = arr.array_filter(filter_expr, elm_alias, idx_alias)
         assert infix_instance_with_idx == instance_with_idx
@@ -1706,13 +1708,15 @@ class TestExpressionessionMethods:
         assert instance.params == [arr, Constant.of(elm_alias), transform_expr]
         assert (
             repr(instance)
-            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), None)"
+            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'))"
         )
         infix_instance = arr.array_transform(transform_expr, elm_alias)
         assert infix_instance == instance
 
         idx_alias = "index_alias"
-        instance_with_idx = Expression.array_transform(arr, transform_expr, elm_alias, idx_alias)
+        instance_with_idx = Expression.array_transform(
+            arr, transform_expr, elm_alias, idx_alias
+        )
         assert instance_with_idx.name == "array_transform"
         assert instance_with_idx.params == [
             arr,
@@ -1724,7 +1728,9 @@ class TestExpressionessionMethods:
             repr(instance_with_idx)
             == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
         )
-        infix_instance_with_idx = arr.array_transform(transform_expr, elm_alias, idx_alias)
+        infix_instance_with_idx = arr.array_transform(
+            transform_expr, elm_alias, idx_alias
+        )
         assert infix_instance_with_idx == instance_with_idx
 
     def test_array_concat(self):
