@@ -629,6 +629,8 @@ class Expression(ABC):
         """Evaluates to the distance in meters between the location in the specified
         field and the query location.
 
+        .. note::
+            This feature is currently in beta and is subject to change.
         Note: This Expression can only be used within a `Search` stage.
 
         Example:
@@ -2840,6 +2842,9 @@ class Score(FunctionExpression):
     in the search query. If `SearchOptions.query` is not set or does not contain
     any text predicates, then this topicality score will always be `0`.
 
+    .. note::
+        This feature is currently in beta and is subject to change.
+
     Note: This Expression can only be used within a `Search` stage.
 
     Example:
@@ -2860,6 +2865,9 @@ class Score(FunctionExpression):
 
 class DocumentMatches(BooleanExpression):
     """Creates a boolean expression for a document match query.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
 
     Note: This Expression can only be used within a `Search` stage.
 

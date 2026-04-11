@@ -343,7 +343,11 @@ class Sample(Stage):
 
 
 class Search(Stage):
-    """Search stage."""
+    """Search stage.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
 
     def __init__(self, query_or_options: str | BooleanExpression | SearchOptions):
         super().__init__("search")
@@ -434,7 +438,11 @@ class Where(Stage):
 
 
 class Delete(Stage):
-    """Deletes documents matching the pipeline criteria."""
+    """Deletes documents matching the pipeline criteria.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
 
     def __init__(self):
         super().__init__("delete")
@@ -444,7 +452,11 @@ class Delete(Stage):
 
 
 class Update(Stage):
-    """Updates documents with transformed fields."""
+    """Updates documents with transformed fields.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
 
     def __init__(self, *transformed_fields: Selectable):
         super().__init__("update")

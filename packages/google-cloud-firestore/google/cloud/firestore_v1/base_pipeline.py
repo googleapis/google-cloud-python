@@ -402,6 +402,9 @@ class _BasePipeline:
         """
         Adds a search stage to the pipeline.
 
+        .. note::
+            This feature is currently in beta and is subject to change.
+
         This stage filters documents based on the provided query expression.
 
         Example:
@@ -712,6 +715,9 @@ class _BasePipeline:
         """
         Deletes the documents from the current pipeline stage.
 
+        .. note::
+            This feature is currently in beta and is subject to change.
+
         Example:
             >>> from google.cloud.firestore_v1.pipeline_expressions import Field
             >>> pipeline = client.pipeline().collection("logs")
@@ -727,6 +733,9 @@ class _BasePipeline:
     def update(self, *transformed_fields: "Selectable") -> "_BasePipeline":
         """
         Performs an update operation using documents from previous stages.
+
+        .. note::
+            This feature is currently in beta and is subject to change.
 
         If called without `transformed_fields`, this method updates the documents in
         place based on the data flowing through the pipeline.

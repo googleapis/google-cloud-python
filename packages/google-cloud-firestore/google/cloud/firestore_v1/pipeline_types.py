@@ -228,7 +228,11 @@ class SampleOptions:
 
 
 class SearchOptions:
-    """Options for configuring the `Search` pipeline stage."""
+    """Options for configuring the `Search` pipeline stage.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
 
     def __init__(
         self,
