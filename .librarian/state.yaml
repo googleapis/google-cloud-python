@@ -3684,7 +3684,7 @@ libraries:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 38ed7d6ba66a774924722146f054d12b4487a89f
     apis:
       - path: google/cloud/vectorsearch/v1beta
