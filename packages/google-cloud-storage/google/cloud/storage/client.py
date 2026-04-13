@@ -21,8 +21,8 @@ import datetime
 import functools
 import json
 import os
-from typing import Optional, Sequence, Tuple, Union
 import warnings
+from typing import Optional, Sequence, Tuple, Union
 
 import google.api_core.client_options
 from google.api_core import page_iterator
@@ -32,7 +32,6 @@ from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
-
 from google.cloud.storage._helpers import (
     _DEFAULT_SCHEME,
     _DEFAULT_UNIVERSE_DOMAIN,

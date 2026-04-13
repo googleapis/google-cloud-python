@@ -18,8 +18,8 @@ import base64
 import copy
 import datetime
 import json
-from typing import Any, Optional, Set, Tuple, Union
 import warnings
+from typing import Any, Optional, Set, Tuple, Union, TYPE_CHECKING
 from urllib.parse import urlsplit
 
 from google.api_core import datetime_helpers
@@ -27,8 +27,7 @@ from google.api_core.iam import Policy
 from google.api_core.retry import Retry
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
-
-from google.cloud.storage import Client, _signing
+from google.cloud.storage import _signing
 from google.cloud.storage._helpers import (
     _NOW,
     _UTC,
@@ -69,6 +68,9 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ConditionalRetryPolicy,
 )
+
+if TYPE_CHECKING:
+    from google.cloud.storage.client import Client
 
 _UBLA_BPO_ENABLED_MESSAGE = (
     "Pass only one of 'uniform_bucket_level_access_enabled' / "
@@ -854,7 +856,7 @@ class Bucket(_PropertyMixin):
         encryption_key: Optional[bytes] = None,
         kms_key_name: Optional[str] = None,
         generation: Optional[int] = None,
-    ) -> Blob:
+    ) -> "Blob":
         """Factory constructor for blob object.
 
         .. note::
@@ -1295,7 +1297,7 @@ class Bucket(_PropertyMixin):
     def get_blob(
         self,
         blob_name: str,
-        client: Optional[Client] = None,
+        client: Optional["Client"] = None,
         encryption_key: Optional[bytes] = None,
         generation: Optional[int] = None,
         if_etag_match: Optional[Union[str, Set[str]]] = None,
