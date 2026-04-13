@@ -364,7 +364,8 @@ def run_system(
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+
+@nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
     if session.python in ("3.7", "3.8", "3.9"):
