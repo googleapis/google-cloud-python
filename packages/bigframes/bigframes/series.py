@@ -1146,10 +1146,12 @@ class Series:
         )
 
     def isin(self, values) -> "Series":
+        # Block.isin can return nulls for non-matching rows, but pandas.isin
+        # always returns boolean (False for non-matches). We fill nulls with False.
         if isinstance(values, Series):
-            return Series(self._block.isin(values._block))
+            return Series(self._block.isin(values._block)).fillna(value=False)
         if isinstance(values, indexes.Index):
-            return Series(self._block.isin(values.to_series()._block))
+            return Series(self._block.isin(values.to_series()._block)).fillna(value=False)
         if not _is_list_like(values):
             raise TypeError(
                 "only list-like objects are allowed to be passed to "
