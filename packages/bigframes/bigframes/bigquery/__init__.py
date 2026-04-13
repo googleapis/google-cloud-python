@@ -87,7 +87,11 @@ from bigframes.bigquery._operations.json import (
     to_json,
     to_json_string,
 )
-from bigframes.bigquery._operations.mathematical import rand
+from bigframes.bigquery._operations.mathematical import (
+    hparam_candidates,
+    hparam_range,
+    rand,
+)
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
 from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
@@ -130,6 +134,8 @@ _functions = [
     to_json,
     to_json_string,
     # mathematical ops
+    hparam_candidates,
+    hparam_range,
     rand,
     # search ops
     create_vector_index,
@@ -187,6 +193,8 @@ __all__ = [
     "to_json",
     "to_json_string",
     # mathematical ops
+    "hparam_candidates",
+    "hparam_range",
     "rand",
     # search ops
     "create_vector_index",
