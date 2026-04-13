@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ExportDataObjects
+# Snippet for UpdateIndex
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vectorsearch
 
 
-# [START vectorsearch_v1beta_generated_VectorSearchService_ExportDataObjects_async]
+# [START vectorsearch_v1beta_generated_VectorSearchService_UpdateIndex_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,29 +34,27 @@
 from google.cloud import vectorsearch_v1beta
 
 
-async def sample_export_data_objects():
+def sample_update_index():
     # Create a client
-    client = vectorsearch_v1beta.VectorSearchServiceAsyncClient()
+    client = vectorsearch_v1beta.VectorSearchServiceClient()
 
     # Initialize request argument(s)
-    gcs_destination = vectorsearch_v1beta.GcsExportDestination()
-    gcs_destination.export_uri = "export_uri_value"
-    gcs_destination.format_ = "JSONL"
+    index = vectorsearch_v1beta.Index()
+    index.index_field = "index_field_value"
 
-    request = vectorsearch_v1beta.ExportDataObjectsRequest(
-        gcs_destination=gcs_destination,
-        name="name_value",
+    request = vectorsearch_v1beta.UpdateIndexRequest(
+        index=index,
     )
 
     # Make the request
-    operation = client.export_data_objects(request=request)
+    operation = client.update_index(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
 
-# [END vectorsearch_v1beta_generated_VectorSearchService_ExportDataObjects_async]
+# [END vectorsearch_v1beta_generated_VectorSearchService_UpdateIndex_sync]
