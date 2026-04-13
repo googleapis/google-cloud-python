@@ -78,6 +78,7 @@ from google.cloud.vectorsearch_v1.types.embedding_config import (
     EmbeddingTaskType,
     VertexEmbeddingConfig,
 )
+from google.cloud.vectorsearch_v1.types.encryption_spec import EncryptionSpec
 from google.cloud.vectorsearch_v1.types.vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
@@ -103,6 +104,7 @@ from google.cloud.vectorsearch_v1.types.vectorsearch_service import (
     OperationMetadata,
     SparseVectorField,
     UpdateCollectionRequest,
+    UpdateIndexRequest,
     VectorField,
 )
 
@@ -147,6 +149,7 @@ __all__ = (
     "UpdateDataObjectRequest",
     "VertexEmbeddingConfig",
     "EmbeddingTaskType",
+    "EncryptionSpec",
     "Collection",
     "CreateCollectionRequest",
     "CreateIndexRequest",
@@ -171,5 +174,6 @@ __all__ = (
     "OperationMetadata",
     "SparseVectorField",
     "UpdateCollectionRequest",
+    "UpdateIndexRequest",
     "VectorField",
 )

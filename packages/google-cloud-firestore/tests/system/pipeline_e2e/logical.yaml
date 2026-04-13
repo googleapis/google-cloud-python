@@ -760,3 +760,127 @@ tests:
             - "value_or_default"
     assert_results:
       - value_or_default: "1984"
+  - description: whereByNorCondition
+    pipeline:
+      - Collection: books
+      - Where:
+          - Nor:
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Romance
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Dystopian
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Fantasy
+              - FunctionExpression.greater_than:
+                  - Field: published
+                  - Constant: 1949
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: "Crime and Punishment"
+      - title: "The Great Gatsby"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Romance
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Dystopian
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Fantasy
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1949'
+                  name: greater_than
+              name: nor
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+  - description: expression_between
+    pipeline:
+    - Collection: restaurants
+    - Where:
+      - FunctionExpression.between:
+        - Field: average_price_per_person
+        - Constant: 15
+        - Constant: 20
+    - Select:
+      - name
+    - Sort:
+      - Ordering:
+        - Field: name
+        - ASCENDING
+    assert_results:
+    - name: Eastside Cantina
+    - name: Peak Burgers
+    - name: The Sunny Side Up
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /restaurants
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: average_price_per_person
+                  - integerValue: '15'
+                  name: greater_than_or_equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: average_price_per_person
+                  - integerValue: '20'
+                  name: less_than_or_equal
+              name: and
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                name:
+                  fieldReferenceValue: name
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: name
+          name: sort

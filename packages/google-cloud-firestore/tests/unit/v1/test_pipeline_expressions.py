@@ -735,6 +735,14 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "Or(Arg1, Arg2)"
 
+    def test_nor(self):
+        arg1 = self._make_arg("Arg1")
+        arg2 = self._make_arg("Arg2")
+        instance = expr.Nor(arg1, arg2)
+        assert instance.name == "nor"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Nor(Arg1, Arg2)"
+
     def test_array_get(self):
         arg1 = self._make_arg("ArrayField")
         arg2 = self._make_arg("Offset")
@@ -742,8 +750,18 @@ class TestExpressionessionMethods:
         assert instance.name == "array_get"
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "ArrayField.array_get(Offset)"
-        infix_istance = arg1.array_get(arg2)
-        assert infix_istance == instance
+        infix_instance = arg1.array_get(arg2)
+        assert infix_instance == instance
+
+    def test_offset(self):
+        arg1 = self._make_arg("ArrayField")
+        arg2 = self._make_arg("Offset")
+        instance = Expression.offset(arg1, arg2)
+        assert instance.name == "offset"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "ArrayField.offset(Offset)"
+        infix_instance = arg1.offset(arg2)
+        assert infix_instance == instance
 
     def test_array_contains(self):
         arg1 = self._make_arg("ArrayField")
@@ -789,6 +807,62 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Left.equal(Right)"
         infix_instance = arg1.equal(arg2)
         assert infix_instance == instance
+
+    def test_between(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Lower")
+        arg3 = self._make_arg("Upper")
+        instance = Expression.between(arg1, arg2, arg3)
+        assert instance.name == "and"
+        assert len(instance.params) == 2
+        assert instance.params[0].name == "greater_than_or_equal"
+        assert instance.params[1].name == "less_than_or_equal"
+        assert (
+            repr(instance)
+            == "And(Left.greater_than_or_equal(Lower), Left.less_than_or_equal(Upper))"
+        )
+        infix_instance = arg1.between(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_geo_distance(self):
+        arg1 = self._make_arg("Left")
+        arg2 = self._make_arg("Right")
+        instance = Expression.geo_distance(arg1, arg2)
+        assert instance.name == "geo_distance"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Left.geo_distance(Right)"
+        infix_instance = arg1.geo_distance(arg2)
+        assert infix_instance == instance
+
+    def test_geo_distance_with_tuple(self):
+        from google.cloud.firestore_v1._helpers import GeoPoint
+        from google.cloud.firestore_v1.pipeline_expressions import Constant
+
+        arg1 = self._make_arg("Left")
+        instance = Expression.geo_distance(arg1, (1.2, 3.4))
+        assert instance.name == "geo_distance"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == GeoPoint(1.2, 3.4)
+
+        infix_instance = arg1.geo_distance((1.2, 3.4))
+        assert infix_instance.name == "geo_distance"
+        assert infix_instance.params[0] == arg1
+        assert isinstance(infix_instance.params[1], Constant)
+        assert infix_instance.params[1].value == GeoPoint(1.2, 3.4)
+
+    def test_document_matches(self):
+        arg1 = self._make_arg("Query")
+        instance = expr.DocumentMatches(arg1)
+        assert instance.name == "document_matches"
+        assert instance.params == [arg1]
+        assert repr(instance) == "DocumentMatches(Query)"
+
+    def test_score(self):
+        instance = expr.Score()
+        assert instance.name == "score"
+        assert instance.params == []
+        assert repr(instance) == "Score()"
 
     def test_greater_than_or_equal(self):
         arg1 = self._make_arg("Left")
@@ -902,6 +976,42 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1, arg2]
         assert repr(instance) == "Value.if_error(ThenExpression)"
         infix_instance = arg1.if_error(arg2)
+        assert infix_instance == instance
+
+    def test_coalesce(self):
+        arg1 = self._make_arg("Arg1")
+        arg2 = self._make_arg("Arg2")
+        arg3 = self._make_arg("Arg3")
+        instance = Expression.coalesce(arg1, arg2, arg3)
+        assert instance.name == "coalesce"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Arg1.coalesce(Arg2, Arg3)"
+        infix_instance = arg1.coalesce(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_switch_on(self):
+        arg1 = self._make_arg("Condition1")
+        arg2 = self._make_arg("Result1")
+        arg3 = self._make_arg("Condition2")
+        arg4 = self._make_arg("Result2")
+        arg5 = self._make_arg("Default")
+        instance = Expression.switch_on(arg1, arg2, arg3, arg4, arg5)
+        assert instance.name == "switch_on"
+        assert instance.params == [arg1, arg2, arg3, arg4, arg5]
+        assert (
+            repr(instance)
+            == "Condition1.switch_on(Result1, Condition2, Result2, Default)"
+        )
+        infix_instance = arg1.switch_on(arg2, arg3, arg4, arg5)
+        assert infix_instance == instance
+
+    def test_storage_size(self):
+        arg1 = self._make_arg("Input")
+        instance = Expression.storage_size(arg1)
+        assert instance.name == "storage_size"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Input.storage_size()"
+        infix_instance = arg1.storage_size()
         assert infix_instance == instance
 
     def test_not(self):
@@ -1605,13 +1715,61 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_array_reverse(self):
-        arg1 = self._make_arg("Array")
+        arg1 = self._make_arg("ArrayField")
         instance = Expression.array_reverse(arg1)
         assert instance.name == "array_reverse"
         assert instance.params == [arg1]
-        assert repr(instance) == "Array.array_reverse()"
+        assert repr(instance) == "ArrayField.array_reverse()"
         infix_instance = arg1.array_reverse()
         assert infix_instance == instance
+
+    def test_array_filter(self):
+        arr = self._make_arg("ArrayField")
+        filter_expr = self._make_arg("FilterExpr")
+        elm_alias = "element_alias"
+        instance = Expression.array_filter(arr, filter_expr, elm_alias)
+        assert instance.name == "array_filter"
+        assert instance.params == [arr, Constant.of(elm_alias), filter_expr]
+        assert (
+            repr(instance)
+            == "ArrayField.array_filter(FilterExpr, Constant.of('element_alias'))"
+        )
+        infix_instance = arr.array_filter(filter_expr, elm_alias)
+        assert infix_instance == instance
+
+    def test_array_transform(self):
+        arr = self._make_arg("ArrayField")
+        transform_expr = self._make_arg("TransformExpr")
+        elm_alias = "element_alias"
+        instance = Expression.array_transform(arr, transform_expr, elm_alias)
+        assert instance.name == "array_transform"
+        assert instance.params == [arr, Constant.of(elm_alias), transform_expr]
+        assert (
+            repr(instance)
+            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'))"
+        )
+        infix_instance = arr.array_transform(transform_expr, elm_alias)
+        assert infix_instance == instance
+
+        idx_alias = "index_alias"
+        instance_with_idx = Expression.array_transform(
+            arr, transform_expr, elm_alias, idx_alias
+        )
+        assert instance_with_idx.name == "array_transform"
+        assert instance_with_idx.params == [
+            arr,
+            Constant.of(elm_alias),
+            Constant.of(idx_alias),
+            transform_expr,
+        ]
+        assert (
+            repr(instance_with_idx)
+            == "ArrayField.array_transform(TransformExpr, Constant.of('element_alias'), Constant.of('index_alias'))"
+        )
+        infix_instance_with_idx = arr.array_transform(
+            transform_expr, elm_alias, idx_alias
+        )
+        assert infix_instance_with_idx == instance_with_idx
 
     def test_array_concat(self):
         arg1 = self._make_arg("ArrayRef1")
@@ -1891,16 +2049,16 @@ class TestExpressionessionMethods:
         assert infix_instance == instance
 
     def test_type_enum(self):
-        from google.cloud.firestore_v1.pipeline_expressions import Type
+        from google.cloud.firestore_v1.pipeline_expressions import PipelineDataType
 
         arg1 = self._make_arg("Value")
-        instance = Expression.is_type(arg1, Type.STRING)
+        instance = Expression.is_type(arg1, PipelineDataType.STRING)
         assert instance.name == "is_type"
         assert instance.params[0] == arg1
         assert isinstance(instance.params[1], Constant)
-        assert instance.params[1].value == Type.STRING.value
+        assert instance.params[1].value == PipelineDataType.STRING.value
         assert repr(instance) == "Value.is_type(Constant.of('string'))"
-        infix_instance = arg1.is_type(Type.STRING)
+        infix_instance = arg1.is_type(PipelineDataType.STRING)
         assert infix_instance == instance
 
     def test_timestamp_enums(self):
