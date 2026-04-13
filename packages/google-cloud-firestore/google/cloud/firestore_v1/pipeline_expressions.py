@@ -25,6 +25,7 @@ from enum import Enum
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     Generic,
     Sequence,
     TypeVar,
@@ -193,7 +194,7 @@ class Expression(ABC):
     """Represents an expression that can be evaluated to a value within the
     execution of a pipeline.
 
-    Expressionessions are the building blocks for creating complex queries and
+    Expressions are the building blocks for creating complex queries and
     transformations in Firestore pipelines. They can represent:
 
     - **Field references:** Access values from document fields.
@@ -569,7 +570,7 @@ class Expression(ABC):
         return FunctionExpression(
             "maximum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_maximum",
+            repr_function=FunctionExpression._build_infix_repr("logical_maximum"),
         )
 
     @expose_as_static
@@ -595,7 +596,7 @@ class Expression(ABC):
         return FunctionExpression(
             "minimum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_minimum",
+            repr_function=FunctionExpression._build_infix_repr("logical_minimum"),
         )
 
     @expose_as_static
@@ -841,6 +842,9 @@ class Expression(ABC):
         Creates an expression that indexes into an array from the beginning or end and returns the
         element. A negative offset starts from the end.
 
+        If the expression is evaluated against a non-array type, it evaluates to an error. See `offset`
+        for an alternative that evaluates to unset instead.
+
         Example:
             >>> Array([1,2,3]).array_get(0)
 
@@ -852,6 +856,26 @@ class Expression(ABC):
         """
         return FunctionExpression(
             "array_get", [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        )
+
+    @expose_as_static
+    def offset(self, offset: Expression | int) -> "FunctionExpression":
+        """
+        Creates an expression that indexes into an array from the beginning or end and returns the
+        element. A negative offset starts from the end.
+        If the expression is evaluated against a non-array type, it evaluates to unset.
+
+        Example:
+            >>> Array([1,2,3]).offset(0)
+
+        Args:
+            offset: the index of the element to return
+
+        Returns:
+            A new `Expression` representing the `offset` operation.
+        """
+        return FunctionExpression(
+            "offset", [self, self._cast_to_expr_or_convert_to_constant(offset)]
         )
 
     @expose_as_static
@@ -958,6 +982,73 @@ class Expression(ABC):
         return FunctionExpression("array_reverse", [self])
 
     @expose_as_static
+    def array_filter(
+        self,
+        filter_expr: "BooleanExpression",
+        element_alias: str | Constant[str],
+    ) -> "Expression":
+        """Filters an array based on a predicate.
+
+        Example:
+            >>> # Filter the 'tags' array to only include the tag "comedy"
+            >>> Field.of("tags").array_filter(Variable("tag").equal("comedy"), "tag")
+
+        Args:
+            filter_expr: The predicate boolean expression used to filter the elements.
+            element_alias: A string or string constant used to refer to the current array
+                element as a variable within the filter expression.
+
+
+        Returns:
+            A new `Expression` representing the filtered array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        args.append(filter_expr)
+
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[2]!r}, {expr.params[1]!r})"
+        )
+        return FunctionExpression("array_filter", args, repr_function=repr_func)
+
+    @expose_as_static
+    def array_transform(
+        self,
+        transform_expr: "Expression",
+        element_alias: str | Constant[str],
+        index_alias: str | Constant[str] | None = None,
+    ) -> "Expression":
+        """Creates an expression that applies a provided transformation to each element in an array.
+
+        Example:
+            >>> # Convert each tag in the 'tags' array to uppercase
+            >>> Field.of("tags").array_transform(Variable("tag").to_upper(), "tag")
+            >>> # Append the index to each tag in the 'tags' array
+            >>> Field.of("tags").array_transform(
+            ...     Variable("tag").string_concat(Variable("i")),
+            ...     element_alias="tag", index_alias="i"
+            ... )
+
+        Args:
+            transform_expr: The expression used to transform the elements.
+            element_alias: A string or string constant used to refer to the current array
+                element as a variable within the transform expression.
+            index_alias: An optional string or string constant used to refer to the index
+                of the current array element as a variable within the transform expression.
+
+        Returns:
+            A new `Expression` representing the transformed array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        if index_alias is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
+        args.append(transform_expr)
+
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[-1]!r}, {expr.params[1]!r}{', ' + repr(expr.params[2]) if len(expr.params) == 4 else ''})"
+        )
+        return FunctionExpression("array_transform", args, repr_function=repr_func)
+
+    @expose_as_static
     def array_concat(
         self, *other_arrays: Array | list[Expression | CONSTANT_TYPE] | Expression
     ) -> "Expression":
@@ -1018,7 +1109,7 @@ class Expression(ABC):
             >>> Field.of("email").is_absent()
 
         Returns:
-            A new `BooleanExpressionession` representing the isAbsent operation.
+            A new `BooleanExpression` representing the isAbsent operation.
         """
         return BooleanExpression("is_absent", [self])
 
@@ -1085,6 +1176,76 @@ class Expression(ABC):
             A new `Expression` representing the 'exists' check.
         """
         return BooleanExpression("exists", [self])
+
+    @expose_as_static
+    def coalesce(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that evaluates to the first non-null/non-missing value.
+
+        Example:
+            >>> # Return the "preferredName" field if it exists.
+            >>> # Otherwise, check the "fullName" field.
+            >>> # Otherwise, return the literal string "Anonymous".
+            >>> Field.of("preferredName").coalesce(Field.of("fullName"), "Anonymous")
+
+            >>> # Equivalent static call:
+            >>> Expression.coalesce(Field.of("preferredName"), Field.of("fullName"), "Anonymous")
+
+        Args:
+            *others: Additional expressions or constants to evaluate if the current
+                expression evaluates to null or is missing.
+
+        Returns:
+            An Expression representing the coalesce operation.
+        """
+        return FunctionExpression(
+            "coalesce",
+            [self]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
+        )
+
+    @expose_as_static
+    def switch_on(
+        self, result: Expression | CONSTANT_TYPE, *others: Expression | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that evaluates to the result corresponding to the first true condition.
+
+        This function behaves like a `switch` statement. It accepts an alternating sequence of
+        conditions and their corresponding results. If an odd number of arguments is provided, the
+        final argument serves as a default fallback result. If no default is provided and no condition
+        evaluates to true, it throws an error.
+
+        Example:
+            >>> # Return "Pending" if status is 1, "Active" if status is 2, otherwise "Unknown"
+            >>> Field.of("status").equal(1).switch_on(
+            ...     "Pending", Field.of("status").equal(2), "Active", "Unknown"
+            ... )
+
+        Args:
+            result: The result to return if this condition is true.
+            *others: Additional alternating conditions and results, optionally followed by a default value.
+
+        Returns:
+            An Expression representing the "switch_on" operation.
+        """
+        return FunctionExpression(
+            "switch_on",
+            [self, Expression._cast_to_expr_or_convert_to_constant(result)]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
+        )
+
+    @expose_as_static
+    def storage_size(self) -> "Expression":
+        """Calculates the Firestore storage size of a given value.
+
+        Mirrors the sizing rules detailed in Firebase/Firestore documentation.
+
+        Example:
+            >>> Field.of("content").storage_size()
+
+        Returns:
+            A new `Expression` representing the storage size.
+        """
+        return FunctionExpression("storage_size", [self])
 
     @expose_as_static
     def sum(self) -> "Expression":
@@ -1446,6 +1607,7 @@ class Expression(ABC):
     @expose_as_static
     def map_get(self, key: str | Constant[str]) -> "Expression":
         """Accesses a value from the map produced by evaluating this expression.
+        If the expression is evaluated against a non-map type, it evaluates to an error.
 
         Example:
             >>> Map({"city": "London"}).map_get("city")
@@ -2051,7 +2213,9 @@ class Expression(ABC):
             A new `Expression` representing the maximum element of the array.
         """
         return FunctionExpression(
-            "maximum", [self], infix_name_override="array_maximum"
+            "maximum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_maximum"),
         )
 
     @expose_as_static
@@ -2066,7 +2230,9 @@ class Expression(ABC):
             A new `Expression` representing the minimum element of the array.
         """
         return FunctionExpression(
-            "minimum", [self], infix_name_override="array_minimum"
+            "minimum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_minimum"),
         )
 
     @expose_as_static
@@ -2088,7 +2254,7 @@ class Expression(ABC):
         return FunctionExpression(
             "maximum_n",
             [self, self._cast_to_expr_or_convert_to_constant(n)],
-            infix_name_override="array_maximum_n",
+            repr_function=FunctionExpression._build_infix_repr("array_maximum_n"),
         )
 
     @expose_as_static
@@ -2110,7 +2276,7 @@ class Expression(ABC):
         return FunctionExpression(
             "minimum_n",
             [self, self._cast_to_expr_or_convert_to_constant(n)],
-            infix_name_override="array_minimum_n",
+            repr_function=FunctionExpression._build_infix_repr("array_minimum_n"),
         )
 
     @expose_as_static
@@ -2580,13 +2746,11 @@ class FunctionExpression(Expression):
         name: str,
         params: Sequence[Expression],
         *,
-        use_infix_repr: bool = True,
-        infix_name_override: str | None = None,
+        repr_function: Callable[["FunctionExpression"], str] | None = None,
     ):
         self.name = name
         self.params = list(params)
-        self._use_infix_repr = use_infix_repr
-        self._infix_name_override = infix_name_override
+        self._repr_function = repr_function or self._build_infix_repr()
 
     def __repr__(self):
         """
@@ -2594,21 +2758,53 @@ class FunctionExpression(Expression):
 
         Display them this way in the repr string where possible
         """
-        if self._use_infix_repr:
-            infix_name = self._infix_name_override or self.name
-            if len(self.params) == 1:
-                return f"{self.params[0]!r}.{infix_name}()"
-            elif len(self.params) == 2:
-                return f"{self.params[0]!r}.{infix_name}({self.params[1]!r})"
-            else:
-                return f"{self.params[0]!r}.{infix_name}({', '.join([repr(p) for p in self.params[1:]])})"
-        return f"{self.__class__.__name__}({', '.join([repr(p) for p in self.params])})"
+        return self._repr_function(self)
 
     def __eq__(self, other):
         if not isinstance(other, FunctionExpression):
             return False
         else:
             return other.name == self.name and other.params == self.params
+
+    @staticmethod
+    def _build_infix_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using infix notation.
+
+        Example:
+            `value.greater_than(18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.name
+            args = expr.params
+            if len(args) == 0:
+                return f"{final_name}()"
+            elif len(args) == 1:
+                return f"{args[0]!r}.{final_name}()"
+            elif len(args) == 2:
+                return f"{args[0]!r}.{final_name}({args[1]!r})"
+            else:
+                return f"{args[0]!r}.{final_name}({', '.join([repr(a) for a in args[1:]])})"
+
+        return build_repr
+
+    @staticmethod
+    def _build_standalone_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using standalone function notation.
+
+        Example:
+            `GreaterThan(value, 18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.__class__.__name__
+            return f"{final_name}({', '.join([repr(a) for a in expr.params])})"
+
+        return build_repr
 
     def _to_pb(self):
         return Value(
@@ -2863,7 +3059,9 @@ class And(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("and", conditions, use_infix_repr=False)
+        super().__init__(
+            "and", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Not(BooleanExpression):
@@ -2879,7 +3077,11 @@ class Not(BooleanExpression):
     """
 
     def __init__(self, condition: BooleanExpression):
-        super().__init__("not", [condition], use_infix_repr=False)
+        super().__init__(
+            "not",
+            [condition],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Or(BooleanExpression):
@@ -2896,7 +3098,27 @@ class Or(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("or", conditions, use_infix_repr=False)
+        super().__init__(
+            "or", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
+
+
+class Nor(BooleanExpression):
+    """
+    Represents an expression that performs a logical 'NOR' operation on multiple filter conditions.
+
+    Example:
+        >>> # Check if neither the 'age' field is greater than 18 nor the 'city' field is "London"
+        >>> Nor(Field.of("age").greater_than(18), Field.of("city").equal("London"))
+
+    Args:
+        *conditions: The filter conditions to 'NOR' together.
+    """
+
+    def __init__(self, *conditions: "BooleanExpression"):
+        super().__init__(
+            "nor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Xor(BooleanExpression):
@@ -2913,7 +3135,9 @@ class Xor(BooleanExpression):
     """
 
     def __init__(self, conditions: Sequence["BooleanExpression"]):
-        super().__init__("xor", conditions, use_infix_repr=False)
+        super().__init__(
+            "xor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Conditional(BooleanExpression):
@@ -2935,7 +3159,9 @@ class Conditional(BooleanExpression):
         self, condition: BooleanExpression, then_expr: Expression, else_expr: Expression
     ):
         super().__init__(
-            "conditional", [condition, then_expr, else_expr], use_infix_repr=False
+            "conditional",
+            [condition, then_expr, else_expr],
+            repr_function=FunctionExpression._build_standalone_repr(),
         )
 
 
@@ -2956,7 +3182,13 @@ class Count(AggregateFunction):
 
     def __init__(self, expression: Expression | None = None):
         expression_list = [expression] if expression else []
-        super().__init__("count", expression_list, use_infix_repr=bool(expression_list))
+        super().__init__(
+            "count",
+            expression_list,
+            repr_function=FunctionExpression._build_infix_repr()
+            if expression_list
+            else FunctionExpression._build_standalone_repr(),
+        )
 
 
 class CurrentTimestamp(FunctionExpression):
@@ -2967,7 +3199,11 @@ class CurrentTimestamp(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("current_timestamp", [], use_infix_repr=False)
+        super().__init__(
+            "current_timestamp",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Rand(FunctionExpression):
@@ -2979,7 +3215,9 @@ class Rand(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("rand", [], use_infix_repr=False)
+        super().__init__(
+            "rand", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Score(FunctionExpression):
@@ -3003,7 +3241,9 @@ class Score(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("score", [], use_infix_repr=False)
+        super().__init__(
+            "score", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class DocumentMatches(BooleanExpression):
@@ -3028,7 +3268,7 @@ class DocumentMatches(BooleanExpression):
         super().__init__(
             "document_matches",
             [Expression._cast_to_expr_or_convert_to_constant(query)],
-            use_infix_repr=False,
+            repr_function=FunctionExpression._build_standalone_repr(),
         )
 
 
@@ -3068,4 +3308,8 @@ class CurrentDocument(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("current_document", [])
+        super().__init__(
+            "current_document",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
