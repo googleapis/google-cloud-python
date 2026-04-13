@@ -364,7 +364,6 @@ def run_system(
     )
 
 
-
 @nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
@@ -1013,6 +1012,7 @@ def prerelease_deps(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add prerelease deps tests
     unit_prerelease(session)
+    system_prerelease(session)
 
 
 # NOTE: this is based on mypy session that came directly from the bigframes split repo
