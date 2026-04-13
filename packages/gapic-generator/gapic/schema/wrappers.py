@@ -70,6 +70,7 @@ from gapic.schema import metadata
 from gapic.utils import cached_proto_context
 from gapic.utils import uri_sample
 from gapic.utils import make_private
+from gapic.utils import Options
 
 
 @dataclasses.dataclass(frozen=True)
@@ -688,7 +689,16 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find("/") + 1 :] if resource else None
+        if not resource:
+            return None
+            
+        # Extract the standard short name (e.g., "Tool" from "ces.googleapis.com/Tool")
+        default_type = resource.type[resource.type.find("/") + 1 :]
+        
+        # Check if the CLI provided an alias for this specific resource path
+        aliases = getattr(Options, "resource_name_aliases_global", {})
+        
+        return aliases.get(resource.type, default_type)
 
     @property
     def resource_type_full_path(self) -> Optional[str]:

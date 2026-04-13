@@ -51,6 +51,7 @@ class Options:
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
     gapic_version: str = "0.0.0"
+    resource_name_aliases: Dict[str, str] = dataclasses.field(default_factory=dict)
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -73,6 +74,7 @@ class Options:
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
             "gapic-version",  # A version string following https://peps.python.org/pep-0440
+            "resource-name-aliases",
         )
     )
 
@@ -187,6 +189,18 @@ class Options:
         proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
             proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
+        
+        resource_name_aliases = {}
+        resource_alias_strings = opts.pop("resource-name-aliases", None)
+        if resource_alias_strings:
+            try:
+                # Strip single quotes that survive the Bazel/Shell transition
+                raw_string = resource_alias_strings[-1].strip("'")
+                resource_name_aliases = json.loads(raw_string)
+            except json.JSONDecodeError as e:
+                warnings.warn(f"Failed to parse resource-name-aliases JSON: {e} from string: {resource_alias_strings[-1]}")
+        
+        Options.resource_name_aliases_global = resource_name_aliases
 
         answer = Options(
             name=opts.pop("name", [""]).pop(),
@@ -210,6 +224,7 @@ class Options:
             rest_numeric_enums=rest_numeric_enums,
             proto_plus_deps=proto_plus_deps,
             gapic_version=opts.pop("gapic-version", ["0.0.0"]).pop(),
+            resource_name_aliases=resource_name_aliases,
         )
 
         # Note: if we ever need to recursively check directories for sample

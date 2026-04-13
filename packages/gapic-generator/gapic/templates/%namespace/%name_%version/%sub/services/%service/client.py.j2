@@ -262,7 +262,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return self._transport
 
 
-    {% for message in service.resource_messages|sort(attribute="resource_type") %}
+    {% for message in service.resource_messages %}
     @staticmethod
     def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
         """Returns a fully-qualified {{ message.resource_type|snake_case }} string."""
