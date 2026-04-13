@@ -7,7 +7,7 @@
 # Then this file should have foo==1.14.0
 db-dtypes==1.1.1
 geopandas==1.0.1
-google-cloud-bigquery==3.13.0
+google-cloud-bigquery==3.41.0
 google-cloud-bigquery-storage==2.6.0
 ipywidgets==7.7.1
 ipython==7.23.1
