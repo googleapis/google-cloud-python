@@ -52,7 +52,10 @@ import google.cloud.bigquery.table
 import pandas
 import pyarrow as pa
 from google.cloud import bigquery_storage_v1
-from google.cloud.bigquery_storage_v1 import types as bq_storage_types, writer as bq_storage_writer
+from google.cloud.bigquery_storage_v1 import (
+    types as bq_storage_types,
+    writer as bq_storage_writer,
+)
 
 import bigframes._tools
 import bigframes._tools.strings
@@ -520,7 +523,9 @@ class GbqDataLoader:
         )
         serialized_schema = schema.serialize().to_pybytes()
 
-        def stream_worker(work: Iterator[pa.RecordBatch], max_outstanding: int = 5) -> str:
+        def stream_worker(
+            work: Iterator[pa.RecordBatch], max_outstanding: int = 5
+        ) -> str:
             requested_stream = bq_storage_types.WriteStream(
                 type_=bq_storage_types.WriteStream.Type.PENDING
             )
