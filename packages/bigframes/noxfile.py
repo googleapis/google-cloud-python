@@ -366,20 +366,17 @@ def run_system(
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize("test_extra", [True, False])
-def system(session: nox.sessions.Session, test_extra):
+def system(session: nox.sessions.Session):
     """Run the system test suite."""
     if session.python in ("3.7", "3.8", "3.9"):
         session.skip("Python 3.9 and below are not supported")
-    if test_extra:    
-        run_system(
-            session=session,
-            prefix_name="system",
-            test_folder=os.path.join("tests", "system", "small"),
-            check_cov=True,
-        )
-    else:
-        system_noextras(session)
+
+    run_system(
+        session=session,
+        prefix_name="system",
+        test_folder=os.path.join("tests", "system", "small"),
+        check_cov=True,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
