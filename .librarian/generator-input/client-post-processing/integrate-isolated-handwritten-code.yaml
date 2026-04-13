@@ -102,9 +102,17 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
+          translate_v2/services_
+          translate_v2/types_
+    
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
           translate_v3beta1/services_
           translate_v3beta1/types_
-    
+
     after: |
       API Reference
       -------------
