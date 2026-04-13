@@ -8,7 +8,7 @@
 db-dtypes==1.1.1
 geopandas==1.0.1
 google-cloud-bigquery==3.41.0
-google-cloud-bigquery-storage==2.6.0
+google-cloud-bigquery-storage==2.25.0
 ipywidgets==7.7.1
 ipython==7.23.1
 ipykernel==5.5.6
