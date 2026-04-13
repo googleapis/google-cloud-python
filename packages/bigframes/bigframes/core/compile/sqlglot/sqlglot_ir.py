@@ -214,6 +214,10 @@ class SQLGlotIR:
         if not columns and not sql_predicate:
             return cls.from_expr(expr=table_expr, uid_gen=uid_gen)
 
+        # Qualify column references with the table alias to avoid ambiguity
+        # when a table and a column share the same name. Without this, BigQuery
+        # might interpret the column as a reference to the table (STRUCT),
+        # causing failures when casting (e.g. in test_read_gbq_w_ambigous_name).
         select_items: list[sge.Expression] = (
             [sge.Column(this=sql.identifier(col), table=sql.identifier(table_alias)) for col in columns]
             if columns
