@@ -1,6 +1,5 @@
 # This file is being migrated to librarian@latest, and is no longer maintained by hand.
 
-release_only_mode: true
 global_files_allowlist:
   - path: CHANGELOG.md
     permissions: read-write
