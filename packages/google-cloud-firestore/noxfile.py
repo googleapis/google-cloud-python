@@ -399,6 +399,7 @@ def system(session):
         session.run(
             "py.test",
             "--quiet",
+            "-s",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
             *session.posargs,
@@ -407,6 +408,7 @@ def system(session):
         session.run(
             "py.test",
             "--quiet",
+            "-s",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
             *session.posargs,
