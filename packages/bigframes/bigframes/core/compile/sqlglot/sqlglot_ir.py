@@ -214,8 +214,10 @@ class SQLGlotIR:
         if not columns and not sql_predicate:
             return cls.from_expr(expr=table_expr, uid_gen=uid_gen)
 
-        select_items: list[sge.Identifier | sge.Star] = (
-            [sql.identifier(col) for col in columns] if columns else [sge.Star()]
+        select_items: list[sge.Expression] = (
+            [sge.Column(this=sql.identifier(col), table=sql.identifier(table_alias)) for col in columns]
+            if columns
+            else [sge.Star()]
         )
         select_expr = sge.Select().select(*select_items).from_(table_expr)
 
