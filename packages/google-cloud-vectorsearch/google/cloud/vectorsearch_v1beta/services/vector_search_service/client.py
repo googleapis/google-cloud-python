@@ -71,7 +71,11 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.vectorsearch_v1beta.services.vector_search_service import pagers
-from google.cloud.vectorsearch_v1beta.types import common, vectorsearch_service
+from google.cloud.vectorsearch_v1beta.types import (
+    common,
+    encryption_spec,
+    vectorsearch_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, VectorSearchServiceTransport
 from .transports.grpc import VectorSearchServiceGrpcTransport
@@ -124,7 +128,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -132,7 +136,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -142,6 +146,10 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -257,6 +265,30 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         """Parses a collection path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -475,7 +507,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -572,7 +604,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -672,7 +704,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         self._universe_domain = VectorSearchServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -1802,6 +1834,157 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Done; return the response.
         return response
 
+    def update_index(
+        self,
+        request: Optional[Union[vectorsearch_service.UpdateIndexRequest, dict]] = None,
+        *,
+        index: Optional[vectorsearch_service.Index] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single Index.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vectorsearch_v1beta
+
+            def sample_update_index():
+                # Create a client
+                client = vectorsearch_v1beta.VectorSearchServiceClient()
+
+                # Initialize request argument(s)
+                index = vectorsearch_v1beta.Index()
+                index.index_field = "index_field_value"
+
+                request = vectorsearch_v1beta.UpdateIndexRequest(
+                    index=index,
+                )
+
+                # Make the request
+                operation = client.update_index(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.vectorsearch_v1beta.types.UpdateIndexRequest, dict]):
+                The request object. Message for updating an Index.
+            index (google.cloud.vectorsearch_v1beta.types.Index):
+                Required. The resource being updated.
+                This corresponds to the ``index`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Specifies the fields to be overwritten in the
+                Index resource by the update. The fields specified in
+                the update_mask are relative to the resource, not the
+                full request. A field will be overwritten if it is in
+                the mask. If the user does not provide a mask then all
+                fields present in the request with non-empty values will
+                be overwritten.
+
+                The following fields support update:
+
+                - ``display_name``
+                - ``description``
+                - ``labels``
+                - ``dedicated_infrastructure.autoscaling_spec.min_replica_count``
+                - ``dedicated_infrastructure.autoscaling_spec.max_replica_count``
+
+                If ``*`` is provided in the ``update_mask``, full
+                replacement of mutable fields will be performed.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.vectorsearch_v1beta.types.Index`
+                Message describing Index object
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [index, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vectorsearch_service.UpdateIndexRequest):
+            request = vectorsearch_service.UpdateIndexRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if index is not None:
+                request.index = index
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_index]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("index.name", request.index.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            vectorsearch_service.Index,
+            metadata_type=vectorsearch_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def delete_index(
         self,
         request: Optional[Union[vectorsearch_service.DeleteIndexRequest, dict]] = None,
@@ -2069,7 +2252,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
                 # Initialize request argument(s)
                 gcs_destination = vectorsearch_v1beta.GcsExportDestination()
                 gcs_destination.export_uri = "export_uri_value"
-                gcs_destination.format_ = "JSON"
+                gcs_destination.format_ = "JSONL"
 
                 request = vectorsearch_v1beta.ExportDataObjectsRequest(
                     gcs_destination=gcs_destination,
@@ -2160,7 +2343,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2186,8 +2369,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2196,7 +2383,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2205,7 +2392,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2219,7 +2406,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2245,8 +2432,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2255,7 +2446,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2264,7 +2455,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2278,7 +2469,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2308,8 +2499,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2318,7 +2513,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2326,7 +2521,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -2334,7 +2529,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2363,8 +2558,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2373,7 +2572,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2381,7 +2580,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -2389,7 +2588,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2415,8 +2614,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2425,7 +2628,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2434,7 +2637,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2448,7 +2651,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2474,8 +2677,12 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2484,7 +2691,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2493,7 +2700,7 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,

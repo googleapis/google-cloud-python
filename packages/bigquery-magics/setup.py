@@ -28,16 +28,17 @@ description = "Google BigQuery magics for Jupyter and IPython"
 # 'Development Status :: 5 - Production/Stable'``
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "db-dtypes>=0.3.0,<2.0.0",
+    "db-dtypes>=1.1.1,<2.0.0",
     "google-cloud-bigquery >= 3.41.0, <4.0.0",
     "ipywidgets>=7.7.1",
     "ipython>=7.23.1",
     "ipykernel>=5.5.6",
     "packaging >= 20.0.0",
-    "pandas>=1.2.0",
-    "pyarrow >= 3.0.0",
+    "pandas>=1.5.3",
+    "pyarrow >= 12.0.0",
     "pydata-google-auth >=1.5.0",
     "tqdm >= 4.7.4, <5.0.0",
+    "pyopenssl >= 23.3.0",
 ]
 extras = {
     # bqstorage had a period where it was a required dependency, and has been
@@ -106,8 +107,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -120,7 +119,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )

@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.23.0...google-cloud-datastore-v2.24.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:a38add811f7f139d6a385b22d283ad09ef305b8cf50382ef62f0ce690787f021 ([e1673980daa0f80cfa16e35b52a2670fe2783ace](https://github.com/googleapis/google-cloud-python/commit/e1673980daa0f80cfa16e35b52a2670fe2783ace))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:51d42b9060365aa10d21e64a370b82bf1e07ed7f1e46062dcb3ad10632b0acc8 ([b4b3508724eab46796ce9309d2540a3c07e465fc](https://github.com/googleapis/google-cloud-python/commit/b4b3508724eab46796ce9309d2540a3c07e465fc))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [2.23.0](https://github.com/googleapis/python-datastore/compare/v2.22.0...v2.23.0) (2025-12-16)
 
 

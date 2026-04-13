@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.25.0...google-cloud-firestore-v2.26.0) (2026-03-23)
+
+
+### Features
+
+* Add `Rand` and `Trunc` expressions (#16037) ([7538aa5d2e6002f8acda2f1dc2faa690ab2c94d0](https://github.com/googleapis/google-cloud-python/commit/7538aa5d2e6002f8acda2f1dc2faa690ab2c94d0))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.24.0...google-cloud-firestore-v2.25.0) (2026-03-12)
 
 

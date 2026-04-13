@@ -40,12 +40,12 @@ def main():
     with io.open(readme_filename, encoding="utf-8") as readme_file:
         readme = readme_file.read()
     dependencies = [
-        "google-api-core[grpc] >= 1.34.0, < 3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+        "google-api-core[grpc] >= 2.11.0, <3.0.0",
         "google-cloud-datastore >= 2.16.0, != 2.20.2, < 3.0.0",
-        "protobuf >= 3.20.2, < 7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+        "protobuf >= 4.25.8, < 8.0.0",
         "pymemcache >= 2.1.0, < 5.0.0",
         "pytz >= 2018.3",
-        "redis >= 3.0.0, < 7.0.0",
+        "redis >= 3.0.0, < 8.0.0",
     ]
 
     setuptools.setup(
@@ -68,8 +68,6 @@ def main():
             "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.7",
-            "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
@@ -83,7 +81,7 @@ def main():
         packages=packages,
         install_requires=dependencies,
         extras_require={},
-        python_requires=">=3.7",
+        python_requires=">=3.9",
         include_package_data=False,
         zip_safe=False,
     )

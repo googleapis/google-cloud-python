@@ -367,8 +367,10 @@ class LanguageSettings(proto.Message):
             instructions to improve handling of multilingual
             input.
         fallback_action (str):
-            Optional. The action to perform when an agent receives input
-            in an unsupported language.
+            Optional. Deprecated: This feature is no longer supported.
+            Use ``enable_multilingual_support`` instead to improve
+            handling of multilingual input. The action to perform when
+            an agent receives input in an unsupported language.
 
             This can be a predefined action or a custom tool call. Valid
             values are:
@@ -724,18 +726,21 @@ class ErrorHandlingSettings(proto.Message):
 
         Values:
             ERROR_HANDLING_STRATEGY_UNSPECIFIED (0):
-                Unspecified error handling strategy. Defaults to
-                FALLBACK_RESPONSE.
+                Unspecified error handling strategy.
             NONE (1):
                 No specific handling is enabled.
             FALLBACK_RESPONSE (2):
                 A fallback message will be returned to the
-                user in case of LLM errors.
+                user in case of system errors (e.g. LLM errors).
+            END_SESSION (3):
+                An [EndSession][google.cloud.ces.v1beta.EndSession] signal
+                will be emitted in case of system errors (e.g. LLM errors).
         """
 
         ERROR_HANDLING_STRATEGY_UNSPECIFIED = 0
         NONE = 1
         FALLBACK_RESPONSE = 2
+        END_SESSION = 3
 
     error_handling_strategy: ErrorHandlingStrategy = proto.Field(
         proto.ENUM,

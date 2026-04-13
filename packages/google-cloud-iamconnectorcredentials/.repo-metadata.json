@@ -1,0 +1,16 @@
+{
+  "api_description": "iamconnectorcredentials.googleapis.com API.",
+  "api_id": "iamconnectorcredentials.googleapis.com",
+  "api_shortname": "iamconnectorcredentials",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-iamconnectorcredentials/latest",
+  "default_version": "v1alpha",
+  "distribution_name": "google-cloud-iamconnectorcredentials",
+  "issue_tracker": "https://issuetracker.google.com/issues/new?component=190865&template=1161103",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "name": "google-cloud-iamconnectorcredentials",
+  "name_pretty": "iamconnectorcredentials.googleapis.com API",
+  "product_documentation": "https://cloud.google.com/iamconnectorcredentials/docs/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
+}

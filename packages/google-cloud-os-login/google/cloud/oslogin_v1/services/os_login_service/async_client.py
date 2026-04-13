@@ -45,8 +45,8 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-
 from google.cloud.oslogin_v1.common.types import common
+
 from google.cloud.oslogin_v1.types import oslogin
 
 from .client import OsLoginServiceClient
@@ -198,7 +198,7 @@ class OsLoginServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:

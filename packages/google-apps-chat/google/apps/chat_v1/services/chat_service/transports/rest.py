@@ -34,6 +34,7 @@ from google.apps.chat_v1.types import (
     membership,
     message,
     reaction,
+    section,
     space,
     space_event,
     space_notification_setting,
@@ -44,6 +45,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
@@ -132,6 +134,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_section(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_section(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_space(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -157,6 +167,10 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_reaction(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_section(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -276,6 +290,22 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_section_items(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_section_items(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_sections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_sections(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_space_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -289,6 +319,22 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_list_spaces(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_move_section_item(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move_section_item(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_position_section(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_position_section(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -321,6 +367,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_update_message(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_section(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_section(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -602,6 +656,52 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_section(
+        self,
+        request: gc_section.CreateSectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_section.CreateSectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_section
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_create_section(self, response: gc_section.Section) -> gc_section.Section:
+        """Post-rpc interceptor for create_section
+
+        DEPRECATED. Please use the `post_create_section_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_create_section` interceptor runs
+        before the `post_create_section_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_section_with_metadata(
+        self,
+        response: gc_section.Section,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_section.Section, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_section
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_section_with_metadata`
+        interceptor in new development instead of the `post_create_section` interceptor.
+        When both interceptors are used, this `post_create_section_with_metadata` interceptor runs after the
+        `post_create_section` interceptor. The (possibly modified) response returned by
+        `post_create_section` will be passed to
+        `post_create_section_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_space(
         self,
         request: gc_space.CreateSpaceRequest,
@@ -726,6 +826,18 @@ class ChatServiceRestInterceptor:
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[reaction.DeleteReactionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_reaction
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def pre_delete_section(
+        self,
+        request: section.DeleteSectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[section.DeleteSectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for delete_section
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ChatService server.
@@ -1408,6 +1520,102 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_section_items(
+        self,
+        request: section.ListSectionItemsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        section.ListSectionItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_section_items
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_list_section_items(
+        self, response: section.ListSectionItemsResponse
+    ) -> section.ListSectionItemsResponse:
+        """Post-rpc interceptor for list_section_items
+
+        DEPRECATED. Please use the `post_list_section_items_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_list_section_items` interceptor runs
+        before the `post_list_section_items_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_section_items_with_metadata(
+        self,
+        response: section.ListSectionItemsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        section.ListSectionItemsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_section_items
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_section_items_with_metadata`
+        interceptor in new development instead of the `post_list_section_items` interceptor.
+        When both interceptors are used, this `post_list_section_items_with_metadata` interceptor runs after the
+        `post_list_section_items` interceptor. The (possibly modified) response returned by
+        `post_list_section_items` will be passed to
+        `post_list_section_items_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_sections(
+        self,
+        request: section.ListSectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[section.ListSectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for list_sections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_list_sections(
+        self, response: section.ListSectionsResponse
+    ) -> section.ListSectionsResponse:
+        """Post-rpc interceptor for list_sections
+
+        DEPRECATED. Please use the `post_list_sections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_list_sections` interceptor runs
+        before the `post_list_sections_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_sections_with_metadata(
+        self,
+        response: section.ListSectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[section.ListSectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_sections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_sections_with_metadata`
+        interceptor in new development instead of the `post_list_sections` interceptor.
+        When both interceptors are used, this `post_list_sections_with_metadata` interceptor runs after the
+        `post_list_sections` interceptor. The (possibly modified) response returned by
+        `post_list_sections` will be passed to
+        `post_list_sections_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_space_events(
         self,
         request: space_event.ListSpaceEventsRequest,
@@ -1501,6 +1709,102 @@ class ChatServiceRestInterceptor:
         `post_list_spaces` interceptor. The (possibly modified) response returned by
         `post_list_spaces` will be passed to
         `post_list_spaces_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_move_section_item(
+        self,
+        request: section.MoveSectionItemRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[section.MoveSectionItemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for move_section_item
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_move_section_item(
+        self, response: section.MoveSectionItemResponse
+    ) -> section.MoveSectionItemResponse:
+        """Post-rpc interceptor for move_section_item
+
+        DEPRECATED. Please use the `post_move_section_item_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_move_section_item` interceptor runs
+        before the `post_move_section_item_with_metadata` interceptor.
+        """
+        return response
+
+    def post_move_section_item_with_metadata(
+        self,
+        response: section.MoveSectionItemResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        section.MoveSectionItemResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for move_section_item
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_move_section_item_with_metadata`
+        interceptor in new development instead of the `post_move_section_item` interceptor.
+        When both interceptors are used, this `post_move_section_item_with_metadata` interceptor runs after the
+        `post_move_section_item` interceptor. The (possibly modified) response returned by
+        `post_move_section_item` will be passed to
+        `post_move_section_item_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_position_section(
+        self,
+        request: section.PositionSectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[section.PositionSectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for position_section
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_position_section(
+        self, response: section.PositionSectionResponse
+    ) -> section.PositionSectionResponse:
+        """Post-rpc interceptor for position_section
+
+        DEPRECATED. Please use the `post_position_section_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_position_section` interceptor runs
+        before the `post_position_section_with_metadata` interceptor.
+        """
+        return response
+
+    def post_position_section_with_metadata(
+        self,
+        response: section.PositionSectionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        section.PositionSectionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for position_section
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_position_section_with_metadata`
+        interceptor in new development instead of the `post_position_section` interceptor.
+        When both interceptors are used, this `post_position_section_with_metadata` interceptor runs after the
+        `post_position_section` interceptor. The (possibly modified) response returned by
+        `post_position_section` will be passed to
+        `post_position_section_with_metadata`.
         """
         return response, metadata
 
@@ -1683,6 +1987,52 @@ class ChatServiceRestInterceptor:
         `post_update_message` interceptor. The (possibly modified) response returned by
         `post_update_message` will be passed to
         `post_update_message_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_section(
+        self,
+        request: gc_section.UpdateSectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_section.UpdateSectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_section
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_update_section(self, response: gc_section.Section) -> gc_section.Section:
+        """Post-rpc interceptor for update_section
+
+        DEPRECATED. Please use the `post_update_section_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_update_section` interceptor runs
+        before the `post_update_section_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_section_with_metadata(
+        self,
+        response: gc_section.Section,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_section.Section, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_section
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_section_with_metadata`
+        interceptor in new development instead of the `post_update_section` interceptor.
+        When both interceptors are used, this `post_update_section_with_metadata` interceptor runs after the
+        `post_update_section` interceptor. The (possibly modified) response returned by
+        `post_update_section` will be passed to
+        `post_update_section_with_metadata`.
         """
         return response, metadata
 
@@ -1951,6 +2301,12 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[ChatServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -2742,6 +3098,181 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _CreateSection(
+        _BaseChatServiceRestTransport._BaseCreateSection, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.CreateSection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gc_section.CreateSectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gc_section.Section:
+            r"""Call the create section method over HTTP.
+
+            Args:
+                request (~.gc_section.CreateSectionRequest):
+                    The request object. Request message for creating a
+                section.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gc_section.Section:
+                    Represents a
+                `section <https://support.google.com/chat/answer/16059854>`__
+                in Google Chat. Sections help users organize their
+                spaces. There are two types of sections:
+
+                1. **System Sections:** These are predefined sections
+                   managed by Google Chat. Their resource names are
+                   fixed, and they cannot be created, deleted, or have
+                   their ``display_name`` modified. Examples include:
+
+                   - ``users/{user}/sections/default-direct-messages``
+                   - ``users/{user}/sections/default-spaces``
+                   - ``users/{user}/sections/default-apps``
+
+                2. **Custom Sections:** These are sections created and
+                   managed by the user. Creating a custom section using
+                   ``CreateSection`` **requires** a ``display_name``.
+                   Custom sections can be updated using
+                   ``UpdateSection`` and deleted using
+                   ``DeleteSection``.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateSection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_section(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseCreateSection._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseChatServiceRestTransport._BaseCreateSection._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseCreateSection._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateSection",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateSection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._CreateSection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_section.Section()
+            pb_resp = gc_section.Section.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_section(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_section_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_section.Section.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_section",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateSection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateSpace(
         _BaseChatServiceRestTransport._BaseCreateSpace, ChatServiceRestStub
     ):
@@ -3363,6 +3894,115 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             # Send the request
             response = ChatServiceRestTransport._DeleteReaction._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteSection(
+        _BaseChatServiceRestTransport._BaseDeleteSection, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.DeleteSection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: section.DeleteSectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete section method over HTTP.
+
+            Args:
+                request (~.section.DeleteSectionRequest):
+                    The request object. Request message for deleting a section. `Developer
+                Preview <https://developers.google.com/workspace/preview>`__.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteSection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_section(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseDeleteSection._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseDeleteSection._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteSection",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteSection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._DeleteSection._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -5588,6 +6228,307 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _ListSectionItems(
+        _BaseChatServiceRestTransport._BaseListSectionItems, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.ListSectionItems")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: section.ListSectionItemsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> section.ListSectionItemsResponse:
+            r"""Call the list section items method over HTTP.
+
+            Args:
+                request (~.section.ListSectionItemsRequest):
+                    The request object. Request message for listing section
+                items.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.section.ListSectionItemsResponse:
+                    Response message for listing section
+                items.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListSectionItems._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_section_items(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseListSectionItems._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseListSectionItems._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListSectionItems",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSectionItems",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._ListSectionItems._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = section.ListSectionItemsResponse()
+            pb_resp = section.ListSectionItemsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_section_items(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_section_items_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = section.ListSectionItemsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_section_items",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSectionItems",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListSections(
+        _BaseChatServiceRestTransport._BaseListSections, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.ListSections")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: section.ListSectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> section.ListSectionsResponse:
+            r"""Call the list sections method over HTTP.
+
+            Args:
+                request (~.section.ListSectionsRequest):
+                    The request object. Request message for listing sections.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.section.ListSectionsResponse:
+                    Response message for listing
+                sections.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListSections._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_sections(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseListSections._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseListSections._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListSections",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._ListSections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = section.ListSectionsResponse()
+            pb_resp = section.ListSectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_sections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sections_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = section.ListSectionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_sections",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListSpaceEvents(
         _BaseChatServiceRestTransport._BaseListSpaceEvents, ChatServiceRestStub
     ):
@@ -5884,6 +6825,316 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "ListSpaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _MoveSectionItem(
+        _BaseChatServiceRestTransport._BaseMoveSectionItem, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.MoveSectionItem")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: section.MoveSectionItemRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> section.MoveSectionItemResponse:
+            r"""Call the move section item method over HTTP.
+
+            Args:
+                request (~.section.MoveSectionItemRequest):
+                    The request object. Request message for moving a section
+                item across sections.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.section.MoveSectionItemResponse:
+                    Response message for moving a section
+                item.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseMoveSectionItem._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_move_section_item(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseMoveSectionItem._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseMoveSectionItem._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseMoveSectionItem._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.MoveSectionItem",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MoveSectionItem",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._MoveSectionItem._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = section.MoveSectionItemResponse()
+            pb_resp = section.MoveSectionItemResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_move_section_item(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_section_item_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = section.MoveSectionItemResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.move_section_item",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MoveSectionItem",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _PositionSection(
+        _BaseChatServiceRestTransport._BasePositionSection, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.PositionSection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: section.PositionSectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> section.PositionSectionResponse:
+            r"""Call the position section method over HTTP.
+
+            Args:
+                request (~.section.PositionSectionRequest):
+                    The request object. Request message for positioning a
+                section.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.section.PositionSectionResponse:
+                    Response message for positioning a
+                section.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BasePositionSection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_position_section(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BasePositionSection._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BasePositionSection._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BasePositionSection._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.PositionSection",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "PositionSection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._PositionSection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = section.PositionSectionResponse()
+            pb_resp = section.PositionSectionResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_position_section(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_position_section_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = section.PositionSectionResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.position_section",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "PositionSection",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6506,6 +7757,181 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "UpdateMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateSection(
+        _BaseChatServiceRestTransport._BaseUpdateSection, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.UpdateSection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gc_section.UpdateSectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gc_section.Section:
+            r"""Call the update section method over HTTP.
+
+            Args:
+                request (~.gc_section.UpdateSectionRequest):
+                    The request object. Request message for updating a
+                section.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gc_section.Section:
+                    Represents a
+                `section <https://support.google.com/chat/answer/16059854>`__
+                in Google Chat. Sections help users organize their
+                spaces. There are two types of sections:
+
+                1. **System Sections:** These are predefined sections
+                   managed by Google Chat. Their resource names are
+                   fixed, and they cannot be created, deleted, or have
+                   their ``display_name`` modified. Examples include:
+
+                   - ``users/{user}/sections/default-direct-messages``
+                   - ``users/{user}/sections/default-spaces``
+                   - ``users/{user}/sections/default-apps``
+
+                2. **Custom Sections:** These are sections created and
+                   managed by the user. Creating a custom section using
+                   ``CreateSection`` **requires** a ``display_name``.
+                   Custom sections can be updated using
+                   ``UpdateSection`` and deleted using
+                   ``DeleteSection``.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_section(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateSection._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseChatServiceRestTransport._BaseUpdateSection._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseUpdateSection._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateSection",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._UpdateSection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_section.Section()
+            pb_resp = gc_section.Section.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_section(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_section_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_section.Section.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_section",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSection",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -7190,6 +8616,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._CreateReaction(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_section(
+        self,
+    ) -> Callable[[gc_section.CreateSectionRequest], gc_section.Section]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_space(self) -> Callable[[gc_space.CreateSpaceRequest], gc_space.Space]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -7226,6 +8660,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReaction(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_section(
+        self,
+    ) -> Callable[[section.DeleteSectionRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_space(self) -> Callable[[space.DeleteSpaceRequest], empty_pb2.Empty]:
@@ -7355,6 +8797,22 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._ListReactions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_section_items(
+        self,
+    ) -> Callable[[section.ListSectionItemsRequest], section.ListSectionItemsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSectionItems(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_sections(
+        self,
+    ) -> Callable[[section.ListSectionsRequest], section.ListSectionsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSections(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_space_events(
         self,
     ) -> Callable[
@@ -7371,6 +8829,22 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSpaces(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def move_section_item(
+        self,
+    ) -> Callable[[section.MoveSectionItemRequest], section.MoveSectionItemResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MoveSectionItem(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def position_section(
+        self,
+    ) -> Callable[[section.PositionSectionRequest], section.PositionSectionResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PositionSection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_spaces(
@@ -7401,6 +8875,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMessage(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_section(
+        self,
+    ) -> Callable[[gc_section.UpdateSectionRequest], gc_section.Section]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_space(self) -> Callable[[gc_space.UpdateSpaceRequest], gc_space.Space]:

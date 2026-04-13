@@ -36,18 +36,38 @@ from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1.types import (
     authorization_policy,
+    authz_policy,
+    backend_authentication_config,
     client_tls_policy,
+    gateway_security_policy,
+    gateway_security_policy_rule,
     server_tls_policy,
+    tls_inspection_policy,
+    url_list,
 )
 from google.cloud.network_security_v1.types import (
     authorization_policy as gcn_authorization_policy,
+)
+from google.cloud.network_security_v1.types import authz_policy as gcn_authz_policy
+from google.cloud.network_security_v1.types import (
+    backend_authentication_config as gcn_backend_authentication_config,
 )
 from google.cloud.network_security_v1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
 from google.cloud.network_security_v1.types import (
+    gateway_security_policy as gcn_gateway_security_policy,
+)
+from google.cloud.network_security_v1.types import (
+    gateway_security_policy_rule as gcn_gateway_security_policy_rule,
+)
+from google.cloud.network_security_v1.types import (
     server_tls_policy as gcn_server_tls_policy,
 )
+from google.cloud.network_security_v1.types import (
+    tls_inspection_policy as gcn_tls_inspection_policy,
+)
+from google.cloud.network_security_v1.types import url_list as gcn_url_list
 
 from .base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 
@@ -73,7 +93,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -108,7 +128,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -205,6 +225,10 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -516,6 +540,172 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["delete_authorization_policy"]
 
     @property
+    def list_backend_authentication_configs(
+        self,
+    ) -> Callable[
+        [backend_authentication_config.ListBackendAuthenticationConfigsRequest],
+        backend_authentication_config.ListBackendAuthenticationConfigsResponse,
+    ]:
+        r"""Return a callable for the list backend authentication
+        configs method over gRPC.
+
+        Lists BackendAuthenticationConfigs in a given project
+        and location.
+
+        Returns:
+            Callable[[~.ListBackendAuthenticationConfigsRequest],
+                    ~.ListBackendAuthenticationConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backend_authentication_configs" not in self._stubs:
+            self._stubs["list_backend_authentication_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/ListBackendAuthenticationConfigs",
+                    request_serializer=backend_authentication_config.ListBackendAuthenticationConfigsRequest.serialize,
+                    response_deserializer=backend_authentication_config.ListBackendAuthenticationConfigsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_backend_authentication_configs"]
+
+    @property
+    def get_backend_authentication_config(
+        self,
+    ) -> Callable[
+        [backend_authentication_config.GetBackendAuthenticationConfigRequest],
+        backend_authentication_config.BackendAuthenticationConfig,
+    ]:
+        r"""Return a callable for the get backend authentication
+        config method over gRPC.
+
+        Gets details of a single BackendAuthenticationConfig
+        to BackendAuthenticationConfig.
+
+        Returns:
+            Callable[[~.GetBackendAuthenticationConfigRequest],
+                    ~.BackendAuthenticationConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backend_authentication_config" not in self._stubs:
+            self._stubs["get_backend_authentication_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig",
+                    request_serializer=backend_authentication_config.GetBackendAuthenticationConfigRequest.serialize,
+                    response_deserializer=backend_authentication_config.BackendAuthenticationConfig.deserialize,
+                )
+            )
+        return self._stubs["get_backend_authentication_config"]
+
+    @property
+    def create_backend_authentication_config(
+        self,
+    ) -> Callable[
+        [gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create backend authentication
+        config method over gRPC.
+
+        Creates a new BackendAuthenticationConfig in a given
+        project and location.
+
+        Returns:
+            Callable[[~.CreateBackendAuthenticationConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backend_authentication_config" not in self._stubs:
+            self._stubs["create_backend_authentication_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/CreateBackendAuthenticationConfig",
+                    request_serializer=gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["create_backend_authentication_config"]
+
+    @property
+    def update_backend_authentication_config(
+        self,
+    ) -> Callable[
+        [gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update backend authentication
+        config method over gRPC.
+
+        Updates the parameters of a single
+        BackendAuthenticationConfig to
+        BackendAuthenticationConfig.
+
+        Returns:
+            Callable[[~.UpdateBackendAuthenticationConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backend_authentication_config" not in self._stubs:
+            self._stubs["update_backend_authentication_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateBackendAuthenticationConfig",
+                    request_serializer=gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["update_backend_authentication_config"]
+
+    @property
+    def delete_backend_authentication_config(
+        self,
+    ) -> Callable[
+        [backend_authentication_config.DeleteBackendAuthenticationConfigRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete backend authentication
+        config method over gRPC.
+
+        Deletes a single BackendAuthenticationConfig to
+        BackendAuthenticationConfig.
+
+        Returns:
+            Callable[[~.DeleteBackendAuthenticationConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backend_authentication_config" not in self._stubs:
+            self._stubs["delete_backend_authentication_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig",
+                    request_serializer=backend_authentication_config.DeleteBackendAuthenticationConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_backend_authentication_config"]
+
+    @property
     def list_server_tls_policies(
         self,
     ) -> Callable[
@@ -800,6 +990,749 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_client_tls_policy"]
+
+    @property
+    def list_gateway_security_policies(
+        self,
+    ) -> Callable[
+        [gateway_security_policy.ListGatewaySecurityPoliciesRequest],
+        gateway_security_policy.ListGatewaySecurityPoliciesResponse,
+    ]:
+        r"""Return a callable for the list gateway security policies method over gRPC.
+
+        Lists GatewaySecurityPolicies in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListGatewaySecurityPoliciesRequest],
+                    ~.ListGatewaySecurityPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_gateway_security_policies" not in self._stubs:
+            self._stubs["list_gateway_security_policies"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/ListGatewaySecurityPolicies",
+                    request_serializer=gateway_security_policy.ListGatewaySecurityPoliciesRequest.serialize,
+                    response_deserializer=gateway_security_policy.ListGatewaySecurityPoliciesResponse.deserialize,
+                )
+            )
+        return self._stubs["list_gateway_security_policies"]
+
+    @property
+    def get_gateway_security_policy(
+        self,
+    ) -> Callable[
+        [gateway_security_policy.GetGatewaySecurityPolicyRequest],
+        gateway_security_policy.GatewaySecurityPolicy,
+    ]:
+        r"""Return a callable for the get gateway security policy method over gRPC.
+
+        Gets details of a single GatewaySecurityPolicy.
+
+        Returns:
+            Callable[[~.GetGatewaySecurityPolicyRequest],
+                    ~.GatewaySecurityPolicy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_gateway_security_policy" not in self._stubs:
+            self._stubs["get_gateway_security_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy",
+                    request_serializer=gateway_security_policy.GetGatewaySecurityPolicyRequest.serialize,
+                    response_deserializer=gateway_security_policy.GatewaySecurityPolicy.deserialize,
+                )
+            )
+        return self._stubs["get_gateway_security_policy"]
+
+    @property
+    def create_gateway_security_policy(
+        self,
+    ) -> Callable[
+        [gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create gateway security policy method over gRPC.
+
+        Creates a new GatewaySecurityPolicy in a given
+        project and location.
+
+        Returns:
+            Callable[[~.CreateGatewaySecurityPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_gateway_security_policy" not in self._stubs:
+            self._stubs["create_gateway_security_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/CreateGatewaySecurityPolicy",
+                    request_serializer=gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["create_gateway_security_policy"]
+
+    @property
+    def update_gateway_security_policy(
+        self,
+    ) -> Callable[
+        [gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update gateway security policy method over gRPC.
+
+        Updates the parameters of a single
+        GatewaySecurityPolicy.
+
+        Returns:
+            Callable[[~.UpdateGatewaySecurityPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_gateway_security_policy" not in self._stubs:
+            self._stubs["update_gateway_security_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateGatewaySecurityPolicy",
+                    request_serializer=gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["update_gateway_security_policy"]
+
+    @property
+    def delete_gateway_security_policy(
+        self,
+    ) -> Callable[
+        [gateway_security_policy.DeleteGatewaySecurityPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete gateway security policy method over gRPC.
+
+        Deletes a single GatewaySecurityPolicy.
+
+        Returns:
+            Callable[[~.DeleteGatewaySecurityPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_gateway_security_policy" not in self._stubs:
+            self._stubs["delete_gateway_security_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicy",
+                    request_serializer=gateway_security_policy.DeleteGatewaySecurityPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_gateway_security_policy"]
+
+    @property
+    def list_gateway_security_policy_rules(
+        self,
+    ) -> Callable[
+        [gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest],
+        gateway_security_policy_rule.ListGatewaySecurityPolicyRulesResponse,
+    ]:
+        r"""Return a callable for the list gateway security policy
+        rules method over gRPC.
+
+        Lists GatewaySecurityPolicyRules in a given project
+        and location.
+
+        Returns:
+            Callable[[~.ListGatewaySecurityPolicyRulesRequest],
+                    ~.ListGatewaySecurityPolicyRulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_gateway_security_policy_rules" not in self._stubs:
+            self._stubs["list_gateway_security_policy_rules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/ListGatewaySecurityPolicyRules",
+                    request_serializer=gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest.serialize,
+                    response_deserializer=gateway_security_policy_rule.ListGatewaySecurityPolicyRulesResponse.deserialize,
+                )
+            )
+        return self._stubs["list_gateway_security_policy_rules"]
+
+    @property
+    def get_gateway_security_policy_rule(
+        self,
+    ) -> Callable[
+        [gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest],
+        gateway_security_policy_rule.GatewaySecurityPolicyRule,
+    ]:
+        r"""Return a callable for the get gateway security policy
+        rule method over gRPC.
+
+        Gets details of a single GatewaySecurityPolicyRule.
+
+        Returns:
+            Callable[[~.GetGatewaySecurityPolicyRuleRequest],
+                    ~.GatewaySecurityPolicyRule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_gateway_security_policy_rule" not in self._stubs:
+            self._stubs["get_gateway_security_policy_rule"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicyRule",
+                    request_serializer=gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest.serialize,
+                    response_deserializer=gateway_security_policy_rule.GatewaySecurityPolicyRule.deserialize,
+                )
+            )
+        return self._stubs["get_gateway_security_policy_rule"]
+
+    @property
+    def create_gateway_security_policy_rule(
+        self,
+    ) -> Callable[
+        [gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create gateway security policy
+        rule method over gRPC.
+
+        Creates a new GatewaySecurityPolicy in a given
+        project and location.
+
+        Returns:
+            Callable[[~.CreateGatewaySecurityPolicyRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_gateway_security_policy_rule" not in self._stubs:
+            self._stubs["create_gateway_security_policy_rule"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/CreateGatewaySecurityPolicyRule",
+                    request_serializer=gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["create_gateway_security_policy_rule"]
+
+    @property
+    def update_gateway_security_policy_rule(
+        self,
+    ) -> Callable[
+        [gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update gateway security policy
+        rule method over gRPC.
+
+        Updates the parameters of a single
+        GatewaySecurityPolicyRule.
+
+        Returns:
+            Callable[[~.UpdateGatewaySecurityPolicyRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_gateway_security_policy_rule" not in self._stubs:
+            self._stubs["update_gateway_security_policy_rule"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateGatewaySecurityPolicyRule",
+                    request_serializer=gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["update_gateway_security_policy_rule"]
+
+    @property
+    def delete_gateway_security_policy_rule(
+        self,
+    ) -> Callable[
+        [gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete gateway security policy
+        rule method over gRPC.
+
+        Deletes a single GatewaySecurityPolicyRule.
+
+        Returns:
+            Callable[[~.DeleteGatewaySecurityPolicyRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_gateway_security_policy_rule" not in self._stubs:
+            self._stubs["delete_gateway_security_policy_rule"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicyRule",
+                    request_serializer=gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_gateway_security_policy_rule"]
+
+    @property
+    def list_url_lists(
+        self,
+    ) -> Callable[[url_list.ListUrlListsRequest], url_list.ListUrlListsResponse]:
+        r"""Return a callable for the list url lists method over gRPC.
+
+        Lists UrlLists in a given project and location.
+
+        Returns:
+            Callable[[~.ListUrlListsRequest],
+                    ~.ListUrlListsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_url_lists" not in self._stubs:
+            self._stubs["list_url_lists"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/ListUrlLists",
+                request_serializer=url_list.ListUrlListsRequest.serialize,
+                response_deserializer=url_list.ListUrlListsResponse.deserialize,
+            )
+        return self._stubs["list_url_lists"]
+
+    @property
+    def get_url_list(self) -> Callable[[url_list.GetUrlListRequest], url_list.UrlList]:
+        r"""Return a callable for the get url list method over gRPC.
+
+        Gets details of a single UrlList.
+
+        Returns:
+            Callable[[~.GetUrlListRequest],
+                    ~.UrlList]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_url_list" not in self._stubs:
+            self._stubs["get_url_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList",
+                request_serializer=url_list.GetUrlListRequest.serialize,
+                response_deserializer=url_list.UrlList.deserialize,
+            )
+        return self._stubs["get_url_list"]
+
+    @property
+    def create_url_list(
+        self,
+    ) -> Callable[[gcn_url_list.CreateUrlListRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create url list method over gRPC.
+
+        Creates a new UrlList in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateUrlListRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_url_list" not in self._stubs:
+            self._stubs["create_url_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/CreateUrlList",
+                request_serializer=gcn_url_list.CreateUrlListRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_url_list"]
+
+    @property
+    def update_url_list(
+        self,
+    ) -> Callable[[gcn_url_list.UpdateUrlListRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update url list method over gRPC.
+
+        Updates the parameters of a single UrlList.
+
+        Returns:
+            Callable[[~.UpdateUrlListRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_url_list" not in self._stubs:
+            self._stubs["update_url_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateUrlList",
+                request_serializer=gcn_url_list.UpdateUrlListRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_url_list"]
+
+    @property
+    def delete_url_list(
+        self,
+    ) -> Callable[[url_list.DeleteUrlListRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete url list method over gRPC.
+
+        Deletes a single UrlList.
+
+        Returns:
+            Callable[[~.DeleteUrlListRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_url_list" not in self._stubs:
+            self._stubs["delete_url_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteUrlList",
+                request_serializer=url_list.DeleteUrlListRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_url_list"]
+
+    @property
+    def list_tls_inspection_policies(
+        self,
+    ) -> Callable[
+        [tls_inspection_policy.ListTlsInspectionPoliciesRequest],
+        tls_inspection_policy.ListTlsInspectionPoliciesResponse,
+    ]:
+        r"""Return a callable for the list tls inspection policies method over gRPC.
+
+        Lists TlsInspectionPolicies in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListTlsInspectionPoliciesRequest],
+                    ~.ListTlsInspectionPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_tls_inspection_policies" not in self._stubs:
+            self._stubs["list_tls_inspection_policies"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/ListTlsInspectionPolicies",
+                    request_serializer=tls_inspection_policy.ListTlsInspectionPoliciesRequest.serialize,
+                    response_deserializer=tls_inspection_policy.ListTlsInspectionPoliciesResponse.deserialize,
+                )
+            )
+        return self._stubs["list_tls_inspection_policies"]
+
+    @property
+    def get_tls_inspection_policy(
+        self,
+    ) -> Callable[
+        [tls_inspection_policy.GetTlsInspectionPolicyRequest],
+        tls_inspection_policy.TlsInspectionPolicy,
+    ]:
+        r"""Return a callable for the get tls inspection policy method over gRPC.
+
+        Gets details of a single TlsInspectionPolicy.
+
+        Returns:
+            Callable[[~.GetTlsInspectionPolicyRequest],
+                    ~.TlsInspectionPolicy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_tls_inspection_policy" not in self._stubs:
+            self._stubs["get_tls_inspection_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy",
+                request_serializer=tls_inspection_policy.GetTlsInspectionPolicyRequest.serialize,
+                response_deserializer=tls_inspection_policy.TlsInspectionPolicy.deserialize,
+            )
+        return self._stubs["get_tls_inspection_policy"]
+
+    @property
+    def create_tls_inspection_policy(
+        self,
+    ) -> Callable[
+        [gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create tls inspection policy method over gRPC.
+
+        Creates a new TlsInspectionPolicy in a given project
+        and location.
+
+        Returns:
+            Callable[[~.CreateTlsInspectionPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_tls_inspection_policy" not in self._stubs:
+            self._stubs["create_tls_inspection_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/CreateTlsInspectionPolicy",
+                    request_serializer=gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["create_tls_inspection_policy"]
+
+    @property
+    def update_tls_inspection_policy(
+        self,
+    ) -> Callable[
+        [gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update tls inspection policy method over gRPC.
+
+        Updates the parameters of a single
+        TlsInspectionPolicy.
+
+        Returns:
+            Callable[[~.UpdateTlsInspectionPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_tls_inspection_policy" not in self._stubs:
+            self._stubs["update_tls_inspection_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateTlsInspectionPolicy",
+                    request_serializer=gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["update_tls_inspection_policy"]
+
+    @property
+    def delete_tls_inspection_policy(
+        self,
+    ) -> Callable[
+        [tls_inspection_policy.DeleteTlsInspectionPolicyRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete tls inspection policy method over gRPC.
+
+        Deletes a single TlsInspectionPolicy.
+
+        Returns:
+            Callable[[~.DeleteTlsInspectionPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_tls_inspection_policy" not in self._stubs:
+            self._stubs["delete_tls_inspection_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteTlsInspectionPolicy",
+                    request_serializer=tls_inspection_policy.DeleteTlsInspectionPolicyRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_tls_inspection_policy"]
+
+    @property
+    def list_authz_policies(
+        self,
+    ) -> Callable[
+        [authz_policy.ListAuthzPoliciesRequest], authz_policy.ListAuthzPoliciesResponse
+    ]:
+        r"""Return a callable for the list authz policies method over gRPC.
+
+        Lists AuthzPolicies in a given project and location.
+
+        Returns:
+            Callable[[~.ListAuthzPoliciesRequest],
+                    ~.ListAuthzPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_authz_policies" not in self._stubs:
+            self._stubs["list_authz_policies"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/ListAuthzPolicies",
+                request_serializer=authz_policy.ListAuthzPoliciesRequest.serialize,
+                response_deserializer=authz_policy.ListAuthzPoliciesResponse.deserialize,
+            )
+        return self._stubs["list_authz_policies"]
+
+    @property
+    def get_authz_policy(
+        self,
+    ) -> Callable[[authz_policy.GetAuthzPolicyRequest], authz_policy.AuthzPolicy]:
+        r"""Return a callable for the get authz policy method over gRPC.
+
+        Gets details of a single AuthzPolicy.
+
+        Returns:
+            Callable[[~.GetAuthzPolicyRequest],
+                    ~.AuthzPolicy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_authz_policy" not in self._stubs:
+            self._stubs["get_authz_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy",
+                request_serializer=authz_policy.GetAuthzPolicyRequest.serialize,
+                response_deserializer=authz_policy.AuthzPolicy.deserialize,
+            )
+        return self._stubs["get_authz_policy"]
+
+    @property
+    def create_authz_policy(
+        self,
+    ) -> Callable[
+        [gcn_authz_policy.CreateAuthzPolicyRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create authz policy method over gRPC.
+
+        Creates a new AuthzPolicy in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAuthzPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_authz_policy" not in self._stubs:
+            self._stubs["create_authz_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/CreateAuthzPolicy",
+                request_serializer=gcn_authz_policy.CreateAuthzPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_authz_policy"]
+
+    @property
+    def update_authz_policy(
+        self,
+    ) -> Callable[
+        [gcn_authz_policy.UpdateAuthzPolicyRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update authz policy method over gRPC.
+
+        Updates the parameters of a single AuthzPolicy.
+
+        Returns:
+            Callable[[~.UpdateAuthzPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_authz_policy" not in self._stubs:
+            self._stubs["update_authz_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateAuthzPolicy",
+                request_serializer=gcn_authz_policy.UpdateAuthzPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_authz_policy"]
+
+    @property
+    def delete_authz_policy(
+        self,
+    ) -> Callable[[authz_policy.DeleteAuthzPolicyRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete authz policy method over gRPC.
+
+        Deletes a single AuthzPolicy.
+
+        Returns:
+            Callable[[~.DeleteAuthzPolicyRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_authz_policy" not in self._stubs:
+            self._stubs["delete_authz_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteAuthzPolicy",
+                request_serializer=authz_policy.DeleteAuthzPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_authz_policy"]
 
     def close(self):
         self._logged_channel.close()

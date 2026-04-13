@@ -18,12 +18,17 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
         "OutputState",
+        "TraceBlock",
+        "SpeechProcessingMetadata",
+        "PlaybookTraceMetadata",
+        "FlowTraceMetadata",
         "PlaybookInput",
         "PlaybookOutput",
         "Action",
@@ -62,6 +67,159 @@ class OutputState(proto.Enum):
     OUTPUT_STATE_FAILED = 3
     OUTPUT_STATE_ESCALATED = 4
     OUTPUT_STATE_PENDING = 5
+
+
+class TraceBlock(proto.Message):
+    r"""The trace block tracks a sequence of actions taken by the
+    agent in a flow or a playbook.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        playbook_trace_metadata (google.cloud.dialogflowcx_v3.types.PlaybookTraceMetadata):
+            Metadata of the playbook trace.
+
+            This field is a member of `oneof`_ ``trace_metadata``.
+        flow_trace_metadata (google.cloud.dialogflowcx_v3.types.FlowTraceMetadata):
+            Metadata of the flow trace.
+
+            This field is a member of `oneof`_ ``trace_metadata``.
+        speech_processing_metadata (google.cloud.dialogflowcx_v3.types.SpeechProcessingMetadata):
+            Metadata of the speech-to-text and
+            speech-to-text processing.
+
+            This field is a member of `oneof`_ ``trace_metadata``.
+        actions (MutableSequence[google.cloud.dialogflowcx_v3.types.Action]):
+            The actions performed by the agent and the
+            user during this session.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp of the start of the
+            trace block.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp of the end of the
+            trace block.
+        input_parameters (google.protobuf.struct_pb2.Struct):
+            Optional. A list of input parameters of the
+            trace block.
+        output_parameters (google.protobuf.struct_pb2.Struct):
+            Optional. A list of output parameters of the
+            trace block.
+        end_state (google.cloud.dialogflowcx_v3.types.OutputState):
+            Optional. Output only. The end state of the
+            trace block.
+    """
+
+    playbook_trace_metadata: "PlaybookTraceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="trace_metadata",
+        message="PlaybookTraceMetadata",
+    )
+    flow_trace_metadata: "FlowTraceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="trace_metadata",
+        message="FlowTraceMetadata",
+    )
+    speech_processing_metadata: "SpeechProcessingMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="trace_metadata",
+        message="SpeechProcessingMetadata",
+    )
+    actions: MutableSequence["Action"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Action",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    input_parameters: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=struct_pb2.Struct,
+    )
+    output_parameters: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
+    end_state: "OutputState" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="OutputState",
+    )
+
+
+class SpeechProcessingMetadata(proto.Message):
+    r"""Metadata of the speech-to-text and text-to-speech processing.
+
+    Attributes:
+        display_name (str):
+            Output only. The display name of the speech
+            processing.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PlaybookTraceMetadata(proto.Message):
+    r"""Metadata of the playbook trace.
+
+    Attributes:
+        playbook (str):
+            Required. The unique identifier of the playbook. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+        display_name (str):
+            Output only. The display name of the
+            playbook.
+    """
+
+    playbook: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FlowTraceMetadata(proto.Message):
+    r"""Metadata of the flow trace.
+
+    Attributes:
+        flow (str):
+            Required. The unique identifier of the flow. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
+        display_name (str):
+            Output only. The display name of the flow.
+    """
+
+    flow: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PlaybookInput(proto.Message):

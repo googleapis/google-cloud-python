@@ -1,12 +1,26 @@
+# This file is being migrated to librarian@latest, and is no longer maintained by hand.
+
+release_only_mode: true
 global_files_allowlist:
-  # Allow the container to read and write the root `CHANGELOG.md`
-  # file during the `release` step to update the latest client library
-  # versions which are hardcoded in the file.
-  - path: "CHANGELOG.md"
-    permissions: "read-write"
+  - path: CHANGELOG.md
+    permissions: read-write
 libraries:
-# libraries have "release_blocked: true" so that releases are
-# explicitly initiated
-  - id: "google-cloud-documentai-toolbox"
+  - id: google-django-spanner
     release_blocked: true
-    generate_blocked: true
+  - id: google-cloud-storage
+    release_blocked: true
+  - generate_blocked: true
+    id: google-cloud-bigtable
+  - id: bigframes
+    release_blocked: true
+  - generate_blocked: true
+  - generate_blocked: true
+    id: google-cloud-dialogflow
+  - id: google-crc32c
+    release_blocked: true
+  - id: google-cloud-spanner
+    release_blocked: true
+  - generate_blocked: true
+    id: google-area120-tables
+  - generate_blocked: true
+    id: google-cloud-config

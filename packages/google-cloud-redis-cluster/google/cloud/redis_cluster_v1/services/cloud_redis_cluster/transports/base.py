@@ -82,6 +82,10 @@ class CloudRedisClusterTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -131,6 +135,8 @@ class CloudRedisClusterTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -166,6 +172,11 @@ class CloudRedisClusterTransport(abc.ABC):
             self.get_cluster_certificate_authority: gapic_v1.method.wrap_method(
                 self.get_cluster_certificate_authority,
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_shared_regional_certificate_authority: gapic_v1.method.wrap_method(
+                self.get_shared_regional_certificate_authority,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.reschedule_cluster_maintenance: gapic_v1.method.wrap_method(
@@ -310,6 +321,18 @@ class CloudRedisClusterTransport(abc.ABC):
         Union[
             cloud_redis_cluster.CertificateAuthority,
             Awaitable[cloud_redis_cluster.CertificateAuthority],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_shared_regional_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest],
+        Union[
+            cloud_redis_cluster.SharedRegionalCertificateAuthority,
+            Awaitable[cloud_redis_cluster.SharedRegionalCertificateAuthority],
         ],
     ]:
         raise NotImplementedError()

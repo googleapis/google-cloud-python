@@ -55,19 +55,26 @@ __protobuf__ = proto.module(
         "ConnectionState",
         "ExcludeInfoTypes",
         "ExcludeByHotword",
+        "ExcludeByImageFindings",
         "ExclusionRule",
+        "AdjustByMatchingInfoTypes",
+        "AdjustByImageFindings",
+        "AdjustmentRule",
         "InspectionRule",
         "InspectionRuleSet",
         "InspectConfig",
         "ByteContentItem",
         "ContentItem",
+        "ContentMetadata",
         "Table",
+        "KeyValueMetadataProperty",
         "InspectResult",
         "Finding",
         "Location",
         "ContentLocation",
         "MetadataLocation",
         "StorageMetadataLabel",
+        "KeyValueMetadataLabel",
         "DocumentLocation",
         "RecordLocation",
         "TableLocation",
@@ -264,6 +271,10 @@ __protobuf__ = proto.module(
         "HybridContentItem",
         "HybridFindingDetails",
         "HybridInspectResponse",
+        "ImageContainmentType",
+        "Overlap",
+        "Encloses",
+        "FullyInside",
         "ListProjectDataProfilesRequest",
         "ListProjectDataProfilesResponse",
         "ListTableDataProfilesRequest",
@@ -624,12 +635,25 @@ class MatchingType(proto.Enum):
             - Regex: finding doesn't match the regex
             - Exclude infoType: no intersection with
               affecting infoTypes findings
+        MATCHING_TYPE_RULE_SPECIFIC (4):
+            Rule-specific match.
+
+            The matching logic is based on the specific rule being used.
+            This is required for rules where the matching behavior is
+            not a simple string comparison (e.g., image containment).
+            This matching type can only be used with the
+            ``ExcludeByImageFindings`` rule.
+
+            - Exclude by image findings: The matching logic is defined
+              within ``ExcludeByImageFindings`` based on spatial
+              relationships between bounding boxes.
     """
 
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
     MATCHING_TYPE_PARTIAL_MATCH = 2
     MATCHING_TYPE_INVERSE_MATCH = 3
+    MATCHING_TYPE_RULE_SPECIFIC = 4
 
 
 class ContentOption(proto.Enum):
@@ -660,10 +684,16 @@ class MetadataType(proto.Enum):
         STORAGE_METADATA (2):
             General file metadata provided by Cloud
             Storage.
+        CONTENT_METADATA (3):
+            Metadata extracted from the files.
+        CLIENT_PROVIDED_METADATA (4):
+            Metadata provided by the client.
     """
 
     METADATATYPE_UNSPECIFIED = 0
     STORAGE_METADATA = 2
+    CONTENT_METADATA = 3
+    CLIENT_PROVIDED_METADATA = 4
 
 
 class InfoTypeSupportedBy(proto.Enum):
@@ -911,6 +941,47 @@ class ExcludeByHotword(proto.Message):
     )
 
 
+class ExcludeByImageFindings(proto.Message):
+    r"""The rule to exclude image findings based on spatial
+    relationships with other image findings. For example, exclude an
+    image finding if it overlaps with another image finding.
+    This rule is silently ignored if the content being inspected is
+    not an image.
+
+    Attributes:
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
+            A list of image-supported infoTypes—excluding `document
+            infoTypes <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>`__—to
+            be used as context for the exclusion rule. A finding is
+            excluded if its bounding box has the specified spatial
+            relationship (defined by ``image_containment_type``) with a
+            finding of an infoType in this list.
+
+            For example, if ``InspectionRuleSet.info_types`` includes
+            ``OBJECT_TYPE/PERSON`` and this ``exclusion_rule`` specifies
+            ``info_types`` as ``OBJECT_TYPE/PERSON/PASSPORT`` with
+            ``image_containment_type`` set to ``encloses``, then
+            ``OBJECT_TYPE/PERSON`` findings will be excluded if they are
+            fully contained within the bounding box of an
+            ``OBJECT_TYPE/PERSON/PASSPORT`` finding.
+        image_containment_type (google.cloud.dlp_v2.types.ImageContainmentType):
+            Specifies the required spatial relationship
+            between the bounding boxes of the target finding
+            and the context infoType findings.
+    """
+
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+    image_containment_type: "ImageContainmentType" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImageContainmentType",
+    )
+
+
 class ExclusionRule(proto.Message):
     r"""The rule that specifies conditions when findings of infoTypes
     specified in ``InspectionRuleSet`` are removed from results.
@@ -942,6 +1013,12 @@ class ExclusionRule(proto.Message):
             includes the column name.
 
             This field is a member of `oneof`_ ``type``.
+        exclude_by_image_findings (google.cloud.dlp_v2.types.ExcludeByImageFindings):
+            Exclude findings based on image containment
+            rules. For example, exclude an image finding if
+            it overlaps with another image finding.
+
+            This field is a member of `oneof`_ ``type``.
         matching_type (google.cloud.dlp_v2.types.MatchingType):
             How the rule is applied, see MatchingType
             documentation for details.
@@ -971,10 +1048,170 @@ class ExclusionRule(proto.Message):
         oneof="type",
         message="ExcludeByHotword",
     )
+    exclude_by_image_findings: "ExcludeByImageFindings" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="type",
+        message="ExcludeByImageFindings",
+    )
     matching_type: "MatchingType" = proto.Field(
         proto.ENUM,
         number=4,
         enum="MatchingType",
+    )
+
+
+class AdjustByMatchingInfoTypes(proto.Message):
+    r"""AdjustmentRule condition for matching infoTypes.
+
+    Attributes:
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
+            Sensitive Data Protection adjusts the likelihood of a
+            finding if that finding also matches one of these infoTypes.
+
+            For example, you can create a rule to adjust the likelihood
+            of a ``PHONE_NUMBER`` finding if the string is found within
+            a document that is classified as
+            ``DOCUMENT_TYPE/HR/RESUME``. To configure this, set
+            ``PHONE_NUMBER`` in ``InspectionRuleSet.info_types``. Add an
+            ``adjustment_rule`` with an
+            ``adjust_by_matching_info_types.info_types`` that contains
+            ``DOCUMENT_TYPE/HR/RESUME``. In this case, the likelihood of
+            the ``PHONE_NUMBER`` finding is adjusted, but the likelihood
+            of the ``DOCUMENT_TYPE/HR/RESUME`` finding is not.
+        min_likelihood (google.cloud.dlp_v2.types.Likelihood):
+            Required. Minimum likelihood of the
+            ``adjust_by_matching_info_types.info_types`` finding. If the
+            likelihood is lower than this value, Sensitive Data
+            Protection doesn't adjust the likelihood of the
+            ``InspectionRuleSet.info_types`` finding.
+        matching_type (google.cloud.dlp_v2.types.MatchingType):
+            How the adjustment rule is applied.
+
+            Only ``MATCHING_TYPE_PARTIAL_MATCH`` is supported:
+
+            - Partial match: adjusts the findings of infoTypes specified
+              in the inspection rule when they have a nonempty
+              intersection with a finding of an infoType specified in
+              this adjustment rule.
+    """
+
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+    min_likelihood: storage.Likelihood = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=storage.Likelihood,
+    )
+    matching_type: "MatchingType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="MatchingType",
+    )
+
+
+class AdjustByImageFindings(proto.Message):
+    r"""AdjustmentRule condition for image findings.
+    This rule is silently ignored if the content being inspected is
+    not an image.
+
+    Attributes:
+        info_types (MutableSequence[google.cloud.dlp_v2.types.InfoType]):
+            A list of image-supported infoTypes—excluding `document
+            infoTypes <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>`__—to
+            be used as context for the adjustment rule. Sensitive Data
+            Protection adjusts the likelihood of an image finding if its
+            bounding box has the specified spatial relationship (defined
+            by ``image_containment_type``) with a finding of an infoType
+            in this list.
+
+            For example, you can create a rule to adjust the likelihood
+            of a ``US_PASSPORT`` finding if it is enclosed by a finding
+            of ``OBJECT_TYPE/PERSON/PASSPORT``. To configure this, set
+            ``US_PASSPORT`` in ``InspectionRuleSet.info_types``. Add an
+            ``adjustment_rule`` with an
+            ``adjust_by_image_findings.info_types`` that contains
+            ``OBJECT_TYPE/PERSON/PASSPORT`` and
+            ``image_containment_type`` set to ``encloses``. In this
+            case, the likelihood of the ``US_PASSPORT`` finding is
+            adjusted, but the likelihood of the
+            ``OBJECT_TYPE/PERSON/PASSPORT`` finding is not.
+        min_likelihood (google.cloud.dlp_v2.types.Likelihood):
+            Required. Minimum likelihood of the
+            ``adjust_by_image_findings.info_types`` finding. If the
+            likelihood is lower than this value, Sensitive Data
+            Protection doesn't adjust the likelihood of the
+            ``InspectionRuleSet.info_types`` finding.
+        image_containment_type (google.cloud.dlp_v2.types.ImageContainmentType):
+            Specifies the required spatial relationship
+            between the bounding boxes of the target finding
+            and the context infoType findings.
+    """
+
+    info_types: MutableSequence[storage.InfoType] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+    min_likelihood: storage.Likelihood = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=storage.Likelihood,
+    )
+    image_containment_type: "ImageContainmentType" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImageContainmentType",
+    )
+
+
+class AdjustmentRule(proto.Message):
+    r"""Rule that specifies conditions when a certain infoType's
+    finding details should be adjusted.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        adjust_by_matching_info_types (google.cloud.dlp_v2.types.AdjustByMatchingInfoTypes):
+            Set of infoTypes for which findings would
+            affect this rule.
+
+            This field is a member of `oneof`_ ``conditions``.
+        adjust_by_image_findings (google.cloud.dlp_v2.types.AdjustByImageFindings):
+            AdjustmentRule condition for image findings.
+
+            This field is a member of `oneof`_ ``conditions``.
+        likelihood_adjustment (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.LikelihoodAdjustment):
+            Likelihood adjustment to apply to the
+            infoType.
+    """
+
+    adjust_by_matching_info_types: "AdjustByMatchingInfoTypes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="conditions",
+        message="AdjustByMatchingInfoTypes",
+    )
+    adjust_by_image_findings: "AdjustByImageFindings" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="conditions",
+        message="AdjustByImageFindings",
+    )
+    likelihood_adjustment: storage.CustomInfoType.DetectionRule.LikelihoodAdjustment = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=storage.CustomInfoType.DetectionRule.LikelihoodAdjustment,
+        )
     )
 
 
@@ -998,6 +1235,10 @@ class InspectionRule(proto.Message):
             Exclusion rule.
 
             This field is a member of `oneof`_ ``type``.
+        adjustment_rule (google.cloud.dlp_v2.types.AdjustmentRule):
+            Adjustment rule.
+
+            This field is a member of `oneof`_ ``type``.
     """
 
     hotword_rule: storage.CustomInfoType.DetectionRule.HotwordRule = proto.Field(
@@ -1011,6 +1252,12 @@ class InspectionRule(proto.Message):
         number=2,
         oneof="type",
         message="ExclusionRule",
+    )
+    adjustment_rule: "AdjustmentRule" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="AdjustmentRule",
     )
 
 
@@ -1106,11 +1353,11 @@ class InspectConfig(proto.Message):
         content_options (MutableSequence[google.cloud.dlp_v2.types.ContentOption]):
             Deprecated and unused.
         rule_set (MutableSequence[google.cloud.dlp_v2.types.InspectionRuleSet]):
-            Set of rules to apply to the findings for
-            this InspectConfig. Exclusion rules, contained
-            in the set are executed in the end, other rules
-            are executed in the order they are specified for
-            each info type.
+            Set of rules to apply to the findings for this
+            InspectConfig. Exclusion rules, contained in the set are
+            executed in the end, other rules are executed in the order
+            they are specified for each info type. Not supported for the
+            ``metadata_key_value_expression`` CustomInfoType.
     """
 
     class InfoTypeLikelihood(proto.Message):
@@ -1388,6 +1635,8 @@ class ContentItem(proto.Message):
             ``data``.
 
             This field is a member of `oneof`_ ``data_item``.
+        content_metadata (google.cloud.dlp_v2.types.ContentMetadata):
+            User provided metadata for the content.
     """
 
     value: str = proto.Field(
@@ -1406,6 +1655,27 @@ class ContentItem(proto.Message):
         number=5,
         oneof="data_item",
         message="ByteContentItem",
+    )
+    content_metadata: "ContentMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ContentMetadata",
+    )
+
+
+class ContentMetadata(proto.Message):
+    r"""Metadata on content to be scanned.
+
+    Attributes:
+        properties (MutableSequence[google.cloud.dlp_v2.types.KeyValueMetadataProperty]):
+            User provided key-value pairs of content
+            metadata.
+    """
+
+    properties: MutableSequence["KeyValueMetadataProperty"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="KeyValueMetadataProperty",
     )
 
 
@@ -1445,6 +1715,26 @@ class Table(proto.Message):
         proto.MESSAGE,
         number=2,
         message=Row,
+    )
+
+
+class KeyValueMetadataProperty(proto.Message):
+    r"""A key-value pair in the Metadata.
+
+    Attributes:
+        key (str):
+            The key of the property.
+        value (str):
+            The value of the property.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1741,6 +2031,11 @@ class ContentLocation(proto.Message):
 class MetadataLocation(proto.Message):
     r"""Metadata Location
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -1748,6 +2043,10 @@ class MetadataLocation(proto.Message):
             Type of metadata containing the finding.
         storage_label (google.cloud.dlp_v2.types.StorageMetadataLabel):
             Storage metadata.
+
+            This field is a member of `oneof`_ ``label``.
+        key_value_metadata_label (google.cloud.dlp_v2.types.KeyValueMetadataLabel):
+            Metadata key that contains the finding.
 
             This field is a member of `oneof`_ ``label``.
     """
@@ -1763,6 +2062,12 @@ class MetadataLocation(proto.Message):
         oneof="label",
         message="StorageMetadataLabel",
     )
+    key_value_metadata_label: "KeyValueMetadataLabel" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="label",
+        message="KeyValueMetadataLabel",
+    )
 
 
 class StorageMetadataLabel(proto.Message):
@@ -1772,6 +2077,26 @@ class StorageMetadataLabel(proto.Message):
     Attributes:
         key (str):
             Label name.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class KeyValueMetadataLabel(proto.Message):
+    r"""The metadata key that contains a finding.
+
+    Attributes:
+        key (str):
+            The metadata key. The format depends on the source of the
+            metadata.
+
+            Example:
+
+            - ``MSIP_Label_122709e3-8f6b-4860-985f-7f722a94f61e_Enabled``
+              (a Microsoft Purview Information Protection key example)
     """
 
     key: str = proto.Field(
@@ -2991,7 +3316,28 @@ class InfoTypeDescription(proto.Message):
             specific infoTypes. For example, the "GEOGRAPHIC_DATA"
             general infoType would have set for this field "LOCATION",
             "LOCATION_COORDINATES", and "STREET_ADDRESS".
+        launch_status (google.cloud.dlp_v2.types.InfoTypeDescription.InfoTypeLaunchStatus):
+            The launch status of the infoType.
     """
+
+    class InfoTypeLaunchStatus(proto.Enum):
+        r"""The launch status of an infoType.
+
+        Values:
+            INFO_TYPE_LAUNCH_STATUS_UNSPECIFIED (0):
+                Unspecified.
+            GENERAL_AVAILABILITY (1):
+                InfoType is generally available.
+            PUBLIC_PREVIEW (2):
+                InfoType is in public preview.
+            PRIVATE_PREVIEW (3):
+                InfoType is in private preview.
+        """
+
+        INFO_TYPE_LAUNCH_STATUS_UNSPECIFIED = 0
+        GENERAL_AVAILABILITY = 1
+        PUBLIC_PREVIEW = 2
+        PRIVATE_PREVIEW = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -3037,6 +3383,11 @@ class InfoTypeDescription(proto.Message):
     specific_info_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
+    )
+    launch_status: InfoTypeLaunchStatus = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=InfoTypeLaunchStatus,
     )
 
 
@@ -12166,6 +12517,71 @@ class HybridInspectResponse(proto.Message):
     r"""Quota exceeded errors will be thrown once quota has been met."""
 
 
+class ImageContainmentType(proto.Message):
+    r"""Specifies the relationship between bounding boxes for image
+    findings.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        encloses (google.cloud.dlp_v2.types.Encloses):
+            The context finding's bounding box must fully
+            contain the target finding's bounding box.
+
+            This field is a member of `oneof`_ ``type``.
+        fully_inside (google.cloud.dlp_v2.types.FullyInside):
+            The context finding's bounding box must be
+            fully inside the target finding's bounding box.
+
+            This field is a member of `oneof`_ ``type``.
+        overlaps (google.cloud.dlp_v2.types.Overlap):
+            The context finding's bounding box and the
+            target finding's bounding box must have a
+            non-zero intersection.
+
+            This field is a member of `oneof`_ ``type``.
+    """
+
+    encloses: "Encloses" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="type",
+        message="Encloses",
+    )
+    fully_inside: "FullyInside" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="FullyInside",
+    )
+    overlaps: "Overlap" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="Overlap",
+    )
+
+
+class Overlap(proto.Message):
+    r"""Defines a condition for overlapping bounding boxes."""
+
+
+class Encloses(proto.Message):
+    r"""Defines a condition where one bounding box encloses another."""
+
+
+class FullyInside(proto.Message):
+    r"""Defines a condition where one bounding box is fully inside
+    another.
+
+    """
+
+
 class ListProjectDataProfilesRequest(proto.Message):
     r"""Request to list the profiles generated for a given
     organization or project.
@@ -14785,7 +15201,7 @@ class Domain(proto.Message):
 
     class Signal(proto.Enum):
         r"""The signal used to determine the category.
-        This list may increase over time.
+        New values may be added in the future.
 
         Values:
             SIGNAL_UNSPECIFIED (0):
@@ -14794,7 +15210,12 @@ class Domain(proto.Message):
                 One or more machine learning models are
                 present.
             TEXT_EMBEDDING (2):
-                A table appears to be a text embedding.
+                A table appears to contain text embeddings.
+            EMBEDDING (7):
+                A table appears to contain embeddings of any type (for
+                example, text, image, multimodal). The ``TEXT_EMBEDDING``
+                signal might also be present if the table contains text
+                embeddings.
             VERTEX_PLUGIN (3):
                 The `Cloud SQL Vertex
                 AI <https://cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>`__
@@ -14813,6 +15234,7 @@ class Domain(proto.Message):
         SIGNAL_UNSPECIFIED = 0
         MODEL = 1
         TEXT_EMBEDDING = 2
+        EMBEDDING = 7
         VERTEX_PLUGIN = 3
         VECTOR_PLUGIN = 4
         SOURCE_CODE = 5

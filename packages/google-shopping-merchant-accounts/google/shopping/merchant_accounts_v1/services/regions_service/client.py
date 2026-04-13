@@ -117,7 +117,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -125,7 +125,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -135,6 +135,10 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -452,7 +456,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -549,7 +553,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -645,7 +649,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
         self._universe_domain = RegionsServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -802,8 +806,13 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
@@ -931,8 +940,13 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
@@ -1141,8 +1155,13 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 

@@ -56,7 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -91,7 +91,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -205,6 +205,10 @@ class CloudRedisClusterGrpcTransport(CloudRedisClusterTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -548,6 +552,39 @@ class CloudRedisClusterGrpcTransport(CloudRedisClusterTransport):
                 )
             )
         return self._stubs["get_cluster_certificate_authority"]
+
+    @property
+    def get_shared_regional_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest],
+        cloud_redis_cluster.SharedRegionalCertificateAuthority,
+    ]:
+        r"""Return a callable for the get shared regional
+        certificate authority method over gRPC.
+
+        Gets the details of regional certificate authority
+        information for Redis cluster.
+
+        Returns:
+            Callable[[~.GetSharedRegionalCertificateAuthorityRequest],
+                    ~.SharedRegionalCertificateAuthority]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_shared_regional_certificate_authority" not in self._stubs:
+            self._stubs["get_shared_regional_certificate_authority"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetSharedRegionalCertificateAuthority",
+                    request_serializer=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest.serialize,
+                    response_deserializer=cloud_redis_cluster.SharedRegionalCertificateAuthority.deserialize,
+                )
+            )
+        return self._stubs["get_shared_regional_certificate_authority"]
 
     @property
     def reschedule_cluster_maintenance(

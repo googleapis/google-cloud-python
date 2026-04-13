@@ -4,6 +4,61 @@
 
 [1]: https://pypi.org/project/google-cloud-ces/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.3.0...google-cloud-ces-v0.4.0) (2026-04-02)
+
+
+### Documentation
+
+* A comment for field `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* deprecate `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` in favor of new `agent` field. ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* add support for generating app resources with LLM ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* update public libraries for CES v1beta ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.2.0...google-cloud-ces-v0.3.0) (2026-03-26)
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.ces.v1.Deployment` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `name` in message `.google.cloud.ces.v1.Tool` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `tools` in message `.google.cloud.ces.v1.RetrieveToolsResponse` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `interruption_signal` in message `.google.cloud.ces.v1.BidiSessionServerMessage` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for method `RunSession` in service `SessionService` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `entry_agent` in message `.google.cloud.ces.v1.SessionConfig` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `project` in message `.google.cloud.ces.v1.BigQueryExportSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `output_schema` in message `.google.cloud.ces.v1.RetrieveToolSchemaResponse` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `will_continue` in message `.google.cloud.ces.v1.SessionInput` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `input_schema` in message `.google.cloud.ces.v1.RetrieveToolSchemaResponse` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `app_version` in message `.google.cloud.ces.v1.Deployment` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `fallback_action` in message `.google.cloud.ces.v1.LanguageSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `cert` in message `.google.cloud.ces.v1.TlsConfig` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `response` in message `.google.cloud.ces.v1.ExecuteToolResponse` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `dataset` in message `.google.cloud.ces.v1.BigQueryExportSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for enum value `ERROR_HANDLING_STRATEGY_UNSPECIFIED` in enum `ErrorHandlingStrategy` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `dataset` in message `.google.cloud.ces.v1beta.BigQueryExportSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `project` in message `.google.cloud.ces.v1beta.BigQueryExportSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for field `fallback_action` in message `.google.cloud.ces.v1beta.LanguageSettings` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for enum value `FALLBACK_RESPONSE` in enum `ErrorHandlingStrategy` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* A comment for message `RunEvaluationOperationMetadata` is changed ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+
+
+### Features
+
+* update public libraries for CES v1 ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* update public libraries for CES v1beta ([397ae5384b5fa2741d0f479ba7efc1612e1195da](https://github.com/googleapis/google-cloud-python/commit/397ae5384b5fa2741d0f479ba7efc1612e1195da))
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.1.0...google-cloud-ces-v0.2.0) (2026-03-12)
 
 

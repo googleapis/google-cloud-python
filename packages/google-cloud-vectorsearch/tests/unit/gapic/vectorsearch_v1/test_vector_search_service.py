@@ -76,6 +76,7 @@ from google.cloud.vectorsearch_v1.services.vector_search_service import (
 from google.cloud.vectorsearch_v1.types import (
     common,
     embedding_config,
+    encryption_spec,
     vectorsearch_service,
 )
 
@@ -133,6 +134,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert VectorSearchServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -154,6 +156,10 @@ def test__get_default_mtls_endpoint():
     assert (
         VectorSearchServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        VectorSearchServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1354,11 +1360,13 @@ def test_vector_search_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4548,6 +4556,364 @@ async def test_create_index_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        vectorsearch_service.UpdateIndexRequest,
+        dict,
+    ],
+)
+def test_update_index(request_type, transport: str = "grpc"):
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = vectorsearch_service.UpdateIndexRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vectorsearch_service.UpdateIndexRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vectorsearch_service.UpdateIndexRequest()
+
+
+def test_update_index_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VectorSearchServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_index in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_index] = mock_rpc
+        request = {}
+        client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_index(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_index_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VectorSearchServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_index
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_index
+        ] = mock_rpc
+
+        request = {}
+        await client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_index(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_index_async(
+    transport: str = "grpc_asyncio",
+    request_type=vectorsearch_service.UpdateIndexRequest,
+):
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = vectorsearch_service.UpdateIndexRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_index_async_from_dict():
+    await test_update_index_async(request_type=dict)
+
+
+def test_update_index_field_headers():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vectorsearch_service.UpdateIndexRequest()
+
+    request.index.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "index.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_index_field_headers_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vectorsearch_service.UpdateIndexRequest()
+
+    request.index.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "index.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_index_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_index(
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].index
+        mock_val = vectorsearch_service.Index(
+            dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_index_flattened_error():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_index(
+            vectorsearch_service.UpdateIndexRequest(),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_index_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_index(
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].index
+        mock_val = vectorsearch_service.Index(
+            dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_index_flattened_error_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_index(
+            vectorsearch_service.UpdateIndexRequest(),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         vectorsearch_service.DeleteIndexRequest,
         dict,
     ],
@@ -7102,6 +7468,208 @@ def test_create_index_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_update_index_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VectorSearchServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_index in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_index] = mock_rpc
+
+        request = {}
+        client.update_index(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_index(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_index_rest_required_fields(
+    request_type=vectorsearch_service.UpdateIndexRequest,
+):
+    transport_class = transports.VectorSearchServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_index._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_index._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_index(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_index_rest_unset_required_fields():
+    transport = transports.VectorSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_index._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("index",))
+    )
+
+
+def test_update_index_rest_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "index": {
+                "name": "projects/sample1/locations/sample2/collections/sample3/indexes/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_index(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{index.name=projects/*/locations/*/collections/*/indexes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_index_rest_flattened_error(transport: str = "rest"):
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_index(
+            vectorsearch_service.UpdateIndexRequest(),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_delete_index_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7817,6 +8385,27 @@ def test_create_index_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_index_empty_call_grpc():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_index(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vectorsearch_service.UpdateIndexRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_index_empty_call_grpc():
     client = VectorSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8122,6 +8711,31 @@ async def test_create_index_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_update_index_empty_call_grpc_asyncio():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_index(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vectorsearch_service.UpdateIndexRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_delete_index_empty_call_grpc_asyncio():
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8216,8 +8830,9 @@ def test_list_collections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8282,18 +8897,20 @@ def test_list_collections_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_list_collections"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_list_collections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_list_collections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_list_collections"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_list_collections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_list_collections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8351,8 +8968,9 @@ def test_get_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8419,18 +9037,20 @@ def test_get_collection_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_get_collection"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_get_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_get_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_get_collection"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_get_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_get_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8485,8 +9105,9 @@ def test_create_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8522,6 +9143,7 @@ def test_create_collection_rest_call_success(request_type):
         "labels": {},
         "vector_schema": {},
         "data_schema": {"fields": {}},
+        "encryption_spec": {"crypto_key_name": "crypto_key_name_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8620,20 +9242,21 @@ def test_create_collection_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_create_collection"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_create_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_create_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_create_collection"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_create_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_create_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8688,8 +9311,9 @@ def test_update_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8727,6 +9351,7 @@ def test_update_collection_rest_call_success(request_type):
         "labels": {},
         "vector_schema": {},
         "data_schema": {"fields": {}},
+        "encryption_spec": {"crypto_key_name": "crypto_key_name_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8825,20 +9450,21 @@ def test_update_collection_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_update_collection"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_update_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_update_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_update_collection"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_update_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_update_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8891,8 +9517,9 @@ def test_delete_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8949,20 +9576,21 @@ def test_delete_collection_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_delete_collection"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_delete_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_delete_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_delete_collection"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_delete_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_delete_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9015,8 +9643,9 @@ def test_list_indexes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9079,17 +9708,20 @@ def test_list_indexes_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_list_indexes"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_list_indexes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_list_indexes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_list_indexes"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_list_indexes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_list_indexes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9147,8 +9779,9 @@ def test_get_index_rest_bad_request(request_type=vectorsearch_service.GetIndexRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9225,17 +9858,20 @@ def test_get_index_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_get_index"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_get_index_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_get_index"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_get_index"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_get_index_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_get_index"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9288,8 +9924,9 @@ def test_create_index_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9430,19 +10067,21 @@ def test_create_index_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_create_index"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_create_index_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_create_index"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_create_index"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_create_index_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_create_index"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9484,6 +10123,224 @@ def test_create_index_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_update_index_rest_bad_request(
+    request_type=vectorsearch_service.UpdateIndexRequest,
+):
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "index": {
+            "name": "projects/sample1/locations/sample2/collections/sample3/indexes/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_index(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.UpdateIndexRequest,
+        dict,
+    ],
+)
+def test_update_index_rest_call_success(request_type):
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "index": {
+            "name": "projects/sample1/locations/sample2/collections/sample3/indexes/sample4"
+        }
+    }
+    request_init["index"] = {
+        "dedicated_infrastructure": {
+            "mode": 1,
+            "autoscaling_spec": {"min_replica_count": 1803, "max_replica_count": 1805},
+        },
+        "dense_scann": {"feature_norm_type": 1},
+        "name": "projects/sample1/locations/sample2/collections/sample3/indexes/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "distance_metric": 1,
+        "index_field": "index_field_value",
+        "filter_fields": ["filter_fields_value1", "filter_fields_value2"],
+        "store_fields": ["store_fields_value1", "store_fields_value2"],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vectorsearch_service.UpdateIndexRequest.meta.fields["index"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["index"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["index"][field])):
+                    del request_init["index"][field][i][subfield]
+            else:
+                del request_init["index"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_index(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_index_rest_interceptors(null_interceptor):
+    transport = transports.VectorSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VectorSearchServiceRestInterceptor(),
+    )
+    client = VectorSearchServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_update_index"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_update_index_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_update_index"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = vectorsearch_service.UpdateIndexRequest.pb(
+            vectorsearch_service.UpdateIndexRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = vectorsearch_service.UpdateIndexRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.update_index(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_index_rest_bad_request(
     request_type=vectorsearch_service.DeleteIndexRequest,
 ):
@@ -9497,8 +10354,9 @@ def test_delete_index_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9557,19 +10415,21 @@ def test_delete_index_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_delete_index"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_delete_index_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_delete_index"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_delete_index"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_delete_index_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_delete_index"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9622,8 +10482,9 @@ def test_import_data_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9680,20 +10541,21 @@ def test_import_data_objects_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_import_data_objects"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_import_data_objects_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_import_data_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_import_data_objects"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_import_data_objects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_import_data_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9746,8 +10608,9 @@ def test_export_data_objects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9804,20 +10667,21 @@ def test_export_data_objects_rest_interceptors(null_interceptor):
     )
     client = VectorSearchServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "post_export_data_objects"
-    ) as post, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor,
-        "post_export_data_objects_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VectorSearchServiceRestInterceptor, "pre_export_data_objects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "post_export_data_objects"
+        ) as post,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor,
+            "post_export_data_objects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VectorSearchServiceRestInterceptor, "pre_export_data_objects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9870,8 +10734,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9930,8 +10795,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9992,8 +10858,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -10054,8 +10921,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -10116,8 +10984,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -10178,8 +11047,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -10402,6 +11272,26 @@ def test_create_index_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_index_empty_call_rest():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_index), "__call__") as call:
+        client.update_index(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vectorsearch_service.UpdateIndexRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_index_empty_call_rest():
     client = VectorSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10522,6 +11412,7 @@ def test_vector_search_service_base_transport():
         "list_indexes",
         "get_index",
         "create_index",
+        "update_index",
         "delete_index",
         "import_data_objects",
         "export_data_objects",
@@ -10555,11 +11446,14 @@ def test_vector_search_service_base_transport():
 
 def test_vector_search_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.vectorsearch_v1.services.vector_search_service.transports.VectorSearchServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.vectorsearch_v1.services.vector_search_service.transports.VectorSearchServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VectorSearchServiceTransport(
@@ -10576,9 +11470,12 @@ def test_vector_search_service_base_transport_with_credentials_file():
 
 def test_vector_search_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.vectorsearch_v1.services.vector_search_service.transports.VectorSearchServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.vectorsearch_v1.services.vector_search_service.transports.VectorSearchServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VectorSearchServiceTransport()
@@ -10650,11 +11547,12 @@ def test_vector_search_service_transport_auth_gdch_credentials(transport_class):
 def test_vector_search_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -10819,6 +11717,9 @@ def test_vector_search_service_client_transport_session_collision(transport_name
     assert session1 != session2
     session1 = client1.transport.create_index._session
     session2 = client2.transport.create_index._session
+    assert session1 != session2
+    session1 = client1.transport.update_index._session
+    session2 = client2.transport.update_index._session
     assert session1 != session2
     session1 = client1.transport.delete_index._session
     session2 = client2.transport.delete_index._session
@@ -11020,11 +11921,42 @@ def test_parse_collection_path():
     assert expected == actual
 
 
-def test_index_path():
+def test_crypto_key_path():
     project = "cuttlefish"
     location = "mussel"
-    collection = "winkle"
-    index = "nautilus"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = VectorSearchServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = VectorSearchServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VectorSearchServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_index_path():
+    project = "whelk"
+    location = "octopus"
+    collection = "oyster"
+    index = "nudibranch"
     expected = "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}".format(
         project=project,
         location=location,
@@ -11037,10 +11969,10 @@ def test_index_path():
 
 def test_parse_index_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "collection": "squid",
-        "index": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "collection": "winkle",
+        "index": "nautilus",
     }
     path = VectorSearchServiceClient.index_path(**expected)
 
@@ -11050,7 +11982,7 @@ def test_parse_index_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -11060,7 +11992,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = VectorSearchServiceClient.common_billing_account_path(**expected)
 
@@ -11070,7 +12002,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11080,7 +12012,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = VectorSearchServiceClient.common_folder_path(**expected)
 
@@ -11090,7 +12022,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11100,7 +12032,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = VectorSearchServiceClient.common_organization_path(**expected)
 
@@ -11110,7 +12042,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11120,7 +12052,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = VectorSearchServiceClient.common_project_path(**expected)
 
@@ -11130,8 +12062,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11142,8 +12074,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = VectorSearchServiceClient.common_location_path(**expected)
 
@@ -11314,6 +12246,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = VectorSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11451,6 +12415,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -11598,6 +12594,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = VectorSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11741,6 +12771,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -11888,6 +12952,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = VectorSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12029,6 +13127,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = VectorSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = VectorSearchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

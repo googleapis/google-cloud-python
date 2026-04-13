@@ -34,10 +34,17 @@ LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
+UNIT_TEST_PYTHON_VERSIONS = [
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    # Not supported, but included so that we can explicitly skip the session
+    # from here. Keep unsupported versions last so that they don't conflict with
+    # the prerelease_deps session.
+    "3.9",
+]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -57,7 +64,7 @@ UNIT_TEST_EXTRAS = [
     "geopandas",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON = {
-    "3.9": [],
+    "3.10": [],
 }
 
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
@@ -224,12 +231,12 @@ def default(session):
     )
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
+    if session.python == "3.9":
+        session.skip("Python 3.9 is not supported.")
     default(session)
 
 

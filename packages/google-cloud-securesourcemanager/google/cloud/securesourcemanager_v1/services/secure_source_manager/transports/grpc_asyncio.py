@@ -68,7 +68,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -103,7 +103,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -246,6 +246,10 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -1658,8 +1662,8 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         used to create multiple PullRequestComments for code
         review. There needs to be exactly one PullRequestComment
         of type Review, and at most 100 PullRequestComments of
-        type Code per request. The Postition of the code
-        comments must be unique within the request.
+        type Code per request. The Position of the code comments
+        must be unique within the request.
 
         Returns:
             Callable[[~.BatchCreatePullRequestCommentsRequest],

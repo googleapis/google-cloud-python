@@ -114,12 +114,17 @@ class Conversation(proto.Message):
                 The conversation is from the simulator.
             EVAL (3):
                 The conversation is from the evaluation.
+            AGENT_TOOL (4):
+                The conversation is from an agent tool. Agent
+                tool runs the agent in a separate session, which
+                is persisted for testing and debugging purposes.
         """
 
         SOURCE_UNSPECIFIED = 0
         LIVE = 1
         SIMULATOR = 2
         EVAL = 3
+        AGENT_TOOL = 4
 
     class InputType(proto.Enum):
         r"""Type of the input message.

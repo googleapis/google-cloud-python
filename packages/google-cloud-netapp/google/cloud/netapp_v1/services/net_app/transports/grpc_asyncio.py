@@ -40,6 +40,7 @@ from google.cloud.netapp_v1.types import (
     backup_vault,
     host_group,
     kms,
+    ontap,
     quota_rule,
     replication,
     snapshot,
@@ -84,7 +85,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -119,7 +120,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -259,6 +260,10 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -741,6 +746,36 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["revert_volume"]
+
+    @property
+    def establish_volume_peering(
+        self,
+    ) -> Callable[
+        [volume.EstablishVolumePeeringRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the establish volume peering method over gRPC.
+
+        Establish volume peering. This is used to establish
+        cluster and svm peerings between the GCNV and OnPrem
+        clusters.
+
+        Returns:
+            Callable[[~.EstablishVolumePeeringRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "establish_volume_peering" not in self._stubs:
+            self._stubs["establish_volume_peering"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/EstablishVolumePeering",
+                request_serializer=volume.EstablishVolumePeeringRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["establish_volume_peering"]
 
     @property
     def list_snapshots(
@@ -2231,6 +2266,122 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
             )
         return self._stubs["delete_host_group"]
 
+    @property
+    def execute_ontap_post(
+        self,
+    ) -> Callable[
+        [ontap.ExecuteOntapPostRequest], Awaitable[ontap.ExecuteOntapPostResponse]
+    ]:
+        r"""Return a callable for the execute ontap post method over gRPC.
+
+        ``ExecuteOntapPost`` dispatches the ONTAP ``POST`` request to
+        the ``StoragePool`` cluster.
+
+        Returns:
+            Callable[[~.ExecuteOntapPostRequest],
+                    Awaitable[~.ExecuteOntapPostResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_ontap_post" not in self._stubs:
+            self._stubs["execute_ontap_post"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapPost",
+                request_serializer=ontap.ExecuteOntapPostRequest.serialize,
+                response_deserializer=ontap.ExecuteOntapPostResponse.deserialize,
+            )
+        return self._stubs["execute_ontap_post"]
+
+    @property
+    def execute_ontap_get(
+        self,
+    ) -> Callable[
+        [ontap.ExecuteOntapGetRequest], Awaitable[ontap.ExecuteOntapGetResponse]
+    ]:
+        r"""Return a callable for the execute ontap get method over gRPC.
+
+        ``ExecuteOntapGet`` dispatches the ONTAP ``GET`` request to the
+        ``StoragePool`` cluster.
+
+        Returns:
+            Callable[[~.ExecuteOntapGetRequest],
+                    Awaitable[~.ExecuteOntapGetResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_ontap_get" not in self._stubs:
+            self._stubs["execute_ontap_get"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapGet",
+                request_serializer=ontap.ExecuteOntapGetRequest.serialize,
+                response_deserializer=ontap.ExecuteOntapGetResponse.deserialize,
+            )
+        return self._stubs["execute_ontap_get"]
+
+    @property
+    def execute_ontap_delete(
+        self,
+    ) -> Callable[
+        [ontap.ExecuteOntapDeleteRequest], Awaitable[ontap.ExecuteOntapDeleteResponse]
+    ]:
+        r"""Return a callable for the execute ontap delete method over gRPC.
+
+        ``ExecuteOntapDelete`` dispatches the ONTAP ``DELETE`` request
+        to the ``StoragePool`` cluster.
+
+        Returns:
+            Callable[[~.ExecuteOntapDeleteRequest],
+                    Awaitable[~.ExecuteOntapDeleteResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_ontap_delete" not in self._stubs:
+            self._stubs["execute_ontap_delete"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapDelete",
+                request_serializer=ontap.ExecuteOntapDeleteRequest.serialize,
+                response_deserializer=ontap.ExecuteOntapDeleteResponse.deserialize,
+            )
+        return self._stubs["execute_ontap_delete"]
+
+    @property
+    def execute_ontap_patch(
+        self,
+    ) -> Callable[
+        [ontap.ExecuteOntapPatchRequest], Awaitable[ontap.ExecuteOntapPatchResponse]
+    ]:
+        r"""Return a callable for the execute ontap patch method over gRPC.
+
+        ``ExecuteOntapPatch`` dispatches the ONTAP ``PATCH`` request to
+        the ``StoragePool`` cluster.
+
+        Returns:
+            Callable[[~.ExecuteOntapPatchRequest],
+                    Awaitable[~.ExecuteOntapPatchResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_ontap_patch" not in self._stubs:
+            self._stubs["execute_ontap_patch"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapPatch",
+                request_serializer=ontap.ExecuteOntapPatchRequest.serialize,
+                response_deserializer=ontap.ExecuteOntapPatchResponse.deserialize,
+            )
+        return self._stubs["execute_ontap_patch"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -2333,6 +2484,11 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
             self.revert_volume: self._wrap_method(
                 self.revert_volume,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.establish_volume_peering: self._wrap_method(
+                self.establish_volume_peering,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_snapshots: self._wrap_method(
@@ -2723,6 +2879,26 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
             ),
             self.delete_host_group: self._wrap_method(
                 self.delete_host_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_ontap_post: self._wrap_method(
+                self.execute_ontap_post,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_ontap_get: self._wrap_method(
+                self.execute_ontap_get,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_ontap_delete: self._wrap_method(
+                self.execute_ontap_delete,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_ontap_patch: self._wrap_method(
+                self.execute_ontap_patch,
                 default_timeout=None,
                 client_info=client_info,
             ),

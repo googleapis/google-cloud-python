@@ -36,6 +36,7 @@ from google.cloud.dialogflowcx_v3.types import (
     response_message,
     session_entity_type,
     tool_call,
+    trace,
 )
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
@@ -1639,6 +1640,13 @@ class QueryResult(proto.Message):
             Optional. Data store connection feature
             output signals. Filled only when data stores are
             involved in serving the query.
+        trace_blocks (MutableSequence[google.cloud.dialogflowcx_v3.types.TraceBlock]):
+            Optional. Contains the sequence of trace
+            blocks from the current conversation turn. Trace
+            blocks are ordered chronologically and contain
+            detailed traces of runtime behavior such as tool
+            calls, LLM calls, flow and playbook invocations,
+            agent utterances and user utterances.
     """
 
     text: str = proto.Field(
@@ -1742,6 +1750,11 @@ class QueryResult(proto.Message):
             number=35,
             message=data_store_connection.DataStoreConnectionSignals,
         )
+    )
+    trace_blocks: MutableSequence[trace.TraceBlock] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=37,
+        message=trace.TraceBlock,
     )
 
 

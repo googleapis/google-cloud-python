@@ -147,8 +147,8 @@ class MessagesV1Beta3RestStub:
 class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
     """REST backend synchronous transport for MessagesV1Beta3.
 
-    The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -204,6 +204,12 @@ class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[MessagesV1Beta3RestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.

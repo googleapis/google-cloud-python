@@ -32,6 +32,7 @@ from google.apps.chat_v1.types import (
     membership,
     message,
     reaction,
+    section,
     space,
     space_event,
     space_notification_setting,
@@ -42,6 +43,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
@@ -67,9 +69,11 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
         "https://www.googleapis.com/auth/chat.app.delete",
         "https://www.googleapis.com/auth/chat.app.memberships",
+        "https://www.googleapis.com/auth/chat.app.memberships.readonly",
         "https://www.googleapis.com/auth/chat.app.messages.readonly",
         "https://www.googleapis.com/auth/chat.app.spaces",
         "https://www.googleapis.com/auth/chat.app.spaces.create",
+        "https://www.googleapis.com/auth/chat.app.spaces.readonly",
         "https://www.googleapis.com/auth/chat.bot",
         "https://www.googleapis.com/auth/chat.customemojis",
         "https://www.googleapis.com/auth/chat.customemojis.readonly",
@@ -89,6 +93,8 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.spaces.readonly",
         "https://www.googleapis.com/auth/chat.users.readstate",
         "https://www.googleapis.com/auth/chat.users.readstate.readonly",
+        "https://www.googleapis.com/auth/chat.users.sections",
+        "https://www.googleapis.com/auth/chat.users.sections.readonly",
         "https://www.googleapis.com/auth/chat.users.spacesettings",
     )
 
@@ -131,6 +137,10 @@ class ChatServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -179,6 +189,8 @@ class ChatServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
@@ -677,6 +689,104 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.create_section: gapic_v1.method.wrap_method(
+                self.create_section,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_section: gapic_v1.method.wrap_method(
+                self.delete_section,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_section: gapic_v1.method.wrap_method(
+                self.update_section,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_sections: gapic_v1.method.wrap_method(
+                self.list_sections,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.position_section: gapic_v1.method.wrap_method(
+                self.position_section,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_section_items: gapic_v1.method.wrap_method(
+                self.list_section_items,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.move_section_item: gapic_v1.method.wrap_method(
+                self.move_section_item,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -1021,6 +1131,76 @@ class ChatServiceTransport(abc.ABC):
         Union[
             gc_space_notification_setting.SpaceNotificationSetting,
             Awaitable[gc_space_notification_setting.SpaceNotificationSetting],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_section(
+        self,
+    ) -> Callable[
+        [gc_section.CreateSectionRequest],
+        Union[gc_section.Section, Awaitable[gc_section.Section]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_section(
+        self,
+    ) -> Callable[
+        [section.DeleteSectionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_section(
+        self,
+    ) -> Callable[
+        [gc_section.UpdateSectionRequest],
+        Union[gc_section.Section, Awaitable[gc_section.Section]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sections(
+        self,
+    ) -> Callable[
+        [section.ListSectionsRequest],
+        Union[section.ListSectionsResponse, Awaitable[section.ListSectionsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def position_section(
+        self,
+    ) -> Callable[
+        [section.PositionSectionRequest],
+        Union[
+            section.PositionSectionResponse, Awaitable[section.PositionSectionResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_section_items(
+        self,
+    ) -> Callable[
+        [section.ListSectionItemsRequest],
+        Union[
+            section.ListSectionItemsResponse,
+            Awaitable[section.ListSectionItemsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_section_item(
+        self,
+    ) -> Callable[
+        [section.MoveSectionItemRequest],
+        Union[
+            section.MoveSectionItemResponse, Awaitable[section.MoveSectionItemResponse]
         ],
     ]:
         raise NotImplementedError()

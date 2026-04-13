@@ -159,7 +159,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -167,7 +167,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -177,6 +177,10 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -393,6 +397,28 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def dataset_path(
+        project: str,
+        location: str,
+        dataset: str,
+    ) -> str:
+        """Returns a fully-qualified dataset string."""
+        return "projects/{project}/locations/{location}/datasets/{dataset}".format(
+            project=project,
+            location=location,
+            dataset=dataset,
+        )
+
+    @staticmethod
+    def parse_dataset_path(path: str) -> Dict[str, str]:
+        """Parses a dataset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def deidentify_template_path(
         organization: str,
         location: str,
@@ -480,6 +506,128 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         """Parses a engine path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/engines/(?P<engine>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def evaluation_path(
+        project: str,
+        location: str,
+        app: str,
+        evaluation: str,
+    ) -> str:
+        """Returns a fully-qualified evaluation string."""
+        return "projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}".format(
+            project=project,
+            location=location,
+            app=app,
+            evaluation=evaluation,
+        )
+
+    @staticmethod
+    def parse_evaluation_path(path: str) -> Dict[str, str]:
+        """Parses a evaluation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/evaluations/(?P<evaluation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def evaluation_dataset_path(
+        project: str,
+        location: str,
+        app: str,
+        evaluation_dataset: str,
+    ) -> str:
+        """Returns a fully-qualified evaluation_dataset string."""
+        return "projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluation_dataset}".format(
+            project=project,
+            location=location,
+            app=app,
+            evaluation_dataset=evaluation_dataset,
+        )
+
+    @staticmethod
+    def parse_evaluation_dataset_path(path: str) -> Dict[str, str]:
+        """Parses a evaluation_dataset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/evaluationDatasets/(?P<evaluation_dataset>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def evaluation_expectation_path(
+        project: str,
+        location: str,
+        app: str,
+        evaluation_expectation: str,
+    ) -> str:
+        """Returns a fully-qualified evaluation_expectation string."""
+        return "projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}".format(
+            project=project,
+            location=location,
+            app=app,
+            evaluation_expectation=evaluation_expectation,
+        )
+
+    @staticmethod
+    def parse_evaluation_expectation_path(path: str) -> Dict[str, str]:
+        """Parses a evaluation_expectation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/evaluationExpectations/(?P<evaluation_expectation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def evaluation_result_path(
+        project: str,
+        location: str,
+        app: str,
+        evaluation: str,
+        evaluation_result: str,
+    ) -> str:
+        """Returns a fully-qualified evaluation_result string."""
+        return "projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}/results/{evaluation_result}".format(
+            project=project,
+            location=location,
+            app=app,
+            evaluation=evaluation,
+            evaluation_result=evaluation_result,
+        )
+
+    @staticmethod
+    def parse_evaluation_result_path(path: str) -> Dict[str, str]:
+        """Parses a evaluation_result path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/evaluations/(?P<evaluation>.+?)/results/(?P<evaluation_result>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def evaluation_run_path(
+        project: str,
+        location: str,
+        app: str,
+        evaluation_run: str,
+    ) -> str:
+        """Returns a fully-qualified evaluation_run string."""
+        return "projects/{project}/locations/{location}/apps/{app}/evaluationRuns/{evaluation_run}".format(
+            project=project,
+            location=location,
+            app=app,
+            evaluation_run=evaluation_run,
+        )
+
+    @staticmethod
+    def parse_evaluation_run_path(path: str) -> Dict[str, str]:
+        """Parses a evaluation_run path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/evaluationRuns/(?P<evaluation_run>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -858,7 +1006,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -955,7 +1103,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -1051,7 +1199,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         self._universe_domain = AgentServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -6870,6 +7018,133 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Done; return the response.
         return response
 
+    def generate_app_resource(
+        self,
+        request: Optional[Union[agent_service.GenerateAppResourceRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Generates specific resources (e.g. agent) in the app
+        using LLM assistant.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            def sample_generate_app_resource():
+                # Create a client
+                client = ces_v1beta.AgentServiceClient()
+
+                # Initialize request argument(s)
+                agent = ces_v1beta.Agent()
+                agent.display_name = "display_name_value"
+
+                request = ces_v1beta.GenerateAppResourceRequest(
+                    agent=agent,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.generate_app_resource(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.ces_v1beta.types.GenerateAppResourceRequest, dict]):
+                The request object. Request message for
+                [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+            parent (str):
+                Required. The resource name of the
+                app to generate the resource for.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.ces_v1beta.types.GenerateAppResourceResponse` Response message for
+                   [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent_service.GenerateAppResourceRequest):
+            request = agent_service.GenerateAppResourceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.generate_app_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            agent_service.GenerateAppResourceResponse,
+            metadata_type=agent_service.GenerateAppResourceOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def list_changelogs(
         self,
         request: Optional[Union[agent_service.ListChangelogsRequest, dict]] = None,
@@ -7117,7 +7392,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7143,8 +7418,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7153,7 +7432,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7162,7 +7441,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -7176,7 +7455,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7202,8 +7481,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7212,7 +7495,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7221,7 +7504,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -7235,7 +7518,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7265,8 +7548,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7275,7 +7562,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7283,7 +7570,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7291,7 +7578,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7320,8 +7607,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7330,7 +7621,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7338,7 +7629,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7346,7 +7637,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7372,8 +7663,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7382,7 +7677,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7391,7 +7686,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -7405,7 +7700,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7431,8 +7726,12 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7441,7 +7740,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7450,7 +7749,7 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,

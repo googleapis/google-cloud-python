@@ -2,11 +2,13 @@ on:
   pull_request:
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-django4.2_tests_against_emulator6.yml'
   push:
     branches:
       - main
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-django4.2_tests_against_emulator6.yml'
 
 defaults:
   run:
@@ -14,7 +16,23 @@ defaults:
 
 name: django4.2-tests6
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            django_spanner:
+              - 'packages/django-google-spanner/**'
+              - '.github/workflows/django-spanner-django4.2_tests_against_emulator6.yml'
+
   system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_django_spanner == 'true' }}
     runs-on: ubuntu-latest
 
     services:

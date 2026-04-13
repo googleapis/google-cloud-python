@@ -11,11 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-.. warning::
-    **Preview API**: Firestore Pipelines is currently in preview and is
-    subject to potential breaking changes in future releases.
-"""
 
 from __future__ import annotations
 
@@ -23,13 +18,26 @@ import datetime
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
+    Callable,
     Generic,
     Sequence,
     TypeVar,
 )
 
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
+from google.cloud.firestore_v1.pipeline_types import (
+    Ordering,
+    PipelineDataType,
+    TimeGranularity,
+    TimePart,
+    TimeUnit,
+)
+from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.types.query import StructuredQuery as Query_pb
 from google.cloud.firestore_v1.vector import Vector
@@ -48,53 +56,11 @@ CONSTANT_TYPE = TypeVar(
 )
 
 
-class Ordering:
-    """Represents the direction for sorting results in a pipeline."""
-
-    class Direction(Enum):
-        ASCENDING = "ascending"
-        DESCENDING = "descending"
-
-    def __init__(self, expr, order_dir: Direction | str = Direction.ASCENDING):
-        """
-        Initializes an Ordering instance
-
-        Args:
-            expr (Expression | str): The expression or field path string to sort by.
-                If a string is provided, it's treated as a field path.
-            order_dir (Direction | str): The direction to sort in.
-                Defaults to ascending
-        """
-        self.expr = expr if isinstance(expr, Expression) else Field.of(expr)
-        self.order_dir = (
-            Ordering.Direction[order_dir.upper()]
-            if isinstance(order_dir, str)
-            else order_dir
-        )
-
-    def __repr__(self):
-        if self.order_dir is Ordering.Direction.ASCENDING:
-            order_str = ".ascending()"
-        else:
-            order_str = ".descending()"
-        return f"{self.expr!r}{order_str}"
-
-    def _to_pb(self) -> Value:
-        return Value(
-            map_value={
-                "fields": {
-                    "direction": Value(string_value=self.order_dir.value),
-                    "expression": self.expr._to_pb(),
-                }
-            }
-        )
-
-
 class Expression(ABC):
     """Represents an expression that can be evaluated to a value within the
     execution of a pipeline.
 
-    Expressionessions are the building blocks for creating complex queries and
+    Expressions are the building blocks for creating complex queries and
     transformations in Firestore pipelines. They can represent:
 
     - **Field references:** Access values from document fields.
@@ -120,6 +86,8 @@ class Expression(ABC):
         """Convert arbitrary object to an Expression."""
         if isinstance(o, Expression):
             return o
+        if isinstance(o, Enum):
+            o = o.value
         if isinstance(o, dict):
             return Map(o)
         if isinstance(o, list):
@@ -161,6 +129,26 @@ class Expression(ABC):
                 return self.static_func
             else:
                 return self.instance_func.__get__(instance, owner)
+
+    @expose_as_static
+    def get_field(self, key: Expression | str) -> "Expression":
+        """Accesses a field/property of the expression that evaluates to a Map or Document.
+
+        Example:
+            >>> # Access the 'city' field from the 'address' map field.
+            >>> Field.of("address").get_field("city")
+            >>> # Create a map and access a field from it.
+            >>> Map({"foo": "bar"}).get_field("foo")
+
+        Args:
+            key: The key of the field to access.
+
+        Returns:
+            A new `Expression` representing the value of the field.
+        """
+        return FunctionExpression(
+            "get_field", [self, self._cast_to_expr_or_convert_to_constant(key)]
+        )
 
     @expose_as_static
     def add(self, other: Expression | float) -> "Expression":
@@ -448,7 +436,7 @@ class Expression(ABC):
         return FunctionExpression(
             "maximum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_maximum",
+            repr_function=FunctionExpression._build_infix_repr("logical_maximum"),
         )
 
     @expose_as_static
@@ -474,7 +462,7 @@ class Expression(ABC):
         return FunctionExpression(
             "minimum",
             [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
-            infix_name_override="logical_minimum",
+            repr_function=FunctionExpression._build_infix_repr("logical_minimum"),
         )
 
     @expose_as_static
@@ -610,6 +598,63 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def between(
+        self, lower: Expression | float, upper: Expression | float
+    ) -> "BooleanExpression":
+        """Evaluates if the result of this expression is between
+        the lower bound (inclusive) and upper bound (inclusive).
+
+        This is functionally equivalent to performing an `And` operation with
+        `greater_than_or_equal` and `less_than_or_equal`.
+
+        Example:
+            >>> # Check if the 'age' field is between 18 and 65
+            >>> Field.of("age").between(18, 65)
+
+        Args:
+            lower: Lower bound (inclusive) of the range.
+            upper: Upper bound (inclusive) of the range.
+
+        Returns:
+            A new `BooleanExpression` representing the between comparison.
+        """
+        return And(
+            self.greater_than_or_equal(lower),
+            self.less_than_or_equal(upper),
+        )
+
+    @expose_as_static
+    def geo_distance(
+        self, other: Expression | GeoPoint | tuple[float, float]
+    ) -> "FunctionExpression":
+        """Evaluates to the distance in meters between the location in the specified
+        field and the query location.
+
+        .. note::
+            This feature is currently in beta and is subject to change.
+        Note: This Expression can only be used within a `Search` stage.
+
+        Example:
+            >>> # Calculate distance between the 'location' field and a target GeoPoint
+            >>> Field.of("location").geo_distance(target_point)
+            >>> # Calculate distance between the 'location' field and a (latitude, longitude) tuple
+            >>> Field.of("location").geo_distance((37.7749, -122.4194))
+
+        Args:
+            other: target point used to calculate distance. Can be a GeoPoint, an
+                Expression resolving to a GeoPoint, or a (latitude, longitude) tuple.
+
+        Returns:
+            A new `FunctionExpression` representing the distance.
+        """
+        if isinstance(other, tuple) and len(other) == 2:
+            other = GeoPoint(other[0], other[1])
+
+        return FunctionExpression(
+            "geo_distance", [self, self._cast_to_expr_or_convert_to_constant(other)]
+        )
+
+    @expose_as_static
     def equal_any(
         self, array: Array | Sequence[Expression | CONSTANT_TYPE] | Expression
     ) -> "BooleanExpression":
@@ -665,6 +710,9 @@ class Expression(ABC):
         Creates an expression that indexes into an array from the beginning or end and returns the
         element. A negative offset starts from the end.
 
+        If the expression is evaluated against a non-array type, it evaluates to an error. See `offset`
+        for an alternative that evaluates to unset instead.
+
         Example:
             >>> Array([1,2,3]).array_get(0)
 
@@ -676,6 +724,26 @@ class Expression(ABC):
         """
         return FunctionExpression(
             "array_get", [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        )
+
+    @expose_as_static
+    def offset(self, offset: Expression | int) -> "FunctionExpression":
+        """
+        Creates an expression that indexes into an array from the beginning or end and returns the
+        element. A negative offset starts from the end.
+        If the expression is evaluated against a non-array type, it evaluates to unset.
+
+        Example:
+            >>> Array([1,2,3]).offset(0)
+
+        Args:
+            offset: the index of the element to return
+
+        Returns:
+            A new `Expression` representing the `offset` operation.
+        """
+        return FunctionExpression(
+            "offset", [self, self._cast_to_expr_or_convert_to_constant(offset)]
         )
 
     @expose_as_static
@@ -782,6 +850,73 @@ class Expression(ABC):
         return FunctionExpression("array_reverse", [self])
 
     @expose_as_static
+    def array_filter(
+        self,
+        filter_expr: "BooleanExpression",
+        element_alias: str | Constant[str],
+    ) -> "Expression":
+        """Filters an array based on a predicate.
+
+        Example:
+            >>> # Filter the 'tags' array to only include the tag "comedy"
+            >>> Field.of("tags").array_filter(Variable("tag").equal("comedy"), "tag")
+
+        Args:
+            filter_expr: The predicate boolean expression used to filter the elements.
+            element_alias: A string or string constant used to refer to the current array
+                element as a variable within the filter expression.
+
+
+        Returns:
+            A new `Expression` representing the filtered array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        args.append(filter_expr)
+
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[2]!r}, {expr.params[1]!r})"
+        )
+        return FunctionExpression("array_filter", args, repr_function=repr_func)
+
+    @expose_as_static
+    def array_transform(
+        self,
+        transform_expr: "Expression",
+        element_alias: str | Constant[str],
+        index_alias: str | Constant[str] | None = None,
+    ) -> "Expression":
+        """Creates an expression that applies a provided transformation to each element in an array.
+
+        Example:
+            >>> # Convert each tag in the 'tags' array to uppercase
+            >>> Field.of("tags").array_transform(Variable("tag").to_upper(), "tag")
+            >>> # Append the index to each tag in the 'tags' array
+            >>> Field.of("tags").array_transform(
+            ...     Variable("tag").string_concat(Variable("i")),
+            ...     element_alias="tag", index_alias="i"
+            ... )
+
+        Args:
+            transform_expr: The expression used to transform the elements.
+            element_alias: A string or string constant used to refer to the current array
+                element as a variable within the transform expression.
+            index_alias: An optional string or string constant used to refer to the index
+                of the current array element as a variable within the transform expression.
+
+        Returns:
+            A new `Expression` representing the transformed array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(element_alias)]
+        if index_alias is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
+        args.append(transform_expr)
+
+        repr_func = (
+            lambda expr: f"{expr.params[0]!r}.{expr.name}({expr.params[-1]!r}, {expr.params[1]!r}{', ' + repr(expr.params[2]) if len(expr.params) == 4 else ''})"
+        )
+        return FunctionExpression("array_transform", args, repr_function=repr_func)
+
+    @expose_as_static
     def array_concat(
         self, *other_arrays: Array | list[Expression | CONSTANT_TYPE] | Expression
     ) -> "Expression":
@@ -842,7 +977,7 @@ class Expression(ABC):
             >>> Field.of("email").is_absent()
 
         Returns:
-            A new `BooleanExpressionession` representing the isAbsent operation.
+            A new `BooleanExpression` representing the isAbsent operation.
         """
         return BooleanExpression("is_absent", [self])
 
@@ -909,6 +1044,76 @@ class Expression(ABC):
             A new `Expression` representing the 'exists' check.
         """
         return BooleanExpression("exists", [self])
+
+    @expose_as_static
+    def coalesce(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that evaluates to the first non-null/non-missing value.
+
+        Example:
+            >>> # Return the "preferredName" field if it exists.
+            >>> # Otherwise, check the "fullName" field.
+            >>> # Otherwise, return the literal string "Anonymous".
+            >>> Field.of("preferredName").coalesce(Field.of("fullName"), "Anonymous")
+
+            >>> # Equivalent static call:
+            >>> Expression.coalesce(Field.of("preferredName"), Field.of("fullName"), "Anonymous")
+
+        Args:
+            *others: Additional expressions or constants to evaluate if the current
+                expression evaluates to null or is missing.
+
+        Returns:
+            An Expression representing the coalesce operation.
+        """
+        return FunctionExpression(
+            "coalesce",
+            [self]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
+        )
+
+    @expose_as_static
+    def switch_on(
+        self, result: Expression | CONSTANT_TYPE, *others: Expression | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that evaluates to the result corresponding to the first true condition.
+
+        This function behaves like a `switch` statement. It accepts an alternating sequence of
+        conditions and their corresponding results. If an odd number of arguments is provided, the
+        final argument serves as a default fallback result. If no default is provided and no condition
+        evaluates to true, it throws an error.
+
+        Example:
+            >>> # Return "Pending" if status is 1, "Active" if status is 2, otherwise "Unknown"
+            >>> Field.of("status").equal(1).switch_on(
+            ...     "Pending", Field.of("status").equal(2), "Active", "Unknown"
+            ... )
+
+        Args:
+            result: The result to return if this condition is true.
+            *others: Additional alternating conditions and results, optionally followed by a default value.
+
+        Returns:
+            An Expression representing the "switch_on" operation.
+        """
+        return FunctionExpression(
+            "switch_on",
+            [self, Expression._cast_to_expr_or_convert_to_constant(result)]
+            + [Expression._cast_to_expr_or_convert_to_constant(x) for x in others],
+        )
+
+    @expose_as_static
+    def storage_size(self) -> "Expression":
+        """Calculates the Firestore storage size of a given value.
+
+        Mirrors the sizing rules detailed in Firebase/Firestore documentation.
+
+        Example:
+            >>> Field.of("content").storage_size()
+
+        Returns:
+            A new `Expression` representing the storage size.
+        """
+        return FunctionExpression("storage_size", [self])
 
     @expose_as_static
     def sum(self) -> "Expression":
@@ -1270,6 +1475,7 @@ class Expression(ABC):
     @expose_as_static
     def map_get(self, key: str | Constant[str]) -> "Expression":
         """Accesses a value from the map produced by evaluating this expression.
+        If the expression is evaluated against a non-map type, it evaluates to an error.
 
         Example:
             >>> Map({"city": "London"}).map_get("city")
@@ -1284,6 +1490,33 @@ class Expression(ABC):
         return FunctionExpression(
             "map_get", [self, self._cast_to_expr_or_convert_to_constant(key)]
         )
+
+    def map_set(self, key: str | Constant[str], value: Any) -> "Expression":
+        """Creates an expression that returns a new map with the specified entries added or
+        updated.
+
+        Note:
+            `map_set` only performs shallow updates to the map. Setting a value to `None`
+            will retain the key with a `None` value. To remove a key entirely, use
+            `map_remove`.
+
+        Example:
+            >>> Map({"city": "London"}).map_set("city", "New York")
+            >>> Field.of("address").map_set("city", "Seattle")
+
+        Args:
+            key: The key to set in the map.
+            value: The value to associate with the key.
+
+        Returns:
+            A new `Expression` representing the map_set operation.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(key),
+            self._cast_to_expr_or_convert_to_constant(value),
+        ]
+        return FunctionExpression("map_set", args)
 
     @expose_as_static
     def map_remove(self, key: str | Constant[str]) -> "Expression":
@@ -1326,6 +1559,276 @@ class Expression(ABC):
             "map_merge",
             [self] + [self._cast_to_expr_or_convert_to_constant(m) for m in other_maps],
         )
+
+    @expose_as_static
+    def map_keys(self) -> "Expression":
+        """Creates an expression that returns the keys of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_keys()
+            >>> Field.of("address").map_keys()
+
+        Returns:
+            A new `Expression` representing the keys of the map.
+        """
+        return FunctionExpression("map_keys", [self])
+
+    @expose_as_static
+    def map_values(self) -> "Expression":
+        """Creates an expression that returns the values of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_values()
+            >>> Field.of("address").map_values()
+
+        Returns:
+            A new `Expression` representing the values of the map.
+        """
+        return FunctionExpression("map_values", [self])
+
+    @expose_as_static
+    def map_entries(self) -> "Expression":
+        """Creates an expression that returns the entries of a map as an array of maps,
+        where each map contains a `"k"` property for the key and a `"v"` property for the value.
+        For example: `[{ "k": "key1", "v": "value1" }, ...]`.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_entries()
+            >>> Field.of("address").map_entries()
+
+        Returns:
+            A new `Expression` representing the entries of the map.
+        """
+        return FunctionExpression("map_entries", [self])
+
+    def regex_find(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that returns the first substring of a string expression that
+        matches a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("email").regex_find("@[A-Za-z0-9.-]+")
+            >>> Field.of("email").regex_find(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def regex_find_all(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that evaluates to an array of all substrings in a string expression
+        that match a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("comment").regex_find_all("@[A-Za-z0-9_]+")
+            >>> Field.of("comment").regex_find_all(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find_all", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def split(self, delimiter: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that splits the value of a field on the provided delimiter.
+
+        Example:
+            >>> Field.of("date").split("date", "-")
+
+        Args:
+            field_name: Split the value in this field.
+            delimiter: The delimiter string to split on.
+
+        Returns:
+            A new `Expression` representing the split function.
+        """
+        return FunctionExpression(
+            "split", [self, self._cast_to_expr_or_convert_to_constant(delimiter)]
+        )
+
+    @expose_as_static
+    def string_repeat(self, repetitions: int | Expression) -> "Expression":
+        """Creates an expression that repeats a string or byte array a specified number
+        of times.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("name").string_repeat(3)
+            >>> # Called statically using the field name:
+            >>> Expression.string_repeat("name", 3)
+
+        Args:
+            repetitions: The number of times to repeat the string or byte array.
+
+        Returns:
+            A new `Expression` representing the repeated string or byte array.
+        """
+        return FunctionExpression(
+            "string_repeat",
+            [self, self._cast_to_expr_or_convert_to_constant(repetitions)],
+        )
+
+    @expose_as_static
+    def string_replace_all(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces all occurrences of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_all("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with replacements.
+        """
+        return FunctionExpression(
+            "string_replace_all",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_replace_one(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces the first occurrence of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_one("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with the replacement.
+        """
+        return FunctionExpression(
+            "string_replace_one",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_index_of(
+        self,
+        search: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that finds the index of the first occurrence of a substring or
+        byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_index_of("foo")
+
+        Args:
+            search: The substring or byte sequence to search for.
+
+        Returns:
+            A new `Expression` representing the index of the first occurrence.
+        """
+        return FunctionExpression(
+            "string_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+            ],
+        )
+
+    @expose_as_static
+    def ltrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims leading whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").ltrim()
+            >>> Field.of("text").ltrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("ltrim", args)
+
+    @expose_as_static
+    def rtrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims trailing whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").rtrim()
+            >>> Field.of("text").rtrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("rtrim", args)
 
     @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
@@ -1439,10 +1942,6 @@ class Expression(ABC):
         `None`. The order of elements in the output array is not stable and
         shouldn't be relied upon.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Collect all values of field 'color' into an array
             >>> Field.of("color").array_agg()
@@ -1461,10 +1960,6 @@ class Expression(ABC):
         `None`. The order of elements in the output array is not stable and
         shouldn't be relied upon.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Collect distinct values of field 'color' into an array
             >>> Field.of("color").array_agg_distinct()
@@ -1478,10 +1973,6 @@ class Expression(ABC):
     def first(self) -> "Expression":
         """Creates an aggregation that finds the first value of an expression
         across multiple stage inputs.
-
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
 
         Example:
             >>> # Select the first value of field 'color'
@@ -1497,10 +1988,6 @@ class Expression(ABC):
         """Creates an aggregation that finds the last value of an expression
         across multiple stage inputs.
 
-        This API is provided as a preview for developers and may change based
-        on feedback that we receive. Do not use this API in a production
-        environment.
-
         Example:
             >>> # Select the last value of field 'color'
             >>> Field.of("color").last()
@@ -1509,6 +1996,206 @@ class Expression(ABC):
             A new `AggregateFunction` representing the last aggregation.
         """
         return AggregateFunction("last", [self])
+
+    @expose_as_static
+    def array_first(self) -> "Expression":
+        """Creates an expression that returns the first element of an array.
+
+        Example:
+            >>> # Select the first element of array 'colors'
+            >>> Field.of("colors").array_first()
+
+        Returns:
+            A new `Expression` representing the first element of the array.
+        """
+        return FunctionExpression("array_first", [self])
+
+    @expose_as_static
+    def array_last(self) -> "Expression":
+        """Creates an expression that returns the last element of an array.
+
+        Example:
+            >>> # Select the last element of array 'colors'
+            >>> Field.of("colors").array_last()
+
+        Returns:
+            A new `Expression` representing the last element of the array.
+        """
+        return FunctionExpression("array_last", [self])
+
+    @expose_as_static
+    def array_first_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the first `n` elements of an array.
+
+        Example:
+            >>> # Select the first 2 elements of array 'colors'
+            >>> Field.of("colors").array_first_n(2)
+
+        Returns:
+            A new `Expression` representing the first `n` elements of the array.
+        """
+        return FunctionExpression(
+            "array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_last_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the last `n` elements of an array.
+
+        Example:
+            >>> # Select the last 2 elements of array 'colors'
+            >>> Field.of("colors").array_last_n(2)
+
+        Returns:
+            A new `Expression` representing the last `n` elements of the array.
+        """
+        return FunctionExpression(
+            "array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_maximum(self) -> "Expression":
+        """Creates an expression that returns the maximum element of an array.
+
+        Example:
+            >>> # Select the maximum element of array 'scores'
+            >>> Field.of("scores").array_maximum()
+
+        Returns:
+            A new `Expression` representing the maximum element of the array.
+        """
+        return FunctionExpression(
+            "maximum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_maximum"),
+        )
+
+    @expose_as_static
+    def array_minimum(self) -> "Expression":
+        """Creates an expression that returns the minimum element of an array.
+
+        Example:
+            >>> # Select the minimum element of array 'scores'
+            >>> Field.of("scores").array_minimum()
+
+        Returns:
+            A new `Expression` representing the minimum element of the array.
+        """
+        return FunctionExpression(
+            "minimum",
+            [self],
+            repr_function=FunctionExpression._build_infix_repr("array_minimum"),
+        )
+
+    @expose_as_static
+    def array_maximum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the maximum `n` elements of an array.
+
+        Example:
+            >>> # Select the maximum 2 elements of array 'scores'
+            >>> Field.of("scores").array_maximum_n(2)
+
+        Note:
+            Returns the n largest non-null elements in the array, in descending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the maximum `n` elements of the array.
+        """
+        return FunctionExpression(
+            "maximum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            repr_function=FunctionExpression._build_infix_repr("array_maximum_n"),
+        )
+
+    @expose_as_static
+    def array_minimum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the minimum `n` elements of an array.
+
+        Example:
+            >>> # Select the minimum 2 elements of array 'scores'
+            >>> Field.of("scores").array_minimum_n(2)
+
+        Note:
+            Returns the n smallest non-null elements in the array, in ascending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the minimum `n` elements of the array.
+        """
+        return FunctionExpression(
+            "minimum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            repr_function=FunctionExpression._build_infix_repr("array_minimum_n"),
+        )
+
+    @expose_as_static
+    def array_slice(
+        self, offset: int | "Expression", length: int | "Expression" | None = None
+    ) -> "Expression":
+        """Creates an expression that returns a slice of an array starting from the specified
+        offset with a given length.
+
+        Example:
+            >>> # Slice array 'scores' starting at index 1 with length 2
+            >>> Field.of("scores").array_slice(1, 2)
+
+        Args:
+            offset: the 0-based index of the first element to include.
+            length: The number of elements to include in the slice. If omitted, slices to the end.
+
+        Returns:
+            A new `Expression` representing the slice of the array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        if length is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(length))
+        return FunctionExpression("array_slice", args)
+
+    @expose_as_static
+    def array_index_of(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the first index of the search value in the array,
+        or -1 if not found.
+
+        Example:
+            >>> # Get the index of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of("comedy")
+
+        Args:
+            search: An expression evaluating to the value to search for.
+
+        Returns:
+            A new `Expression` representing the index.
+        """
+        return FunctionExpression(
+            "array_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant("first"),
+            ],
+        )
+
+    @expose_as_static
+    def array_index_of_all(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns all indices of a value in an array.
+
+        Example:
+            >>> # Get all indices of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of_all("comedy")
+
+        Args:
+            search: An expression evaluating to the value to search for.
+
+        Returns:
+            A new `Expression` representing the indices.
+        """
+        return FunctionExpression(
+            "array_index_of_all",
+            [self, self._cast_to_expr_or_convert_to_constant(search)],
+        )
 
     @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
@@ -1586,20 +2273,21 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_add(
-        self, unit: Expression | str, amount: Expression | float
+        self, unit: TimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that adds a specified amount of time to this timestamp expression.
 
         Example:
+            >>> # Add 1.5 days to the 'timestamp' field using TimeUnit enum.
+            >>> Field.of("timestamp").timestamp_add(TimeUnit.DAY, 1.5)
             >>> # Add a duration specified by the 'unit' and 'amount' fields to the 'timestamp' field.
             >>> Field.of("timestamp").timestamp_add(Field.of("unit"), Field.of("amount"))
-            >>> # Add 1.5 days to the 'timestamp' field.
+            >>> # Add 1.5 days to the 'timestamp' field using a string.
             >>> Field.of("timestamp").timestamp_add("day", 1.5)
 
         Args:
-            unit: The expression or string evaluating to the unit of time to add, must be one of
-                  'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day'.
-            amount: The expression or float representing the amount of time to add.
+            unit: The unit of time to add.
+            amount: The amount of time to add.
 
         Returns:
             A new `Expression` representing the resulting timestamp.
@@ -1615,20 +2303,21 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_subtract(
-        self, unit: Expression | str, amount: Expression | float
+        self, unit: TimeUnit | str | Expression, amount: Expression | float
     ) -> "Expression":
         """Creates an expression that subtracts a specified amount of time from this timestamp expression.
 
         Example:
+            >>> # Subtract 2.5 hours from the 'timestamp' field using TimeUnit enum.
+            >>> Field.of("timestamp").timestamp_subtract(TimeUnit.HOUR, 2.5)
             >>> # Subtract a duration specified by the 'unit' and 'amount' fields from the 'timestamp' field.
             >>> Field.of("timestamp").timestamp_subtract(Field.of("unit"), Field.of("amount"))
-            >>> # Subtract 2.5 hours from the 'timestamp' field.
+            >>> # Subtract 2.5 hours from the 'timestamp' field using a string.
             >>> Field.of("timestamp").timestamp_subtract("hour", 2.5)
 
         Args:
-            unit: The expression or string evaluating to the unit of time to subtract, must be one of
-                  'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day'.
-            amount: The expression or float representing the amount of time to subtract.
+            unit: The unit of time to subtract.
+            amount: The amount of time to subtract.
 
         Returns:
             A new `Expression` representing the resulting timestamp.
@@ -1713,6 +2402,165 @@ class Expression(ABC):
         """
         return AliasedExpression(self, alias)
 
+    @expose_as_static
+    def cmp(self, other: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that compares this expression to another expression.
+
+        Returns an integer:
+            * -1 if this expression is less than the other
+            * 0 if they are equal
+            * 1 if this expression is greater than the other
+
+        Example:
+            >>> # Compare the 'price' field to 10
+            >>> Field.of("price").cmp(10)
+
+        Args:
+            other: The value to compare against.
+
+        Returns:
+            A new `Expression` representing the comparison operation.
+        """
+        return FunctionExpression(
+            "cmp", [self, self._cast_to_expr_or_convert_to_constant(other)]
+        )
+
+    @expose_as_static
+    def timestamp_trunc(
+        self,
+        granularity: TimeGranularity | Expression | str,
+        timezone: Expression | str | None = None,
+    ) -> "Expression":
+        """Creates an expression that truncates a timestamp to a specified granularity.
+
+        Example:
+            >>> # Truncate the 'createdAt' field to the day using TimeGranularity enum
+            >>> Field.of("createdAt").timestamp_trunc(TimeGranularity.DAY)
+            >>> # Truncate the 'createdAt' field to the day in the 'America/Los_Angeles' timezone
+            >>> Field.of("createdAt").timestamp_trunc(TimeGranularity.DAY, "America/Los_Angeles")
+            >>> # Truncate the 'createdAt' field to the day using a string
+            >>> Field.of("createdAt").timestamp_trunc("day")
+
+        Args:
+            granularity: The granularity to truncate to.
+            timezone: The optional timezone.
+
+        Returns:
+            A new `Expression` representing the timestamp_trunc operation.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(granularity)]
+        if timezone is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(timezone))
+        return FunctionExpression("timestamp_trunc", args)
+
+    @expose_as_static
+    def timestamp_extract(
+        self,
+        part: TimePart | str | Expression,
+        timezone: str | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that extracts a part of a timestamp.
+
+        Example:
+            >>> # Extract the year from the 'createdAt' field using TimePart enum
+            >>> Field.of("createdAt").timestamp_extract(TimePart.YEAR)
+            >>> # Extract the year from the 'createdAt' field in the 'America/Los_Angeles' timezone
+            >>> Field.of("createdAt").timestamp_extract(TimePart.YEAR, "America/Los_Angeles")
+            >>> # Extract the year from the 'createdAt' field using a string
+            >>> Field.of("createdAt").timestamp_extract("year")
+
+        Args:
+            part: The part to extract.
+            timezone: The optional timezone.
+
+        Returns:
+            A new `Expression` representing the timestamp_extract operation.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(part)]
+        if timezone is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(timezone))
+        return FunctionExpression("timestamp_extract", args)
+
+    @expose_as_static
+    def timestamp_diff(
+        self, start: Expression | datetime.datetime, unit: TimeUnit | str | Expression
+    ) -> "Expression":
+        """Creates an expression that computes the difference between two timestamps in the specified unit.
+
+        Example:
+            >>> # Compute the difference in days between the 'end' field and the 'start' field using TimeUnit enum
+            >>> Field.of("end").timestamp_diff(Field.of("start"), TimeUnit.DAY)
+            >>> # Compute the difference in days using a string
+            >>> Field.of("end").timestamp_diff(Field.of("start"), "day")
+
+        Args:
+            start: The start timestamp.
+            unit: The unit of time.
+
+        Returns:
+            A new `Expression` representing the timestamp_diff operation.
+        """
+        return FunctionExpression(
+            "timestamp_diff",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(start),
+                self._cast_to_expr_or_convert_to_constant(unit),
+            ],
+        )
+
+    @expose_as_static
+    def if_null(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the first non-null expression from the provided arguments.
+
+        Example:
+            >>> # Return the 'nickname' field if not null, otherwise return 'firstName'
+            >>> Field.of("nickname").if_null(Field.of("firstName"))
+
+        Args:
+            *others: Additional expressions or constants to evaluate if the previous ones are null.
+
+        Returns:
+            A new `Expression` representing the if_null operation.
+        """
+        return FunctionExpression(
+            "if_null",
+            [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
+        )
+
+    @expose_as_static
+    def type(self) -> "Expression":
+        """Creates an expression that returns the data type of this expression's result as a string.
+
+        Example:
+            >>> # Get the type of the 'title' field
+            >>> Field.of("title").type()
+
+        Returns:
+            A new `Expression` representing the type operation.
+        """
+        return FunctionExpression("type", [self])
+
+    @expose_as_static
+    def is_type(
+        self, type_val: PipelineDataType | str | Expression
+    ) -> "BooleanExpression":
+        """Creates an expression that checks if the result is of the specified type.
+
+        Example:
+            >>> # Check if the 'price' field is a number
+            >>> Field.of("price").is_type("number")
+
+        Args:
+            type_val: The type string or expression to check against.
+
+        Returns:
+            A new `BooleanExpression` representing the is_type operation.
+        """
+        return BooleanExpression(
+            "is_type", [self, self._cast_to_expr_or_convert_to_constant(type_val)]
+        )
+
 
 class Constant(Expression, Generic[CONSTANT_TYPE]):
     """Represents a constant literal value in an expression."""
@@ -1752,13 +2600,11 @@ class FunctionExpression(Expression):
         name: str,
         params: Sequence[Expression],
         *,
-        use_infix_repr: bool = True,
-        infix_name_override: str | None = None,
+        repr_function: Callable[["FunctionExpression"], str] | None = None,
     ):
         self.name = name
         self.params = list(params)
-        self._use_infix_repr = use_infix_repr
-        self._infix_name_override = infix_name_override
+        self._repr_function = repr_function or self._build_infix_repr()
 
     def __repr__(self):
         """
@@ -1766,21 +2612,53 @@ class FunctionExpression(Expression):
 
         Display them this way in the repr string where possible
         """
-        if self._use_infix_repr:
-            infix_name = self._infix_name_override or self.name
-            if len(self.params) == 1:
-                return f"{self.params[0]!r}.{infix_name}()"
-            elif len(self.params) == 2:
-                return f"{self.params[0]!r}.{infix_name}({self.params[1]!r})"
-            else:
-                return f"{self.params[0]!r}.{infix_name}({', '.join([repr(p) for p in self.params[1:]])})"
-        return f"{self.__class__.__name__}({', '.join([repr(p) for p in self.params])})"
+        return self._repr_function(self)
 
     def __eq__(self, other):
         if not isinstance(other, FunctionExpression):
             return False
         else:
             return other.name == self.name and other.params == self.params
+
+    @staticmethod
+    def _build_infix_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using infix notation.
+
+        Example:
+            `value.greater_than(18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.name
+            args = expr.params
+            if len(args) == 0:
+                return f"{final_name}()"
+            elif len(args) == 1:
+                return f"{args[0]!r}.{final_name}()"
+            elif len(args) == 2:
+                return f"{args[0]!r}.{final_name}({args[1]!r})"
+            else:
+                return f"{args[0]!r}.{final_name}({', '.join([repr(a) for a in args[1:]])})"
+
+        return build_repr
+
+    @staticmethod
+    def _build_standalone_repr(
+        name_override: str | None = None,
+    ) -> Callable[["FunctionExpression"], str]:
+        """Creates a repr_function that displays a FunctionExpression using standalone function notation.
+
+        Example:
+            `GreaterThan(value, 18)`
+        """
+
+        def build_repr(expr):
+            final_name = name_override or expr.__class__.__name__
+            return f"{final_name}({', '.join([repr(a) for a in expr.params])})"
+
+        return build_repr
 
     def _to_pb(self):
         return Value(
@@ -1961,6 +2839,17 @@ class BooleanExpression(FunctionExpression):
             raise TypeError(f"Unexpected filter type: {type(filter_pb)}")
 
 
+class _PipelineValueExpression(Expression):
+    """Internal wrapper to represent a pipeline as an expression."""
+
+    def __init__(self, pipeline: "_BasePipeline"):
+        self.pipeline = pipeline
+
+    def _to_pb(self) -> Value:
+        pipeline_pb = Pipeline_pb(stages=[s._to_pb() for s in self.pipeline.stages])
+        return Value(pipeline_value=pipeline_pb)
+
+
 class Array(FunctionExpression):
     """
     Creates an expression that creates a Firestore array value from an input list.
@@ -2024,7 +2913,9 @@ class And(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("and", conditions, use_infix_repr=False)
+        super().__init__(
+            "and", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Not(BooleanExpression):
@@ -2040,7 +2931,11 @@ class Not(BooleanExpression):
     """
 
     def __init__(self, condition: BooleanExpression):
-        super().__init__("not", [condition], use_infix_repr=False)
+        super().__init__(
+            "not",
+            [condition],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Or(BooleanExpression):
@@ -2057,7 +2952,27 @@ class Or(BooleanExpression):
     """
 
     def __init__(self, *conditions: "BooleanExpression"):
-        super().__init__("or", conditions, use_infix_repr=False)
+        super().__init__(
+            "or", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
+
+
+class Nor(BooleanExpression):
+    """
+    Represents an expression that performs a logical 'NOR' operation on multiple filter conditions.
+
+    Example:
+        >>> # Check if neither the 'age' field is greater than 18 nor the 'city' field is "London"
+        >>> Nor(Field.of("age").greater_than(18), Field.of("city").equal("London"))
+
+    Args:
+        *conditions: The filter conditions to 'NOR' together.
+    """
+
+    def __init__(self, *conditions: "BooleanExpression"):
+        super().__init__(
+            "nor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Xor(BooleanExpression):
@@ -2074,7 +2989,9 @@ class Xor(BooleanExpression):
     """
 
     def __init__(self, conditions: Sequence["BooleanExpression"]):
-        super().__init__("xor", conditions, use_infix_repr=False)
+        super().__init__(
+            "xor", conditions, repr_function=FunctionExpression._build_standalone_repr()
+        )
 
 
 class Conditional(BooleanExpression):
@@ -2096,7 +3013,9 @@ class Conditional(BooleanExpression):
         self, condition: BooleanExpression, then_expr: Expression, else_expr: Expression
     ):
         super().__init__(
-            "conditional", [condition, then_expr, else_expr], use_infix_repr=False
+            "conditional",
+            [condition, then_expr, else_expr],
+            repr_function=FunctionExpression._build_standalone_repr(),
         )
 
 
@@ -2117,7 +3036,13 @@ class Count(AggregateFunction):
 
     def __init__(self, expression: Expression | None = None):
         expression_list = [expression] if expression else []
-        super().__init__("count", expression_list, use_infix_repr=bool(expression_list))
+        super().__init__(
+            "count",
+            expression_list,
+            repr_function=FunctionExpression._build_infix_repr()
+            if expression_list
+            else FunctionExpression._build_standalone_repr(),
+        )
 
 
 class CurrentTimestamp(FunctionExpression):
@@ -2128,7 +3053,11 @@ class CurrentTimestamp(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("current_timestamp", [], use_infix_repr=False)
+        super().__init__(
+            "current_timestamp",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
 
 
 class Rand(FunctionExpression):
@@ -2140,4 +3069,107 @@ class Rand(FunctionExpression):
     """
 
     def __init__(self):
-        super().__init__("rand", [], use_infix_repr=False)
+        super().__init__(
+            "rand", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
+
+
+class Score(FunctionExpression):
+    """Evaluates to the search score that reflects the topicality of the document
+    to all of the text predicates (`queryMatch`)
+    in the search query. If `SearchOptions.query` is not set or does not contain
+    any text predicates, then this topicality score will always be `0`.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+
+    Note: This Expression can only be used within a `Search` stage.
+
+    Example:
+        >>> # Sort by search score and retrieve it via add_fields
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query="tacos",
+        ...     sort=Score().descending(),
+        ...     add_fields=[Score().as_("search_score")]
+        ... )
+
+    Returns:
+        A new `Expression` representing the score operation.
+    """
+
+    def __init__(self):
+        super().__init__(
+            "score", [], repr_function=FunctionExpression._build_standalone_repr()
+        )
+
+
+class DocumentMatches(BooleanExpression):
+    """Creates a boolean expression for a document match query.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+
+    Note: This Expression can only be used within a `Search` stage.
+
+    Example:
+        >>> # Find documents matching the query string
+        >>> db.pipeline().collection("restaurants").search(
+        ...     query=DocumentMatches("pizza OR pasta")
+        ... )
+
+    Args:
+        query: The search query string or expression.
+
+    Returns:
+        A new `BooleanExpression` representing the document match.
+    """
+
+    def __init__(self, query: Expression | str):
+        super().__init__(
+            "document_matches",
+            [Expression._cast_to_expr_or_convert_to_constant(query)],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )
+
+
+class Variable(Expression):
+    """
+    Creates an expression that retrieves the value of a variable bound via `Pipeline.define`.
+
+    Example:
+        >>> # Define a variable "discountedPrice" and use it in a filter
+        >>> db.pipeline().collection("products").define(
+        ...     Field.of("price").multiply(0.9).as_("discountedPrice")
+        ... ).where(Variable("discountedPrice").less_than(100))
+
+    Args:
+        name: The name of the variable to retrieve.
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def _to_pb(self) -> Value:
+        return Value(variable_reference_value=self.name)
+
+
+class CurrentDocument(FunctionExpression):
+    """
+    Creates an expression that represents the current document being processed.
+
+    This acts as a handle, allowing you to bind the entire document to a variable or pass the
+    document itself to a function or subquery.
+
+    Example:
+        >>> # Define the current document as a variable "doc"
+        >>> db.pipeline().collection("books").define(
+        ...     CurrentDocument().as_("doc")
+        ... ).select(Variable("doc").get_field("title"))
+    """
+
+    def __init__(self):
+        super().__init__(
+            "current_document",
+            [],
+            repr_function=FunctionExpression._build_standalone_repr(),
+        )

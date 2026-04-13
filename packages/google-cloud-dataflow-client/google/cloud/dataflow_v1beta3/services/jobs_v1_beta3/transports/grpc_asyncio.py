@@ -60,7 +60,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -95,7 +95,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -116,9 +116,9 @@ class _LoggingClientAIOInterceptor(
 class JobsV1Beta3GrpcAsyncIOTransport(JobsV1Beta3Transport):
     """gRPC AsyncIO backend transport for JobsV1Beta3.
 
-    Provides a method to create and modify Google Cloud Dataflow
-    jobs. A Job is a multi-stage computation graph run by the Cloud
-    Dataflow service.
+    Provides a method to create and modify Dataflow jobs.
+    A Job is a multi-stage computation graph run by the Dataflow
+    service.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -237,6 +237,10 @@ class JobsV1Beta3GrpcAsyncIOTransport(JobsV1Beta3Transport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -335,7 +339,7 @@ class JobsV1Beta3GrpcAsyncIOTransport(JobsV1Beta3Transport):
     def create_job(self) -> Callable[[jobs.CreateJobRequest], Awaitable[jobs.Job]]:
         r"""Return a callable for the create job method over gRPC.
 
-        Creates a Cloud Dataflow job.
+        Creates a Dataflow job.
 
         To create a job, we recommend using
         ``projects.locations.jobs.create`` with a [regional endpoint]

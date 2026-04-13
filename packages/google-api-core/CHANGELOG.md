@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.30.3](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.2...google-api-core-v2.30.3) (2026-04-09)
+
+
+### Bug Fixes
+
+* avoid repeated scan of entire venv via packages_distributions() at import time (#16579) ([c5728b24fac3363c10a8cfb315b96d3e6459cf06](https://github.com/googleapis/google-cloud-python/commit/c5728b24fac3363c10a8cfb315b96d3e6459cf06))
+
+## [2.30.2](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.1...google-api-core-v2.30.2) (2026-04-02)
+
+
+### Bug Fixes
+
+* allow Protobuf 7.x (#16532) ([ffb4b712121d04a38399e0bd3dc9773e96798564](https://github.com/googleapis/google-cloud-python/commit/ffb4b712121d04a38399e0bd3dc9773e96798564))
+
+## [2.30.1](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.0...google-api-core-v2.30.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.29.0...google-api-core-v2.30.0) (2026-02-17)
 
 

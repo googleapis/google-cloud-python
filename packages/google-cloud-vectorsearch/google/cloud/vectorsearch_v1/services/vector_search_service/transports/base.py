@@ -82,6 +82,10 @@ class VectorSearchServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -130,6 +134,8 @@ class VectorSearchServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
@@ -248,6 +254,11 @@ class VectorSearchServiceTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_index: gapic_v1.method.wrap_method(
+                self.update_index,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_index: gapic_v1.method.wrap_method(
@@ -405,6 +416,15 @@ class VectorSearchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [vectorsearch_service.CreateIndexRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_index(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.UpdateIndexRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

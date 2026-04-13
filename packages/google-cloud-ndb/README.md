@@ -30,14 +30,14 @@ GA
 
 Our client libraries are compatible with all current [active][3] and [maintenance][4] versions of Python.
 
-Python >= 3.7
+Python >= 3.9
 
 [3]: https://devguide.python.org/devcycle/#in-development-main-branch
 [4]: https://devguide.python.org/devcycle/#maintenance-branches
 
 ### Unsupported Python Versions
 
-Python <= 3.6
+Python <= 3.8
 
 If you are using an [end-of-life][5]
 version of Python, we recommend that you update as soon as possible to an actively supported version.

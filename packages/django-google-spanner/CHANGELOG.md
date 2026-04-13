@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/django-google-spanner/#history
 
+## [4.0.3](https://github.com/googleapis/google-cloud-python/compare/django-google-spanner-v4.0.2...django-google-spanner-v4.0.3) (2026-03-23)
+
+
+### Bug Fixes
+
+* db_returning should only be overridden for Spanner (#16111) ([8c1eb13f57a08d2d816725d31ff087a91e043e7e](https://github.com/googleapis/google-cloud-python/commit/8c1eb13f57a08d2d816725d31ff087a91e043e7e))
+
 ## [4.0.2](https://github.com/googleapis/python-spanner-django/compare/v4.0.1...v4.0.2) (2025-06-05)
 
 

@@ -105,6 +105,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -360,6 +365,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -613,6 +623,11 @@
             "ExportApp": {
               "methods": [
                 "export_app"
+              ]
+            },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
               ]
             },
             "GetAgent": {
@@ -1272,6 +1287,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1287,6 +1307,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1301,6 +1326,11 @@
             "RunSession": {
               "methods": [
                 "run_session"
+              ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
               ]
             }
           }

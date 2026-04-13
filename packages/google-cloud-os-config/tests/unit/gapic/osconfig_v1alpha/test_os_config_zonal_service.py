@@ -137,6 +137,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert OsConfigZonalServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -158,6 +159,10 @@ def test__get_default_mtls_endpoint():
     assert (
         OsConfigZonalServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        OsConfigZonalServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1358,11 +1363,13 @@ def test_os_config_zonal_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -11649,8 +11656,9 @@ def test_create_os_policy_assignment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11912,22 +11920,23 @@ def test_create_os_policy_assignment_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_create_os_policy_assignment",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_create_os_policy_assignment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_create_os_policy_assignment",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_create_os_policy_assignment",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_create_os_policy_assignment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_create_os_policy_assignment",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11984,8 +11993,9 @@ def test_update_os_policy_assignment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12251,22 +12261,23 @@ def test_update_os_policy_assignment_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_update_os_policy_assignment",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_update_os_policy_assignment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_update_os_policy_assignment",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_update_os_policy_assignment",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_update_os_policy_assignment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_update_os_policy_assignment",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12321,8 +12332,9 @@ def test_get_os_policy_assignment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12406,18 +12418,22 @@ def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "post_get_os_policy_assignment"
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_os_policy_assignment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_get_os_policy_assignment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_os_policy_assignment",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_os_policy_assignment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_get_os_policy_assignment",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12475,8 +12491,9 @@ def test_list_os_policy_assignments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12541,19 +12558,22 @@ def test_list_os_policy_assignments_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignments",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignments_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_list_os_policy_assignments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignments",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_list_os_policy_assignments",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12613,8 +12633,9 @@ def test_list_os_policy_assignment_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12681,20 +12702,22 @@ def test_list_os_policy_assignment_revisions_rest_interceptors(null_interceptor)
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignment_revisions",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignment_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_list_os_policy_assignment_revisions",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignment_revisions",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignment_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_list_os_policy_assignment_revisions",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12758,8 +12781,9 @@ def test_delete_os_policy_assignment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12818,22 +12842,23 @@ def test_delete_os_policy_assignment_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_delete_os_policy_assignment",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_delete_os_policy_assignment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_delete_os_policy_assignment",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_delete_os_policy_assignment",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_delete_os_policy_assignment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_delete_os_policy_assignment",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12888,8 +12913,9 @@ def test_get_instance_os_policies_compliance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12968,20 +12994,22 @@ def test_get_instance_os_policies_compliance_rest_interceptors(null_interceptor)
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_instance_os_policies_compliance",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_instance_os_policies_compliance_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_get_instance_os_policies_compliance",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_instance_os_policies_compliance",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_instance_os_policies_compliance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_get_instance_os_policies_compliance",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13047,8 +13075,9 @@ def test_list_instance_os_policies_compliances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13115,20 +13144,22 @@ def test_list_instance_os_policies_compliances_rest_interceptors(null_intercepto
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_instance_os_policies_compliances",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_instance_os_policies_compliances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_list_instance_os_policies_compliances",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_instance_os_policies_compliances",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_instance_os_policies_compliances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_list_instance_os_policies_compliances",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13192,8 +13223,9 @@ def test_get_os_policy_assignment_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13266,20 +13298,22 @@ def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_os_policy_assignment_report",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_os_policy_assignment_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_get_os_policy_assignment_report",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_os_policy_assignment_report",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_os_policy_assignment_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_get_os_policy_assignment_report",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13339,8 +13373,9 @@ def test_list_os_policy_assignment_reports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13411,20 +13446,22 @@ def test_list_os_policy_assignment_reports_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignment_reports",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_os_policy_assignment_reports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "pre_list_os_policy_assignment_reports",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignment_reports",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_os_policy_assignment_reports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_list_os_policy_assignment_reports",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13488,8 +13525,9 @@ def test_get_inventory_rest_bad_request(request_type=inventory.GetInventoryReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13554,18 +13592,20 @@ def test_get_inventory_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "post_get_inventory"
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_inventory_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_get_inventory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor, "post_get_inventory"
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_inventory_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor, "pre_get_inventory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13616,8 +13656,9 @@ def test_list_inventories_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13680,18 +13721,20 @@ def test_list_inventories_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "post_list_inventories"
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_inventories_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_list_inventories"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor, "post_list_inventories"
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_inventories_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor, "pre_list_inventories"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13748,8 +13791,9 @@ def test_get_vulnerability_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13814,18 +13858,22 @@ def test_get_vulnerability_report_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "post_get_vulnerability_report"
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_get_vulnerability_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_get_vulnerability_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_vulnerability_report",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_get_vulnerability_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_get_vulnerability_report",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13880,8 +13928,9 @@ def test_list_vulnerability_reports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13944,19 +13993,22 @@ def test_list_vulnerability_reports_rest_interceptors(null_interceptor):
     )
     client = OsConfigZonalServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_vulnerability_reports",
-    ) as post, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor,
-        "post_list_vulnerability_reports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.OsConfigZonalServiceRestInterceptor, "pre_list_vulnerability_reports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_vulnerability_reports",
+        ) as post,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "post_list_vulnerability_reports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OsConfigZonalServiceRestInterceptor,
+            "pre_list_vulnerability_reports",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14408,11 +14460,14 @@ def test_os_config_zonal_service_base_transport():
 
 def test_os_config_zonal_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.osconfig_v1alpha.services.os_config_zonal_service.transports.OsConfigZonalServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.osconfig_v1alpha.services.os_config_zonal_service.transports.OsConfigZonalServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OsConfigZonalServiceTransport(
@@ -14429,9 +14484,12 @@ def test_os_config_zonal_service_base_transport_with_credentials_file():
 
 def test_os_config_zonal_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.osconfig_v1alpha.services.os_config_zonal_service.transports.OsConfigZonalServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.osconfig_v1alpha.services.os_config_zonal_service.transports.OsConfigZonalServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OsConfigZonalServiceTransport()
@@ -14505,11 +14563,12 @@ def test_os_config_zonal_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

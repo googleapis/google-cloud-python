@@ -60,6 +60,8 @@ from .types.agent_service import (
     DeleteToolsetRequest,
     ExportAppRequest,
     ExportAppResponse,
+    GenerateAppResourceOperationMetadata,
+    GenerateAppResourceRequest,
     GenerateAppResourceResponse,
     GetAgentRequest,
     GetAppRequest,
@@ -95,6 +97,7 @@ from .types.agent_service import (
     ListToolsRequest,
     ListToolsResponse,
     OperationMetadata,
+    QualityReport,
     RestoreAppVersionRequest,
     RestoreAppVersionResponse,
     UpdateAgentRequest,
@@ -234,6 +237,7 @@ from .types.example import (
     ToolResponse,
 )
 from .types.fakes import CodeBlock, EvaluationToolCallBehaviour, ToolFakeConfig
+from .types.file_context import FileContext
 from .types.file_search_tool import FileSearchTool
 from .types.golden_run import GoldenRunMethod
 from .types.google_search_tool import GoogleSearchTool
@@ -475,7 +479,10 @@ __all__ = (
     "ExportAppRequest",
     "ExportAppResponse",
     "ExpressionCondition",
+    "FileContext",
     "FileSearchTool",
+    "GenerateAppResourceOperationMetadata",
+    "GenerateAppResourceRequest",
     "GenerateAppResourceResponse",
     "GenerateChatTokenRequest",
     "GenerateChatTokenResponse",
@@ -563,6 +570,7 @@ __all__ = (
     "PersonaRunConfig",
     "PythonCodeCondition",
     "PythonFunction",
+    "QualityReport",
     "RecognitionResult",
     "RedactionConfig",
     "RestoreAppVersionRequest",

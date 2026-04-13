@@ -128,6 +128,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert GkeHubClient._get_default_mtls_endpoint(None) is None
     assert GkeHubClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -143,6 +144,7 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert GkeHubClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert GkeHubClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 
 def test__read_environment_variables():
@@ -1221,11 +1223,13 @@ def test_gke_hub_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -29216,8 +29220,9 @@ def test_list_memberships_rest_bad_request(request_type=service.ListMembershipsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29280,17 +29285,19 @@ def test_list_memberships_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_memberships"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_memberships_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_memberships"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_memberships"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_memberships_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_memberships"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29343,8 +29350,9 @@ def test_list_bound_memberships_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29407,17 +29415,20 @@ def test_list_bound_memberships_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_bound_memberships"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_bound_memberships_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_bound_memberships"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_bound_memberships"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_list_bound_memberships_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_bound_memberships"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29473,8 +29484,9 @@ def test_list_features_rest_bad_request(request_type=service.ListFeaturesRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29535,17 +29547,17 @@ def test_list_features_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_features"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_features_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_features"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_features"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_features_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_list_features") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29596,8 +29608,9 @@ def test_get_membership_rest_bad_request(request_type=service.GetMembershipReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29664,17 +29677,19 @@ def test_get_membership_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_membership"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_membership"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_membership_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_get_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29723,8 +29738,9 @@ def test_get_feature_rest_bad_request(request_type=service.GetFeatureRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29787,17 +29803,15 @@ def test_get_feature_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_feature"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_feature_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_feature"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GkeHubRestInterceptor, "post_get_feature") as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_feature_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_get_feature") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29848,8 +29862,9 @@ def test_create_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30024,19 +30039,20 @@ def test_create_membership_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_membership"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_membership"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_membership_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30087,8 +30103,9 @@ def test_create_feature_rest_bad_request(request_type=service.CreateFeatureReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30234,19 +30251,20 @@ def test_create_feature_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_feature"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_feature_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_feature"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_feature"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_feature_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_feature"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30297,8 +30315,9 @@ def test_delete_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30353,19 +30372,20 @@ def test_delete_membership_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_membership"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_membership"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_membership_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30416,8 +30436,9 @@ def test_delete_feature_rest_bad_request(request_type=service.DeleteFeatureReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30472,19 +30493,20 @@ def test_delete_feature_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_feature"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_feature_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_feature"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_feature"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_feature_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_feature"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30535,8 +30557,9 @@ def test_update_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30711,19 +30734,20 @@ def test_update_membership_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_membership"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_membership"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_membership_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30774,8 +30798,9 @@ def test_update_feature_rest_bad_request(request_type=service.UpdateFeatureReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30921,19 +30946,20 @@ def test_update_feature_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_feature"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_feature_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_feature"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_feature"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_feature_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_feature"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30984,8 +31010,9 @@ def test_generate_connect_manifest_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31043,17 +31070,20 @@ def test_generate_connect_manifest_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_generate_connect_manifest"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_generate_connect_manifest_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_generate_connect_manifest"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_generate_connect_manifest"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_generate_connect_manifest_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_generate_connect_manifest"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31109,8 +31139,9 @@ def test_create_fleet_rest_bad_request(request_type=service.CreateFleetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31253,19 +31284,18 @@ def test_create_fleet_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_fleet"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_fleet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_fleet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_fleet"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_fleet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_create_fleet") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31314,8 +31344,9 @@ def test_get_fleet_rest_bad_request(request_type=service.GetFleetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31380,17 +31411,15 @@ def test_get_fleet_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_fleet"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_fleet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_fleet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GkeHubRestInterceptor, "post_get_fleet") as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_fleet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_get_fleet") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31441,8 +31470,9 @@ def test_update_fleet_rest_bad_request(request_type=service.UpdateFleetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31587,19 +31617,18 @@ def test_update_fleet_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_fleet"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_fleet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_fleet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_fleet"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_fleet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_update_fleet") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31648,8 +31677,9 @@ def test_delete_fleet_rest_bad_request(request_type=service.DeleteFleetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31704,19 +31734,18 @@ def test_delete_fleet_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_fleet"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_fleet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_fleet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_fleet"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_fleet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_delete_fleet") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31765,8 +31794,9 @@ def test_list_fleets_rest_bad_request(request_type=service.ListFleetsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31827,17 +31857,15 @@ def test_list_fleets_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_fleets"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_fleets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_fleets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GkeHubRestInterceptor, "post_list_fleets") as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_fleets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_list_fleets") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31890,8 +31918,9 @@ def test_get_scope_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31958,17 +31987,19 @@ def test_get_scope_namespace_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_scope_namespace"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_scope_namespace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_scope_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_scope_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_scope_namespace_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_get_scope_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32021,8 +32052,9 @@ def test_create_scope_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32155,19 +32187,21 @@ def test_create_scope_namespace_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_scope_namespace"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_scope_namespace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_scope_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_scope_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_create_scope_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_scope_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32224,8 +32258,9 @@ def test_update_scope_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32362,19 +32397,21 @@ def test_update_scope_namespace_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_scope_namespace"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_scope_namespace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_scope_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_scope_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_update_scope_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_scope_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32429,8 +32466,9 @@ def test_delete_scope_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32487,19 +32525,21 @@ def test_delete_scope_namespace_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_scope_namespace"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_scope_namespace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_scope_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_scope_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_delete_scope_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_scope_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32552,8 +32592,9 @@ def test_list_scope_namespaces_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32614,17 +32655,19 @@ def test_list_scope_namespaces_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_scope_namespaces"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_scope_namespaces_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_scope_namespaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_scope_namespaces"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_scope_namespaces_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_scope_namespaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32684,8 +32727,9 @@ def test_get_scope_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32751,18 +32795,20 @@ def test_get_scope_rbac_role_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_scope_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_get_scope_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_scope_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_scope_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_get_scope_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_get_scope_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32815,8 +32861,9 @@ def test_create_scope_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32952,20 +32999,21 @@ def test_create_scope_rbac_role_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_scope_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_create_scope_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_scope_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_scope_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_create_scope_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_scope_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33022,8 +33070,9 @@ def test_update_scope_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33163,20 +33212,21 @@ def test_update_scope_rbac_role_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_scope_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_update_scope_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_scope_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_scope_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_update_scope_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_scope_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33231,8 +33281,9 @@ def test_delete_scope_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33289,20 +33340,21 @@ def test_delete_scope_rbac_role_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_scope_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_delete_scope_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_scope_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_scope_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_delete_scope_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_scope_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33355,8 +33407,9 @@ def test_list_scope_rbac_role_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33417,18 +33470,20 @@ def test_list_scope_rbac_role_bindings_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_scope_rbac_role_bindings"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_list_scope_rbac_role_bindings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_scope_rbac_role_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_scope_rbac_role_bindings"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_list_scope_rbac_role_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_scope_rbac_role_bindings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33484,8 +33539,9 @@ def test_get_scope_rest_bad_request(request_type=service.GetScopeRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33548,17 +33604,15 @@ def test_get_scope_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_scope"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_scope_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_scope"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GkeHubRestInterceptor, "post_get_scope") as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_scope_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_get_scope") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33607,8 +33661,9 @@ def test_create_scope_rest_bad_request(request_type=service.CreateScopeRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33740,19 +33795,18 @@ def test_create_scope_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_scope"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_scope_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_scope"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_scope"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_scope_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_create_scope") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33803,8 +33857,9 @@ def test_update_scope_rest_bad_request(request_type=service.UpdateScopeRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33938,19 +33993,18 @@ def test_update_scope_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_scope"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_scope_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_scope"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_scope"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_scope_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_update_scope") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33999,8 +34053,9 @@ def test_delete_scope_rest_bad_request(request_type=service.DeleteScopeRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34055,19 +34110,18 @@ def test_delete_scope_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_scope"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_scope_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_scope"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_scope"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_scope_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_delete_scope") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34116,8 +34170,9 @@ def test_list_scopes_rest_bad_request(request_type=service.ListScopesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34178,17 +34233,15 @@ def test_list_scopes_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_scopes"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_scopes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_scopes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GkeHubRestInterceptor, "post_list_scopes") as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_scopes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GkeHubRestInterceptor, "pre_list_scopes") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34239,8 +34292,9 @@ def test_list_permitted_scopes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34301,17 +34355,19 @@ def test_list_permitted_scopes_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_permitted_scopes"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_permitted_scopes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_permitted_scopes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_permitted_scopes"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_permitted_scopes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_permitted_scopes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34371,8 +34427,9 @@ def test_get_membership_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34438,17 +34495,20 @@ def test_get_membership_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_membership_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_membership_binding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_membership_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_membership_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_get_membership_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_get_membership_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34501,8 +34561,9 @@ def test_create_membership_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34636,19 +34697,21 @@ def test_create_membership_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_membership_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_membership_binding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_membership_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_membership_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_create_membership_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_membership_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34705,8 +34768,9 @@ def test_update_membership_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34844,19 +34908,21 @@ def test_update_membership_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_membership_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_membership_binding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_membership_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_membership_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_update_membership_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_membership_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34911,8 +34977,9 @@ def test_delete_membership_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34969,19 +35036,21 @@ def test_delete_membership_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_membership_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_membership_binding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_membership_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_membership_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_delete_membership_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_membership_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35034,8 +35103,9 @@ def test_list_membership_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35098,17 +35168,20 @@ def test_list_membership_bindings_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_membership_bindings"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_membership_bindings_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_membership_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_membership_bindings"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_list_membership_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_membership_bindings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35168,8 +35241,9 @@ def test_get_membership_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35235,18 +35309,20 @@ def test_get_membership_rbac_role_binding_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_get_membership_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_get_membership_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_get_membership_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_get_membership_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_get_membership_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_get_membership_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35299,8 +35375,9 @@ def test_create_membership_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35436,20 +35513,21 @@ def test_create_membership_rbac_role_binding_rest_interceptors(null_interceptor)
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_create_membership_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_create_membership_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_create_membership_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_create_membership_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_create_membership_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_create_membership_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35506,8 +35584,9 @@ def test_update_membership_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35647,20 +35726,21 @@ def test_update_membership_rbac_role_binding_rest_interceptors(null_interceptor)
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_update_membership_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_update_membership_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_update_membership_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_update_membership_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_update_membership_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_update_membership_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35715,8 +35795,9 @@ def test_delete_membership_rbac_role_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35773,20 +35854,21 @@ def test_delete_membership_rbac_role_binding_rest_interceptors(null_interceptor)
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_delete_membership_rbac_role_binding"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_delete_membership_rbac_role_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_delete_membership_rbac_role_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_delete_membership_rbac_role_binding"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_delete_membership_rbac_role_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_delete_membership_rbac_role_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35839,8 +35921,9 @@ def test_list_membership_rbac_role_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35903,18 +35986,20 @@ def test_list_membership_rbac_role_bindings_rest_interceptors(null_interceptor):
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor, "post_list_membership_rbac_role_bindings"
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_list_membership_rbac_role_bindings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor, "pre_list_membership_rbac_role_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "post_list_membership_rbac_role_bindings"
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_list_membership_rbac_role_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor, "pre_list_membership_rbac_role_bindings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35972,8 +36057,9 @@ def test_generate_membership_rbac_role_binding_yaml_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36117,20 +36203,22 @@ def test_generate_membership_rbac_role_binding_yaml_rest_interceptors(null_inter
     )
     client = GkeHubClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_generate_membership_rbac_role_binding_yaml",
-    ) as post, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "post_generate_membership_rbac_role_binding_yaml_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GkeHubRestInterceptor,
-        "pre_generate_membership_rbac_role_binding_yaml",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_generate_membership_rbac_role_binding_yaml",
+        ) as post,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "post_generate_membership_rbac_role_binding_yaml_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GkeHubRestInterceptor,
+            "pre_generate_membership_rbac_role_binding_yaml",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37236,11 +37324,14 @@ def test_gke_hub_base_transport():
 
 def test_gke_hub_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GkeHubTransport(
@@ -37257,9 +37348,12 @@ def test_gke_hub_base_transport_with_credentials_file():
 
 def test_gke_hub_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GkeHubTransport()
@@ -37331,11 +37425,12 @@ def test_gke_hub_transport_auth_gdch_credentials(transport_class):
 def test_gke_hub_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

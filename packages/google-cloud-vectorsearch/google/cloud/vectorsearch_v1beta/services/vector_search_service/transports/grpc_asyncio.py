@@ -62,7 +62,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -97,7 +97,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -242,6 +242,10 @@ class VectorSearchServiceGrpcAsyncIOTransport(VectorSearchServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -585,6 +589,34 @@ class VectorSearchServiceGrpcAsyncIOTransport(VectorSearchServiceTransport):
         return self._stubs["create_index"]
 
     @property
+    def update_index(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.UpdateIndexRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update index method over gRPC.
+
+        Updates the parameters of a single Index.
+
+        Returns:
+            Callable[[~.UpdateIndexRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_index" not in self._stubs:
+            self._stubs["update_index"] = self._logged_channel.unary_unary(
+                "/google.cloud.vectorsearch.v1beta.VectorSearchService/UpdateIndex",
+                request_serializer=vectorsearch_service.UpdateIndexRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_index"]
+
+    @property
     def delete_index(
         self,
     ) -> Callable[
@@ -785,6 +817,11 @@ class VectorSearchServiceGrpcAsyncIOTransport(VectorSearchServiceTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_index: self._wrap_method(
+                self.update_index,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_index: self._wrap_method(

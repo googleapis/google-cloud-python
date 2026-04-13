@@ -24,6 +24,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Constant,
     Field,
     Ordering,
+    DocumentMatches,
 )
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.vector import Vector
@@ -517,6 +518,112 @@ class TestLimit:
         assert len(result.options) == 0
 
 
+class TestLiterals:
+    def _make_one(self, *args, **kwargs):
+        return stages.Literals(*args, **kwargs)
+
+    def test_ctor(self):
+        val1 = {"a": Field.of("a")}
+        val2 = {"b": 2}
+        instance = self._make_one(val1, val2)
+        assert instance.documents == (val1, val2)
+        assert instance.name == "literals"
+
+    def test_ctor_extended_types(self):
+        import datetime
+        from google.cloud.firestore_v1._helpers import GeoPoint
+        from google.cloud.firestore_v1.vector import Vector
+
+        doc = {
+            "a": 1,
+            "b": "string",
+            "c": 3.14,
+            "d": True,
+            "e": None,
+            "f": b"bytes",
+            "g": datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc),
+            "h": GeoPoint(1.0, 2.0),
+            "i": Vector([1.0, 2.0]),
+        }
+        instance = self._make_one(doc)
+        assert instance.documents == (doc,)
+        assert instance.name == "literals"
+
+    def test_ctor_w_expressions(self):
+        from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
+
+        expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
+        doc = {"res": expr}
+        instance = self._make_one(doc)
+        assert instance.documents == (doc,)
+        assert instance.name == "literals"
+
+    def test_repr(self):
+        from google.cloud.firestore_v1.pipeline_expressions import Field
+
+        val1 = {"a": Field.of("a")}
+        instance = self._make_one(val1, {"b": 2})
+        repr_str = repr(instance)
+        assert repr_str == "Literals(documents=({'a': Field.of('a')}, {'b': 2}))"
+
+    def test_to_pb_constant_types(self):
+        import datetime
+        from google.cloud.firestore_v1._helpers import GeoPoint
+        from google.cloud.firestore_v1.vector import Vector
+
+        doc = {
+            "a": 1,
+            "b": "string",
+            "c": 3.14,
+            "d": True,
+            "e": None,
+            "f": b"bytes",
+            "g": datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc),
+            "h": GeoPoint(1.0, 2.0),
+            "i": Vector([1.0, 2.0]),
+        }
+        instance = self._make_one(doc)
+        result = instance._to_pb()
+        assert result.name == "literals"
+        assert len(result.args) == 1
+
+        fields = result.args[0].map_value.fields
+        assert fields["a"].integer_value == 1
+        assert fields["b"].string_value == "string"
+        assert fields["c"].double_value == 3.14
+        assert fields["d"].boolean_value is True
+        assert fields["e"].null_value == 0
+        assert fields["f"].bytes_value == b"bytes"
+        assert fields["g"].timestamp_value == datetime.datetime(
+            2025, 1, 1, tzinfo=datetime.timezone.utc
+        )
+        assert fields["h"].geo_point_value.latitude == 1.0
+        assert fields["h"].geo_point_value.longitude == 2.0
+        assert (
+            fields["i"].map_value.fields["value"].array_value.values[0].double_value
+            == 1.0
+        )
+        assert (
+            fields["i"].map_value.fields["value"].array_value.values[1].double_value
+            == 2.0
+        )
+
+    def test_to_pb_w_expression(self):
+        from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
+
+        expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
+        doc = {"res": expr}
+        instance = self._make_one(doc)
+        result = instance._to_pb()
+        assert result.name == "literals"
+        assert len(result.args) == 1
+
+        fields = result.args[0].map_value.fields
+        assert fields["res"].function_value.name == "string_concat"
+        assert fields["res"].function_value.args[0].string_value == "A"
+        assert fields["res"].function_value.args[1].string_value == "B"
+
+
 class TestOffset:
     def _make_one(self, *args, **kwargs):
         return stages.Offset(*args, **kwargs)
@@ -670,6 +777,71 @@ class TestSample:
         assert result_percent.args[0].double_value == 0.25
         assert result_percent.args[1].string_value == "percent"
         assert len(result_percent.options) == 0
+
+
+class TestSearch:
+    def test_search_defaults(self):
+        options = stages.SearchOptions(query="technology")
+        assert options.query.name == "document_matches"
+        assert options.limit is None
+        assert options.retrieval_depth is None
+        assert options.sort is None
+        assert options.add_fields is None
+        assert options.offset is None
+        assert options.language_code is None
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+        assert "limit" not in pb_opts
+        assert "retrieval_depth" not in pb_opts
+
+    def test_search_full_options(self):
+        options = stages.SearchOptions(
+            query=DocumentMatches("tech"),
+            limit=10,
+            retrieval_depth=2,
+            sort=Ordering("score", Ordering.Direction.DESCENDING),
+            add_fields=[Field("extra")],
+            offset=5,
+            language_code="en",
+        )
+        assert options.limit == 10
+        assert options.retrieval_depth == 2
+        assert len(options.sort) == 1
+        assert options.offset == 5
+        assert options.language_code == "en"
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+
+        assert pb_opts["limit"].integer_value == 10
+        assert pb_opts["retrieval_depth"].integer_value == 2
+        assert len(pb_opts["sort"].array_value.values) == 1
+        assert pb_opts["offset"].integer_value == 5
+        assert pb_opts["language_code"].string_value == "en"
+        assert "query" in pb_opts
+
+    def test_search_string_query_wrapping(self):
+        options = stages.SearchOptions(query="science")
+        assert options.query.name == "document_matches"
+        assert options.query.params[0].value == "science"
+
+    def test_search_with_string(self):
+        stage = stages.Search("technology")
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query.name == "document_matches"
+        assert stage.options.query.params[0].value == "technology"
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+
+    def test_search_with_boolean_expression(self):
+        expr = DocumentMatches("tech")
+        stage = stages.Search(expr)
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query is expr
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
 
 
 class TestSelect:
@@ -853,4 +1025,40 @@ class TestWhere:
         assert len(got_fn.args) == 2
         assert got_fn.args[0].field_reference_value == "city"
         assert got_fn.args[1].string_value == "SF"
+        assert len(result.options) == 0
+
+
+class TestDelete:
+    def _make_one(self):
+        return stages.Delete()
+
+    def test_to_pb(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "delete"
+        assert len(result.args) == 0
+        assert len(result.options) == 0
+
+
+class TestUpdate:
+    def _make_one(self, *args):
+        return stages.Update(*args)
+
+    def test_to_pb_empty(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert result.args[0].map_value.fields == {}
+        assert len(result.options) == 0
+
+    def test_to_pb_with_fields(self):
+        instance = self._make_one(
+            Field.of("score").add(10).as_("score"), Constant.of("active").as_("status")
+        )
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert "score" in result.args[0].map_value.fields
+        assert "status" in result.args[0].map_value.fields
         assert len(result.options) == 0

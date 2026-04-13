@@ -37,6 +37,7 @@ from google.apps.chat_v1.types import (
     membership,
     message,
     reaction,
+    section,
     space,
     space_event,
     space_notification_setting,
@@ -47,6 +48,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
@@ -80,7 +82,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -115,7 +117,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -256,6 +258,10 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -450,9 +456,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with the authorization scope:
 
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``.
@@ -633,9 +637,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             that invoke the Chat app.
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
             with `administrator
-            approval <https://support.google.com/a?p=chat-app-auth>`__
-            (available in `Developer
-            Preview <https://developers.google.com/workspace/preview>`__).
+            approval <https://support.google.com/a?p=chat-app-auth>`__.
             When using this authentication scope, this method returns
             details about a public message in a space.
 
@@ -2004,14 +2006,14 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with one of the following authorization scopes:
 
           - ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces.readonly``
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
           - ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships.readonly``
 
         - `User
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
@@ -2078,14 +2080,14 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with one of the following authorization scopes:
 
           - ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces.readonly``
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
           - ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships.readonly``
 
         - `User
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
@@ -2204,6 +2206,275 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 )
             )
         return self._stubs["update_space_notification_setting"]
+
+    @property
+    def create_section(
+        self,
+    ) -> Callable[[gc_section.CreateSectionRequest], Awaitable[gc_section.Section]]:
+        r"""Return a callable for the create section method over gRPC.
+
+        Creates a section in Google Chat. Sections help users group
+        conversations and customize the list of spaces displayed in Chat
+        navigation panel. Only sections of type ``CUSTOM_SECTION`` can
+        be created. For details, see `Create and organize sections in
+        Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        Returns:
+            Callable[[~.CreateSectionRequest],
+                    Awaitable[~.Section]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_section" not in self._stubs:
+            self._stubs["create_section"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/CreateSection",
+                request_serializer=gc_section.CreateSectionRequest.serialize,
+                response_deserializer=gc_section.Section.deserialize,
+            )
+        return self._stubs["create_section"]
+
+    @property
+    def delete_section(
+        self,
+    ) -> Callable[[section.DeleteSectionRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete section method over gRPC.
+
+        Deletes a section of type ``CUSTOM_SECTION``.
+
+        If the section contains items, such as spaces, the items are
+        moved to Google Chat's default sections and are not deleted.
+
+        For details, see `Create and organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        Returns:
+            Callable[[~.DeleteSectionRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_section" not in self._stubs:
+            self._stubs["delete_section"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/DeleteSection",
+                request_serializer=section.DeleteSectionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_section"]
+
+    @property
+    def update_section(
+        self,
+    ) -> Callable[[gc_section.UpdateSectionRequest], Awaitable[gc_section.Section]]:
+        r"""Return a callable for the update section method over gRPC.
+
+        Updates a section. Only sections of type ``CUSTOM_SECTION`` can
+        be updated. For details, see `Create and organize sections in
+        Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        Returns:
+            Callable[[~.UpdateSectionRequest],
+                    Awaitable[~.Section]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_section" not in self._stubs:
+            self._stubs["update_section"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateSection",
+                request_serializer=gc_section.UpdateSectionRequest.serialize,
+                response_deserializer=gc_section.Section.deserialize,
+            )
+        return self._stubs["update_section"]
+
+    @property
+    def list_sections(
+        self,
+    ) -> Callable[
+        [section.ListSectionsRequest], Awaitable[section.ListSectionsResponse]
+    ]:
+        r"""Return a callable for the list sections method over gRPC.
+
+        Lists sections available to the Chat user. Sections help users
+        group their conversations and customize the list of spaces
+        displayed in Chat navigation panel. For details, see `Create and
+        organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+        - ``https://www.googleapis.com/auth/chat.users.sections.readonly``
+
+        Returns:
+            Callable[[~.ListSectionsRequest],
+                    Awaitable[~.ListSectionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sections" not in self._stubs:
+            self._stubs["list_sections"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/ListSections",
+                request_serializer=section.ListSectionsRequest.serialize,
+                response_deserializer=section.ListSectionsResponse.deserialize,
+            )
+        return self._stubs["list_sections"]
+
+    @property
+    def position_section(
+        self,
+    ) -> Callable[
+        [section.PositionSectionRequest], Awaitable[section.PositionSectionResponse]
+    ]:
+        r"""Return a callable for the position section method over gRPC.
+
+        Changes the sort order of a section. For details, see `Create
+        and organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        Returns:
+            Callable[[~.PositionSectionRequest],
+                    Awaitable[~.PositionSectionResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "position_section" not in self._stubs:
+            self._stubs["position_section"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/PositionSection",
+                request_serializer=section.PositionSectionRequest.serialize,
+                response_deserializer=section.PositionSectionResponse.deserialize,
+            )
+        return self._stubs["position_section"]
+
+    @property
+    def list_section_items(
+        self,
+    ) -> Callable[
+        [section.ListSectionItemsRequest], Awaitable[section.ListSectionItemsResponse]
+    ]:
+        r"""Return a callable for the list section items method over gRPC.
+
+        Lists items in a section.
+
+        Only spaces can be section items. For details, see `Create and
+        organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+        - ``https://www.googleapis.com/auth/chat.users.sections.readonly``
+
+        Returns:
+            Callable[[~.ListSectionItemsRequest],
+                    Awaitable[~.ListSectionItemsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_section_items" not in self._stubs:
+            self._stubs["list_section_items"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/ListSectionItems",
+                request_serializer=section.ListSectionItemsRequest.serialize,
+                response_deserializer=section.ListSectionItemsResponse.deserialize,
+            )
+        return self._stubs["list_section_items"]
+
+    @property
+    def move_section_item(
+        self,
+    ) -> Callable[
+        [section.MoveSectionItemRequest], Awaitable[section.MoveSectionItemResponse]
+    ]:
+        r"""Return a callable for the move section item method over gRPC.
+
+        Moves an item from one section to another. For example, if a
+        section contains spaces, this method can be used to move a space
+        to a different section. For details, see `Create and organize
+        sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        Returns:
+            Callable[[~.MoveSectionItemRequest],
+                    Awaitable[~.MoveSectionItemResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "move_section_item" not in self._stubs:
+            self._stubs["move_section_item"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/MoveSectionItem",
+                request_serializer=section.MoveSectionItemRequest.serialize,
+                response_deserializer=section.MoveSectionItemResponse.deserialize,
+            )
+        return self._stubs["move_section_item"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -2686,6 +2957,104 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.update_space_notification_setting: self._wrap_method(
                 self.update_space_notification_setting,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.create_section: self._wrap_method(
+                self.create_section,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_section: self._wrap_method(
+                self.delete_section,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_section: self._wrap_method(
+                self.update_section,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_sections: self._wrap_method(
+                self.list_sections,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.position_section: self._wrap_method(
+                self.position_section,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_section_items: self._wrap_method(
+                self.list_section_items,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.move_section_item: self._wrap_method(
+                self.move_section_item,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

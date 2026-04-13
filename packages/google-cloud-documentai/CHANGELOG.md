@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.13.0...google-cloud-documentai-v3.14.0) (2026-04-02)
+
+
+### Features
+
+* Update comments for proto fields ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Added a fields for image and table annotation output ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.12.0...google-cloud-documentai-v3.13.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.11.0...google-cloud-documentai-v3.12.0) (2026-03-23)
+
+
+### Features
+
+* Add a field for upgrading previous processor version when fine tuning ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.10.0...google-cloud-documentai-v3.11.0) (2026-03-05)
 
 
