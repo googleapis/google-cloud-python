@@ -3339,7 +3339,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
-    version: 3.64.0
+    version: 3.65.0
     last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
     apis:
       - path: google/spanner/admin/instance/v1
