@@ -242,7 +242,7 @@ def docs(session):
         "sphinx==4.5.0",
         "alabaster",
         "recommonmark",
-        "django==3.2",
+        "django==5.2",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -279,7 +279,7 @@ def docfx(session):
         "gcp-sphinx-docfx-yaml",
         "alabaster",
         "recommonmark",
-        "django==3.2",
+        "django==5.2",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
