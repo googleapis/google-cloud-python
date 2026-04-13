@@ -14,8 +14,6 @@ libraries:
   - id: bigframes
     release_blocked: true
   - generate_blocked: true
-    id: google-cloud-firestore
-    release_blocked: true
   - generate_blocked: true
     id: google-cloud-dialogflow
   - id: google-crc32c
