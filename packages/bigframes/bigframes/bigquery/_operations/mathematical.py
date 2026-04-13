@@ -89,7 +89,7 @@ def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:
 
 
 def hparam_candidates(
-    candidates: list[float | int | str],
+    candidates: list[float | str],
 ) -> bigframes.core.col.Expression:
     """
     Specifies the set of discrete values for the hyperparameter.
