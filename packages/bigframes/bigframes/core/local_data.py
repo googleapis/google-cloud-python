@@ -33,8 +33,7 @@ import pyarrow.parquet  # type: ignore
 
 import bigframes.core.schema as schemata
 import bigframes.dtypes
-from bigframes.core import identifiers
-from bigframes.core import pyarrow_utils
+from bigframes.core import identifiers, pyarrow_utils
 
 
 @dataclasses.dataclass(frozen=True)

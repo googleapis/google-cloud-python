@@ -182,7 +182,9 @@ def st_buffer(
 
 @ibis_udf.scalar.builtin
 def st_distance(
-    a: ibis_dtypes.geography, b: ibis_dtypes.geography, use_spheroid: bool  # type: ignore
+    a: ibis_dtypes.geography,
+    b: ibis_dtypes.geography,
+    use_spheroid: bool,  # type: ignore
 ) -> ibis_dtypes.float:  # type: ignore
     """Convert string to geography."""
 

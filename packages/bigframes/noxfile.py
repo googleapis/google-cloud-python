@@ -364,7 +364,6 @@ def run_system(
     )
 
 
-
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
@@ -982,7 +981,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # added to the list below so that it is installed from source, rather than PyPI
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
-    core_dependencies_from_source = [        
+    core_dependencies_from_source = [
         "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
         "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
         "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",

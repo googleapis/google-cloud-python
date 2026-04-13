@@ -158,7 +158,7 @@ def tpch_session():
         return original_read_gbq_table(*args, **kwargs)
 
     session._executor = compiler_session.SQLCompilerExecutor()
-    
+
     with mock.patch.object(
         session._loader, "read_gbq_table", new=read_gbq_table_no_snapshot
     ):

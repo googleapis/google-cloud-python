@@ -54,7 +54,9 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
         # Need to do this before replacing unsupported ops, as that will rewrite slice ops
         result_node = rewrite.pull_up_limits(result_node)
     result_node = typing.cast(nodes.ResultNode, _replace_unsupported_ops(result_node))
-    result_node = typing.cast(nodes.ResultNode, result_node.bottom_up(rewrite.simplify_join))
+    result_node = typing.cast(
+        nodes.ResultNode, result_node.bottom_up(rewrite.simplify_join)
+    )
     # prune before pulling up order to avoid unnnecessary row_number() ops
     result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
     result_node = rewrite.defer_order(
