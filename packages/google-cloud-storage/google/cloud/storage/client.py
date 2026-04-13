@@ -21,10 +21,12 @@ import datetime
 import functools
 import json
 import os
+from typing import Optional, Sequence, Tuple, Union
 import warnings
 
 import google.api_core.client_options
 from google.api_core import page_iterator
+from google.api_core.retry import Retry
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
@@ -58,7 +60,7 @@ from google.cloud.storage.blob import Blob
 from google.cloud.storage.bucket import Bucket, _blobs_page_start, _item_to_blob
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.hmac_key import HMACKeyMetadata
-from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY, ConditionalRetryPolicy
 
 _marker = object()
 
@@ -881,15 +883,15 @@ class Client(ClientWithProject):
 
     def get_bucket(
         self,
-        bucket_or_name,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
+        bucket_or_name: Union[Bucket, str],
+        timeout: Optional[Union[float, Tuple[float, float]]] = _DEFAULT_TIMEOUT,
+        if_metageneration_match: Optional[int] = None,
+        if_metageneration_not_match: Optional[int] = None,
+        retry: Optional[Union[Retry, ConditionalRetryPolicy]] = DEFAULT_RETRY,
         *,
-        generation=None,
-        soft_deleted=None,
-    ):
+        generation: Optional[int] = None,
+        soft_deleted: Optional[bool] = None,
+    ) -> Bucket:
         """Retrieve a bucket via a GET request.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/get) and a [code sample](https://cloud.google.com/storage/docs/samples/storage-get-bucket-metadata#storage_get_bucket_metadata-python).
@@ -1012,18 +1014,18 @@ class Client(ClientWithProject):
 
     def create_bucket(
         self,
-        bucket_or_name,
-        requester_pays=None,
-        project=None,
-        user_project=None,
-        location=None,
-        data_locations=None,
-        predefined_acl=None,
-        predefined_default_object_acl=None,
-        enable_object_retention=False,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        bucket_or_name: Union[Bucket, str],
+        requester_pays: Optional[bool] = None,
+        project: Optional[str] = None,
+        user_project: Optional[str] = None,
+        location: Optional[str] = None,
+        data_locations: Optional[Sequence[str]] = None,
+        predefined_acl: Optional[str] = None,
+        predefined_default_object_acl: Optional[str] = None,
+        enable_object_retention: Optional[bool] = False,
+        timeout: Optional[Union[float, Tuple[float, float]]] = _DEFAULT_TIMEOUT,
+        retry: Optional[Union[Retry, ConditionalRetryPolicy]] = DEFAULT_RETRY,
+    ) -> Bucket:
         """Create a new bucket via a POST request.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/insert) and a [code sample](https://cloud.google.com/storage/docs/samples/storage-create-bucket#storage_create_bucket-python).
