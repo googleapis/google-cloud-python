@@ -45,8 +45,9 @@ from .types import (
     Timestamp,
     TimestampFromTicks,
 )
+from .version import __version__ as _version
 
-__version__: Final[str] = "0.0.1"
+__version__: Final[str] = _version
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
