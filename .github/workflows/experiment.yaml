@@ -141,6 +141,9 @@ jobs:
   # ==========================================
   # 5. SYSTEM TESTS
   # ==========================================
+  # ==========================================
+  # 5. SYSTEM TESTS
+  # ==========================================
   system-tests:
     needs: discover
     if: ${{ needs.discover.outputs.packages != '[]' }}
@@ -152,6 +155,13 @@ jobs:
         python: ["3.11"] 
     steps:
       - uses: actions/checkout@v4
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python }}
@@ -161,10 +171,14 @@ jobs:
       - name: Execute System Tests
         env:
           RUN_SYSTEM_TESTS: "true"
+          # ADDED: Inject the required environment variables for the tests
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Update to match your legacy YAML's secret name
         run: |
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
-          uvx --with 'nox[uv]' nox -s system
+          
+          # FIXED: Append the exact matrix version to stop Nox from running all versions sequentially
+          uvx --with 'nox[uv]' nox -s system-${{ matrix.python }}
 
   # ==========================================
   # 6. THE GATEKEEPER (Status Check Rollup)
