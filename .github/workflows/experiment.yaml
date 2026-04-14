@@ -24,9 +24,9 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: packages/** # Only watch the packages directory
-          dir_names: true             # Return folder names, not files
-          dir_names_max_depth: 2      # Strip it down to just "google-cloud-storage"
-          json: true                  # Output a perfect JSON array for the matrix
+          dir_names: true               # Return folder names, not files
+          dir_names_max_depth: 2        # Output format: "packages/google-cloud-storage"
+          json: true                    # Output a perfect JSON array for the matrix
           escape_json: false
 
   # 3. EXECUTION: Native Fan-out Matrix
@@ -50,11 +50,13 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
-          cache-dependency-glob: "packages/${{ matrix.package }}/setup.py"
+          # Rely on the full path provided by tj-actions
+          cache-dependency-glob: "${{ matrix.package }}/setup.py"
 
       - name: Execute Tests (High-Density)
         run: |
-          cd packages/${{ matrix.package }}
+          # Step into the exact directory output by the matrix
+          cd ${{ matrix.package }}
           
           # Force Nox to natively use uv instead of the legacy virtualenv module
           export NOX_DEFAULT_VENV_BACKEND=uv
