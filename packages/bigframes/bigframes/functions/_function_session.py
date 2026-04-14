@@ -81,8 +81,7 @@ class FunctionSession:
         if not bigquery_client:
             raise bf_formatting.create_exception_with_feedback_link(
                 ValueError,
-                "A bigquery client must be provided, either directly or via "
-                "session.",
+                "A bigquery client must be provided, either directly or via session.",
             )
         return bigquery_client
 

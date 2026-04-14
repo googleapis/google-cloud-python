@@ -160,8 +160,7 @@ def read_gbq_function(
 @runtime_checkable
 class Udf(Protocol):
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf:
-        ...
+    def udf_def(self) -> udf_def.BigqueryUdf: ...
 
 
 class BigqueryCallableRoutine:
