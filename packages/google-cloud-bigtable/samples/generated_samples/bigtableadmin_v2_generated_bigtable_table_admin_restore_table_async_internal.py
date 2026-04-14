@@ -55,4 +55,5 @@ async def sample_restore_table():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_RestoreTable_async_internal]

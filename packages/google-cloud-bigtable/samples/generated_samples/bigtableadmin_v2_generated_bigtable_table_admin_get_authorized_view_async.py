@@ -49,4 +49,5 @@ async def sample_get_authorized_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GetAuthorizedView_async]

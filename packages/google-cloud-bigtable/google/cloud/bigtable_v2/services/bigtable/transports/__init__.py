@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import BigtableTransport
 from .grpc import BigtableGrpcTransport
 from .grpc_asyncio import BigtableGrpcAsyncIOTransport
-from .rest import BigtableRestTransport
-from .rest import BigtableRestInterceptor
-
+from .rest import BigtableRestInterceptor, BigtableRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BigtableTransport]]

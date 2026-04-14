@@ -2,33 +2,33 @@ WITH `bfcte_0` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_0`,
     `N_NAME` AS `bfcol_1`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_6` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_6`
 ), `bfcte_1` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_4`,
     `N_REGIONKEY` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_6` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_6`
 ), `bfcte_2` AS (
   SELECT
     `R_REGIONKEY` AS `bfcol_2`,
     `R_NAME` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`REGION` AS `bft_5` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`REGION` AS `bft_5`
 ), `bfcte_3` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_6`,
     `C_NATIONKEY` AS `bfcol_7`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_4`
 ), `bfcte_4` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_8`,
     `O_CUSTKEY` AS `bfcol_9`,
     `O_ORDERDATE` AS `bfcol_10`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_3`
 ), `bfcte_5` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_11`,
     `S_NATIONKEY` AS `bfcol_12`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2`
 ), `bfcte_6` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_13`,
@@ -36,12 +36,12 @@ WITH `bfcte_0` AS (
     `L_SUPPKEY` AS `bfcol_15`,
     `L_EXTENDEDPRICE` AS `bfcol_16`,
     `L_DISCOUNT` AS `bfcol_17`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
 ), `bfcte_7` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_18`,
     `P_TYPE` AS `bfcol_19`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_8` AS (
   SELECT
     `bfcol_19` AS `bfcol_20`,
@@ -51,8 +51,7 @@ WITH `bfcte_0` AS (
     `bfcol_17` AS `bfcol_24`
   FROM `bfcte_7`
   INNER JOIN `bfcte_6`
-    ON COALESCE(`bfcol_18`, 0) = COALESCE(`bfcol_14`, 0)
-    AND COALESCE(`bfcol_18`, 1) = COALESCE(`bfcol_14`, 1)
+    ON `bfcol_18` = `bfcol_14`
 ), `bfcte_9` AS (
   SELECT
     `bfcol_20` AS `bfcol_25`,
@@ -62,8 +61,7 @@ WITH `bfcte_0` AS (
     `bfcol_12` AS `bfcol_29`
   FROM `bfcte_8`
   INNER JOIN `bfcte_5`
-    ON COALESCE(`bfcol_22`, 0) = COALESCE(`bfcol_11`, 0)
-    AND COALESCE(`bfcol_22`, 1) = COALESCE(`bfcol_11`, 1)
+    ON `bfcol_22` = `bfcol_11`
 ), `bfcte_10` AS (
   SELECT
     `bfcol_25` AS `bfcol_30`,
@@ -74,8 +72,7 @@ WITH `bfcte_0` AS (
     `bfcol_10` AS `bfcol_35`
   FROM `bfcte_9`
   INNER JOIN `bfcte_4`
-    ON COALESCE(`bfcol_26`, 0) = COALESCE(`bfcol_8`, 0)
-    AND COALESCE(`bfcol_26`, 1) = COALESCE(`bfcol_8`, 1)
+    ON `bfcol_26` = `bfcol_8`
 ), `bfcte_11` AS (
   SELECT
     `bfcol_30` AS `bfcol_36`,
@@ -86,8 +83,7 @@ WITH `bfcte_0` AS (
     `bfcol_7` AS `bfcol_41`
   FROM `bfcte_10`
   INNER JOIN `bfcte_3`
-    ON COALESCE(`bfcol_34`, 0) = COALESCE(`bfcol_6`, 0)
-    AND COALESCE(`bfcol_34`, 1) = COALESCE(`bfcol_6`, 1)
+    ON `bfcol_34` = `bfcol_6`
 ), `bfcte_12` AS (
   SELECT
     `bfcol_36` AS `bfcol_42`,
@@ -98,8 +94,7 @@ WITH `bfcte_0` AS (
     `bfcol_5` AS `bfcol_47`
   FROM `bfcte_11`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_41`, 0) = COALESCE(`bfcol_4`, 0)
-    AND COALESCE(`bfcol_41`, 1) = COALESCE(`bfcol_4`, 1)
+    ON `bfcol_41` = `bfcol_4`
 ), `bfcte_13` AS (
   SELECT
     `bfcol_42` AS `bfcol_66`,
@@ -109,8 +104,7 @@ WITH `bfcte_0` AS (
     `bfcol_46` AS `bfcol_70`
   FROM `bfcte_12`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_47`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_47`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_47` = `bfcol_2`
   WHERE
     `bfcol_3` = 'AMERICA'
 ), `bfcte_14` AS (
@@ -163,8 +157,7 @@ WITH `bfcte_0` AS (
     ) AS `bfcol_129`
   FROM `bfcte_13`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_69`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_69`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_69` = `bfcol_0`
   WHERE
     (
       `bfcol_70` >= CAST('1995-01-01' AS DATE)

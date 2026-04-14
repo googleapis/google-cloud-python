@@ -13,17 +13,17 @@
 # limitations under the License.
 
 
-import mock
 import time
 
+import mock
 import pytest
 
-from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.batcher import (
-    _FlowControl,
     MutationsBatcher,
     MutationsBatchError,
+    _FlowControl,
 )
+from google.cloud.bigtable.row import DirectRow
 
 TABLE_ID = "table-id"
 TABLE_NAME = "/tables/" + TABLE_ID

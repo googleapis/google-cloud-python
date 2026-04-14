@@ -56,4 +56,5 @@ def sample_partial_update_instance():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_PartialUpdateInstance_sync]

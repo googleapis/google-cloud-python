@@ -17,6 +17,7 @@ import dataclasses
 from typing import TYPE_CHECKING, Any, Hashable, Literal
 
 import bigframes_vendored.pandas.core.col as pd_col
+import numpy
 
 import bigframes.core.expression as bf_expression
 import bigframes.operations as bf_ops
@@ -56,14 +57,10 @@ class Expression:
         alignment: Literal["outer", "left"] = "outer",
         reverse: bool = False,
     ):
-        if isinstance(other, Expression):
-            other_value = other._value
-        else:
-            other_value = bf_expression.const(other)
         if reverse:
-            return Expression(op.as_expr(other_value, self._value))
+            return Expression(op.as_expr(_as_bf_expr(other), self._value))
         else:
-            return Expression(op.as_expr(self._value, other_value))
+            return Expression(op.as_expr(self._value, _as_bf_expr(other)))
 
     def __add__(self, other: Any) -> Expression:
         return self._apply_binary_op(other, bf_ops.add_op)
@@ -164,11 +161,40 @@ class Expression:
 
         return datetimes.DatetimeSimpleMethods(self)
 
+    def __array_ufunc__(
+        self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
+    ) -> Expression:
+        """Used to support numpy ufuncs.
+        See: https://numpy.org/doc/stable/reference/ufuncs.html
+        """
+        # Only __call__ supported with zero arguments
+        if method != "__call__" or len(inputs) > 2 or len(kwargs) > 0:
+            return NotImplemented
+
+        if len(inputs) == 1 and ufunc in bf_ops.NUMPY_TO_OP:
+            op = bf_ops.NUMPY_TO_OP[ufunc]
+            return Expression(op.as_expr(self._value))
+        if len(inputs) == 2 and ufunc in bf_ops.NUMPY_TO_BINOP:
+            binop = bf_ops.NUMPY_TO_BINOP[ufunc]
+            if inputs[0] is self:
+                return Expression(binop.as_expr(self._value, _as_bf_expr(inputs[1])))
+            else:
+                return Expression(binop.as_expr(_as_bf_expr(inputs[0]), self._value))
+
+        return NotImplemented
+
+    # keep this last as str declaration can shadow builtins.str
     @property
     def str(self) -> strings.StringMethods:
         import bigframes.operations.strings as strings
 
         return strings.StringMethods(self)
+
+
+def _as_bf_expr(arg: Any) -> bf_expression.Expression:
+    if isinstance(arg, Expression):
+        return arg._value
+    return bf_expression.const(arg)
 
 
 def col(col_name: Hashable) -> Expression:

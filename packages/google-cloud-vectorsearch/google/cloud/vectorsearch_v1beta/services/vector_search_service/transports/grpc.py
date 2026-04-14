@@ -573,6 +573,32 @@ class VectorSearchServiceGrpcTransport(VectorSearchServiceTransport):
         return self._stubs["create_index"]
 
     @property
+    def update_index(
+        self,
+    ) -> Callable[[vectorsearch_service.UpdateIndexRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update index method over gRPC.
+
+        Updates the parameters of a single Index.
+
+        Returns:
+            Callable[[~.UpdateIndexRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_index" not in self._stubs:
+            self._stubs["update_index"] = self._logged_channel.unary_unary(
+                "/google.cloud.vectorsearch.v1beta.VectorSearchService/UpdateIndex",
+                request_serializer=vectorsearch_service.UpdateIndexRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_index"]
+
+    @property
     def delete_index(
         self,
     ) -> Callable[[vectorsearch_service.DeleteIndexRequest], operations_pb2.Operation]:

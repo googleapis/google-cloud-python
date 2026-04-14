@@ -295,53 +295,6 @@ tests:
         - Pipeline:
           - Collection: books
     assert_count: 20 # Results will be duplicated
-  - description: testDocumentId
-    pipeline:
-      - Collection: books
-      - Where:
-          - FunctionExpression.equal:
-              - Field: title
-              - Constant: "The Hitchhiker's Guide to the Galaxy"
-      - Select:
-        - AliasedExpression:
-            - FunctionExpression.document_id:
-                - Field: __name__
-            - "doc_id"
-    assert_results:
-      - doc_id: "book1"
-    assert_proto:
-      pipeline:
-        stages:
-        - args:
-          - referenceValue: /books
-          name: collection
-        - args:
-          - functionValue:
-              args:
-              - fieldReferenceValue: title
-              - stringValue: "The Hitchhiker's Guide to the Galaxy"
-              name: equal
-          name: where
-        - args:
-          - mapValue:
-              fields:
-                doc_id:
-                  functionValue:
-                    name: document_id
-                    args:
-                    - fieldReferenceValue: __name__
-          name: select
-  - description: testCollectionId
-    pipeline:
-      - Collection: books
-      - Limit: 1
-      - Select:
-        - AliasedExpression:
-            - FunctionExpression.collection_id:
-                - Field: __name__
-            - "collectionName"
-    assert_results:
-      - collectionName: "books"
   - description: testCollectionGroup
     pipeline:
       - CollectionGroup: books
@@ -765,3 +718,181 @@ tests:
                 res:
                   fieldReferenceValue: res
           name: select
+  - description: testCoalesce
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - Constant: "B"
+            - "res"
+    assert_results:
+      - res: "B"
+  - description: testCoalesceMultipleFailures
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field1
+                - Field: non_existent_field2
+                - Field: non_existent_field3
+                - Constant: "Found"
+            - "res"
+    assert_results:
+      - res: "Found"
+  - description: testCoalesceShortCircuit
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - "Hello"
+                - "Never Reaches"
+            - "res"
+    assert_results:
+      - res: "Hello"
+  - description: testCoalesceNumber
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - 42
+            - "res"
+    assert_results:
+      - res: 42
+  - description: testCoalesceNoResult
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field1
+                - Field: non_existent_field2
+            - "res"
+    assert_results:
+      - {}
+  - description: testCoalesceFieldResult
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "1984"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: non_existent_field
+                - Field: title
+            - "res"
+    assert_results:
+      - res: "1984"
+  - description: testCoalesceNull
+    pipeline:
+      - Documents:
+          - /errors/doc_with_null
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.coalesce:
+                - Field: value
+                - Constant: "Success"
+            - "res"
+    assert_results:
+      - res: "Success"
+  - description: testSwitchOn
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 1
+              - Constant: "B"
+              - Constant: "C"
+      - Select:
+        - res
+    assert_results:
+      - res: "B"
+  - description: testSwitchOn_Default
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 3
+              - Constant: "B"
+              - Constant: "C"
+      - Select:
+        - res
+    assert_results:
+      - res: "C"
+  - description: testSwitchOn_Error
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.switch_on:
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 2
+              - Constant: "A"
+              - FunctionExpression.equal:
+                  - Constant: 1
+                  - Constant: 3
+              - Constant: "B"
+      - Select:
+        - res
+    assert_error: ".*all switch cases evaluate to false, and no default provided"
+  - description: testStorageSize
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.storage_size:
+                - Field: __name__
+            - res
+    assert_results:
+      - res: 29
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: __name__
+                    name: storage_size
+          name: select
+  - description: union_subpipeline_error
+    pipeline:
+      - Collection: books
+      - Union:
+        - Pipeline:
+          - Subcollection: reviews
+    assert_error: ".*start of a nested pipeline.*"

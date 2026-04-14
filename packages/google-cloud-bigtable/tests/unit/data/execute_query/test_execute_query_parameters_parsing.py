@@ -14,9 +14,10 @@
 
 import datetime
 
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-from google.type import date_pb2
 import pytest
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.protobuf import timestamp_pb2
+from google.type import date_pb2
 
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
@@ -24,7 +25,7 @@ from google.cloud.bigtable.data.execute_query._parameters_formatting import (
 )
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import Struct
-from google.protobuf import timestamp_pb2
+
 from .resources import singer_pb2
 
 timestamp = int(

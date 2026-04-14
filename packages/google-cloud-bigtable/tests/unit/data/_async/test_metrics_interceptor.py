@@ -13,12 +13,13 @@
 # limitations under the License.
 
 import pytest
-from grpc import RpcError
-from grpc import ClientCallDetails
+from grpc import ClientCallDetails, RpcError
 
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import OperationState
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveOperationMetric,
+    OperationState,
+)
 
 # try/except added for compatibility with python < 3.8
 try:

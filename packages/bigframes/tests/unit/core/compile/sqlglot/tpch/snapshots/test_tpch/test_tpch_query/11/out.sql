@@ -7,23 +7,23 @@ WITH `bfcte_0` AS (
     `PS_SUPPKEY` AS `bfcol_0`,
     `PS_AVAILQTY` AS `bfcol_1`,
     `PS_SUPPLYCOST` AS `bfcol_2`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_2`
 ), `bfcte_2` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_10`,
     `PS_SUPPKEY` AS `bfcol_11`,
     `PS_AVAILQTY` AS `bfcol_12`,
     `PS_SUPPLYCOST` AS `bfcol_13`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_2`
 ), `bfcte_3` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_3`,
     `S_NATIONKEY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_1`
 ), `bfcte_4` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_18`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_0`
   WHERE
     `N_NAME` = 'GERMANY'
 ), `bfcte_5` AS (
@@ -31,8 +31,7 @@ WITH `bfcte_0` AS (
     `bfcol_3` AS `bfcol_19`
   FROM `bfcte_4`
   INNER JOIN `bfcte_3`
-    ON COALESCE(`bfcol_18`, 0) = COALESCE(`bfcol_4`, 0)
-    AND COALESCE(`bfcol_18`, 1) = COALESCE(`bfcol_4`, 1)
+    ON `bfcol_18` = `bfcol_4`
 ), `bfcte_6` AS (
   SELECT
     `bfcol_19`,
@@ -46,8 +45,7 @@ WITH `bfcte_0` AS (
     `bfcol_2` * `bfcol_1` AS `bfcol_40`
   FROM `bfcte_5`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_19`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_19`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_19` = `bfcol_0`
 ), `bfcte_7` AS (
   SELECT
     `bfcol_19`,
@@ -59,8 +57,7 @@ WITH `bfcte_0` AS (
     `bfcol_13` * `bfcol_12` AS `bfcol_28`
   FROM `bfcte_5`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_19`, 0) = COALESCE(`bfcol_11`, 0)
-    AND COALESCE(`bfcol_19`, 1) = COALESCE(`bfcol_11`, 1)
+    ON `bfcol_19` = `bfcol_11`
 ), `bfcte_8` AS (
   SELECT
     COALESCE(SUM(`bfcol_40`), 0) AS `bfcol_44`
@@ -70,8 +67,6 @@ WITH `bfcte_0` AS (
     `bfcol_27`,
     COALESCE(SUM(`bfcol_28`), 0) AS `bfcol_35`
   FROM `bfcte_7`
-  WHERE
-    NOT `bfcol_27` IS NULL
   GROUP BY
     `bfcol_27`
 ), `bfcte_10` AS (
@@ -101,8 +96,6 @@ WITH `bfcte_0` AS (
     `bfcol_8`,
     ANY_VALUE(`bfcol_51`) AS `bfcol_55`
   FROM `bfcte_12`
-  WHERE
-    NOT `bfcol_7` IS NULL AND NOT `bfcol_8` IS NULL
   GROUP BY
     `bfcol_7`,
     `bfcol_8`

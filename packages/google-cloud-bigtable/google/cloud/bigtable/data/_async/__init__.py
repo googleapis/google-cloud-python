@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.bigtable.data._async.client import BigtableDataClientAsync
-from google.cloud.bigtable.data._async.client import TableAsync
-
+from google.cloud.bigtable.data._async.client import BigtableDataClientAsync, TableAsync
 from google.cloud.bigtable.data._async.mutations_batcher import MutationsBatcherAsync
-
 
 __all__ = [
     "BigtableDataClientAsync",

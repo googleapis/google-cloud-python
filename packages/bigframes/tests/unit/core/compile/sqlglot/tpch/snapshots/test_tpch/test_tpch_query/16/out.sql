@@ -6,7 +6,7 @@ WITH `bfcte_0` AS (
     NOT (
       REGEXP_CONTAINS(`S_COMMENT`, 'Customer.*Complaints')
     ) AS `bfcol_9`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_2`
   WHERE
     NOT (
       REGEXP_CONTAINS(`S_COMMENT`, 'Customer.*Complaints')
@@ -15,14 +15,14 @@ WITH `bfcte_0` AS (
   SELECT
     `PS_PARTKEY` AS `bfcol_2`,
     `PS_SUPPKEY` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`PARTSUPP` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PARTSUPP` AS `bft_1`
 ), `bfcte_2` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_4`,
     `P_BRAND` AS `bfcol_5`,
     `P_TYPE` AS `bfcol_6`,
     `P_SIZE` AS `bfcol_7`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_3` AS (
   SELECT
     `bfcol_8`
@@ -37,8 +37,7 @@ WITH `bfcte_0` AS (
     `bfcol_3` AS `bfcol_58`
   FROM `bfcte_2`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_4`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_4`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_4` = `bfcol_2`
   WHERE
     `bfcol_5` <> 'Brand#45'
     AND NOT (
@@ -52,13 +51,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_6` AS (
   SELECT
     *,
-    STRUCT(COALESCE(`bfcol_58`, 0) AS `bfpart1`, COALESCE(`bfcol_58`, 1) AS `bfpart2`) IN (
-      (
+    COALESCE(`bfcol_58` IN ((
         SELECT
-          STRUCT(COALESCE(`bfcol_21`, 0) AS `bfpart1`, COALESCE(`bfcol_21`, 1) AS `bfpart2`)
+          *
         FROM `bfcte_5`
-      )
-    ) AS `bfcol_59`
+    )), FALSE) AS `bfcol_59`
   FROM `bfcte_4`
 ), `bfcte_7` AS (
   SELECT
@@ -73,8 +70,6 @@ WITH `bfcte_0` AS (
     `bfcol_57`,
     COUNT(DISTINCT `bfcol_58`) AS `bfcol_69`
   FROM `bfcte_7`
-  WHERE
-    NOT `bfcol_55` IS NULL AND NOT `bfcol_56` IS NULL AND NOT `bfcol_57` IS NULL
   GROUP BY
     `bfcol_55`,
     `bfcol_56`,

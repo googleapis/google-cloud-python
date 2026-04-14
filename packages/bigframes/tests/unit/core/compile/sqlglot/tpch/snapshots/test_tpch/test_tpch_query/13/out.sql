@@ -2,7 +2,7 @@ WITH `bfcte_0` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_10`,
     `O_CUSTKEY` AS `bfcol_11`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
   WHERE
     NOT (
       REGEXP_CONTAINS(`O_COMMENT`, 'special.*requests')
@@ -10,17 +10,14 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0`
 ), `bfcte_2` AS (
   SELECT
     `bfcol_3`,
     COUNT(`bfcol_10`) AS `bfcol_14`
   FROM `bfcte_1`
   LEFT JOIN `bfcte_0`
-    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_11`, 0)
-    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_11`, 1)
-  WHERE
-    NOT `bfcol_3` IS NULL
+    ON `bfcol_3` = `bfcol_11`
   GROUP BY
     `bfcol_3`
 ), `bfcte_3` AS (

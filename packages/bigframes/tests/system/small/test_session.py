@@ -47,7 +47,8 @@ all_write_engines = pytest.mark.parametrize(
         "bigquery_inline",
         "bigquery_load",
         "bigquery_streaming",
-        "bigquery_write",
+        # TODO(b/502298527): Reenable bigquery_write test
+        # "bigquery_write",
     ],
 )
 
@@ -1108,7 +1109,8 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
         pytest.param("default"),
         pytest.param("bigquery_inline"),
         pytest.param("bigquery_streaming"),
-        pytest.param("bigquery_write"),
+        # TODO(b/502298527): Reenable bigquery_write test
+        # pytest.param("bigquery_write"),
     ],
 )
 def test_read_pandas_w_nested_json(session, write_engine):
@@ -1196,7 +1198,8 @@ def test_read_pandas_w_nested_json_index_fails(session, write_engine):
         pytest.param("default"),
         pytest.param("bigquery_inline"),
         pytest.param("bigquery_streaming"),
-        pytest.param("bigquery_write"),
+        # TODO(b/502298527): Reenable bigquery_write test
+        # pytest.param("bigquery_write"),
     ],
 )
 def test_read_pandas_w_nested_json_index(session, write_engine):

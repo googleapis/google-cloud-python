@@ -20,11 +20,10 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from google.cloud.bigtable_admin_v2.overlay.types import async_consistency
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-
 import pytest
 
+from google.cloud.bigtable_admin_v2.overlay.types import async_consistency
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 TRUE_CONSISTENCY_RESPONSE = bigtable_table_admin.CheckConsistencyResponse(
     consistent=True

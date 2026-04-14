@@ -14,20 +14,17 @@
 
 """Container for Google Cloud Bigtable Cells and Streaming Row Contents."""
 
-
 import copy
+import warnings
 
 import grpc  # type: ignore
-import warnings
-from google.api_core import exceptions
-from google.api_core import retry
+from google.api_core import exceptions, retry
 from google.cloud._helpers import _to_bytes  # type: ignore
 
+from google.cloud.bigtable.row import Cell, InvalidChunk, PartialRowData
 from google.cloud.bigtable.row_merger import _RowMerger, _State
 from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
-from google.cloud.bigtable.row import Cell, InvalidChunk, PartialRowData
-
 
 # Some classes need to be re-exported here to keep backwards
 # compatibility. Those classes were moved to row_merger, but we dont want to

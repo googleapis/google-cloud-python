@@ -1,0 +1,81 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+language: python
+version: v0.10.1
+repo: googleapis/google-cloud-python
+sources:
+  googleapis:
+    commit: 2233f63baf69c2a481f30180045fcf036242781d
+    sha256: fe0d4bb6d640fa6e0b48aa828c833c458f6835b6643b664062a288995b244c3c
+release:
+  ignored_changes:
+    - .repo-metadata.json
+    - docs/README.rst
+default:
+  output: packages
+  tag_format: '{name}: v{version}'
+  python:
+    common_gapic_paths:
+      - samples/generated_samples
+      - tests/unit/gapic
+      - testing
+      - '{neutral-source}/__init__.py'
+      - '{neutral-source}/gapic_version.py'
+      - '{neutral-source}/py.typed'
+      - tests/unit/__init__.py
+      - tests/__init__.py
+      - setup.py
+      - noxfile.py
+      - .coveragerc
+      - .flake8
+      - .repo-metadata.json
+      - mypy.ini
+      - README.rst
+      - LICENSE
+      - MANIFEST.in
+      - docs/_static/custom.css
+      - docs/_templates/layout.html
+      - docs/conf.py
+      - docs/index.rst
+      - docs/multiprocessing.rst
+      - docs/README.rst
+      - docs/summary_overview.md
+    library_type: GAPIC_AUTO
+libraries:
+  - name: google-area120-tables
+    version: 0.14.0
+    apis:
+      - path: google/area120/tables/v1alpha1
+    description_override: provides programmatic methods to the Area 120 Tables API.
+    keep:
+      - CHANGELOG.md
+      - docs/CHANGELOG.md
+    python:
+      name_pretty_override: Area 120 Tables
+      metadata_name_override: area120tables
+      default_version: v1alpha1
+  - name: google-cloud-config
+    version: 0.5.0
+    apis:
+      - path: google/cloud/config/v1
+    description_override: Infrastructure Manager API
+    keep:
+      - CHANGELOG.md
+      - docs/CHANGELOG.md
+    python:
+      name_pretty_override: Infrastructure Manager API
+      product_documentation_override: https://cloud.google.com/infrastructure-manager/docs/overview
+      api_shortname_override: config
+      metadata_name_override: config
+      default_version: v1

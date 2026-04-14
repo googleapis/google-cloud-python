@@ -54,4 +54,5 @@ async def sample_create_app_profile():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_CreateAppProfile_async]

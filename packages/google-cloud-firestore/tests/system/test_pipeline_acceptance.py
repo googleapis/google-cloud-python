@@ -26,9 +26,9 @@ import pytest
 import yaml
 from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
-from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB
+from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
-from google.cloud.firestore import AsyncClient, Client
+from google.cloud.firestore import AsyncClient, Client, GeoPoint
 from google.cloud.firestore_v1 import pipeline_expressions
 from google.cloud.firestore_v1 import pipeline_expressions as expr
 from google.cloud.firestore_v1 import pipeline_stages as stages
@@ -72,6 +72,28 @@ def yaml_loader(field="tests", dir_name="pipeline_e2e", attach_file_name=True):
                 combined_yaml.update(extracted)
             elif isinstance(combined_yaml, list) and extracted:
                 combined_yaml.extend(extracted)
+
+    # Validate test keys
+    allowed_keys = {
+        "description",
+        "pipeline",
+        "assert_proto",
+        "assert_error",
+        "assert_results",
+        "assert_count",
+        "assert_results_approximate",
+        "assert_end_state",
+        "file_name",
+    }
+    if field == "tests" and isinstance(combined_yaml, list):
+        for item in combined_yaml:
+            if isinstance(item, dict):
+                for key in item:
+                    if key not in allowed_keys:
+                        raise ValueError(
+                            f"Unrecognized key '{key}' in test '{item.get('description', 'Unknown')}' in file '{item.get('file_name', 'Unknown')}'"
+                        )
+
     return combined_yaml
 
 
@@ -111,6 +133,34 @@ def test_pipeline_expected_errors(test_dict, client):
     assert match, f"error '{found_error}' does not match '{error_regex}'"
 
 
+def _assert_pipeline_results(
+    got_results, expected_results, expected_approximate_results, expected_count
+):
+    if expected_results:
+        assert got_results == expected_results
+    if expected_approximate_results is not None:
+        tolerance = 1e-4
+        if (
+            isinstance(expected_approximate_results, dict)
+            and "data" in expected_approximate_results
+        ):
+            if (
+                "config" in expected_approximate_results
+                and "absolute_tolerance" in expected_approximate_results["config"]
+            ):
+                tolerance = expected_approximate_results["config"]["absolute_tolerance"]
+            expected_approximate_results = expected_approximate_results["data"]
+
+        assert len(got_results) == len(expected_approximate_results), (
+            "got unexpected result count"
+        )
+        for idx in range(len(got_results)):
+            expected = expected_approximate_results[idx]
+            assert got_results[idx] == pytest.approx(expected, abs=tolerance)
+    if expected_count is not None:
+        assert len(got_results) == expected_count
+
+
 @pytest.mark.parametrize(
     "test_dict",
     [
@@ -119,6 +169,7 @@ def test_pipeline_expected_errors(test_dict, client):
         if "assert_results" in t
         or "assert_count" in t
         or "assert_results_approximate" in t
+        or "assert_end_state" in t
     ],
     ids=id_format,
 )
@@ -131,21 +182,26 @@ def test_pipeline_results(test_dict, client):
         test_dict.get("assert_results_approximate", None)
     )
     expected_count = test_dict.get("assert_count", None)
+    expected_end_state = _parse_yaml_types(test_dict.get("assert_end_state", {}))
     pipeline = parse_pipeline(client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() for snapshot in pipeline.stream()]
-    if expected_results:
-        assert got_results == expected_results
-    if expected_approximate_results:
-        assert len(got_results) == len(expected_approximate_results), (
-            "got unexpected result count"
-        )
-        for idx in range(len(got_results)):
-            assert got_results[idx] == pytest.approx(
-                expected_approximate_results[idx], abs=1e-4
-            )
-    if expected_count is not None:
-        assert len(got_results) == expected_count
+    _assert_pipeline_results(
+        got_results, expected_results, expected_approximate_results, expected_count
+    )
+    if expected_end_state:
+        for doc_path, expected_content in expected_end_state.items():
+            doc_ref = client.document(doc_path)
+            snapshot = doc_ref.get()
+            if expected_content is None:
+                assert not snapshot.exists, (
+                    f"Expected {doc_path} to be absent, but it exists"
+                )
+            else:
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
+                assert snapshot.to_dict() == expected_content
 
 
 @pytest.mark.parametrize(
@@ -176,6 +232,7 @@ async def test_pipeline_expected_errors_async(test_dict, async_client):
         if "assert_results" in t
         or "assert_count" in t
         or "assert_results_approximate" in t
+        or "assert_end_state" in t
     ],
     ids=id_format,
 )
@@ -189,21 +246,26 @@ async def test_pipeline_results_async(test_dict, async_client):
         test_dict.get("assert_results_approximate", None)
     )
     expected_count = test_dict.get("assert_count", None)
+    expected_end_state = _parse_yaml_types(test_dict.get("assert_end_state", {}))
     pipeline = parse_pipeline(async_client, test_dict["pipeline"])
     # check if server responds as expected
     got_results = [snapshot.data() async for snapshot in pipeline.stream()]
-    if expected_results:
-        assert got_results == expected_results
-    if expected_approximate_results:
-        assert len(got_results) == len(expected_approximate_results), (
-            "got unexpected result count"
-        )
-        for idx in range(len(got_results)):
-            assert got_results[idx] == pytest.approx(
-                expected_approximate_results[idx], abs=1e-4
-            )
-    if expected_count is not None:
-        assert len(got_results) == expected_count
+    _assert_pipeline_results(
+        got_results, expected_results, expected_approximate_results, expected_count
+    )
+    if expected_end_state:
+        for doc_path, expected_content in expected_end_state.items():
+            doc_ref = async_client.document(doc_path)
+            snapshot = await doc_ref.get()
+            if expected_content is None:
+                assert not snapshot.exists, (
+                    f"Expected {doc_path} to be absent, but it exists"
+                )
+            else:
+                assert snapshot.exists, (
+                    f"Expected {doc_path} to exist, but it was absent"
+                )
+                assert snapshot.to_dict() == expected_content
 
 
 #################################################################################
@@ -223,7 +285,12 @@ def parse_pipeline(client, pipeline: list[dict[str, Any], str]):
         # find arguments if given
         if isinstance(stage, dict):
             stage_yaml_args = stage[stage_name]
-            stage_obj = _apply_yaml_args_to_callable(stage_cls, client, stage_yaml_args)
+            if stage_yaml_args is None:
+                stage_obj = stage_cls()
+            else:
+                stage_obj = _apply_yaml_args_to_callable(
+                    stage_cls, client, stage_yaml_args
+                )
         else:
             # yaml has no arguments
             stage_obj = stage_cls()
@@ -260,6 +327,18 @@ def _parse_expressions(client, yaml_element: Any):
             # find Pipeline objects for Union expressions
             other_ppl = yaml_element["Pipeline"]
             return parse_pipeline(client, other_ppl)
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_array_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_array_expression"]
+            return parse_pipeline(client, other_ppl).to_array_expression()
+        elif (
+            len(yaml_element) == 1
+            and list(yaml_element)[0] == "Pipeline.to_scalar_expression"
+        ):
+            other_ppl = yaml_element["Pipeline.to_scalar_expression"]
+            return parse_pipeline(client, other_ppl).to_scalar_expression()
         else:
             # otherwise, return dict
             return {
@@ -279,18 +358,21 @@ def _apply_yaml_args_to_callable(callable_obj, client, yaml_args):
     Helper to instantiate a class with yaml arguments. The arguments will be applied
     as positional or keyword arguments, based on type
     """
-    if isinstance(yaml_args, dict):
-        return callable_obj(**_parse_expressions(client, yaml_args))
+    parsed = _parse_expressions(client, yaml_args)
+    if isinstance(yaml_args, dict) and isinstance(parsed, dict):
+        return callable_obj(**parsed)
     elif isinstance(yaml_args, list) and not (
         callable_obj == expr.Constant
         or callable_obj == Vector
         or callable_obj == expr.Array
     ):
         # yaml has an array of arguments. Treat as args
-        return callable_obj(*_parse_expressions(client, yaml_args))
+        return callable_obj(*parsed)
+    elif yaml_args is None and callable_obj != expr.Constant:
+        return callable_obj()
     else:
         # yaml has a single argument
-        return callable_obj(_parse_expressions(client, yaml_args))
+        return callable_obj(parsed)
 
 
 def _is_expr_string(yaml_str):
@@ -340,17 +422,21 @@ def _parse_yaml_types(data):
         return {key: _parse_yaml_types(value) for key, value in data.items()}
     if isinstance(data, list):
         # detect vectors
-        if all([isinstance(d, float) for d in data]):
+        if len(data) > 0 and all([isinstance(d, float) for d in data]):
             return Vector(data)
         else:
             return [_parse_yaml_types(value) for value in data]
     # detect timestamps
-    if isinstance(data, str) and ":" in data:
+    if isinstance(data, str) and ":" in data and not data.startswith("GEOPOINT("):
         try:
             parsed_datetime = datetime.datetime.fromisoformat(data)
             return parsed_datetime
         except ValueError:
             pass
+    if isinstance(data, str) and data.startswith("GEOPOINT("):
+        match = re.match(r"GEOPOINT\(([^,]+),\s*([^)]+)\)", data)
+        if match:
+            return GeoPoint(float(match.group(1)), float(match.group(2)))
     if data == "NaN":
         return float("NaN")
     return data
@@ -364,21 +450,23 @@ def client():
     client = Client(project=FIRESTORE_PROJECT, database=FIRESTORE_ENTERPRISE_DB)
     data = yaml_loader("data", attach_file_name=False)
     to_delete = []
-    try:
-        # setup data
-        batch = client.batch()
-        for collection_name, documents in data.items():
-            collection_ref = client.collection(collection_name)
-            for document_id, document_data in documents.items():
-                document_ref = collection_ref.document(document_id)
-                to_delete.append(document_ref)
-                batch.set(document_ref, _parse_yaml_types(document_data))
-        batch.commit()
-        yield client
-    finally:
-        # clear data
-        for document_ref in to_delete:
-            document_ref.delete()
+
+    with system_test_lock(client, lock_name="pipeline_e2e_lock"):
+        try:
+            # setup data
+            batch = client.batch()
+            for collection_name, documents in data.items():
+                collection_ref = client.collection(collection_name)
+                for document_id, document_data in documents.items():
+                    document_ref = collection_ref.document(document_id)
+                    to_delete.append(document_ref)
+                    batch.set(document_ref, _parse_yaml_types(document_data))
+            batch.commit()
+            yield client
+        finally:
+            # clear data
+            for document_ref in to_delete:
+                document_ref.delete()
 
 
 @pytest.fixture(scope="module")

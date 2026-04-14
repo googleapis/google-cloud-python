@@ -17,9 +17,9 @@ import warnings
 
 import mock
 import pytest
+from google.api_core.exceptions import DeadlineExceeded
 from grpc import StatusCode
 
-from google.api_core.exceptions import DeadlineExceeded
 from ._testing import _make_credentials
 
 PROJECT_ID = "project-id"
@@ -53,8 +53,10 @@ STATUS_INTERNAL = StatusCode.INTERNAL.value[0]
 @mock.patch("google.cloud.bigtable.table._MAX_BULK_MUTATIONS", new=3)
 def test__compile_mutation_entries_w_too_many_mutations():
     from google.cloud.bigtable.row import DirectRow
-    from google.cloud.bigtable.table import TooManyMutationsError
-    from google.cloud.bigtable.table import _compile_mutation_entries
+    from google.cloud.bigtable.table import (
+        TooManyMutationsError,
+        _compile_mutation_entries,
+    )
 
     table = mock.Mock(name="table", spec=["name"])
     table.name = "table"
@@ -74,8 +76,7 @@ def test__compile_mutation_entries_w_too_many_mutations():
 def test__compile_mutation_entries_normal():
     from google.cloud.bigtable.row import DirectRow
     from google.cloud.bigtable.table import _compile_mutation_entries
-    from google.cloud.bigtable_v2.types import MutateRowsRequest
-    from google.cloud.bigtable_v2.types import data
+    from google.cloud.bigtable_v2.types import MutateRowsRequest, data
 
     table = mock.Mock(spec=["name"])
     table.name = "table"
@@ -109,9 +110,8 @@ def test__compile_mutation_entries_normal():
 
 
 def test__check_row_table_name_w_wrong_table_name():
-    from google.cloud.bigtable.table import _check_row_table_name
-    from google.cloud.bigtable.table import TableMismatchError
     from google.cloud.bigtable.row import DirectRow
+    from google.cloud.bigtable.table import TableMismatchError, _check_row_table_name
 
     table = mock.Mock(name="table", spec=["name"])
     table.name = "table"
@@ -353,11 +353,11 @@ def _make_table_api():
 
 
 def _create_table_helper(split_keys=[], column_families={}):
-    from google.cloud.bigtable_admin_v2.types import table as table_pb2
+    from google.cloud.bigtable.column_family import ColumnFamily
     from google.cloud.bigtable_admin_v2.types import (
         bigtable_table_admin as table_admin_messages_v2_pb2,
     )
-    from google.cloud.bigtable.column_family import ColumnFamily
+    from google.cloud.bigtable_admin_v2.types import table as table_pb2
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -402,9 +402,8 @@ def test_table_create_with_split_keys():
 
 
 def test_table_exists_hit():
-    from google.cloud.bigtable_admin_v2.types import ListTablesResponse
-    from google.cloud.bigtable_admin_v2.types import Table
     from google.cloud.bigtable import enums
+    from google.cloud.bigtable_admin_v2.types import ListTablesResponse, Table
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -426,6 +425,7 @@ def test_table_exists_hit():
 
 def test_table_exists_miss():
     from google.api_core.exceptions import NotFound
+
     from google.cloud.bigtable import enums
 
     credentials = _make_credentials()
@@ -447,6 +447,7 @@ def test_table_exists_miss():
 
 def test_table_exists_error():
     from google.api_core.exceptions import BadRequest
+
     from google.cloud.bigtable import enums
 
     credentials = _make_credentials()
@@ -557,6 +558,7 @@ def test_table_get_cluster_states():
 
 def test_table_get_encryption_info():
     from google.rpc.code_pb2 import Code
+
     from google.cloud.bigtable.encryption_info import EncryptionInfo
     from google.cloud.bigtable.enums import EncryptionInfo as enum_crypto
     from google.cloud.bigtable.enums import Table as enum_table
@@ -640,10 +642,11 @@ def _make_data_api():
 
 def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
     from google.cloud._testing import _Monkey
+
     from google.cloud.bigtable import table as MUT
-    from google.cloud.bigtable.row_set import RowSet
-    from google.cloud.bigtable.row_filters import RowSampleFilter
     from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_set import RowSet
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -707,8 +710,7 @@ def test_table_read_row_miss_no_chunks_in_response():
 
 
 def test_table_read_row_complete():
-    from google.cloud.bigtable.row_data import Cell
-    from google.cloud.bigtable.row_data import PartialRowData
+    from google.cloud.bigtable.row_data import Cell, PartialRowData
 
     app_profile_id = "app-profile-id"
     chunk = _ReadRowsResponseCellChunkPB(
@@ -771,6 +773,7 @@ def _table_mutate_rows_helper(
     mutation_timeout=None, app_profile_id=None, retry=None, timeout=None
 ):
     from google.rpc.status_pb2 import Status
+
     from google.cloud.bigtable.table import DEFAULT_RETRY
 
     credentials = _make_credentials()
@@ -857,9 +860,9 @@ def test_table_mutate_rows_w_mutation_timeout_and_timeout_arg():
 
 def test_table_read_rows():
     from google.cloud._testing import _Monkey
-    from google.cloud.bigtable.row_data import PartialRowsData
+
     from google.cloud.bigtable import table as MUT
-    from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+    from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS, PartialRowsData
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -1082,10 +1085,9 @@ def test_table_yield_retry_rows():
 
 
 def test_table_yield_rows_with_row_set():
-    from google.cloud.bigtable.row_set import RowSet
-    from google.cloud.bigtable.row_set import RowRange
-    from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+    from google.cloud.bigtable.row_set import RowRange, RowSet
+    from google.cloud.bigtable.table import _create_row_request
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -1261,6 +1263,7 @@ def test_table_mutations_batcher_factory():
 
 def test_table_get_iam_policy():
     from google.iam.v1 import policy_pb2
+
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
     credentials = _make_credentials()
@@ -1292,8 +1295,8 @@ def test_table_get_iam_policy():
 
 def test_table_set_iam_policy():
     from google.iam.v1 import policy_pb2
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -1378,6 +1381,7 @@ def test_table_backup_factory_defaults():
 
 def test_table_backup_factory_non_defaults():
     import datetime
+
     from google.cloud.bigtable.backup import Backup
     from google.cloud.bigtable.instance import Instance
 
@@ -1405,11 +1409,13 @@ def test_table_backup_factory_non_defaults():
 
 
 def _table_list_backups_helper(cluster_id=None, filter_=None, **kwargs):
+    from google.cloud.bigtable.backup import Backup
     from google.cloud.bigtable_admin_v2.types import (
         Backup as backup_pb,
+    )
+    from google.cloud.bigtable_admin_v2.types import (
         bigtable_table_admin,
     )
-    from google.cloud.bigtable.backup import Backup
 
     client = _make_client(
         project=PROJECT_ID, credentials=_make_credentials(), admin=True
@@ -1520,8 +1526,9 @@ def _make_responses_statuses(codes):
 
 
 def _make_responses(codes):
-    from google.cloud.bigtable_v2.types.bigtable import MutateRowsResponse
     from google.rpc.status_pb2 import Status
+
+    from google.cloud.bigtable_v2.types.bigtable import MutateRowsResponse
 
     entries = [
         MutateRowsResponse.Entry(index=i, status=Status(code=codes[i]))
@@ -1645,6 +1652,7 @@ def _do_mutate_retryable_rows_helper(
     mutate_rows_side_effect=None,
 ):
     from google.api_core.exceptions import ServiceUnavailable
+
     from google.cloud.bigtable.row import DirectRow
     from google.cloud.bigtable.table import _BigtableRetryableError
     from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
@@ -1801,6 +1809,7 @@ def test_rmrw_do_mutate_retryable_rows_w_retryable_error_internal_rst_stream_err
     # Raise internal server error with RST STREAM error messages
     # There should be no error raised and that the request is retried
     from google.api_core.exceptions import InternalServerError
+
     from google.cloud.bigtable.row_data import RETRYABLE_INTERNAL_ERROR_MESSAGES
 
     row_cells = [
@@ -2079,8 +2088,8 @@ def test__create_row_request_row_range_both_keys_inclusive():
 
 
 def test__create_row_request_with_filter():
-    from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.table import _create_row_request
 
     table_name = "table_name"
     row_filter = RowSampleFilter(0.33)
@@ -2102,8 +2111,8 @@ def test__create_row_request_with_limit():
 
 
 def test__create_row_request_with_row_set():
-    from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.table import _create_row_request
 
     table_name = "table_name"
     row_set = RowSet()

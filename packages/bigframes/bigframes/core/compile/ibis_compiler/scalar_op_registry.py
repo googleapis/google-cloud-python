@@ -2168,9 +2168,12 @@ def obj_make_ref_json(objectref_json: ibis_dtypes.JSON) -> _OBJ_REF_IBIS_DTYPE: 
 
 
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
-def obj_get_access_url(
-    obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String
-) -> ibis_dtypes.JSON:  # type: ignore
+# Stub for BigQuery UDF, empty body is intentional.
+# _OBJ_REF_IBIS_DTYPE is a variable holding a type, Mypy complains about it being used as type hint.
+def obj_get_access_url(  # type: ignore[empty-body]
+    obj_ref: _OBJ_REF_IBIS_DTYPE,  # type: ignore[valid-type]
+    mode: ibis_dtypes.String,
+) -> ibis_dtypes.JSON:
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
 
 

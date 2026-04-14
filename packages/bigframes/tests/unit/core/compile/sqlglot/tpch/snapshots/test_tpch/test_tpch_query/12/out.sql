@@ -5,12 +5,12 @@ WITH `bfcte_0` AS (
     `L_COMMITDATE` AS `bfcol_2`,
     `L_RECEIPTDATE` AS `bfcol_3`,
     `L_SHIPMODE` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
 ), `bfcte_1` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_5`,
     `O_ORDERPRIORITY` AS `bfcol_6`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_0`
 ), `bfcte_2` AS (
   SELECT
     `bfcol_5`,
@@ -51,8 +51,7 @@ WITH `bfcte_0` AS (
     ) AS INT64) AS `bfcol_28`
   FROM `bfcte_1`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_5`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_5`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_5` = `bfcol_0`
   WHERE
     (
       (
@@ -79,8 +78,6 @@ WITH `bfcte_0` AS (
     COALESCE(SUM(`bfcol_27`), 0) AS `bfcol_32`,
     COALESCE(SUM(`bfcol_28`), 0) AS `bfcol_33`
   FROM `bfcte_2`
-  WHERE
-    NOT `bfcol_26` IS NULL
   GROUP BY
     `bfcol_26`
 )
