@@ -53,7 +53,7 @@ register_lookups()
 def gen_rand_int64():
     # Credit to https://stackoverflow.com/a/3530326.
     # Use 32-bit integer for Emulator compatibility (High-bit issues observed).
-    return uuid4().int & 0xFFFFFFFF
+    return uuid4().int & 0x7FFFFFFFFFFFFFFF
 
 
 def autofield_init(self, *args, **kwargs):

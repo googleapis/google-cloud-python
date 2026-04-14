@@ -10,12 +10,19 @@ from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 
 class TestBase(SpannerSimpleTestClass):
-    def test_property_instance(self):
-        # Reset global cache to ensure we test the creation logic
+    def setUp(self):
+        super().setUp()
         import django_spanner.base
 
         django_spanner.base._SPANNER_CLIENT_CACHE = None
+        self.client_patcher = mock.patch("django_spanner.base.spanner.Client")
+        self.mock_client = self.client_patcher.start()
+        self.mock_client.return_value.instance.return_value.instance_id = (
+            self.INSTANCE_ID
+        )
+        self.addCleanup(self.client_patcher.stop)
 
+    def test_property_instance(self):
         with mock.patch("django_spanner.base.spanner") as mock_spanner:
             mock_spanner.Client = mock_client = mock.MagicMock()
             mock_client.return_value.instance = mock_instance = mock.MagicMock()
@@ -48,7 +55,11 @@ class TestBase(SpannerSimpleTestClass):
         )
 
     def test_init_connection_state(self):
-        self.db_wrapper.connection = mock_connection = mock.MagicMock()
+        from google.cloud.spanner_dbapi.connection import Connection
+
+        self.db_wrapper.connection = mock_connection = Connection(
+            self.db_wrapper.instance, "dummy_db"
+        )
         mock_connection.close = mock_close = mock.MagicMock()
         self.db_wrapper.init_connection_state()
         mock_close.assert_called_once_with()

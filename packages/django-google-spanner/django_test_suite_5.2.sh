@@ -80,6 +80,10 @@ create_settings
 EXIT_STATUS=0
 for DJANGO_TEST_APP in $DJANGO_TEST_APPS
 do
+   if [ "$DJANGO_TEST_APP" = "order_with_respect_to" ] || [ "$DJANGO_TEST_APP" = "contenttypes_tests" ] || [ "$DJANGO_TEST_APP" = "inspectdb" ]; then
+       echo "Skipping $DJANGO_TEST_APP as it is incompatible with Spanner"
+       continue
+   fi
    python3 runtests.py $DJANGO_TEST_APP --verbosity=3 --noinput --settings $SETTINGS_FILE || EXIT_STATUS=$?
 done
 exit $EXIT_STATUS
