@@ -1530,8 +1530,8 @@ libraries:
       - packages/google-cloud-dataplex/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc
-    version: 5.26.0
-    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
+    version: 5.27.0
+    last_generated_commit: 38ed7d6ba66a774924722146f054d12b4487a89f
     apis:
       - path: google/cloud/dataproc/v1
         service_config: dataproc_v1.yaml
@@ -1960,7 +1960,7 @@ libraries:
       - packages/google-cloud-financialservices/
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
-    version: 2.26.0
+    version: 2.27.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/firestore/admin/v1
@@ -3339,7 +3339,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
-    version: 3.64.0
+    version: 3.65.0
     last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
     apis:
       - path: google/spanner/admin/instance/v1
@@ -3684,7 +3684,7 @@ libraries:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 38ed7d6ba66a774924722146f054d12b4487a89f
     apis:
       - path: google/cloud/vectorsearch/v1beta
