@@ -60,12 +60,13 @@ jobs:
           cache-dependency-glob: "packages/${{ matrix.package }}/setup.py"
 
       - name: Execute Tests (High-Density)
-        # uvx downloads and runs nox in milliseconds without a global pip install
         run: |
           cd packages/${{ matrix.package }}
           
-          # Force nox to use uv as its backend for lightning-fast venv creation
-          export VIRTUALENV_CREATOR=uv
+          # Force Nox to natively use uv instead of the legacy virtualenv module
+          export NOX_DEFAULT_VENV_BACKEND=uv
           
           echo "Running targeted tests for ${{ matrix.package }} on Python ${{ matrix.python }}"
-          uvx nox -s unit-${{ matrix.python }}
+          
+          # Use uvx to run nox (with the uv plugin injected to guarantee compatibility)
+          uvx --with 'nox[uv]' nox -s unit-${{ matrix.python }}
