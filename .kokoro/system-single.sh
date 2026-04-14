@@ -1,47 +1,31 @@
 #!/bin/bash
 # Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# `-e` enables the script to automatically fail when a command fails
-# `-o pipefail` sets the exit code to non-zero if any command fails,
-# or zero if all commands in the pipeline exit successfully.
+# Licensed under the Apache License, Version 2.0 (the "License"); ...
 set -eo pipefail
 
 pwd
 
-# If NOX_SESSION is set, it only runs the specified session,
-# otherwise run all the sessions.
 NOX_SESSION_ARG=""
-
-# IF NOX_FILE is set, it runs the specific nox file,
-# otherwise it runs noxfile.py in the package directory.
 NOX_FILE_ARG=""
 
 [[ -z "${NOX_SESSION}" ]] || NOX_SESSION_ARG="-s ${NOX_SESSION}"
-
 [[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
 
-python3 -m pip install uv
+# 3-Attempt retry loop to absorb GCP quota limits and network blips
 for attempt in 1 2 3; do
+  echo "============================================"
   echo "Execution attempt $attempt of 3..."
-  if uvx --with 'nox[uv]' nox ${NOX_SESSION_ARG} $NOX_FILE_ARG; then
+  echo "============================================"
+  
+  if uvx --with 'nox[uv]' nox ${NOX_SESSION_ARG} ${NOX_FILE_ARG}; then
     echo "Tests passed successfully!"
     exit 0
   fi
   
-  echo "Tests failed. Backing off for 15 seconds..."
-  sleep 15
+  if [[ $attempt -lt 3 ]]; then
+    echo "Tests failed. Backing off for 15 seconds to absorb quota limits..."
+    sleep 15
+  fi
 done
 
 echo "Tests failed after 3 attempts. Hard failure."
