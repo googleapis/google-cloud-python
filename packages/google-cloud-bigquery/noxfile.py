@@ -552,7 +552,7 @@ def core_deps_from_source(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def format(session):
+def format(session: nox.sessions.Session) -> None:
     """
     Run ruff to sort imports and format code.
     """
