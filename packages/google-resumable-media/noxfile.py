@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import shutil
@@ -68,7 +69,7 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -105,6 +106,7 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
 
 @nox.session(python="3.10")
 def docfx(session):
@@ -251,8 +253,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
@@ -266,7 +270,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         os.path.join("google", "resumable_media"),
@@ -345,7 +350,9 @@ def prerelease_deps(session):
     # Resolve the linked bug once prerelease_deps and core_deps_from_source
     # are implemented for this package.
     if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release.")
+        session.skip(
+            f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release."
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -354,4 +361,6 @@ def core_deps_from_source(session):
     # Resolve the linked bug once prerelease_deps and core_deps_from_source
     # are implemented for this package.
     if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release.")
+        session.skip(
+            f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release."
+        )

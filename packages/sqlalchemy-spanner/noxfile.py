@@ -446,8 +446,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
@@ -456,7 +458,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,

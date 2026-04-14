@@ -13,12 +13,12 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import os
 import re
 import shutil
 
 import nox
-
 
 BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
@@ -86,8 +86,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
@@ -96,7 +98,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,
@@ -370,7 +373,7 @@ def core_deps_from_source(session, protobuf_implementation):
         f"{CURRENT_DIRECTORY}/../google-api-core",
         f"{CURRENT_DIRECTORY}/../google-auth",
         f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
-        f"{CURRENT_DIRECTORY}/../proto-plus"
+        f"{CURRENT_DIRECTORY}/../proto-plus",
     ]
 
     for dep in core_dependencies_from_source:

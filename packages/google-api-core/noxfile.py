@@ -18,6 +18,7 @@
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import re
@@ -26,7 +27,6 @@ import unittest
 
 # https://github.com/google/importlab/issues/25
 import nox
-
 
 BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
@@ -83,8 +83,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
@@ -93,7 +95,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,
