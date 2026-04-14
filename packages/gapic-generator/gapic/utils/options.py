@@ -190,14 +190,37 @@ class Options:
         if len(proto_plus_deps):
             proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
         
+        # Parse the resource name aliases dictionary (Format: "path/to/Resource:AliasName")
         resource_name_aliases = {}
-        for alias_mapping in opts.pop("resource-name-alias", []):
-            try:
-                res_path, alias_name = alias_mapping.split(":", 1)
-                resource_name_aliases[res_path.strip()] = alias_name.strip()
-            except ValueError:
-                warnings.warn(f"Invalid format for resource-name-alias: '{alias_mapping}'. Expected format 'resource.path/Name:AliasName'")
+        raw_aliases = opts.pop("resource-name-alias", [])
         
+        # Normalize: protoc can return a string (1 flag) or list (multiple flags)
+        if not isinstance(raw_aliases, list):
+            raw_aliases = [raw_aliases]
+            
+        # Parse explicitly and safely
+        for mapping in raw_aliases:
+            if not mapping or not mapping.strip():
+                continue
+                
+            try:
+                # split(":", 1) ensures we only split on the FIRST colon 
+                res_path, alias_name = mapping.split(":", 1)
+                
+                clean_path = res_path.strip()
+                clean_alias = alias_name.strip()
+                
+                if not clean_path or not clean_alias:
+                    raise ValueError()
+                    
+                resource_name_aliases[clean_path] = clean_alias
+                
+            except ValueError:
+                warnings.warn(
+                    f"Ignored malformed resource-name-alias: '{mapping}'. "
+                    "Expected format is 'resource.path/Name:AliasName'."
+                )
+                
         Options.resource_name_aliases_global = resource_name_aliases
 
         answer = Options(
