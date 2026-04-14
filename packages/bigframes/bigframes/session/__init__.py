@@ -1378,7 +1378,7 @@ class Session(
                 The write engine used to persist the data to BigQuery if needed.
 
         Returns:
-            bigframes.dataframe.DataFrame:
+            bigframes.pandas.DataFrame:
                 A new DataFrame representing the data from the ORC file.
         """
         bigframes.session.validation.validate_engine_compatibility(
@@ -1426,7 +1426,7 @@ class Session(
                 The engine used to read the file. Only `bigquery` is supported for Avro.
 
         Returns:
-            bigframes.dataframe.DataFrame:
+            bigframes.pandas.DataFrame:
                 A new DataFrame representing the data from the Avro file.
         """
         if engine not in ("auto", "bigquery"):
