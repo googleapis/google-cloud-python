@@ -24,7 +24,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: bigquery-magics
-    version: 0.13.0
+    version: 0.14.0
     last_generated_commit: ""
     apis: []
     source_roots:
