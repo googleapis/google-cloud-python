@@ -36,6 +36,7 @@ nox.options.sessions = [
     "blacken",
     "mypy",
     "doctest",
+    "format",
 ]
 
 
@@ -237,6 +238,43 @@ def blacken(session):
         "tests",
         os.path.join("google", "_async_resumable_media"),
         "tests_async",
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff", "check",
+        "--select", "I",
+        "--fix",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        os.path.join("google", "resumable_media"),
+        "tests",
+        os.path.join("google", "_async_resumable_media"),
+        "tests_async",
+        "noxfile.py",
+        "setup.py",
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff", "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        os.path.join("google", "resumable_media"),
+        "tests",
+        os.path.join("google", "_async_resumable_media"),
+        "tests_async",
+        "noxfile.py",
+        "setup.py",
     )
 
 

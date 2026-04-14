@@ -89,6 +89,7 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
+    "format",
     "docs",
 ]
 

@@ -78,6 +78,7 @@ UPGRADE_CODE = """def upgrade():
 
 
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.11.0"
 BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py", "samples"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
@@ -96,6 +97,7 @@ nox.options.sessions = [
     "migration_test",
     "_migration_test",
     "mockserver",
+    "format",
 ]
 
 
@@ -434,11 +436,28 @@ def docfx(session):
     session.skip("docfx builds are not yet supported")
 
 
-@nox.session
-def format(session: nox.sessions.Session) -> None:
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    import os
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
 
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
-    session.run("isort", "--fss", *python_files)
-    session.run("black", *python_files)
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff", "check",
+        "--select", "I",
+        "--fix",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff", "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )

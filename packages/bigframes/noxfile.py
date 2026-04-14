@@ -189,6 +189,15 @@ def format(session):
         *LINT_PATHS,
     )
 
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
