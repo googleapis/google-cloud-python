@@ -21,7 +21,6 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 import pytest
-
 from grpc.experimental import aio
 
 try:
@@ -31,9 +30,9 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials
+
 from google.cloud.bigtable_v2.services.bigtable.async_client import BigtableAsyncClient
 from google.cloud.bigtable_v2.services.bigtable.client import BigtableClient
 from google.cloud.bigtable_v2.types import bigtable

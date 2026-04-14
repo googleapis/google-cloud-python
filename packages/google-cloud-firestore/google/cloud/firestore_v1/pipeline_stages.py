@@ -11,16 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-.. warning::
-    **Preview API**: Firestore Pipelines is currently in preview and is
-    subject to potential breaking changes in future releases.
-"""
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from enum import Enum
 from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence
 
 from google.cloud.firestore_v1._helpers import encode_value
@@ -32,7 +26,6 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     CONSTANT_TYPE,
     Expression,
     Field,
-    Ordering,
     Selectable,
 )
 from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
@@ -42,88 +35,14 @@ from google.cloud.firestore_v1.vector import Vector
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
     from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+    from google.cloud.firestore_v1.pipeline_types import Ordering
 
-
-class FindNearestOptions:
-    """Options for configuring the `FindNearest` pipeline stage.
-
-    Attributes:
-        limit (Optional[int]): The maximum number of nearest neighbors to return.
-        distance_field (Optional[Field]): An optional field to store the calculated
-            distance in the output documents.
-    """
-
-    def __init__(
-        self,
-        limit: Optional[int] = None,
-        distance_field: Optional[Field] = None,
-    ):
-        self.limit = limit
-        self.distance_field = distance_field
-
-    def __repr__(self):
-        args = []
-        if self.limit is not None:
-            args.append(f"limit={self.limit}")
-        if self.distance_field is not None:
-            args.append(f"distance_field={self.distance_field}")
-        return f"{self.__class__.__name__}({', '.join(args)})"
-
-
-class SampleOptions:
-    """Options for the 'sample' pipeline stage."""
-
-    class Mode(Enum):
-        DOCUMENTS = "documents"
-        PERCENT = "percent"
-
-    def __init__(self, value: int | float, mode: Mode | str):
-        self.value = value
-        self.mode = SampleOptions.Mode[mode.upper()] if isinstance(mode, str) else mode
-
-    def __repr__(self):
-        if self.mode == SampleOptions.Mode.DOCUMENTS:
-            mode_str = "doc_limit"
-        else:
-            mode_str = "percentage"
-        return f"SampleOptions.{mode_str}({self.value})"
-
-    @staticmethod
-    def doc_limit(value: int):
-        """
-        Sample a set number of documents
-
-        Args:
-            value: number of documents to sample
-        """
-        return SampleOptions(value, mode=SampleOptions.Mode.DOCUMENTS)
-
-    @staticmethod
-    def percentage(value: float):
-        """
-        Sample a percentage of documents
-
-        Args:
-            value: percentage of documents to return
-        """
-        return SampleOptions(value, mode=SampleOptions.Mode.PERCENT)
-
-
-class UnnestOptions:
-    """Options for configuring the `Unnest` pipeline stage.
-
-    Attributes:
-        index_field (str): The name of the field to add to each output document,
-            storing the original 0-based index of the element within the array.
-    """
-
-    def __init__(self, index_field: Field | str):
-        self.index_field = (
-            index_field if isinstance(index_field, Field) else Field.of(index_field)
-        )
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(index_field={self.index_field.path!r})"
+from google.cloud.firestore_v1.pipeline_types import (
+    FindNearestOptions,
+    SampleOptions,
+    SearchOptions,
+    UnnestOptions,
+)
 
 
 class Stage(ABC):
@@ -423,6 +342,28 @@ class Sample(Stage):
             ]
 
 
+class Search(Stage):
+    """Search stage.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
+
+    def __init__(self, query_or_options: str | BooleanExpression | SearchOptions):
+        super().__init__("search")
+        if isinstance(query_or_options, SearchOptions):
+            options = query_or_options
+        else:
+            options = SearchOptions(query=query_or_options)
+        self.options = options
+
+    def _pb_args(self) -> list[Value]:
+        return []
+
+    def _pb_options(self) -> dict[str, Value]:
+        return self.options._to_dict()
+
+
 class Select(Stage):
     """Selects or creates a set of fields."""
 
@@ -494,3 +435,54 @@ class Where(Stage):
 
     def _pb_args(self):
         return [self.condition._to_pb()]
+
+
+class Delete(Stage):
+    """Deletes documents matching the pipeline criteria.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
+
+    def __init__(self):
+        super().__init__("delete")
+
+    def _pb_args(self) -> list[Value]:
+        return []
+
+
+class Update(Stage):
+    """Updates documents with transformed fields.
+
+    .. note::
+        This feature is currently in beta and is subject to change.
+    """
+
+    def __init__(self, *transformed_fields: Selectable):
+        super().__init__("update")
+        self.transformed_fields = list(transformed_fields)
+
+    def _pb_args(self) -> list[Value]:
+        return [Selectable._to_value(self.transformed_fields)]
+
+
+class Define(Stage):
+    """Binds one or more expressions to variables."""
+
+    def __init__(self, *expressions: AliasedExpression):
+        super().__init__("let")
+        self.expressions = list(expressions)
+
+    def _pb_args(self) -> list[Value]:
+        return [Selectable._to_value(self.expressions)]
+
+
+class Subcollection(Stage):
+    """Targets a subcollection relative to the current document."""
+
+    def __init__(self, path: str):
+        super().__init__("subcollection")
+        self.path = path
+
+    def _pb_args(self) -> list[Value]:
+        return [encode_value(self.path)]

@@ -56,4 +56,5 @@ async def sample_update_app_profile():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_UpdateAppProfile_async]

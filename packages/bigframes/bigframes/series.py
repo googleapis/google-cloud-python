@@ -2308,9 +2308,10 @@ class Series:
             )
         else:
             pd_series = self.to_pandas(allow_large_results=allow_large_results)
+            # Pandas Series.to_json only supports a subset of orients, but bigframes Series.to_json allows all of them.
             return pd_series.to_json(
                 path_or_buf=path_or_buf,
-                orient=orient,
+                orient=orient,  # type: ignore[arg-type]
                 lines=lines,
                 index=index,  # type: ignore
             )

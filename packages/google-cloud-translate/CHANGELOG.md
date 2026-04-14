@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.25.0...google-cloud-translate-v3.26.0) (2026-04-09)
+
+
+### Features
+
+* A new field `mime_type` is added to message `.google.cloud.translation.v3.AdaptiveMtTranslateRequest` ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
 ## [3.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.24.0...google-cloud-translate-v3.25.0) (2026-03-26)
 
 

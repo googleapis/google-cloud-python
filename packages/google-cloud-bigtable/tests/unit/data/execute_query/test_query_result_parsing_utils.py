@@ -12,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
 import pytest
-from google.cloud.bigtable.data.execute_query.values import Struct
-from google.cloud.bigtable_v2 import Type as PBType, Value as PBValue
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.type import date_pb2
+
 from google.cloud.bigtable.data.execute_query._query_result_parsing_utils import (
     _parse_pb_value_to_python_value,
 )
 from google.cloud.bigtable.data.execute_query.metadata import (
-    _pb_type_to_metadata_type,
     SqlType,
+    _pb_type_to_metadata_type,
 )
+from google.cloud.bigtable.data.execute_query.values import Struct
+from google.cloud.bigtable_v2 import Type as PBType
+from google.cloud.bigtable_v2 import Value as PBValue
+from tests.unit.data.execute_query.sql_helpers import enum_type, int64_type, proto_type
 
-from google.type import date_pb2
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
-import datetime
-
-from tests.unit.data.execute_query.sql_helpers import int64_type, proto_type, enum_type
 from .resources import singer_pb2
 
 TYPE_BYTES = {"bytes_type": {}}

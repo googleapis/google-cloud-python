@@ -29,8 +29,8 @@
 
 import copy
 import functools
-
 from typing import Callable, Optional, Sequence, Tuple, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
@@ -42,22 +42,19 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import client_options as client_options_lib
 from google.auth import credentials as ga_credentials  # type: ignore
 
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-
+from google.cloud.bigtable.gapic_version import __version__ as bigtable_version
+from google.cloud.bigtable_admin_v2.overlay.types import (
+    consistency,
+    restore_table,
+    wait_for_consistency_request,
+)
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
     client as base_client,
 )
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports.base import (
     BigtableTableAdminTransport,
 )
-from google.cloud.bigtable_admin_v2.overlay.types import (
-    consistency,
-    restore_table,
-    wait_for_consistency_request,
-)
-
-from google.cloud.bigtable.gapic_version import __version__ as bigtable_version
-
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 DEFAULT_CLIENT_INFO = copy.copy(base_client.DEFAULT_CLIENT_INFO)
 DEFAULT_CLIENT_INFO.client_library_version = f"{bigtable_version}-admin-overlay"

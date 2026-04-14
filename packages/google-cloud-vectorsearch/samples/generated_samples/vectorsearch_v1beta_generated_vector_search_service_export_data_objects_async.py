@@ -41,7 +41,7 @@ async def sample_export_data_objects():
     # Initialize request argument(s)
     gcs_destination = vectorsearch_v1beta.GcsExportDestination()
     gcs_destination.export_uri = "export_uri_value"
-    gcs_destination.format_ = "JSON"
+    gcs_destination.format_ = "JSONL"
 
     request = vectorsearch_v1beta.ExportDataObjectsRequest(
         gcs_destination=gcs_destination,

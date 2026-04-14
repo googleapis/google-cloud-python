@@ -19,17 +19,15 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from google.longrunning import operations_pb2
-from google.rpc import status_pb2, code_pb2
-
-from google.api_core import operation_async, exceptions
+import pytest
+from google.api_core import exceptions, operation_async
 from google.api_core.future import async_future
 from google.api_core.operations_v1 import operations_async_client
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
+from google.longrunning import operations_pb2
+from google.rpc import code_pb2, status_pb2
+
 from google.cloud.bigtable_admin_v2.overlay.types import async_restore_table
-
-import pytest
-
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
 
 # Set up the mock operations
 DEFAULT_MAX_POLL = 3

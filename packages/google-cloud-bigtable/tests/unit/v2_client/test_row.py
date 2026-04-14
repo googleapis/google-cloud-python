@@ -174,6 +174,7 @@ def test_direct_row_set_cell_with_non_bytes_value():
 
 def test_direct_row_set_cell_with_non_null_timestamp():
     import datetime
+
     from google.cloud._helpers import _EPOCH
 
     microseconds = 898294371
@@ -292,7 +293,9 @@ def test_direct_row_delete_cells_no_time_range():
 
 def test_direct_row_delete_cells_with_time_range():
     import datetime
+
     from google.cloud._helpers import _EPOCH
+
     from google.cloud.bigtable.row_filters import TimestampRange
 
     microseconds = 30871000  # Makes sure already milliseconds granularity
@@ -466,6 +469,7 @@ def test_conditional_row_commit():
 
 def test_conditional_row_commit_too_many_mutations():
     from google.cloud._testing import _Monkey
+
     from google.cloud.bigtable import row as MUT
 
     row_key = b"row_key"
@@ -564,6 +568,7 @@ def test_append_row_increment_cell_value():
 
 def test_append_row_commit():
     from google.cloud._testing import _Monkey
+
     from google.cloud.bigtable import row as MUT
     from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
@@ -630,6 +635,7 @@ def test_append_row_commit_no_rules():
 
 def test_append_row_commit_too_many_mutations():
     from google.cloud._testing import _Monkey
+
     from google.cloud.bigtable import row as MUT
 
     row_key = b"row_key"
@@ -644,6 +650,7 @@ def test_append_row_commit_too_many_mutations():
 
 def test__parse_rmw_row_response():
     from google.cloud._helpers import _datetime_from_microseconds
+
     from google.cloud.bigtable.row import _parse_rmw_row_response
 
     col_fam1 = "col-fam-id"
@@ -700,6 +707,7 @@ def test__parse_rmw_row_response():
 
 def test__parse_family_pb():
     from google.cloud._helpers import _datetime_from_microseconds
+
     from google.cloud.bigtable.row import _parse_family_pb
 
     col_fam1 = "col-fam-id"

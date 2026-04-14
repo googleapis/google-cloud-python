@@ -24,6 +24,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     Constant,
     Field,
     Ordering,
+    DocumentMatches,
 )
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.vector import Vector
@@ -778,6 +779,71 @@ class TestSample:
         assert len(result_percent.options) == 0
 
 
+class TestSearch:
+    def test_search_defaults(self):
+        options = stages.SearchOptions(query="technology")
+        assert options.query.name == "document_matches"
+        assert options.limit is None
+        assert options.retrieval_depth is None
+        assert options.sort is None
+        assert options.add_fields is None
+        assert options.offset is None
+        assert options.language_code is None
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+        assert "limit" not in pb_opts
+        assert "retrieval_depth" not in pb_opts
+
+    def test_search_full_options(self):
+        options = stages.SearchOptions(
+            query=DocumentMatches("tech"),
+            limit=10,
+            retrieval_depth=2,
+            sort=Ordering("score", Ordering.Direction.DESCENDING),
+            add_fields=[Field("extra")],
+            offset=5,
+            language_code="en",
+        )
+        assert options.limit == 10
+        assert options.retrieval_depth == 2
+        assert len(options.sort) == 1
+        assert options.offset == 5
+        assert options.language_code == "en"
+
+        stage = stages.Search(options)
+        pb_opts = stage._pb_options()
+
+        assert pb_opts["limit"].integer_value == 10
+        assert pb_opts["retrieval_depth"].integer_value == 2
+        assert len(pb_opts["sort"].array_value.values) == 1
+        assert pb_opts["offset"].integer_value == 5
+        assert pb_opts["language_code"].string_value == "en"
+        assert "query" in pb_opts
+
+    def test_search_string_query_wrapping(self):
+        options = stages.SearchOptions(query="science")
+        assert options.query.name == "document_matches"
+        assert options.query.params[0].value == "science"
+
+    def test_search_with_string(self):
+        stage = stages.Search("technology")
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query.name == "document_matches"
+        assert stage.options.query.params[0].value == "technology"
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+
+    def test_search_with_boolean_expression(self):
+        expr = DocumentMatches("tech")
+        stage = stages.Search(expr)
+        assert isinstance(stage.options, stages.SearchOptions)
+        assert stage.options.query is expr
+        pb_opts = stage._pb_options()
+        assert "query" in pb_opts
+
+
 class TestSelect:
     def _make_one(self, *args, **kwargs):
         return stages.Select(*args, **kwargs)
@@ -959,4 +1025,40 @@ class TestWhere:
         assert len(got_fn.args) == 2
         assert got_fn.args[0].field_reference_value == "city"
         assert got_fn.args[1].string_value == "SF"
+        assert len(result.options) == 0
+
+
+class TestDelete:
+    def _make_one(self):
+        return stages.Delete()
+
+    def test_to_pb(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "delete"
+        assert len(result.args) == 0
+        assert len(result.options) == 0
+
+
+class TestUpdate:
+    def _make_one(self, *args):
+        return stages.Update(*args)
+
+    def test_to_pb_empty(self):
+        instance = self._make_one()
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert result.args[0].map_value.fields == {}
+        assert len(result.options) == 0
+
+    def test_to_pb_with_fields(self):
+        instance = self._make_one(
+            Field.of("score").add(10).as_("score"), Constant.of("active").as_("status")
+        )
+        result = instance._to_pb()
+        assert result.name == "update"
+        assert len(result.args) == 1
+        assert "score" in result.args[0].map_value.fields
+        assert "status" in result.args[0].map_value.fields
         assert len(result.options) == 0

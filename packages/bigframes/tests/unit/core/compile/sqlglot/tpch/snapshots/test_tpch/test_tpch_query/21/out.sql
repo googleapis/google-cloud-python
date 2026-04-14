@@ -2,33 +2,33 @@ WITH `bfcte_0` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_0`,
     `O_ORDERSTATUS` AS `bfcol_1`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_3`
 ), `bfcte_1` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_2`,
     `N_NAME` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_2`
 ), `bfcte_2` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_4`,
     `S_NAME` AS `bfcol_5`,
     `S_NATIONKEY` AS `bfcol_6`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_1`
 ), `bfcte_3` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_30`,
     `L_SUPPKEY` AS `bfcol_31`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
   WHERE
     `L_RECEIPTDATE` > `L_COMMITDATE`
 ), `bfcte_4` AS (
   SELECT
     `L_ORDERKEY`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
 ), `bfcte_5` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_32`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
   WHERE
     `L_RECEIPTDATE` > `L_COMMITDATE`
 ), `bfcte_6` AS (
@@ -36,8 +36,6 @@ WITH `bfcte_0` AS (
     `L_ORDERKEY`,
     COUNT(1) AS `bfcol_18`
   FROM `bfcte_4`
-  WHERE
-    NOT `L_ORDERKEY` IS NULL
   GROUP BY
     `L_ORDERKEY`
 ), `bfcte_7` AS (
@@ -83,8 +81,7 @@ WITH `bfcte_0` AS (
     `bfcol_6` AS `bfcol_44`
   FROM `bfcte_11`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_40`, 0) = COALESCE(`bfcol_4`, 0)
-    AND COALESCE(`bfcol_40`, 1) = COALESCE(`bfcol_4`, 1)
+    ON `bfcol_40` = `bfcol_4`
 ), `bfcte_13` AS (
   SELECT
     `bfcol_41` AS `bfcol_45`,
@@ -93,8 +90,7 @@ WITH `bfcte_0` AS (
     `bfcol_3` AS `bfcol_48`
   FROM `bfcte_12`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_44`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_44`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_44` = `bfcol_2`
 ), `bfcte_14` AS (
   SELECT
     `bfcol_45`,
@@ -133,8 +129,6 @@ WITH `bfcte_0` AS (
     `bfcol_53`,
     COUNT(1) AS `bfcol_58`
   FROM `bfcte_14`
-  WHERE
-    NOT `bfcol_53` IS NULL
   GROUP BY
     `bfcol_53`
 )

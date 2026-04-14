@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 Client Types
 -------------
 .. toctree::
@@ -11,15 +12,16 @@ Client Types
    classic_client/usage
    admin_client/admin_client_usage
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-bigtable`` releases:
 
 .. toctree::
-  :maxdepth: 2
+    :maxdepth: 2
 
-  CHANGELOG
+    CHANGELOG
 
 .. toctree::
   :hidden:

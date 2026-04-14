@@ -38,7 +38,7 @@ WITH `bfcte_0` AS (
     ) * (
       1.0 + `L_TAX`
     ) AS `bfcol_47`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
   WHERE
     `L_SHIPDATE` <= CAST('1998-09-02' AS DATE)
 ), `bfcte_1` AS (
@@ -54,8 +54,6 @@ WITH `bfcte_0` AS (
     AVG(`bfcol_43`) AS `bfcol_61`,
     COUNT(`bfcol_41`) AS `bfcol_62`
   FROM `bfcte_0`
-  WHERE
-    NOT `bfcol_44` IS NULL AND NOT `bfcol_45` IS NULL
   GROUP BY
     `bfcol_44`,
     `bfcol_45`

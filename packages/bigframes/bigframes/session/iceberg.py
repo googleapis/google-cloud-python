@@ -98,9 +98,10 @@ def _extract_location_from_catalog_extension_data(data):
 
 
 class SchemaVisitor(pyiceberg.schema.SchemaVisitorPerPrimitiveType[bq.SchemaField]):
-    def schema(
+    # Override returns a tuple of fields instead of a single field, violating supertype signature but intentional for this visitor.
+    def schema(  # type: ignore[override]
         self, schema: pyiceberg.schema.Schema, struct_result: bq.SchemaField
-    ) -> tuple[bq.SchemaField, ...]:  # type: ignore
+    ) -> tuple[bq.SchemaField, ...]:
         return tuple(f for f in struct_result.fields)
 
     def struct(
