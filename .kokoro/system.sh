@@ -43,7 +43,8 @@ run_package_test() {
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
   local NOX_FILE
-  local NOX_SESSION
+  # Inherit NOX_SESSION from environment to allow configs (like prerelease.cfg) to pass it in
+  local NOX_SESSION="${NOX_SESSION}"
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
@@ -66,7 +67,8 @@ run_package_test() {
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
-      NOX_SESSION="system-3.12"
+      # Use inherited NOX_SESSION if set, otherwise fallback to system-3.12
+      NOX_SESSION="${NOX_SESSION:-system-3.12}"
       ;;
   esac
 
