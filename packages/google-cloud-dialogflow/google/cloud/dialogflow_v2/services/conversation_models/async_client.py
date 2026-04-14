@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,14 +47,13 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.conversation_models import pagers
 from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ConversationModelsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
@@ -103,15 +101,9 @@ class ConversationModelsAsyncClient:
     )
     document_path = staticmethod(ConversationModelsClient.document_path)
     parse_document_path = staticmethod(ConversationModelsClient.parse_document_path)
-    common_billing_account_path = staticmethod(
-        ConversationModelsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationModelsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(ConversationModelsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationModelsClient.parse_common_folder_path
+    common_project_path = staticmethod(ConversationModelsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ConversationModelsClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         ConversationModelsClient.common_organization_path
@@ -119,9 +111,15 @@ class ConversationModelsAsyncClient:
     parse_common_organization_path = staticmethod(
         ConversationModelsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ConversationModelsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationModelsClient.parse_common_project_path
+    common_folder_path = staticmethod(ConversationModelsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ConversationModelsClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        ConversationModelsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ConversationModelsClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(ConversationModelsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -346,10 +344,10 @@ class ConversationModelsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
-        - ``response``:
-          [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
+        -  ``metadata``:
+           [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
+        -  ``response``:
+           [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
 
         .. code-block:: python
 
@@ -376,11 +374,11 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_conversation_model(request=request)
+                operation = await client.create_conversation_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -738,10 +736,10 @@ class ConversationModelsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -764,11 +762,11 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_conversation_model(request=request)
+                operation = await client.delete_conversation_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -885,10 +883,10 @@ class ConversationModelsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -911,11 +909,11 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.deploy_conversation_model(request=request)
+                operation = await client.deploy_conversation_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1001,18 +999,18 @@ class ConversationModelsAsyncClient:
         r"""Undeploys a model. If the model is not deployed this method has
         no effect. If the model is currently being used:
 
-        - For article suggestion, article suggestion will fallback to
-          the default model if model is undeployed.
+        -  For article suggestion, article suggestion will fallback to
+           the default model if model is undeployed.
 
         This method is a `long-running
         operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1035,11 +1033,11 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undeploy_conversation_model(request=request)
+                operation = await client.undeploy_conversation_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1397,11 +1395,11 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_conversation_model_evaluation(request=request)
+                operation = await client.create_conversation_model_evaluation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

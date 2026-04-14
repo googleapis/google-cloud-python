@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,9 +47,6 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
 from google.cloud.dialogflow_v2beta1.types import (
     audio_config,
@@ -60,6 +56,8 @@ from google.cloud.dialogflow_v2beta1.types import (
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ConversationProfilesClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
@@ -91,6 +89,12 @@ class ConversationProfilesAsyncClient:
 
     agent_path = staticmethod(ConversationProfilesClient.agent_path)
     parse_agent_path = staticmethod(ConversationProfilesClient.parse_agent_path)
+    cx_security_settings_path = staticmethod(
+        ConversationProfilesClient.cx_security_settings_path
+    )
+    parse_cx_security_settings_path = staticmethod(
+        ConversationProfilesClient.parse_cx_security_settings_path
+    )
     conversation_model_path = staticmethod(
         ConversationProfilesClient.conversation_model_path
     )
@@ -102,12 +106,6 @@ class ConversationProfilesAsyncClient:
     )
     parse_conversation_profile_path = staticmethod(
         ConversationProfilesClient.parse_conversation_profile_path
-    )
-    cx_security_settings_path = staticmethod(
-        ConversationProfilesClient.cx_security_settings_path
-    )
-    parse_cx_security_settings_path = staticmethod(
-        ConversationProfilesClient.parse_cx_security_settings_path
     )
     document_path = staticmethod(ConversationProfilesClient.document_path)
     parse_document_path = staticmethod(ConversationProfilesClient.parse_document_path)
@@ -121,15 +119,9 @@ class ConversationProfilesAsyncClient:
     parse_phrase_set_path = staticmethod(
         ConversationProfilesClient.parse_phrase_set_path
     )
-    common_billing_account_path = staticmethod(
-        ConversationProfilesClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationProfilesClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(ConversationProfilesClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationProfilesClient.parse_common_folder_path
+    common_project_path = staticmethod(ConversationProfilesClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ConversationProfilesClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         ConversationProfilesClient.common_organization_path
@@ -137,9 +129,15 @@ class ConversationProfilesAsyncClient:
     parse_common_organization_path = staticmethod(
         ConversationProfilesClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ConversationProfilesClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationProfilesClient.parse_common_project_path
+    common_folder_path = staticmethod(ConversationProfilesClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ConversationProfilesClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        ConversationProfilesClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ConversationProfilesClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(ConversationProfilesClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -999,10 +997,10 @@ class ConversationProfilesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+        -  ``metadata``:
+           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
 
         If a long running operation to add or update suggestion feature
         config for the same conversation profile, participant role and
@@ -1032,11 +1030,11 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.set_suggestion_feature_config(request=request)
+                operation = await client.set_suggestion_feature_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1178,10 +1176,10 @@ class ConversationProfilesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+        -  ``metadata``:
+           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
 
         .. code-block:: python
 
@@ -1206,11 +1204,11 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.clear_suggestion_feature_config(request=request)
+                operation = await client.clear_suggestion_feature_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

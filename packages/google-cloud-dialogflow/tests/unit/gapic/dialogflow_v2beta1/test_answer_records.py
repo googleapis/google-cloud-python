@@ -58,10 +58,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-
 from google.cloud.dialogflow_v2beta1.services.answer_records import (
     AnswerRecordsAsyncClient,
     AnswerRecordsClient,
@@ -79,6 +75,9 @@ from google.cloud.dialogflow_v2beta1.types import (
     tool_call,
 )
 from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -3815,6 +3814,9 @@ def test_update_answer_record_rest_call_success(request_type):
                     {
                         "tool_call": {
                             "tool": "tool_value",
+                            "ces_tool": "ces_tool_value",
+                            "ces_toolset": "ces_toolset_value",
+                            "ces_app": "ces_app_value",
                             "tool_display_name": "tool_display_name_value",
                             "tool_display_details": "tool_display_details_value",
                             "action": "action_value",
@@ -3825,6 +3827,9 @@ def test_update_answer_record_rest_call_success(request_type):
                         },
                         "tool_call_result": {
                             "tool": "tool_value",
+                            "ces_tool": "ces_tool_value",
+                            "ces_toolset": "ces_toolset_value",
+                            "ces_app": "ces_app_value",
                             "action": "action_value",
                             "error": {"message": "message_value"},
                             "raw_content": b"raw_content_blob",
@@ -4858,10 +4863,65 @@ def test_parse_answer_record_path():
     assert expected == actual
 
 
-def test_context_path():
+def test_app_path():
     project = "oyster"
-    session = "nudibranch"
-    context = "cuttlefish"
+    location = "nudibranch"
+    app = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = AnswerRecordsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "app": "nautilus",
+    }
+    path = AnswerRecordsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_ces_tool_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    tool = "clam"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = AnswerRecordsClient.ces_tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_ces_tool_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "tool": "nudibranch",
+    }
+    path = AnswerRecordsClient.ces_tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_ces_tool_path(path)
+    assert expected == actual
+
+
+def test_context_path():
+    project = "cuttlefish"
+    session = "mussel"
+    context = "winkle"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
         project=project,
         session=session,
@@ -4873,9 +4933,9 @@ def test_context_path():
 
 def test_parse_context_path():
     expected = {
-        "project": "mussel",
-        "session": "winkle",
-        "context": "nautilus",
+        "project": "nautilus",
+        "session": "scallop",
+        "context": "abalone",
     }
     path = AnswerRecordsClient.context_path(**expected)
 
@@ -4885,9 +4945,9 @@ def test_parse_context_path():
 
 
 def test_document_path():
-    project = "scallop"
-    knowledge_base = "abalone"
-    document = "squid"
+    project = "squid"
+    knowledge_base = "clam"
+    document = "whelk"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -4899,9 +4959,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "clam",
-        "knowledge_base": "whelk",
-        "document": "octopus",
+        "project": "octopus",
+        "knowledge_base": "oyster",
+        "document": "nudibranch",
     }
     path = AnswerRecordsClient.document_path(**expected)
 
@@ -4911,8 +4971,8 @@ def test_parse_document_path():
 
 
 def test_intent_path():
-    project = "oyster"
-    intent = "nudibranch"
+    project = "cuttlefish"
+    intent = "mussel"
     expected = "projects/{project}/agent/intents/{intent}".format(
         project=project,
         intent=intent,
@@ -4923,8 +4983,8 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "cuttlefish",
-        "intent": "mussel",
+        "project": "winkle",
+        "intent": "nautilus",
     }
     path = AnswerRecordsClient.intent_path(**expected)
 
@@ -4934,9 +4994,9 @@ def test_parse_intent_path():
 
 
 def test_tool_path():
-    project = "winkle"
-    location = "nautilus"
-    tool = "scallop"
+    project = "scallop"
+    location = "abalone"
+    tool = "squid"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -4948,9 +5008,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "tool": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "tool": "octopus",
     }
     path = AnswerRecordsClient.tool_path(**expected)
 
@@ -4959,8 +5019,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "oyster"
+    location = "nudibranch"
+    app = "cuttlefish"
+    toolset = "mussel"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = AnswerRecordsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "app": "scallop",
+        "toolset": "abalone",
+    }
+    path = AnswerRecordsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4970,7 +5061,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "clam",
     }
     path = AnswerRecordsClient.common_billing_account_path(**expected)
 
@@ -4980,7 +5071,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4990,7 +5081,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "octopus",
     }
     path = AnswerRecordsClient.common_folder_path(**expected)
 
@@ -5000,7 +5091,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5010,7 +5101,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nudibranch",
     }
     path = AnswerRecordsClient.common_organization_path(**expected)
 
@@ -5020,7 +5111,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5030,7 +5121,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "mussel",
     }
     path = AnswerRecordsClient.common_project_path(**expected)
 
@@ -5040,8 +5131,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5052,8 +5143,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = AnswerRecordsClient.common_location_path(**expected)
 

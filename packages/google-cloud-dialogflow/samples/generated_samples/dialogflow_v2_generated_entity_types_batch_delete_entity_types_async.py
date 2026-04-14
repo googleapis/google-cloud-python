@@ -45,11 +45,11 @@ async def sample_batch_delete_entity_types():
     )
 
     # Make the request
-    operation = client.batch_delete_entity_types(request=request)
+    operation = await client.batch_delete_entity_types(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

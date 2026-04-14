@@ -62,10 +62,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-
 from google.cloud.dialogflow_v2.services.entity_types import (
     EntityTypesAsyncClient,
     EntityTypesClient,
@@ -74,6 +70,9 @@ from google.cloud.dialogflow_v2.services.entity_types import (
 )
 from google.cloud.dialogflow_v2.types import entity_type
 from google.cloud.dialogflow_v2.types import entity_type as gcd_entity_type
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",

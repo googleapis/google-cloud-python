@@ -20,7 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2.types import context
 
 __protobuf__ = proto.module(
@@ -89,11 +88,11 @@ class Intent(proto.Message):
             Optional. The priority of this intent. Higher numbers
             represent higher priorities.
 
-            - If the supplied value is unspecified or 0, the service
-              translates the value to 500,000, which corresponds to the
-              ``Normal`` priority in the console.
-            - If the supplied value is negative, the intent is ignored
-              in runtime detect intent requests.
+            -  If the supplied value is unspecified or 0, the service
+               translates the value to 500,000, which corresponds to the
+               ``Normal`` priority in the console.
+            -  If the supplied value is negative, the intent is ignored
+               in runtime detect intent requests.
         is_fallback (bool):
             Optional. Indicates whether this is a
             fallback intent.
@@ -227,11 +226,11 @@ class Intent(proto.Message):
                 multiple parts, where the fields of each part are populated
                 in one of two ways:
 
-                - ``Part.text`` is set to a part of the phrase that has no
-                  parameters.
-                - ``Part.text`` is set to a part of the phrase that you want
-                  to annotate, and the ``entity_type``, ``alias``, and
-                  ``user_defined`` fields are all set.
+                -  ``Part.text`` is set to a part of the phrase that has no
+                   parameters.
+                -  ``Part.text`` is set to a part of the phrase that you
+                   want to annotate, and the ``entity_type``, ``alias``, and
+                   ``user_defined`` fields are all set.
             times_added_count (int):
                 Optional. Indicates how many times this
                 example was added to the intent. Each time a
@@ -334,12 +333,12 @@ class Intent(proto.Message):
             value (str):
                 Optional. The definition of the parameter value. It can be:
 
-                - a constant string,
-                - a parameter value defined as ``$parameter_name``,
-                - an original parameter value defined as
-                  ``$parameter_name.original``,
-                - a parameter value from some context defined as
-                  ``#context_name.parameter_name``.
+                -  a constant string,
+                -  a parameter value defined as ``$parameter_name``,
+                -  an original parameter value defined as
+                   ``$parameter_name.original``,
+                -  a parameter value from some context defined as
+                   ``#context_name.parameter_name``.
             default_value (str):
                 Optional. The default value to use when the ``value`` yields
                 an empty result. Default values can be extracted from

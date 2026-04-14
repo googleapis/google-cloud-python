@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,12 +62,11 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.tools import pagers
 from google.cloud.dialogflow_v2.types import tool
 from google.cloud.dialogflow_v2.types import tool as gcd_tool
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ToolsTransport
 from .transports.grpc import ToolsGrpcTransport
@@ -236,6 +234,28 @@ class ToolsClient(metaclass=ToolsClientMeta):
         return self._transport
 
     @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/tools/{tool}".format(
+            project=project,
+            location=location,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def secret_version_path(
         project: str,
         secret: str,
@@ -277,28 +297,6 @@ class ToolsClient(metaclass=ToolsClientMeta):
         """Parses a service path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def tool_path(
-        project: str,
-        location: str,
-        tool: str,
-    ) -> str:
-        """Returns a fully-qualified tool string."""
-        return "projects/{project}/locations/{location}/tools/{tool}".format(
-            project=project,
-            location=location,
-            tool=tool,
-        )
-
-    @staticmethod
-    def parse_tool_path(path: str) -> Dict[str, str]:
-        """Parses a tool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

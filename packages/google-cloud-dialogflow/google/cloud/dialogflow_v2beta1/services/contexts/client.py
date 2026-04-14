@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,12 +62,11 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.contexts import pagers
 from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import context as gcd_context
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ContextsTransport
 from .transports.grpc import ContextsGrpcTransport
@@ -779,10 +777,10 @@ class ContextsClient(metaclass=ContextsClientMeta):
                 Required. The session to list all contexts from.
                 Supported formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -910,10 +908,10 @@ class ContextsClient(metaclass=ContextsClientMeta):
             name (str):
                 Required. The name of the context. Supported formats:
 
-                - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -1049,10 +1047,10 @@ class ContextsClient(metaclass=ContextsClientMeta):
                 Required. The session to create a context for. Supported
                 formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -1322,10 +1320,10 @@ class ContextsClient(metaclass=ContextsClientMeta):
                 Required. The name of the context to delete. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -1428,10 +1426,10 @@ class ContextsClient(metaclass=ContextsClientMeta):
                 Required. The name of the session to delete all contexts
                 from. Supported formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified we

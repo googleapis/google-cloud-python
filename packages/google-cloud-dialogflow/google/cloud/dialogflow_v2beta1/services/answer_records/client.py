@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,12 +61,11 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.answer_records import pagers
 from google.cloud.dialogflow_v2beta1.types import answer_record
 from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnswerRecordsTransport
 from .transports.grpc import AnswerRecordsGrpcTransport
@@ -232,6 +230,76 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def app_path(
+        project: str,
+        location: str,
+        app: str,
+    ) -> str:
+        """Returns a fully-qualified app string."""
+        return "projects/{project}/locations/{location}/apps/{app}".format(
+            project=project,
+            location=location,
+            app=app,
+        )
+
+    @staticmethod
+    def parse_app_path(path: str) -> Dict[str, str]:
+        """Parses a app path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def ces_tool_path(
+        project: str,
+        location: str,
+        app: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified ces_tool string."""
+        return "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+            project=project,
+            location=location,
+            app=app,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_ces_tool_path(path: str) -> Dict[str, str]:
+        """Parses a ces_tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def toolset_path(
+        project: str,
+        location: str,
+        app: str,
+        toolset: str,
+    ) -> str:
+        """Returns a fully-qualified toolset string."""
+        return "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+
+    @staticmethod
+    def parse_toolset_path(path: str) -> Dict[str, str]:
+        """Parses a toolset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/toolsets/(?P<toolset>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def answer_record_path(
@@ -869,13 +937,13 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
                    Currently, answer record includes:
 
-                   - human agent assistant article suggestion
-                   - human agent assistant faq article
+                   -  human agent assistant article suggestion
+                   -  human agent assistant faq article
 
                    It doesn't include:
 
-                   - DetectIntent intent matching
-                   - DetectIntent knowledge
+                   -  DetectIntent intent matching
+                   -  DetectIntent knowledge
 
                    Answer records are not related to the conversation
                    history in the Dialogflow Console. A Record is
@@ -1128,13 +1196,13 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
                    Currently, answer record includes:
 
-                   - human agent assistant article suggestion
-                   - human agent assistant faq article
+                   -  human agent assistant article suggestion
+                   -  human agent assistant faq article
 
                    It doesn't include:
 
-                   - DetectIntent intent matching
-                   - DetectIntent knowledge
+                   -  DetectIntent intent matching
+                   -  DetectIntent knowledge
 
                    Answer records are not related to the conversation
                    history in the Dialogflow Console. A Record is

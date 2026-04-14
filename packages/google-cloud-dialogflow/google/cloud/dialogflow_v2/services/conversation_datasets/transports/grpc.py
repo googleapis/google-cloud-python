@@ -26,14 +26,13 @@ import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-
 from google.cloud.dialogflow_v2.types import conversation_dataset
 from google.cloud.dialogflow_v2.types import (
     conversation_dataset as gcd_conversation_dataset,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, ConversationDatasetsTransport
 
@@ -366,10 +365,10 @@ class ConversationDatasetsGrpcTransport(ConversationDatasetsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
-        - ``response``:
-          [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
+        -  ``metadata``:
+           [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
+        -  ``response``:
+           [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
 
         Returns:
             Callable[[~.CreateConversationDatasetRequest],
@@ -468,10 +467,10 @@ class ConversationDatasetsGrpcTransport(ConversationDatasetsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.DeleteConversationDatasetRequest],
@@ -510,10 +509,10 @@ class ConversationDatasetsGrpcTransport(ConversationDatasetsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
-        - ``response``:
-          [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
+        -  ``metadata``:
+           [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
+        -  ``response``:
+           [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
 
         Returns:
             Callable[[~.ImportConversationDataRequest],

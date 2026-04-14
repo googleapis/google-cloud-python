@@ -44,11 +44,11 @@ async def sample_train_agent():
     )
 
     # Make the request
-    operation = client.train_agent(request=request)
+    operation = await client.train_agent(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

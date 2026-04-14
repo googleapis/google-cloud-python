@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -45,12 +44,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.answer_records import pagers
 from google.cloud.dialogflow_v2.types import answer_record
 from google.cloud.dialogflow_v2.types import answer_record as gcd_answer_record
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import AnswerRecordsClient
 from .transports.base import DEFAULT_CLIENT_INFO, AnswerRecordsTransport
@@ -80,6 +78,12 @@ class AnswerRecordsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = AnswerRecordsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AnswerRecordsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(AnswerRecordsClient.app_path)
+    parse_app_path = staticmethod(AnswerRecordsClient.parse_app_path)
+    ces_tool_path = staticmethod(AnswerRecordsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(AnswerRecordsClient.parse_ces_tool_path)
+    toolset_path = staticmethod(AnswerRecordsClient.toolset_path)
+    parse_toolset_path = staticmethod(AnswerRecordsClient.parse_toolset_path)
     answer_record_path = staticmethod(AnswerRecordsClient.answer_record_path)
     parse_answer_record_path = staticmethod(
         AnswerRecordsClient.parse_answer_record_path
@@ -90,15 +94,9 @@ class AnswerRecordsAsyncClient:
     parse_intent_path = staticmethod(AnswerRecordsClient.parse_intent_path)
     tool_path = staticmethod(AnswerRecordsClient.tool_path)
     parse_tool_path = staticmethod(AnswerRecordsClient.parse_tool_path)
-    common_billing_account_path = staticmethod(
-        AnswerRecordsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AnswerRecordsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(AnswerRecordsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AnswerRecordsClient.parse_common_folder_path
+    common_project_path = staticmethod(AnswerRecordsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        AnswerRecordsClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         AnswerRecordsClient.common_organization_path
@@ -106,9 +104,15 @@ class AnswerRecordsAsyncClient:
     parse_common_organization_path = staticmethod(
         AnswerRecordsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(AnswerRecordsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AnswerRecordsClient.parse_common_project_path
+    common_folder_path = staticmethod(AnswerRecordsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        AnswerRecordsClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        AnswerRecordsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AnswerRecordsClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(AnswerRecordsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -506,13 +510,13 @@ class AnswerRecordsAsyncClient:
 
                    Currently, answer record includes:
 
-                   - human agent assistant article suggestion
-                   - human agent assistant faq article
+                   -  human agent assistant article suggestion
+                   -  human agent assistant faq article
 
                    It doesn't include:
 
-                   - DetectIntent intent matching
-                   - DetectIntent knowledge
+                   -  DetectIntent intent matching
+                   -  DetectIntent knowledge
 
                    Answer records are not related to the conversation
                    history in the Dialogflow Console. A Record is

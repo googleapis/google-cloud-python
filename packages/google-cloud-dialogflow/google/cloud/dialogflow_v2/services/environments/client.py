@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,11 +61,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.environments import pagers
 from google.cloud.dialogflow_v2.types import environment, fulfillment
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
 from .transports.grpc import EnvironmentsGrpcTransport
@@ -808,8 +806,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 Required. The agent to list all environments from.
                 Format:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -951,10 +949,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -1055,10 +1053,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -1170,10 +1168,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments

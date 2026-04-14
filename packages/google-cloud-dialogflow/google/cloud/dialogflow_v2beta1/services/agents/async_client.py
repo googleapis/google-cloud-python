@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,12 +47,11 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.agents import pagers
 from google.cloud.dialogflow_v2beta1.types import agent, validation_result
 from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import AgentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, AgentsTransport
@@ -85,18 +83,18 @@ class AgentsAsyncClient:
 
     agent_path = staticmethod(AgentsClient.agent_path)
     parse_agent_path = staticmethod(AgentsClient.parse_agent_path)
-    common_billing_account_path = staticmethod(AgentsClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(
-        AgentsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(AgentsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(AgentsClient.parse_common_folder_path)
+    common_project_path = staticmethod(AgentsClient.common_project_path)
+    parse_common_project_path = staticmethod(AgentsClient.parse_common_project_path)
     common_organization_path = staticmethod(AgentsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         AgentsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(AgentsClient.common_project_path)
-    parse_common_project_path = staticmethod(AgentsClient.parse_common_project_path)
+    common_folder_path = staticmethod(AgentsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(AgentsClient.parse_common_folder_path)
+    common_billing_account_path = staticmethod(AgentsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(
+        AgentsClient.parse_common_billing_account_path
+    )
     common_location_path = staticmethod(AgentsClient.common_location_path)
     parse_common_location_path = staticmethod(AgentsClient.parse_common_location_path)
 
@@ -789,10 +787,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -819,11 +817,11 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.train_agent(request=request)
+                operation = await client.train_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -937,10 +935,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
 
         .. code-block:: python
 
@@ -963,11 +961,11 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_agent(request=request)
+                operation = await client.export_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1084,10 +1082,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when importing is complete, not when
         it is done training.
@@ -1118,11 +1116,11 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_agent(request=request)
+                operation = await client.import_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1220,10 +1218,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when restoring is complete, not when
         it is done training.
@@ -1254,11 +1252,11 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_agent(request=request)
+                operation = await client.restore_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

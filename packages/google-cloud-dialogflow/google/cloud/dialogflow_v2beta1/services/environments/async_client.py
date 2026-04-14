@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -45,11 +44,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.environments import pagers
 from google.cloud.dialogflow_v2beta1.types import environment, fulfillment
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import EnvironmentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
@@ -85,21 +83,21 @@ class EnvironmentsAsyncClient:
     parse_fulfillment_path = staticmethod(EnvironmentsClient.parse_fulfillment_path)
     version_path = staticmethod(EnvironmentsClient.version_path)
     parse_version_path = staticmethod(EnvironmentsClient.parse_version_path)
+    common_project_path = staticmethod(EnvironmentsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        EnvironmentsClient.parse_common_project_path
+    )
+    common_organization_path = staticmethod(EnvironmentsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        EnvironmentsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(EnvironmentsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(EnvironmentsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         EnvironmentsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         EnvironmentsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(EnvironmentsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(EnvironmentsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(EnvironmentsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        EnvironmentsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(EnvironmentsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        EnvironmentsClient.parse_common_project_path
     )
     common_location_path = staticmethod(EnvironmentsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -346,8 +344,8 @@ class EnvironmentsAsyncClient:
                 Required. The agent to list all environments from.
                 Format:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -492,10 +490,10 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -598,10 +596,10 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -714,10 +712,10 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments

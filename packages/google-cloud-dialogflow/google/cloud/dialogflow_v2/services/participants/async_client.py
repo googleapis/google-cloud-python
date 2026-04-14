@@ -38,9 +38,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,12 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.participants import pagers
 from google.cloud.dialogflow_v2.types import participant, session
 from google.cloud.dialogflow_v2.types import participant as gcd_participant
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ParticipantsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ParticipantsTransport
@@ -83,6 +81,12 @@ class ParticipantsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ParticipantsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ParticipantsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(ParticipantsClient.app_path)
+    parse_app_path = staticmethod(ParticipantsClient.parse_app_path)
+    ces_tool_path = staticmethod(ParticipantsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(ParticipantsClient.parse_ces_tool_path)
+    toolset_path = staticmethod(ParticipantsClient.toolset_path)
+    parse_toolset_path = staticmethod(ParticipantsClient.parse_toolset_path)
     answer_record_path = staticmethod(ParticipantsClient.answer_record_path)
     parse_answer_record_path = staticmethod(ParticipantsClient.parse_answer_record_path)
     context_path = staticmethod(ParticipantsClient.context_path)
@@ -93,29 +97,29 @@ class ParticipantsAsyncClient:
     parse_message_path = staticmethod(ParticipantsClient.parse_message_path)
     participant_path = staticmethod(ParticipantsClient.participant_path)
     parse_participant_path = staticmethod(ParticipantsClient.parse_participant_path)
-    phrase_set_path = staticmethod(ParticipantsClient.phrase_set_path)
-    parse_phrase_set_path = staticmethod(ParticipantsClient.parse_phrase_set_path)
     session_entity_type_path = staticmethod(ParticipantsClient.session_entity_type_path)
     parse_session_entity_type_path = staticmethod(
         ParticipantsClient.parse_session_entity_type_path
     )
     tool_path = staticmethod(ParticipantsClient.tool_path)
     parse_tool_path = staticmethod(ParticipantsClient.parse_tool_path)
+    phrase_set_path = staticmethod(ParticipantsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(ParticipantsClient.parse_phrase_set_path)
+    common_project_path = staticmethod(ParticipantsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ParticipantsClient.parse_common_project_path
+    )
+    common_organization_path = staticmethod(ParticipantsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        ParticipantsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(ParticipantsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(ParticipantsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         ParticipantsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         ParticipantsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(ParticipantsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(ParticipantsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(ParticipantsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        ParticipantsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(ParticipantsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ParticipantsClient.parse_common_project_path
     )
     common_location_path = staticmethod(ParticipantsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -1045,9 +1049,9 @@ class ParticipantsAsyncClient:
                    to continue with Speech recognition. However, note
                    that:
 
-                   - Dialogflow will bill you for the audio so far.
-                   - Dialogflow discards all Speech recognition results
-                     in favor of the text input.
+                   -  Dialogflow will bill you for the audio so far.
+                   -  Dialogflow discards all Speech recognition results
+                      in favor of the text input.
 
                 3. If
                    [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]

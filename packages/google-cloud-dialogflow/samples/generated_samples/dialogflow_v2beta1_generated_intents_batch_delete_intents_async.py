@@ -48,11 +48,11 @@ async def sample_batch_delete_intents():
     )
 
     # Make the request
-    operation = client.batch_delete_intents(request=request)
+    operation = await client.batch_delete_intents(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

@@ -27,12 +27,11 @@ import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.dialogflow_v2.types import sip_trunk
+from google.cloud.dialogflow_v2.types import sip_trunk as gcd_sip_trunk
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-
-from google.cloud.dialogflow_v2.types import sip_trunk
-from google.cloud.dialogflow_v2.types import sip_trunk as gcd_sip_trunk
 
 from .base import DEFAULT_CLIENT_INFO, SipTrunksTransport
 

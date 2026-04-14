@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -49,12 +48,11 @@ import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.intents import pagers
 from google.cloud.dialogflow_v2.types import context, intent
 from google.cloud.dialogflow_v2.types import intent as gcd_intent
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import IntentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, IntentsTransport
@@ -86,20 +84,20 @@ class IntentsAsyncClient:
     parse_context_path = staticmethod(IntentsClient.parse_context_path)
     intent_path = staticmethod(IntentsClient.intent_path)
     parse_intent_path = staticmethod(IntentsClient.parse_intent_path)
+    common_project_path = staticmethod(IntentsClient.common_project_path)
+    parse_common_project_path = staticmethod(IntentsClient.parse_common_project_path)
+    common_organization_path = staticmethod(IntentsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        IntentsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(IntentsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(IntentsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         IntentsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         IntentsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(IntentsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(IntentsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(IntentsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        IntentsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(IntentsClient.common_project_path)
-    parse_common_project_path = staticmethod(IntentsClient.parse_common_project_path)
     common_location_path = staticmethod(IntentsClient.common_location_path)
     parse_common_location_path = staticmethod(IntentsClient.parse_common_location_path)
 
@@ -1001,10 +999,10 @@ class IntentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1032,11 +1030,11 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_update_intents(request=request)
+                operation = await client.batch_update_intents(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1163,10 +1161,10 @@ class IntentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1197,11 +1195,11 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_intents(request=request)
+                operation = await client.batch_delete_intents(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

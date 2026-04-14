@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -65,14 +64,13 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.conversation_models import pagers
 from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 from .transports.grpc import ConversationModelsGrpcTransport
@@ -827,10 +825,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
-        - ``response``:
-          [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
+        -  ``metadata``:
+           [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
+        -  ``response``:
+           [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
 
         .. code-block:: python
 
@@ -1212,10 +1210,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1358,10 +1356,10 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1474,18 +1472,18 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         r"""Undeploys a model. If the model is not deployed this method has
         no effect. If the model is currently being used:
 
-        - For article suggestion, article suggestion will fallback to
-          the default model if model is undeployed.
+        -  For article suggestion, article suggestion will fallback to
+           the default model if model is undeployed.
 
         This method is a `long-running
         operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 

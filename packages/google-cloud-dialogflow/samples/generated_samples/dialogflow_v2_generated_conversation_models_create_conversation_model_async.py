@@ -48,11 +48,11 @@ async def sample_create_conversation_model():
     )
 
     # Make the request
-    operation = client.create_conversation_model(request=request)
+    operation = await client.create_conversation_model(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

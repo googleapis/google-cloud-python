@@ -16,7 +16,6 @@
 import sys
 
 import google.api_core as api_core
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 __version__ = package_version.__version__
@@ -105,6 +104,8 @@ from .types.audio_config import (
     TelephonyDtmfEvents,
     VoiceSelectionParams,
 )
+from .types.ces_app import CesAppSpec
+from .types.ces_tool import CesToolSpec
 from .types.context import (
     Context,
     CreateContextRequest,
@@ -136,6 +137,7 @@ from .types.conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
     SearchKnowledgeAnswer,
+    SearchKnowledgeDebugInfo,
     SearchKnowledgeRequest,
     SearchKnowledgeResponse,
     SuggestConversationSummaryRequest,
@@ -290,15 +292,18 @@ from .types.participant import (
     CompileSuggestionRequest,
     CompileSuggestionResponse,
     CreateParticipantRequest,
+    DatastoreResponseReason,
     DialogflowAssistAnswer,
     DtmfParameters,
     FaqAnswer,
     GenerateSuggestionsResponse,
     GetParticipantRequest,
+    IngestedContextReferenceDebugInfo,
     InputTextConfig,
     IntentInput,
     IntentSuggestion,
     KnowledgeAssistAnswer,
+    KnowledgeAssistDebugInfo,
     ListParticipantsRequest,
     ListParticipantsResponse,
     ListSuggestionsRequest,
@@ -308,6 +313,7 @@ from .types.participant import (
     OutputAudio,
     Participant,
     ResponseMessage,
+    ServiceLatency,
     SmartReplyAnswer,
     StreamingAnalyzeContentRequest,
     StreamingAnalyzeContentResponse,
@@ -380,6 +386,7 @@ from .types.tool import (
     UpdateToolRequest,
 )
 from .types.tool_call import ToolCall, ToolCallResult
+from .types.toolset import ToolsetTool
 from .types.validation_result import ValidationError, ValidationResult
 from .types.version import (
     CreateVersionRequest,
@@ -541,6 +548,8 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "BidiStreamingAnalyzeContentRequest",
     "BidiStreamingAnalyzeContentResponse",
+    "CesAppSpec",
+    "CesToolSpec",
     "ClearSuggestionFeatureConfigOperationMetadata",
     "ClearSuggestionFeatureConfigRequest",
     "CloudConversationDebuggingInfo",
@@ -574,6 +583,7 @@ __all__ = (
     "CreateToolRequest",
     "CreateVersionRequest",
     "CustomPronunciationParams",
+    "DatastoreResponseReason",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
@@ -662,6 +672,7 @@ __all__ = (
     "InferenceParameter",
     "IngestContextReferencesRequest",
     "IngestContextReferencesResponse",
+    "IngestedContextReferenceDebugInfo",
     "InitializeEncryptionSpecMetadata",
     "InitializeEncryptionSpecRequest",
     "InitializeEncryptionSpecResponse",
@@ -675,6 +686,7 @@ __all__ = (
     "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeAssistAnswer",
+    "KnowledgeAssistDebugInfo",
     "KnowledgeBase",
     "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
@@ -739,11 +751,13 @@ __all__ = (
     "SearchAgentsRequest",
     "SearchAgentsResponse",
     "SearchKnowledgeAnswer",
+    "SearchKnowledgeDebugInfo",
     "SearchKnowledgeRequest",
     "SearchKnowledgeResponse",
     "Sentiment",
     "SentimentAnalysisRequestConfig",
     "SentimentAnalysisResult",
+    "ServiceLatency",
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionsClient",
@@ -794,6 +808,7 @@ __all__ = (
     "ToolCall",
     "ToolCallResult",
     "ToolsClient",
+    "ToolsetTool",
     "TrainAgentRequest",
     "TriggerEvent",
     "UndeletePhoneNumberRequest",

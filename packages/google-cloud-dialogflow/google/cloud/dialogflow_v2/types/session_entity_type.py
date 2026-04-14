@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2.types import entity_type
 
 __protobuf__ = proto.module(

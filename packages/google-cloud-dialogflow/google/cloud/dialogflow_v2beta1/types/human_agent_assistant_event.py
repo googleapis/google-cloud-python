@@ -18,7 +18,6 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 
 __protobuf__ = proto.module(

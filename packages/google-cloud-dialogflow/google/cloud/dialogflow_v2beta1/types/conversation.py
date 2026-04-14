@@ -20,7 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
@@ -51,6 +50,7 @@ __protobuf__ = proto.module(
         "GenerateStatelessSuggestionRequest",
         "GenerateStatelessSuggestionResponse",
         "SearchKnowledgeRequest",
+        "SearchKnowledgeDebugInfo",
         "SearchKnowledgeResponse",
         "SearchKnowledgeAnswer",
         "GenerateSuggestionsRequest",
@@ -108,9 +108,18 @@ class Conversation(proto.Message):
         telephony_connection_info (google.cloud.dialogflow_v2beta1.types.Conversation.TelephonyConnectionInfo):
             Output only. The telephony connection
             information.
+        initial_conversation_profile (google.cloud.dialogflow_v2beta1.types.ConversationProfile):
+            Optional. Output only. The initial
+            conversation profile to be used to configure
+            this conversation, which is a copy of the
+            conversation profile config read at conversation
+            creation time.
         ingested_context_references (MutableMapping[str, google.cloud.dialogflow_v2beta1.types.Conversation.ContextReference]):
             Output only. The context reference updates
             provided by external systems.
+        initial_generator_contexts (MutableMapping[str, google.cloud.dialogflow_v2beta1.types.Conversation.GeneratorContext]):
+            Output only. A map with generator name as key
+            and generator context as value.
     """
 
     class LifecycleState(proto.Enum):
@@ -347,6 +356,48 @@ class Conversation(proto.Message):
             message=timestamp_pb2.Timestamp,
         )
 
+    class GeneratorContext(proto.Message):
+        r"""Represents the context of a generator.
+
+        Attributes:
+            generator_type (google.cloud.dialogflow_v2beta1.types.Conversation.GeneratorContext.GeneratorType):
+                Output only. The type of the generator.
+        """
+
+        class GeneratorType(proto.Enum):
+            r"""The available generator types.
+
+            Values:
+                GENERATOR_TYPE_UNSPECIFIED (0):
+                    Unspecified generator type.
+                FREE_FORM (1):
+                    Free form generator type.
+                AGENT_COACHING (2):
+                    Agent coaching generator type.
+                SUMMARIZATION (3):
+                    Summarization generator type.
+                TRANSLATION (4):
+                    Translation generator type.
+                AGENT_FEEDBACK (5):
+                    Agent feedback generator type.
+                CUSTOMER_MESSAGE_GENERATION (6):
+                    Customer message generation generator type.
+            """
+
+            GENERATOR_TYPE_UNSPECIFIED = 0
+            FREE_FORM = 1
+            AGENT_COACHING = 2
+            SUMMARIZATION = 3
+            TRANSLATION = 4
+            AGENT_FEEDBACK = 5
+            CUSTOMER_MESSAGE_GENERATION = 6
+
+        generator_type: "Conversation.GeneratorContext.GeneratorType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Conversation.GeneratorContext.GeneratorType",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -385,11 +436,24 @@ class Conversation(proto.Message):
         number=10,
         message=TelephonyConnectionInfo,
     )
+    initial_conversation_profile: gcd_conversation_profile.ConversationProfile = (
+        proto.Field(
+            proto.MESSAGE,
+            number=15,
+            message=gcd_conversation_profile.ConversationProfile,
+        )
+    )
     ingested_context_references: MutableMapping[str, ContextReference] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=17,
         message=ContextReference,
+    )
+    initial_generator_contexts: MutableMapping[str, GeneratorContext] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=18,
+        message=GeneratorContext,
     )
 
 
@@ -838,6 +902,9 @@ class SuggestConversationSummaryResponse(proto.Message):
                 sections. The key is the section's name and the
                 value is the section's content. There is no
                 specific format for the key or value.
+            sorted_text_sections (MutableSequence[google.cloud.dialogflow_v2beta1.types.SuggestConversationSummaryResponse.Summary.SummarySection]):
+                Same as text_sections, but in an order that is consistent
+                with the order of the sections in the generator.
             answer_record (str):
                 The name of the answer record. Format:
 
@@ -849,6 +916,25 @@ class SuggestConversationSummaryResponse(proto.Message):
                 was not used to generate this summary.
         """
 
+        class SummarySection(proto.Message):
+            r"""A component of the generated summary.
+
+            Attributes:
+                section (str):
+                    Output only. Name of the section.
+                summary (str):
+                    Output only. Summary text for the section.
+            """
+
+            section: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            summary: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
         text: str = proto.Field(
             proto.STRING,
             number=1,
@@ -857,6 +943,13 @@ class SuggestConversationSummaryResponse(proto.Message):
             proto.STRING,
             proto.STRING,
             number=4,
+        )
+        sorted_text_sections: MutableSequence[
+            "SuggestConversationSummaryResponse.Summary.SummarySection"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="SuggestConversationSummaryResponse.Summary.SummarySection",
         )
         answer_record: str = proto.Field(
             proto.STRING,
@@ -1278,11 +1371,11 @@ class SearchKnowledgeRequest(proto.Message):
                             The syntax and supported fields are the same as a filter
                             expression. Examples:
 
-                            - To boost documents with document ID "doc_1" or "doc_2",
-                              and color "Red" or "Blue":
+                            -  To boost documents with document ID "doc_1" or "doc_2",
+                               and color "Red" or "Blue":
 
-                              - (id: ANY("doc_1", "doc_2")) AND (color:
-                                ANY("Red","Blue"))
+                               -  (id: ANY("doc_1", "doc_2")) AND (color:
+                                  ANY("Red","Blue"))
                         boost (float):
                             Optional. Strength of the condition boost, which should be
                             in [-1, 1]. Negative boost means demotion. Default is 0.0.
@@ -1549,6 +1642,75 @@ class SearchKnowledgeRequest(proto.Message):
     )
 
 
+class SearchKnowledgeDebugInfo(proto.Message):
+    r"""Debug information related to SearchKnowledge feature.
+
+    Attributes:
+        datastore_response_reason (google.cloud.dialogflow_v2beta1.types.DatastoreResponseReason):
+            Response reason from datastore which
+            indicates data serving status or answer quality
+            degradation.
+        search_knowledge_behavior (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeDebugInfo.SearchKnowledgeBehavior):
+            Configured behaviors for SearchKnowledge.
+        ingested_context_reference_debug_info (google.cloud.dialogflow_v2beta1.types.IngestedContextReferenceDebugInfo):
+            Information about parameters ingested for
+            search knowledge.
+        service_latency (google.cloud.dialogflow_v2beta1.types.ServiceLatency):
+            The latency of the service.
+    """
+
+    class SearchKnowledgeBehavior(proto.Message):
+        r"""Configured behaviors for SearchKnowledge.
+
+        Attributes:
+            answer_generation_rewriter_on (bool):
+                Whether data store agent rewriter was turned
+                on for the request.
+            end_user_metadata_included (bool):
+                Whether end_user_metadata is included in the data store
+                agent call.
+            third_party_connector_allowed (bool):
+                This field indicates whether third party
+                connectors are enabled for the project. Note
+                that this field only indicates if the project is
+                allowlisted for connectors.
+        """
+
+        answer_generation_rewriter_on: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        end_user_metadata_included: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        third_party_connector_allowed: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+
+    datastore_response_reason: participant.DatastoreResponseReason = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=participant.DatastoreResponseReason,
+    )
+    search_knowledge_behavior: SearchKnowledgeBehavior = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=SearchKnowledgeBehavior,
+    )
+    ingested_context_reference_debug_info: participant.IngestedContextReferenceDebugInfo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=participant.IngestedContextReferenceDebugInfo,
+    )
+    service_latency: participant.ServiceLatency = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=participant.ServiceLatency,
+    )
+
+
 class SearchKnowledgeResponse(proto.Message):
     r"""The response message for
     [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
@@ -1560,6 +1722,8 @@ class SearchKnowledgeResponse(proto.Message):
             confidence.
         rewritten_query (str):
             The rewritten query used to search knowledge.
+        search_knowledge_debug_info (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeDebugInfo):
+            Debug info for SearchKnowledge.
     """
 
     answers: MutableSequence["SearchKnowledgeAnswer"] = proto.RepeatedField(
@@ -1570,6 +1734,11 @@ class SearchKnowledgeResponse(proto.Message):
     rewritten_query: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    search_knowledge_debug_info: "SearchKnowledgeDebugInfo" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SearchKnowledgeDebugInfo",
     )
 
 

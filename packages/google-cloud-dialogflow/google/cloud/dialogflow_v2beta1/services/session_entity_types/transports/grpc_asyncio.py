@@ -29,15 +29,14 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-from grpc.experimental import aio  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import session_entity_type
 from google.cloud.dialogflow_v2beta1.types import (
     session_entity_type as gcd_session_entity_type,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+from grpc.experimental import aio  # type: ignore
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
 from .grpc import SessionEntityTypesGrpcTransport

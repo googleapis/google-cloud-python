@@ -26,14 +26,13 @@ import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-
 from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 
@@ -363,10 +362,10 @@ class ConversationModelsGrpcTransport(ConversationModelsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
-        - ``response``:
-          [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
+        -  ``metadata``:
+           [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
+        -  ``response``:
+           [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
 
         Returns:
             Callable[[~.CreateConversationModelRequest],
@@ -459,10 +458,10 @@ class ConversationModelsGrpcTransport(ConversationModelsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.DeleteConversationModelRequest],
@@ -500,10 +499,10 @@ class ConversationModelsGrpcTransport(ConversationModelsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.DeployConversationModelRequest],
@@ -534,18 +533,18 @@ class ConversationModelsGrpcTransport(ConversationModelsTransport):
         Undeploys a model. If the model is not deployed this method has
         no effect. If the model is currently being used:
 
-        - For article suggestion, article suggestion will fallback to
-          the default model if model is undeployed.
+        -  For article suggestion, article suggestion will fallback to
+           the default model if model is undeployed.
 
         This method is a `long-running
         operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.UndeployConversationModelRequest],

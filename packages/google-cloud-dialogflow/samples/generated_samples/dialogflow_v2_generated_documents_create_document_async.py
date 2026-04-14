@@ -51,11 +51,11 @@ async def sample_create_document():
     )
 
     # Make the request
-    operation = client.create_document(request=request)
+    operation = await client.create_document(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

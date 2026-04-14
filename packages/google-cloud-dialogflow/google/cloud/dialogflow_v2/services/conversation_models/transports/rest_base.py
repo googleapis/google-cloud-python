@@ -18,14 +18,13 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
-
 from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
 
 from .base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 

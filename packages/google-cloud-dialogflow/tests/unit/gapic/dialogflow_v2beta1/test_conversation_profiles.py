@@ -62,10 +62,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-
 from google.cloud.dialogflow_v2beta1.services.conversation_profiles import (
     ConversationProfilesAsyncClient,
     ConversationProfilesClient,
@@ -81,6 +77,9 @@ from google.cloud.dialogflow_v2beta1.types import (
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1971,6 +1970,7 @@ def test_get_conversation_profile(request_type, transport: str = "grpc"):
         call.return_value = conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -1987,6 +1987,7 @@ def test_get_conversation_profile(request_type, transport: str = "grpc"):
     assert isinstance(response, conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -2127,6 +2128,7 @@ async def test_get_conversation_profile_async(
             conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -2144,6 +2146,7 @@ async def test_get_conversation_profile_async(
     assert isinstance(response, conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -2330,6 +2333,7 @@ def test_create_conversation_profile(request_type, transport: str = "grpc"):
         call.return_value = gcd_conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -2346,6 +2350,7 @@ def test_create_conversation_profile(request_type, transport: str = "grpc"):
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -2486,6 +2491,7 @@ async def test_create_conversation_profile_async(
             gcd_conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -2503,6 +2509,7 @@ async def test_create_conversation_profile_async(
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -2707,6 +2714,7 @@ def test_update_conversation_profile(request_type, transport: str = "grpc"):
         call.return_value = gcd_conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -2723,6 +2731,7 @@ def test_update_conversation_profile(request_type, transport: str = "grpc"):
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -2859,6 +2868,7 @@ async def test_update_conversation_profile_async(
             gcd_conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -2876,6 +2886,7 @@ async def test_update_conversation_profile_async(
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -5910,6 +5921,7 @@ async def test_get_conversation_profile_empty_call_grpc_asyncio():
             conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -5943,6 +5955,7 @@ async def test_create_conversation_profile_empty_call_grpc_asyncio():
             gcd_conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -5976,6 +5989,7 @@ async def test_update_conversation_profile_empty_call_grpc_asyncio():
             gcd_conversation_profile.ConversationProfile(
                 name="name_value",
                 display_name="display_name_value",
+                use_bidi_streaming=True,
                 language_code="language_code_value",
                 time_zone="time_zone_value",
                 security_settings="security_settings_value",
@@ -6265,6 +6279,7 @@ def test_get_conversation_profile_rest_call_success(request_type):
         return_value = conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -6286,6 +6301,7 @@ def test_get_conversation_profile_rest_call_success(request_type):
     assert isinstance(response, conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -6408,6 +6424,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "use_bidi_streaming": True,
         "automated_agent_config": {
             "agent": "agent_value",
             "session_ttl": {"seconds": 751, "nanos": 543},
@@ -6475,6 +6492,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {
@@ -6600,6 +6618,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
         return_value = gcd_conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -6621,6 +6640,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
@@ -6751,6 +6771,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "use_bidi_streaming": True,
         "automated_agent_config": {
             "agent": "agent_value",
             "session_ttl": {"seconds": 751, "nanos": 543},
@@ -6818,6 +6839,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {
@@ -6943,6 +6965,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
         return_value = gcd_conversation_profile.ConversationProfile(
             name="name_value",
             display_name="display_name_value",
+            use_bidi_streaming=True,
             language_code="language_code_value",
             time_zone="time_zone_value",
             security_settings="security_settings_value",
@@ -6964,6 +6987,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
     assert isinstance(response, gcd_conversation_profile.ConversationProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.use_bidi_streaming is True
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"

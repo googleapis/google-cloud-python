@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -64,9 +63,6 @@ _LOGGER = std_logging.getLogger(__name__)
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.generator_evaluations import pagers
 from google.cloud.dialogflow_v2beta1.types import (
     generator,
@@ -76,6 +72,8 @@ from google.cloud.dialogflow_v2beta1.types import (
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, GeneratorEvaluationsTransport
 from .transports.grpc import GeneratorEvaluationsGrpcTransport
@@ -238,6 +236,76 @@ class GeneratorEvaluationsClient(metaclass=GeneratorEvaluationsClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def app_path(
+        project: str,
+        location: str,
+        app: str,
+    ) -> str:
+        """Returns a fully-qualified app string."""
+        return "projects/{project}/locations/{location}/apps/{app}".format(
+            project=project,
+            location=location,
+            app=app,
+        )
+
+    @staticmethod
+    def parse_app_path(path: str) -> Dict[str, str]:
+        """Parses a app path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def ces_tool_path(
+        project: str,
+        location: str,
+        app: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified ces_tool string."""
+        return "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+            project=project,
+            location=location,
+            app=app,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_ces_tool_path(path: str) -> Dict[str, str]:
+        """Parses a ces_tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def toolset_path(
+        project: str,
+        location: str,
+        app: str,
+        toolset: str,
+    ) -> str:
+        """Returns a fully-qualified toolset string."""
+        return "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+
+    @staticmethod
+    def parse_toolset_path(path: str) -> Dict[str, str]:
+        """Parses a toolset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/toolsets/(?P<toolset>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def generator_path(

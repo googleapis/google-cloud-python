@@ -20,8 +20,12 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.types import agent_coaching_instruction
+from google.cloud.dialogflow_v2beta1.types import (
+    agent_coaching_instruction,
+    ces_app,
+    ces_tool,
+    toolset,
+)
 from google.cloud.dialogflow_v2beta1.types import tool_call as gcd_tool_call
 
 __protobuf__ = proto.module(
@@ -657,10 +661,10 @@ class Generator(proto.Message):
         published_model (str):
             Optional. The published Large Language Model name.
 
-            - To use the latest model version, specify the model name
-              without version number. Example: ``text-bison``
-            - To use a stable model version, specify the version number
-              as well. Example: ``text-bison@002``.
+            -  To use the latest model version, specify the model name
+               without version number. Example: ``text-bison``
+            -  To use a stable model version, specify the version number
+               as well. Example: ``text-bison@002``.
 
             This field is a member of `oneof`_ ``foundation_model``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -675,6 +679,15 @@ class Generator(proto.Message):
             Optional. Configuration for suggestion
             deduping. This is only applicable to AI Coach
             feature.
+        toolset_tools (MutableSequence[google.cloud.dialogflow_v2beta1.types.ToolsetTool]):
+            Optional. List of CES toolset specs that the
+            generator can choose from.
+        ces_tool_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.CesToolSpec]):
+            Optional. List of CES tool specs that the
+            generator can choose from.
+        ces_app_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.CesAppSpec]):
+            Optional. List of CES app specs that the
+            generator can choose from.
     """
 
     name: str = proto.Field(
@@ -736,6 +749,21 @@ class Generator(proto.Message):
         proto.MESSAGE,
         number=23,
         message="SuggestionDedupingConfig",
+    )
+    toolset_tools: MutableSequence[toolset.ToolsetTool] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message=toolset.ToolsetTool,
+    )
+    ces_tool_specs: MutableSequence[ces_tool.CesToolSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28,
+        message=ces_tool.CesToolSpec,
+    )
+    ces_app_specs: MutableSequence[ces_app.CesAppSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message=ces_app.CesAppSpec,
     )
 
 
@@ -1095,10 +1123,10 @@ class RaiSettings(proto.Message):
                 SENSITIVITY_LEVEL_UNSPECIFIED (0):
                     Default value. If unspecified, the default behavior is:
 
-                    - DANGEROUS_CONTENT: BLOCK_FEW
-                    - SEXUALLY_EXPLICIT: BLOCK_SOME
-                    - HARASSMENT: BLOCK_SOME
-                    - HATE_SPEECH: BLOCK_SOME
+                    -  DANGEROUS_CONTENT: BLOCK_FEW
+                    -  SEXUALLY_EXPLICIT: BLOCK_SOME
+                    -  HARASSMENT: BLOCK_SOME
+                    -  HATE_SPEECH: BLOCK_SOME
                 BLOCK_MOST (1):
                     Block most potentially sensitive responses.
                 BLOCK_SOME (2):

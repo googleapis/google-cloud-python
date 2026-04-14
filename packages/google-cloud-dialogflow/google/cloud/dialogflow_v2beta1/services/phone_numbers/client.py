@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,12 +61,12 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.dialogflow_v2beta1.services.phone_numbers import pagers
 from google.cloud.dialogflow_v2beta1.types import phone_number
 from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, PhoneNumbersTransport
 from .transports.grpc import PhoneNumbersGrpcTransport
@@ -249,6 +248,28 @@ class PhoneNumbersClient(metaclass=PhoneNumbersClientMeta):
         """Parses a phone_number path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/phoneNumbers/(?P<phone_number>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def sip_trunk_path(
+        project: str,
+        location: str,
+        siptrunk: str,
+    ) -> str:
+        """Returns a fully-qualified sip_trunk string."""
+        return "projects/{project}/locations/{location}/sipTrunks/{siptrunk}".format(
+            project=project,
+            location=location,
+            siptrunk=siptrunk,
+        )
+
+    @staticmethod
+    def parse_sip_trunk_path(path: str) -> Dict[str, str]:
+        """Parses a sip_trunk path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sipTrunks/(?P<siptrunk>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
