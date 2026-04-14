@@ -74,7 +74,7 @@ class Options:
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
             "gapic-version",  # A version string following https://peps.python.org/pep-0440
-            "resource-name-aliases",
+            "resource-name-alias",
         )
     )
 
@@ -191,14 +191,12 @@ class Options:
             proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
         
         resource_name_aliases = {}
-        resource_alias_strings = opts.pop("resource-name-aliases", None)
-        if resource_alias_strings:
+        for alias_mapping in opts.pop("resource-name-alias", []):
             try:
-                # Strip single quotes that survive the Bazel/Shell transition
-                raw_string = resource_alias_strings[-1].strip("'")
-                resource_name_aliases = json.loads(raw_string)
-            except json.JSONDecodeError as e:
-                warnings.warn(f"Failed to parse resource-name-aliases JSON: {e} from string: {resource_alias_strings[-1]}")
+                res_path, alias_name = alias_mapping.split(":", 1)
+                resource_name_aliases[res_path.strip()] = alias_name.strip()
+            except ValueError:
+                warnings.warn(f"Invalid format for resource-name-alias: '{alias_mapping}'. Expected format 'resource.path/Name:AliasName'")
         
         Options.resource_name_aliases_global = resource_name_aliases
 

@@ -2346,8 +2346,8 @@ class Service:
                     f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
                     f"both flatten to the exact same method name.\n"
                     f"To protect backward compatibility, explicitly alias one of these using "
-                    f"the `--resource-name-aliases` CLI parameter.\n"
-                    f"Example: --resource-name-aliases='{{\"{msg.resource_type_full_path}\": \"CustomName\"}}'\n"
+                    f"the `--resource-name-alias` CLI parameter.\n"
+                    f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
                 )
             seen_types[res_type] = msg
 
