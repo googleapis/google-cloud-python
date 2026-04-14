@@ -10,31 +10,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # 2. DISCOVERY: Find exactly what changed and output JSON
   discover:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.set-matrix.outputs.packages }}
+      packages: ${{ steps.changes.outputs.all_changed_files }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Needed to diff against main
-
-      - name: Calculate Changed Packages
-        id: set-matrix
-        run: |
-          # Find all modified directories inside packages/
-          CHANGED=$(git diff --name-only origin/main...HEAD | grep "^packages/" | cut -d/ -f2 | sort -u || true)
+          fetch-depth: 0
           
-          if [ -z "$CHANGED" ]; then
-            echo "packages=[]" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          # Convert bash list to JSON array using jq
-          JSON_ARRAY=$(jq -R -s -c 'split("\n")[:-1]' <<< "$CHANGED")
-          echo "Discovered packages: $JSON_ARRAY"
-          echo "packages=$JSON_ARRAY" >> $GITHUB_OUTPUT
+      - name: Detect Changed Packages
+        id: changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: packages/** # Only watch the packages directory
+          dir_names: true             # Return folder names, not files
+          dir_names_max_depth: 2      # Strip it down to just "google-cloud-storage"
+          json: true                  # Output a perfect JSON array for the matrix
+          escape_json: false
 
   # 3. EXECUTION: Native Fan-out Matrix
   unit-test:
