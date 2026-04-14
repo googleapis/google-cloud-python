@@ -1,0 +1,71 @@
+name: Next-Gen CI Prototype
+
+on:
+  pull_request:
+    branches: [ main ]
+
+# 1. CONCURRENCY: Stop burning money on abandoned commits
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # 2. DISCOVERY: Find exactly what changed and output JSON
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.set-matrix.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to diff against main
+
+      - name: Calculate Changed Packages
+        id: set-matrix
+        run: |
+          # Find all modified directories inside packages/
+          CHANGED=$(git diff --name-only origin/main...HEAD | grep "^packages/" | cut -d/ -f2 | sort -u || true)
+          
+          if [ -z "$CHANGED" ]; then
+            echo "packages=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Convert bash list to JSON array using jq
+          JSON_ARRAY=$(jq -R -s -c 'split("\n")[:-1]' <<< "$CHANGED")
+          echo "Discovered packages: $JSON_ARRAY"
+          echo "packages=$JSON_ARRAY" >> $GITHUB_OUTPUT
+
+  # 3. EXECUTION: Native Fan-out Matrix
+  unit-test:
+    needs: discover
+    if: ${{ needs.discover.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Don't kill the whole matrix if one package fails
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        # Risk-Tiering: Smoke test on presubmit to save money
+        python: ["3.11"] 
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      # 4. THE ENGINE SWAP: Rust-based uv instead of setup-python + pip
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: "packages/${{ matrix.package }}/setup.py"
+
+      - name: Execute Tests (High-Density)
+        # uvx downloads and runs nox in milliseconds without a global pip install
+        run: |
+          cd packages/${{ matrix.package }}
+          
+          # Force nox to use uv as its backend for lightning-fast venv creation
+          export VIRTUALENV_CREATOR=uv
+          
+          echo "Running targeted tests for ${{ matrix.package }} on Python ${{ matrix.python }}"
+          uvx nox -s unit-${{ matrix.python }}
