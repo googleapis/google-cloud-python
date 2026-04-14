@@ -22,7 +22,6 @@ if TYPE_CHECKING:
     import bigframes.series
 
 import dataclasses
-import functools
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -243,7 +242,6 @@ class UdfRoutine:
     # And this ref will be replaced with requirements rather to support lazy creation
     _udf_def: udf_def.BigqueryUdf
 
-    @functools.partial
     def __call__(self, *args, **kwargs):
         return self.func(*args, **kwargs)
 
