@@ -1,15 +1,21 @@
-name: Next-Gen CI Prototype
+name: Next-Gen CI Pipeline
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, preview ]
+  # Native Merge Queue support for O(1) batching
+  merge_group:
+    types: [checks_requested]
 
-# 1. CONCURRENCY: Stop burning money on abandoned commits
+# Stop burning money on abandoned iterative commits
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
+  # ==========================================
+  # 1. DISCOVERY ENGINE (The Router)
+  # ==========================================
   discover:
     runs-on: ubuntu-latest
     outputs:
@@ -23,45 +29,142 @@ jobs:
         id: changes
         uses: tj-actions/changed-files@v44
         with:
-          files: packages/** # Only watch the packages directory
-          dir_names: true               # Return folder names, not files
-          dir_names_max_depth: 2        # Output format: "packages/google-cloud-storage"
-          json: true                    # Output a perfect JSON array for the matrix
+          files: packages/**
+          dir_names: true               
+          dir_names_max_depth: 2        
+          json: true                    
           escape_json: false
 
-  # 3. EXECUTION: Native Fan-out Matrix
-  unit-test:
+  # ==========================================
+  # 2. STATIC ANALYSIS (Grouped for Speed)
+  # ==========================================
+  static-checks:
     needs: discover
     if: ${{ needs.discover.outputs.packages != '[]' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false # Don't kill the whole matrix if one package fails
+      fail-fast: false 
       matrix:
         package: ${{ fromJSON(needs.discover.outputs.packages) }}
-        # Risk-Tiering: Smoke test on presubmit to save money
-        python: ["3.11"] 
-    
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.14" 
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.package }}/setup.py"
 
-      # 4. THE ENGINE SWAP: Rust-based uv instead of setup-python + pip
-      - name: Install uv and Python
-        uses: astral-sh/setup-uv@v5
+      - name: Run Lint and MyPy
+        run: |
+          cd ${{ matrix.package }}
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          # Chaining sessions executes them in a single fast VM
+          uvx --with 'nox[uv]' nox -s lint mypy lint_setup_py
+
+  # ==========================================
+  # 3. DOCUMENTATION BUILD
+  # ==========================================
+  docs-build:
+    needs: discover
+    if: ${{ needs.discover.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.10"
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.package }}/setup.py"
+
+      - name: Build Docs and DocFX
+        run: |
+          cd ${{ matrix.package }}
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          uvx --with 'nox[uv]' nox -s docs docfx
+
+  # ==========================================
+  # 4. UNIT TESTS (The 2D Multiplier Matrix)
+  # ==========================================
+  unit-tests:
+    needs: discover
+    if: ${{ needs.discover.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
-          # Rely on the full path provided by tj-actions
           cache-dependency-glob: "${{ matrix.package }}/setup.py"
 
-      - name: Execute Tests (High-Density)
+      - name: Execute Unit Tests
         run: |
-          # Step into the exact directory output by the matrix
           cd ${{ matrix.package }}
-          
-          # Force Nox to natively use uv instead of the legacy virtualenv module
           export NOX_DEFAULT_VENV_BACKEND=uv
-          
-          echo "Running targeted tests for ${{ matrix.package }} on Python ${{ matrix.python }}"
-          
-          # Use uvx to run nox (with the uv plugin injected to guarantee compatibility)
           uvx --with 'nox[uv]' nox -s unit-${{ matrix.python }}
+
+  # ==========================================
+  # 5. SYSTEM TESTS
+  # ==========================================
+  system-tests:
+    needs: discover
+    if: ${{ needs.discover.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        python: ["3.11"] 
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.package }}/setup.py"
+
+      - name: Execute System Tests
+        env:
+          RUN_SYSTEM_TESTS: "true"
+        run: |
+          cd ${{ matrix.package }}
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          uvx --with 'nox[uv]' nox -s system
+
+  # ==========================================
+  # 6. THE GATEKEEPER (Status Check Rollup)
+  # ==========================================
+  presubmit-passed:
+    # Always runs so GitHub can definitively mark the PR as passed/failed
+    if: always() 
+    needs: 
+      - discover
+      - static-checks
+      - docs-build
+      - unit-tests
+      - system-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate Pipeline Status
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "::error::One or more required CI jobs failed or were cancelled."
+            exit 1
+          fi
+          
+          # If the router output was empty, it means no Python code changed.
+          if [[ "${{ needs.discover.outputs.packages }}" == "[]" ]]; then
+            echo "No Python packages changed. Safely bypassing execution."
+            exit 0
+          fi
+          
+          echo "All dynamically generated CI jobs completed successfully."
