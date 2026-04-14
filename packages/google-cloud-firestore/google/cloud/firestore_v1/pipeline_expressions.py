@@ -72,6 +72,11 @@ class Expression(ABC):
     together method calls to create complex expressions.
     """
 
+    # Controls whether expression methods (e.g., .add(), .multiply()) can be called on
+    # instances of this class or its subclasses. Set to False for non-computational 
+    # expressions like AliasedExpression.
+    _supports_expr_methods = True
+
     def __repr__(self):
         return f"{self.__class__.__name__}()"
 
@@ -113,6 +118,10 @@ class Expression(ABC):
             self.instance_func = instance_func
 
         def static_func(self, first_arg, *other_args, **kwargs):
+            if getattr(first_arg, "_supports_expr_methods", True) is False:
+                raise TypeError(
+                    f"Cannot call '{self.instance_func.__name__}' on {type(first_arg).__name__}."
+                )
             if not isinstance(first_arg, (Expression, str)):
                 raise TypeError(
                     f"'{self.instance_func.__name__}' must be called on an Expression or a string representing a field. got {type(first_arg)}."
@@ -128,6 +137,10 @@ class Expression(ABC):
             if instance is None:
                 return self.static_func
             else:
+                if getattr(instance, "_supports_expr_methods", True) is False:
+                    raise TypeError(
+                        f"Cannot call '{self.instance_func.__name__}' on {type(instance).__name__}."
+                    )
                 return self.instance_func.__get__(instance, owner)
 
     @expose_as_static
@@ -2714,10 +2727,14 @@ T = TypeVar("T", bound=Expression)
 
 class AliasedExpression(Selectable, Generic[T]):
     """Wraps an expression with an alias."""
+    _supports_expr_methods = False
 
     def __init__(self, expr: T, alias: str):
         self.expr = expr
         self.alias = alias
+
+    def as_(self, alias: str) -> "AliasedExpression":
+        raise TypeError("Cannot call as_() on an AliasedExpression. An alias can only be applied once.")
 
     def _to_map(self):
         return self.alias, self.expr._to_pb()
