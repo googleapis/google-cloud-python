@@ -71,7 +71,7 @@ class RequestsResumableUpload:
         content_type: Optional[str] = None,
         chunk_size: Optional[int] = None,
         deadline: Optional[datetime.datetime] = None,
-        headers: Optional[Sequence[Tuple[str, Union[str, bytes]]]] = None,
+        headers: Optional[Sequence[Tuple[str, str]]] = None,
         on_progress: Optional[Callable[[ResumableUploadStatus], None]] = None,
     ):
         """Initializes the RequestsResumableUpload.
@@ -96,10 +96,7 @@ class RequestsResumableUpload:
         self.size = size
         self.content_type = content_type
         self.deadline = deadline
-        self.extra_headers = {
-            k: v.decode("utf-8") if isinstance(v, bytes) else v
-            for k, v in (headers or [])
-        }
+        self.extra_headers = headers
         self.on_progress = on_progress
 
         if hasattr(stream, "tell"):
@@ -435,7 +432,7 @@ def make_resumable_upload(
     chunk_size: Optional[int] = None,
     request_retry: Optional[google.api_core.retry.Retry] = None,
     deadline: Optional[datetime.datetime] = None,
-    headers: Optional[Sequence[Tuple[str, Union[str, bytes]]]] = None,
+    headers: Optional[Sequence[Tuple[str, str]]] = None,
     on_progress: Optional[Callable[[ResumableUploadStatus], None]] = None,
 ) -> requests.Response:
     """Makes a resumable upload using synchronous I/O.
@@ -456,6 +453,7 @@ def make_resumable_upload(
     Returns:
         The final requests.Response object.
     """
+
     upload = RequestsResumableUpload(
         upload_url=upload_url,
         stream=stream,
