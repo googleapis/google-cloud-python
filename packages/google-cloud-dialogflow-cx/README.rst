@@ -3,8 +3,7 @@ Python Client for Dialogflow CX
 
 |stable| |pypi| |versions|
 
-`Dialogflow CX`_: Builds conversational interfaces (for example, chatbots, and voice-powered
-apps and devices).
+`Dialogflow CX`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
