@@ -32,4 +32,17 @@ NOX_FILE_ARG=""
 
 [[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
 
-python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG
+python3 -m pip install uv
+for attempt in 1 2 3; do
+  echo "Execution attempt $attempt of 3..."
+  if uvx --with 'nox[uv]' nox ${NOX_SESSION_ARG} $NOX_FILE_ARG; then
+    echo "Tests passed successfully!"
+    exit 0
+  fi
+  
+  echo "Tests failed. Backing off for 15 seconds..."
+  sleep 15
+done
+
+echo "Tests failed after 3 attempts. Hard failure."
+exit 1

@@ -117,6 +117,8 @@ system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
 packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
+declare -A pids
+
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
   \( -type d -wholename 'packages/*/tests/system' \) -o \
@@ -141,11 +143,30 @@ for path in `find 'packages' \
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
 
-  if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
+      echo ">>> Dispatching ${package_name} in the background <<<"
+      
+      # Execute inside an isolated subshell ( ) to prevent GCP credential collisions
+      (
+        run_package_test "$package_name"
+      ) &
+      
+      # Capture the PID of the subshell
+      pids["$package_name"]=$!
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
+
+echo "============================================================"
+echo "Waiting for all concurrent system tests to complete..."
+echo "============================================================"
+
+for package in "${!pids[@]}"; do
+  wait ${pids[$package]} || {
+    echo "ERROR: System tests failed for $package"
+    RETVAL=1
+  }
+done
+
 exit ${RETVAL}
