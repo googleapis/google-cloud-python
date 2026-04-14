@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,12 +45,11 @@ except AttributeError:  # pragma: NO COVER
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.contexts import pagers
 from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import context as gcd_context
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ContextsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ContextsTransport
@@ -83,20 +81,20 @@ class ContextsAsyncClient:
 
     context_path = staticmethod(ContextsClient.context_path)
     parse_context_path = staticmethod(ContextsClient.parse_context_path)
+    common_project_path = staticmethod(ContextsClient.common_project_path)
+    parse_common_project_path = staticmethod(ContextsClient.parse_common_project_path)
+    common_organization_path = staticmethod(ContextsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        ContextsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(ContextsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(ContextsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         ContextsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         ContextsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(ContextsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(ContextsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(ContextsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        ContextsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(ContextsClient.common_project_path)
-    parse_common_project_path = staticmethod(ContextsClient.parse_common_project_path)
     common_location_path = staticmethod(ContextsClient.common_location_path)
     parse_common_location_path = staticmethod(ContextsClient.parse_common_location_path)
 
@@ -340,10 +338,10 @@ class ContextsAsyncClient:
                 Required. The session to list all contexts from.
                 Supported formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -474,10 +472,10 @@ class ContextsAsyncClient:
             name (:class:`str`):
                 Required. The name of the context. Supported formats:
 
-                - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -616,10 +614,10 @@ class ContextsAsyncClient:
                 Required. The session to create a context for. Supported
                 formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -895,10 +893,10 @@ class ContextsAsyncClient:
                 Required. The name of the context to delete. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -1004,10 +1002,10 @@ class ContextsAsyncClient:
                 Required. The name of the session to delete all contexts
                 from. Supported formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified we

@@ -45,11 +45,11 @@ async def sample_export_agent():
     )
 
     # Make the request
-    operation = client.export_agent(request=request)
+    operation = await client.export_agent(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

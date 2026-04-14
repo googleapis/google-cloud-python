@@ -45,9 +45,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -64,11 +63,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.types import audio_config, session
 from google.cloud.dialogflow_v2.types import session as gcd_session
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
 from .transports.grpc import SessionsGrpcTransport
@@ -276,28 +274,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def phrase_set_path(
-        project: str,
-        location: str,
-        phrase_set: str,
-    ) -> str:
-        """Returns a fully-qualified phrase_set string."""
-        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
-            project=project,
-            location=location,
-            phrase_set=phrase_set,
-        )
-
-    @staticmethod
-    def parse_phrase_set_path(path: str) -> Dict[str, str]:
-        """Parses a phrase_set path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def session_path(
         project: str,
         session: str,
@@ -334,6 +310,28 @@ class SessionsClient(metaclass=SessionsClientMeta):
         """Parses a session_entity_type path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/entityTypes/(?P<entity_type>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def phrase_set_path(
+        project: str,
+        location: str,
+        phrase_set: str,
+    ) -> str:
+        """Returns a fully-qualified phrase_set string."""
+        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+            project=project,
+            location=location,
+            phrase_set=phrase_set,
+        )
+
+    @staticmethod
+    def parse_phrase_set_path(path: str) -> Dict[str, str]:
+        """Parses a phrase_set path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1078,12 +1076,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
                    However, note that:
 
-                   - Dialogflow will bill you for the audio duration so
-                     far.
-                   - Dialogflow discards all Speech recognition results
-                     in favor of the input text.
-                   - Dialogflow will use the language code from the
-                     first message.
+                   -  Dialogflow will bill you for the audio duration so
+                      far.
+                   -  Dialogflow discards all Speech recognition results
+                      in favor of the input text.
+                   -  Dialogflow will use the language code from the
+                      first message.
 
                 After you sent all input, you must half-close or abort
                 the request stream.

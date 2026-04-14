@@ -62,10 +62,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-
 from google.cloud.dialogflow_v2.services.conversation_profiles import (
     ConversationProfilesAsyncClient,
     ConversationProfilesClient,
@@ -81,6 +77,9 @@ from google.cloud.dialogflow_v2.types import (
 from google.cloud.dialogflow_v2.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -6467,6 +6466,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {
@@ -6810,6 +6810,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
             "message_analysis_config": {
                 "enable_entity_extraction": True,
                 "enable_sentiment_analysis": True,
+                "enable_sentiment_analysis_v3": True,
             },
         },
         "human_agent_handoff_config": {

@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2.types import participant, session
 
 __protobuf__ = proto.module(
@@ -101,9 +100,9 @@ class ConversationEvent(proto.Message):
 
                 We don't fire this event:
 
-                - in an API call because we can directly return the error,
-                  or,
-                - when we can recover from an error.
+                -  in an API call because we can directly return the error,
+                   or,
+                -  when we can recover from an error.
         """
 
         TYPE_UNSPECIFIED = 0

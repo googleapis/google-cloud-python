@@ -23,7 +23,6 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
 from google.cloud.dialogflow_v2.types import context, session_entity_type
 from google.cloud.dialogflow_v2.types import intent as gcd_intent
@@ -362,14 +361,14 @@ class QueryResult(proto.Message):
         query_text (str):
             The original conversational query text:
 
-            - If natural language text was provided as input,
-              ``query_text`` contains a copy of the input.
-            - If natural language speech audio was provided as input,
-              ``query_text`` contains the speech recognition result. If
-              speech recognizer produced multiple alternatives, a
-              particular one is picked.
-            - If automatic spell correction is enabled, ``query_text``
-              will contain the corrected user input.
+            -  If natural language text was provided as input,
+               ``query_text`` contains a copy of the input.
+            -  If natural language speech audio was provided as input,
+               ``query_text`` contains the speech recognition result. If
+               speech recognizer produced multiple alternatives, a
+               particular one is picked.
+            -  If automatic spell correction is enabled, ``query_text``
+               will contain the corrected user input.
         language_code (str):
             The language that was triggered during intent detection. See
             `Language
@@ -396,24 +395,24 @@ class QueryResult(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         all_required_params_present (bool):
             This field is set to:
 
-            - ``false`` if the matched intent has required parameters
-              and not all of the required parameter values have been
-              collected.
-            - ``true`` if all required parameter values have been
-              collected, or if the matched intent doesn't contain any
-              required parameters.
+            -  ``false`` if the matched intent has required parameters
+               and not all of the required parameter values have been
+               collected.
+            -  ``true`` if all required parameter values have been
+               collected, or if the matched intent doesn't contain any
+               required parameters.
         cancels_slot_filling (bool):
             Indicates whether the conversational query triggers a
             cancellation for slot filling. For more information, see the
@@ -576,10 +575,10 @@ class StreamingDetectIntentRequest(proto.Message):
 
        However, note that:
 
-       - Dialogflow will bill you for the audio duration so far.
-       - Dialogflow discards all Speech recognition results in favor of
-         the input text.
-       - Dialogflow will use the language code from the first message.
+       -  Dialogflow will bill you for the audio duration so far.
+       -  Dialogflow discards all Speech recognition results in favor of
+          the input text.
+       -  Dialogflow will use the language code from the first message.
 
     After you sent all input, you must half-close or abort the request
     stream.
@@ -1118,15 +1117,15 @@ class EventInput(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         language_code (str):
             Required. The language of this query. See `Language
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__

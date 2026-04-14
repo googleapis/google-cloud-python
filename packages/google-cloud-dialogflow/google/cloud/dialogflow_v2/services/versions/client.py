@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,12 +62,11 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.versions import pagers
 from google.cloud.dialogflow_v2.types import version
 from google.cloud.dialogflow_v2.types import version as gcd_version
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, VersionsTransport
 from .transports.grpc import VersionsGrpcTransport
@@ -774,8 +772,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The agent to list all versions from. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -898,8 +896,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
             name (str):
                 Required. The name of the version. Supported formats:
 
-                - ``projects/<Project ID>/agent/versions/<Version ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -927,10 +925,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -1032,8 +1030,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The agent to create a version for. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1066,10 +1064,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -1173,8 +1171,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
             version (google.cloud.dialogflow_v2.types.Version):
                 Required. The version to update. Supported formats:
 
-                - ``projects/<Project ID>/agent/versions/<Version ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``version`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1209,10 +1207,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   - testing
-                   - development
-                   - production
-                   - etc.
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
 
                    For more information, see the [versions and
                    environments
@@ -1311,8 +1309,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The name of the version to delete. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent/versions/<Version ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/agent/versions/<Version ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -21,7 +21,6 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import gcs
 
 __protobuf__ = proto.module(
@@ -316,19 +315,19 @@ class ListDocumentsRequest(proto.Message):
 
             The following fields and operators are supported:
 
-            - knowledge_types with has(:) operator
-            - display_name with has(:) operator
-            - state with equals(=) operator
+            -  knowledge_types with has(:) operator
+            -  display_name with has(:) operator
+            -  state with equals(=) operator
 
             Examples:
 
-            - "knowledge_types:FAQ" matches documents with FAQ knowledge
-              type.
-            - "display_name:customer" matches documents whose display
-              name contains "customer".
-            - "state=ACTIVE" matches documents with ACTIVE state.
-            - "knowledge_types:FAQ AND state=ACTIVE" matches all active
-              FAQ documents.
+            -  "knowledge_types:FAQ" matches documents with FAQ
+               knowledge type.
+            -  "display_name:customer" matches documents whose display
+               name contains "customer".
+            -  "state=ACTIVE" matches documents with ACTIVE state.
+            -  "knowledge_types:FAQ AND state=ACTIVE" matches all active
+               FAQ documents.
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.

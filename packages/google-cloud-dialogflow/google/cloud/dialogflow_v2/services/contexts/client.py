@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,12 +62,11 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.contexts import pagers
 from google.cloud.dialogflow_v2.types import context
 from google.cloud.dialogflow_v2.types import context as gcd_context
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ContextsTransport
 from .transports.grpc import ContextsGrpcTransport

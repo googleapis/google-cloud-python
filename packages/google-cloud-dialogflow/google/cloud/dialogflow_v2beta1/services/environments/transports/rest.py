@@ -26,12 +26,11 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.dialogflow_v2beta1.types import environment
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
-
-from google.cloud.dialogflow_v2beta1.types import environment
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEnvironmentsRestTransport
@@ -665,10 +664,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                - testing
-                - development
-                - production
-                - etc.
+                -  testing
+                -  development
+                -  production
+                -  etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -941,10 +940,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                - testing
-                - development
-                - production
-                - etc.
+                -  testing
+                -  development
+                -  production
+                -  etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -1404,10 +1403,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                - testing
-                - development
-                - production
-                - etc.
+                -  testing
+                -  development
+                -  production
+                -  etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.

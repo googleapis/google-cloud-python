@@ -53,11 +53,11 @@ async def sample_import_documents():
     )
 
     # Make the request
-    operation = client.import_documents(request=request)
+    operation = await client.import_documents(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

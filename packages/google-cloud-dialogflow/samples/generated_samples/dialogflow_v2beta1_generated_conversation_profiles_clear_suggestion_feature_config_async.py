@@ -46,11 +46,11 @@ async def sample_clear_suggestion_feature_config():
     )
 
     # Make the request
-    operation = client.clear_suggestion_feature_config(request=request)
+    operation = await client.clear_suggestion_feature_config(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

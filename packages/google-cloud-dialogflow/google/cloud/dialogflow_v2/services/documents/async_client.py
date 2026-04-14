@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,12 +47,11 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.documents import pagers
 from google.cloud.dialogflow_v2.types import document
 from google.cloud.dialogflow_v2.types import document as gcd_document
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import DocumentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentsTransport
@@ -85,20 +83,20 @@ class DocumentsAsyncClient:
 
     document_path = staticmethod(DocumentsClient.document_path)
     parse_document_path = staticmethod(DocumentsClient.parse_document_path)
+    common_project_path = staticmethod(DocumentsClient.common_project_path)
+    parse_common_project_path = staticmethod(DocumentsClient.parse_common_project_path)
+    common_organization_path = staticmethod(DocumentsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        DocumentsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(DocumentsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(DocumentsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         DocumentsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         DocumentsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(DocumentsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(DocumentsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(DocumentsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        DocumentsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(DocumentsClient.common_project_path)
-    parse_common_project_path = staticmethod(DocumentsClient.parse_common_project_path)
     common_location_path = staticmethod(DocumentsClient.common_location_path)
     parse_common_location_path = staticmethod(
         DocumentsClient.parse_common_location_path
@@ -560,9 +558,9 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         .. code-block:: python
 
@@ -592,11 +590,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_document(request=request)
+                operation = await client.create_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -717,10 +715,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``:
-          [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``:
+           [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
 
         .. code-block:: python
 
@@ -752,11 +750,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_documents(request=request)
+                operation = await client.import_documents(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -837,10 +835,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -863,11 +861,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_document(request=request)
+                operation = await client.delete_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -981,9 +979,9 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         .. code-block:: python
 
@@ -1012,11 +1010,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_document(request=request)
+                operation = await client.update_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1143,9 +1141,9 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1172,11 +1170,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reload_document(request=request)
+                operation = await client.reload_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1300,9 +1298,9 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         .. code-block:: python
 
@@ -1325,11 +1323,11 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_document(request=request)
+                operation = await client.export_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

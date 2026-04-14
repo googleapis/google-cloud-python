@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -66,12 +65,11 @@ import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.entity_types import pagers
 from google.cloud.dialogflow_v2beta1.types import entity_type
 from google.cloud.dialogflow_v2beta1.types import entity_type as gcd_entity_type
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, EntityTypesTransport
 from .transports.grpc import EntityTypesGrpcTransport
@@ -780,8 +778,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The agent to list all entity types from.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -918,8 +916,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the entity type. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1065,8 +1063,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The agent to create a entity type for.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1361,8 +1359,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the entity type to delete.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1435,10 +1433,10 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1554,10 +1552,10 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1602,8 +1600,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the agent to delete all entities
                 types for. Supported formats:
 
-                - ``projects/<Project ID>/agent``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent``.
+                -  ``projects/<Project ID>/agent``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1715,10 +1713,10 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1766,8 +1764,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the entity type to create entities
                 in. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1893,10 +1891,10 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1940,8 +1938,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the entity type to update or
                 create entities in. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2063,10 +2061,10 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -2111,8 +2109,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 Required. The name of the entity type to delete entries
                 for. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

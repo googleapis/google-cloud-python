@@ -29,13 +29,12 @@ from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.dialogflow_v2.types import intent
+from google.cloud.dialogflow_v2.types import intent as gcd_intent
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
-
-from google.cloud.dialogflow_v2.types import intent
-from google.cloud.dialogflow_v2.types import intent as gcd_intent
 
 from .base import DEFAULT_CLIENT_INFO, IntentsTransport
 from .grpc import IntentsGrpcTransport
@@ -513,10 +512,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -555,10 +554,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training

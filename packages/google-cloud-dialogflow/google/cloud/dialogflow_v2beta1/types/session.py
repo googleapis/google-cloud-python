@@ -23,7 +23,6 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import agent, context, session_entity_type
 from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
 from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
@@ -58,10 +57,10 @@ class DetectIntentRequest(proto.Message):
             Required. The name of the session this query is sent to.
             Supported formats:
 
-            - \`projects//agent/sessions/,
-            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            -  \`projects//agent/sessions/,
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -412,14 +411,14 @@ class QueryResult(proto.Message):
         query_text (str):
             The original conversational query text:
 
-            - If natural language text was provided as input,
-              ``query_text`` contains a copy of the input.
-            - If natural language speech audio was provided as input,
-              ``query_text`` contains the speech recognition result. If
-              speech recognizer produced multiple alternatives, a
-              particular one is picked.
-            - If automatic spell correction is enabled, ``query_text``
-              will contain the corrected user input.
+            -  If natural language text was provided as input,
+               ``query_text`` contains a copy of the input.
+            -  If natural language speech audio was provided as input,
+               ``query_text`` contains the speech recognition result. If
+               speech recognizer produced multiple alternatives, a
+               particular one is picked.
+            -  If automatic spell correction is enabled, ``query_text``
+               will contain the corrected user input.
         language_code (str):
             The language that was triggered during intent detection. See
             `Language
@@ -448,24 +447,24 @@ class QueryResult(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         all_required_params_present (bool):
             This field is set to:
 
-            - ``false`` if the matched intent has required parameters
-              and not all of the required parameter values have been
-              collected.
-            - ``true`` if all required parameter values have been
-              collected, or if the matched intent doesn't contain any
-              required parameters.
+            -  ``false`` if the matched intent has required parameters
+               and not all of the required parameter values have been
+               collected.
+            -  ``true`` if all required parameter values have been
+               collected, or if the matched intent doesn't contain any
+               required parameters.
         cancels_slot_filling (bool):
             Indicates whether the conversational query triggers a
             cancellation for slot filling. For more information, see the
@@ -730,10 +729,10 @@ class StreamingDetectIntentRequest(proto.Message):
 
        However, note that:
 
-       - Dialogflow will bill you for the audio duration so far.
-       - Dialogflow discards all Speech recognition results in favor of
-         the input text.
-       - Dialogflow will use the language code from the first message.
+       -  Dialogflow will bill you for the audio duration so far.
+       -  Dialogflow discards all Speech recognition results in favor of
+          the input text.
+       -  Dialogflow will use the language code from the first message.
 
     After you sent all input, you must half-close or abort the request
     stream.
@@ -743,10 +742,10 @@ class StreamingDetectIntentRequest(proto.Message):
             Required. The name of the session the query is sent to.
             Supported formats:
 
-            - \`projects//agent/sessions/,
-            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            -  \`projects//agent/sessions/,
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -1179,12 +1178,12 @@ class StreamingRecognitionResult(proto.Message):
             will not change its guess about this interim recognition
             result:
 
-            - If the value is unspecified or 0.0, Dialogflow didn't
-              compute the stability. In particular, Dialogflow will only
-              provide stability for ``TRANSCRIPT`` results with
-              ``is_final = false``.
-            - Otherwise, the value is in (0.0, 1.0] where 0.0 means
-              completely unstable and 1.0 means completely stable.
+            -  If the value is unspecified or 0.0, Dialogflow didn't
+               compute the stability. In particular, Dialogflow will
+               only provide stability for ``TRANSCRIPT`` results with
+               ``is_final = false``.
+            -  Otherwise, the value is in (0.0, 1.0] where 0.0 means
+               completely unstable and 1.0 means completely stable.
         speech_word_info (MutableSequence[google.cloud.dialogflow_v2beta1.types.SpeechWordInfo]):
             Word-specific information for the words recognized by Speech
             in
@@ -1328,15 +1327,15 @@ class EventInput(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         language_code (str):
             Required. The language of this query. See `Language
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__

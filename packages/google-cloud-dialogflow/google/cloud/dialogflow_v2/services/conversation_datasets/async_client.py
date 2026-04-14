@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,14 +47,13 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2.services.conversation_datasets import pagers
 from google.cloud.dialogflow_v2.types import conversation_dataset
 from google.cloud.dialogflow_v2.types import (
     conversation_dataset as gcd_conversation_dataset,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ConversationDatasetsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationDatasetsTransport
@@ -93,15 +91,9 @@ class ConversationDatasetsAsyncClient:
     parse_conversation_dataset_path = staticmethod(
         ConversationDatasetsClient.parse_conversation_dataset_path
     )
-    common_billing_account_path = staticmethod(
-        ConversationDatasetsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationDatasetsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(ConversationDatasetsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationDatasetsClient.parse_common_folder_path
+    common_project_path = staticmethod(ConversationDatasetsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ConversationDatasetsClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         ConversationDatasetsClient.common_organization_path
@@ -109,9 +101,15 @@ class ConversationDatasetsAsyncClient:
     parse_common_organization_path = staticmethod(
         ConversationDatasetsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ConversationDatasetsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationDatasetsClient.parse_common_project_path
+    common_folder_path = staticmethod(ConversationDatasetsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ConversationDatasetsClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        ConversationDatasetsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ConversationDatasetsClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(ConversationDatasetsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -338,10 +336,10 @@ class ConversationDatasetsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
-        - ``response``:
-          [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
+        -  ``metadata``:
+           [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
+        -  ``response``:
+           [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
 
         .. code-block:: python
 
@@ -368,11 +366,11 @@ class ConversationDatasetsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_conversation_dataset(request=request)
+                operation = await client.create_conversation_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -744,10 +742,10 @@ class ConversationDatasetsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -770,11 +768,11 @@ class ConversationDatasetsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_conversation_dataset(request=request)
+                operation = await client.delete_conversation_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -892,10 +890,10 @@ class ConversationDatasetsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
-        - ``response``:
-          [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
+        -  ``metadata``:
+           [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
+        -  ``response``:
+           [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
 
         .. code-block:: python
 
@@ -922,11 +920,11 @@ class ConversationDatasetsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_conversation_data(request=request)
+                operation = await client.import_conversation_data(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -65,9 +64,6 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
 from google.cloud.dialogflow_v2beta1.types import (
     audio_config,
@@ -77,6 +73,8 @@ from google.cloud.dialogflow_v2beta1.types import (
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
 from .transports.grpc import ConversationProfilesGrpcTransport
@@ -258,6 +256,28 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def cx_security_settings_path(
+        project: str,
+        location: str,
+        security_settings: str,
+    ) -> str:
+        """Returns a fully-qualified cx_security_settings string."""
+        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+            project=project,
+            location=location,
+            security_settings=security_settings,
+        )
+
+    @staticmethod
+    def parse_cx_security_settings_path(path: str) -> Dict[str, str]:
+        """Parses a cx_security_settings path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def conversation_model_path(
         project: str,
         location: str,
@@ -295,28 +315,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         """Parses a conversation_profile path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/conversationProfiles/(?P<conversation_profile>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def cx_security_settings_path(
-        project: str,
-        location: str,
-        security_settings: str,
-    ) -> str:
-        """Returns a fully-qualified cx_security_settings string."""
-        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
-            project=project,
-            location=location,
-            security_settings=security_settings,
-        )
-
-    @staticmethod
-    def parse_cx_security_settings_path(path: str) -> Dict[str, str]:
-        """Parses a cx_security_settings path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1537,10 +1535,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+        -  ``metadata``:
+           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
 
         If a long running operation to add or update suggestion feature
         config for the same conversation profile, participant role and
@@ -1715,10 +1713,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+        -  ``metadata``:
+           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
 
         .. code-block:: python
 

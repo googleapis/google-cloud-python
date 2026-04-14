@@ -48,11 +48,11 @@ async def sample_import_conversation_data():
     )
 
     # Make the request
-    operation = client.import_conversation_data(request=request)
+    operation = await client.import_conversation_data(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

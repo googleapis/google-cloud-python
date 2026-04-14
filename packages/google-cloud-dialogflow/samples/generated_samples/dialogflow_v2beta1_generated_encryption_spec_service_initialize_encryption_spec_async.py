@@ -47,11 +47,11 @@ async def sample_initialize_encryption_spec():
     )
 
     # Make the request
-    operation = client.initialize_encryption_spec(request=request)
+    operation = await client.initialize_encryption_spec(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

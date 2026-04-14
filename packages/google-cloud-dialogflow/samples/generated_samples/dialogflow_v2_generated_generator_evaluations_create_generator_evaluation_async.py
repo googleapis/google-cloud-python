@@ -52,11 +52,11 @@ async def sample_create_generator_evaluation():
     )
 
     # Make the request
-    operation = client.create_generator_evaluation(request=request)
+    operation = await client.create_generator_evaluation(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

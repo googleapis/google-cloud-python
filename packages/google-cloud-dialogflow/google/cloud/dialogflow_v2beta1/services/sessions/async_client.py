@@ -38,9 +38,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,11 +47,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import audio_config, session
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import SessionsClient
 from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
@@ -90,28 +88,28 @@ class SessionsAsyncClient:
     parse_document_path = staticmethod(SessionsClient.parse_document_path)
     intent_path = staticmethod(SessionsClient.intent_path)
     parse_intent_path = staticmethod(SessionsClient.parse_intent_path)
-    phrase_set_path = staticmethod(SessionsClient.phrase_set_path)
-    parse_phrase_set_path = staticmethod(SessionsClient.parse_phrase_set_path)
     session_path = staticmethod(SessionsClient.session_path)
     parse_session_path = staticmethod(SessionsClient.parse_session_path)
     session_entity_type_path = staticmethod(SessionsClient.session_entity_type_path)
     parse_session_entity_type_path = staticmethod(
         SessionsClient.parse_session_entity_type_path
     )
+    phrase_set_path = staticmethod(SessionsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(SessionsClient.parse_phrase_set_path)
+    common_project_path = staticmethod(SessionsClient.common_project_path)
+    parse_common_project_path = staticmethod(SessionsClient.parse_common_project_path)
+    common_organization_path = staticmethod(SessionsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        SessionsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(SessionsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(SessionsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         SessionsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         SessionsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(SessionsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(SessionsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(SessionsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        SessionsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(SessionsClient.common_project_path)
-    parse_common_project_path = staticmethod(SessionsClient.parse_common_project_path)
     common_location_path = staticmethod(SessionsClient.common_location_path)
     parse_common_location_path = staticmethod(SessionsClient.parse_common_location_path)
 
@@ -373,10 +371,10 @@ class SessionsAsyncClient:
                 Required. The name of the session this query is sent to.
                 Supported formats:
 
-                - \`projects//agent/sessions/,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  \`projects//agent/sessions/,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -582,12 +580,12 @@ class SessionsAsyncClient:
 
                    However, note that:
 
-                   - Dialogflow will bill you for the audio duration so
-                     far.
-                   - Dialogflow discards all Speech recognition results
-                     in favor of the input text.
-                   - Dialogflow will use the language code from the
-                     first message.
+                   -  Dialogflow will bill you for the audio duration so
+                      far.
+                   -  Dialogflow discards all Speech recognition results
+                      in favor of the input text.
+                   -  Dialogflow will use the language code from the
+                      first message.
 
                 After you sent all input, you must half-close or abort
                 the request stream.

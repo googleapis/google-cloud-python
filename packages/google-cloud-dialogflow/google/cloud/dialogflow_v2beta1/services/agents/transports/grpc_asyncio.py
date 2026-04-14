@@ -29,13 +29,12 @@ from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.dialogflow_v2beta1.types import agent, validation_result
+from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.types import agent, validation_result
-from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 from .grpc import AgentsGrpcTransport
@@ -479,10 +478,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -519,10 +518,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
 
         Returns:
             Callable[[~.ExportAgentRequest],
@@ -567,10 +566,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when importing is complete, not when
         it is done training.
@@ -620,10 +619,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when restoring is complete, not when
         it is done training.

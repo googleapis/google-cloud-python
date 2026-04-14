@@ -28,13 +28,12 @@ from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.dialogflow_v2.types import encryption_spec
+from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
-
-from google.cloud.dialogflow_v2.types import encryption_spec
-from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
 
 from .base import DEFAULT_CLIENT_INFO, EncryptionSpecServiceTransport
 from .grpc import EncryptionSpecServiceGrpcTransport

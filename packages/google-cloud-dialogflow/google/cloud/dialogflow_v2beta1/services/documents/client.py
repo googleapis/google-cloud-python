@@ -43,9 +43,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -65,12 +64,11 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.documents import pagers
 from google.cloud.dialogflow_v2beta1.types import document, gcs
 from google.cloud.dialogflow_v2beta1.types import document as gcd_document
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentsTransport
 from .transports.grpc import DocumentsGrpcTransport
@@ -996,10 +994,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        - ``response``:
-          [Document][google.cloud.dialogflow.v2beta1.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1154,10 +1152,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        - ``response``:
-          [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
         .. code-block:: python
 
@@ -1272,10 +1270,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1416,10 +1414,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        - ``response``:
-          [Document][google.cloud.dialogflow.v2beta1.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1583,10 +1581,10 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        - ``response``:
-          [Document][google.cloud.dialogflow.v2beta1.Document]
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.

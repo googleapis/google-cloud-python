@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -45,12 +44,12 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.dialogflow_v2beta1.services.phone_numbers import pagers
 from google.cloud.dialogflow_v2beta1.types import phone_number
 from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import PhoneNumbersClient
 from .transports.base import DEFAULT_CLIENT_INFO, PhoneNumbersTransport
@@ -82,21 +81,23 @@ class PhoneNumbersAsyncClient:
 
     phone_number_path = staticmethod(PhoneNumbersClient.phone_number_path)
     parse_phone_number_path = staticmethod(PhoneNumbersClient.parse_phone_number_path)
+    sip_trunk_path = staticmethod(PhoneNumbersClient.sip_trunk_path)
+    parse_sip_trunk_path = staticmethod(PhoneNumbersClient.parse_sip_trunk_path)
+    common_project_path = staticmethod(PhoneNumbersClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        PhoneNumbersClient.parse_common_project_path
+    )
+    common_organization_path = staticmethod(PhoneNumbersClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        PhoneNumbersClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(PhoneNumbersClient.common_folder_path)
+    parse_common_folder_path = staticmethod(PhoneNumbersClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         PhoneNumbersClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         PhoneNumbersClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(PhoneNumbersClient.common_folder_path)
-    parse_common_folder_path = staticmethod(PhoneNumbersClient.parse_common_folder_path)
-    common_organization_path = staticmethod(PhoneNumbersClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        PhoneNumbersClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(PhoneNumbersClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        PhoneNumbersClient.parse_common_project_path
     )
     common_location_path = staticmethod(PhoneNumbersClient.common_location_path)
     parse_common_location_path = staticmethod(

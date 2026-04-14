@@ -45,11 +45,11 @@ async def sample_batch_update_intents():
     )
 
     # Make the request
-    operation = client.batch_update_intents(request=request)
+    operation = await client.batch_update_intents(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

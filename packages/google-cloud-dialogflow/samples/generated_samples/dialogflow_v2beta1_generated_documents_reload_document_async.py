@@ -44,11 +44,11 @@ async def sample_reload_document():
     )
 
     # Make the request
-    operation = client.reload_document(request=request)
+    operation = await client.reload_document(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

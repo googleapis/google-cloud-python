@@ -20,7 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.types import generator
 
 __protobuf__ = proto.module(

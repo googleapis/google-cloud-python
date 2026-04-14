@@ -27,14 +27,13 @@ import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-
 from google.cloud.dialogflow_v2.types import conversation_profile
 from google.cloud.dialogflow_v2.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
 
@@ -535,10 +534,10 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        -  ``metadata``:
+           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
 
         If a long running operation to add or update suggestion feature
         config for the same conversation profile, participant role and
@@ -584,10 +583,10 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``:
-          [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
-        - ``response``:
-          [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        -  ``metadata``:
+           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
 
         Returns:
             Callable[[~.ClearSuggestionFeatureConfigRequest],

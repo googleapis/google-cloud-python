@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,12 +45,11 @@ except AttributeError:  # pragma: NO COVER
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.dialogflow_v2beta1.services.generators import pagers
+from google.cloud.dialogflow_v2beta1.types import ces_app, ces_tool, generator, toolset
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.services.generators import pagers
-from google.cloud.dialogflow_v2beta1.types import generator
-from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 
 from .client import GeneratorsClient
 from .transports.base import DEFAULT_CLIENT_INFO, GeneratorsTransport
@@ -84,24 +82,30 @@ class GeneratorsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GeneratorsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GeneratorsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(GeneratorsClient.app_path)
+    parse_app_path = staticmethod(GeneratorsClient.parse_app_path)
+    ces_tool_path = staticmethod(GeneratorsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(GeneratorsClient.parse_ces_tool_path)
+    toolset_path = staticmethod(GeneratorsClient.toolset_path)
+    parse_toolset_path = staticmethod(GeneratorsClient.parse_toolset_path)
     generator_path = staticmethod(GeneratorsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorsClient.parse_generator_path)
     tool_path = staticmethod(GeneratorsClient.tool_path)
     parse_tool_path = staticmethod(GeneratorsClient.parse_tool_path)
+    common_project_path = staticmethod(GeneratorsClient.common_project_path)
+    parse_common_project_path = staticmethod(GeneratorsClient.parse_common_project_path)
+    common_organization_path = staticmethod(GeneratorsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        GeneratorsClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(GeneratorsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(GeneratorsClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         GeneratorsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         GeneratorsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(GeneratorsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(GeneratorsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(GeneratorsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        GeneratorsClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(GeneratorsClient.common_project_path)
-    parse_common_project_path = staticmethod(GeneratorsClient.parse_common_project_path)
     common_location_path = staticmethod(GeneratorsClient.common_location_path)
     parse_common_location_path = staticmethod(
         GeneratorsClient.parse_common_location_path

@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -47,9 +46,6 @@ except AttributeError:  # pragma: NO COVER
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.generator_evaluations import pagers
 from google.cloud.dialogflow_v2beta1.types import (
     generator,
@@ -59,6 +55,8 @@ from google.cloud.dialogflow_v2beta1.types import (
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import GeneratorEvaluationsClient
 from .transports.base import DEFAULT_CLIENT_INFO, GeneratorEvaluationsTransport
@@ -86,6 +84,12 @@ class GeneratorEvaluationsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GeneratorEvaluationsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GeneratorEvaluationsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(GeneratorEvaluationsClient.app_path)
+    parse_app_path = staticmethod(GeneratorEvaluationsClient.parse_app_path)
+    ces_tool_path = staticmethod(GeneratorEvaluationsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(GeneratorEvaluationsClient.parse_ces_tool_path)
+    toolset_path = staticmethod(GeneratorEvaluationsClient.toolset_path)
+    parse_toolset_path = staticmethod(GeneratorEvaluationsClient.parse_toolset_path)
     generator_path = staticmethod(GeneratorEvaluationsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorEvaluationsClient.parse_generator_path)
     generator_evaluation_path = staticmethod(
@@ -96,15 +100,9 @@ class GeneratorEvaluationsAsyncClient:
     )
     tool_path = staticmethod(GeneratorEvaluationsClient.tool_path)
     parse_tool_path = staticmethod(GeneratorEvaluationsClient.parse_tool_path)
-    common_billing_account_path = staticmethod(
-        GeneratorEvaluationsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        GeneratorEvaluationsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(GeneratorEvaluationsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        GeneratorEvaluationsClient.parse_common_folder_path
+    common_project_path = staticmethod(GeneratorEvaluationsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        GeneratorEvaluationsClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         GeneratorEvaluationsClient.common_organization_path
@@ -112,9 +110,15 @@ class GeneratorEvaluationsAsyncClient:
     parse_common_organization_path = staticmethod(
         GeneratorEvaluationsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(GeneratorEvaluationsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        GeneratorEvaluationsClient.parse_common_project_path
+    common_folder_path = staticmethod(GeneratorEvaluationsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        GeneratorEvaluationsClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        GeneratorEvaluationsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        GeneratorEvaluationsClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(GeneratorEvaluationsClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -363,11 +367,11 @@ class GeneratorEvaluationsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_generator_evaluation(request=request)
+                operation = await client.create_generator_evaluation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

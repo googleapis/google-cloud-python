@@ -26,15 +26,14 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
-from requests import __version__ as requests_version
-
 from google.cloud.dialogflow_v2.types import session_entity_type
 from google.cloud.dialogflow_v2.types import (
     session_entity_type as gcd_session_entity_type,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSessionEntityTypesRestTransport

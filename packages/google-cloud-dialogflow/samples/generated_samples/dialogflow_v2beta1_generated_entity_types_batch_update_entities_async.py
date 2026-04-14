@@ -48,11 +48,11 @@ async def sample_batch_update_entities():
     )
 
     # Make the request
-    operation = client.batch_update_entities(request=request)
+    operation = await client.batch_update_entities(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

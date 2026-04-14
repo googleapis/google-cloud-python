@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -45,12 +44,16 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.dialogflow_v2beta1.services.conversations import pagers
+from google.cloud.dialogflow_v2beta1.types import (
+    conversation,
+    conversation_profile,
+    generator,
+    participant,
+)
+from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.services.conversations import pagers
-from google.cloud.dialogflow_v2beta1.types import conversation, generator, participant
-from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 
 from .client import ConversationsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationsTransport
@@ -80,11 +83,23 @@ class ConversationsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ConversationsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ConversationsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(ConversationsClient.app_path)
+    parse_app_path = staticmethod(ConversationsClient.parse_app_path)
+    ces_tool_path = staticmethod(ConversationsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(ConversationsClient.parse_ces_tool_path)
+    toolset_path = staticmethod(ConversationsClient.toolset_path)
+    parse_toolset_path = staticmethod(ConversationsClient.parse_toolset_path)
     agent_path = staticmethod(ConversationsClient.agent_path)
     parse_agent_path = staticmethod(ConversationsClient.parse_agent_path)
     answer_record_path = staticmethod(ConversationsClient.answer_record_path)
     parse_answer_record_path = staticmethod(
         ConversationsClient.parse_answer_record_path
+    )
+    cx_security_settings_path = staticmethod(
+        ConversationsClient.cx_security_settings_path
+    )
+    parse_cx_security_settings_path = staticmethod(
+        ConversationsClient.parse_cx_security_settings_path
     )
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
@@ -98,14 +113,6 @@ class ConversationsAsyncClient:
     parse_conversation_profile_path = staticmethod(
         ConversationsClient.parse_conversation_profile_path
     )
-    cx_security_settings_path = staticmethod(
-        ConversationsClient.cx_security_settings_path
-    )
-    parse_cx_security_settings_path = staticmethod(
-        ConversationsClient.parse_cx_security_settings_path
-    )
-    data_store_path = staticmethod(ConversationsClient.data_store_path)
-    parse_data_store_path = staticmethod(ConversationsClient.parse_data_store_path)
     document_path = staticmethod(ConversationsClient.document_path)
     parse_document_path = staticmethod(ConversationsClient.parse_document_path)
     generator_path = staticmethod(ConversationsClient.generator_path)
@@ -116,19 +123,15 @@ class ConversationsAsyncClient:
     )
     message_path = staticmethod(ConversationsClient.message_path)
     parse_message_path = staticmethod(ConversationsClient.parse_message_path)
-    phrase_set_path = staticmethod(ConversationsClient.phrase_set_path)
-    parse_phrase_set_path = staticmethod(ConversationsClient.parse_phrase_set_path)
     tool_path = staticmethod(ConversationsClient.tool_path)
     parse_tool_path = staticmethod(ConversationsClient.parse_tool_path)
-    common_billing_account_path = staticmethod(
-        ConversationsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationsClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(ConversationsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationsClient.parse_common_folder_path
+    data_store_path = staticmethod(ConversationsClient.data_store_path)
+    parse_data_store_path = staticmethod(ConversationsClient.parse_data_store_path)
+    phrase_set_path = staticmethod(ConversationsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(ConversationsClient.parse_phrase_set_path)
+    common_project_path = staticmethod(ConversationsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ConversationsClient.parse_common_project_path
     )
     common_organization_path = staticmethod(
         ConversationsClient.common_organization_path
@@ -136,9 +139,15 @@ class ConversationsAsyncClient:
     parse_common_organization_path = staticmethod(
         ConversationsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ConversationsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationsClient.parse_common_project_path
+    common_folder_path = staticmethod(ConversationsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ConversationsClient.parse_common_folder_path
+    )
+    common_billing_account_path = staticmethod(
+        ConversationsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ConversationsClient.parse_common_billing_account_path
     )
     common_location_path = staticmethod(ConversationsClient.common_location_path)
     parse_common_location_path = staticmethod(

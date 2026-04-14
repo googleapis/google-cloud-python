@@ -35,9 +35,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -49,12 +48,11 @@ import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.dialogflow_v2beta1.services.entity_types import pagers
 from google.cloud.dialogflow_v2beta1.types import entity_type
 from google.cloud.dialogflow_v2beta1.types import entity_type as gcd_entity_type
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import EntityTypesClient
 from .transports.base import DEFAULT_CLIENT_INFO, EntityTypesTransport
@@ -86,21 +84,21 @@ class EntityTypesAsyncClient:
 
     entity_type_path = staticmethod(EntityTypesClient.entity_type_path)
     parse_entity_type_path = staticmethod(EntityTypesClient.parse_entity_type_path)
+    common_project_path = staticmethod(EntityTypesClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        EntityTypesClient.parse_common_project_path
+    )
+    common_organization_path = staticmethod(EntityTypesClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        EntityTypesClient.parse_common_organization_path
+    )
+    common_folder_path = staticmethod(EntityTypesClient.common_folder_path)
+    parse_common_folder_path = staticmethod(EntityTypesClient.parse_common_folder_path)
     common_billing_account_path = staticmethod(
         EntityTypesClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         EntityTypesClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(EntityTypesClient.common_folder_path)
-    parse_common_folder_path = staticmethod(EntityTypesClient.parse_common_folder_path)
-    common_organization_path = staticmethod(EntityTypesClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        EntityTypesClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(EntityTypesClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        EntityTypesClient.parse_common_project_path
     )
     common_location_path = staticmethod(EntityTypesClient.common_location_path)
     parse_common_location_path = staticmethod(
@@ -348,8 +346,8 @@ class EntityTypesAsyncClient:
                 Required. The agent to list all entity types from.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -489,8 +487,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the entity type. Supported
                 formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -639,8 +637,8 @@ class EntityTypesAsyncClient:
                 Required. The agent to create a entity type for.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent``
-                - ``projects/<Project ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -941,8 +939,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the entity type to delete.
                 Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1018,10 +1016,10 @@ class EntityTypesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1049,11 +1047,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_update_entity_types(request=request)
+                operation = await client.batch_update_entity_types(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1137,10 +1135,10 @@ class EntityTypesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1168,11 +1166,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_entity_types(request=request)
+                operation = await client.batch_delete_entity_types(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1185,8 +1183,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the agent to delete all entities
                 types for. Supported formats:
 
-                - ``projects/<Project ID>/agent``,
-                - ``projects/<Project ID>/locations/<Location ID>/agent``.
+                -  ``projects/<Project ID>/agent``,
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1299,10 +1297,10 @@ class EntityTypesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1333,11 +1331,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_entities(request=request)
+                operation = await client.batch_create_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1350,8 +1348,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the entity type to create entities
                 in. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1480,10 +1478,10 @@ class EntityTypesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1510,11 +1508,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_update_entities(request=request)
+                operation = await client.batch_update_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1527,8 +1525,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the entity type to update or
                 create entities in. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1653,10 +1651,10 @@ class EntityTypesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1684,11 +1682,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_entities(request=request)
+                operation = await client.batch_delete_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1701,8 +1699,8 @@ class EntityTypesAsyncClient:
                 Required. The name of the entity type to delete entries
                 for. Supported formats:
 
-                - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-                - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
