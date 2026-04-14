@@ -546,7 +546,11 @@ class GbqDataLoader:
 
             for batch in work:
                 if len(futures) >= max_outstanding:
-                    futures.pop(0).result()
+                    row_errors = futures.pop(0).result().row_errors
+                    if row_errors:
+                        raise ValueError(
+                            f"Problem loading rows: {row_errors}. {constants.FEEDBACK_LINK}"
+                        )
 
                 request = bq_storage_types.AppendRowsRequest(offset=current_offset)
                 request.arrow_rows.rows.serialized_record_batch = (
@@ -557,7 +561,11 @@ class GbqDataLoader:
                 current_offset += batch.num_rows
 
             for future in futures:
-                future.result()
+                row_errors = future.result().row_errors
+                if row_errors:
+                    raise ValueError(
+                        f"Problem loading rows: {row_errors}. {constants.FEEDBACK_LINK}"
+                    )
 
             stream_manager.close()
             self._write_client.finalize_write_stream(name=stream_name)
