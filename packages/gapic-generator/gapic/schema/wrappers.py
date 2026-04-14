@@ -2326,12 +2326,32 @@ class Service:
             )
         )
 
-        return tuple(
-            sorted(
-                unique_messages,
-                key=lambda m: m.resource_type_full_path or m.name
-            )
+        # 1. Deterministic AST Sort to avoid potential pipeline flakiness.
+        sorted_messages = sorted(
+            unique_messages, 
+            key=lambda m: m.resource_type_full_path or m.name
         )
+
+        # 2. Fail-fast collision detection
+        seen_types = {}
+        for msg in sorted_messages:
+            res_type = msg.resource_type
+            if not res_type:
+                continue
+                
+            if res_type in seen_types:
+                incumbent = seen_types[res_type]
+                raise ValueError(
+                    f"\n\nFatal: Namespace collision detected for resource type '{res_type}'.\n"
+                    f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
+                    f"both flatten to the exact same method name.\n"
+                    f"To protect backward compatibility, explicitly alias one of these using "
+                    f"the `--resource-name-aliases` CLI parameter.\n"
+                    f"Example: --resource-name-aliases='{{\"{msg.resource_type_full_path}\": \"CustomName\"}}'\n"
+                )
+            seen_types[res_type] = msg
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:
