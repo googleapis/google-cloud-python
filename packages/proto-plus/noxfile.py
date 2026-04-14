@@ -14,11 +14,11 @@
 
 from __future__ import absolute_import
 
-import shutil
-import nox
 import os
 import pathlib
+import shutil
 
+import nox
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
@@ -335,8 +335,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
@@ -345,7 +347,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
