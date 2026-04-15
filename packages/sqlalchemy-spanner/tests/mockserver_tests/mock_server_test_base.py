@@ -161,9 +161,12 @@ class MockServerTestBase(fixtures.TestBase):
         MockServerTestBase.database_admin_service.clear_requests()
 
     def create_engine(self) -> Engine:
+        from sqlalchemy.pool import NullPool
+
         return create_engine(
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={"client": self.client, "logger": MockServerTestBase.logger},
+            poolclass=NullPool,  # Disable pooling to force new sessions for every test
         )
 
     @property
