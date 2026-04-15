@@ -186,8 +186,8 @@ class NotSupportedError(DatabaseError):
 def map_spanner_error(error: Exception) -> Error:
     """Map SpannerLibError or GoogleAPICallError to DB API 2.0 errors."""
     from google.api_core import exceptions
-    from google.cloud.spannerlib.internal.errors import (
-        SpannerLibError,  # type: ignore[import-untyped]
+    from google.cloud.spannerlib.internal.errors import (  # type: ignore[import-untyped]
+        SpannerLibError,
     )
 
     match error:
