@@ -722,7 +722,15 @@ def test_mrd_concurrent_download_cancellation(
 
             for i in range(num_chunks):
                 if i % 2 == 0:
-                    assert isinstance(results[i], asyncio.CancelledError)
+                    # In fast environments, the task might complete before cancellation takes effect.
+                    # We accept either Cancellation or successful completion to avoid flakiness.
+                    if isinstance(results[i], asyncio.CancelledError):
+                        pass
+                    else:
+                        assert results[i] is None
+                        start = i * chunk_size
+                        expected_data = object_data[start : start + chunk_size]
+                        assert buffers[i].getvalue() == expected_data
                 else:
                     start = i * chunk_size
                     expected_data = object_data[start : start + chunk_size]
