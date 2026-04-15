@@ -37,7 +37,7 @@ class TestResumableUpload:
     def test_initiate_request(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
         method, url, headers, body = upload.build_initiate_request(
-            stream_metadata={"x-custom-meta": "value"},
+            stream_metadata=[("x-custom-meta", "value")],
             content_type="text/plain",
             size=100,
         )
@@ -53,12 +53,12 @@ class TestResumableUpload:
     def test_initiate_request_conflicting_metadata(self):
         upload = _upload.ResumableUpload("http://test.local/upload")
         method, url, headers, body = upload.build_initiate_request(
-            stream_metadata={
-                "x-custom-meta": "value",
-                _common.UPLOAD_PROTOCOL_HEADER: "malicious-protocol",
-                _common.UPLOAD_COMMAND_HEADER: "malicious-command",
-                _common.UPLOAD_CONTENT_TYPE_HEADER: "malicious/type",
-            },
+            stream_metadata=[
+                ("x-custom-meta", "value"),
+                (_common.UPLOAD_PROTOCOL_HEADER, "malicious-protocol"),
+                (_common.UPLOAD_COMMAND_HEADER, "malicious-command"),
+                (_common.UPLOAD_CONTENT_TYPE_HEADER, "malicious/type"),
+            ],
             content_type="text/plain",
             size=100,
         )

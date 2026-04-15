@@ -307,3 +307,48 @@ def test_logging_success_path(caplog):
     # Check for final response logs
     assert "'final'" in caplog.text.lower() or "final" in caplog.text.lower()
     assert "Body: Final Success" in caplog.text
+
+
+@responses.activate
+def test_make_resumable_upload_with_custom_headers(caplog):
+    caplog.set_level("DEBUG")
+    initial_url = "http://example.com/start"
+    session_url = "http://example.com/session/123"
+    data = b"test data"
+    stream = io.BytesIO(data)
+    custom_headers = [("X-Custom-Header", "CustomValue")]
+
+    responses.add(
+        responses.POST,
+        initial_url,
+        status=200,
+        headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-URL": session_url},
+        body="",
+    )
+    responses.add(
+        responses.POST,
+        session_url,
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body="Final Success",
+    )
+
+    session = requests.Session()
+    requests_upload.make_resumable_upload(
+        transport=session,
+        request_body="metadata",
+        stream=stream,
+        upload_url=initial_url,
+        size=len(data),
+        chunk_size=1024,
+        headers=custom_headers,
+    )
+
+    # Check for initiation request logs containing the custom header
+    assert f"HTTP Request: POST {initial_url}" in caplog.text
+    assert "'X-Custom-Header': 'CustomValue'" in caplog.text
+
+    # Check for upload/finalize request logs NOT containing the custom header
+    assert f"HTTP Request: POST {session_url}" in caplog.text
+    assert caplog.text.count("'X-Custom-Header': 'CustomValue'") == 1
+
