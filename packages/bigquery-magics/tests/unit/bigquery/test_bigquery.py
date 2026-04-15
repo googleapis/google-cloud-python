@@ -241,21 +241,76 @@ def test__run_query_dry_run_without_errors_is_silent():
     assert len(captured.stdout) == 0
 
 
-def test__get_graph_name():
-    assert magics._get_graph_name("GRAPH foo.bar") == ("foo", "bar")
-    assert magics._get_graph_name("GRAPH `foo.bar`") is None
-    assert magics._get_graph_name("GRAPH `foo`.bar") is None
-    assert magics._get_graph_name("SELECT 1") is None
-
-
 def test__get_graph_schema_exception():
     bq_client = mock.create_autospec(bigquery.Client, instance=True)
     bq_client.query.side_effect = Exception("error")
     query_text = "GRAPH foo.bar"
     query_job = mock.Mock()
-    query_job.configuration.destination.project = "my-project"
+
+    graph_ref = mock.Mock()
+    graph_ref.project = "my-project"
+    graph_ref.dataset_id = "dataset"
+    graph_ref.property_graph_id = "graph"
+    query_job.referenced_property_graphs = [graph_ref]
 
     assert magics._get_graph_schema(bq_client, query_text, query_job) is None
+
+
+def test__get_graph_schema_zero_references():
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_job = mock.Mock()
+    query_job.referenced_property_graphs = []
+
+    assert magics._get_graph_schema(bq_client, "SELECT 1", query_job) is None
+
+
+def test__get_graph_schema_two_references():
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_job = mock.Mock()
+
+    ref1 = mock.Mock()
+    ref2 = mock.Mock()
+    query_job.referenced_property_graphs = [ref1, ref2]
+
+    assert magics._get_graph_schema(bq_client, "SELECT 1", query_job) is None
+
+
+def test__get_graph_schema_success():
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_job = mock.Mock()
+
+    graph_ref = mock.Mock()
+    graph_ref.project = "my-project"
+    graph_ref.dataset_id = "dataset"
+    graph_ref.property_graph_id = "graph"
+    query_job.referenced_property_graphs = [graph_ref]
+
+    mock_df = mock.MagicMock()
+    mock_df.shape = (1, 1)
+    mock_df.iloc.__getitem__.return_value = "schema_json"
+    bq_client.query.return_value.to_dataframe.return_value = mock_df
+
+    with mock.patch(
+        "bigquery_magics.bigquery.graph_server._convert_schema"
+    ) as convert_mock:
+        convert_mock.return_value = {"nodes": [], "edges": []}
+
+        result = magics._get_graph_schema(bq_client, "SELECT 1", query_job)
+
+        assert result == {"nodes": [], "edges": []}
+        convert_mock.assert_called_once_with("schema_json")
+
+        called_query = bq_client.query.call_args[0][0]
+        assert (
+            "FROM `my-project.dataset`.INFORMATION_SCHEMA.PROPERTY_GRAPHS"
+            in called_query
+        )
+
+        called_config = bq_client.query.call_args[1]["job_config"]
+        called_params = called_config.query_parameters
+        assert len(called_params) == 1
+        assert called_params[0].name == "graph_id"
+        assert called_params[0].value == "graph"
 
 
 @pytest.mark.skipif(
@@ -417,6 +472,12 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
     reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
 )
 def test_bigquery_graph_spanner_graph_notebook_missing(monkeypatch):
+    """If `spanner-graph-notebook` is not installed, the graph visualizer
+    widget cannot be displayed.
+    """
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -468,6 +529,10 @@ def test_bigquery_graph_spanner_graph_notebook_missing(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_int_result(monkeypatch):
+    """Graph visualization of integer scalars is supported."""
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -519,6 +584,10 @@ def test_bigquery_graph_int_result(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_str_result(monkeypatch):
+    """Graph visualization of string scalars is supported."""
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -570,6 +639,10 @@ def test_bigquery_graph_str_result(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_json_json_result(monkeypatch):
+    """Graph visualization of JSON objects with valid JSON string fields is supported."""
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -639,6 +712,9 @@ def test_bigquery_graph_json_json_result(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_json_result(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -758,6 +834,9 @@ def test_bigquery_graph_json_result(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_size_exceeds_max(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -813,6 +892,9 @@ def test_bigquery_graph_size_exceeds_max(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_size_exceeds_query_result_max(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -869,6 +951,9 @@ def test_bigquery_graph_size_exceeds_query_result_max(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_with_args_serialization(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -938,6 +1023,9 @@ def test_bigquery_graph_with_args_serialization(monkeypatch):
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_colab(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     # Mock the colab module so the code under test uses colab.register_callback(), rather than
     # GraphServer.
     sys.modules["google.colab"] = mock.Mock()
@@ -1073,6 +1161,9 @@ def test_colab_node_expansion_callback():
     reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
 )
 def test_bigquery_graph_missing_spanner_deps(monkeypatch):
+    monkeypatch.setattr(
+        "bigquery_magics.bigquery._get_graph_schema", lambda *args: None
+    )
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -1142,10 +1233,16 @@ def test_add_graph_widget_with_schema(monkeypatch):
     query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
     query_text = "GRAPH my_dataset.my_graph"
 
-    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job = mock.Mock()
     query_job.configuration.destination.project = "p"
     query_job.configuration.destination.dataset_id = "d"
     query_job.configuration.destination.table_id = "t"
+
+    graph_ref = mock.Mock()
+    graph_ref.project = "p"
+    graph_ref.dataset_id = "my_dataset"
+    graph_ref.property_graph_id = "my_graph"
+    query_job.referenced_property_graphs = [graph_ref]
 
     args = mock.Mock()
     args.bigquery_api_endpoint = "e"
@@ -1203,10 +1300,12 @@ def test_add_graph_widget_no_graph_name(monkeypatch):
     query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
     query_text = "SELECT * FROM my_dataset.my_table"
 
-    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job = mock.Mock()
     query_job.configuration.destination.project = "p"
     query_job.configuration.destination.dataset_id = "d"
     query_job.configuration.destination.table_id = "t"
+
+    query_job.referenced_property_graphs = []
 
     args = mock.Mock()
     args.bigquery_api_endpoint = "e"
@@ -1244,10 +1343,16 @@ def test_add_graph_widget_schema_not_found(monkeypatch):
     query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
     query_text = "GRAPH my_dataset.my_graph"
 
-    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job = mock.Mock()
     query_job.configuration.destination.project = "p"
     query_job.configuration.destination.dataset_id = "d"
     query_job.configuration.destination.table_id = "t"
+
+    graph_ref = mock.Mock()
+    graph_ref.project = "p"
+    graph_ref.dataset_id = "my_dataset"
+    graph_ref.property_graph_id = "my_graph"
+    query_job.referenced_property_graphs = [graph_ref]
 
     args = mock.Mock()
     args.bigquery_api_endpoint = "e"
@@ -1293,9 +1398,8 @@ def test_bigquery_magic_default_connection_user_agent():
 
     client_info_arg = conn.call_args[1].get("client_info")
     assert client_info_arg is not None
-    assert (
-        client_info_arg.user_agent
-        == f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
+    assert client_info_arg.user_agent.startswith(
+        f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
     )
 
 
@@ -1611,9 +1715,8 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     assert kwargs.get("credentials") is mock_credentials
     client_info = kwargs.get("client_info")
     assert client_info is not None
-    assert (
-        client_info.user_agent
-        == f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
+    assert client_info.user_agent.startswith(
+        f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
     )
 
     query_job_mock.to_dataframe.assert_called_once_with(

@@ -19,7 +19,6 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteBatchDmlRequest,
     CommitRequest,
-    BeginTransactionRequest,
 )
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
@@ -115,12 +114,12 @@ LIMIT 1""",
             session.commit()
 
             requests = self.spanner_service.requests
-            eq_(5, len(requests))
+            # Dialect now inlines BeginTransaction into the first statement.
+            eq_(4, len(requests))
             is_instance_of(requests[0], CreateSessionRequest)
-            is_instance_of(requests[1], BeginTransactionRequest)
+            is_instance_of(requests[1], ExecuteBatchDmlRequest)
             is_instance_of(requests[2], ExecuteBatchDmlRequest)
-            is_instance_of(requests[3], ExecuteBatchDmlRequest)
-            is_instance_of(requests[4], CommitRequest)
-            is_not_none(requests[2].transaction.id)
-            eq_(requests[2].transaction.id, requests[3].transaction.id)
-            eq_(requests[2].transaction.id, requests[4].transaction_id)
+            is_instance_of(requests[3], CommitRequest)
+            is_not_none(requests[1].transaction.begin)  # First request inlines begin
+            is_not_none(requests[2].transaction.id)  # Subsequent requests use ID
+            eq_(requests[2].transaction.id, requests[3].transaction_id)

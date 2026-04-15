@@ -3926,12 +3926,13 @@ class DataFrame:
                 bigframes.dtypes.BOOL_DTYPE
             }:
                 if is_mapping:
-                    if label in decimals:  # type: ignore
+                    decimals_dict = typing.cast(dict[typing.Hashable, int], decimals)
+                    if label in decimals_dict:
                         exprs.append(
                             ops.round_op.as_expr(
                                 col_id,
                                 ex.const(
-                                    decimals[label],
+                                    decimals_dict[label],
                                     dtype=bigframes.dtypes.INT_DTYPE,  # type: ignore
                                 ),
                             )
@@ -4447,8 +4448,8 @@ class DataFrame:
     ) -> str | None:
         return self.to_pandas(allow_large_results=allow_large_results).to_latex(
             buf,
-            columns=columns,
-            header=header,
+            columns=typing.cast(typing.Optional[list[str]], columns),
+            header=typing.cast(typing.Union[bool, list[str]], header),
             index=index,
             **kwargs,  # type: ignore
         )

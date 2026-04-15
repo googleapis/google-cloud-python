@@ -385,9 +385,13 @@ class SQLGlotIR:
                 )
             )
         else:
-            new_column = sge.In(
-                this=conditions[0].expr,
-                expressions=[right._as_subquery()],
+            new_column = sge.func(
+                "COALESCE",
+                sge.In(
+                    this=conditions[0].expr,
+                    expressions=[right._as_subquery()],
+                ),
+                sql.literal(False, dtypes.BOOL_DTYPE),
             )
 
         new_column = sge.Alias(
