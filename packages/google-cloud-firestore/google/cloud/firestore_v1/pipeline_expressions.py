@@ -2730,6 +2730,8 @@ class AliasedExpression(Selectable, Generic[T]):
     _supports_expr_methods = False
 
     def __init__(self, expr: T, alias: str):
+        if isinstance(expr, AliasedExpression):
+            raise TypeError("Cannot wrap an AliasedExpression with another alias. An alias can only be applied once.")
         self.expr = expr
         self.alias = alias
 
