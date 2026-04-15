@@ -248,6 +248,7 @@ class ExecutionMetrics:
                 self.execution_count += 1
                 bytes_processed = event.result.total_bytes_processed or 0
                 self.bytes_processed += bytes_processed
+                self.bytes_processed += bytes_processed
 
                 metadata = JobMetadata(
                     job_type="polars",
