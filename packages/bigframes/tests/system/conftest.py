@@ -1503,8 +1503,10 @@ def images_uris() -> list[str]:
 def images_mm_df(
     images_uris, session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    blob_series = bpd.Series(images_uris, session=session).str.to_blob(
-        connection=bq_connection
+    import bigframes.bigquery.obj as obj
+
+    blob_series = obj.make_ref(
+        bpd.Series(images_uris, session=session), authorizer=bq_connection
     )
     return blob_series.rename("blob_col").to_frame()
 
@@ -1527,7 +1529,12 @@ def pdf_gcs_path() -> str:
 def pdf_mm_df(
     pdf_gcs_path, session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    return session.from_glob_path(pdf_gcs_path, name="pdf", connection=bq_connection)
+    import bigframes.bigquery.obj as obj
+
+    table_id = session._create_object_table(pdf_gcs_path, bq_connection)
+    df = session.read_gbq(table_id)
+    blob_series = obj.make_ref(df["uri"], authorizer=bq_connection)
+    return blob_series.rename("pdf").to_frame()
 
 
 @pytest.fixture(scope="session")
@@ -1539,6 +1546,9 @@ def audio_gcs_path() -> str:
 def audio_mm_df(
     audio_gcs_path, session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    return session.from_glob_path(
-        audio_gcs_path, name="audio", connection=bq_connection
-    )
+    import bigframes.bigquery.obj as obj
+
+    table_id = session._create_object_table(audio_gcs_path, bq_connection)
+    df = session.read_gbq(table_id)
+    blob_series = obj.make_ref(df["uri"], authorizer=bq_connection)
+    return blob_series.rename("audio").to_frame()

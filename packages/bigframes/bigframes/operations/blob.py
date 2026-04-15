@@ -14,7 +14,6 @@
 
 from __future__ import annotations
 
-
 import bigframes.dataframe
 import bigframes.operations as ops
 import bigframes.series

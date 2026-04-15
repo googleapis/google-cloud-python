@@ -206,7 +206,8 @@ def read_gbq(  # type: ignore[overload-overlap]
     col_order: Iterable[str] = ...,
     dry_run: Literal[False] = ...,
     allow_large_results: Optional[bool] = ...,
-) -> bigframes.dataframe.DataFrame: ...
+) -> bigframes.dataframe.DataFrame:
+    ...
 
 
 @overload
@@ -222,7 +223,8 @@ def read_gbq(
     col_order: Iterable[str] = ...,
     dry_run: Literal[True] = ...,
     allow_large_results: Optional[bool] = ...,
-) -> pandas.Series: ...
+) -> pandas.Series:
+    ...
 
 
 def read_gbq(
@@ -302,7 +304,8 @@ def _read_gbq_colab(  # type: ignore[overload-overlap]
     *,
     pyformat_args: Optional[Dict[str, Any]] = ...,
     dry_run: Literal[False] = ...,
-) -> bigframes.dataframe.DataFrame: ...
+) -> bigframes.dataframe.DataFrame:
+    ...
 
 
 @overload
@@ -311,7 +314,8 @@ def _read_gbq_colab(
     *,
     pyformat_args: Optional[Dict[str, Any]] = ...,
     dry_run: Literal[True] = ...,
-) -> pandas.Series: ...
+) -> pandas.Series:
+    ...
 
 
 def _read_gbq_colab(
@@ -394,21 +398,6 @@ def read_gbq_model(model_name: str):
 read_gbq_model.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_model)
 
 
-def read_gbq_object_table(
-    object_table: str, *, name: Optional[str] = None
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.read_gbq_object_table,
-        object_table,
-        name=name,
-    )
-
-
-read_gbq_object_table.__doc__ = inspect.getdoc(
-    bigframes.session.Session.read_gbq_object_table
-)
-
-
 @overload
 def read_gbq_query(  # type: ignore[overload-overlap]
     query: str,
@@ -422,7 +411,8 @@ def read_gbq_query(  # type: ignore[overload-overlap]
     filters: vendored_pandas_gbq.FiltersType = ...,
     dry_run: Literal[False] = ...,
     allow_large_results: Optional[bool] = ...,
-) -> bigframes.dataframe.DataFrame: ...
+) -> bigframes.dataframe.DataFrame:
+    ...
 
 
 @overload
@@ -438,7 +428,8 @@ def read_gbq_query(
     filters: vendored_pandas_gbq.FiltersType = ...,
     dry_run: Literal[True] = ...,
     allow_large_results: Optional[bool] = ...,
-) -> pandas.Series: ...
+) -> pandas.Series:
+    ...
 
 
 def read_gbq_query(
@@ -484,7 +475,8 @@ def read_gbq_table(  # type: ignore[overload-overlap]
     use_cache: bool = ...,
     col_order: Iterable[str] = ...,
     dry_run: Literal[False] = ...,
-) -> bigframes.dataframe.DataFrame: ...
+) -> bigframes.dataframe.DataFrame:
+    ...
 
 
 @overload
@@ -498,7 +490,8 @@ def read_gbq_table(
     use_cache: bool = ...,
     col_order: Iterable[str] = ...,
     dry_run: Literal[True] = ...,
-) -> pandas.Series: ...
+) -> pandas.Series:
+    ...
 
 
 def read_gbq_table(
@@ -551,7 +544,8 @@ def read_pandas(
     pandas_dataframe: pandas.DataFrame,
     *,
     write_engine: constants.WriteEngineType = "default",
-) -> bigframes.dataframe.DataFrame: ...
+) -> bigframes.dataframe.DataFrame:
+    ...
 
 
 @typing.overload
@@ -559,7 +553,8 @@ def read_pandas(
     pandas_dataframe: pandas.Series,
     *,
     write_engine: constants.WriteEngineType = "default",
-) -> bigframes.series.Series: ...
+) -> bigframes.series.Series:
+    ...
 
 
 @typing.overload
@@ -567,7 +562,8 @@ def read_pandas(
     pandas_dataframe: pandas.Index,
     *,
     write_engine: constants.WriteEngineType = "default",
-) -> bigframes.core.indexes.Index: ...
+) -> bigframes.core.indexes.Index:
+    ...
 
 
 def read_pandas(
@@ -634,19 +630,6 @@ def read_gbq_function(
 
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
-
-def from_glob_path(
-    path: str, *, connection: Optional[str] = None, name: Optional[str] = None
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.from_glob_path,
-        path=path,
-        connection=connection,
-        name=name,
-    )
-
-
-from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session.from_glob_path)
 
 _default_location_lock = threading.Lock()
 
