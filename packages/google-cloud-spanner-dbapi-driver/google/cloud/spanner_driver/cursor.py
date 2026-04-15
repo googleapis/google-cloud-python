@@ -16,7 +16,7 @@ import datetime
 import logging
 import uuid
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Iterable
 
 from google.cloud.spanner_v1 import (
     ExecuteBatchDmlRequest,
@@ -135,7 +135,7 @@ class Cursor:
 
     def _prepare_params(
         self, parameters: dict[str, Any] | list[Any] | tuple[Any] | None = None
-    ) -> (dict[str, Any] | None, dict[str, Type] | None):
+    ) -> tuple[dict[str, Any] | None, dict[str, Type] | None]:
         """
         Prepares parameters for Spanner execution
 
@@ -154,10 +154,11 @@ class Cursor:
         if not parameters:
             return {}, {}
 
-        converted_params = {}
+        converted_params: dict[str, Any] = {}
         param_types = {}
 
         # Normalize input to an iterable of (key, value)
+        iterator: Iterable[tuple[str, Any]]
         if isinstance(parameters, (list, tuple)):
             # PostgreSQL Dialect: Positional parameters $1, $2... are
             # mapped to P1, P2...
@@ -233,7 +234,7 @@ class Cursor:
 
         request = ExecuteSqlRequest(sql=operation)
         params, _ = self._prepare_params(parameters)
-        request.params = params
+        request.params = params  # type: ignore[assignment]
 
         try:
             self._rows = self._connection._internal_conn.execute(request)
@@ -271,7 +272,7 @@ class Cursor:
         for parameters in seq_of_parameters:
             statement = ExecuteBatchDmlRequest.Statement(sql=operation)
             params, _ = self._prepare_params(parameters)
-            statement.params = params
+            statement.params = params  # type: ignore[assignment]
 
             request.statements.append(statement)
 

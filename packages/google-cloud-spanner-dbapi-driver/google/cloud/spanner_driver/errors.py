@@ -60,7 +60,7 @@ class Error(Exception):
         """
         return (
             self.__cause__.reason
-            if self._is_error_cause_instance_of_google_api_exception()
+            if isinstance(self.__cause__, GoogleAPICallError)
             else None
         )
 
@@ -75,7 +75,7 @@ class Error(Exception):
         """
         return (
             self.__cause__.domain
-            if self._is_error_cause_instance_of_google_api_exception()
+            if isinstance(self.__cause__, GoogleAPICallError)
             else None
         )
 
@@ -90,7 +90,7 @@ class Error(Exception):
         """
         return (
             self.__cause__.metadata
-            if self._is_error_cause_instance_of_google_api_exception()
+            if isinstance(self.__cause__, GoogleAPICallError)
             else None
         )
 
@@ -106,7 +106,7 @@ class Error(Exception):
         """
         return (
             self.__cause__.details
-            if self._is_error_cause_instance_of_google_api_exception()
+            if isinstance(self.__cause__, GoogleAPICallError)
             else None
         )
 
@@ -186,7 +186,9 @@ class NotSupportedError(DatabaseError):
 def map_spanner_error(error: Exception) -> Error:
     """Map SpannerLibError or GoogleAPICallError to DB API 2.0 errors."""
     from google.api_core import exceptions
-    from google.cloud.spannerlib.internal.errors import SpannerLibError
+    from google.cloud.spannerlib.internal.errors import (
+        SpannerLibError,  # type: ignore[import-untyped]
+    )
 
     match error:
         # Handle SpannerLibError by matching on the internal

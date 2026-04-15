@@ -14,7 +14,7 @@
 import logging
 from typing import Any
 
-from google.cloud.spannerlib.pool import Pool
+from google.cloud.spannerlib.pool import Pool  # type: ignore[import-untyped]
 
 from . import errors
 from .cursor import Cursor
