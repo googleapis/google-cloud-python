@@ -83,18 +83,18 @@ class TestStaleReads(MockServerTestBase):
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(6, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(5, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)
-        is_instance_of(requests[4], ExecuteSqlRequest)
-        is_instance_of(requests[5], CommitRequest)
-        for request in requests[2:]:
+        is_instance_of(requests[4], CommitRequest)
+        for request in requests[1:]:
             eq_("my-transaction-tag", request.request_options.transaction_tag)
-        eq_("my-tag-1", requests[2].request_options.request_tag)
-        eq_("my-tag-2", requests[3].request_options.request_tag)
-        eq_("insert-singer", requests[4].request_options.request_tag)
+        eq_("my-tag-1", requests[1].request_options.request_tag)
+        eq_("my-tag-2", requests[2].request_options.request_tag)
+        eq_("insert-singer", requests[3].request_options.request_tag)
 
 
 def empty_singer_result_set():
