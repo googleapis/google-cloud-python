@@ -73,7 +73,7 @@ class Expression(ABC):
     """
 
     # Controls whether expression methods (e.g., .add(), .multiply()) can be called on
-    # instances of this class or its subclasses. Set to False for non-computational 
+    # instances of this class or its subclasses. Set to False for non-computational
     # expressions like AliasedExpression.
     _supports_expr_methods = True
 
@@ -2727,16 +2727,21 @@ T = TypeVar("T", bound=Expression)
 
 class AliasedExpression(Selectable, Generic[T]):
     """Wraps an expression with an alias."""
+
     _supports_expr_methods = False
 
     def __init__(self, expr: T, alias: str):
         if isinstance(expr, AliasedExpression):
-            raise TypeError("Cannot wrap an AliasedExpression with another alias. An alias can only be applied once.")
+            raise TypeError(
+                "Cannot wrap an AliasedExpression with another alias. An alias can only be applied once."
+            )
         self.expr = expr
         self.alias = alias
 
     def as_(self, alias: str) -> "AliasedExpression":
-        raise TypeError("Cannot call as_() on an AliasedExpression. An alias can only be applied once.")
+        raise TypeError(
+            "Cannot call as_() on an AliasedExpression. An alias can only be applied once."
+        )
 
     def _to_map(self):
         return self.alias, self.expr._to_pb()

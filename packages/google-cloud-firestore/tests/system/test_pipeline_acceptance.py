@@ -24,7 +24,6 @@ from typing import Any
 
 import pytest
 import yaml
-from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
 from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
