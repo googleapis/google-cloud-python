@@ -395,9 +395,10 @@ class Block:
     def order_by(
         self,
         by: typing.Sequence[ordering.OrderingExpression],
+        stable: bool = True,
     ) -> Block:
         return Block(
-            self._expr.order_by(by),
+            self._expr.order_by(by, stable=stable),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,

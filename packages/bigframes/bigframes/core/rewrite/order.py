@@ -71,7 +71,8 @@ def _pull_up_order(
             child_result, child_order = pull_up_order_inner(node.child)
             return child_result, child_order.with_reverse()
         elif isinstance(node, bigframes.core.nodes.OrderByNode):
-            if node.is_total_order:
+            # unstable sorts don't care about previous order, total orders override previous order
+            if (not node.stable) or node.is_total_order:
                 new_node = remove_order(node.child)
             else:
                 new_node, child_order = pull_up_order_inner(node.child)
@@ -105,6 +106,10 @@ def _pull_up_order(
                             map(lambda x: bigframes.core.expression.DerefOp(x), ids)
                         ),
                     )
+                )
+            elif not node.stable:
+                new_order = bigframes.core.ordering.RowOrdering(
+                    ordering_value_columns=tuple(new_by),
                 )
             else:
                 assert child_order

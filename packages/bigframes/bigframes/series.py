@@ -1769,7 +1769,7 @@ class Series:
         axis=...,
         inplace: Literal[True] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -1780,7 +1780,7 @@ class Series:
         axis=...,
         inplace: Literal[False] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> Series: ...
 
@@ -1790,19 +1790,21 @@ class Series:
         axis=0,
         inplace: bool = False,
         ascending=True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: typing.Literal["first", "last"] = "last",
     ) -> Optional[Series]:
         if axis != 0 and axis != "index":
             raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
         block = self._block.order_by(
             [
                 order.ascending_over(self._value_column, (na_position == "last"))
                 if ascending
                 else order.descending_over(self._value_column, (na_position == "last"))
             ],
+            stable=is_stable,
         )
         if inplace:
             self._set_block(block)
@@ -1812,17 +1814,37 @@ class Series:
 
     @typing.overload  # type: ignore[override]
     def sort_index(
-        self, *, axis=..., inplace: Literal[False] = ..., ascending=..., na_position=...
-    ) -> Series: ...
+        self,
+        *,
+        axis=...,
+        inplace: Literal[False] = ...,
+        ascending=...,
+        kind: str | None = ...,
+        na_position=...,
+    ) -> Series:
+        ...
 
     @typing.overload
     def sort_index(
-        self, *, axis=0, inplace: Literal[True] = ..., ascending=..., na_position=...
-    ) -> None: ...
+        self,
+        *,
+        axis=0,
+        inplace: Literal[True] = ...,
+        ascending=...,
+        kind: str | None = ...,
+        na_position=...,
+    ) -> None:
+        ...
 
     @validations.requires_index
     def sort_index(
-        self, *, axis=0, inplace: bool = False, ascending=True, na_position="last"
+        self,
+        *,
+        axis=0,
+        inplace: bool = False,
+        ascending=True,
+        kind: str | None = None,
+        na_position="last",
     ) -> Optional[Series]:
         # TODO(tbergeron): Support level parameter once multi-index introduced.
         if axis != 0 and axis != "index":
@@ -1837,7 +1859,8 @@ class Series:
             else order.descending_over(column, na_last)
             for column in block.index_columns
         ]
-        block = block.order_by(ordering)
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
+        block = block.order_by(ordering, stable=is_stable)
         if inplace:
             self._set_block(block)
             return None

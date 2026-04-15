@@ -255,12 +255,6 @@ class Index:
             self._query_job = query_job
         return self._query_job
 
-    @property
-    def str(self) -> bigframes.operations.strings.StringMethods:
-        import bigframes.operations.strings
-
-        return bigframes.operations.strings.StringMethods(self)
-
     def get_loc(self, key) -> typing.Union[int, slice, "bigframes.series.Series"]:
         """Get integer location, slice or boolean mask for requested label.
 
@@ -436,7 +430,8 @@ class Index:
         *,
         inplace: bool = False,
         ascending: bool = True,
-        na_position: __builtins__.str = "last",
+        kind: str | None = None,
+        na_position: str = "last",
     ) -> Index:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
@@ -448,7 +443,8 @@ class Index:
             else order.descending_over(column, na_last)
             for column in index_columns
         ]
-        return Index(self._block.order_by(ordering))
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
+        return Index(self._block.order_by(ordering, stable=is_stable))
 
     def astype(
         self,
@@ -839,6 +835,13 @@ class Index:
             return Index(block.set_index(block.value_columns, index_labels=self.names))
         else:
             return NotImplemented
+
+    # last so as to not shadow __builtins__.str
+    @property
+    def str(self) -> bigframes.operations.strings.StringMethods:
+        import bigframes.operations.strings
+
+        return bigframes.operations.strings.StringMethods(self)
 
 
 def _should_create_datetime_index(block: blocks.Block) -> bool:
