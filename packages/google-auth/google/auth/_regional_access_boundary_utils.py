@@ -14,6 +14,7 @@
 
 """Utilities for Regional Access Boundary management."""
 
+import copy
 import datetime
 import functools
 import logging
@@ -99,6 +100,17 @@ class _RegionalAccessBoundaryManager(object):
         self.refresh_manager = _RegionalAccessBoundaryRefreshManager()
         self._update_lock = threading.Lock()
 
+    def __getstate__(self):
+        """Pickle helper that serializes the _update_lock attribute."""
+        state = self.__dict__.copy()
+        state["_update_lock"] = None
+        return state
+
+    def __setstate__(self, state):
+        """Pickle helper that deserializes the _update_lock attribute."""
+        self.__dict__.update(state)
+        self._update_lock = threading.Lock()
+
     def apply_headers(self, headers):
         """Applies the Regional Access Boundary header to the provided dictionary.
 
@@ -111,7 +123,7 @@ class _RegionalAccessBoundaryManager(object):
         """
         rab_data = self._data
 
-        if rab_data.encoded_locations is not None and (
+        if rab_data.encoded_locations and (
             rab_data.expiry is not None and _helpers.utcnow() < rab_data.expiry
         ):
             headers[_REGIONAL_ACCESS_BOUNDARY_HEADER] = rab_data.encoded_locations
@@ -241,6 +253,19 @@ class _RegionalAccessBoundaryRefreshManager(object):
         self._lock = threading.Lock()
         self._worker = None
 
+    def __getstate__(self):
+        """Pickle helper that serializes the _lock and _worker attributes."""
+        state = self.__dict__.copy()
+        state["_lock"] = None
+        state["_worker"] = None
+        return state
+
+    def __setstate__(self, state):
+        """Pickle helper that deserializes the _lock and _worker attributes."""
+        self.__dict__.update(state)
+        self._lock = threading.Lock()
+        self._worker = None
+
     def start_refresh(self, credentials, request, rab_manager):
         """
         Starts a background thread to refresh the Regional Access Boundary if one is not already running.
@@ -257,7 +282,19 @@ class _RegionalAccessBoundaryRefreshManager(object):
                 # A refresh is already in progress.
                 return
 
+            try:
+                copied_request = copy.deepcopy(request)
+            except Exception as e:
+                if _helpers.is_logging_enabled(_LOGGER):
+                    _LOGGER.warning(
+                        "Could not deepcopy transport for background RAB refresh. "
+                        "Skipping background refresh to avoid thread safety issues. "
+                        "Exception: %s",
+                        e,
+                    )
+                return
+
             self._worker = _RegionalAccessBoundaryRefreshThread(
-                credentials, request, rab_manager
+                credentials, copied_request, rab_manager
             )
             self._worker.start()

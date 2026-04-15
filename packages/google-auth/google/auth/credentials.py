@@ -355,7 +355,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
 
     def _copy_regional_access_boundary_manager(self, target):
         """Copies the regional access boundary manager to another instance."""
-        target._rab_manager = self._rab_manager
+        # Create a new manager for the clone to isolate background refresh locks and threads,
+        # but share the immutable data reference to avoid unnecessary initial lookups.
+        new_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+        new_manager._data = self._rab_manager._data
+        target._rab_manager = new_manager
 
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """

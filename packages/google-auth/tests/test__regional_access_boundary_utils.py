@@ -187,7 +187,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             )
         mock_start_refresh.assert_called_once_with(creds, request, creds._rab_manager)
 
-    def test_apply_headers(self):
+    def test_apply_headers_success(self):
         creds = CredentialsImpl()
         creds._rab_manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
             encoded_locations="0xABC",
@@ -199,8 +199,25 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         creds._rab_manager.apply_headers(headers)
         assert headers == {"x-allowed-locations": "0xABC"}
 
-        creds._rab_manager._data = creds._rab_manager._data._replace(
-            encoded_locations=None
+    def test_apply_headers_removes_header_if_none(self):
+        creds = CredentialsImpl()
+        creds._rab_manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
+            encoded_locations=None,
+            expiry=_helpers.utcnow() + datetime.timedelta(hours=1),
+            cooldown_expiry=None,
+            cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+        )
+        headers = {"x-allowed-locations": "0xABC"}
+        creds._rab_manager.apply_headers(headers)
+        assert headers == {}
+
+    def test_apply_headers_removes_header_if_empty(self):
+        creds = CredentialsImpl()
+        creds._rab_manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
+            encoded_locations="",
+            expiry=_helpers.utcnow() + datetime.timedelta(hours=1),
+            cooldown_expiry=None,
+            cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
         headers = {"x-allowed-locations": "0xABC"}
         creds._rab_manager.apply_headers(headers)
@@ -219,15 +236,27 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         target_creds = CredentialsImpl()
         source_creds._copy_regional_access_boundary_manager(target_creds)
 
-        assert target_creds._rab_manager is source_creds._rab_manager
-        assert (
-            target_creds._rab_manager._data.encoded_locations
-            == snapshot.encoded_locations
+        assert target_creds._rab_manager is not source_creds._rab_manager
+        assert target_creds._rab_manager._data is source_creds._rab_manager._data
+
+    def test_serialization(self):
+        import pickle
+
+        manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+        manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
+            encoded_locations="0xABC",
+            expiry=_helpers.utcnow(),
+            cooldown_expiry=_helpers.utcnow(),
+            cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
-        assert target_creds._rab_manager._data.expiry == snapshot.expiry
-        assert (
-            target_creds._rab_manager._data.cooldown_expiry == snapshot.cooldown_expiry
-        )
+
+        pickled = pickle.dumps(manager)
+        unpickled = pickle.loads(pickled)
+
+        assert unpickled._data == manager._data
+        assert unpickled._update_lock is not None
+        assert unpickled.refresh_manager._lock is not None
+        assert unpickled.refresh_manager._worker is None
 
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
