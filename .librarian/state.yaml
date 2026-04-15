@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
@@ -22,6 +21,9 @@ libraries:
       - packages/bigframes
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/bigframes/.repo-metadata.json
+      - packages/bigframes/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: bigquery-magics
     version: 0.14.0
@@ -31,6 +33,9 @@ libraries:
       - packages/bigquery-magics
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/bigquery-magics/.repo-metadata.json
+      - packages/bigquery-magics/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: db-dtypes
     version: 1.5.1
@@ -40,6 +45,9 @@ libraries:
       - packages/db-dtypes
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/db-dtypes/.repo-metadata.json
+      - packages/db-dtypes/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: django-google-spanner
     version: 4.0.3
@@ -49,6 +57,9 @@ libraries:
       - packages/django-google-spanner
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/django-google-spanner/.repo-metadata.json
+      - packages/django-google-spanner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: gapic-generator
     version: 1.30.14
@@ -58,6 +69,9 @@ libraries:
       - packages/gapic-generator
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/gapic-generator/.repo-metadata.json
+      - packages/gapic-generator/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
     version: 3.2.5
@@ -67,6 +81,9 @@ libraries:
       - packages/gcp-sphinx-docfx-yaml
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/gcp-sphinx-docfx-yaml/.repo-metadata.json
+      - packages/gcp-sphinx-docfx-yaml/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.9.0
@@ -81,6 +98,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-ads-admanager/
+    release_exclude_paths:
+      - packages/google-ads-admanager/.repo-metadata.json
+      - packages/google-ads-admanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.8.0
@@ -95,6 +115,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-ads-datamanager
+    release_exclude_paths:
+      - packages/google-ads-datamanager/.repo-metadata.json
+      - packages/google-ads-datamanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.5.0
@@ -109,6 +132,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-ads-marketingplatform-admin/
+    release_exclude_paths:
+      - packages/google-ads-marketingplatform-admin/.repo-metadata.json
+      - packages/google-ads-marketingplatform-admin/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-ai-generativelanguage
     version: 0.11.0
@@ -131,6 +157,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-ai-generativelanguage/
+    release_exclude_paths:
+      - packages/google-ai-generativelanguage/.repo-metadata.json
+      - packages/google-ai-generativelanguage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-analytics-admin
     version: 0.28.0
@@ -147,6 +176,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-analytics-admin/
+    release_exclude_paths:
+      - packages/google-analytics-admin/.repo-metadata.json
+      - packages/google-analytics-admin/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-analytics-data
     version: 0.21.0
@@ -163,6 +195,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-analytics-data/
+    release_exclude_paths:
+      - packages/google-analytics-data/.repo-metadata.json
+      - packages/google-analytics-data/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-api-core
     version: 2.30.3
@@ -172,13 +207,15 @@ libraries:
       - packages/google-api-core
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-api-core/.repo-metadata.json
+      - packages/google-api-core/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-card
     version: 0.6.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/apps/card/v1
-        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -187,6 +224,9 @@ libraries:
       - tests/unit/gapic/card_v1/test_card.py
     remove_regex:
       - packages/google-apps-card/
+    release_exclude_paths:
+      - packages/google-apps-card/.repo-metadata.json
+      - packages/google-apps-card/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
     version: 0.8.0
@@ -201,6 +241,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-apps-chat/
+    release_exclude_paths:
+      - packages/google-apps-chat/.repo-metadata.json
+      - packages/google-apps-chat/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-events-subscriptions
     version: 0.5.0
@@ -217,6 +260,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-apps-events-subscriptions/
+    release_exclude_paths:
+      - packages/google-apps-events-subscriptions/.repo-metadata.json
+      - packages/google-apps-events-subscriptions/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-meet
     version: 0.4.0
@@ -233,25 +279,21 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-apps-meet/
+    release_exclude_paths:
+      - packages/google-apps-meet/.repo-metadata.json
+      - packages/google-apps-meet/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-script-type
     version: 0.6.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/apps/script/type
-        service_config: ""
       - path: google/apps/script/type/gmail
-        service_config: ""
       - path: google/apps/script/type/docs
-        service_config: ""
       - path: google/apps/script/type/drive
-        service_config: ""
       - path: google/apps/script/type/sheets
-        service_config: ""
       - path: google/apps/script/type/calendar
-        service_config: ""
       - path: google/apps/script/type/slides
-        service_config: ""
     source_roots:
       - packages/google-apps-script-type
     preserve_regex:
@@ -266,6 +308,9 @@ libraries:
       - tests/unit/gapic/type/test_type.py
     remove_regex:
       - packages/google-apps-script-type
+    release_exclude_paths:
+      - packages/google-apps-script-type/.repo-metadata.json
+      - packages/google-apps-script-type/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-area120-tables
     version: 0.14.0
@@ -292,6 +337,9 @@ libraries:
       - packages/google-auth
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-auth/.repo-metadata.json
+      - packages/google-auth/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-auth-httplib2
     version: 0.3.1
@@ -301,6 +349,9 @@ libraries:
       - packages/google-auth-httplib2
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-auth-httplib2/.repo-metadata.json
+      - packages/google-auth-httplib2/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-auth-oauthlib
     version: 1.3.1
@@ -310,6 +361,9 @@ libraries:
       - packages/google-auth-oauthlib
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-auth-oauthlib/.repo-metadata.json
+      - packages/google-auth-oauthlib/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-approval
     version: 1.19.0
@@ -325,6 +379,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-access-approval/
+    release_exclude_paths:
+      - packages/google-cloud-access-approval/.repo-metadata.json
+      - packages/google-cloud-access-approval/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-context-manager
     version: 0.4.0
@@ -333,7 +390,6 @@ libraries:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
       - path: google/identity/accesscontextmanager/type
-        service_config: ""
     source_roots:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
@@ -342,6 +398,9 @@ libraries:
       - .repo-metadata.json
       - README.rst
       - docs/summary_overview.md
+    release_exclude_paths:
+      - packages/google-cloud-access-context-manager/.repo-metadata.json
+      - packages/google-cloud-access-context-manager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-advisorynotifications
     version: 0.6.0
@@ -356,6 +415,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-advisorynotifications/
+    release_exclude_paths:
+      - packages/google-cloud-advisorynotifications/.repo-metadata.json
+      - packages/google-cloud-advisorynotifications/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.9.0
@@ -374,6 +436,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-alloydb/
+    release_exclude_paths:
+      - packages/google-cloud-alloydb/.repo-metadata.json
+      - packages/google-cloud-alloydb/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb-connectors
     version: 0.4.0
@@ -393,6 +458,9 @@ libraries:
       - tests/unit/gapic/connectors_v1/test_connectors.py
     remove_regex:
       - packages/google-cloud-alloydb-connectors/
+    release_exclude_paths:
+      - packages/google-cloud-alloydb-connectors/.repo-metadata.json
+      - packages/google-cloud-alloydb-connectors/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-gateway
     version: 1.15.0
@@ -407,6 +475,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-api-gateway/
+    release_exclude_paths:
+      - packages/google-cloud-api-gateway/.repo-metadata.json
+      - packages/google-cloud-api-gateway/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-keys
     version: 0.8.0
@@ -421,6 +492,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-api-keys/
+    release_exclude_paths:
+      - packages/google-cloud-api-keys/.repo-metadata.json
+      - packages/google-cloud-api-keys/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-apigee-connect
     version: 1.15.0
@@ -435,6 +509,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-apigee-connect/
+    release_exclude_paths:
+      - packages/google-cloud-apigee-connect/.repo-metadata.json
+      - packages/google-cloud-apigee-connect/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-apigee-registry
     version: 0.9.0
@@ -449,6 +526,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-apigee-registry/
+    release_exclude_paths:
+      - packages/google-cloud-apigee-registry/.repo-metadata.json
+      - packages/google-cloud-apigee-registry/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-apihub
     version: 0.6.0
@@ -463,6 +543,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-apihub/
+    release_exclude_paths:
+      - packages/google-cloud-apihub/.repo-metadata.json
+      - packages/google-cloud-apihub/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-apiregistry
     version: 0.2.0
@@ -481,6 +564,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-apiregistry
+    release_exclude_paths:
+      - packages/google-cloud-apiregistry/.repo-metadata.json
+      - packages/google-cloud-apiregistry/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-appengine-admin
     version: 1.17.0
@@ -495,13 +581,15 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-appengine-admin/
+    release_exclude_paths:
+      - packages/google-cloud-appengine-admin/.repo-metadata.json
+      - packages/google-cloud-appengine-admin/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-appengine-logging
     version: 1.9.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/appengine/logging/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-appengine-logging
     preserve_regex:
@@ -510,6 +598,9 @@ libraries:
       - tests/unit/gapic/appengine_logging_v1/test_appengine_logging_v1.py
     remove_regex:
       - packages/google-cloud-appengine-logging/
+    release_exclude_paths:
+      - packages/google-cloud-appengine-logging/.repo-metadata.json
+      - packages/google-cloud-appengine-logging/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-apphub
     version: 0.4.0
@@ -524,6 +615,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-apphub/
+    release_exclude_paths:
+      - packages/google-cloud-apphub/.repo-metadata.json
+      - packages/google-cloud-apphub/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-appoptimize
     version: 0.1.0
@@ -542,6 +636,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-appoptimize
+    release_exclude_paths:
+      - packages/google-cloud-appoptimize/.repo-metadata.json
+      - packages/google-cloud-appoptimize/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.21.0
@@ -558,6 +655,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-artifact-registry/
+    release_exclude_paths:
+      - packages/google-cloud-artifact-registry/.repo-metadata.json
+      - packages/google-cloud-artifact-registry/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-asset
     version: 4.3.0
@@ -578,6 +678,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-asset/
+    release_exclude_paths:
+      - packages/google-cloud-asset/.repo-metadata.json
+      - packages/google-cloud-asset/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-assured-workloads
     version: 2.3.0
@@ -594,6 +697,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-assured-workloads/
+    release_exclude_paths:
+      - packages/google-cloud-assured-workloads/.repo-metadata.json
+      - packages/google-cloud-assured-workloads/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-audit-log
     version: 0.5.0
@@ -609,6 +715,9 @@ libraries:
       - .repo-metadata.json
       - README.rst
       - docs/summary_overview.md
+    release_exclude_paths:
+      - packages/google-cloud-audit-log/.repo-metadata.json
+      - packages/google-cloud-audit-log/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-auditmanager
     version: 0.2.0
@@ -627,6 +736,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-auditmanager
+    release_exclude_paths:
+      - packages/google-cloud-auditmanager/.repo-metadata.json
+      - packages/google-cloud-auditmanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-automl
     version: 2.19.0
@@ -649,6 +761,9 @@ libraries:
       - tests/unit/test_tables_client_v1beta1.py
     remove_regex:
       - packages/google-cloud-automl/
+    release_exclude_paths:
+      - packages/google-cloud-automl/.repo-metadata.json
+      - packages/google-cloud-automl/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.9.0
@@ -663,6 +778,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-backupdr/
+    release_exclude_paths:
+      - packages/google-cloud-backupdr/.repo-metadata.json
+      - packages/google-cloud-backupdr/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bare-metal-solution
     version: 1.13.0
@@ -677,6 +795,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bare-metal-solution/
+    release_exclude_paths:
+      - packages/google-cloud-bare-metal-solution/.repo-metadata.json
+      - packages/google-cloud-bare-metal-solution/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-batch
     version: 0.21.0
@@ -693,6 +814,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-batch/
+    release_exclude_paths:
+      - packages/google-cloud-batch/.repo-metadata.json
+      - packages/google-cloud-batch/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appconnections
     version: 0.7.0
@@ -707,6 +831,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-beyondcorp-appconnections/
+    release_exclude_paths:
+      - packages/google-cloud-beyondcorp-appconnections/.repo-metadata.json
+      - packages/google-cloud-beyondcorp-appconnections/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appconnectors
     version: 0.7.0
@@ -721,6 +848,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-beyondcorp-appconnectors/
+    release_exclude_paths:
+      - packages/google-cloud-beyondcorp-appconnectors/.repo-metadata.json
+      - packages/google-cloud-beyondcorp-appconnectors/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appgateways
     version: 0.7.0
@@ -735,6 +865,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-beyondcorp-appgateways/
+    release_exclude_paths:
+      - packages/google-cloud-beyondcorp-appgateways/.repo-metadata.json
+      - packages/google-cloud-beyondcorp-appgateways/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-clientconnectorservices
     version: 0.7.0
@@ -749,6 +882,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-beyondcorp-clientconnectorservices/
+    release_exclude_paths:
+      - packages/google-cloud-beyondcorp-clientconnectorservices/.repo-metadata.json
+      - packages/google-cloud-beyondcorp-clientconnectorservices/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-clientgateways
     version: 0.7.0
@@ -763,6 +899,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-beyondcorp-clientgateways/
+    release_exclude_paths:
+      - packages/google-cloud-beyondcorp-clientgateways/.repo-metadata.json
+      - packages/google-cloud-beyondcorp-clientgateways/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-biglake
     version: 0.3.0
@@ -777,6 +916,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-biglake
+    release_exclude_paths:
+      - packages/google-cloud-biglake/.repo-metadata.json
+      - packages/google-cloud-biglake/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-biglake-hive
     version: 0.1.0
@@ -795,6 +937,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-biglake-hive
+    release_exclude_paths:
+      - packages/google-cloud-biglake-hive/.repo-metadata.json
+      - packages/google-cloud-biglake-hive/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery
     version: 3.41.0
@@ -804,6 +949,9 @@ libraries:
       - packages/google-cloud-bigquery
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-bigquery/.repo-metadata.json
+      - packages/google-cloud-bigquery/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-analyticshub
     version: 0.8.0
@@ -818,6 +966,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bigquery-analyticshub/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-analyticshub/.repo-metadata.json
+      - packages/google-cloud-bigquery-analyticshub/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-biglake
     version: 0.7.0
@@ -834,6 +985,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bigquery-biglake/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-biglake/.repo-metadata.json
+      - packages/google-cloud-bigquery-biglake/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-connection
     version: 1.21.0
@@ -849,6 +1003,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-connection/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-connection/.repo-metadata.json
+      - packages/google-cloud-bigquery-connection/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-data-exchange
     version: 0.8.0
@@ -863,6 +1020,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bigquery-data-exchange/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-data-exchange/.repo-metadata.json
+      - packages/google-cloud-bigquery-data-exchange/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-datapolicies
     version: 0.9.0
@@ -883,6 +1043,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bigquery-datapolicies/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-datapolicies/.repo-metadata.json
+      - packages/google-cloud-bigquery-datapolicies/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-datatransfer
     version: 3.22.0
@@ -898,13 +1061,15 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-datatransfer/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-datatransfer/.repo-metadata.json
+      - packages/google-cloud-bigquery-datatransfer/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-logging
     version: 1.9.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/bigquery/logging/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-bigquery-logging
     preserve_regex:
@@ -913,6 +1078,9 @@ libraries:
       - tests/unit/gapic/bigquery_logging_v1/test_bigquery_logging_v1.py
     remove_regex:
       - packages/google-cloud-bigquery-logging/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-logging/.repo-metadata.json
+      - packages/google-cloud-bigquery-logging/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-migration
     version: 0.14.0
@@ -929,6 +1097,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-bigquery-migration/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-migration/.repo-metadata.json
+      - packages/google-cloud-bigquery-migration/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-reservation
     version: 1.23.0
@@ -944,6 +1115,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-reservation/
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-reservation/.repo-metadata.json
+      - packages/google-cloud-bigquery-reservation/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
     version: 2.37.0
@@ -986,6 +1160,9 @@ libraries:
       - tests/unit/test_.*.py
     remove_regex:
       - packages/google-cloud-bigquery-storage
+    release_exclude_paths:
+      - packages/google-cloud-bigquery-storage/.repo-metadata.json
+      - packages/google-cloud-bigquery-storage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
     version: 2.36.0
@@ -1033,6 +1210,9 @@ libraries:
       - ^packages/google-cloud-bigtable/tests/__init__.py
       - ^packages/google-cloud-bigtable/tests/unit/__init__.py
       - ^packages/google-cloud-bigtable/tests/unit/gapic
+    release_exclude_paths:
+      - packages/google-cloud-bigtable/.repo-metadata.json
+      - packages/google-cloud-bigtable/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.19.0
@@ -1047,6 +1227,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-billing/
+    release_exclude_paths:
+      - packages/google-cloud-billing/.repo-metadata.json
+      - packages/google-cloud-billing/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing-budgets
     version: 1.20.0
@@ -1063,6 +1246,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-billing-budgets/
+    release_exclude_paths:
+      - packages/google-cloud-billing-budgets/.repo-metadata.json
+      - packages/google-cloud-billing-budgets/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-binary-authorization
     version: 1.16.0
@@ -1079,6 +1265,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-binary-authorization/
+    release_exclude_paths:
+      - packages/google-cloud-binary-authorization/.repo-metadata.json
+      - packages/google-cloud-binary-authorization/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-build
     version: 3.36.0
@@ -1095,6 +1284,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-build/
+    release_exclude_paths:
+      - packages/google-cloud-build/.repo-metadata.json
+      - packages/google-cloud-build/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-capacityplanner
     version: 0.4.0
@@ -1109,6 +1301,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-capacityplanner/
+    release_exclude_paths:
+      - packages/google-cloud-capacityplanner/.repo-metadata.json
+      - packages/google-cloud-capacityplanner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-certificate-manager
     version: 1.13.0
@@ -1123,6 +1318,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-certificate-manager/
+    release_exclude_paths:
+      - packages/google-cloud-certificate-manager/.repo-metadata.json
+      - packages/google-cloud-certificate-manager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
     version: 0.4.0
@@ -1143,6 +1341,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-ces
+    release_exclude_paths:
+      - packages/google-cloud-ces/.repo-metadata.json
+      - packages/google-cloud-ces/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-channel
     version: 1.27.0
@@ -1157,6 +1358,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-channel/
+    release_exclude_paths:
+      - packages/google-cloud-channel/.repo-metadata.json
+      - packages/google-cloud-channel/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-chronicle
     version: 0.4.0
@@ -1171,6 +1375,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-chronicle/
+    release_exclude_paths:
+      - packages/google-cloud-chronicle/.repo-metadata.json
+      - packages/google-cloud-chronicle/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudcontrolspartner
     version: 0.5.0
@@ -1187,6 +1394,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-cloudcontrolspartner/
+    release_exclude_paths:
+      - packages/google-cloud-cloudcontrolspartner/.repo-metadata.json
+      - packages/google-cloud-cloudcontrolspartner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudsecuritycompliance
     version: 0.6.0
@@ -1201,6 +1411,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-cloudsecuritycompliance/
+    release_exclude_paths:
+      - packages/google-cloud-cloudsecuritycompliance/.repo-metadata.json
+      - packages/google-cloud-cloudsecuritycompliance/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-commerce-consumer-procurement
     version: 0.5.0
@@ -1217,6 +1430,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-commerce-consumer-procurement/
+    release_exclude_paths:
+      - packages/google-cloud-commerce-consumer-procurement/.repo-metadata.json
+      - packages/google-cloud-commerce-consumer-procurement/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-common
     version: 1.9.0
@@ -1232,6 +1448,9 @@ libraries:
       - tests/unit/gapic/common/test_common.py
     remove_regex:
       - packages/google-cloud-common/
+    release_exclude_paths:
+      - packages/google-cloud-common/.repo-metadata.json
+      - packages/google-cloud-common/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
     version: 1.47.0
@@ -1247,6 +1466,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-compute/
+    release_exclude_paths:
+      - packages/google-cloud-compute/.repo-metadata.json
+      - packages/google-cloud-compute/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
     version: 0.10.0
@@ -1261,6 +1483,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-compute-v1beta/
+    release_exclude_paths:
+      - packages/google-cloud-compute-v1beta/.repo-metadata.json
+      - packages/google-cloud-compute-v1beta/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-confidentialcomputing
     version: 0.9.0
@@ -1275,6 +1500,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-confidentialcomputing/
+    release_exclude_paths:
+      - packages/google-cloud-confidentialcomputing/.repo-metadata.json
+      - packages/google-cloud-confidentialcomputing/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-config
     version: 0.5.0
@@ -1310,6 +1538,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-configdelivery/
+    release_exclude_paths:
+      - packages/google-cloud-configdelivery/.repo-metadata.json
+      - packages/google-cloud-configdelivery/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-contact-center-insights
     version: 1.26.0
@@ -1324,6 +1555,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-contact-center-insights/
+    release_exclude_paths:
+      - packages/google-cloud-contact-center-insights/.repo-metadata.json
+      - packages/google-cloud-contact-center-insights/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
     version: 2.64.0
@@ -1341,6 +1575,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-container/
+    release_exclude_paths:
+      - packages/google-cloud-container/.repo-metadata.json
+      - packages/google-cloud-container/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-containeranalysis
     version: 2.21.0
@@ -1356,6 +1593,9 @@ libraries:
       - tests/unit/test_get_grafeas_client.py
     remove_regex:
       - packages/google-cloud-containeranalysis/
+    release_exclude_paths:
+      - packages/google-cloud-containeranalysis/.repo-metadata.json
+      - packages/google-cloud-containeranalysis/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-contentwarehouse
     version: 0.10.0
@@ -1370,6 +1610,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-contentwarehouse/
+    release_exclude_paths:
+      - packages/google-cloud-contentwarehouse/.repo-metadata.json
+      - packages/google-cloud-contentwarehouse/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-core
     version: 2.5.1
@@ -1379,6 +1622,9 @@ libraries:
       - packages/google-cloud-core
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-core/.repo-metadata.json
+      - packages/google-cloud-core/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-data-fusion
     version: 1.16.0
@@ -1393,6 +1639,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-data-fusion/
+    release_exclude_paths:
+      - packages/google-cloud-data-fusion/.repo-metadata.json
+      - packages/google-cloud-data-fusion/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-data-qna
     version: 0.13.0
@@ -1407,6 +1656,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-data-qna/
+    release_exclude_paths:
+      - packages/google-cloud-data-qna/.repo-metadata.json
+      - packages/google-cloud-data-qna/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
     version: 0.7.0
@@ -1422,6 +1674,9 @@ libraries:
       - scripts/client-post-processing
     remove_regex:
       - packages/google-cloud-databasecenter
+    release_exclude_paths:
+      - packages/google-cloud-databasecenter/.repo-metadata.json
+      - packages/google-cloud-databasecenter/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog
     version: 3.30.0
@@ -1438,6 +1693,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-datacatalog/
+    release_exclude_paths:
+      - packages/google-cloud-datacatalog/.repo-metadata.json
+      - packages/google-cloud-datacatalog/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog-lineage
     version: 0.6.0
@@ -1452,6 +1710,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-datacatalog-lineage/
+    release_exclude_paths:
+      - packages/google-cloud-datacatalog-lineage/.repo-metadata.json
+      - packages/google-cloud-datacatalog-lineage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog-lineage-configmanagement
     version: 0.1.0
@@ -1470,6 +1731,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-datacatalog-lineage-configmanagement
+    release_exclude_paths:
+      - packages/google-cloud-datacatalog-lineage-configmanagement/.repo-metadata.json
+      - packages/google-cloud-datacatalog-lineage-configmanagement/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataflow-client
     version: 0.13.0
@@ -1484,6 +1748,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dataflow-client/
+    release_exclude_paths:
+      - packages/google-cloud-dataflow-client/.repo-metadata.json
+      - packages/google-cloud-dataflow-client/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataform
     version: 0.10.0
@@ -1500,6 +1767,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dataform/
+    release_exclude_paths:
+      - packages/google-cloud-dataform/.repo-metadata.json
+      - packages/google-cloud-dataform/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datalabeling
     version: 1.16.0
@@ -1514,6 +1784,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-datalabeling/
+    release_exclude_paths:
+      - packages/google-cloud-datalabeling/.repo-metadata.json
+      - packages/google-cloud-datalabeling/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataplex
     version: 2.18.0
@@ -1528,6 +1801,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dataplex/
+    release_exclude_paths:
+      - packages/google-cloud-dataplex/.repo-metadata.json
+      - packages/google-cloud-dataplex/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc
     version: 5.27.0
@@ -1543,6 +1819,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-dataproc/
+    release_exclude_paths:
+      - packages/google-cloud-dataproc/.repo-metadata.json
+      - packages/google-cloud-dataproc/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc-metastore
     version: 1.22.0
@@ -1561,6 +1840,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dataproc-metastore/
+    release_exclude_paths:
+      - packages/google-cloud-dataproc-metastore/.repo-metadata.json
+      - packages/google-cloud-dataproc-metastore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datastore
     version: 2.24.0
@@ -1622,6 +1904,9 @@ libraries:
       - ^packages/google-cloud-datastore/tests/unit/__init__.py
       - ^packages/google-cloud-datastore/tests/unit/gapic
       - ^packages/google-cloud-datastore/samples/generated_samples
+    release_exclude_paths:
+      - packages/google-cloud-datastore/.repo-metadata.json
+      - packages/google-cloud-datastore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-datastream
     version: 1.18.0
@@ -1638,6 +1923,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-datastream/
+    release_exclude_paths:
+      - packages/google-cloud-datastream/.repo-metadata.json
+      - packages/google-cloud-datastream/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-deploy
     version: 2.10.0
@@ -1652,6 +1940,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-deploy/
+    release_exclude_paths:
+      - packages/google-cloud-deploy/.repo-metadata.json
+      - packages/google-cloud-deploy/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-developerconnect
     version: 0.5.0
@@ -1666,6 +1957,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-developerconnect/
+    release_exclude_paths:
+      - packages/google-cloud-developerconnect/.repo-metadata.json
+      - packages/google-cloud-developerconnect/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-devicestreaming
     version: 0.4.0
@@ -1680,6 +1974,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-devicestreaming/
+    release_exclude_paths:
+      - packages/google-cloud-devicestreaming/.repo-metadata.json
+      - packages/google-cloud-devicestreaming/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
     version: 2.47.0
@@ -1696,6 +1993,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dialogflow/
+    release_exclude_paths:
+      - packages/google-cloud-dialogflow/.repo-metadata.json
+      - packages/google-cloud-dialogflow/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
     version: 2.5.0
@@ -1712,6 +2012,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dialogflow-cx
+    release_exclude_paths:
+      - packages/google-cloud-dialogflow-cx/.repo-metadata.json
+      - packages/google-cloud-dialogflow-cx/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
     version: 0.18.0
@@ -1730,6 +2033,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-discoveryengine/
+    release_exclude_paths:
+      - packages/google-cloud-discoveryengine/.repo-metadata.json
+      - packages/google-cloud-discoveryengine/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.36.0
@@ -1745,6 +2051,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-dlp/
+    release_exclude_paths:
+      - packages/google-cloud-dlp/.repo-metadata.json
+      - packages/google-cloud-dlp/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dms
     version: 1.15.0
@@ -1759,6 +2068,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-dms/
+    release_exclude_paths:
+      - packages/google-cloud-dms/.repo-metadata.json
+      - packages/google-cloud-dms/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dns
     version: 0.36.1
@@ -1768,6 +2080,9 @@ libraries:
       - packages/google-cloud-dns
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-dns/.repo-metadata.json
+      - packages/google-cloud-dns/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
     version: 3.14.0
@@ -1784,6 +2099,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-documentai/
+    release_exclude_paths:
+      - packages/google-cloud-documentai/.repo-metadata.json
+      - packages/google-cloud-documentai/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai-toolbox
     version: 0.15.2
@@ -1793,6 +2111,9 @@ libraries:
       - packages/google-cloud-documentai-toolbox
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-documentai-toolbox/.repo-metadata.json
+      - packages/google-cloud-documentai-toolbox/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-domains
     version: 1.13.0
@@ -1809,6 +2130,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-domains/
+    release_exclude_paths:
+      - packages/google-cloud-domains/.repo-metadata.json
+      - packages/google-cloud-domains/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgecontainer
     version: 0.8.0
@@ -1823,6 +2147,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-edgecontainer/
+    release_exclude_paths:
+      - packages/google-cloud-edgecontainer/.repo-metadata.json
+      - packages/google-cloud-edgecontainer/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgenetwork
     version: 0.5.0
@@ -1837,6 +2164,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-edgenetwork/
+    release_exclude_paths:
+      - packages/google-cloud-edgenetwork/.repo-metadata.json
+      - packages/google-cloud-edgenetwork/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-enterpriseknowledgegraph
     version: 0.6.0
@@ -1851,6 +2181,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-enterpriseknowledgegraph/
+    release_exclude_paths:
+      - packages/google-cloud-enterpriseknowledgegraph/.repo-metadata.json
+      - packages/google-cloud-enterpriseknowledgegraph/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-error-reporting
     version: 1.15.0
@@ -1888,6 +2221,9 @@ libraries:
       - ^packages/google-cloud-error-reporting/samples/generated_samples
       - ^packages/google-cloud-error-reporting/setup.py
       - ^packages/google-cloud-error-reporting/testing
+    release_exclude_paths:
+      - packages/google-cloud-error-reporting/.repo-metadata.json
+      - packages/google-cloud-error-reporting/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-essential-contacts
     version: 1.13.0
@@ -1902,6 +2238,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-essential-contacts/
+    release_exclude_paths:
+      - packages/google-cloud-essential-contacts/.repo-metadata.json
+      - packages/google-cloud-essential-contacts/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
     version: 1.20.0
@@ -1916,6 +2255,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-eventarc/
+    release_exclude_paths:
+      - packages/google-cloud-eventarc/.repo-metadata.json
+      - packages/google-cloud-eventarc/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc-publishing
     version: 0.10.0
@@ -1930,6 +2272,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-eventarc-publishing/
+    release_exclude_paths:
+      - packages/google-cloud-eventarc-publishing/.repo-metadata.json
+      - packages/google-cloud-eventarc-publishing/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-filestore
     version: 1.16.0
@@ -1944,6 +2289,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-filestore/
+    release_exclude_paths:
+      - packages/google-cloud-filestore/.repo-metadata.json
+      - packages/google-cloud-filestore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-financialservices
     version: 0.4.0
@@ -1958,6 +2306,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-financialservices/
+    release_exclude_paths:
+      - packages/google-cloud-financialservices/.repo-metadata.json
+      - packages/google-cloud-financialservices/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.27.0
@@ -1966,7 +2317,6 @@ libraries:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
       - path: google/firestore/bundle
-        service_config: ""
       - path: google/firestore/v1
         service_config: firestore_v1.yaml
     source_roots:
@@ -2020,6 +2370,9 @@ libraries:
       - ^packages/google-cloud-firestore/docs/index.rst
       - ^packages/google-cloud-firestore/docs/README.rst
       - ^packages/google-cloud-firestore/docs/summary_overview.md
+    release_exclude_paths:
+      - packages/google-cloud-firestore/.repo-metadata.json
+      - packages/google-cloud-firestore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-functions
     version: 1.23.0
@@ -2036,6 +2389,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-functions/
+    release_exclude_paths:
+      - packages/google-cloud-functions/.repo-metadata.json
+      - packages/google-cloud-functions/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gdchardwaremanagement
     version: 0.5.0
@@ -2050,6 +2406,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gdchardwaremanagement/
+    release_exclude_paths:
+      - packages/google-cloud-gdchardwaremanagement/.repo-metadata.json
+      - packages/google-cloud-gdchardwaremanagement/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
     version: 0.12.0
@@ -2066,6 +2425,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-geminidataanalytics/
+    release_exclude_paths:
+      - packages/google-cloud-geminidataanalytics/.repo-metadata.json
+      - packages/google-cloud-geminidataanalytics/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-backup
     version: 0.8.0
@@ -2080,6 +2442,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gke-backup/
+    release_exclude_paths:
+      - packages/google-cloud-gke-backup/.repo-metadata.json
+      - packages/google-cloud-gke-backup/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-connect-gateway
     version: 0.13.0
@@ -2096,6 +2461,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gke-connect-gateway/
+    release_exclude_paths:
+      - packages/google-cloud-gke-connect-gateway/.repo-metadata.json
+      - packages/google-cloud-gke-connect-gateway/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-hub
     version: 1.23.0
@@ -2118,6 +2486,9 @@ libraries:
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1
     remove_regex:
       - packages/google-cloud-gke-hub
+    release_exclude_paths:
+      - packages/google-cloud-gke-hub/.repo-metadata.json
+      - packages/google-cloud-gke-hub/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-multicloud
     version: 0.9.0
@@ -2132,6 +2503,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gke-multicloud
+    release_exclude_paths:
+      - packages/google-cloud-gke-multicloud/.repo-metadata.json
+      - packages/google-cloud-gke-multicloud/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gkerecommender
     version: 0.3.0
@@ -2146,6 +2520,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gkerecommender
+    release_exclude_paths:
+      - packages/google-cloud-gkerecommender/.repo-metadata.json
+      - packages/google-cloud-gkerecommender/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-gsuiteaddons
     version: 0.5.0
@@ -2160,6 +2537,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-gsuiteaddons
+    release_exclude_paths:
+      - packages/google-cloud-gsuiteaddons/.repo-metadata.json
+      - packages/google-cloud-gsuiteaddons/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-hypercomputecluster
     version: 0.4.0
@@ -2176,6 +2556,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-hypercomputecluster
+    release_exclude_paths:
+      - packages/google-cloud-hypercomputecluster/.repo-metadata.json
+      - packages/google-cloud-hypercomputecluster/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-iam
     version: 2.22.0
@@ -2200,13 +2583,15 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-iam
+    release_exclude_paths:
+      - packages/google-cloud-iam/.repo-metadata.json
+      - packages/google-cloud-iam/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-iam-logging
     version: 1.7.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/iam/v1/logging
-        service_config: ""
     source_roots:
       - packages/google-cloud-iam-logging
     preserve_regex:
@@ -2215,6 +2600,9 @@ libraries:
       - tests/unit/gapic/iam_logging_v1/test_iam_logging.py
     remove_regex:
       - packages/google-cloud-iam-logging/
+    release_exclude_paths:
+      - packages/google-cloud-iam-logging/.repo-metadata.json
+      - packages/google-cloud-iam-logging/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-iamconnectorcredentials
     version: 0.1.0
@@ -2233,6 +2621,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-iamconnectorcredentials
+    release_exclude_paths:
+      - packages/google-cloud-iamconnectorcredentials/.repo-metadata.json
+      - packages/google-cloud-iamconnectorcredentials/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-iap
     version: 1.21.0
@@ -2247,6 +2638,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-iap/
+    release_exclude_paths:
+      - packages/google-cloud-iap/.repo-metadata.json
+      - packages/google-cloud-iap/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-ids
     version: 1.13.0
@@ -2261,6 +2655,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-ids/
+    release_exclude_paths:
+      - packages/google-cloud-ids/.repo-metadata.json
+      - packages/google-cloud-ids/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
     version: 3.12.0
@@ -2276,6 +2673,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-kms/
+    release_exclude_paths:
+      - packages/google-cloud-kms/.repo-metadata.json
+      - packages/google-cloud-kms/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms-inventory
     version: 0.6.0
@@ -2290,6 +2690,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-kms-inventory/
+    release_exclude_paths:
+      - packages/google-cloud-kms-inventory/.repo-metadata.json
+      - packages/google-cloud-kms-inventory/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-language
     version: 2.20.0
@@ -2309,6 +2712,9 @@ libraries:
       - samples/README.txt
     remove_regex:
       - packages/google-cloud-language/
+    release_exclude_paths:
+      - packages/google-cloud-language/.repo-metadata.json
+      - packages/google-cloud-language/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-licensemanager
     version: 0.4.0
@@ -2323,6 +2729,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-licensemanager/
+    release_exclude_paths:
+      - packages/google-cloud-licensemanager/.repo-metadata.json
+      - packages/google-cloud-licensemanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-life-sciences
     version: 0.12.0
@@ -2337,6 +2746,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-life-sciences/
+    release_exclude_paths:
+      - packages/google-cloud-life-sciences/.repo-metadata.json
+      - packages/google-cloud-life-sciences/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-locationfinder
     version: 0.4.0
@@ -2351,6 +2763,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-locationfinder/
+    release_exclude_paths:
+      - packages/google-cloud-locationfinder/.repo-metadata.json
+      - packages/google-cloud-locationfinder/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-logging
     version: 3.15.0
@@ -2395,6 +2810,9 @@ libraries:
       - ^packages/google-cloud-logging/tests/__init__.py
       - ^packages/google-cloud-logging/tests/unit/__init__.py
       - ^packages/google-cloud-logging/tests/unit/gapic
+    release_exclude_paths:
+      - packages/google-cloud-logging/.repo-metadata.json
+      - packages/google-cloud-logging/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-lustre
     version: 0.4.0
@@ -2409,6 +2827,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-lustre/
+    release_exclude_paths:
+      - packages/google-cloud-lustre/.repo-metadata.json
+      - packages/google-cloud-lustre/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-maintenance-api
     version: 0.4.0
@@ -2425,6 +2846,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-maintenance-api/
+    release_exclude_paths:
+      - packages/google-cloud-maintenance-api/.repo-metadata.json
+      - packages/google-cloud-maintenance-api/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-managed-identities
     version: 1.15.0
@@ -2439,6 +2863,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-managed-identities/
+    release_exclude_paths:
+      - packages/google-cloud-managed-identities/.repo-metadata.json
+      - packages/google-cloud-managed-identities/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka
     version: 0.4.0
@@ -2453,6 +2880,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-managedkafka/
+    release_exclude_paths:
+      - packages/google-cloud-managedkafka/.repo-metadata.json
+      - packages/google-cloud-managedkafka/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka-schemaregistry
     version: 0.4.0
@@ -2467,6 +2897,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-managedkafka-schemaregistry/
+    release_exclude_paths:
+      - packages/google-cloud-managedkafka-schemaregistry/.repo-metadata.json
+      - packages/google-cloud-managedkafka-schemaregistry/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-media-translation
     version: 0.14.0
@@ -2481,6 +2914,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-media-translation/
+    release_exclude_paths:
+      - packages/google-cloud-media-translation/.repo-metadata.json
+      - packages/google-cloud-media-translation/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-memcache
     version: 1.15.0
@@ -2497,6 +2933,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-memcache/
+    release_exclude_paths:
+      - packages/google-cloud-memcache/.repo-metadata.json
+      - packages/google-cloud-memcache/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
     version: 0.4.0
@@ -2513,6 +2952,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-memorystore/
+    release_exclude_paths:
+      - packages/google-cloud-memorystore/.repo-metadata.json
+      - packages/google-cloud-memorystore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-migrationcenter
     version: 0.4.0
@@ -2527,6 +2969,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-migrationcenter/
+    release_exclude_paths:
+      - packages/google-cloud-migrationcenter/.repo-metadata.json
+      - packages/google-cloud-migrationcenter/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-modelarmor
     version: 0.5.0
@@ -2543,6 +2988,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-modelarmor/
+    release_exclude_paths:
+      - packages/google-cloud-modelarmor/.repo-metadata.json
+      - packages/google-cloud-modelarmor/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring
     version: 2.30.0
@@ -2563,6 +3011,9 @@ libraries:
       - tests/unit/test_query.py
     remove_regex:
       - packages/google-cloud-monitoring
+    release_exclude_paths:
+      - packages/google-cloud-monitoring/.repo-metadata.json
+      - packages/google-cloud-monitoring/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-dashboards
     version: 2.21.0
@@ -2579,6 +3030,9 @@ libraries:
       - tests/unit/gapic/dashboard_v1
     remove_regex:
       - packages/google-cloud-monitoring-dashboards
+    release_exclude_paths:
+      - packages/google-cloud-monitoring-dashboards/.repo-metadata.json
+      - packages/google-cloud-monitoring-dashboards/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-metrics-scopes
     version: 1.12.0
@@ -2593,6 +3047,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-monitoring-metrics-scopes/
+    release_exclude_paths:
+      - packages/google-cloud-monitoring-metrics-scopes/.repo-metadata.json
+      - packages/google-cloud-monitoring-metrics-scopes/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-ndb
     version: 2.4.2
@@ -2602,6 +3059,9 @@ libraries:
       - packages/google-cloud-ndb
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-ndb/.repo-metadata.json
+      - packages/google-cloud-ndb/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.9.0
@@ -2616,6 +3076,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-netapp/
+    release_exclude_paths:
+      - packages/google-cloud-netapp/.repo-metadata.json
+      - packages/google-cloud-netapp/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
     version: 2.15.0
@@ -2634,6 +3097,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-network-connectivity/
+    release_exclude_paths:
+      - packages/google-cloud-network-connectivity/.repo-metadata.json
+      - packages/google-cloud-network-connectivity/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
     version: 1.34.0
@@ -2648,6 +3114,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-network-management/
+    release_exclude_paths:
+      - packages/google-cloud-network-management/.repo-metadata.json
+      - packages/google-cloud-network-management/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
     version: 0.13.0
@@ -2666,6 +3135,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-network-security
+    release_exclude_paths:
+      - packages/google-cloud-network-security/.repo-metadata.json
+      - packages/google-cloud-network-security/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-services
     version: 0.9.0
@@ -2680,6 +3152,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-network-services/
+    release_exclude_paths:
+      - packages/google-cloud-network-services/.repo-metadata.json
+      - packages/google-cloud-network-services/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-notebooks
     version: 1.16.0
@@ -2698,6 +3173,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-notebooks/
+    release_exclude_paths:
+      - packages/google-cloud-notebooks/.repo-metadata.json
+      - packages/google-cloud-notebooks/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-optimization
     version: 1.14.0
@@ -2712,6 +3190,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-optimization/
+    release_exclude_paths:
+      - packages/google-cloud-optimization/.repo-metadata.json
+      - packages/google-cloud-optimization/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
     version: 0.5.0
@@ -2726,6 +3207,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-oracledatabase/
+    release_exclude_paths:
+      - packages/google-cloud-oracledatabase/.repo-metadata.json
+      - packages/google-cloud-oracledatabase/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-orchestration-airflow
     version: 1.20.0
@@ -2742,13 +3226,15 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-orchestration-airflow/
+    release_exclude_paths:
+      - packages/google-cloud-orchestration-airflow/.repo-metadata.json
+      - packages/google-cloud-orchestration-airflow/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-org-policy
     version: 1.17.0
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
-        service_config: ""
       - path: google/cloud/orgpolicy/v2
         service_config: orgpolicy_v2.yaml
     source_roots:
@@ -2761,6 +3247,9 @@ libraries:
       - tests/unit/test_packaging.py
     remove_regex:
       - packages/google-cloud-org-policy
+    release_exclude_paths:
+      - packages/google-cloud-org-policy/.repo-metadata.json
+      - packages/google-cloud-org-policy/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-config
     version: 1.24.0
@@ -2778,6 +3267,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-os-config/
+    release_exclude_paths:
+      - packages/google-cloud-os-config/.repo-metadata.json
+      - packages/google-cloud-os-config/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-login
     version: 2.20.0
@@ -2794,6 +3286,9 @@ libraries:
       - docs/oslogin_v1/common/types.rst
     remove_regex:
       - packages/google-cloud-os-login
+    release_exclude_paths:
+      - packages/google-cloud-os-login/.repo-metadata.json
+      - packages/google-cloud-os-login/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-parallelstore
     version: 0.6.0
@@ -2810,6 +3305,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-parallelstore/
+    release_exclude_paths:
+      - packages/google-cloud-parallelstore/.repo-metadata.json
+      - packages/google-cloud-parallelstore/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-parametermanager
     version: 0.4.0
@@ -2824,6 +3322,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-parametermanager/
+    release_exclude_paths:
+      - packages/google-cloud-parametermanager/.repo-metadata.json
+      - packages/google-cloud-parametermanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-phishing-protection
     version: 1.17.0
@@ -2838,6 +3339,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-phishing-protection/
+    release_exclude_paths:
+      - packages/google-cloud-phishing-protection/.repo-metadata.json
+      - packages/google-cloud-phishing-protection/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-policy-troubleshooter
     version: 1.16.0
@@ -2852,6 +3356,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-policy-troubleshooter/
+    release_exclude_paths:
+      - packages/google-cloud-policy-troubleshooter/.repo-metadata.json
+      - packages/google-cloud-policy-troubleshooter/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-policysimulator
     version: 0.4.0
@@ -2866,6 +3373,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-policysimulator/
+    release_exclude_paths:
+      - packages/google-cloud-policysimulator/.repo-metadata.json
+      - packages/google-cloud-policysimulator/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-policytroubleshooter-iam
     version: 0.4.0
@@ -2880,6 +3390,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-policytroubleshooter-iam/
+    release_exclude_paths:
+      - packages/google-cloud-policytroubleshooter-iam/.repo-metadata.json
+      - packages/google-cloud-policytroubleshooter-iam/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-ca
     version: 1.18.0
@@ -2896,6 +3409,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-private-ca/
+    release_exclude_paths:
+      - packages/google-cloud-private-ca/.repo-metadata.json
+      - packages/google-cloud-private-ca/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-catalog
     version: 0.12.0
@@ -2910,6 +3426,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-private-catalog/
+    release_exclude_paths:
+      - packages/google-cloud-private-catalog/.repo-metadata.json
+      - packages/google-cloud-private-catalog/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-privilegedaccessmanager
     version: 0.4.0
@@ -2924,6 +3443,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-privilegedaccessmanager/
+    release_exclude_paths:
+      - packages/google-cloud-privilegedaccessmanager/.repo-metadata.json
+      - packages/google-cloud-privilegedaccessmanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
     version: 2.37.0
@@ -2960,6 +3482,9 @@ libraries:
       - ^packages/google-cloud-pubsub/tests/unit/gapic
       - ^packages/google-cloud-pubsub/samples/generated_samples
       - ^packages/google-cloud-pubsub/docs/pubsub_v1
+    release_exclude_paths:
+      - packages/google-cloud-pubsub/.repo-metadata.json
+      - packages/google-cloud-pubsub/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.6.0
@@ -2976,6 +3501,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-quotas/
+    release_exclude_paths:
+      - packages/google-cloud-quotas/.repo-metadata.json
+      - packages/google-cloud-quotas/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-rapidmigrationassessment
     version: 0.4.0
@@ -2990,6 +3518,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-rapidmigrationassessment/
+    release_exclude_paths:
+      - packages/google-cloud-rapidmigrationassessment/.repo-metadata.json
+      - packages/google-cloud-rapidmigrationassessment/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-recaptcha-enterprise
     version: 1.31.0
@@ -3004,6 +3535,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-recaptcha-enterprise/
+    release_exclude_paths:
+      - packages/google-cloud-recaptcha-enterprise/.repo-metadata.json
+      - packages/google-cloud-recaptcha-enterprise/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommendations-ai
     version: 0.13.0
@@ -3018,6 +3552,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-recommendations-ai/
+    release_exclude_paths:
+      - packages/google-cloud-recommendations-ai/.repo-metadata.json
+      - packages/google-cloud-recommendations-ai/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommender
     version: 2.21.0
@@ -3034,6 +3571,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-recommender/
+    release_exclude_paths:
+      - packages/google-cloud-recommender/.repo-metadata.json
+      - packages/google-cloud-recommender/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis
     version: 2.21.0
@@ -3050,6 +3590,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-redis/
+    release_exclude_paths:
+      - packages/google-cloud-redis/.repo-metadata.json
+      - packages/google-cloud-redis/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
     version: 0.4.0
@@ -3066,6 +3609,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-redis-cluster/
+    release_exclude_paths:
+      - packages/google-cloud-redis-cluster/.repo-metadata.json
+      - packages/google-cloud-redis-cluster/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-resource-manager
     version: 1.17.0
@@ -3080,6 +3626,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-resource-manager/
+    release_exclude_paths:
+      - packages/google-cloud-resource-manager/.repo-metadata.json
+      - packages/google-cloud-resource-manager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
     version: 2.10.0
@@ -3098,6 +3647,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-retail/
+    release_exclude_paths:
+      - packages/google-cloud-retail/.repo-metadata.json
+      - packages/google-cloud-retail/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
     version: 0.16.0
@@ -3112,6 +3664,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-run/
+    release_exclude_paths:
+      - packages/google-cloud-run/.repo-metadata.json
+      - packages/google-cloud-run/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-runtimeconfig
     version: 0.36.1
@@ -3121,6 +3676,9 @@ libraries:
       - packages/google-cloud-runtimeconfig
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-runtimeconfig/.repo-metadata.json
+      - packages/google-cloud-runtimeconfig/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
     version: 0.5.0
@@ -3135,6 +3693,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-saasplatform-saasservicemgmt/
+    release_exclude_paths:
+      - packages/google-cloud-saasplatform-saasservicemgmt/.repo-metadata.json
+      - packages/google-cloud-saasplatform-saasservicemgmt/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-scheduler
     version: 2.19.0
@@ -3152,6 +3713,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-scheduler/
+    release_exclude_paths:
+      - packages/google-cloud-scheduler/.repo-metadata.json
+      - packages/google-cloud-scheduler/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-secret-manager
     version: 2.27.0
@@ -3170,6 +3734,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-secret-manager
+    release_exclude_paths:
+      - packages/google-cloud-secret-manager/.repo-metadata.json
+      - packages/google-cloud-secret-manager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
     version: 0.5.0
@@ -3184,6 +3751,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-securesourcemanager/
+    release_exclude_paths:
+      - packages/google-cloud-securesourcemanager/.repo-metadata.json
+      - packages/google-cloud-securesourcemanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-security-publicca
     version: 0.6.0
@@ -3200,6 +3770,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-security-publicca/
+    release_exclude_paths:
+      - packages/google-cloud-security-publicca/.repo-metadata.json
+      - packages/google-cloud-security-publicca/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycenter
     version: 1.44.0
@@ -3220,6 +3793,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-securitycenter/
+    release_exclude_paths:
+      - packages/google-cloud-securitycenter/.repo-metadata.json
+      - packages/google-cloud-securitycenter/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycentermanagement
     version: 0.4.0
@@ -3234,6 +3810,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-securitycentermanagement/
+    release_exclude_paths:
+      - packages/google-cloud-securitycentermanagement/.repo-metadata.json
+      - packages/google-cloud-securitycentermanagement/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-control
     version: 1.19.0
@@ -3250,6 +3829,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-service-control/
+    release_exclude_paths:
+      - packages/google-cloud-service-control/.repo-metadata.json
+      - packages/google-cloud-service-control/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-directory
     version: 1.17.0
@@ -3266,6 +3848,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-service-directory/
+    release_exclude_paths:
+      - packages/google-cloud-service-directory/.repo-metadata.json
+      - packages/google-cloud-service-directory/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-management
     version: 1.16.0
@@ -3280,6 +3865,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-service-management/
+    release_exclude_paths:
+      - packages/google-cloud-service-management/.repo-metadata.json
+      - packages/google-cloud-service-management/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-usage
     version: 1.16.0
@@ -3294,6 +3882,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-service-usage/
+    release_exclude_paths:
+      - packages/google-cloud-service-usage/.repo-metadata.json
+      - packages/google-cloud-service-usage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-servicehealth
     version: 0.4.0
@@ -3308,6 +3899,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-servicehealth/
+    release_exclude_paths:
+      - packages/google-cloud-servicehealth/.repo-metadata.json
+      - packages/google-cloud-servicehealth/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-shell
     version: 1.15.0
@@ -3322,13 +3916,15 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-shell/
+    release_exclude_paths:
+      - packages/google-cloud-shell/.repo-metadata.json
+      - packages/google-cloud-shell/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-source-context
     version: 1.10.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/devtools/source/v1
-        service_config: ""
     source_roots:
       - packages/google-cloud-source-context
     preserve_regex:
@@ -3337,6 +3933,9 @@ libraries:
       - tests/unit/gapic/source_context_v1/test_source_context_v1.py
     remove_regex:
       - packages/google-cloud-source-context/
+    release_exclude_paths:
+      - packages/google-cloud-source-context/.repo-metadata.json
+      - packages/google-cloud-source-context/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
     version: 3.65.0
@@ -3419,6 +4018,9 @@ libraries:
       - ^packages/google-cloud-spanner/tests/unit/gapic/spanner_v1
       - ^packages/google-cloud-spanner/tests/unit/gapic/__init__.py
       - ^packages/google-cloud-spanner/samples/generated_samples
+    release_exclude_paths:
+      - packages/google-cloud-spanner/.repo-metadata.json
+      - packages/google-cloud-spanner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.38.0
@@ -3440,6 +4042,9 @@ libraries:
       - tests/unit/test_helpers.py
     remove_regex:
       - packages/google-cloud-speech/
+    release_exclude_paths:
+      - packages/google-cloud-speech/.repo-metadata.json
+      - packages/google-cloud-speech/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
     version: 3.10.1
@@ -3476,6 +4081,9 @@ libraries:
       - ^packages/google-cloud-storage/docs/_storage
       - ^packages/google-cloud-storage/docs/summary_overview.md
       - ^packages/google-cloud-storage/docs/multiprocessing.rst
+    release_exclude_paths:
+      - packages/google-cloud-storage/.repo-metadata.json
+      - packages/google-cloud-storage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.11.0
@@ -3490,6 +4098,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-storage-control/
+    release_exclude_paths:
+      - packages/google-cloud-storage-control/.repo-metadata.json
+      - packages/google-cloud-storage-control/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-transfer
     version: 1.20.0
@@ -3504,6 +4115,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-storage-transfer/
+    release_exclude_paths:
+      - packages/google-cloud-storage-transfer/.repo-metadata.json
+      - packages/google-cloud-storage-transfer/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.6.0
@@ -3518,6 +4132,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-storagebatchoperations/
+    release_exclude_paths:
+      - packages/google-cloud-storagebatchoperations/.repo-metadata.json
+      - packages/google-cloud-storagebatchoperations/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-storageinsights
     version: 0.4.0
@@ -3532,6 +4149,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-storageinsights/
+    release_exclude_paths:
+      - packages/google-cloud-storageinsights/.repo-metadata.json
+      - packages/google-cloud-storageinsights/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-support
     version: 0.4.0
@@ -3548,6 +4168,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-support/
+    release_exclude_paths:
+      - packages/google-cloud-support/.repo-metadata.json
+      - packages/google-cloud-support/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-talent
     version: 2.20.0
@@ -3564,6 +4187,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-talent/
+    release_exclude_paths:
+      - packages/google-cloud-talent/.repo-metadata.json
+      - packages/google-cloud-talent/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-tasks
     version: 2.22.0
@@ -3584,6 +4210,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-tasks/
+    release_exclude_paths:
+      - packages/google-cloud-tasks/.repo-metadata.json
+      - packages/google-cloud-tasks/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-telcoautomation
     version: 0.5.0
@@ -3601,6 +4230,9 @@ libraries:
       - snippets/README.md
     remove_regex:
       - packages/google-cloud-telcoautomation/
+    release_exclude_paths:
+      - packages/google-cloud-telcoautomation/.repo-metadata.json
+      - packages/google-cloud-telcoautomation/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-testutils
     version: 1.7.1
@@ -3610,6 +4242,9 @@ libraries:
       - packages/google-cloud-testutils
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-testutils/.repo-metadata.json
+      - packages/google-cloud-testutils/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
     version: 2.36.0
@@ -3627,6 +4262,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-texttospeech/
+    release_exclude_paths:
+      - packages/google-cloud-texttospeech/.repo-metadata.json
+      - packages/google-cloud-texttospeech/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-tpu
     version: 1.26.0
@@ -3645,6 +4283,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-tpu/
+    release_exclude_paths:
+      - packages/google-cloud-tpu/.repo-metadata.json
+      - packages/google-cloud-tpu/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-trace
     version: 1.19.0
@@ -3661,6 +4302,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-trace/
+    release_exclude_paths:
+      - packages/google-cloud-trace/.repo-metadata.json
+      - packages/google-cloud-trace/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
     version: 3.26.0
@@ -3682,6 +4326,9 @@ libraries:
       - tests/unit/v2
     remove_regex:
       - packages/google-cloud-translate/
+    release_exclude_paths:
+      - packages/google-cloud-translate/.repo-metadata.json
+      - packages/google-cloud-translate/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
     version: 0.10.0
@@ -3698,6 +4345,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-vectorsearch
+    release_exclude_paths:
+      - packages/google-cloud-vectorsearch/.repo-metadata.json
+      - packages/google-cloud-vectorsearch/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.16.0
@@ -3712,6 +4362,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-video-live-stream/
+    release_exclude_paths:
+      - packages/google-cloud-video-live-stream/.repo-metadata.json
+      - packages/google-cloud-video-live-stream/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-stitcher
     version: 0.11.0
@@ -3726,6 +4379,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-video-stitcher/
+    release_exclude_paths:
+      - packages/google-cloud-video-stitcher/.repo-metadata.json
+      - packages/google-cloud-video-stitcher/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-transcoder
     version: 1.20.0
@@ -3740,6 +4396,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-video-transcoder/
+    release_exclude_paths:
+      - packages/google-cloud-video-transcoder/.repo-metadata.json
+      - packages/google-cloud-video-transcoder/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-videointelligence
     version: 2.19.0
@@ -3763,6 +4422,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-videointelligence/
+    release_exclude_paths:
+      - packages/google-cloud-videointelligence/.repo-metadata.json
+      - packages/google-cloud-videointelligence/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-vision
     version: 3.13.0
@@ -3789,6 +4451,9 @@ libraries:
       - tests/unit/test_helpers.py
     remove_regex:
       - packages/google-cloud-vision/
+    release_exclude_paths:
+      - packages/google-cloud-vision/.repo-metadata.json
+      - packages/google-cloud-vision/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
     version: 0.5.0
@@ -3805,6 +4470,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-visionai/
+    release_exclude_paths:
+      - packages/google-cloud-visionai/.repo-metadata.json
+      - packages/google-cloud-visionai/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-vm-migration
     version: 1.16.0
@@ -3819,6 +4487,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-vm-migration/
+    release_exclude_paths:
+      - packages/google-cloud-vm-migration/.repo-metadata.json
+      - packages/google-cloud-vm-migration/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-vmwareengine
     version: 1.11.0
@@ -3833,6 +4504,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-vmwareengine/
+    release_exclude_paths:
+      - packages/google-cloud-vmwareengine/.repo-metadata.json
+      - packages/google-cloud-vmwareengine/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-vpc-access
     version: 1.16.0
@@ -3847,6 +4521,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-vpc-access/
+    release_exclude_paths:
+      - packages/google-cloud-vpc-access/.repo-metadata.json
+      - packages/google-cloud-vpc-access/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-webrisk
     version: 1.21.0
@@ -3863,6 +4540,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-webrisk/
+    release_exclude_paths:
+      - packages/google-cloud-webrisk/.repo-metadata.json
+      - packages/google-cloud-webrisk/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-websecurityscanner
     version: 1.20.0
@@ -3881,6 +4561,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-websecurityscanner/
+    release_exclude_paths:
+      - packages/google-cloud-websecurityscanner/.repo-metadata.json
+      - packages/google-cloud-websecurityscanner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-workflows
     version: 1.21.0
@@ -3901,6 +4584,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-workflows/
+    release_exclude_paths:
+      - packages/google-cloud-workflows/.repo-metadata.json
+      - packages/google-cloud-workflows/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-workloadmanager
     version: 0.2.0
@@ -3919,6 +4605,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-workloadmanager
+    release_exclude_paths:
+      - packages/google-cloud-workloadmanager/.repo-metadata.json
+      - packages/google-cloud-workloadmanager/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-workstations
     version: 0.8.0
@@ -3935,6 +4624,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-workstations/
+    release_exclude_paths:
+      - packages/google-cloud-workstations/.repo-metadata.json
+      - packages/google-cloud-workstations/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-crc32c
     version: 1.8.0
@@ -3944,6 +4636,9 @@ libraries:
       - packages/google-crc32c
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-crc32c/.repo-metadata.json
+      - packages/google-crc32c/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-geo-type
     version: 0.6.0
@@ -3959,6 +4654,9 @@ libraries:
       - tests/unit/gapic/type/test_type.py
     remove_regex:
       - packages/google-geo-type
+    release_exclude_paths:
+      - packages/google-geo-type/.repo-metadata.json
+      - packages/google-geo-type/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-addressvalidation
     version: 0.6.0
@@ -3973,6 +4671,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-addressvalidation
+    release_exclude_paths:
+      - packages/google-maps-addressvalidation/.repo-metadata.json
+      - packages/google-maps-addressvalidation/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-areainsights
     version: 0.4.0
@@ -3987,6 +4688,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-areainsights
+    release_exclude_paths:
+      - packages/google-maps-areainsights/.repo-metadata.json
+      - packages/google-maps-areainsights/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine
     version: 0.5.0
@@ -4001,6 +4705,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-fleetengine
+    release_exclude_paths:
+      - packages/google-maps-fleetengine/.repo-metadata.json
+      - packages/google-maps-fleetengine/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine-delivery
     version: 0.5.0
@@ -4015,6 +4722,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-fleetengine-delivery
+    release_exclude_paths:
+      - packages/google-maps-fleetengine-delivery/.repo-metadata.json
+      - packages/google-maps-fleetengine-delivery/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-geocode
     version: 0.2.0
@@ -4033,6 +4743,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-maps-geocode
+    release_exclude_paths:
+      - packages/google-maps-geocode/.repo-metadata.json
+      - packages/google-maps-geocode/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
     version: 0.7.0
@@ -4047,6 +4760,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-mapsplatformdatasets
+    release_exclude_paths:
+      - packages/google-maps-mapsplatformdatasets/.repo-metadata.json
+      - packages/google-maps-mapsplatformdatasets/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-navconnect
     version: 0.1.0
@@ -4065,6 +4781,9 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-maps-navconnect
+    release_exclude_paths:
+      - packages/google-maps-navconnect/.repo-metadata.json
+      - packages/google-maps-navconnect/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.8.0
@@ -4079,6 +4798,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-places
+    release_exclude_paths:
+      - packages/google-maps-places/.repo-metadata.json
+      - packages/google-maps-places/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-routeoptimization
     version: 0.4.0
@@ -4093,6 +4815,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-routeoptimization
+    release_exclude_paths:
+      - packages/google-maps-routeoptimization/.repo-metadata.json
+      - packages/google-maps-routeoptimization/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-routing
     version: 0.10.0
@@ -4107,6 +4832,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-routing
+    release_exclude_paths:
+      - packages/google-maps-routing/.repo-metadata.json
+      - packages/google-maps-routing/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-solar
     version: 0.5.0
@@ -4121,6 +4849,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-maps-solar
+    release_exclude_paths:
+      - packages/google-maps-solar/.repo-metadata.json
+      - packages/google-maps-solar/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-resumable-media
     version: 2.8.2
@@ -4130,6 +4861,9 @@ libraries:
       - packages/google-resumable-media
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/google-resumable-media/.repo-metadata.json
+      - packages/google-resumable-media/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-css
     version: 0.5.0
@@ -4144,6 +4878,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-css/
+    release_exclude_paths:
+      - packages/google-shopping-css/.repo-metadata.json
+      - packages/google-shopping-css/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.5.0
@@ -4160,6 +4897,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-accounts/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-accounts/.repo-metadata.json
+      - packages/google-shopping-merchant-accounts/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-conversions
     version: 1.3.0
@@ -4176,6 +4916,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-conversions/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-conversions/.repo-metadata.json
+      - packages/google-shopping-merchant-conversions/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-datasources
     version: 1.4.0
@@ -4192,6 +4935,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-datasources/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-datasources/.repo-metadata.json
+      - packages/google-shopping-merchant-datasources/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-inventories
     version: 1.3.0
@@ -4208,6 +4954,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-inventories/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-inventories/.repo-metadata.json
+      - packages/google-shopping-merchant-inventories/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-issueresolution
     version: 1.3.0
@@ -4224,6 +4973,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-issueresolution/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-issueresolution/.repo-metadata.json
+      - packages/google-shopping-merchant-issueresolution/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-lfp
     version: 1.3.0
@@ -4240,6 +4992,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-lfp/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-lfp/.repo-metadata.json
+      - packages/google-shopping-merchant-lfp/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-notifications
     version: 1.3.0
@@ -4256,6 +5011,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-notifications/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-notifications/.repo-metadata.json
+      - packages/google-shopping-merchant-notifications/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-ordertracking
     version: 1.3.0
@@ -4272,6 +5030,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-ordertracking/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-ordertracking/.repo-metadata.json
+      - packages/google-shopping-merchant-ordertracking/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
     version: 1.5.0
@@ -4288,6 +5049,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-products/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-products/.repo-metadata.json
+      - packages/google-shopping-merchant-products/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-productstudio
     version: 0.4.0
@@ -4302,6 +5066,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-productstudio/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-productstudio/.repo-metadata.json
+      - packages/google-shopping-merchant-productstudio/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-promotions
     version: 1.3.0
@@ -4318,6 +5085,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-promotions/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-promotions/.repo-metadata.json
+      - packages/google-shopping-merchant-promotions/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-quota
     version: 1.4.0
@@ -4334,6 +5104,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-quota/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-quota/.repo-metadata.json
+      - packages/google-shopping-merchant-quota/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reports
     version: 1.3.0
@@ -4352,6 +5125,9 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-reports/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-reports/.repo-metadata.json
+      - packages/google-shopping-merchant-reports/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reviews
     version: 0.5.0
@@ -4366,13 +5142,15 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-shopping-merchant-reviews/
+    release_exclude_paths:
+      - packages/google-shopping-merchant-reviews/.repo-metadata.json
+      - packages/google-shopping-merchant-reviews/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-shopping-type
     version: 1.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/type
-        service_config: ""
     source_roots:
       - packages/google-shopping-type
     preserve_regex:
@@ -4381,6 +5159,9 @@ libraries:
       - tests/unit/gapic/type/test_type.py
     remove_regex:
       - packages/google-shopping-type/
+    release_exclude_paths:
+      - packages/google-shopping-type/.repo-metadata.json
+      - packages/google-shopping-type/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.74.0
@@ -4389,15 +5170,12 @@ libraries:
       - path: google/api
         service_config: serviceconfig.yaml
       - path: google/cloud
-        service_config: ""
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
-        service_config: ""
       - path: google/rpc
         service_config: rpc_publish.yaml
       - path: google/rpc/context
-        service_config: ""
       - path: google/type
         service_config: type.yaml
     source_roots:
@@ -4408,6 +5186,9 @@ libraries:
       - .repo-metadata.json
       - README.rst
       - docs/summary_overview.md
+    release_exclude_paths:
+      - packages/googleapis-common-protos/.repo-metadata.json
+      - packages/googleapis-common-protos/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.22.0
@@ -4425,6 +5206,9 @@ libraries:
       - grafeas/grafeas/grafeas_v1/types.py
     remove_regex:
       - packages/grafeas
+    release_exclude_paths:
+      - packages/grafeas/.repo-metadata.json
+      - packages/grafeas/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: grpc-google-iam-v1
     version: 0.14.4
@@ -4440,6 +5224,9 @@ libraries:
       - .repo-metadata.json
       - README.rst
       - docs/summary_overview.md
+    release_exclude_paths:
+      - packages/grpc-google-iam-v1/.repo-metadata.json
+      - packages/grpc-google-iam-v1/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: pandas-gbq
     version: 0.35.0
@@ -4449,6 +5236,9 @@ libraries:
       - packages/pandas-gbq
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/pandas-gbq/.repo-metadata.json
+      - packages/pandas-gbq/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: proto-plus
     version: 1.27.2
@@ -4458,6 +5248,9 @@ libraries:
       - packages/proto-plus
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/proto-plus/.repo-metadata.json
+      - packages/proto-plus/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-bigquery
     version: 1.16.0
@@ -4467,6 +5260,9 @@ libraries:
       - packages/sqlalchemy-bigquery
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/sqlalchemy-bigquery/.repo-metadata.json
+      - packages/sqlalchemy-bigquery/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-spanner
     version: 1.17.3
@@ -4476,4 +5272,7 @@ libraries:
       - packages/sqlalchemy-spanner
     preserve_regex: []
     remove_regex: []
+    release_exclude_paths:
+      - packages/sqlalchemy-spanner/.repo-metadata.json
+      - packages/sqlalchemy-spanner/docs/README.rst
     tag_format: '{id}-v{version}'
