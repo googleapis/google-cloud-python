@@ -17,10 +17,6 @@ from __future__ import annotations
 import logging
 from typing import Callable, Optional, Protocol, runtime_checkable, TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from bigframes.session import Session
-    import bigframes.series
-
 import dataclasses
 
 import google.api_core.exceptions
@@ -32,6 +28,8 @@ from bigframes.functions import function_typing, udf_def
 
 if TYPE_CHECKING:
     import bigframes.core.col
+    from bigframes.session import Session
+    import bigframes.series
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +156,12 @@ def read_gbq_function(
 
 @runtime_checkable
 class Udf(Protocol):
+    """
+    Protocol for all BigFrames user-defined functions.
+
+    Has @runtime_checkable so functions like df.apply() can dispatch UDFs with isinstance() checks.
+    """
+
     @property
     def udf_def(self) -> udf_def.BigqueryUdf: ...
 

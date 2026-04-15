@@ -854,11 +854,11 @@ class FunctionSession:
                 msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
-            if not name:  # session-managed resource
+            if not name:  # session-owned resource - will be cleaned up automatically
                 self._update_temp_artifacts(full_rf_name, "")
                 return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
 
-            # user-managed permanent resource
+            # user-managed permanent resource - will not be cleaned up automatically
             else:
                 return bq_functions.BigqueryCallableRoutine(
                     udf_definition, session, local_func=func, is_managed=True

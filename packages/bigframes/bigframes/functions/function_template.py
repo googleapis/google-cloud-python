@@ -43,7 +43,7 @@ def convert_from_bq_json(type_, arg):
     import base64
     import collections
 
-    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters = collections.defaultdict(lambda: lambda value: value)  # type: ignore
     converters["BYTES"] = base64.b64decode
     converter = converters[type_]
     return converter(arg) if arg is not None else None
@@ -53,7 +53,7 @@ def convert_to_bq_json(type_, arg):
     import base64
     import collections
 
-    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters = collections.defaultdict(lambda: lambda value: value)  # type: ignore
     converters["BYTES"] = lambda value: base64.b64encode(value).decode("utf-8")
     converter = converters[type_]
     return converter(arg) if arg is not None else None
