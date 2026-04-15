@@ -19,7 +19,7 @@ class PublicKeyCredentialDescriptor:
     id: str
     transports: Optional[List[str]] = None
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, object]:
         cred = {"type": "public-key", "id": self.id}
         if self.transports:
             cred["transports"] = self.transports
@@ -37,7 +37,7 @@ class AuthenticationExtensionsClientInputs:
 
     appid: Optional[str] = None
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, object]:
         extensions = {}
         if self.appid:
             extensions["appid"] = self.appid
@@ -119,7 +119,7 @@ class GetResponse:
     client_extension_results: Optional[Dict]
 
     @staticmethod
-    def from_json(json_str: str):
+    def from_json(json_str: str) -> "GetResponse":
         """Verify and construct GetResponse from a JSON string."""
         try:
             resp_json = json.loads(json_str)

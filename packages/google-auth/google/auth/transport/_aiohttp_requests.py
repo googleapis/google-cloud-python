@@ -31,7 +31,9 @@ from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
 from google.auth.aio import _helpers as _helpers_async
-from google.auth.transport import requests
+from google.auth.transport import Request, Response, requests
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -54,7 +56,7 @@ class _CombinedResponse(transport.Response):
     implementation.
     """
 
-    def __init__(self, response):
+    def __init__(self, response: Any) -> None:
         self._response = response
         self._raw_content = None
 
@@ -66,23 +68,23 @@ class _CombinedResponse(transport.Response):
         )
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._response.status
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         return self._response.headers
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self._response.content
 
-    async def raw_content(self):
+    async def raw_content(self) -> bytes:
         if self._raw_content is None:
             self._raw_content = await self._response.content.read()
         return self._raw_content
 
-    async def content(self):
+    async def content(self) -> bytes:
         # Load raw_content if necessary
         await self.raw_content()
         if self._is_compressed():
@@ -103,19 +105,19 @@ class _Response(transport.Response):
         response (requests.Response): The raw Requests response.
     """
 
-    def __init__(self, response):
+    def __init__(self, response: Any) -> None:
         self._response = response
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._response.status
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         return self._response.headers
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self._response.content
 
 
@@ -142,7 +144,7 @@ class Request(transport.Request):
     .. automethod:: __call__
     """
 
-    def __init__(self, session=None):
+    def __init__(self, session: Any | None=None) -> None:
         # TODO: Use auto_decompress property for aiohttp 3.7+
         if session is not None and session._auto_decompress:
             raise exceptions.InvalidOperation(
@@ -152,13 +154,13 @@ class Request(transport.Request):
 
     async def __call__(
         self,
-        url,
-        method="GET",
-        body=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
+        url: str,
+        method: str="GET",
+        body: bytes | None=None,
+        headers: Mapping[str, str] | None=None,
+        timeout: float | None=_DEFAULT_TIMEOUT,
         **kwargs,
-    ):
+    ) -> Response:
         """
         Make an HTTP request using aiohttp.
 
@@ -245,14 +247,14 @@ class AuthorizedSession(aiohttp.ClientSession):
 
     def __init__(
         self,
-        credentials,
-        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
-        refresh_timeout=None,
-        auth_request=None,
-        auto_decompress=False,
+        credentials: Any,
+        refresh_status_codes: Sequence[int]=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts: int=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+        refresh_timeout: float | None=None,
+        auth_request: Request | None=None,
+        auto_decompress: bool=False,
         **kwargs,
-    ):
+    ) -> None:
         super(AuthorizedSession, self).__init__(**kwargs)
         self.credentials = credentials
         self._refresh_status_codes = refresh_status_codes
@@ -267,15 +269,15 @@ class AuthorizedSession(aiohttp.ClientSession):
 
     async def request(
         self,
-        method,
-        url,
-        data=None,
-        headers=None,
-        max_allowed_time=None,
-        timeout=_DEFAULT_TIMEOUT,
-        auto_decompress=False,
+        method: str,
+        url: str,
+        data: Any=None,
+        headers: Mapping[str, str] | None=None,
+        max_allowed_time: float | None=None,
+        timeout: float | None=_DEFAULT_TIMEOUT,
+        auto_decompress: bool=False,
         **kwargs,
-    ):
+    ) -> _Response:
         """Implementation of Authorized Session aiohttp request.
 
         Args:

@@ -16,14 +16,18 @@ import asyncio
 from contextlib import asynccontextmanager
 import functools
 import time
-from typing import Mapping, Optional, TYPE_CHECKING, Union
+from typing import Any, Mapping, Optional, TYPE_CHECKING, Union
 
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
-from google.auth.aio.transport import mtls
+from google.auth.aio.transport import Request, Response, mtls
 from google.auth.exceptions import TimeoutError
+
+class ClientTimeout: ...
+
 import google.auth.transport._mtls_helper
+import collections.abc
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -46,7 +50,7 @@ except ImportError:  # pragma: NO COVER
 
 
 @asynccontextmanager
-async def timeout_guard(timeout):
+async def timeout_guard(timeout: float) -> collections.abc.AsyncGenerator[Any]:
     """
     timeout_guard is an asynchronous context manager to apply a timeout to an asynchronous block of code.
 
@@ -147,7 +151,7 @@ class AsyncAuthorizedSession:
             )
         self._auth_request = _auth_request
 
-    async def configure_mtls_channel(self, client_cert_callback=None):
+    async def configure_mtls_channel(self, client_cert_callback: collections.abc.Callable[[], tuple[bytes, bytes]] | None=None) -> None:
         """Configure the client certificate and key for SSL connection.
 
         The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
@@ -565,7 +569,7 @@ class AsyncAuthorizedSession:
         )
 
     @property
-    def is_mtls(self):
+    def is_mtls(self) -> bool:
         """Indicates if mutual TLS is enabled."""
         return self._is_mtls
 

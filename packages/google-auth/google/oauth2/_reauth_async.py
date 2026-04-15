@@ -39,6 +39,9 @@ from google.oauth2 import _client
 from google.oauth2 import _client_async
 from google.oauth2 import challenges
 from google.oauth2 import reauth
+from google.auth.transport import Request as _Request, Request as _Request
+from collections.abc import Mapping, Sequence
+from datetime import datetime
 
 
 async def _get_challenges(
@@ -204,8 +207,8 @@ async def _obtain_rapt(request, access_token, requested_scopes):
 
 
 async def get_rapt_token(
-    request, client_id, client_secret, refresh_token, token_uri, scopes=None
-):
+    request: _Request, client_id: str, client_secret: str, refresh_token: str, token_uri: str, scopes: Sequence[str] | None=None
+) -> str:
     """Given an http request method and refresh_token, get rapt token.
 
     Args:
@@ -241,15 +244,15 @@ async def get_rapt_token(
 
 
 async def refresh_grant(
-    request,
-    token_uri,
-    refresh_token,
-    client_id,
-    client_secret,
-    scopes=None,
-    rapt_token=None,
-    enable_reauth_refresh=False,
-):
+    request: _Request,
+    token_uri: str,
+    refresh_token: str,
+    client_id: str,
+    client_secret: str,
+    scopes: Sequence[str] | None=None,
+    rapt_token: str | None=None,
+    enable_reauth_refresh: bool=False,
+) -> tuple[str, str | None, datetime | None, Mapping[str, str], str]:
     """Implements the reauthentication flow.
 
     Args:

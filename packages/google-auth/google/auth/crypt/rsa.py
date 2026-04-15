@@ -25,6 +25,8 @@ from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 from google.auth import _helpers
 from google.auth.crypt import _cryptography_rsa
 from google.auth.crypt import base
+from google.auth.crypt.base import FromServiceAccountMixin, Signer, Verifier
+from typing import Any
 
 RSA_KEY_MODULE_PREFIX = "rsa.key"
 
@@ -40,7 +42,7 @@ class RSAVerifier(base.Verifier):
         ValueError: if an unrecognized public key is provided
     """
 
-    def __init__(self, public_key):
+    def __init__(self, public_key: Any) -> None:
         module_str = public_key.__class__.__module__
         if isinstance(public_key, RSAPublicKey):
             impl_lib = _cryptography_rsa
@@ -53,11 +55,11 @@ class RSAVerifier(base.Verifier):
         self._impl = impl_lib.RSAVerifier(public_key)
 
     @_helpers.copy_docstring(base.Verifier)
-    def verify(self, message, signature):
+    def verify(self, message: Any, signature: Any) -> bool:
         return self._impl.verify(message, signature)
 
     @classmethod
-    def from_string(cls, public_key):
+    def from_string(cls, public_key: Any) -> "RSAVerifier":
         """Construct a Verifier instance from a public key or public
         certificate string.
 
@@ -91,7 +93,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         ValueError: if an unrecognized public key is provided
     """
 
-    def __init__(self, private_key, key_id=None):
+    def __init__(self, private_key: Any, key_id: str | None=None) -> None:
         module_str = private_key.__class__.__module__
         if isinstance(private_key, RSAPrivateKey):
             impl_lib = _cryptography_rsa
@@ -105,15 +107,15 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
 
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
-    def key_id(self):
+    def key_id(self) -> str:
         return self._impl.key_id
 
     @_helpers.copy_docstring(base.Signer)
-    def sign(self, message):
+    def sign(self, message: Any) -> bytes:
         return self._impl.sign(message)
 
     @classmethod
-    def from_string(cls, key, key_id=None):
+    def from_string(cls, key: Any, key_id: str | None=None) -> "RSASigner":
         """Construct a Signer instance from a private key in PEM format.
 
         Args:

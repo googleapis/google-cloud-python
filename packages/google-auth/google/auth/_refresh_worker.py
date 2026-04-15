@@ -17,6 +17,7 @@ import logging
 import threading
 
 import google.auth.exceptions as e
+from typing import Any
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,13 +27,13 @@ class RefreshThreadManager:
     Organizes exactly one background job that refresh a token.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initializes the manager."""
 
         self._worker = None
         self._lock = threading.Lock()  # protects access to worker threads.
 
-    def start_refresh(self, cred, request):
+    def start_refresh(self, cred: Any, request: Any) -> bool:
         """Starts a refresh thread for the given credentials.
         The credentials are refreshed using the request parameter.
         request and cred MUST not be None
@@ -59,7 +60,7 @@ class RefreshThreadManager:
                 self._worker.start()
         return True
 
-    def clear_error(self):
+    def clear_error(self) -> None:
         """
         Removes any errors that were stored from previous background refreshes.
         """
@@ -84,7 +85,7 @@ class RefreshThread(threading.Thread):
     Thread that refreshes credentials.
     """
 
-    def __init__(self, cred, request, **kwargs):
+    def __init__(self, cred: Any, request: Any, **kwargs) -> None:
         """Initializes the thread.
 
         Args:
@@ -98,7 +99,7 @@ class RefreshThread(threading.Thread):
         self._request = request
         self._error_info = None
 
-    def run(self):
+    def run(self) -> None:
         """
         Perform the credential refresh.
         """

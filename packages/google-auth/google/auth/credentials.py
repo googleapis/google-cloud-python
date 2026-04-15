@@ -19,13 +19,17 @@ import abc
 from enum import Enum
 import logging
 import os
-from typing import List
+from typing import Any, List
 
 from google.auth import _helpers, environment_vars
 from google.auth import exceptions
 from google.auth import metrics
 from google.auth._credentials_base import _BaseCredentials
 from google.auth._refresh_worker import RefreshThreadManager
+from google.auth.crypt import Signer as _Signer
+from google.auth.transport import Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest
+from collections.abc import Coroutine, Mapping, Sequence
+from datetime import datetime
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 NO_OP_TRUST_BOUNDARY_LOCATIONS: List[str] = []
@@ -53,7 +57,7 @@ class Credentials(_BaseCredentials):
     with modifications such as :meth:`ScopedCredentials.with_scopes`.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super(Credentials, self).__init__()
 
         self.expiry = None
@@ -73,7 +77,7 @@ class Credentials(_BaseCredentials):
         self._refresh_worker = RefreshThreadManager()
 
     @property
-    def expired(self):
+    def expired(self) -> bool:
         """Checks if the credentials are expired.
 
         Note that credentials can be invalid but not expired because
@@ -91,7 +95,7 @@ class Credentials(_BaseCredentials):
         return _helpers.utcnow() >= skewed_expiry
 
     @property
-    def valid(self):
+    def valid(self) -> bool:
         """Checks the validity of the credentials.
 
         This is True if the credentials have a :attr:`token` and the token
@@ -103,7 +107,7 @@ class Credentials(_BaseCredentials):
         return self.token is not None and not self.expired
 
     @property
-    def token_state(self):
+    def token_state(self) -> "TokenState":
         """
         See `:obj:`TokenState`
         """
@@ -125,16 +129,16 @@ class Credentials(_BaseCredentials):
         return TokenState.FRESH
 
     @property
-    def quota_project_id(self):
+    def quota_project_id(self) -> str | None:
         """Project to use for quota and billing purposes."""
         return self._quota_project_id
 
     @property
-    def universe_domain(self):
+    def universe_domain(self) -> str:
         """The universe domain value."""
         return self._universe_domain
 
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         """The credential information JSON.
 
         The credential information will be added to auth related error messages
@@ -146,7 +150,7 @@ class Credentials(_BaseCredentials):
         return None
 
     @abc.abstractmethod
-    def refresh(self, request):
+    def refresh(self, request: _TransportRequest) -> None | Coroutine[Any, Any, None]:
         """Refreshes the access token.
 
         Args:
@@ -176,7 +180,7 @@ class Credentials(_BaseCredentials):
         """
         return None
 
-    def apply(self, headers, token=None):
+    def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Apply the token to the authentication header.
 
         Args:
@@ -207,7 +211,7 @@ class Credentials(_BaseCredentials):
             # background thread.
             self._refresh_worker.clear_error()
 
-    def before_request(self, request, method, url, headers):
+    def before_request(self, request: _TransportRequest, method: str, url: str, headers: Mapping[str, str]) -> None | Coroutine[Any, Any, None]:
         """Performs credential-specific before request logic.
 
         Refreshes the credentials if necessary, then calls :meth:`apply` to
@@ -232,14 +236,14 @@ class Credentials(_BaseCredentials):
         metrics.add_metric_header(headers, self._metric_header_for_usage())
         self.apply(headers)
 
-    def with_non_blocking_refresh(self):
+    def with_non_blocking_refresh(self) -> None:
         self._use_non_blocking_refresh = True
 
 
 class CredentialsWithQuotaProject(Credentials):
     """Abstract base for credentials supporting ``with_quota_project`` factory"""
 
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> Credentials:
         """Returns a copy of these credentials with a modified quota project.
 
         Args:
@@ -251,7 +255,7 @@ class CredentialsWithQuotaProject(Credentials):
         """
         raise NotImplementedError("This credential does not support quota project.")
 
-    def with_quota_project_from_environment(self):
+    def with_quota_project_from_environment(self) -> Credentials:
         quota_from_env = os.environ.get(environment_vars.GOOGLE_CLOUD_QUOTA_PROJECT)
         if quota_from_env:
             return self.with_quota_project(quota_from_env)
@@ -261,7 +265,7 @@ class CredentialsWithQuotaProject(Credentials):
 class CredentialsWithTokenUri(Credentials):
     """Abstract base for credentials supporting ``with_token_uri`` factory"""
 
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> Credentials:
         """Returns a copy of these credentials with a modified token uri.
 
         Args:
@@ -276,7 +280,7 @@ class CredentialsWithTokenUri(Credentials):
 class CredentialsWithUniverseDomain(Credentials):
     """Abstract base for credentials supporting ``with_universe_domain`` factory"""
 
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str) -> Credentials:
         """Returns a copy of these credentials with a modified universe domain.
 
         Args:
@@ -294,7 +298,7 @@ class CredentialsWithTrustBoundary(Credentials):
     """Abstract base for credentials supporting ``with_trust_boundary`` factory"""
 
     @abc.abstractmethod
-    def _perform_refresh_token(self, request):
+    def _perform_refresh_token(self, request: _TransportRequest) -> None:
         """Refreshes the access token.
 
         Args:
@@ -307,7 +311,7 @@ class CredentialsWithTrustBoundary(Credentials):
         """
         raise NotImplementedError("_perform_refresh_token must be implemented")
 
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str]) -> Credentials:
         """Returns a copy of these credentials with a modified trust boundary.
 
         Args:
@@ -353,12 +357,12 @@ class CredentialsWithTrustBoundary(Credentials):
                 return {"x-allowed-locations": self._trust_boundary["encodedLocations"]}
         return {}
 
-    def apply(self, headers, token=None):
+    def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Apply the token to the authentication header."""
         super().apply(headers, token)
         headers.update(self._get_trust_boundary_header())
 
-    def refresh(self, request):
+    def refresh(self, request: _TransportRequest) -> None | Coroutine[Any, Any, None]:
         """Refreshes the access token and the trust boundary.
 
         This method calls the subclass's token refresh logic and then
@@ -453,21 +457,21 @@ class AnonymousCredentials(Credentials):
     """
 
     @property
-    def expired(self):
+    def expired(self) -> bool:
         """Returns `False`, anonymous credentials never expire."""
         return False
 
     @property
-    def valid(self):
+    def valid(self) -> bool:
         """Returns `True`, anonymous credentials are always valid."""
         return True
 
-    def refresh(self, request):
+    def refresh(self, request: _TransportRequest) -> None:
         """Raises :class:``InvalidOperation``, anonymous credentials cannot be
         refreshed."""
         raise exceptions.InvalidOperation("Anonymous credentials cannot be refreshed.")
 
-    def apply(self, headers, token=None):
+    def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Anonymous credentials do nothing to the request.
 
         The optional ``token`` argument is not supported.
@@ -478,7 +482,7 @@ class AnonymousCredentials(Credentials):
         if token is not None:
             raise exceptions.InvalidValue("Anonymous credentials don't support tokens.")
 
-    def before_request(self, request, method, url, headers):
+    def before_request(self, request: _TransportRequest, method: str, url: str, headers: Mapping[str, str]) -> None | Coroutine[Any, Any, None]:
         """Anonymous credentials do nothing to the request."""
 
 
@@ -511,27 +515,27 @@ class ReadOnlyScoped(metaclass=abc.ABCMeta):
     .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super(ReadOnlyScoped, self).__init__()
         self._scopes = None
         self._default_scopes = None
 
     @property
-    def scopes(self):
+    def scopes(self) -> Sequence[str] | None:
         """Sequence[str]: the credentials' current set of scopes."""
         return self._scopes
 
     @property
-    def default_scopes(self):
+    def default_scopes(self) -> Sequence[str] | None:
         """Sequence[str]: the credentials' current set of default scopes."""
         return self._default_scopes
 
     @abc.abstractproperty
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """True if these credentials require scopes to obtain an access token."""
         return False
 
-    def has_scopes(self, scopes):
+    def has_scopes(self, scopes: Sequence[str]) -> bool:
         """Checks if the credentials have the given scopes.
 
         .. warning: This method is not guaranteed to be accurate if the
@@ -579,7 +583,7 @@ class Scoped(ReadOnlyScoped):
     """
 
     @abc.abstractmethod
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Scoped":
         """Create a copy of these credentials with the specified scopes.
 
         Args:
@@ -594,7 +598,7 @@ class Scoped(ReadOnlyScoped):
         raise NotImplementedError("This class does not require scoping.")
 
 
-def with_scopes_if_required(credentials, scopes, default_scopes=None):
+def with_scopes_if_required(credentials: Credentials, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> Credentials:
     """Creates a copy of the credentials with scopes if scoping is required.
 
     This helper function is useful when you do not know (or care to know) the
@@ -626,7 +630,7 @@ class Signing(metaclass=abc.ABCMeta):
     """Interface for credentials that can cryptographically sign messages."""
 
     @abc.abstractmethod
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         """Signs the given message.
 
         Args:
@@ -640,14 +644,14 @@ class Signing(metaclass=abc.ABCMeta):
         raise NotImplementedError("Sign bytes must be implemented.")
 
     @abc.abstractproperty
-    def signer_email(self):
+    def signer_email(self) -> str:
         """Optional[str]: An email address that identifies the signer."""
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)
         raise NotImplementedError("Signer email must be implemented.")
 
     @abc.abstractproperty
-    def signer(self):
+    def signer(self) -> _Signer:
         """google.auth.crypt.Signer: The signer used to sign bytes."""
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)

@@ -24,6 +24,7 @@ from urllib.parse import quote, urlparse
 
 from google.auth import environment_vars
 from google.auth import exceptions
+from typing import Any
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -62,7 +63,7 @@ def _is_certificate_file_ready(path):
     return path and os.path.exists(path) and os.path.getsize(path) > 0
 
 
-def get_agent_identity_certificate_path():
+def get_agent_identity_certificate_path() -> str | None:
     """Gets the certificate path from the certificate config file.
 
     The path to the certificate config file is read from the
@@ -127,7 +128,7 @@ def get_agent_identity_certificate_path():
     )
 
 
-def get_and_parse_agent_identity_certificate():
+def get_and_parse_agent_identity_certificate() -> Any | None:
     """Gets and parses the agent identity certificate if not opted out.
 
     Checks if the user has opted out of certificate-bound tokens. If not,
@@ -158,7 +159,7 @@ def get_and_parse_agent_identity_certificate():
     return parse_certificate(cert_bytes)
 
 
-def parse_certificate(cert_bytes):
+def parse_certificate(cert_bytes: bytes):
     """Parses a PEM-encoded certificate.
 
     Args:
@@ -212,7 +213,7 @@ def _is_agent_identity_certificate(cert):
         raise ImportError(CRYPTOGRAPHY_NOT_FOUND_ERROR) from e
 
 
-def calculate_certificate_fingerprint(cert):
+def calculate_certificate_fingerprint(cert: Any) -> str:
     """Calculates the URL-encoded, unpadded, base64-encoded SHA256 hash of a
     DER-encoded certificate.
 
@@ -239,7 +240,7 @@ def calculate_certificate_fingerprint(cert):
         raise ImportError(CRYPTOGRAPHY_NOT_FOUND_ERROR) from e
 
 
-def should_request_bound_token(cert):
+def should_request_bound_token(cert: Any) -> bool:
     """Determines if a bound token should be requested.
 
     This is based on the GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
@@ -262,7 +263,7 @@ def should_request_bound_token(cert):
     return is_agent_cert and is_opted_in
 
 
-def get_cached_cert_fingerprint(cached_cert):
+def get_cached_cert_fingerprint(cached_cert: bytes | None) -> str:
     """Returns the fingerprint of the cached certificate."""
     if cached_cert:
         cert_obj = parse_certificate(cached_cert)

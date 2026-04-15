@@ -25,9 +25,12 @@ import warnings
 from google.auth import _default
 from google.auth import environment_vars
 from google.auth import exceptions
+from google.auth.transport import Request as _Request
+from collections.abc import Sequence
+from google.auth.credentials import Credentials
 
 
-def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
+def load_credentials_from_file(filename: str, scopes: Sequence[str] | None=None, quota_project_id: str | None=None) -> tuple[Credentials, str | None]:
     """Loads Google credentials from a file.
 
     The credentials file must be a service account key or stored authorized
@@ -178,7 +181,7 @@ def _get_gce_credentials(request=None):
     return _default._get_gce_credentials(request)
 
 
-def default_async(scopes=None, request=None, quota_project_id=None):
+def default_async(scopes: Sequence[str] | None=None, request: _Request | None=None, quota_project_id: str | None=None) -> tuple[Credentials, str | None]:
     """Gets the default credentials for the current environment.
 
     `Application Default Credentials`_ provides an easy way to obtain

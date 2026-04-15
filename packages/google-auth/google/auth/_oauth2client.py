@@ -26,6 +26,7 @@ import google.auth.app_engine
 import google.auth.compute_engine
 import google.oauth2.credentials
 import google.oauth2.service_account
+from typing import Any
 
 try:
     import oauth2client.client  # type: ignore
@@ -133,7 +134,7 @@ if _HAS_APPENGINE:  # pragma: no cover
     ] = _convert_appengine_app_assertion_credentials
 
 
-def convert(credentials):
+def convert(credentials: Any):
     """Convert oauth2client credentials to google-auth credentials.
 
     This class converts:

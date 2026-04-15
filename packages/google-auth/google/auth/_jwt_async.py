@@ -45,9 +45,16 @@ change in minor releases.
 
 from google.auth import _credentials_async
 from google.auth import jwt
+from google.auth.crypt import Signer as _Signer, Signer as _Signer, Signer as _Signer, Signer as _Signer
+from google.auth.transport import Request as _Request
+from collections.abc import Mapping
+from google.auth._credentials_async import Credentials
+from google.auth.credentials import Signing
+from google.auth.jwt import Credentials, OnDemandCredentials
+from typing import Any
 
 
-def encode(signer, payload, header=None, key_id=None):
+def encode(signer: _Signer, payload: Mapping[str, str], header: Mapping[str, str] | None=None, key_id: str | None=None) -> bytes:
     """Make a signed JWT.
 
     Args:

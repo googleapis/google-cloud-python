@@ -44,6 +44,10 @@ from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
 from google.oauth2 import utils
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, CredentialsWithTokenUri, CredentialsWithTrustBoundary, Scoped
+from google.auth.transport import Request
+from typing import Any
 
 # External account JSON type identifier.
 _EXTERNAL_ACCOUNT_JSON_TYPE = "external_account"
@@ -103,22 +107,22 @@ class Credentials(
 
     def __init__(
         self,
-        audience,
-        subject_token_type,
-        token_url,
-        credential_source,
-        service_account_impersonation_url=None,
-        service_account_impersonation_options=None,
-        client_id=None,
-        client_secret=None,
-        token_info_url=None,
-        quota_project_id=None,
-        scopes=None,
-        default_scopes=None,
-        workforce_pool_user_project=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-        trust_boundary=None,
-    ):
+        audience: str,
+        subject_token_type: str,
+        token_url: str,
+        credential_source: Mapping[str, Any],
+        service_account_impersonation_url: str | None=None,
+        service_account_impersonation_options: Mapping[str, str] | None=None,
+        client_id: str | None=None,
+        client_secret: str | None=None,
+        token_info_url: str | None=None,
+        quota_project_id: str | None=None,
+        scopes: Sequence[str] | None=None,
+        default_scopes: Sequence[str] | None=None,
+        workforce_pool_user_project: str | None=None,
+        universe_domain: str=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        trust_boundary: Mapping[str, str] | None=None,
+    ) -> None:
         """Instantiates an external account credentials object.
 
         Args:
@@ -203,7 +207,7 @@ class Credentials(
             )
 
     @property
-    def info(self):
+    def info(self) -> Mapping[str, Any]:
         """Generates the dictionary representation of the current credentials.
 
         Returns:
@@ -249,7 +253,7 @@ class Credentials(
         return args
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str | None:
         """Returns the service account email if service account impersonation is used.
 
         Returns:
@@ -268,7 +272,7 @@ class Credentials(
         return None
 
     @property
-    def is_user(self):
+    def is_user(self) -> bool:
         """Returns whether the credentials represent a user (True) or workload (False).
         Workloads behave similarly to service accounts. Currently workloads will use
         service account impersonation but will eventually not require impersonation.
@@ -286,7 +290,7 @@ class Credentials(
         return self.is_workforce_pool
 
     @property
-    def is_workforce_pool(self):
+    def is_workforce_pool(self) -> bool:
         """Returns whether the credentials represent a workforce pool (True) or
         workload (False) based on the credentials' audience.
 
@@ -302,7 +306,7 @@ class Credentials(
         return p.match(self._audience or "") is not None
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """Checks if the credentials requires scopes.
 
         Returns:
@@ -311,7 +315,7 @@ class Credentials(
         return not self._scopes and not self._default_scopes
 
     @property
-    def project_number(self):
+    def project_number(self) -> str | None:
         """Optional[str]: The project number corresponding to the workload identity pool."""
 
         # STS audience pattern:
@@ -325,13 +329,13 @@ class Credentials(
             return None
 
     @property
-    def token_info_url(self):
+    def token_info_url(self) -> str | None:
         """Optional[str]: The STS token introspection endpoint."""
 
         return self._token_info_url
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         if self._cred_file_path:
             cred_info_json = {
                 "credential_source": self._cred_file_path,
@@ -343,7 +347,7 @@ class Credentials(
         return None
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Credentials":
         kwargs = self._constructor_args()
         kwargs.update(scopes=scopes, default_scopes=default_scopes)
         scoped = self.__class__(**kwargs)
@@ -352,7 +356,7 @@ class Credentials(
         return scoped
 
     @abc.abstractmethod
-    def retrieve_subject_token(self, request):
+    def retrieve_subject_token(self, request: Request) -> str:
         """Retrieves the subject token using the credential_source object.
 
         Args:
@@ -365,7 +369,7 @@ class Credentials(
         # (pylint doesn't recognize that this is abstract)
         raise NotImplementedError("retrieve_subject_token must be implemented")
 
-    def get_project_id(self, request):
+    def get_project_id(self, request: Request) -> str | None:
         """Retrieves the project ID corresponding to the workload identity or workforce pool.
         For workforce pool credentials, it returns the project ID corresponding to
         the workforce_pool_user_project.
@@ -413,7 +417,7 @@ class Credentials(
 
         return None
 
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         """Refreshes the access token.
 
         For impersonated credentials, this method will refresh the underlying
@@ -528,26 +532,26 @@ class Credentials(
         return new_cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         # Return copy of instance with the provided quota project ID.
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "Credentials":
         cred = self._make_copy()
         cred._token_url = token_uri
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str) -> "Credentials":
         cred = self._make_copy()
         cred._universe_domain = universe_domain
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str] | None) -> "Credentials":
         cred = self._make_copy()
         cred._trust_boundary = trust_boundary
         return cred
@@ -644,7 +648,7 @@ class Credentials(
         )
 
     @classmethod
-    def from_info(cls, info, **kwargs):
+    def from_info(cls, info: Mapping[str, Any], **kwargs) -> "Credentials":
         """Creates a Credentials instance from parsed external account info.
 
         **IMPORTANT**:
@@ -692,7 +696,7 @@ class Credentials(
         )
 
     @classmethod
-    def from_file(cls, filename, **kwargs):
+    def from_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates a Credentials instance from an external account json file.
 
         **IMPORTANT**:

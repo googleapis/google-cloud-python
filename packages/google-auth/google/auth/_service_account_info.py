@@ -19,9 +19,11 @@ import json
 
 from google.auth import crypt
 from google.auth import exceptions
+from collections.abc import Mapping, Sequence
+from google.auth.crypt import Signer
 
 
-def from_dict(data, require=None, use_rsa_signer=True):
+def from_dict(data: Mapping[str, str], require: Sequence[str] | None=None, use_rsa_signer: bool=True) -> Signer:
     """Validates a dictionary containing Google service account data.
 
     Creates and returns a :class:`google.auth.crypt.Signer` instance from the
@@ -61,7 +63,7 @@ def from_dict(data, require=None, use_rsa_signer=True):
     return signer
 
 
-def from_filename(filename, require=None, use_rsa_signer=True):
+def from_filename(filename: str, require: Sequence[str] | None=None, use_rsa_signer: bool=True) -> tuple[Mapping[str, str], Signer]:
     """Reads a Google service account JSON file and returns its parsed info.
 
     Args:
