@@ -18,7 +18,7 @@ This module provides the pure state machine for Resumable Uploads.
 """
 
 import logging
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Sequence, Tuple
 
 from google.api_core import exceptions
 from google.api_core.resumable_media import _common
@@ -83,14 +83,14 @@ class ResumableUpload(object):
 
     def build_initiate_request(
         self,
-        stream_metadata: Optional[Dict[str, str]] = None,
+        stream_metadata: Optional[Sequence[Tuple[str, str]]] = None,
         content_type: Optional[str] = None,
         size: Optional[int] = None,
     ) -> Tuple[str, str, Dict[str, str], bytes]:
         """Constructs an upload initiation request.
 
         Args:
-            stream_metadata (Optional[Dict[str, str]]): Additional headers for
+            stream_metadata (Optional[Sequence[Tuple[str, str]]]): Additional headers for
                 the upload initiation request. These headers are ONLY applied to
                 the initial request and will NOT be included in subsequent chunk
                 upload requests. If not specified, no additional headers will be appended.
@@ -109,7 +109,7 @@ class ResumableUpload(object):
 
         # Merge user metadata first
         if stream_metadata:
-            for k, v in stream_metadata.items():
+            for k, v in stream_metadata:
                 headers[k] = str(v)
 
         # Critical protocol headers overwrite user metadata
