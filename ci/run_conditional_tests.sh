@@ -44,10 +44,6 @@ TARGET_BRANCH="${TARGET_BRANCH:-main}"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
 
-# Shared cache and nox settings to speed up repeated installs in monorepo.
-export PIP_CACHE_DIR="${PROJECT_ROOT}/.pip_cache"
-export NOX_REUSE_EXISTING_VIRTUALENVS=yes
-
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
