@@ -68,28 +68,74 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than four hours."""
+    """Delete stale or excessive test databases.
+
+    Deletes stale test databases that are older than 4 hours and
+    ensures we don't hit the 100 database limit per spanner instance by
+    deleting the oldest databases if we are near the limit.
+    """
     cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
-    database_pbs = instance.list_databases()
+        
+    # Convert iterator to list to allow multiple passes and length check
+    database_pbs = list(instance.list_databases())
+    
+    # First pass: Delete stale databases
+    remaining_dbs = []
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
         # The emulator does not return a create_time for databases.
         if database.create_time is None:
+            remaining_dbs.append(database_pb)
             continue
+            
         create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
         if create_time > cutoff:
+            remaining_dbs.append(database_pb)
             continue
+            
         try:
             database.drop()
+            print(f"Dropped stale database '{database.database_id}'")
         except ResourceExhausted:
             print(
                 "Unable to drop stale database '{}'. May need manual delete.".format(
                     database.database_id
                 )
             )
+            remaining_dbs.append(database_pb) # Still there
+
+    # Second pass: If we are still near the limit (e.g., 90+ databases),
+    # delete the oldest ones regardless of age to free up slots.
+    # Spanner instances have a hard limit of 100 databases.
+    LIMIT = 90
+    if len(remaining_dbs) >= LIMIT:
+        print(f"Database count ({len(remaining_dbs)}) is near limit. Cleaning up oldest databases.")
+        
+        # Sort by creation time
+        dbs_with_time = []
+        for db_pb in remaining_dbs:
+            if db_pb.create_time:
+                dbs_with_time.append((db_pb.create_time, db_pb.name))
+                
+        dbs_with_time.sort() # Sorts by time ascending (oldest first)
+        
+        # Delete enough to get below the limit
+        to_delete = len(remaining_dbs) - (LIMIT - 10) # Aim for 80
+        deleted_count = 0
+        
+        for create_time, full_name in dbs_with_time:
+            if deleted_count >= to_delete:
+                break
+            db_id = full_name.split('/')[-1]
+            try:
+                instance.database(db_id).drop()
+                print(f"Dropped oldest database '{db_id}' to prevent resource exhaustion.")
+                deleted_count += 1
+            except Exception as e:
+                print(f"Failed to drop database '{db_id}': {e}")
 
 
 def create_test_instance():
