@@ -385,7 +385,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials(project=PROJECT)
         with mock.patch("os.environ", {}):
             client = self._make_one(
-                credentials=credentials, client_options={"api_endpoint": custom_endpoint}
+                credentials=credentials,
+                client_options={"api_endpoint": custom_endpoint},
             )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
