@@ -126,7 +126,7 @@ def with_default_session(func_: Callable[..., _T], *args, **kwargs) -> _T:
     return func_(get_global_session(), *args, **kwargs)
 
 
-def execution_history() -> "pandas.DataFrame":
+def execution_history() -> "bigframes.session._ExecutionHistory":
     import pandas  # noqa: F401
 
     import bigframes.session
