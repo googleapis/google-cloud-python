@@ -14,13 +14,12 @@
 
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
-from sqlalchemy.testing import eq_, is_instance_of
+from sqlalchemy.testing import eq_, is_instance_of, is_not_none
 from google.cloud.spanner_v1 import (
     ResultSet,
     CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
-    BeginTransactionRequest,
     TypeCode,
     JsonObject,
 )
@@ -105,12 +104,13 @@ LIMIT 1
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
-        request: ExecuteSqlRequest = requests[2]
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        is_not_none(requests[1].transaction.begin)  # First request inlines begin
+        request: ExecuteSqlRequest = requests[1]
         eq_(3, len(request.params))
         eq_("1", request.params["a0"])
         eq_("Test", request.params["a1"])

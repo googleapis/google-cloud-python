@@ -528,8 +528,9 @@ def _(
     column: ibis_types.Column,
     window=None,
 ) -> ibis_types.Value:
+    # Ibis FirstNonNullValue expects Value[Any, Columnar], Mypy struggles to see Column as compatible.
     return _apply_window_if_present(
-        ibis_ops.FirstNonNullValue(column).to_expr(),
+        ibis_ops.FirstNonNullValue(column).to_expr(),  # type: ignore[arg-type]
         window,  # type: ignore
     )
 
@@ -549,8 +550,9 @@ def _(
     column: ibis_types.Column,
     window=None,
 ) -> ibis_types.Value:
+    # Ibis LastNonNullValue expects Value[Any, Columnar], Mypy struggles to see Column as compatible.
     return _apply_window_if_present(
-        ibis_ops.LastNonNullValue(column).to_expr(),
+        ibis_ops.LastNonNullValue(column).to_expr(),  # type: ignore[arg-type]
         window,  # type: ignore
     )
 
@@ -803,8 +805,9 @@ def _to_ibis_boundary(
 ) -> Optional[ibis_expr_window.WindowBoundary]:
     if boundary is None:
         return None
+    # WindowBoundary expects Value[Any, Any], ibis_types.literal returns Scalar which Mypy doesn't see as compatible.
     return ibis_expr_window.WindowBoundary(
-        abs(boundary),
+        ibis_types.literal(boundary if boundary >= 0 else -boundary),  # type: ignore[arg-type]
         preceding=boundary <= 0,  # type:ignore
     )
 

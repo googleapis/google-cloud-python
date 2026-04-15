@@ -3,7 +3,7 @@ Python Client for Discovery Engine API
 
 |preview| |pypi| |versions|
 
-`Discovery Engine API`_: 
+`Discovery Engine API`_: Discovery Engine API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

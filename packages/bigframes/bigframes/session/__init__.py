@@ -480,7 +480,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq(
@@ -496,7 +497,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq(
         self,
@@ -568,7 +570,8 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def _read_gbq_colab(
@@ -577,7 +580,8 @@ class Session(
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     @log_adapter.log_name_override("read_gbq_colab")
     def _read_gbq_colab(
@@ -638,7 +642,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_query(
@@ -654,7 +659,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_query(
         self,
@@ -801,7 +807,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_table(
@@ -815,7 +822,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_table(
         self,
@@ -966,7 +974,8 @@ class Session(
         pandas_dataframe: pandas.Index,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.core.indexes.Index: ...
+    ) -> bigframes.core.indexes.Index:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -974,7 +983,8 @@ class Session(
         pandas_dataframe: pandas.Series,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.series.Series: ...
+    ) -> bigframes.series.Series:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -982,7 +992,8 @@ class Session(
         pandas_dataframe: pandas.DataFrame,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     def read_pandas(
         self,
@@ -1392,7 +1403,7 @@ class Session(
                     "The provided path contains a wildcard character (*), which is not "
                     "supported by the current engine. To read files from wildcard paths, "
                     "please use the 'bigquery' engine by setting `engine='bigquery'` in "
-                    "your configuration."
+                    "the function call."
                 )
 
             read_parquet_kwargs: Dict[str, Any] = {}
@@ -1407,6 +1418,87 @@ class Session(
                 **read_parquet_kwargs,
             )
             return self._read_pandas(pandas_obj, write_engine=write_engine)
+
+    def read_orc(
+        self,
+        path: str | IO["bytes"],
+        *,
+        engine: str = "auto",
+        write_engine: constants.WriteEngineType = "default",
+    ) -> dataframe.DataFrame:
+        """Load an ORC file to a BigQuery DataFrames DataFrame.
+
+        Args:
+            path (str or IO):
+                The path or buffer to the ORC file. Can be a local path or Google Cloud Storage URI.
+            engine (str, default "auto"):
+                The engine used to read the file. Supported values: `auto`, `bigquery`, `pyarrow`.
+            write_engine (str, default "default"):
+                The write engine used to persist the data to BigQuery if needed.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                A new DataFrame representing the data from the ORC file.
+        """
+        bigframes.session.validation.validate_engine_compatibility(
+            engine=engine,
+            write_engine=write_engine,
+        )
+        if engine == "bigquery":
+            job_config = bigquery.LoadJobConfig()
+            job_config.source_format = bigquery.SourceFormat.ORC
+            job_config.labels = {"bigframes-api": "read_orc"}
+            table_id = self._loader.load_file(path, job_config=job_config)
+            return self._loader.read_gbq_table(table_id)
+        elif engine in ("auto", "pyarrow"):
+            if isinstance(path, str) and "*" in path:
+                raise ValueError(
+                    "The provided path contains a wildcard character (*), which is not "
+                    "supported by the current engine. To read files from wildcard paths, "
+                    "please use the 'bigquery' engine by setting `engine='bigquery'` in "
+                    "your configuration."
+                )
+
+            read_orc_kwargs: Dict[str, Any] = {}
+            if not pandas.__version__.startswith("1."):
+                read_orc_kwargs["dtype_backend"] = "pyarrow"
+
+            pandas_obj = pandas.read_orc(path, **read_orc_kwargs)
+            return self._read_pandas(pandas_obj, write_engine=write_engine)
+        else:
+            raise ValueError(
+                f"Unsupported engine: {repr(engine)}. Supported values: 'auto', 'bigquery', 'pyarrow'."
+            )
+
+    def read_avro(
+        self,
+        path: str | IO["bytes"],
+        *,
+        engine: str = "auto",
+    ) -> dataframe.DataFrame:
+        """Load an Avro file to a BigQuery DataFrames DataFrame.
+
+        Args:
+            path (str or IO):
+                The path or buffer to the Avro file. Can be a local path or Google Cloud Storage URI.
+            engine (str, default "auto"):
+                The engine used to read the file. Only `bigquery` is supported for Avro.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                A new DataFrame representing the data from the Avro file.
+        """
+        if engine not in ("auto", "bigquery"):
+            raise ValueError(
+                f"Unsupported engine: {repr(engine)}. Supported values: 'auto', 'bigquery'."
+            )
+
+        job_config = bigquery.LoadJobConfig()
+        job_config.use_avro_logical_types = True
+        job_config.source_format = bigquery.SourceFormat.AVRO
+        job_config.labels = {"bigframes-api": "read_avro"}
+        table_id = self._loader.load_file(path, job_config=job_config)
+        return self._loader.read_gbq_table(table_id)
 
     def read_json(
         self,

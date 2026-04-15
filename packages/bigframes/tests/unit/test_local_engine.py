@@ -171,8 +171,11 @@ def test_polars_local_engine_agg(polars_session):
     pd_result = pd_df.agg(["sum", "count"])
     # local engine appears to produce uint32
     pandas.testing.assert_frame_equal(
-        bf_result, pd_result, check_dtype=False, check_index_type=False
-    )  # type: ignore
+        bf_result,  # type: ignore[arg-type]
+        pd_result,
+        check_dtype=False,
+        check_index_type=False,
+    )
 
 
 def test_polars_local_engine_groupby_sum(polars_session):

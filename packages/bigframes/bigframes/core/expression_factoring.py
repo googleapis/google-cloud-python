@@ -243,7 +243,12 @@ def factor_aggregation(root: nodes.ColumnDef) -> FactoredAggregation:
     }
 
     root_scalar_expr = nodes.ColumnDef(
-        sub_expressions(root.expression, agg_outputs_dict),
+        sub_expressions(
+            root.expression,
+            cast(
+                Mapping[expression.Expression, expression.Expression], agg_outputs_dict
+            ),
+        ),
         root.id,  # type: ignore
     )
 

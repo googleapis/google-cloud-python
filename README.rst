@@ -985,6 +985,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1509913>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1509913>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `App Optimize API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appoptimize>`_
+     - preview
+     - |PyPI-google-cloud-appoptimize|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:190865>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=190865&template=1161103>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Apps Card Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-card>`_
      - preview
      - |PyPI-google-apps-card|
@@ -1645,6 +1651,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1356349>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1356349>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Spanner DBAPI Driver <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-dbapi-driver>`_
+     - preview
+     - |PyPI-google-cloud-spanner-dbapi-driver|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Sphinx DocFX YAML Generator <https://github.com/googleapis/google-cloud-python/tree/main/packages/gcp-sphinx-docfx-yaml>`_
      - preview
      - |PyPI-gcp-sphinx-docfx-yaml|
@@ -1722,6 +1734,12 @@ Libraries
      - |PyPI-google-cloud-workstations|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `iamconnectorcredentials.googleapis.com API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iamconnectorcredentials>`_
+     - preview
+     - |PyPI-google-cloud-iamconnectorcredentials|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:190865>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=190865&template=1161103>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
 
 .. |PyPI-google-crc32c| image:: https://img.shields.io/pypi/v/google-crc32c.svg
@@ -2028,6 +2046,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-apigee-registry
 .. |PyPI-google-cloud-apphub| image:: https://img.shields.io/pypi/v/google-cloud-apphub.svg
      :target: https://pypi.org/project/google-cloud-apphub
+.. |PyPI-google-cloud-appoptimize| image:: https://img.shields.io/pypi/v/google-cloud-appoptimize.svg
+     :target: https://pypi.org/project/google-cloud-appoptimize
 .. |PyPI-google-apps-card| image:: https://img.shields.io/pypi/v/google-apps-card.svg
      :target: https://pypi.org/project/google-apps-card
 .. |PyPI-google-apps-script-type| image:: https://img.shields.io/pypi/v/google-apps-script-type.svg
@@ -2248,6 +2268,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-servicehealth
 .. |PyPI-google-maps-solar| image:: https://img.shields.io/pypi/v/google-maps-solar.svg
      :target: https://pypi.org/project/google-maps-solar
+.. |PyPI-google-cloud-spanner-dbapi-driver| image:: https://img.shields.io/pypi/v/google-cloud-spanner-dbapi-driver.svg
+     :target: https://pypi.org/project/google-cloud-spanner-dbapi-driver
 .. |PyPI-gcp-sphinx-docfx-yaml| image:: https://img.shields.io/pypi/v/gcp-sphinx-docfx-yaml.svg
      :target: https://pypi.org/project/gcp-sphinx-docfx-yaml
 .. |PyPI-google-cloud-storagebatchoperations| image:: https://img.shields.io/pypi/v/google-cloud-storagebatchoperations.svg
@@ -2274,6 +2296,8 @@ Libraries
      :target: https://pypi.org/project/google-apps-events-subscriptions
 .. |PyPI-google-cloud-workstations| image:: https://img.shields.io/pypi/v/google-cloud-workstations.svg
      :target: https://pypi.org/project/google-cloud-workstations
+.. |PyPI-google-cloud-iamconnectorcredentials| image:: https://img.shields.io/pypi/v/google-cloud-iamconnectorcredentials.svg
+     :target: https://pypi.org/project/google-cloud-iamconnectorcredentials
 
 .. API_TABLE_END
 
