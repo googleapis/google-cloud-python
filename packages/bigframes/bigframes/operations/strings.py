@@ -313,7 +313,9 @@ class StringMethods(Generic[T]):
         ):
             session = self._data._block.session
         else:
-            raise ValueError(f"{self._to_blob.__name__} is only supported via Series.str")
+            raise ValueError(
+                f"{self._to_blob.__name__} is only supported via Series.str"
+            )
         connection = session._create_bq_connection(connection=connection)
         return self._data._apply_binary_op(connection, ops.obj_make_ref_op)
 
