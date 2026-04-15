@@ -6,6 +6,7 @@ global_files_allowlist:
     permissions: read-write
 libraries:
   - id: google-django-spanner
+    generate_blocked: true
     release_blocked: true
   - generate_blocked: true
     id: google-cloud-storage
@@ -32,8 +33,6 @@ libraries:
     id: bigquery-magics
   - generate_blocked: true
     id: db-dtypes
-  - generate_blocked: true
-    id: django-google-spanner
   - generate_blocked: true
     id: gapic-generator
   - generate_blocked: true
