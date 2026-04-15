@@ -24,7 +24,6 @@ from google.cloud.spanner_v1 import (
     ExecuteSqlRequest,
     ResultSet,
     ResultSetStats,
-    BeginTransactionRequest,
     CommitRequest,
     TypeCode,
 )

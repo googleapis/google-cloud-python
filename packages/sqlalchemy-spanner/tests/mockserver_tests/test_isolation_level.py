@@ -19,7 +19,6 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
-    BeginTransactionRequest,
     TransactionOptions,
 )
 

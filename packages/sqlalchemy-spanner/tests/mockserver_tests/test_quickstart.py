@@ -19,7 +19,6 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteBatchDmlRequest,
     CommitRequest,
-    BeginTransactionRequest,
 )
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
