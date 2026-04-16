@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Shared pytest fixtures."""
+"""Shared pytest fixtures."""
 
 import time
 import uuid
@@ -19,10 +19,10 @@ import uuid
 from google.api_core import exceptions
 from google.cloud import spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import backup, client, database, instance
 import pytest
 from test_utils import retry
-from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
 INSTANCE_CREATION_TIMEOUT = 560  # seconds
 

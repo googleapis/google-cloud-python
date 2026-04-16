@@ -3501,7 +3501,6 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
