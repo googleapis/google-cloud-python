@@ -3572,7 +3572,6 @@ libraries:
       - tests/system/__init__.py
       - tests/system/smoke_test.py
       - tests/unit/test_helpers.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       name_pretty_override: Cloud Speech
