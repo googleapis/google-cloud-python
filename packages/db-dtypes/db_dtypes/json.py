@@ -32,7 +32,7 @@ class JSONDtype(pd.api.extensions.ExtensionDtype):
     name = "dbjson"
 
     @property
-    def na_value(self) -> pd.NAType:
+    def na_value(self) -> pd.NAType:  # type: ignore[name-defined]
         """Default NA value to use for this type."""
         return pd.NA
 
@@ -203,7 +203,7 @@ class JSONArray(arrays.ArrowExtensionArray):
                 assert item.dtype.kind == "b"
                 return type(self)(self.pa_data.filter(item))
         elif isinstance(item, tuple):
-            item = indexers.unpack_tuple_and_ellipses(item)
+            item = indexers.unpack_tuple_and_ellipses(item)  # type: ignore[attr-defined]
 
         if common.is_scalar(item) and not common.is_integer(item):
             # e.g. "foo" or 2.5

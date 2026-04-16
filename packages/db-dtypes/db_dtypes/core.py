@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
+from typing import Optional, Callable, Any
 
 import numpy
 import pandas
@@ -49,6 +49,13 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
     # be exactly locations in self._ndarray with _internal_fill_value. See:
     # https://github.com/pandas-dev/pandas/blob/main/pandas/core/arrays/_mixins.py
     _internal_fill_value = numpy.datetime64("NaT")
+
+    _box_func: Callable[[Any], Any]
+    _from_backing_data: Callable[[Any], Any]
+
+    @classmethod
+    def _datetime(cls, value: Any) -> Any:
+        raise NotImplementedError
 
     def __init__(self, values, dtype=None, copy: bool = False):
         if not (
@@ -164,8 +171,8 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
             values=self._ndarray, axis=axis, mask=self.isna(), skipna=skipna
         )
         if axis is None or self.ndim == 1:
-            return self._box_func(result)  # type: ignore[attr-defined]
-        return self._from_backing_data(result)  # type: ignore[attr-defined]
+            return self._box_func(result)
+        return self._from_backing_data(result)
 
     def max(self, *, axis: Optional[int] = None, skipna: bool = True, **kwargs):
         pandas_backports.numpy_validate_max((), kwargs)
@@ -173,8 +180,8 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
             values=self._ndarray, axis=axis, mask=self.isna(), skipna=skipna
         )
         if axis is None or self.ndim == 1:
-            return self._box_func(result)  # type: ignore[attr-defined]
-        return self._from_backing_data(result)  # type: ignore[attr-defined]
+            return self._box_func(result)
+        return self._from_backing_data(result)
 
     def median(
         self,
@@ -191,5 +198,5 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         )
         result = pandas_backports.nanmedian(self._ndarray, axis=axis, skipna=skipna)
         if axis is None or self.ndim == 1:
-            return self._box_func(result)  # type: ignore[attr-defined]
-        return self._from_backing_data(result)  # type: ignore[attr-defined]
+            return self._box_func(result)
+        return self._from_backing_data(result)
