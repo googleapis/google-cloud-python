@@ -1859,7 +1859,7 @@ class Series:
             else order.descending_over(column, na_last)
             for column in block.index_columns
         ]
-        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
         block = block.order_by(ordering, stable=is_stable)
         if inplace:
             self._set_block(block)
