@@ -358,15 +358,36 @@ def test_series_groupby_describe(scalars_dfs):
 
 def test_describe_json_and_obj_ref_returns_count(session):
     # Test describe() works on JSON and OBJ_REF types (without nunique, which fails)
+    import uuid
+    import google.cloud.bigquery
+
     sql = """
         SELECT
             PARSE_JSON('{"a": 1}') AS json_col,
             'gs://cloud-samples-data/vision/ocr/sign.jpg' AS uri_col
     """
-    df = session.read_gbq(sql)
+    df_init = session.read_gbq(sql)
 
-    df["obj_ref_col"] = df["uri_col"].str.to_blob()
-    df = df.drop(columns=["uri_col"])
+    table_id = f"bigframes-dev.bigframes_tests_sys.tmp_obj_ref_{uuid.uuid4().hex}"
+    df_init.to_gbq(table_id, if_exists="replace")
+
+    client = session.bqclient
+    table = client.get_table(table_id)
+    schema = list(table.schema)
+    for i, field in enumerate(schema):
+        if field.name == "uri_col":
+            schema[i] = google.cloud.bigquery.SchemaField(
+                name=field.name,
+                field_type=field.field_type,
+                mode=field.mode,
+                description="bigframes_dtype: OBJ_REF_DTYPE",
+            )
+            break
+    table.schema = schema
+    client.update_table(table, ["schema"])
+
+    df = session.read_gbq(table_id)
+    df = df.rename(columns={"uri_col": "obj_ref_col"})
 
     res = df.describe(include="all").to_pandas()
 

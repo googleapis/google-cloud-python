@@ -1010,16 +1010,38 @@ def test_to_gbq_timedelta_tag_ignored_when_appending(bigquery_client, dataset_id
 
 
 def test_to_gbq_obj_ref(session, dataset_id: str, bigquery_client):
+    import uuid
+    import google.cloud.bigquery
+
     destination_table = f"{dataset_id}.test_to_gbq_obj_ref"
     sql = """
-        SELECT
-            'gs://cloud-samples-data/vision/ocr/sign.jpg' AS uri_col
+        SELECT STRUCT('gs://cloud-samples-data/vision/ocr/sign.jpg' AS uri, CAST(NULL AS STRING) AS version, CAST(NULL AS STRING) AS authorizer, PARSE_JSON('{}') AS details) AS uri_col
     """
-    df = session.read_gbq(sql)
-    df["obj_ref_col"] = df["uri_col"].str.to_blob()
-    df = df.drop(columns=["uri_col"])
+    df_init = session.read_gbq(sql)
 
-    df.to_gbq(destination_table)
+    tmp_table_id = f"{dataset_id}.tmp_obj_ref_{uuid.uuid4().hex}"
+    df_init.to_gbq(tmp_table_id, if_exists="replace")
+
+    client = session.bqclient
+    table = client.get_table(tmp_table_id)
+    schema = list(table.schema)
+    for i, field in enumerate(schema):
+        if field.name == "uri_col":
+            schema[i] = google.cloud.bigquery.SchemaField(
+                name=field.name,
+                field_type=field.field_type,
+                mode=field.mode,
+                description="bigframes_dtype: OBJ_REF_DTYPE",
+                fields=field.fields,
+            )
+            break
+    table.schema = schema
+    client.update_table(table, ["schema"])
+
+    df = session.read_gbq(tmp_table_id)
+    df = df.rename(columns={"uri_col": "obj_ref_col"})
+
+    df.to_gbq(destination_table, if_exists="replace")
 
     table = bigquery_client.get_table(destination_table)
     obj_ref_field = next(f for f in table.schema if f.name == "obj_ref_col")
