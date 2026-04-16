@@ -300,7 +300,7 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         credentials = _make_credentials(project=PROJECT)
 
-        with mock.patch("os.environ", {}):
+        with mock.patch.dict("os.environ", {}, clear=True):
             client = self._make_one(credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
