@@ -55,7 +55,6 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: A unified Python API in BigQuery
