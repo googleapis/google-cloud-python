@@ -3,7 +3,7 @@ Python Client for Google Cloud OS Login
 
 |stable| |pypi| |versions|
 
-`Google Cloud OS Login`_: 
+`Google Cloud OS Login`_: You can use OS Login to manage access to your VM instances using IAM roles.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
