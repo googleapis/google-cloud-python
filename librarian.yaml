@@ -4574,7 +4574,6 @@ libraries:
       - path: google/cloud/location
       - path: google/logging/type
       - path: google/rpc/context
-    skip_generate: true
     python:
       library_type: CORE
       proto_only_apis:
