@@ -1797,7 +1797,7 @@ class Series:
             raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
-        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
         block = self._block.order_by(
             [
                 order.ascending_over(self._value_column, (na_position == "last"))
