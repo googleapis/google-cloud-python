@@ -336,7 +336,6 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
   - name: google-auth-oauthlib
     version: 1.3.1
-    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth OAuthlib
