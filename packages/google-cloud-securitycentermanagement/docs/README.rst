@@ -3,7 +3,9 @@ Python Client for Security Center Management API
 
 |preview| |pypi| |versions|
 
-`Security Center Management API`_: 
+`Security Center Management API`_: Management API for Security Command Center, a built-in security and risk
+management solution for Google Cloud. Use this API to programmatically
+update the settings and configuration of Security Command Center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
