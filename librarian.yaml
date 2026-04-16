@@ -4652,7 +4652,6 @@ libraries:
     version: 0.14.4
     apis:
       - path: google/iam/v1
-    skip_generate: true
     python:
       proto_only_apis:
         - google/iam/v1
