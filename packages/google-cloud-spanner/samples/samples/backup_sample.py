@@ -631,8 +631,7 @@ def create_database_with_version_retention_period(
         + "  AlbumTitle   STRING(MAX)"
         + ") PRIMARY KEY (SingerId, AlbumId),"
         + "  INTERLEAVE IN PARENT Singers ON DELETE CASCADE",
-        "ALTER DATABASE `{}`"
-        " SET OPTIONS (version_retention_period = '{}')".format(
+        "ALTER DATABASE `{}` SET OPTIONS (version_retention_period = '{}')".format(
             database_id, retention_period
         ),
     ]
@@ -706,8 +705,8 @@ def copy_backup_with_multiple_kms_keys(
 ):
     """Copies a backup."""
 
-    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
     from google.cloud.spanner_admin_database_v1 import CopyBackupEncryptionConfig
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
