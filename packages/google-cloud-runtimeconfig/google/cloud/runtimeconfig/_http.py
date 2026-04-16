@@ -17,7 +17,6 @@
 
 
 from google.cloud import _http
-
 from google.cloud.runtimeconfig import __version__
 
 
