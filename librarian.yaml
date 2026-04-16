@@ -3757,7 +3757,6 @@ libraries:
       - tests/unit/v2
       - tests/unit/v2/test__http.py
       - tests/unit/v2/test_client.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
