@@ -443,7 +443,7 @@ class Index:
             else order.descending_over(column, na_last)
             for column in index_columns
         ]
-        is_stable = (kind or constants.DEFAULT_SORT_KIND) in ["stable", "mergesort"]
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
         return Index(self._block.order_by(ordering, stable=is_stable))
 
     def astype(
