@@ -3920,7 +3920,6 @@ libraries:
       - tests/system/smoke_test.py
       - tests/unit/test_decorators.py
       - tests/unit/test_helpers.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       product_documentation_override: https://cloud.google.com/vision/docs/
