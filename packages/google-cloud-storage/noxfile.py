@@ -89,7 +89,6 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
-    "format",
     "docs",
 ]
 
@@ -569,7 +568,7 @@ def prerelease_deps(session, protobuf_implementation):
         )
 
     # Install all test dependencies
-    session.install("mock", "pytest", "pytest-cov", "brotli", "pytest-asyncio")
+    session.install("mock", "pytest", "pytest-cov", "brotli")
 
     # Install dependencies needed for system tests
     session.install(

@@ -110,7 +110,7 @@ def test_result_w_retry_wo_state(global_time_lock):
         predicate=custom_predicate,
         initial=0.001,
         maximum=0.001,
-        deadline=1.0,  # Increased from 0.1 to avoid flakiness in slow environments
+        deadline=0.1,
     )
     assert job.result(retry=custom_retry) is job
 

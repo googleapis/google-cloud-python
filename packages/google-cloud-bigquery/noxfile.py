@@ -14,18 +14,17 @@
 
 from __future__ import absolute_import
 
+from functools import wraps
 import os
 import pathlib
 import re
 import shutil
 import time
-from functools import wraps
 
 import nox
 
 MYPY_VERSION = "mypy==1.6.1"
 BLACK_VERSION = "black==23.7.0"
-RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.10.1"
 BLACK_PATHS = (
     "benchmark",
@@ -551,31 +550,16 @@ def core_deps_from_source(session):
     session.skip("Core deps from source tests are not yet supported")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session
 def format(session: nox.sessions.Session) -> None:
     """
-    Run ruff to sort imports and format code.
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
     """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
 
-    # 2. Run Ruff to fix imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
-        *BLACK_PATHS,
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
-        *BLACK_PATHS,
-    )
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    session.run("isort", "--fss", *python_files)
+    session.run("black", *python_files)

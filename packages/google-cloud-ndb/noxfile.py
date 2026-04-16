@@ -33,7 +33,6 @@ ALL_INTERPRETERS = ("3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
-RUFF_VERSION = "ruff==0.14.14"
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -59,7 +58,6 @@ nox.options.sessions = [
     "emulator-system",
     "lint",
     "blacken",
-    "format",
     "docs",
     "doctest",
     "system",
@@ -278,42 +276,6 @@ def blacken(session):
     session.install(BLACK_VERSION)
     # Run ``black``.
     run_black(session)
-
-
-@nox.session(py=DEFAULT_INTERPRETER)
-def format(session):
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
-        "--line-length=88",
-        "docs",
-        "noxfile.py",
-        "google",
-        "tests",
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
-        "--line-length=88",
-        "docs",
-        "noxfile.py",
-        "google",
-        "tests",
-    )
 
 
 @nox.session(py="3.10")

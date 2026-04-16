@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-
 import os
 import pathlib
 import shutil
@@ -37,7 +36,6 @@ nox.options.sessions = [
     "blacken",
     "mypy",
     "doctest",
-    "format",
 ]
 
 
@@ -69,7 +67,7 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs,
+        *session.posargs
     )
 
 
@@ -106,7 +104,6 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
-
 
 @nox.session(python="3.10")
 def docfx(session):
@@ -244,46 +241,6 @@ def blacken(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def format(session):
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
-        os.path.join("google", "resumable_media"),
-        "tests",
-        os.path.join("google", "_async_resumable_media"),
-        "tests_async",
-        "noxfile.py",
-        "setup.py",
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
-        os.path.join("google", "resumable_media"),
-        "tests",
-        os.path.join("google", "_async_resumable_media"),
-        "tests_async",
-        "noxfile.py",
-        "setup.py",
-    )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
@@ -350,9 +307,7 @@ def prerelease_deps(session):
     # Resolve the linked bug once prerelease_deps and core_deps_from_source
     # are implemented for this package.
     if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(
-            f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release."
-        )
+        session.skip(f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release.")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -361,6 +316,4 @@ def core_deps_from_source(session):
     # Resolve the linked bug once prerelease_deps and core_deps_from_source
     # are implemented for this package.
     if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(
-            f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release."
-        )
+        session.skip(f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release.")
