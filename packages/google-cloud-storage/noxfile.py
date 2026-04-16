@@ -569,7 +569,7 @@ def prerelease_deps(session, protobuf_implementation):
         )
 
     # Install all test dependencies
-    session.install("mock", "pytest", "pytest-cov", "brotli")
+    session.install("mock", "pytest", "pytest-cov", "brotli", "pytest-asyncio")
 
     # Install dependencies needed for system tests
     session.install(
