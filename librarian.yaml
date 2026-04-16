@@ -24,7 +24,7 @@ release:
     - docs/README.rst
 default:
   output: packages
-  tag_format: '{name}: v{version}'
+  tag_format: '{name}-v{version}'
   python:
     common_gapic_paths:
       - samples/generated_samples
