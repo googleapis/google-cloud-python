@@ -329,7 +329,6 @@ libraries:
       skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
-    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth httplib2
