@@ -19,31 +19,27 @@ from unittest import mock
 
 import jinja2
 import pytest
-
-from google.api import service_pb2
-from google.api import client_pb2
+from google.api import client_pb2, service_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
 from gapic.samplegen_utils import snippet_metadata_pb2, types, yaml
+from gapic.schema import api, naming, wrappers
+from gapic.utils import Options
+
 from ..common_types import (
     DummyApiSchema,
     DummyField,
     DummyIdent,
-    DummyNaming,
     DummyMessage,
     DummyMessageTypePB,
-    DummyService,
     DummyMethod,
-    message_factory,
+    DummyNaming,
+    DummyService,
     enum_factory,
+    message_factory,
 )
-
-from gapic.schema import api
-from gapic.schema import naming
-from gapic.schema import wrappers
-from gapic.utils import Options
 
 
 def mock_generate_sample(*args, **kwargs):

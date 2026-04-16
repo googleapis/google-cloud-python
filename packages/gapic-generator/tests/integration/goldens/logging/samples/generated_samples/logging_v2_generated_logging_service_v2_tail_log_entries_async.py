@@ -40,7 +40,7 @@ async def sample_tail_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.TailLogEntriesRequest(
-        resource_names=['resource_names_value1', 'resource_names_value2'],
+        resource_names=["resource_names_value1", "resource_names_value2"],
     )
 
     # This method expects an iterator which contains
@@ -59,5 +59,6 @@ async def sample_tail_log_entries():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END logging_v2_generated_LoggingServiceV2_TailLogEntries_async]

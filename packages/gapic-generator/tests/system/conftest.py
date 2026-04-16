@@ -13,14 +13,13 @@
 # limitations under the License.
 
 
-import grpc
-from unittest import mock
 import os
+from typing import Sequence, Tuple
+from unittest import mock
+
+import grpc
 import pytest
 import pytest_asyncio
-
-from typing import Sequence, Tuple
-
 from google.api_core.client_options import ClientOptions  # type: ignore
 from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
 
@@ -33,20 +32,18 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
-from google.showcase import EchoClient
-from google.showcase import IdentityClient
-from google.showcase import MessagingClient
+from google.showcase import EchoClient, IdentityClient, MessagingClient
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
-    from grpc.experimental import aio
     import asyncio
-    from google.showcase import EchoAsyncClient
-    from google.showcase import IdentityAsyncClient
+
+    from google.showcase import EchoAsyncClient, IdentityAsyncClient
+    from grpc.experimental import aio
 
     try:
         from google.showcase_v1beta1.services.echo.transports import (
-            AsyncEchoRestTransport,
             AsyncEchoRestInterceptor,
+            AsyncEchoRestTransport,
         )
 
         HAS_ASYNC_REST_ECHO_TRANSPORT = True

@@ -49,4 +49,5 @@ async def sample_update_settings():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_UpdateSettings_async_internal]

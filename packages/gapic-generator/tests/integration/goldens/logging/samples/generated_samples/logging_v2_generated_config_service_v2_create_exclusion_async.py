@@ -54,4 +54,5 @@ async def sample_create_exclusion():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CreateExclusion_async]

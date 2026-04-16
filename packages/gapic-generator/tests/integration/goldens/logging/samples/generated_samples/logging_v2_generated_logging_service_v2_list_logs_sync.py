@@ -50,4 +50,5 @@ def sample_list_logs():
     for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_LoggingServiceV2_ListLogs_sync]

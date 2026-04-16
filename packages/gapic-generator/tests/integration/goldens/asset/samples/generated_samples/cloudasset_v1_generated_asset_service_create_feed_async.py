@@ -54,4 +54,5 @@ async def sample_create_feed():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_CreateFeed_async]

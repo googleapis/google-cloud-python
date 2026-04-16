@@ -53,4 +53,5 @@ def sample_delete_link():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_DeleteLink_sync_internal]

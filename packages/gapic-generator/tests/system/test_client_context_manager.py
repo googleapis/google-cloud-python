@@ -13,8 +13,9 @@
 # limitations under the License.
 
 import os
-import pytest
+
 import grpc
+import pytest
 from google.auth import exceptions
 
 

@@ -49,4 +49,5 @@ def sample_get_trigger():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_GetTrigger_sync]

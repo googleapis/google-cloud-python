@@ -13,14 +13,15 @@
 # limitations under the License.
 
 import re
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 from google.protobuf import json_format
 
+from gapic.samplegen_utils import (
+    snippet_metadata_pb2,  # type: ignore
+    types,
+)
 from gapic.schema import api, metadata
-from gapic.samplegen_utils import snippet_metadata_pb2  # type: ignore
-from gapic.samplegen_utils import types
-
 
 CLIENT_INIT_RE = re.compile(r"^\s+# Create a client")
 REQUEST_INIT_RE = re.compile(r"^\s+# Initialize request argument\(s\)")

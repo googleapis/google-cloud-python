@@ -53,4 +53,5 @@ async def sample_update_bucket_async():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_UpdateBucketAsync_async]

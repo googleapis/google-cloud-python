@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-import yaml
 from textwrap import dedent
 
-import gapic.samplegen_utils.yaml as gapic_yaml
-import gapic.samplegen_utils.types as types
+import pytest
+import yaml
+
 import gapic.samplegen.manifest as manifest
+import gapic.samplegen_utils.types as types
+import gapic.samplegen_utils.yaml as gapic_yaml
+
 from ..common_types import DummyApiSchema, DummyNaming
 
 

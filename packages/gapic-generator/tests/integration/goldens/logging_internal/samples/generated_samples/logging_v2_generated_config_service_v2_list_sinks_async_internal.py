@@ -50,4 +50,5 @@ async def sample_list_sinks():
     async for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListSinks_async_internal]

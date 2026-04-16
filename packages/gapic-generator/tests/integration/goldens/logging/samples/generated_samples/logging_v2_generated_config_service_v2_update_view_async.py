@@ -49,4 +49,5 @@ async def sample_update_view():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_UpdateView_async]

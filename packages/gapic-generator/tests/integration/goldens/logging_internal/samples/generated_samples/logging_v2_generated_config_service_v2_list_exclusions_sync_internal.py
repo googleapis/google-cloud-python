@@ -50,4 +50,5 @@ def sample_list_exclusions():
     for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListExclusions_sync_internal]

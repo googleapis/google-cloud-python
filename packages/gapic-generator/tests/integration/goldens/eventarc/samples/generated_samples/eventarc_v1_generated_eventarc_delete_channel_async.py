@@ -54,4 +54,5 @@ async def sample_delete_channel():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_DeleteChannel_async]

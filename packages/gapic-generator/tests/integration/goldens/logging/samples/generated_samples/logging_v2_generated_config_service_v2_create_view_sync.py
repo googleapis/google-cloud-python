@@ -50,4 +50,5 @@ def sample_create_view():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CreateView_sync]

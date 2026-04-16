@@ -50,4 +50,5 @@ async def sample_list_links():
     async for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListLinks_async_internal]

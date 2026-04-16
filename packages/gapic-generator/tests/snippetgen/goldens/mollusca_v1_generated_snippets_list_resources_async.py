@@ -51,4 +51,5 @@ async def sample_list_resources():
     async for response in page_result:
         print(response)
 
+
 # [END mollusca_v1_generated_Snippets_ListResources_async]

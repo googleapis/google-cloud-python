@@ -17,20 +17,20 @@ import io
 import os
 import re
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = 'google-cloud-asset'
+name = "google-cloud-asset"
 
 
 description = "Google Cloud Asset API client library"
 
 version = None
 
-with open(os.path.join(package_root, 'google/cloud/asset/gapic_version.py')) as fp:
+with open(os.path.join(package_root, "google/cloud/asset/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
-    assert (len(version_candidates) == 1)
+    assert len(version_candidates) == 1
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -52,8 +52,7 @@ dependencies = [
     "google-cloud-os-config >= 1.13.0, <2.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
-extras = {
-}
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset"
 
 package_root = os.path.abspath(os.path.dirname(__file__))

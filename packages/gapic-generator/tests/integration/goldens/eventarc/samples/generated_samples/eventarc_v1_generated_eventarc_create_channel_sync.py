@@ -60,4 +60,5 @@ def sample_create_channel():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_CreateChannel_sync]

@@ -17,29 +17,27 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.logging_v2.types import log_entry
 import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-
+import proto  # type: ignore
+from google.cloud.logging_v2.types import log_entry
 
 __protobuf__ = proto.module(
-    package='google.logging.v2',
+    package="google.logging.v2",
     manifest={
-        'DeleteLogRequest',
-        'WriteLogEntriesRequest',
-        'WriteLogEntriesResponse',
-        'WriteLogEntriesPartialErrors',
-        'ListLogEntriesRequest',
-        'ListLogEntriesResponse',
-        'ListMonitoredResourceDescriptorsRequest',
-        'ListMonitoredResourceDescriptorsResponse',
-        'ListLogsRequest',
-        'ListLogsResponse',
-        'TailLogEntriesRequest',
-        'TailLogEntriesResponse',
+        "DeleteLogRequest",
+        "WriteLogEntriesRequest",
+        "WriteLogEntriesResponse",
+        "WriteLogEntriesPartialErrors",
+        "ListLogEntriesRequest",
+        "ListLogEntriesResponse",
+        "ListMonitoredResourceDescriptorsRequest",
+        "ListMonitoredResourceDescriptorsResponse",
+        "ListLogsRequest",
+        "ListLogsResponse",
+        "TailLogEntriesRequest",
+        "TailLogEntriesResponse",
     },
 )
 
@@ -191,8 +189,7 @@ class WriteLogEntriesRequest(proto.Message):
 
 
 class WriteLogEntriesResponse(proto.Message):
-    r"""Result returned from WriteLogEntries.
-    """
+    r"""Result returned from WriteLogEntries."""
 
 
 class WriteLogEntriesPartialErrors(proto.Message):
@@ -376,7 +373,9 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors: MutableSequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
+    resource_descriptors: MutableSequence[
+        monitored_resource_pb2.MonitoredResourceDescriptor
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
@@ -556,6 +555,7 @@ class TailLogEntriesResponse(proto.Message):
                 A lower bound on the count of entries omitted due to
                 ``reason``.
         """
+
         class Reason(proto.Enum):
             r"""An indicator of why entries were omitted.
 
@@ -571,14 +571,15 @@ class TailLogEntriesResponse(proto.Message):
                     Indicates suppression occurred due to the
                     client not consuming responses quickly enough.
             """
+
             REASON_UNSPECIFIED = 0
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
 
-        reason: 'TailLogEntriesResponse.SuppressionInfo.Reason' = proto.Field(
+        reason: "TailLogEntriesResponse.SuppressionInfo.Reason" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='TailLogEntriesResponse.SuppressionInfo.Reason',
+            enum="TailLogEntriesResponse.SuppressionInfo.Reason",
         )
         suppressed_count: int = proto.Field(
             proto.INT32,

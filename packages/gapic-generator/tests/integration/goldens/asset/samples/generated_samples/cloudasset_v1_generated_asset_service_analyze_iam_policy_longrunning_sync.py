@@ -60,4 +60,5 @@ def sample_analyze_iam_policy_longrunning():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_AnalyzeIamPolicyLongrunning_sync]

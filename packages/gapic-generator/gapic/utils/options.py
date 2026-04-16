@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import defaultdict
-from os import path
-from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
-
 import dataclasses
 import json
 import os
 import warnings
+from collections import defaultdict
+from os import path
+from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
+
 import yaml
 
 from gapic.samplegen_utils import utils as samplegen_utils

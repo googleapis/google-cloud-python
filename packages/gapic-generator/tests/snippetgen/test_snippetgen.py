@@ -13,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 
 import pytest
-
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 REPO_ROOT = CURRENT_DIRECTORY.parent.parent

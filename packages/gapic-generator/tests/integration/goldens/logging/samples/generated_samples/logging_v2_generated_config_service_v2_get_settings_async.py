@@ -49,4 +49,5 @@ async def sample_get_settings():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_GetSettings_async]

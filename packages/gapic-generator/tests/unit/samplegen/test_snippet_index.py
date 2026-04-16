@@ -14,12 +14,12 @@
 
 import json
 
-from google.protobuf import json_format
 import pytest
+from google.protobuf import json_format
 
-from gapic.samplegen_utils import snippet_metadata_pb2
-from gapic.samplegen_utils import snippet_index, types
-from ..common_types import DummyApiSchema, DummyService, DummyMethod, DummyNaming
+from gapic.samplegen_utils import snippet_index, snippet_metadata_pb2, types
+
+from ..common_types import DummyApiSchema, DummyMethod, DummyNaming, DummyService
 
 
 @pytest.fixture

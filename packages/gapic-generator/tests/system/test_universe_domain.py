@@ -1,7 +1,6 @@
-import pytest
-
 import google.auth
 import grpc
+import pytest
 
 # Define the parametrized data
 vary_transport = [

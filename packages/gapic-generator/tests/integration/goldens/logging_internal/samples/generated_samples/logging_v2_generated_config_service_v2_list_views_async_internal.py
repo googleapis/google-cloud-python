@@ -50,4 +50,5 @@ async def sample_list_views():
     async for response in page_result:
         print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_ListViews_async_internal]

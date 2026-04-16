@@ -49,4 +49,5 @@ async def sample_update_cmek_settings():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_UpdateCmekSettings_async]

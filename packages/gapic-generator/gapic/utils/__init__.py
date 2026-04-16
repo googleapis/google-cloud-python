@@ -12,26 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.utils.cache import cached_property
-from gapic.utils.cache import cached_proto_context
-from gapic.utils.case import to_snake_case
-from gapic.utils.case import to_camel_case
-from gapic.utils.checks import is_msg_field_pb
-from gapic.utils.checks import is_str_field_pb
-from gapic.utils.code import empty
-from gapic.utils.code import nth
-from gapic.utils.code import partition
-from gapic.utils.code import make_private
+from gapic.utils.cache import cached_property, cached_proto_context
+from gapic.utils.case import to_camel_case, to_snake_case
+from gapic.utils.checks import is_msg_field_pb, is_str_field_pb
+from gapic.utils.code import empty, make_private, nth, partition
 from gapic.utils.doc import doc
-from gapic.utils.filename import to_valid_filename
-from gapic.utils.filename import to_valid_module_name
-from gapic.utils.lines import sort_lines
-from gapic.utils.lines import wrap
+from gapic.utils.filename import to_valid_filename, to_valid_module_name
+from gapic.utils.lines import sort_lines, wrap
 from gapic.utils.options import Options
 from gapic.utils.reserved_names import RESERVED_NAMES
 from gapic.utils.rst import rst
 from gapic.utils.uri_conv import convert_uri_fieldnames
-
 
 __all__ = (
     "cached_property",

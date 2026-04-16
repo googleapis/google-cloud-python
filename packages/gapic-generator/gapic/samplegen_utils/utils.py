@@ -16,12 +16,11 @@
 that will eventually move somewhere else (probably)."""
 
 import os
+from typing import Generator, List, Tuple, Union
+
 import yaml
 
-from typing import Generator, Tuple, List, Union
-
 from gapic.samplegen_utils import types
-
 
 MIN_SCHEMA_VERSION = (1, 2, 0)
 

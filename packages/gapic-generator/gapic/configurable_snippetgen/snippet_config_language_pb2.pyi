@@ -15,14 +15,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import builtins
 import collections.abc
+import sys
+import typing
+
 import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
-import sys
-import typing
 
 if sys.version_info >= (3, 10):
     import typing as typing_extensions
@@ -35,7 +37,12 @@ class _GeneratorOutputLanguage:
     ValueType = typing.NewType("ValueType", builtins.int)
     V: typing_extensions.TypeAlias = ValueType
 
-class _GeneratorOutputLanguageEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_GeneratorOutputLanguage.ValueType], builtins.type):
+class _GeneratorOutputLanguageEnumTypeWrapper(
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _GeneratorOutputLanguage.ValueType
+    ],
+    builtins.type,
+):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     GENERATOR_OUTPUT_LANGUAGE_UNSPECIFIED: _GeneratorOutputLanguage.ValueType  # 0
     """The language has not been specified. Consumers should not see this value."""
@@ -48,7 +55,9 @@ class _GeneratorOutputLanguageEnumTypeWrapper(google.protobuf.internal.enum_type
     PYTHON: _GeneratorOutputLanguage.ValueType  # 7
     RUBY: _GeneratorOutputLanguage.ValueType  # 8
 
-class GeneratorOutputLanguage(_GeneratorOutputLanguage, metaclass=_GeneratorOutputLanguageEnumTypeWrapper):
+class GeneratorOutputLanguage(
+    _GeneratorOutputLanguage, metaclass=_GeneratorOutputLanguageEnumTypeWrapper
+):
     """A programming language in which snippets are generated.
     Note that this is different from
     google.cloud.tools.snippetgen.snippetindex.v1.Language, i.e. language
@@ -104,8 +113,32 @@ class SnippetConfig(google.protobuf.message.Message):
         signature: global___SnippetSignature | None = ...,
         snippet: global___Snippet | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["metadata", b"metadata", "rpc", b"rpc", "signature", b"signature", "snippet", b"snippet"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["metadata", b"metadata", "rpc", b"rpc", "signature", b"signature", "snippet", b"snippet"]) -> None: ...
+    def HasField(
+        self,
+        field_name: typing_extensions.Literal[
+            "metadata",
+            b"metadata",
+            "rpc",
+            b"rpc",
+            "signature",
+            b"signature",
+            "snippet",
+            b"snippet",
+        ],
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "metadata",
+            b"metadata",
+            "rpc",
+            b"rpc",
+            "signature",
+            b"signature",
+            "snippet",
+            b"snippet",
+        ],
+    ) -> None: ...
 
 global___SnippetConfig = SnippetConfig
 
@@ -128,7 +161,11 @@ class SnippetConfigMetadata(google.protobuf.message.Message):
     Defaults to false.
     """
     @property
-    def skipped_languages(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[global___GeneratorOutputLanguage.ValueType]:
+    def skipped_languages(
+        self,
+    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+        global___GeneratorOutputLanguage.ValueType
+    ]:
         """List of languages to skip snippet generation for.
         Config producers should specify here languages for which some of the
         capabilities required by the snippet are not supported. For instance, if a
@@ -168,12 +205,29 @@ class SnippetConfigMetadata(google.protobuf.message.Message):
         self,
         *,
         skipped: builtins.bool = ...,
-        skipped_languages: collections.abc.Iterable[global___GeneratorOutputLanguage.ValueType] | None = ...,
+        skipped_languages: collections.abc.Iterable[
+            global___GeneratorOutputLanguage.ValueType
+        ]
+        | None = ...,
         config_id: builtins.str = ...,
         snippet_name: builtins.str = ...,
         snippet_description: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["config_id", b"config_id", "skipped", b"skipped", "skipped_languages", b"skipped_languages", "snippet_description", b"snippet_description", "snippet_name", b"snippet_name"]) -> None: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "config_id",
+            b"config_id",
+            "skipped",
+            b"skipped",
+            "skipped_languages",
+            b"skipped_languages",
+            "snippet_description",
+            b"snippet_description",
+            "snippet_name",
+            b"snippet_name",
+        ],
+    ) -> None: ...
 
 global___SnippetConfigMetadata = SnippetConfigMetadata
 
@@ -193,7 +247,9 @@ class Rpc(google.protobuf.message.Message):
     "google.cloud.translate.v3" the API name is "google.cloud.translate".
     """
     @property
-    def api_version(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def api_version(
+        self,
+    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """The list of API versions for which one snippet is defined.
         The same RPC may exist in different versions (v1, v1beta, v2) of the API
         and may be covered by the same snippet config.
@@ -212,7 +268,19 @@ class Rpc(google.protobuf.message.Message):
         service_name: builtins.str = ...,
         rpc_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["api_version", b"api_version", "proto_package", b"proto_package", "rpc_name", b"rpc_name", "service_name", b"service_name"]) -> None: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "api_version",
+            b"api_version",
+            "proto_package",
+            b"proto_package",
+            "rpc_name",
+            b"rpc_name",
+            "service_name",
+            b"service_name",
+        ],
+    ) -> None: ...
 
 global___Rpc = Rpc
 
@@ -224,7 +292,12 @@ class SnippetSignature(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _SyncPreferenceEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[SnippetSignature._SyncPreference.ValueType], builtins.type):  # noqa: F821
+    class _SyncPreferenceEnumTypeWrapper(
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            SnippetSignature._SyncPreference.ValueType
+        ],
+        builtins.type,
+    ):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         LANGUAGE_PREFERRED: SnippetSignature._SyncPreference.ValueType  # 0
         """Generate an async, sync or both snippets as per language
@@ -291,7 +364,11 @@ class SnippetSignature(google.protobuf.message.Message):
     sync_preference: global___SnippetSignature.SyncPreference.ValueType
     """Synchronous preference indicator for the generated snippet."""
     @property
-    def parameters(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement.Declaration]:
+    def parameters(
+        self,
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Statement.Declaration
+    ]:
         """The list of parameters that the snippet will receive. May be empty if the
         snippet method does not receive parameters. If any, parameters should
         appear in generated code in the same order as they appear in this field.
@@ -305,10 +382,25 @@ class SnippetSignature(google.protobuf.message.Message):
         snippet_method_name: builtins.str = ...,
         return_type: global___Type | None = ...,
         sync_preference: global___SnippetSignature.SyncPreference.ValueType = ...,
-        parameters: collections.abc.Iterable[global___Statement.Declaration] | None = ...,
+        parameters: collections.abc.Iterable[global___Statement.Declaration]
+        | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["return_type", b"return_type"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["parameters", b"parameters", "return_type", b"return_type", "snippet_method_name", b"snippet_method_name", "sync_preference", b"sync_preference"]) -> None: ...
+    def HasField(
+        self, field_name: typing_extensions.Literal["return_type", b"return_type"]
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "parameters",
+            b"parameters",
+            "return_type",
+            b"return_type",
+            "snippet_method_name",
+            b"snippet_method_name",
+            "sync_preference",
+            b"sync_preference",
+        ],
+    ) -> None: ...
 
 global___SnippetSignature = SnippetSignature
 
@@ -343,7 +435,12 @@ class Snippet(google.protobuf.message.Message):
                 ValueType = typing.NewType("ValueType", builtins.int)
                 V: typing_extensions.TypeAlias = ValueType
 
-            class _ServiceEndpointSchemaEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Snippet.ClientInitialization.ServiceEndpoint._ServiceEndpointSchema.ValueType], builtins.type):  # noqa: F821
+            class _ServiceEndpointSchemaEnumTypeWrapper(
+                google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+                    Snippet.ClientInitialization.ServiceEndpoint._ServiceEndpointSchema.ValueType
+                ],
+                builtins.type,
+            ):  # noqa: F821
                 DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
                 LANGUAGE_DEFAULT: Snippet.ClientInitialization.ServiceEndpoint._ServiceEndpointSchema.ValueType  # 0
                 """Each language to use their own default.
@@ -357,7 +454,9 @@ class Snippet(google.protobuf.message.Message):
                 HTTP: Snippet.ClientInitialization.ServiceEndpoint._ServiceEndpointSchema.ValueType  # 2
                 """Use HTTP for service endpoint schema."""
 
-            class ServiceEndpointSchema(_ServiceEndpointSchema, metaclass=_ServiceEndpointSchemaEnumTypeWrapper):
+            class ServiceEndpointSchema(
+                _ServiceEndpointSchema, metaclass=_ServiceEndpointSchemaEnumTypeWrapper
+            ):
                 """Schemas for the service endpoint."""
 
             LANGUAGE_DEFAULT: Snippet.ClientInitialization.ServiceEndpoint.ServiceEndpointSchema.ValueType  # 0
@@ -401,12 +500,28 @@ class Snippet(google.protobuf.message.Message):
                 region: builtins.str = ...,
                 port: builtins.int = ...,
             ) -> None: ...
-            def ClearField(self, field_name: typing_extensions.Literal["host", b"host", "port", b"port", "region", b"region", "schema", b"schema"]) -> None: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "host",
+                    b"host",
+                    "port",
+                    b"port",
+                    "region",
+                    b"region",
+                    "schema",
+                    b"schema",
+                ],
+            ) -> None: ...
 
         PRE_CLIENT_INITIALIZATION_FIELD_NUMBER: builtins.int
         CUSTOM_SERVICE_ENDPOINT_FIELD_NUMBER: builtins.int
         @property
-        def pre_client_initialization(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def pre_client_initialization(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """Statements to be executed before the service client is initialized. For
             instance, some Statement.Declaration statements of variables to be used
             in service client initialization. May be empty. If any, statements will
@@ -414,16 +529,33 @@ class Snippet(google.protobuf.message.Message):
             pre_request_initialization.
             """
         @property
-        def custom_service_endpoint(self) -> global___Snippet.ClientInitialization.ServiceEndpoint:
+        def custom_service_endpoint(
+            self,
+        ) -> global___Snippet.ClientInitialization.ServiceEndpoint:
             """Custom endpoint to use in client initialization. Optional."""
         def __init__(
             self,
             *,
-            pre_client_initialization: collections.abc.Iterable[global___Statement] | None = ...,
-            custom_service_endpoint: global___Snippet.ClientInitialization.ServiceEndpoint | None = ...,
+            pre_client_initialization: collections.abc.Iterable[global___Statement]
+            | None = ...,
+            custom_service_endpoint: global___Snippet.ClientInitialization.ServiceEndpoint
+            | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["custom_service_endpoint", b"custom_service_endpoint"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["custom_service_endpoint", b"custom_service_endpoint", "pre_client_initialization", b"pre_client_initialization"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "custom_service_endpoint", b"custom_service_endpoint"
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "custom_service_endpoint",
+                b"custom_service_endpoint",
+                "pre_client_initialization",
+                b"pre_client_initialization",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class Standard(google.protobuf.message.Message):
@@ -435,7 +567,9 @@ class Snippet(google.protobuf.message.Message):
         CALL_FIELD_NUMBER: builtins.int
         RESPONSE_HANDLING_FIELD_NUMBER: builtins.int
         @property
-        def request_initialization(self) -> global___Snippet.SimpleRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.SimpleRequestInitialization:
             """Describes how to initialize the request object. Required."""
         @property
         def call(self) -> global___Snippet.ClientCall:
@@ -446,12 +580,33 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            request_initialization: global___Snippet.SimpleRequestInitialization | None = ...,
+            request_initialization: global___Snippet.SimpleRequestInitialization
+            | None = ...,
             call: global___Snippet.ClientCall | None = ...,
             response_handling: global___Snippet.SimpleResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["call", b"call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["call", b"call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "call",
+                b"call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "call",
+                b"call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class Paginated(google.protobuf.message.Message):
@@ -463,7 +618,9 @@ class Snippet(google.protobuf.message.Message):
         PAGINATED_CALL_FIELD_NUMBER: builtins.int
         PAGINATED_HANDLING_FIELD_NUMBER: builtins.int
         @property
-        def request_initialization(self) -> global___Snippet.SimpleRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.SimpleRequestInitialization:
             """Describes how to initialize the request object. This is the request
             object used for the initial paginated RPC call. Depending on how the
             response should be handled subsequent requests will be initialized either
@@ -482,12 +639,33 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            request_initialization: global___Snippet.SimpleRequestInitialization | None = ...,
+            request_initialization: global___Snippet.SimpleRequestInitialization
+            | None = ...,
             paginated_call: global___Snippet.ClientCall | None = ...,
             paginated_handling: global___Snippet.PaginatedResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["paginated_call", b"paginated_call", "paginated_handling", b"paginated_handling", "request_initialization", b"request_initialization"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["paginated_call", b"paginated_call", "paginated_handling", b"paginated_handling", "request_initialization", b"request_initialization"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "paginated_call",
+                b"paginated_call",
+                "paginated_handling",
+                b"paginated_handling",
+                "request_initialization",
+                b"request_initialization",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "paginated_call",
+                b"paginated_call",
+                "paginated_handling",
+                b"paginated_handling",
+                "request_initialization",
+                b"request_initialization",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class Lro(google.protobuf.message.Message):
@@ -499,7 +677,9 @@ class Snippet(google.protobuf.message.Message):
         CALL_FIELD_NUMBER: builtins.int
         LRO_HANDLING_FIELD_NUMBER: builtins.int
         @property
-        def request_initialization(self) -> global___Snippet.SimpleRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.SimpleRequestInitialization:
             """Describes how to initialize the request object. Required.
             This describes the request to the LRO operation itself and not to polling
             operations.
@@ -516,12 +696,33 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            request_initialization: global___Snippet.SimpleRequestInitialization | None = ...,
+            request_initialization: global___Snippet.SimpleRequestInitialization
+            | None = ...,
             call: global___Snippet.ClientCall | None = ...,
             lro_handling: global___Snippet.LroResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["call", b"call", "lro_handling", b"lro_handling", "request_initialization", b"request_initialization"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["call", b"call", "lro_handling", b"lro_handling", "request_initialization", b"request_initialization"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "call",
+                b"call",
+                "lro_handling",
+                b"lro_handling",
+                "request_initialization",
+                b"request_initialization",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "call",
+                b"call",
+                "lro_handling",
+                b"lro_handling",
+                "request_initialization",
+                b"request_initialization",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class ClientStreaming(google.protobuf.message.Message):
@@ -543,7 +744,9 @@ class Snippet(google.protobuf.message.Message):
         in which streaming requests are written. Required.
         """
         @property
-        def request_initialization(self) -> global___Snippet.StreamingRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.StreamingRequestInitialization:
             """Describes how to initialize the streaming request objects. Required."""
         @property
         def response_handling(self) -> global___Snippet.SimpleResponseHandling:
@@ -556,11 +759,34 @@ class Snippet(google.protobuf.message.Message):
             *,
             initialization_call: global___Snippet.ClientCall | None = ...,
             client_stream_name: builtins.str = ...,
-            request_initialization: global___Snippet.StreamingRequestInitialization | None = ...,
+            request_initialization: global___Snippet.StreamingRequestInitialization
+            | None = ...,
             response_handling: global___Snippet.SimpleResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["client_stream_name", b"client_stream_name", "initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "client_stream_name",
+                b"client_stream_name",
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class ServerStreaming(google.protobuf.message.Message):
@@ -573,7 +799,9 @@ class Snippet(google.protobuf.message.Message):
         SERVER_STREAM_NAME_FIELD_NUMBER: builtins.int
         RESPONSE_HANDLING_FIELD_NUMBER: builtins.int
         @property
-        def request_initialization(self) -> global___Snippet.SimpleRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.SimpleRequestInitialization:
             """Describes how to initialize the request object. Required."""
         @property
         def initialization_call(self) -> global___Snippet.ClientCall:
@@ -591,13 +819,36 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            request_initialization: global___Snippet.SimpleRequestInitialization | None = ...,
+            request_initialization: global___Snippet.SimpleRequestInitialization
+            | None = ...,
             initialization_call: global___Snippet.ClientCall | None = ...,
             server_stream_name: builtins.str = ...,
             response_handling: global___Snippet.StreamingResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling", "server_stream_name", b"server_stream_name"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+                "server_stream_name",
+                b"server_stream_name",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class BidiStreaming(google.protobuf.message.Message):
@@ -620,7 +871,9 @@ class Snippet(google.protobuf.message.Message):
         in which streaming requests are written. Required.
         """
         @property
-        def request_initialization(self) -> global___Snippet.StreamingRequestInitialization:
+        def request_initialization(
+            self,
+        ) -> global___Snippet.StreamingRequestInitialization:
             """Describes how to initialize the streaming request objects. Required."""
         server_stream_name: builtins.str
         """The name of the variable to capture the server stream in, i.e. the object
@@ -637,12 +890,37 @@ class Snippet(google.protobuf.message.Message):
             *,
             initialization_call: global___Snippet.ClientCall | None = ...,
             client_stream_name: builtins.str = ...,
-            request_initialization: global___Snippet.StreamingRequestInitialization | None = ...,
+            request_initialization: global___Snippet.StreamingRequestInitialization
+            | None = ...,
             server_stream_name: builtins.str = ...,
             response_handling: global___Snippet.StreamingResponseHandling | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["client_stream_name", b"client_stream_name", "initialization_call", b"initialization_call", "request_initialization", b"request_initialization", "response_handling", b"response_handling", "server_stream_name", b"server_stream_name"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "client_stream_name",
+                b"client_stream_name",
+                "initialization_call",
+                b"initialization_call",
+                "request_initialization",
+                b"request_initialization",
+                "response_handling",
+                b"response_handling",
+                "server_stream_name",
+                b"server_stream_name",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class ClientCall(google.protobuf.message.Message):
@@ -655,7 +933,11 @@ class Snippet(google.protobuf.message.Message):
 
         PRE_CALL_FIELD_NUMBER: builtins.int
         @property
-        def pre_call(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def pre_call(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """Statements to be executed before the initial call to the service client
             method is made. Whether that results in an RPC call or not is operation
             type and language dependent. May be empty.
@@ -667,7 +949,9 @@ class Snippet(google.protobuf.message.Message):
             *,
             pre_call: collections.abc.Iterable[global___Statement] | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["pre_call", b"pre_call"]) -> None: ...
+        def ClearField(
+            self, field_name: typing_extensions.Literal["pre_call", b"pre_call"]
+        ) -> None: ...
 
     @typing_extensions.final
     class SimpleRequestInitialization(google.protobuf.message.Message):
@@ -679,7 +963,11 @@ class Snippet(google.protobuf.message.Message):
         REQUEST_VALUE_FIELD_NUMBER: builtins.int
         REQUEST_NAME_FIELD_NUMBER: builtins.int
         @property
-        def pre_request_initialization(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def pre_request_initialization(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """Statements to be executed before the request object is initialized. For
             instance, some Statement.Declaration statements of variables to be used
             in request initialization. May be empty. If any, statements will be
@@ -698,12 +986,26 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            pre_request_initialization: collections.abc.Iterable[global___Statement] | None = ...,
+            pre_request_initialization: collections.abc.Iterable[global___Statement]
+            | None = ...,
             request_value: global___Expression | None = ...,
             request_name: builtins.str = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["request_value", b"request_value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["pre_request_initialization", b"pre_request_initialization", "request_name", b"request_name", "request_value", b"request_value"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal["request_value", b"request_value"],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "pre_request_initialization",
+                b"pre_request_initialization",
+                "request_name",
+                b"request_name",
+                "request_value",
+                b"request_value",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class StreamingRequestInitialization(google.protobuf.message.Message):
@@ -719,7 +1021,9 @@ class Snippet(google.protobuf.message.Message):
         ITERATION_FIELD_NUMBER: builtins.int
         STREAMING_REQUEST_FIELD_NUMBER: builtins.int
         @property
-        def first_streaming_request(self) -> global___Snippet.SimpleRequestInitialization:
+        def first_streaming_request(
+            self,
+        ) -> global___Snippet.SimpleRequestInitialization:
             """Describes how to initialize the first streaming request. Optional for
             operations that do not require a specific first request.
             """
@@ -737,12 +1041,34 @@ class Snippet(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            first_streaming_request: global___Snippet.SimpleRequestInitialization | None = ...,
+            first_streaming_request: global___Snippet.SimpleRequestInitialization
+            | None = ...,
             iteration: global___Statement.Iteration | None = ...,
-            streaming_request: global___Snippet.SimpleRequestInitialization | None = ...,
+            streaming_request: global___Snippet.SimpleRequestInitialization
+            | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["first_streaming_request", b"first_streaming_request", "iteration", b"iteration", "streaming_request", b"streaming_request"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["first_streaming_request", b"first_streaming_request", "iteration", b"iteration", "streaming_request", b"streaming_request"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "first_streaming_request",
+                b"first_streaming_request",
+                "iteration",
+                b"iteration",
+                "streaming_request",
+                b"streaming_request",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "first_streaming_request",
+                b"first_streaming_request",
+                "iteration",
+                b"iteration",
+                "streaming_request",
+                b"streaming_request",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class SimpleResponseHandling(google.protobuf.message.Message):
@@ -760,7 +1086,10 @@ class Snippet(google.protobuf.message.Message):
             *,
             response_name: builtins.str = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["response_name", b"response_name"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal["response_name", b"response_name"],
+        ) -> None: ...
 
     @typing_extensions.final
     class PaginatedResponseHandling(google.protobuf.message.Message):
@@ -779,15 +1108,28 @@ class Snippet(google.protobuf.message.Message):
             item_name: builtins.str
             """The name of the variable to capture the current item in. Required."""
             @property
-            def per_item_statements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+            def per_item_statements(
+                self,
+            ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+                global___Statement
+            ]:
                 """Statements to execute for each item. Optional."""
             def __init__(
                 self,
                 *,
                 item_name: builtins.str = ...,
-                per_item_statements: collections.abc.Iterable[global___Statement] | None = ...,
+                per_item_statements: collections.abc.Iterable[global___Statement]
+                | None = ...,
             ) -> None: ...
-            def ClearField(self, field_name: typing_extensions.Literal["item_name", b"item_name", "per_item_statements", b"per_item_statements"]) -> None: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "item_name",
+                    b"item_name",
+                    "per_item_statements",
+                    b"per_item_statements",
+                ],
+            ) -> None: ...
 
         @typing_extensions.final
         class ByPage(google.protobuf.message.Message):
@@ -801,7 +1143,11 @@ class Snippet(google.protobuf.message.Message):
             page_name: builtins.str
             """The name of the variable to capture the current page in. Required."""
             @property
-            def per_page_statements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+            def per_page_statements(
+                self,
+            ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+                global___Statement
+            ]:
                 """Statements to execute for each page. Optional."""
             @property
             def by_item(self) -> global___Snippet.PaginatedResponseHandling.ByItem:
@@ -810,11 +1156,24 @@ class Snippet(google.protobuf.message.Message):
                 self,
                 *,
                 page_name: builtins.str = ...,
-                per_page_statements: collections.abc.Iterable[global___Statement] | None = ...,
+                per_page_statements: collections.abc.Iterable[global___Statement]
+                | None = ...,
                 by_item: global___Snippet.PaginatedResponseHandling.ByItem | None = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["by_item", b"by_item"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["by_item", b"by_item", "page_name", b"page_name", "per_page_statements", b"per_page_statements"]) -> None: ...
+            def HasField(
+                self, field_name: typing_extensions.Literal["by_item", b"by_item"]
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "by_item",
+                    b"by_item",
+                    "page_name",
+                    b"page_name",
+                    "per_page_statements",
+                    b"per_page_statements",
+                ],
+            ) -> None: ...
 
         @typing_extensions.final
         class NextPageToken(google.protobuf.message.Message):
@@ -846,8 +1205,23 @@ class Snippet(google.protobuf.message.Message):
                 explicit_page_size: global___Expression | None = ...,
                 by_page: global___Snippet.PaginatedResponseHandling.ByPage | None = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["by_page", b"by_page", "explicit_page_size", b"explicit_page_size"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["by_page", b"by_page", "explicit_page_size", b"explicit_page_size", "next_page_token_name", b"next_page_token_name"]) -> None: ...
+            def HasField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "by_page", b"by_page", "explicit_page_size", b"explicit_page_size"
+                ],
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "by_page",
+                    b"by_page",
+                    "explicit_page_size",
+                    b"explicit_page_size",
+                    "next_page_token_name",
+                    b"next_page_token_name",
+                ],
+            ) -> None: ...
 
         RESPONSE_NAME_FIELD_NUMBER: builtins.int
         BY_ITEM_FIELD_NUMBER: builtins.int
@@ -869,7 +1243,9 @@ class Snippet(google.protobuf.message.Message):
             needed.
             """
         @property
-        def next_page_token(self) -> global___Snippet.PaginatedResponseHandling.NextPageToken:
+        def next_page_token(
+            self,
+        ) -> global___Snippet.PaginatedResponseHandling.NextPageToken:
             """Iterate page by page, explicitly using the next page token.
             This pagination mode will modify the original request by subsequently
             setting the next page token obtained from the previous response.
@@ -880,11 +1256,45 @@ class Snippet(google.protobuf.message.Message):
             response_name: builtins.str = ...,
             by_item: global___Snippet.PaginatedResponseHandling.ByItem | None = ...,
             by_page: global___Snippet.PaginatedResponseHandling.ByPage | None = ...,
-            next_page_token: global___Snippet.PaginatedResponseHandling.NextPageToken | None = ...,
+            next_page_token: global___Snippet.PaginatedResponseHandling.NextPageToken
+            | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["by_item", b"by_item", "by_page", b"by_page", "next_page_token", b"next_page_token", "pagination_kind", b"pagination_kind"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["by_item", b"by_item", "by_page", b"by_page", "next_page_token", b"next_page_token", "pagination_kind", b"pagination_kind", "response_name", b"response_name"]) -> None: ...
-        def WhichOneof(self, oneof_group: typing_extensions.Literal["pagination_kind", b"pagination_kind"]) -> typing_extensions.Literal["by_item", "by_page", "next_page_token"] | None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "by_item",
+                b"by_item",
+                "by_page",
+                b"by_page",
+                "next_page_token",
+                b"next_page_token",
+                "pagination_kind",
+                b"pagination_kind",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "by_item",
+                b"by_item",
+                "by_page",
+                b"by_page",
+                "next_page_token",
+                b"next_page_token",
+                "pagination_kind",
+                b"pagination_kind",
+                "response_name",
+                b"response_name",
+            ],
+        ) -> None: ...
+        def WhichOneof(
+            self,
+            oneof_group: typing_extensions.Literal[
+                "pagination_kind", b"pagination_kind"
+            ],
+        ) -> (
+            typing_extensions.Literal["by_item", "by_page", "next_page_token"] | None
+        ): ...
 
     @typing_extensions.final
     class LroResponseHandling(google.protobuf.message.Message):
@@ -896,7 +1306,12 @@ class Snippet(google.protobuf.message.Message):
             ValueType = typing.NewType("ValueType", builtins.int)
             V: typing_extensions.TypeAlias = ValueType
 
-        class _PollingTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Snippet.LroResponseHandling._PollingType.ValueType], builtins.type):  # noqa: F821
+        class _PollingTypeEnumTypeWrapper(
+            google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+                Snippet.LroResponseHandling._PollingType.ValueType
+            ],
+            builtins.type,
+        ):  # noqa: F821
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
             UNTIL_COMPLETION: Snippet.LroResponseHandling._PollingType.ValueType  # 0
             """Poll until completion. Default value."""
@@ -942,8 +1357,22 @@ class Snippet(google.protobuf.message.Message):
             polling_response_name: builtins.str = ...,
             polling_call: global___Snippet.ClientCall | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["polling_call", b"polling_call"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["polling_call", b"polling_call", "polling_response_name", b"polling_response_name", "polling_type", b"polling_type", "response_name", b"response_name"]) -> None: ...
+        def HasField(
+            self, field_name: typing_extensions.Literal["polling_call", b"polling_call"]
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "polling_call",
+                b"polling_call",
+                "polling_response_name",
+                b"polling_response_name",
+                "polling_type",
+                b"polling_type",
+                "response_name",
+                b"response_name",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class StreamingResponseHandling(google.protobuf.message.Message):
@@ -958,15 +1387,28 @@ class Snippet(google.protobuf.message.Message):
         Required.
         """
         @property
-        def per_stream_response_statements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def per_stream_response_statements(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """Statements to execute for each stream response. Optional."""
         def __init__(
             self,
             *,
             current_response_name: builtins.str = ...,
-            per_stream_response_statements: collections.abc.Iterable[global___Statement] | None = ...,
+            per_stream_response_statements: collections.abc.Iterable[global___Statement]
+            | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["current_response_name", b"current_response_name", "per_stream_response_statements", b"per_stream_response_statements"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "current_response_name",
+                b"current_response_name",
+                "per_stream_response_statements",
+                b"per_stream_response_statements",
+            ],
+        ) -> None: ...
 
     SERVICE_CLIENT_INITIALIZATION_FIELD_NUMBER: builtins.int
     STANDARD_FIELD_NUMBER: builtins.int
@@ -1000,7 +1442,11 @@ class Snippet(google.protobuf.message.Message):
     def bidi_streaming(self) -> global___Snippet.BidiStreaming:
         """A bidirectional streaming RPC operation."""
     @property
-    def final_statements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+    def final_statements(
+        self,
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Statement
+    ]:
         """Statements to be executed before the snippet ends. For instance, some
         Statement.StandardOutput statements and the Statement.Return statement.
         May be empty. If any, statements should appear on generated code in the
@@ -1009,7 +1455,8 @@ class Snippet(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        service_client_initialization: global___Snippet.ClientInitialization | None = ...,
+        service_client_initialization: global___Snippet.ClientInitialization
+        | None = ...,
         standard: global___Snippet.Standard | None = ...,
         paginated: global___Snippet.Paginated | None = ...,
         lro: global___Snippet.Lro | None = ...,
@@ -1018,9 +1465,63 @@ class Snippet(google.protobuf.message.Message):
         bidi_streaming: global___Snippet.BidiStreaming | None = ...,
         final_statements: collections.abc.Iterable[global___Statement] | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["bidi_streaming", b"bidi_streaming", "call", b"call", "client_streaming", b"client_streaming", "lro", b"lro", "paginated", b"paginated", "server_streaming", b"server_streaming", "service_client_initialization", b"service_client_initialization", "standard", b"standard"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["bidi_streaming", b"bidi_streaming", "call", b"call", "client_streaming", b"client_streaming", "final_statements", b"final_statements", "lro", b"lro", "paginated", b"paginated", "server_streaming", b"server_streaming", "service_client_initialization", b"service_client_initialization", "standard", b"standard"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["call", b"call"]) -> typing_extensions.Literal["standard", "paginated", "lro", "client_streaming", "server_streaming", "bidi_streaming"] | None: ...
+    def HasField(
+        self,
+        field_name: typing_extensions.Literal[
+            "bidi_streaming",
+            b"bidi_streaming",
+            "call",
+            b"call",
+            "client_streaming",
+            b"client_streaming",
+            "lro",
+            b"lro",
+            "paginated",
+            b"paginated",
+            "server_streaming",
+            b"server_streaming",
+            "service_client_initialization",
+            b"service_client_initialization",
+            "standard",
+            b"standard",
+        ],
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "bidi_streaming",
+            b"bidi_streaming",
+            "call",
+            b"call",
+            "client_streaming",
+            b"client_streaming",
+            "final_statements",
+            b"final_statements",
+            "lro",
+            b"lro",
+            "paginated",
+            b"paginated",
+            "server_streaming",
+            b"server_streaming",
+            "service_client_initialization",
+            b"service_client_initialization",
+            "standard",
+            b"standard",
+        ],
+    ) -> None: ...
+    def WhichOneof(
+        self, oneof_group: typing_extensions.Literal["call", b"call"]
+    ) -> (
+        typing_extensions.Literal[
+            "standard",
+            "paginated",
+            "lro",
+            "client_streaming",
+            "server_streaming",
+            "bidi_streaming",
+        ]
+        | None
+    ): ...
 
 global___Snippet = Snippet
 
@@ -1069,8 +1570,23 @@ class Statement(google.protobuf.message.Message):
             value: global___Expression | None = ...,
             description: builtins.str = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["type", b"type", "value", b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["description", b"description", "name", b"name", "type", b"type", "value", b"value"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal["type", b"type", "value", b"value"],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "description",
+                b"description",
+                "name",
+                b"name",
+                "type",
+                b"type",
+                "value",
+                b"value",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class StandardOutput(google.protobuf.message.Message):
@@ -1092,8 +1608,12 @@ class Statement(google.protobuf.message.Message):
             *,
             value: global___Expression | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["value", b"value"]) -> None: ...
+        def HasField(
+            self, field_name: typing_extensions.Literal["value", b"value"]
+        ) -> builtins.bool: ...
+        def ClearField(
+            self, field_name: typing_extensions.Literal["value", b"value"]
+        ) -> None: ...
 
     @typing_extensions.final
     class Return(google.protobuf.message.Message):
@@ -1112,8 +1632,12 @@ class Statement(google.protobuf.message.Message):
             *,
             result: global___Expression | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["result", b"result"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["result", b"result"]) -> None: ...
+        def HasField(
+            self, field_name: typing_extensions.Literal["result", b"result"]
+        ) -> builtins.bool: ...
+        def ClearField(
+            self, field_name: typing_extensions.Literal["result", b"result"]
+        ) -> None: ...
 
     @typing_extensions.final
     class Conditional(google.protobuf.message.Message):
@@ -1130,12 +1654,20 @@ class Statement(google.protobuf.message.Message):
         def condition(self) -> global___Expression:
             """The condition to evaluate. Should evaluate to a bolean value."""
         @property
-        def on_true(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def on_true(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """The set of statements to execute if condition evaluates to true.
             The statements should be executed in the order that they appear.
             """
         @property
-        def on_false(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def on_false(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """The set of statements to execute if condition evaluates to false.
             The statements should be executed in the order that they appear.
             """
@@ -1146,8 +1678,20 @@ class Statement(google.protobuf.message.Message):
             on_true: collections.abc.Iterable[global___Statement] | None = ...,
             on_false: collections.abc.Iterable[global___Statement] | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["condition", b"condition"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["condition", b"condition", "on_false", b"on_false", "on_true", b"on_true"]) -> None: ...
+        def HasField(
+            self, field_name: typing_extensions.Literal["condition", b"condition"]
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "condition",
+                b"condition",
+                "on_false",
+                b"on_false",
+                "on_true",
+                b"on_true",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class Iteration(google.protobuf.message.Message):
@@ -1234,12 +1778,73 @@ class Statement(google.protobuf.message.Message):
                 greater_than: global___Expression | None = ...,
                 total_steps: global___Expression | None = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["end", b"end", "greater_than", b"greater_than", "greater_than_or_equal", b"greater_than_or_equal", "increment", b"increment", "less_than", b"less_than", "less_than_or_equal", b"less_than_or_equal", "multiplier", b"multiplier", "start_at", b"start_at", "step", b"step", "total_steps", b"total_steps"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["end", b"end", "greater_than", b"greater_than", "greater_than_or_equal", b"greater_than_or_equal", "increment", b"increment", "less_than", b"less_than", "less_than_or_equal", b"less_than_or_equal", "multiplier", b"multiplier", "start_at", b"start_at", "step", b"step", "total_steps", b"total_steps"]) -> None: ...
+            def HasField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "end",
+                    b"end",
+                    "greater_than",
+                    b"greater_than",
+                    "greater_than_or_equal",
+                    b"greater_than_or_equal",
+                    "increment",
+                    b"increment",
+                    "less_than",
+                    b"less_than",
+                    "less_than_or_equal",
+                    b"less_than_or_equal",
+                    "multiplier",
+                    b"multiplier",
+                    "start_at",
+                    b"start_at",
+                    "step",
+                    b"step",
+                    "total_steps",
+                    b"total_steps",
+                ],
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "end",
+                    b"end",
+                    "greater_than",
+                    b"greater_than",
+                    "greater_than_or_equal",
+                    b"greater_than_or_equal",
+                    "increment",
+                    b"increment",
+                    "less_than",
+                    b"less_than",
+                    "less_than_or_equal",
+                    b"less_than_or_equal",
+                    "multiplier",
+                    b"multiplier",
+                    "start_at",
+                    b"start_at",
+                    "step",
+                    b"step",
+                    "total_steps",
+                    b"total_steps",
+                ],
+            ) -> None: ...
             @typing.overload
-            def WhichOneof(self, oneof_group: typing_extensions.Literal["end", b"end"]) -> typing_extensions.Literal["less_than_or_equal", "less_than", "greater_than_or_equal", "greater_than", "total_steps"] | None: ...
+            def WhichOneof(
+                self, oneof_group: typing_extensions.Literal["end", b"end"]
+            ) -> (
+                typing_extensions.Literal[
+                    "less_than_or_equal",
+                    "less_than",
+                    "greater_than_or_equal",
+                    "greater_than",
+                    "total_steps",
+                ]
+                | None
+            ): ...
             @typing.overload
-            def WhichOneof(self, oneof_group: typing_extensions.Literal["step", b"step"]) -> typing_extensions.Literal["increment", "multiplier"] | None: ...
+            def WhichOneof(
+                self, oneof_group: typing_extensions.Literal["step", b"step"]
+            ) -> typing_extensions.Literal["increment", "multiplier"] | None: ...
 
         @typing_extensions.final
         class RepeatedIteration(google.protobuf.message.Message):
@@ -1271,8 +1876,21 @@ class Statement(google.protobuf.message.Message):
                 repeated_elements: global___Statement.Declaration | None = ...,
                 current_name: builtins.str = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["repeated_elements", b"repeated_elements"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["current_name", b"current_name", "repeated_elements", b"repeated_elements"]) -> None: ...
+            def HasField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "repeated_elements", b"repeated_elements"
+                ],
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "current_name",
+                    b"current_name",
+                    "repeated_elements",
+                    b"repeated_elements",
+                ],
+            ) -> None: ...
 
         @typing_extensions.final
         class MapIteration(google.protobuf.message.Message):
@@ -1311,8 +1929,20 @@ class Statement(google.protobuf.message.Message):
                 current_key_name: builtins.str = ...,
                 current_value_name: builtins.str = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["map", b"map"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["current_key_name", b"current_key_name", "current_value_name", b"current_value_name", "map", b"map"]) -> None: ...
+            def HasField(
+                self, field_name: typing_extensions.Literal["map", b"map"]
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "current_key_name",
+                    b"current_key_name",
+                    "current_value_name",
+                    b"current_value_name",
+                    "map",
+                    b"map",
+                ],
+            ) -> None: ...
 
         @typing_extensions.final
         class BytesIteration(google.protobuf.message.Message):
@@ -1365,9 +1995,41 @@ class Statement(google.protobuf.message.Message):
                 chunk_type: global___Type.BytesType | None = ...,
                 current_name: builtins.str = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["byte_sequence", b"byte_sequence", "chunk", b"chunk", "chunk_size", b"chunk_size", "chunk_type", b"chunk_type", "total_chunks", b"total_chunks"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["byte_sequence", b"byte_sequence", "chunk", b"chunk", "chunk_size", b"chunk_size", "chunk_type", b"chunk_type", "current_name", b"current_name", "total_chunks", b"total_chunks"]) -> None: ...
-            def WhichOneof(self, oneof_group: typing_extensions.Literal["chunk", b"chunk"]) -> typing_extensions.Literal["chunk_size", "total_chunks"] | None: ...
+            def HasField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "byte_sequence",
+                    b"byte_sequence",
+                    "chunk",
+                    b"chunk",
+                    "chunk_size",
+                    b"chunk_size",
+                    "chunk_type",
+                    b"chunk_type",
+                    "total_chunks",
+                    b"total_chunks",
+                ],
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal[
+                    "byte_sequence",
+                    b"byte_sequence",
+                    "chunk",
+                    b"chunk",
+                    "chunk_size",
+                    b"chunk_size",
+                    "chunk_type",
+                    b"chunk_type",
+                    "current_name",
+                    b"current_name",
+                    "total_chunks",
+                    b"total_chunks",
+                ],
+            ) -> None: ...
+            def WhichOneof(
+                self, oneof_group: typing_extensions.Literal["chunk", b"chunk"]
+            ) -> typing_extensions.Literal["chunk_size", "total_chunks"] | None: ...
 
         NUMERIC_SEQUENCE_ITERATION_FIELD_NUMBER: builtins.int
         REPEATED_ITERATION_FIELD_NUMBER: builtins.int
@@ -1375,7 +2037,9 @@ class Statement(google.protobuf.message.Message):
         BYTES_ITERATION_FIELD_NUMBER: builtins.int
         STATEMENTS_FIELD_NUMBER: builtins.int
         @property
-        def numeric_sequence_iteration(self) -> global___Statement.Iteration.NumericSequenceIteration:
+        def numeric_sequence_iteration(
+            self,
+        ) -> global___Statement.Iteration.NumericSequenceIteration:
             """A numeric sequence iteration."""
         @property
         def repeated_iteration(self) -> global___Statement.Iteration.RepeatedIteration:
@@ -1387,7 +2051,11 @@ class Statement(google.protobuf.message.Message):
         def bytes_iteration(self) -> global___Statement.Iteration.BytesIteration:
             """A bytes sequence iteration."""
         @property
-        def statements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Statement]:
+        def statements(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Statement
+        ]:
             """The set of statements to execute on each step of the iteration.
             The statements should be executed in the order that they appear.
             May be empty as iterations will also be used for streaming request
@@ -1396,15 +2064,58 @@ class Statement(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            numeric_sequence_iteration: global___Statement.Iteration.NumericSequenceIteration | None = ...,
-            repeated_iteration: global___Statement.Iteration.RepeatedIteration | None = ...,
+            numeric_sequence_iteration: global___Statement.Iteration.NumericSequenceIteration
+            | None = ...,
+            repeated_iteration: global___Statement.Iteration.RepeatedIteration
+            | None = ...,
             map_iteration: global___Statement.Iteration.MapIteration | None = ...,
             bytes_iteration: global___Statement.Iteration.BytesIteration | None = ...,
             statements: collections.abc.Iterable[global___Statement] | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["bytes_iteration", b"bytes_iteration", "iteration_type", b"iteration_type", "map_iteration", b"map_iteration", "numeric_sequence_iteration", b"numeric_sequence_iteration", "repeated_iteration", b"repeated_iteration"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["bytes_iteration", b"bytes_iteration", "iteration_type", b"iteration_type", "map_iteration", b"map_iteration", "numeric_sequence_iteration", b"numeric_sequence_iteration", "repeated_iteration", b"repeated_iteration", "statements", b"statements"]) -> None: ...
-        def WhichOneof(self, oneof_group: typing_extensions.Literal["iteration_type", b"iteration_type"]) -> typing_extensions.Literal["numeric_sequence_iteration", "repeated_iteration", "map_iteration", "bytes_iteration"] | None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "bytes_iteration",
+                b"bytes_iteration",
+                "iteration_type",
+                b"iteration_type",
+                "map_iteration",
+                b"map_iteration",
+                "numeric_sequence_iteration",
+                b"numeric_sequence_iteration",
+                "repeated_iteration",
+                b"repeated_iteration",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "bytes_iteration",
+                b"bytes_iteration",
+                "iteration_type",
+                b"iteration_type",
+                "map_iteration",
+                b"map_iteration",
+                "numeric_sequence_iteration",
+                b"numeric_sequence_iteration",
+                "repeated_iteration",
+                b"repeated_iteration",
+                "statements",
+                b"statements",
+            ],
+        ) -> None: ...
+        def WhichOneof(
+            self,
+            oneof_group: typing_extensions.Literal["iteration_type", b"iteration_type"],
+        ) -> (
+            typing_extensions.Literal[
+                "numeric_sequence_iteration",
+                "repeated_iteration",
+                "map_iteration",
+                "bytes_iteration",
+            ]
+            | None
+        ): ...
 
     DECLARATION_FIELD_NUMBER: builtins.int
     STANDARD_OUTPUT_FIELD_NUMBER: builtins.int
@@ -1442,9 +2153,49 @@ class Statement(google.protobuf.message.Message):
         conditional: global___Statement.Conditional | None = ...,
         iteration: global___Statement.Iteration | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["conditional", b"conditional", "declaration", b"declaration", "iteration", b"iteration", "return", b"return", "standard_output", b"standard_output", "statement_type", b"statement_type"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["conditional", b"conditional", "declaration", b"declaration", "iteration", b"iteration", "return", b"return", "standard_output", b"standard_output", "statement_type", b"statement_type"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["statement_type", b"statement_type"]) -> typing_extensions.Literal["declaration", "standard_output", "return", "conditional", "iteration"] | None: ...
+    def HasField(
+        self,
+        field_name: typing_extensions.Literal[
+            "conditional",
+            b"conditional",
+            "declaration",
+            b"declaration",
+            "iteration",
+            b"iteration",
+            "return",
+            b"return",
+            "standard_output",
+            b"standard_output",
+            "statement_type",
+            b"statement_type",
+        ],
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "conditional",
+            b"conditional",
+            "declaration",
+            b"declaration",
+            "iteration",
+            b"iteration",
+            "return",
+            b"return",
+            "standard_output",
+            b"standard_output",
+            "statement_type",
+            b"statement_type",
+        ],
+    ) -> None: ...
+    def WhichOneof(
+        self,
+        oneof_group: typing_extensions.Literal["statement_type", b"statement_type"],
+    ) -> (
+        typing_extensions.Literal[
+            "declaration", "standard_output", "return", "conditional", "iteration"
+        ]
+        | None
+    ): ...
 
 global___Statement = Statement
 
@@ -1460,7 +2211,12 @@ class Type(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _ScalarTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Type._ScalarType.ValueType], builtins.type):  # noqa: F821
+    class _ScalarTypeEnumTypeWrapper(
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Type._ScalarType.ValueType
+        ],
+        builtins.type,
+    ):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         SCALAR_TYPE_UNDEFINED: Type._ScalarType.ValueType  # 0
         """The scalar type has not been specified. Consumers should not see this
@@ -1534,7 +2290,10 @@ class Type(google.protobuf.message.Message):
             *,
             enum_full_name: builtins.str = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["enum_full_name", b"enum_full_name"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal["enum_full_name", b"enum_full_name"],
+        ) -> None: ...
 
     @typing_extensions.final
     class BytesType(google.protobuf.message.Message):
@@ -1546,7 +2305,12 @@ class Type(google.protobuf.message.Message):
             ValueType = typing.NewType("ValueType", builtins.int)
             V: typing_extensions.TypeAlias = ValueType
 
-        class _LanguageEquivalentEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Type.BytesType._LanguageEquivalent.ValueType], builtins.type):  # noqa: F821
+        class _LanguageEquivalentEnumTypeWrapper(
+            google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+                Type.BytesType._LanguageEquivalent.ValueType
+            ],
+            builtins.type,
+        ):  # noqa: F821
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
             PROTOBUF_BYTES: Type.BytesType._LanguageEquivalent.ValueType  # 0
             """The same type used for representing protobuf bytes fields."""
@@ -1559,7 +2323,9 @@ class Type(google.protobuf.message.Message):
             STREAM: Type.BytesType._LanguageEquivalent.ValueType  # 3
             """Language-specific stream type."""
 
-        class LanguageEquivalent(_LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper):
+        class LanguageEquivalent(
+            _LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper
+        ):
             """Possible language-specific equivalents to a bytes type."""
 
         PROTOBUF_BYTES: Type.BytesType.LanguageEquivalent.ValueType  # 0
@@ -1581,7 +2347,12 @@ class Type(google.protobuf.message.Message):
             *,
             language_equivalent: global___Type.BytesType.LanguageEquivalent.ValueType = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["language_equivalent", b"language_equivalent"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "language_equivalent", b"language_equivalent"
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class MessageType(google.protobuf.message.Message):
@@ -1600,7 +2371,12 @@ class Type(google.protobuf.message.Message):
             *,
             message_full_name: builtins.str = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["message_full_name", b"message_full_name"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "message_full_name", b"message_full_name"
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class RepeatedType(google.protobuf.message.Message):
@@ -1612,7 +2388,12 @@ class Type(google.protobuf.message.Message):
             ValueType = typing.NewType("ValueType", builtins.int)
             V: typing_extensions.TypeAlias = ValueType
 
-        class _LanguageEquivalentEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Type.RepeatedType._LanguageEquivalent.ValueType], builtins.type):  # noqa: F821
+        class _LanguageEquivalentEnumTypeWrapper(
+            google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+                Type.RepeatedType._LanguageEquivalent.ValueType
+            ],
+            builtins.type,
+        ):  # noqa: F821
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
             PROTOBUF_REPEATED: Type.RepeatedType._LanguageEquivalent.ValueType  # 0
             """The same type used for representing protobuf repeated fields."""
@@ -1621,7 +2402,9 @@ class Type(google.protobuf.message.Message):
             LIST: Type.RepeatedType._LanguageEquivalent.ValueType  # 2
             """Language-specific list type."""
 
-        class LanguageEquivalent(_LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper):
+        class LanguageEquivalent(
+            _LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper
+        ):
             """Possible language-specific equivalents to a repeated type."""
 
         PROTOBUF_REPEATED: Type.RepeatedType.LanguageEquivalent.ValueType  # 0
@@ -1646,8 +2429,18 @@ class Type(google.protobuf.message.Message):
             element_type: global___Type | None = ...,
             language_equivalent: global___Type.RepeatedType.LanguageEquivalent.ValueType = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["element_type", b"element_type"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["element_type", b"element_type", "language_equivalent", b"language_equivalent"]) -> None: ...
+        def HasField(
+            self, field_name: typing_extensions.Literal["element_type", b"element_type"]
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "element_type",
+                b"element_type",
+                "language_equivalent",
+                b"language_equivalent",
+            ],
+        ) -> None: ...
 
     @typing_extensions.final
     class MapType(google.protobuf.message.Message):
@@ -1659,14 +2452,21 @@ class Type(google.protobuf.message.Message):
             ValueType = typing.NewType("ValueType", builtins.int)
             V: typing_extensions.TypeAlias = ValueType
 
-        class _LanguageEquivalentEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Type.MapType._LanguageEquivalent.ValueType], builtins.type):  # noqa: F821
+        class _LanguageEquivalentEnumTypeWrapper(
+            google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+                Type.MapType._LanguageEquivalent.ValueType
+            ],
+            builtins.type,
+        ):  # noqa: F821
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
             PROTOBUF_MAP: Type.MapType._LanguageEquivalent.ValueType  # 0
             """The same type used for representing protobuf map fields."""
             DICTIONARY: Type.MapType._LanguageEquivalent.ValueType  # 1
             """Language-specific dictionary or map type."""
 
-        class LanguageEquivalent(_LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper):
+        class LanguageEquivalent(
+            _LanguageEquivalent, metaclass=_LanguageEquivalentEnumTypeWrapper
+        ):
             """Possible language-specific equivalents to a map type."""
 
         PROTOBUF_MAP: Type.MapType.LanguageEquivalent.ValueType  # 0
@@ -1692,8 +2492,23 @@ class Type(google.protobuf.message.Message):
             value_type: global___Type | None = ...,
             language_equivalent: global___Type.MapType.LanguageEquivalent.ValueType = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["key_type", b"key_type", "value_type", b"value_type"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key_type", b"key_type", "language_equivalent", b"language_equivalent", "value_type", b"value_type"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "key_type", b"key_type", "value_type", b"value_type"
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "key_type",
+                b"key_type",
+                "language_equivalent",
+                b"language_equivalent",
+                "value_type",
+                b"value_type",
+            ],
+        ) -> None: ...
 
     SCALAR_TYPE_FIELD_NUMBER: builtins.int
     ENUM_TYPE_FIELD_NUMBER: builtins.int
@@ -1728,9 +2543,57 @@ class Type(google.protobuf.message.Message):
         repeated_type: global___Type.RepeatedType | None = ...,
         map_type: global___Type.MapType | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["bytes_type", b"bytes_type", "enum_type", b"enum_type", "map_type", b"map_type", "message_type", b"message_type", "repeated_type", b"repeated_type", "scalar_type", b"scalar_type", "type_kind", b"type_kind"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["bytes_type", b"bytes_type", "enum_type", b"enum_type", "map_type", b"map_type", "message_type", b"message_type", "repeated_type", b"repeated_type", "scalar_type", b"scalar_type", "type_kind", b"type_kind"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["type_kind", b"type_kind"]) -> typing_extensions.Literal["scalar_type", "enum_type", "bytes_type", "message_type", "repeated_type", "map_type"] | None: ...
+    def HasField(
+        self,
+        field_name: typing_extensions.Literal[
+            "bytes_type",
+            b"bytes_type",
+            "enum_type",
+            b"enum_type",
+            "map_type",
+            b"map_type",
+            "message_type",
+            b"message_type",
+            "repeated_type",
+            b"repeated_type",
+            "scalar_type",
+            b"scalar_type",
+            "type_kind",
+            b"type_kind",
+        ],
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "bytes_type",
+            b"bytes_type",
+            "enum_type",
+            b"enum_type",
+            "map_type",
+            b"map_type",
+            "message_type",
+            b"message_type",
+            "repeated_type",
+            b"repeated_type",
+            "scalar_type",
+            b"scalar_type",
+            "type_kind",
+            b"type_kind",
+        ],
+    ) -> None: ...
+    def WhichOneof(
+        self, oneof_group: typing_extensions.Literal["type_kind", b"type_kind"]
+    ) -> (
+        typing_extensions.Literal[
+            "scalar_type",
+            "enum_type",
+            "bytes_type",
+            "message_type",
+            "repeated_type",
+            "map_type",
+        ]
+        | None
+    ): ...
 
 global___Type = Type
 
@@ -1753,7 +2616,12 @@ class Expression(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _NullValueEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Expression._NullValue.ValueType], builtins.type):  # noqa: F821
+    class _NullValueEnumTypeWrapper(
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Expression._NullValue.ValueType
+        ],
+        builtins.type,
+    ):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         NULL_VALUE: Expression._NullValue.ValueType  # 0
         """Null value."""
@@ -1768,7 +2636,12 @@ class Expression(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _DefaultValueEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Expression._DefaultValue.ValueType], builtins.type):  # noqa: F821
+    class _DefaultValueEnumTypeWrapper(
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Expression._DefaultValue.ValueType
+        ],
+        builtins.type,
+    ):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         DEFAULT_VALUE: Expression._DefaultValue.ValueType  # 0
         """Default value."""
@@ -1795,7 +2668,11 @@ class Expression(google.protobuf.message.Message):
         name: builtins.str
         """The name of the variable or parameter name. Required."""
         @property
-        def path(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        def path(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            builtins.str
+        ]:
             """A path within name that refers to a nested value. Optional.
             Note that this path must be valid across all languages, so, the following
             rules apply.
@@ -1833,7 +2710,10 @@ class Expression(google.protobuf.message.Message):
             name: builtins.str = ...,
             path: collections.abc.Iterable[builtins.str] | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["name", b"name", "path", b"path"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal["name", b"name", "path", b"path"],
+        ) -> None: ...
 
     @typing_extensions.final
     class BytesValue(google.protobuf.message.Message):
@@ -1860,8 +2740,12 @@ class Expression(google.protobuf.message.Message):
                 *,
                 file_path: global___Expression | None = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["file_path", b"file_path"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["file_path", b"file_path"]) -> None: ...
+            def HasField(
+                self, field_name: typing_extensions.Literal["file_path", b"file_path"]
+            ) -> builtins.bool: ...
+            def ClearField(
+                self, field_name: typing_extensions.Literal["file_path", b"file_path"]
+            ) -> None: ...
 
         BASE64_STRING_FIELD_NUMBER: builtins.int
         FILE_STREAM_FIELD_NUMBER: builtins.int
@@ -1879,9 +2763,31 @@ class Expression(google.protobuf.message.Message):
             base64_string: global___Expression | None = ...,
             file_stream: global___Expression.BytesValue.FileStream | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["base64_string", b"base64_string", "file_stream", b"file_stream", "value", b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["base64_string", b"base64_string", "file_stream", b"file_stream", "value", b"value"]) -> None: ...
-        def WhichOneof(self, oneof_group: typing_extensions.Literal["value", b"value"]) -> typing_extensions.Literal["base64_string", "file_stream"] | None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "base64_string",
+                b"base64_string",
+                "file_stream",
+                b"file_stream",
+                "value",
+                b"value",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "base64_string",
+                b"base64_string",
+                "file_stream",
+                b"file_stream",
+                "value",
+                b"value",
+            ],
+        ) -> None: ...
+        def WhichOneof(
+            self, oneof_group: typing_extensions.Literal["value", b"value"]
+        ) -> typing_extensions.Literal["base64_string", "file_stream"] | None: ...
 
     @typing_extensions.final
     class ComplexValue(google.protobuf.message.Message):
@@ -1906,12 +2812,21 @@ class Expression(google.protobuf.message.Message):
                 key: builtins.str = ...,
                 value: global___Expression | None = ...,
             ) -> None: ...
-            def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
-            def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
+            def HasField(
+                self, field_name: typing_extensions.Literal["value", b"value"]
+            ) -> builtins.bool: ...
+            def ClearField(
+                self,
+                field_name: typing_extensions.Literal["key", b"key", "value", b"value"],
+            ) -> None: ...
 
         PROPERTIES_FIELD_NUMBER: builtins.int
         @property
-        def properties(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___Expression]:
+        def properties(
+            self,
+        ) -> google.protobuf.internal.containers.MessageMap[
+            builtins.str, global___Expression
+        ]:
             """This is a simple map from message property name to Expression.
             - All keys in the map should correspond to top level properties of the
               protobuf message.
@@ -1923,9 +2838,12 @@ class Expression(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            properties: collections.abc.Mapping[builtins.str, global___Expression] | None = ...,
+            properties: collections.abc.Mapping[builtins.str, global___Expression]
+            | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["properties", b"properties"]) -> None: ...
+        def ClearField(
+            self, field_name: typing_extensions.Literal["properties", b"properties"]
+        ) -> None: ...
 
     @typing_extensions.final
     class RepeatedValue(google.protobuf.message.Message):
@@ -1937,7 +2855,11 @@ class Expression(google.protobuf.message.Message):
 
         VALUES_FIELD_NUMBER: builtins.int
         @property
-        def values(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Expression]:
+        def values(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Expression
+        ]:
             """The values that should be used to initialize a language-specific
             collection, list, array or similar.
             - The values should be used in the same order as they appear in values,
@@ -1951,7 +2873,9 @@ class Expression(google.protobuf.message.Message):
             *,
             values: collections.abc.Iterable[global___Expression] | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["values", b"values"]) -> None: ...
+        def ClearField(
+            self, field_name: typing_extensions.Literal["values", b"values"]
+        ) -> None: ...
 
     @typing_extensions.final
     class MapValue(google.protobuf.message.Message):
@@ -1966,14 +2890,22 @@ class Expression(google.protobuf.message.Message):
         KEYS_FIELD_NUMBER: builtins.int
         VALUES_FIELD_NUMBER: builtins.int
         @property
-        def keys(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Expression]:
+        def keys(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Expression
+        ]:
             """The keys to use for initializing a language-specific map, dictionary or
             similar.
             - Each key Expression should resolve to a type that is assignable to
               the key type of the target map.
             """
         @property
-        def values(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Expression]:
+        def values(
+            self,
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Expression
+        ]:
             """The values to use for initializing a language-specific map, dictionary or
             similar.
             - Each value Expression should resolve to a type that is assignable to
@@ -1987,7 +2919,10 @@ class Expression(google.protobuf.message.Message):
             keys: collections.abc.Iterable[global___Expression] | None = ...,
             values: collections.abc.Iterable[global___Expression] | None = ...,
         ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["keys", b"keys", "values", b"values"]) -> None: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal["keys", b"keys", "values", b"values"],
+        ) -> None: ...
 
     @typing_extensions.final
     class ConditionalOperator(google.protobuf.message.Message):
@@ -2022,8 +2957,28 @@ class Expression(google.protobuf.message.Message):
             on_true: global___Expression | None = ...,
             on_false: global___Expression | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["condition", b"condition", "on_false", b"on_false", "on_true", b"on_true"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["condition", b"condition", "on_false", b"on_false", "on_true", b"on_true"]) -> None: ...
+        def HasField(
+            self,
+            field_name: typing_extensions.Literal[
+                "condition",
+                b"condition",
+                "on_false",
+                b"on_false",
+                "on_true",
+                b"on_true",
+            ],
+        ) -> builtins.bool: ...
+        def ClearField(
+            self,
+            field_name: typing_extensions.Literal[
+                "condition",
+                b"condition",
+                "on_false",
+                b"on_false",
+                "on_true",
+                b"on_true",
+            ],
+        ) -> None: ...
 
     NULL_VALUE_FIELD_NUMBER: builtins.int
     DEFAULT_VALUE_FIELD_NUMBER: builtins.int
@@ -2107,8 +3062,88 @@ class Expression(google.protobuf.message.Message):
         conditional_value: global___Expression.ConditionalOperator | None = ...,
         description: builtins.str = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["boolean_value", b"boolean_value", "bytes_value", b"bytes_value", "complex_value", b"complex_value", "conditional_value", b"conditional_value", "default_value", b"default_value", "enum_value", b"enum_value", "list_value", b"list_value", "map_value", b"map_value", "name_value", b"name_value", "null_value", b"null_value", "number_value", b"number_value", "string_value", b"string_value", "value", b"value"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["boolean_value", b"boolean_value", "bytes_value", b"bytes_value", "complex_value", b"complex_value", "conditional_value", b"conditional_value", "default_value", b"default_value", "description", b"description", "enum_value", b"enum_value", "list_value", b"list_value", "map_value", b"map_value", "name_value", b"name_value", "null_value", b"null_value", "number_value", b"number_value", "string_value", b"string_value", "value", b"value"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["value", b"value"]) -> typing_extensions.Literal["null_value", "default_value", "name_value", "number_value", "boolean_value", "string_value", "enum_value", "bytes_value", "complex_value", "list_value", "map_value", "conditional_value"] | None: ...
+    def HasField(
+        self,
+        field_name: typing_extensions.Literal[
+            "boolean_value",
+            b"boolean_value",
+            "bytes_value",
+            b"bytes_value",
+            "complex_value",
+            b"complex_value",
+            "conditional_value",
+            b"conditional_value",
+            "default_value",
+            b"default_value",
+            "enum_value",
+            b"enum_value",
+            "list_value",
+            b"list_value",
+            "map_value",
+            b"map_value",
+            "name_value",
+            b"name_value",
+            "null_value",
+            b"null_value",
+            "number_value",
+            b"number_value",
+            "string_value",
+            b"string_value",
+            "value",
+            b"value",
+        ],
+    ) -> builtins.bool: ...
+    def ClearField(
+        self,
+        field_name: typing_extensions.Literal[
+            "boolean_value",
+            b"boolean_value",
+            "bytes_value",
+            b"bytes_value",
+            "complex_value",
+            b"complex_value",
+            "conditional_value",
+            b"conditional_value",
+            "default_value",
+            b"default_value",
+            "description",
+            b"description",
+            "enum_value",
+            b"enum_value",
+            "list_value",
+            b"list_value",
+            "map_value",
+            b"map_value",
+            "name_value",
+            b"name_value",
+            "null_value",
+            b"null_value",
+            "number_value",
+            b"number_value",
+            "string_value",
+            b"string_value",
+            "value",
+            b"value",
+        ],
+    ) -> None: ...
+    def WhichOneof(
+        self, oneof_group: typing_extensions.Literal["value", b"value"]
+    ) -> (
+        typing_extensions.Literal[
+            "null_value",
+            "default_value",
+            "name_value",
+            "number_value",
+            "boolean_value",
+            "string_value",
+            "enum_value",
+            "bytes_value",
+            "complex_value",
+            "list_value",
+            "map_value",
+            "conditional_value",
+        ]
+        | None
+    ): ...
 
 global___Expression = Expression

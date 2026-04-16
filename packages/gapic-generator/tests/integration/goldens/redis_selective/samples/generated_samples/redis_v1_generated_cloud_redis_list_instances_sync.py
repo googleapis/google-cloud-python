@@ -50,4 +50,5 @@ def sample_list_instances():
     for response in page_result:
         print(response)
 
+
 # [END redis_v1_generated_CloudRedis_ListInstances_sync]

@@ -14,8 +14,7 @@
 
 import copy
 
-from gapic.schema import metadata
-from gapic.schema import wrappers
+from gapic.schema import metadata, wrappers
 
 
 def test_python_eq():

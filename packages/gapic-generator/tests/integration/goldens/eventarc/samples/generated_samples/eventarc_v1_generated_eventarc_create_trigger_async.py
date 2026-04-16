@@ -63,4 +63,5 @@ async def sample_create_trigger():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_CreateTrigger_async]
