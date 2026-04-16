@@ -32,7 +32,7 @@ class JSONDtype(pd.api.extensions.ExtensionDtype):
     name = "dbjson"
 
     @property
-    def na_value(self) -> pd.NA:  # type: ignore[valid-type]
+    def na_value(self) -> pd.NAType:
         """Default NA value to use for this type."""
         return pd.NA
 
