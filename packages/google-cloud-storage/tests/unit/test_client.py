@@ -384,9 +384,9 @@ class TestClient(unittest.TestCase):
         custom_endpoint = "storage-example.p.googleapis.com"
         credentials = _make_credentials(project=PROJECT)
         with mock.patch("os.environ", {}):
+        with mock.patch.dict("os.environ", {}, clear=True):
             client = self._make_one(
-                credentials=credentials,
-                client_options={"api_endpoint": custom_endpoint},
+                credentials=credentials, client_options={"api_endpoint": custom_endpoint}
             )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
