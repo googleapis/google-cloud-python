@@ -92,7 +92,7 @@ libraries:
       api_shortname_override: django-google-spanner
       issue_tracker_override: https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open
   - name: gapic-generator
-    version: 1.30.14
+    version: 1.31.0
     skip_generate: true
     python:
       library_type: CORE
@@ -218,7 +218,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-apps-chat
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/chat/v1
     keep:
@@ -388,7 +388,7 @@ libraries:
       metadata_name_override: advisorynotifications
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -431,7 +431,7 @@ libraries:
       metadata_name_override: apigateway
       default_version: v1
   - name: google-cloud-api-keys
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/api/apikeys/v2
     keep:
@@ -701,7 +701,7 @@ libraries:
       metadata_name_override: baremetalsolution
       default_version: v2
   - name: google-cloud-batch
-    version: 0.21.0
+    version: 0.22.0
     apis:
       - path: google/cloud/batch/v1
       - path: google/cloud/batch/v1alpha
@@ -992,7 +992,7 @@ libraries:
       metadata_name_override: bigquerylogging
       default_version: v1
   - name: google-cloud-bigquery-migration
-    version: 0.14.0
+    version: 0.15.0
     apis:
       - path: google/cloud/bigquery/migration/v2
       - path: google/cloud/bigquery/migration/v2alpha
@@ -1031,7 +1031,7 @@ libraries:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1154,7 +1154,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.36.0
+    version: 2.37.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -1649,7 +1649,7 @@ libraries:
       metadata_name_override: dataflow
       default_version: v1beta3
   - name: google-cloud-dataform
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
@@ -1836,7 +1836,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.18.0
+    version: 0.19.0
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -4188,7 +4188,7 @@ libraries:
       metadata_name_override: mapsplatformdatasets
       default_version: v1
   - name: google-maps-navconnect
-    version: 0.1.0
+    version: 0.2.0
     apis:
       - path: google/maps/navconnect/v1
     description_override: Navigation Connect API.
@@ -4685,7 +4685,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       skip_readme_copy: true
   - name: sqlalchemy-bigquery
-    version: 1.16.0
+    version: 1.17.0
     skip_generate: true
     python:
       library_type: INTEGRATION
@@ -4693,7 +4693,7 @@ libraries:
       api_id_override: bigquery.googleapis.com
       client_documentation_override: https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html
   - name: sqlalchemy-spanner
-    version: 1.17.3
+    version: 1.18.0
     skip_generate: true
     python:
       library_type: INTEGRATION

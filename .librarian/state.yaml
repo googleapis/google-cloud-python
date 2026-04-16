@@ -62,7 +62,7 @@ libraries:
       - packages/django-google-spanner/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.30.14
+    version: 1.31.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -229,7 +229,7 @@ libraries:
       - packages/google-apps-card/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/chat/v1
@@ -420,7 +420,7 @@ libraries:
       - packages/google-cloud-advisorynotifications/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/alloydb/v1beta
@@ -480,7 +480,7 @@ libraries:
       - packages/google-cloud-api-gateway/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-keys
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/api/apikeys/v2
@@ -800,7 +800,7 @@ libraries:
       - packages/google-cloud-bare-metal-solution/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-batch
-    version: 0.21.0
+    version: 0.22.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/batch/v1alpha
@@ -1083,7 +1083,7 @@ libraries:
       - packages/google-cloud-bigquery-logging/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-migration
-    version: 0.14.0
+    version: 0.15.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/bigquery/migration/v2alpha
@@ -1120,7 +1120,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.37.0
+    version: 2.38.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1165,7 +1165,7 @@ libraries:
       - packages/google-cloud-bigquery-storage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
-    version: 2.36.0
+    version: 2.37.0
     last_generated_commit: a6cbf809c4c165e618ee23a059442af90a80a0f5
     apis:
       - path: google/bigtable/admin/v2
@@ -1753,7 +1753,7 @@ libraries:
       - packages/google-cloud-dataflow-client/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataform
-    version: 0.10.0
+    version: 0.11.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/dataform/v1beta1
@@ -2017,7 +2017,7 @@ libraries:
       - packages/google-cloud-dialogflow-cx/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
-    version: 0.18.0
+    version: 0.19.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/discoveryengine/v1
@@ -4765,7 +4765,7 @@ libraries:
       - packages/google-maps-mapsplatformdatasets/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-maps-navconnect
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: dfcbe6807e8c0bb8d5abb2b5e875a2a03af8d874
     apis:
       - path: google/maps/navconnect/v1
@@ -5253,7 +5253,7 @@ libraries:
       - packages/proto-plus/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-bigquery
-    version: 1.16.0
+    version: 1.17.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -5265,7 +5265,7 @@ libraries:
       - packages/sqlalchemy-bigquery/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-spanner
-    version: 1.17.3
+    version: 1.18.0
     last_generated_commit: ""
     apis: []
     source_roots:
