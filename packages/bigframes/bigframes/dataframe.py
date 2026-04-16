@@ -2428,7 +2428,7 @@ class DataFrame:
         *,
         ascending: bool = ...,
         inplace: Literal[True] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
     ) -> None: ...
 
