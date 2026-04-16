@@ -2476,7 +2476,7 @@ class DataFrame:
         *,
         inplace: Literal[False] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str | None = None,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> DataFrame: ...
 
