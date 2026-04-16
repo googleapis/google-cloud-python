@@ -3282,7 +3282,6 @@ libraries:
       default_version: v2
   - name: google-cloud-runtimeconfig
     version: 0.36.1
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: Google Cloud Runtime Configurator
