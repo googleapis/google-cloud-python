@@ -24,12 +24,10 @@ The main concepts with this API are:
   (adding/deleting resource record sets) to a zone.
 """
 
-from google.cloud.dns.version import __version__
-from google.cloud.dns.zone import Changes
 from google.cloud.dns.client import Client
-from google.cloud.dns.zone import ManagedZone
 from google.cloud.dns.resource_record_set import ResourceRecordSet
-
+from google.cloud.dns.version import __version__
+from google.cloud.dns.zone import Changes, ManagedZone
 
 SCOPE = Client.SCOPE
 
