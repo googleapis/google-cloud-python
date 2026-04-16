@@ -1821,8 +1821,7 @@ class Series:
         ascending=...,
         kind: str | None = ...,
         na_position=...,
-    ) -> Series:
-        ...
+    ) -> Series: ...
 
     @typing.overload
     def sort_index(
@@ -1833,8 +1832,7 @@ class Series:
         ascending=...,
         kind: str | None = ...,
         na_position=...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @validations.requires_index
     def sort_index(

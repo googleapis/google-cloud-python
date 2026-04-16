@@ -2413,13 +2413,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(get_column_right[other.value_columns[index]])
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2472,15 +2472,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(
-                get_column_right[other.transpose().value_columns[index]]
-            )
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.transpose().value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2507,13 +2505,11 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(self.value_columns[index])
-            if index != -1
-            else ex.const(None)
+        left_input_lookup = lambda index: (
+            ex.deref(self.value_columns[index]) if index != -1 else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.const(other.iloc[index]) if index != -1 else ex.const(None)
+        righ_input_lookup = lambda index: (
+            ex.const(other.iloc[index]) if index != -1 else ex.const(None)
         )
 
         left_inputs = [left_input_lookup(i) for i in lcol_indexer]

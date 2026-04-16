@@ -2452,7 +2452,9 @@ class DataFrame:
                 else order.descending_over(column, na_last)
                 for column in index_columns
             ]
-            is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
+            is_stable = (
+                kind or constants.DEFAULT_SORT_KIND
+            ) in constants.STABLE_SORT_KINDS
             block = self._block.order_by(ordering, stable=is_stable)
         else:  # axis=1
             _, indexer = self.columns.sort_values(
@@ -2773,11 +2775,11 @@ class DataFrame:
     ):
         if utils.is_dict_like(value):
             return self.apply(
-                lambda x: x.replace(
-                    to_replace=to_replace, value=value[x.name], regex=regex
+                lambda x: (
+                    x.replace(to_replace=to_replace, value=value[x.name], regex=regex)
+                    if (x.name in value)
+                    else x
                 )
-                if (x.name in value)
-                else x
             )
         return self.apply(
             lambda x: x.replace(to_replace=to_replace, value=value, regex=regex)
