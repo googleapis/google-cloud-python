@@ -24,7 +24,7 @@ release:
     - docs/README.rst
 default:
   output: packages
-  tag_format: '{name}: v{version}'
+  tag_format: '{name}-v{version}'
   python:
     common_gapic_paths:
       - samples/generated_samples
@@ -55,7 +55,6 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: A unified Python API in BigQuery
@@ -329,14 +328,12 @@ libraries:
       skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
-    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth httplib2
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
   - name: google-auth-oauthlib
     version: 1.3.1
-    skip_generate: true
     python:
       library_type: AUTH
       name_pretty_override: Google Auth OAuthlib
@@ -365,7 +362,6 @@ libraries:
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
-    skip_generate: true
     python:
       proto_only_apis:
         - google/identity/accesscontextmanager/v1
@@ -821,7 +817,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/biglake/hive/v1beta:
@@ -1737,6 +1732,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1975,6 +1971,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2219,7 +2216,6 @@ libraries:
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/__init__.py
       - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/rbacrolebindingactuation.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/gkehub/v1:
@@ -2678,41 +2674,8 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-      - google/monitoring
-      - google/monitoring/dashboard
-      - google/monitoring/dashboard/__init__.py
-      - google/monitoring/dashboard/py.typed
-      - google/monitoring/dashboard_v1
-      - google/monitoring/dashboard_v1/__init__.py
-      - google/monitoring/dashboard_v1/gapic_version.py
-      - google/monitoring/dashboard_v1/py.typed
-      - google/monitoring/dashboard_v1/services
-      - google/monitoring/dashboard_v1/services/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service
-      - google/monitoring/dashboard_v1/services/dashboards_service/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/async_client.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/client.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/pagers.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/base.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/grpc.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/grpc_asyncio.py
-      - google/monitoring/dashboard_v1/types
-      - google/monitoring/dashboard_v1/types/__init__.py
-      - google/monitoring/dashboard_v1/types/common.py
-      - google/monitoring/dashboard_v1/types/dashboard.py
-      - google/monitoring/dashboard_v1/types/dashboards_service.py
-      - google/monitoring/dashboard_v1/types/layouts.py
-      - google/monitoring/dashboard_v1/types/metrics.py
-      - google/monitoring/dashboard_v1/types/scorecard.py
-      - google/monitoring/dashboard_v1/types/text.py
-      - google/monitoring/dashboard_v1/types/widget.py
-      - google/monitoring/dashboard_v1/types/xychart.py
-      - tests/unit/gapic/dashboard_v1
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/monitoring/dashboard/v1:
@@ -2740,6 +2703,7 @@ libraries:
       default_version: v1
   - name: google-cloud-ndb
     version: 2.4.2
+    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
@@ -2956,7 +2920,6 @@ libraries:
       - google/cloud/oslogin_v1/common/types
       - google/cloud/oslogin_v1/common/types/__init__.py
       - google/cloud/oslogin_v1/common/types/common.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/oslogin/v1:
@@ -3048,7 +3011,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/policytroubleshooter/iam/v3:
@@ -3114,7 +3076,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3282,7 +3243,6 @@ libraries:
       default_version: v2
   - name: google-cloud-runtimeconfig
     version: 0.36.1
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: Google Cloud Runtime Configurator
@@ -3541,7 +3501,6 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3572,7 +3531,6 @@ libraries:
       - tests/system/__init__.py
       - tests/system/smoke_test.py
       - tests/unit/test_helpers.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       name_pretty_override: Cloud Speech
@@ -3587,6 +3545,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
@@ -3800,7 +3759,6 @@ libraries:
       - tests/unit/v2
       - tests/unit/v2/test__http.py
       - tests/unit/v2/test_client.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3923,7 +3881,6 @@ libraries:
       - tests/system/smoke_test.py
       - tests/unit/test_decorators.py
       - tests/unit/test_helpers.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       product_documentation_override: https://cloud.google.com/vision/docs/
@@ -4616,7 +4573,6 @@ libraries:
       - path: google/cloud/location
       - path: google/logging/type
       - path: google/rpc/context
-    skip_generate: true
     python:
       library_type: CORE
       proto_only_apis:
@@ -4655,7 +4611,6 @@ libraries:
     version: 0.14.4
     apis:
       - path: google/iam/v1
-    skip_generate: true
     python:
       proto_only_apis:
         - google/iam/v1

@@ -18,6 +18,7 @@
 Spanner PostgreSql dialect.
 For more information, see the README.rst under /spanner.
 """
+
 from google.cloud import spanner, spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 

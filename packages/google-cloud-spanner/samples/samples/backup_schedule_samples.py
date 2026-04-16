@@ -18,7 +18,6 @@ Cloud Spanner.
 """
 
 import argparse
-
 from enum import Enum
 
 
@@ -29,13 +28,14 @@ def create_full_backup_schedule(
     schedule_id: str,
 ) -> None:
     from datetime import timedelta
+
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import (
-        backup_schedule as backup_schedule_pb,
-    )
     from google.cloud.spanner_admin_database_v1.types import (
         CreateBackupEncryptionConfig,
         FullBackupSpec,
+    )
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
     )
 
     client = spanner.Client()
@@ -74,13 +74,14 @@ def create_incremental_backup_schedule(
     schedule_id: str,
 ) -> None:
     from datetime import timedelta
+
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import (
-        backup_schedule as backup_schedule_pb,
-    )
     from google.cloud.spanner_admin_database_v1.types import (
         CreateBackupEncryptionConfig,
         IncrementalBackupSpec,
+    )
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
     )
 
     client = spanner.Client()
@@ -174,12 +175,13 @@ def update_backup_schedule(
     schedule_id: str,
 ) -> None:
     from datetime import timedelta
+
     from google.cloud import spanner
     from google.cloud.spanner_admin_database_v1.types import (
-        backup_schedule as backup_schedule_pb,
+        CreateBackupEncryptionConfig,
     )
     from google.cloud.spanner_admin_database_v1.types import (
-        CreateBackupEncryptionConfig,
+        backup_schedule as backup_schedule_pb,
     )
     from google.protobuf.field_mask_pb2 import FieldMask
 

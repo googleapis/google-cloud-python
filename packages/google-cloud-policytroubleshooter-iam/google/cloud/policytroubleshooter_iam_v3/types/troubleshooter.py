@@ -18,12 +18,12 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.cloud.iam_v2 import Policy  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
+from google.cloud.iam_v2 import Policy  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.policytroubleshooter.iam.v3",
