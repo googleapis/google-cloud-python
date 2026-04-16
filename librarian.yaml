@@ -2678,41 +2678,8 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-      - google/monitoring
-      - google/monitoring/dashboard
-      - google/monitoring/dashboard/__init__.py
-      - google/monitoring/dashboard/py.typed
-      - google/monitoring/dashboard_v1
-      - google/monitoring/dashboard_v1/__init__.py
-      - google/monitoring/dashboard_v1/gapic_version.py
-      - google/monitoring/dashboard_v1/py.typed
-      - google/monitoring/dashboard_v1/services
-      - google/monitoring/dashboard_v1/services/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service
-      - google/monitoring/dashboard_v1/services/dashboards_service/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/async_client.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/client.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/pagers.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/__init__.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/base.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/grpc.py
-      - google/monitoring/dashboard_v1/services/dashboards_service/transports/grpc_asyncio.py
-      - google/monitoring/dashboard_v1/types
-      - google/monitoring/dashboard_v1/types/__init__.py
-      - google/monitoring/dashboard_v1/types/common.py
-      - google/monitoring/dashboard_v1/types/dashboard.py
-      - google/monitoring/dashboard_v1/types/dashboards_service.py
-      - google/monitoring/dashboard_v1/types/layouts.py
-      - google/monitoring/dashboard_v1/types/metrics.py
-      - google/monitoring/dashboard_v1/types/scorecard.py
-      - google/monitoring/dashboard_v1/types/text.py
-      - google/monitoring/dashboard_v1/types/widget.py
-      - google/monitoring/dashboard_v1/types/xychart.py
-      - tests/unit/gapic/dashboard_v1
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/monitoring/dashboard/v1:
