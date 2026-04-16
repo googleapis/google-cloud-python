@@ -1887,7 +1887,6 @@ libraries:
   - name: google-cloud-dns
     version: 0.36.1
     description_override: provides methods that you can use to manage DNS for your applications.
-    skip_generate: true
     python:
       library_type: REST
       name_pretty_override: Cloud DNS
