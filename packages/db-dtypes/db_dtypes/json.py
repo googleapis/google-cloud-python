@@ -32,12 +32,12 @@ class JSONDtype(pd.api.extensions.ExtensionDtype):
     name = "dbjson"
 
     @property
-    def na_value(self) -> pd.NA:
+    def na_value(self) -> pd.NA:  # type: ignore[valid-type]
         """Default NA value to use for this type."""
         return pd.NA
 
     @property
-    def type(self) -> type[str]:
+    def type(self) -> type[str]:  # type: ignore[override]
         """
         Return the scalar type for the array elements.
         The standard JSON data types can be one of `dict`, `list`, `str`, `int`, `float`,

@@ -58,7 +58,7 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         elif copy:
             values = values.copy()
 
-        super().__init__(values=values, dtype=values.dtype)
+        super().__init__(values=values, dtype=values.dtype)  # type: ignore[call-arg]
 
     @classmethod
     def __ndarray(cls, scalars):
@@ -164,8 +164,8 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
             values=self._ndarray, axis=axis, mask=self.isna(), skipna=skipna
         )
         if axis is None or self.ndim == 1:
-            return self._box_func(result)
-        return self._from_backing_data(result)
+            return self._box_func(result)  # type: ignore[attr-defined]
+        return self._from_backing_data(result)  # type: ignore[attr-defined]
 
     def max(self, *, axis: Optional[int] = None, skipna: bool = True, **kwargs):
         pandas_backports.numpy_validate_max((), kwargs)
@@ -173,8 +173,8 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
             values=self._ndarray, axis=axis, mask=self.isna(), skipna=skipna
         )
         if axis is None or self.ndim == 1:
-            return self._box_func(result)
-        return self._from_backing_data(result)
+            return self._box_func(result)  # type: ignore[attr-defined]
+        return self._from_backing_data(result)  # type: ignore[attr-defined]
 
     def median(
         self,
@@ -191,5 +191,5 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         )
         result = pandas_backports.nanmedian(self._ndarray, axis=axis, skipna=skipna)
         if axis is None or self.ndim == 1:
-            return self._box_func(result)
-        return self._from_backing_data(result)
+            return self._box_func(result)  # type: ignore[attr-defined]
+        return self._from_backing_data(result)  # type: ignore[attr-defined]
