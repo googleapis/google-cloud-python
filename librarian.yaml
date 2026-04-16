@@ -364,7 +364,6 @@ libraries:
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
-    skip_generate: true
     python:
       proto_only_apis:
         - google/identity/accesscontextmanager/v1
