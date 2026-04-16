@@ -1732,6 +1732,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1970,6 +1971,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2701,6 +2703,7 @@ libraries:
       default_version: v1
   - name: google-cloud-ndb
     version: 2.4.2
+    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
@@ -3542,6 +3545,7 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
+    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
