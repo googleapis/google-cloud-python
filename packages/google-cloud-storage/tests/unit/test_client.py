@@ -369,7 +369,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_bypass_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        with mock.patch("os.environ", {}):
+        with mock.patch.dict("os.environ", {}, clear=True):
             client = self._make_one(
                 client_options={"api_endpoint": custom_endpoint},
                 use_auth_w_custom_endpoint=False,
