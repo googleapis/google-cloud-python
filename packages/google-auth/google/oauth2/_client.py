@@ -43,6 +43,8 @@ _URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded"
 _JSON_CONTENT_TYPE = "application/json"
 _JWT_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 _REFRESH_GRANT_TYPE = "refresh_token"
+_BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT = 3
+
 
 
 def _handle_error_response(response_data, retryable_error):
@@ -517,7 +519,7 @@ def refresh_grant(
     return _handle_refresh_grant_response(response_data, refresh_token)
 
 
-def _lookup_regional_access_boundary(request, url, headers=None):
+def _lookup_regional_access_boundary(request, url, headers=None, blocking=False):
     """Implements the global lookup of a credential Regional Access Boundary.
     For the lookup, we send a request to the global lookup endpoint and then
     parse the response. Service account credentials, workload identity
@@ -527,6 +529,7 @@ def _lookup_regional_access_boundary(request, url, headers=None):
             HTTP requests.
         url (str): The Regional Access Boundary lookup url.
         headers (Optional[Mapping[str, str]]): The headers for the request.
+        blocking (bool): Whether the lookup should be blocking.
     Returns:
         Optional[Mapping[str,list|str]]: A dictionary containing
             "locations" as a list of allowed locations as strings and
@@ -541,7 +544,7 @@ def _lookup_regional_access_boundary(request, url, headers=None):
     """
 
     response_data = _lookup_regional_access_boundary_request(
-        request, url, headers=headers
+        request, url, headers=headers, blocking=blocking
     )
     if response_data is None:
         # Error was already logged by _lookup_regional_access_boundary_request
@@ -557,7 +560,7 @@ def _lookup_regional_access_boundary(request, url, headers=None):
 
 
 def _lookup_regional_access_boundary_request(
-    request, url, can_retry=True, headers=None
+    request, url, can_retry=True, headers=None, blocking=False
 ):
     """Makes a request to the Regional Access Boundary lookup endpoint.
 
@@ -567,6 +570,7 @@ def _lookup_regional_access_boundary_request(
         url (str): The Regional Access Boundary lookup url.
         can_retry (bool): Enable or disable request retry behavior. Defaults to true.
         headers (Optional[Mapping[str, str]]): The headers for the request.
+        blocking (bool): Whether the lookup should be blocking.
 
     Returns:
         Optional[Mapping[str, str]]: The JSON-decoded response data on success, or None on failure.
@@ -576,7 +580,7 @@ def _lookup_regional_access_boundary_request(
         response_data,
         retryable_error,
     ) = _lookup_regional_access_boundary_request_no_throw(
-        request, url, can_retry, headers
+        request, url, can_retry, headers, blocking
     )
     if not response_status_ok:
         _LOGGER.warning(
@@ -589,7 +593,7 @@ def _lookup_regional_access_boundary_request(
 
 
 def _lookup_regional_access_boundary_request_no_throw(
-    request, url, can_retry=True, headers=None
+    request, url, can_retry=True, headers=None, blocking=False
 ):
     """Makes a request to the Regional Access Boundary lookup endpoint. This
         function doesn't throw on response errors.
@@ -600,6 +604,7 @@ def _lookup_regional_access_boundary_request_no_throw(
         url (str): The Regional Access Boundary lookup url.
         can_retry (bool): Enable or disable request retry behavior. Defaults to true.
         headers (Optional[Mapping[str, str]]): The headers for the request.
+        blocking (bool): Whether the lookup should be blocking.
 
     Returns:
         Tuple(bool, Mapping[str, str], Optional[bool]): A boolean indicating
@@ -611,9 +616,14 @@ def _lookup_regional_access_boundary_request_no_throw(
     response_data = {}
     retryable_error = False
 
-    retries = _exponential_backoff.ExponentialBackoff(total_attempts=6)
+    timeout = (
+        _BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if blocking else None
+    )
+    total_attempts = 1 if blocking else 6
+    retries = _exponential_backoff.ExponentialBackoff(total_attempts=total_attempts)
+
     for _ in retries:
-        response = request(method="GET", url=url, headers=headers)
+        response = request(method="GET", url=url, headers=headers, timeout=timeout)
         response_body = (
             response.data.decode("utf-8")
             if hasattr(response.data, "decode")

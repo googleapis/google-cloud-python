@@ -361,6 +361,27 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         new_manager._data = self._rab_manager._data
         target._rab_manager = new_manager
 
+    def with_regional_access_boundary(self, seed):
+        """Returns a copy of these credentials with the the regional_access_boundary
+        set to the provided seed.
+
+        Returns:
+            google.auth.credentials.Credentials: A new credentials instance.
+        """
+        creds = self._make_copy()
+        creds._rab_manager.set_initial_regional_access_boundary(seed)
+        return creds
+
+    def with_blocking_regional_access_boundary_lookup(self):
+        """Returns a copy of these credentials with the blocking lookup mode enabled.
+
+        Returns:
+            google.auth.credentials.Credentials: A new credentials instance.
+        """
+        creds = self._make_copy()
+        creds._rab_manager.use_blocking_regional_access_boundary_lookup()
+        return creds
+
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """
         Starts a background thread to refresh the Regional Access Boundary if needed.
@@ -421,10 +442,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         """Refreshes the access token and triggers the Regional Access Boundary
         lookup if necessary.
         """
-        super(CredentialsWithRegionalAccessBoundary, self).before_request(
-            request, method, url, headers
-        )
+        if self._use_non_blocking_refresh:
+            self._non_blocking_refresh(request)
+        else:
+            self._blocking_refresh(request)
+
         self._maybe_start_regional_access_boundary_refresh(request, url)
+
+        metrics.add_metric_header(headers, self._metric_header_for_usage())
+        self.apply(headers)
 
     def refresh(self, request):
         """Refreshes the access token.
@@ -435,13 +461,16 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         self._perform_refresh_token(request)
 
     def _lookup_regional_access_boundary(
-        self, request: "google.auth.transport.Request"  # noqa: F821
+        self,
+        request: "google.auth.transport.Request",  # noqa: F821
+        blocking: bool = False,
     ) -> "Optional[Dict[str, str]]":
         """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
 
         Args:
             request (google.auth.transport.Request): The object used to make
                 HTTP requests.
+            blocking (bool): Whether the lookup should be blocking.
 
         Returns:
             Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
@@ -456,7 +485,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         headers: Dict[str, str] = {}
         self._apply(headers)
         self._rab_manager.apply_headers(headers)
-        return _client._lookup_regional_access_boundary(request, url, headers=headers)
+        return _client._lookup_regional_access_boundary(
+            request, url, headers=headers, blocking=blocking
+        )
 
     @abc.abstractmethod
     def _build_regional_access_boundary_lookup_url(

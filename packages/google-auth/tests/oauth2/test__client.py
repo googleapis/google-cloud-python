@@ -654,8 +654,9 @@ def test_lookup_regional_access_boundary():
     assert response["encodedLocations"] == "0x80080000000000"
     assert response["locations"] == ["us-central1", "us-east1"]
 
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
-
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 def test_lookup_regional_access_boundary_error():
     mock_response = mock.create_autospec(transport.Response, instance=True)
@@ -672,8 +673,7 @@ def test_lookup_regional_access_boundary_error():
     )
     assert result is None
 
-    mock_request.assert_called_with(method="GET", url=url, headers=headers)
-
+    mock_request.assert_called_with(method="GET", url=url, headers=headers, timeout=None)
 
 @pytest.mark.parametrize(
     "status_code",
@@ -697,8 +697,9 @@ def test_lookup_regional_access_boundary_non_retryable_error(status_code):
     )
     assert result is None
     # Non-retryable errors should only be called once.
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
-
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error():
     retryable_error = mock.create_autospec(transport.Response, instance=True)
@@ -777,5 +778,5 @@ def test_lookup_regional_access_boundary_with_headers():
     )
 
     mock_request.assert_called_once_with(
-        method="GET", url="http://example.com", headers=headers
+        method="GET", url="http://example.com", headers=headers, timeout=None
     )

@@ -97,6 +97,7 @@ class _RegionalAccessBoundaryManager(object):
         )
         self.refresh_manager = _RegionalAccessBoundaryRefreshManager()
         self._update_lock = threading.Lock()
+        self._use_blocking_regional_access_boundary_lookup = False
 
     def __getstate__(self):
         """Pickle helper that serializes the _update_lock attribute."""
@@ -108,6 +109,36 @@ class _RegionalAccessBoundaryManager(object):
         """Pickle helper that deserializes the _update_lock attribute."""
         self.__dict__.update(state)
         self._update_lock = threading.Lock()
+
+    def __eq__(self, other):
+        if not isinstance(other, _RegionalAccessBoundaryManager):
+            return False
+        return (
+            self._data == other._data
+            and self.refresh_manager == other.refresh_manager
+            and self._use_blocking_regional_access_boundary_lookup
+            == other._use_blocking_regional_access_boundary_lookup
+        )
+
+    def use_blocking_regional_access_boundary_lookup(self):
+        """Enables blocking regional access boundary lookup to true"""
+        self._use_blocking_regional_access_boundary_lookup = True
+
+    def set_initial_regional_access_boundary(self, seed):
+        """Manually sets the regional access boundary to the client provided seed
+
+        Args:
+            seed (Mapping[str, str]): The regional access boundary to use for the
+                credential. This should be a map with, at a minimum, an "encodedLocations"
+                key that maps to a hex string and an "expiry" key which maps to a
+                datetime.datetime.
+        """
+        self._data = _RegionalAccessBoundaryData(
+            encoded_locations=seed.get("encodedLocations", None),
+            expiry=seed.get("expiry", None),
+            cooldown_expiry=None,
+            cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+        )
 
     def apply_headers(self, headers):
         """Applies the Regional Access Boundary header to the provided dictionary.
@@ -151,7 +182,92 @@ class _RegionalAccessBoundaryManager(object):
             return
 
         # If all checks pass, start the background refresh.
-        self.refresh_manager.start_refresh(credentials, request, self)
+        if self._use_blocking_regional_access_boundary_lookup:
+            self.start_blocking_refresh(credentials, request)
+        else:
+            self.refresh_manager.start_refresh(credentials, request, self)
+
+    def start_blocking_refresh(self, credentials, request):
+        """Initiates a blocking lookup of the Regional Access Boundary.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.transport.Request): The object used to make HTTP requests.
+        """
+        try:
+            # A blocking parameter is passed here to indicate this is a blocking lookup,
+            # which in turn will do two things: 1) set a timeout to 3s instead of the
+            # default 120s and 2) ensure we do not retry at all
+            blocking = True
+            regional_access_boundary_info = (
+                credentials._lookup_regional_access_boundary(request, blocking)
+            )
+        except Exception as e:
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.warning(
+                    "Blocking Regional Access Boundary lookup raised an exception: %s",
+                    e,
+                    exc_info=True,
+                )
+            regional_access_boundary_info = None
+
+        self.process_regional_access_boundary_info(regional_access_boundary_info)
+
+    def process_regional_access_boundary_info(self, regional_access_boundary_info):
+        """Processes the regional access boundary info and updates the state.
+
+        Args:
+            regional_access_boundary_info (Optional[Mapping[str, str]]): The regional access
+                boundary info to process.
+        """
+        with self._update_lock:
+            # Capture the current state before calculating updates.
+            current_data = self._data
+
+            if regional_access_boundary_info:
+                # On success, update the boundary and its expiry, and clear any cooldown.
+                encoded_locations = regional_access_boundary_info.get("encodedLocations")
+                updated_data = _RegionalAccessBoundaryData(
+                    encoded_locations=encoded_locations,
+                    expiry=_helpers.utcnow() + DEFAULT_REGIONAL_ACCESS_BOUNDARY_TTL,
+                    cooldown_expiry=None,
+                    cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+                )
+                if _helpers.is_logging_enabled(_LOGGER):
+                    _LOGGER.debug("Regional Access Boundary lookup successful.")
+            else:
+                # On failure, calculate cooldown and update state.
+                if _helpers.is_logging_enabled(_LOGGER):
+                    _LOGGER.warning(
+                        "Regional Access Boundary lookup failed. Entering cooldown."
+                    )
+
+                next_cooldown_expiry = _helpers.utcnow() + current_data.cooldown_duration
+                next_cooldown_duration = min(
+                    current_data.cooldown_duration * 2,
+                    MAX_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+                )
+
+                # If the refresh failed, we keep reusing the existing data unless
+                # it has reached its hard expiration time.
+                if current_data.expiry and _helpers.utcnow() > current_data.expiry:
+                    next_encoded_locations = None
+                    next_expiry = None
+                else:
+                    next_encoded_locations = current_data.encoded_locations
+                    next_expiry = current_data.expiry
+
+                updated_data = _RegionalAccessBoundaryData(
+                    encoded_locations=next_encoded_locations,
+                    expiry=next_expiry,
+                    cooldown_expiry=next_cooldown_expiry,
+                    cooldown_duration=next_cooldown_duration,
+                )
+
+            # Perform the atomic swap of the state object.
+            self._data = updated_data
+
+
 
 
 class _RegionalAccessBoundaryRefreshThread(threading.Thread):
@@ -190,58 +306,9 @@ class _RegionalAccessBoundaryRefreshThread(threading.Thread):
                 )
             regional_access_boundary_info = None
 
-        with self._rab_manager._update_lock:
-            # Capture the current state before calculating updates.
-            current_data = self._rab_manager._data
-
-            if regional_access_boundary_info:
-                # On success, update the boundary and its expiry, and clear any cooldown.
-                encoded_locations = regional_access_boundary_info.get(
-                    "encodedLocations"
-                )
-                updated_data = _RegionalAccessBoundaryData(
-                    encoded_locations=encoded_locations,
-                    expiry=_helpers.utcnow() + DEFAULT_REGIONAL_ACCESS_BOUNDARY_TTL,
-                    cooldown_expiry=None,
-                    cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
-                )
-                if _helpers.is_logging_enabled(_LOGGER):
-                    _LOGGER.debug(
-                        "Asynchronous Regional Access Boundary lookup successful."
-                    )
-            else:
-                # On failure, calculate cooldown and update state.
-                if _helpers.is_logging_enabled(_LOGGER):
-                    _LOGGER.warning(
-                        "Asynchronous Regional Access Boundary lookup failed. Entering cooldown."
-                    )
-
-                next_cooldown_expiry = (
-                    _helpers.utcnow() + current_data.cooldown_duration
-                )
-                next_cooldown_duration = min(
-                    current_data.cooldown_duration * 2,
-                    MAX_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
-                )
-
-                # If the refresh failed, we keep reusing the existing data unless
-                # it has reached its hard expiration time.
-                if current_data.expiry and _helpers.utcnow() > current_data.expiry:
-                    next_encoded_locations = None
-                    next_expiry = None
-                else:
-                    next_encoded_locations = current_data.encoded_locations
-                    next_expiry = current_data.expiry
-
-                updated_data = _RegionalAccessBoundaryData(
-                    encoded_locations=next_encoded_locations,
-                    expiry=next_expiry,
-                    cooldown_expiry=next_cooldown_expiry,
-                    cooldown_duration=next_cooldown_duration,
-                )
-
-            # Perform the atomic swap of the state object.
-            self._rab_manager._data = updated_data
+        self._rab_manager.process_regional_access_boundary_info(
+            regional_access_boundary_info
+        )
 
 
 class _RegionalAccessBoundaryRefreshManager(object):
@@ -263,6 +330,12 @@ class _RegionalAccessBoundaryRefreshManager(object):
         self.__dict__.update(state)
         self._lock = threading.Lock()
         self._worker = None
+
+    def __eq__(self, other):
+        if not isinstance(other, _RegionalAccessBoundaryRefreshManager):
+            return False
+        # Note: We only compare public/pickled properties.
+        return self._worker == other._worker
 
     def start_refresh(self, credentials, request, rab_manager):
         """
