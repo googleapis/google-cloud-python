@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 description: Preserve original index.rst
+# Note that we may want to remove the stale directory entirely, at which point
+# this file can be deleted too.
+url: https://github.com/googleapis/google-cloud-python/issues/11858
 replacements:
   - paths: [
       packages/google-cloud-monitoring-dashboards/docs/index.rst
