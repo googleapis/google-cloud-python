@@ -2735,7 +2735,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/networkconnectivity/v1:
