@@ -644,7 +644,9 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                         while len(subvalue) > len(value):
                             # Need to make some more subentities
                             if structprop._model_class is None:
-                                raise TypeError("structprop._model_class cannot be None")
+                                raise TypeError(
+                                    "structprop._model_class cannot be None"
+                                )
                             expando_kind = structprop._model_class._get_kind()
                             expando_key = key_module.Key(expando_kind, None)
                             value.append(new_entity(expando_key._key))
