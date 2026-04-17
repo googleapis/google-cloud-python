@@ -72,6 +72,7 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
 
         dbapi_conn.staleness = None
         dbapi_conn.read_only = False
+        dbapi_conn.timeout = None
 
 
 # register a method to get a single value of a JSON object
@@ -216,6 +217,10 @@ class SpannerExecutionContext(DefaultExecutionContext):
         request_tag = self.execution_options.get("request_tag")
         if request_tag:
             self.cursor.request_tag = request_tag
+
+        timeout = self.execution_options.get("timeout")
+        if timeout is not None:
+            self._dbapi_connection.connection.timeout = timeout
 
         ignore_transaction_warnings = self.execution_options.get(
             "ignore_transaction_warnings"
