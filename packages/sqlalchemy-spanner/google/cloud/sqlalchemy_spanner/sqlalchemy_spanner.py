@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import base64
+import warnings
 
 import re
 
@@ -107,6 +108,21 @@ class SpannerPickleType(TypeDecorator):
         return process
 
 
+class TOKENLIST(types.TypeEngine):
+    """Spanner TOKENLIST type for full-text search indexes.
+
+    TOKENLIST columns store tokenized text produced by functions like
+    TOKENIZE_FULLTEXT() and back SEARCH INDEX structures. They are always
+    generated, always HIDDEN, and cannot be read or written directly by
+    applications.
+
+    This type exists so that schema introspection can roundtrip correctly
+    (reflect → DDL generation) without losing type information.
+    """
+
+    __visit_name__ = "TOKENLIST"
+
+
 # Spanner-to-SQLAlchemy types map
 _type_map = {
     "BOOL": types.Boolean,
@@ -122,6 +138,7 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
+    "TOKENLIST": TOKENLIST,
 }
 
 
@@ -140,6 +157,7 @@ _type_map_inv = {
     types.TIMESTAMP: "TIMESTAMP",
     types.Integer: "INT64",
     types.NullType: "INT64",
+    TOKENLIST: "TOKENLIST",
 }
 
 _compound_keywords = {
@@ -819,6 +837,9 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     def visit_JSON(self, type_, **kw):
         return "JSON"
 
+    def visit_TOKENLIST(self, type_, **kw):
+        return "TOKENLIST"
+
 
 class SpannerDialect(DefaultDialect):
     """Cloud Spanner dialect.
@@ -1226,7 +1247,14 @@ class SpannerDialect(DefaultDialect):
             inner_type = self._designate_type(inner_type_str)
             return _type_map["ARRAY"](inner_type)
         else:
-            return _type_map[str_repr]
+            try:
+                return _type_map[str_repr]
+            except KeyError:
+                warnings.warn(
+                    "Did not recognize Spanner type '%s', "
+                    "mapping it to NullType" % str_repr
+                )
+                return types.NullType()
 
     @engine_to_connection
     def get_multi_indexes(
