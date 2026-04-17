@@ -109,6 +109,46 @@ MAX_INLINE_DF_BYTES = 5000
 logger = logging.getLogger(__name__)
 
 
+class _ExecutionHistory:
+    def __init__(self, jobs: list[dict]):
+        self._df = pandas.DataFrame(jobs)
+
+    def to_dataframe(self) -> pandas.DataFrame:
+        """Returns the execution history as a pandas DataFrame."""
+        return self._df
+
+    def _repr_html_(self) -> str | None:
+        import bigframes.formatting_helpers as formatter
+
+        if self._df.empty:
+            return "<div>No executions found.</div>"
+
+        cols = ["job_type", "job_id", "status", "total_bytes_processed", "job_url"]
+
+        # Filter columns to only those that exist in the dataframe
+        available_cols = [c for c in cols if c in self._df.columns]
+
+        def format_url(url):
+            return f'<a target="_blank" href="{url}">Open Job</a>' if url else ""
+
+        try:
+            df_display = self._df[available_cols].copy()
+            if "total_bytes_processed" in df_display.columns:
+                df_display["total_bytes_processed"] = df_display[
+                    "total_bytes_processed"
+                ].apply(formatter.get_formatted_bytes)
+            if "job_url" in df_display.columns:
+                df_display["job_url"] = df_display["job_url"].apply(format_url)
+
+            # Rename job_id to query_id to match user expectations
+            if "job_id" in df_display.columns:
+                df_display = df_display.rename(columns={"job_id": "query_id"})
+
+            return df_display.to_html(escape=False, index=False)
+        except Exception:
+            return self._df.to_html()
+
+
 @log_adapter.class_logger
 class Session(
     third_party_pandas_gbq.GBQIOMixin,
@@ -233,6 +273,7 @@ class Session(
         )
 
         self._metrics = metrics.ExecutionMetrics()
+        self._publisher.subscribe(self._metrics.on_event)
         self._function_session = bff_session.FunctionSession()
         self._anon_dataset_manager = anonymous_dataset.AnonymousDatasetManager(
             self._clients_provider.bqclient,
@@ -370,6 +411,13 @@ class Session(
     def slot_millis_sum(self):
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
+
+    def execution_history(self) -> _ExecutionHistory:
+        """Returns the history of executions initiated by BigFrames in the current session.
+
+        Use `.to_dataframe()` on the result to get a pandas DataFrame.
+        """
+        return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
 
     @property
     def _allows_ambiguity(self) -> bool:

@@ -124,6 +124,14 @@ def with_default_session(func_: Callable[..., _T], *args, **kwargs) -> _T:
     return func_(get_global_session(), *args, **kwargs)
 
 
+def execution_history() -> "bigframes.session._ExecutionHistory":
+    import pandas  # noqa: F401
+
+    import bigframes.session
+
+    return with_default_session(bigframes.session.Session.execution_history)
+
+
 class _GlobalSessionContext:
     """
     Context manager for testing that sets global session.

@@ -39,7 +39,7 @@ def test_polar_execution_sorted(session_w_polars, scalars_pandas_df_index):
     ]
     bf_result = bf_df.sort_index(ascending=False)[["int64_too", "bool_col"]].to_pandas()
 
-    assert session_w_polars._metrics.execution_count == execution_count_before
+    assert session_w_polars._metrics.execution_count == execution_count_before + 1
     assert_frame_equal(bf_result, pd_result)
 
 
@@ -56,7 +56,7 @@ def test_polar_execution_sorted_filtered(session_w_polars, scalars_pandas_df_ind
         .to_pandas()
     )
 
-    assert session_w_polars._metrics.execution_count == execution_count_before
+    assert session_w_polars._metrics.execution_count == execution_count_before + 1
     assert_frame_equal(bf_result, pd_result)
 
 
@@ -70,5 +70,28 @@ def test_polar_execution_unsupported_sql_fallback(
     bf_result = bf_df.to_pandas()
 
     # geo fns not supported by polar engine yet, so falls back to bq execution
-    assert session_w_polars._metrics.execution_count == (execution_count_before + 1)
+    assert session_w_polars._metrics.execution_count == (execution_count_before + 2)
     assert math.isclose(bf_result.geo_area.sum(), 70.52332050, rel_tol=0.00001)
+
+
+def test_polars_execution_history(session_w_polars):
+    import pandas as pd
+
+    # Create a small local DataFrame
+    pdf = pd.DataFrame({"col_a": [1, 2, 3], "col_b": ["x", "y", "z"]})
+
+    # Read simple local data
+    df = session_w_polars.read_pandas(pdf)
+
+    # Trigger execution
+    _ = df.to_pandas()
+
+    # Verify the execution history captured the local job
+    history = session_w_polars.execution_history().to_dataframe()
+
+    # Verify we have at least one job and logged as polars
+    assert len(history) > 0
+    last_job = history.iloc[-1]
+
+    assert last_job["job_type"] == "polars"
+    assert last_job["status"] == "DONE"
