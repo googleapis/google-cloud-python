@@ -66,7 +66,7 @@ class Entity:
     def __post_init__(self, page_offset: Optional[int]) -> None:
         if page_offset is None:
             page_offset = 0
-            
+
         self.type_ = self.documentai_object.type_
 
         if self.documentai_object.mention_text:

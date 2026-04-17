@@ -20,13 +20,14 @@ import dataclasses
 from functools import cached_property
 from typing import Iterable, List, Optional, Type, TypeVar
 
-T = TypeVar("T", bound="_BasePageElement")
 
 import pandas as pd
 
 from google.cloud import documentai
 from google.cloud.documentai_toolbox.constants import ElementWithLayout
 from google.cloud.documentai_toolbox.utilities import docai_utilities
+
+T = TypeVar("T", bound="_BasePageElement")
 
 
 @dataclasses.dataclass
@@ -182,9 +183,7 @@ class _BasePageElement(ABC):
         """
         return self.documentai_object.layout.text_anchor.text_segments[0]
 
-    def _get_children_of_element(
-        self, potential_children: List[T]
-    ) -> List[T]:
+    def _get_children_of_element(self, potential_children: List[T]) -> List[T]:
         """
         Filters potential child elements to identify only those fully contained within this element.
 

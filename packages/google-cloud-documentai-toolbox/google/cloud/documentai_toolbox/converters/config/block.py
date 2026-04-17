@@ -74,45 +74,19 @@ class Block:
     """
     type_: Any = dataclasses.field(init=True, repr=False)
     text: Any = dataclasses.field(init=True, repr=False)
-    bounding_box: Any = dataclasses.field(
-        init=True, repr=False, default=None
-    )
-    block_references: Any = dataclasses.field(
-        init=True, repr=False, default=None
-    )
-    block_id: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    confidence: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    page_number: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    page_width: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    page_height: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_width: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_height: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_type: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_unit: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_x: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_y: Any = dataclasses.field(
-        init=False, repr=False, default=None
-    )
+    bounding_box: Any = dataclasses.field(init=True, repr=False, default=None)
+    block_references: Any = dataclasses.field(init=True, repr=False, default=None)
+    block_id: Any = dataclasses.field(init=False, repr=False, default=None)
+    confidence: Any = dataclasses.field(init=False, repr=False, default=None)
+    page_number: Any = dataclasses.field(init=False, repr=False, default=None)
+    page_width: Any = dataclasses.field(init=False, repr=False, default=None)
+    page_height: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_width: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_height: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_type: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_unit: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_x: Any = dataclasses.field(init=False, repr=False, default=None)
+    bounding_y: Any = dataclasses.field(init=False, repr=False, default=None)
     docproto_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
@@ -203,7 +177,9 @@ class Block:
             b = Block(
                 type_=block_type,
                 text=block_text,
-                bounding_box=_get_target_object(entity, normalized_vertices) if normalized_vertices is not None else None,
+                bounding_box=_get_target_object(entity, normalized_vertices)
+                if normalized_vertices is not None
+                else None,
             )
 
             if id_:
