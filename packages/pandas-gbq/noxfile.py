@@ -18,18 +18,17 @@
 
 from __future__ import absolute_import
 
+from functools import wraps
 import os
 import pathlib
 import re
 import shutil
 import time
 import warnings
-from functools import wraps
 
 import nox
 
 BLACK_VERSION = "black==23.7.0"
-RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.10.1"
 LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
@@ -113,7 +112,6 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
-    "format",
     "docs",
 ]
 
@@ -153,29 +151,19 @@ def blacken(session):
 @_calculate_duration
 def format(session):
     """
-    Run ruff to sort imports and format code.
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
     """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
+        "isort",
+        "--fss",
         *LINT_PATHS,
     )
-
-    # 3. Run Ruff to format code
     session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
+        "black",
         *LINT_PATHS,
     )
 
