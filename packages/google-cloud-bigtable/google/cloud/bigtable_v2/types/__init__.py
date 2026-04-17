@@ -49,7 +49,6 @@ from .data import (
     Mutation,
     PartialResultSet,
     ProtoFormat,
-    ProtoRows,
     ProtoRowsBatch,
     ProtoSchema,
     ReadModifyWriteRule,
@@ -65,20 +64,11 @@ from .data import (
     Value,
     ValueRange,
 )
-from .feature_flags import (
-    FeatureFlags,
-)
-from .peer_info import (
-    PeerInfo,
-)
 from .request_stats import (
     FullReadStatsView,
     ReadIterationStats,
     RequestLatencyStats,
     RequestStats,
-)
-from .response_params import (
-    ResponseParams,
 )
 from .types import (
     Type,
@@ -118,7 +108,6 @@ __all__ = (
     "Mutation",
     "PartialResultSet",
     "ProtoFormat",
-    "ProtoRows",
     "ProtoRowsBatch",
     "ProtoSchema",
     "ReadModifyWriteRule",
@@ -133,12 +122,9 @@ __all__ = (
     "TimestampRange",
     "Value",
     "ValueRange",
-    "FeatureFlags",
-    "PeerInfo",
     "FullReadStatsView",
     "ReadIterationStats",
     "RequestLatencyStats",
     "RequestStats",
-    "ResponseParams",
     "Type",
 )

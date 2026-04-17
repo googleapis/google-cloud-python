@@ -60,6 +60,10 @@ class Instance(proto.Message):
             instance.
         type_ (google.cloud.bigtable_admin_v2.types.Instance.Type):
             The type of the instance. Defaults to ``PRODUCTION``.
+        edition (google.cloud.bigtable_admin_v2.types.Instance.Edition):
+            Optional. The edition of the instance. See
+            [Edition][google.bigtable.admin.v2.Instance.Edition] for
+            details.
         labels (MutableMapping[str, str]):
             Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
@@ -146,6 +150,38 @@ class Instance(proto.Message):
         PRODUCTION = 1
         DEVELOPMENT = 2
 
+    class Edition(proto.Enum):
+        r"""Possible editions of an instance.
+
+        An edition is a specific tier of Cloud Bigtable. Each edition is
+        tailored to different customer needs. Higher tiers offer more
+        features and better performance.
+
+        Values:
+            EDITION_UNSPECIFIED (0):
+                The edition is unspecified. This is treated as
+                ``ENTERPRISE``.
+            ENTERPRISE (1):
+                The Enterprise edition. This is the default
+                offering that is designed to meet the needs of
+                most enterprise workloads.
+            ENTERPRISE_PLUS (2):
+                The Enterprise Plus edition. This is a
+                premium tier that is designed for demanding,
+                multi-tenant workloads requiring the highest
+                levels of performance, scale, and global
+                availability.
+
+                The nodes in the Enterprise Plus tier come at a
+                higher cost than the Enterprise tier. Any
+                Enterprise Plus features must be disabled before
+                downgrading to Enterprise.
+        """
+
+        EDITION_UNSPECIFIED = 0
+        ENTERPRISE = 1
+        ENTERPRISE_PLUS = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -163,6 +199,11 @@ class Instance(proto.Message):
         proto.ENUM,
         number=4,
         enum=Type,
+    )
+    edition: Edition = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=Edition,
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,

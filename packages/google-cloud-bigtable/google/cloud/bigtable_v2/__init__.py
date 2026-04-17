@@ -66,7 +66,6 @@ from .types.data import (
     Mutation,
     PartialResultSet,
     ProtoFormat,
-    ProtoRows,
     ProtoRowsBatch,
     ProtoSchema,
     ReadModifyWriteRule,
@@ -82,15 +81,12 @@ from .types.data import (
     Value,
     ValueRange,
 )
-from .types.feature_flags import FeatureFlags
-from .types.peer_info import PeerInfo
 from .types.request_stats import (
     FullReadStatsView,
     ReadIterationStats,
     RequestLatencyStats,
     RequestStats,
 )
-from .types.response_params import ResponseParams
 from .types.types import Type
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -200,7 +196,6 @@ __all__ = (
     "ExecuteQueryRequest",
     "ExecuteQueryResponse",
     "Family",
-    "FeatureFlags",
     "FullReadStatsView",
     "GenerateInitialChangeStreamPartitionsRequest",
     "GenerateInitialChangeStreamPartitionsResponse",
@@ -211,13 +206,11 @@ __all__ = (
     "MutateRowsResponse",
     "Mutation",
     "PartialResultSet",
-    "PeerInfo",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
     "PrepareQueryRequest",
     "PrepareQueryResponse",
     "ProtoFormat",
-    "ProtoRows",
     "ProtoRowsBatch",
     "ProtoSchema",
     "RateLimitInfo",
@@ -231,7 +224,6 @@ __all__ = (
     "ReadRowsResponse",
     "RequestLatencyStats",
     "RequestStats",
-    "ResponseParams",
     "ResultSetMetadata",
     "Row",
     "RowFilter",

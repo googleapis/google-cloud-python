@@ -1166,7 +1166,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
     version: 2.36.0
-    last_generated_commit: a6cbf809c4c165e618ee23a059442af90a80a0f5
+    last_generated_commit: 1a00cecd9a90ac056247d5b522e94af5347adc1d
     apis:
       - path: google/bigtable/admin/v2
         service_config: bigtableadmin_v2.yaml

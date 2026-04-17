@@ -47,7 +47,6 @@ __protobuf__ = proto.module(
         "ColumnMetadata",
         "ProtoSchema",
         "ResultSetMetadata",
-        "ProtoRows",
         "ProtoRowsBatch",
         "PartialResultSet",
         "Idempotency",
@@ -1439,28 +1438,6 @@ class ResultSetMetadata(proto.Message):
         number=1,
         oneof="schema",
         message="ProtoSchema",
-    )
-
-
-class ProtoRows(proto.Message):
-    r"""Rows represented in proto format.
-
-    This should be constructed by concatenating the ``batch_data`` from
-    each of the relevant ``ProtoRowsBatch`` messages and parsing the
-    result as a ``ProtoRows`` message.
-
-    Attributes:
-        values (MutableSequence[google.cloud.bigtable_v2.types.Value]):
-            A proto rows message consists of a list of values. Every N
-            complete values defines a row, where N is equal to the
-            number of entries in the ``metadata.proto_schema.columns``
-            value received in the first response.
-    """
-
-    values: MutableSequence["Value"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Value",
     )
 
 
