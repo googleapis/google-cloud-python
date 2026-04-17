@@ -17,9 +17,11 @@
 import dataclasses
 import json
 from types import SimpleNamespace
-from typing import Any, List, Optional, Type, cast
+from typing import Any, List, Optional, Type, Union, cast
 
 from google.cloud import documentai
+
+ConfigOrData = Union[SimpleNamespace, str, int, float, None]
 
 
 def _get_target_object(json_data: Any, target_object: str) -> Any:
@@ -72,21 +74,21 @@ class Block:
         page_number:
             Optional.
     """
-    type_: Any = dataclasses.field(init=True, repr=False)
-    text: Any = dataclasses.field(init=True, repr=False)
-    bounding_box: Any = dataclasses.field(init=True, repr=False, default=None)
-    block_references: Any = dataclasses.field(init=True, repr=False, default=None)
-    block_id: Any = dataclasses.field(init=False, repr=False, default=None)
-    confidence: Any = dataclasses.field(init=False, repr=False, default=None)
-    page_number: Any = dataclasses.field(init=False, repr=False, default=None)
-    page_width: Any = dataclasses.field(init=False, repr=False, default=None)
-    page_height: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_width: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_height: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_type: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_unit: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_x: Any = dataclasses.field(init=False, repr=False, default=None)
-    bounding_y: Any = dataclasses.field(init=False, repr=False, default=None)
+    type_: ConfigOrData = dataclasses.field(init=True, repr=False)
+    text: ConfigOrData = dataclasses.field(init=True, repr=False)
+    bounding_box: ConfigOrData = dataclasses.field(init=True, repr=False, default=None)
+    block_references: ConfigOrData = dataclasses.field(init=True, repr=False, default=None)
+    block_id: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    confidence: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    page_number: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    page_width: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    page_height: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_width: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_height: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_type: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_unit: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_x: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_y: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     docproto_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
