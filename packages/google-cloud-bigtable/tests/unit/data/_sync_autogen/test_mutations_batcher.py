@@ -17,10 +17,12 @@
 
 import asyncio
 import time
+
 import google.api_core.exceptions as core_exceptions
 import google.api_core.retry
 import mock
 import pytest
+
 from google.cloud.bigtable.data import TABLE_DEFAULT
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
@@ -769,6 +771,7 @@ class TestMutationsBatcher:
 
     def _mock_gapic_return(self, num=5):
         from google.rpc import status_pb2
+
         from google.cloud.bigtable_v2.types import MutateRowsResponse
 
         def gen(num):
@@ -984,8 +987,7 @@ class TestMutationsBatcher:
           - limit: the _exception_list_limit representing the max size of either list
           - in_e: size of list of exceptions to send to _add_exceptions
           - start_e: a tuple of ints representing the initial sizes of _oldest_exceptions and _newest_exceptions
-          - end_e: a tuple of ints representing the expected sizes of _oldest_exceptions and _newest_exceptions
-        """
+          - end_e: a tuple of ints representing the expected sizes of _oldest_exceptions and _newest_exceptions"""
         from collections import deque
 
         input_list = [RuntimeError(f"mock {i}") for i in range(in_e)]
