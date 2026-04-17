@@ -20,7 +20,6 @@ import dataclasses
 from functools import cached_property
 from typing import Iterable, List, Optional, Type, TypeVar
 
-
 import pandas as pd
 
 from google.cloud import documentai

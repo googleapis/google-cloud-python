@@ -17,9 +17,10 @@
 import dataclasses
 import json
 from types import SimpleNamespace
-from typing import Any, List, Optional, Type, Union, cast
+from typing import Any, List, Optional, Type, Union
 
 from google.cloud import documentai
+
 
 def _get_target_object(json_data: Any, target_object: str) -> Any:
     r"""Returns SimpleNamespace of target_object.
@@ -73,15 +74,21 @@ class Block:
     """
     type_: Any = dataclasses.field(init=True, repr=False)
     text: str = dataclasses.field(init=True, repr=False)
-    bounding_box: Optional[Union[SimpleNamespace, List[Any]]] = dataclasses.field(init=True, repr=False, default=None)
-    block_references: Any = dataclasses.field(
+    bounding_box: Optional[Union[SimpleNamespace, List[Any]]] = dataclasses.field(
         init=True, repr=False, default=None
     )
+    block_references: Any = dataclasses.field(init=True, repr=False, default=None)
     block_id: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
-    confidence: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    confidence: Optional[float] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
     page_number: Optional[int] = dataclasses.field(init=False, repr=False, default=None)
-    page_width: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
-    page_height: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    page_width: Optional[float] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    page_height: Optional[float] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
     bounding_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
@@ -94,8 +101,12 @@ class Block:
     bounding_unit: Optional[str] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_x: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
-    bounding_y: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    bounding_x: Optional[float] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    bounding_y: Optional[float] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
     docproto_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )

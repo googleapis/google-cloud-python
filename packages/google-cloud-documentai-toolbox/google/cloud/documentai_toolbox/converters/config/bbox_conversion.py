@@ -245,7 +245,9 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
             multiplier=y_multiplier,
         )
         if block.bounding_width is None or block.bounding_height is None:
-            raise ValueError("bounding_width and bounding_height must be set for Type 2")
+            raise ValueError(
+                "bounding_width and bounding_height must be set for Type 2"
+            )
         x_max = x_min + block.bounding_width
         y_max = y_min + block.bounding_height
         normalized_vertices.extend(
