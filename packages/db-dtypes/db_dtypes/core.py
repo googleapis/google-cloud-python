@@ -57,7 +57,7 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
     def _datetime(cls, value: Any) -> Any:
         raise NotImplementedError
 
-    def __init__(self, values, dtype=None, copy: bool = False):
+def __init__(self, values, dtype=None, copy: bool = False):
         if not (
             isinstance(values, numpy.ndarray) and values.dtype == numpy.dtype("<M8[ns]")
         ):
@@ -65,7 +65,12 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         elif copy:
             values = values.copy()
 
-        super().__init__(values=values, dtype=values.dtype)  # type: ignore[call-arg]
+        # 1. Assign the internal attributes required by NDArrayBackedExtensionArray
+        self._ndarray = values
+        self._dtype = values.dtype
+
+        # 2. Call super() without arguments to initialize PandasObject/ExtensionArray
+        super().__init__()
 
     @classmethod
     def __ndarray(cls, scalars):
