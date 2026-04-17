@@ -27,6 +27,10 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import crypt
 from google.auth import exceptions
+from collections.abc import Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, Scoped, Signing
+from google.auth.crypt.base import Signer
+from google.auth.transport import Request
 
 # pytype: disable=import-error
 try:
@@ -44,7 +48,7 @@ class Signer(crypt.Signer):
     """
 
     @property
-    def key_id(self):
+    def key_id(self) -> str:
         """Optional[str]: The key ID used to identify this private key.
 
         .. warning::
@@ -54,13 +58,13 @@ class Signer(crypt.Signer):
         return None
 
     @_helpers.copy_docstring(crypt.Signer)
-    def sign(self, message):
+    def sign(self, message: str | bytes) -> bytes:
         message = _helpers.to_bytes(message)
         _, signature = app_identity.sign_blob(message)
         return signature
 
 
-def get_project_id():
+def get_project_id() -> str:
     """Gets the project ID for the current App Engine application.
 
     Returns:
@@ -88,11 +92,11 @@ class Credentials(
 
     def __init__(
         self,
-        scopes=None,
-        default_scopes=None,
-        service_account_id=None,
-        quota_project_id=None,
-    ):
+        scopes: Sequence[str] | None=None,
+        default_scopes: Sequence[str] | None=None,
+        service_account_id: str | None=None,
+        quota_project_id: str | None=None,
+    ) -> None:
         """
         Args:
             scopes (Sequence[str]): Scopes to request from the App Identity
@@ -123,7 +127,7 @@ class Credentials(
         self._quota_project_id = quota_project_id
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         # pylint: disable=unused-argument
         token, ttl = app_identity.get_access_token(scopes, self._service_account_id)
@@ -132,14 +136,14 @@ class Credentials(
         self.token, self.expiry = token, expiry
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         """The service account email."""
         if self._service_account_id is None:
             self._service_account_id = app_identity.get_service_account_name()
         return self._service_account_id
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """Checks if the credentials requires scopes.
 
         Returns:
@@ -148,7 +152,7 @@ class Credentials(
         return not self._scopes and not self._default_scopes
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Credentials":
         return self.__class__(
             scopes=scopes,
             default_scopes=default_scopes,
@@ -157,7 +161,7 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         return self.__class__(
             scopes=self._scopes,
             service_account_id=self._service_account_id,
@@ -165,15 +169,15 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(credentials.Signing)
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         return self._signer.sign(message)
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self.service_account_email
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer(self):
+    def signer(self) -> Signer:
         return self._signer

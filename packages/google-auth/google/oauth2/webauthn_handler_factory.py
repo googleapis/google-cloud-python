@@ -6,7 +6,7 @@ from google.oauth2.webauthn_handler import PluginHandler, WebAuthnHandler
 class WebauthnHandlerFactory:
     handlers: List[WebAuthnHandler]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.handlers = [PluginHandler()]
 
     def get_handler(self) -> Optional[WebAuthnHandler]:

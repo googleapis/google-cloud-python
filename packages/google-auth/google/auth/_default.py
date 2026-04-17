@@ -22,11 +22,13 @@ import io
 import json
 import logging
 import os
-from typing import Optional, Sequence, TYPE_CHECKING
+from typing import Any, Optional, Sequence, TYPE_CHECKING
 import warnings
 
 from google.auth import environment_vars
 from google.auth import exceptions
+import collections.abc
+from google.auth.api_key import Credentials as _ApiKeyCredentials
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials.Credentials  # type: ignore
@@ -128,8 +130,8 @@ def _warn_about_generic_load_method(method_name):  # pragma: NO COVER
 
 
 def load_credentials_from_file(
-    filename, scopes=None, default_scopes=None, quota_project_id=None, request=None
-):
+    filename: str, scopes: collections.abc.Sequence[str] | None=None, default_scopes: collections.abc.Sequence[str] | None=None, quota_project_id: str | None=None, request: Request | None=None
+) -> tuple[Credentials, str | None]:
     """Loads Google credentials from a file.
 
     The credentials file must be a service account key, stored authorized
@@ -193,8 +195,8 @@ def load_credentials_from_file(
 
 
 def load_credentials_from_dict(
-    info, scopes=None, default_scopes=None, quota_project_id=None, request=None
-):
+    info: collections.abc.Mapping[str, Any], scopes: collections.abc.Sequence[str] | None=None, default_scopes: collections.abc.Sequence[str] | None=None, quota_project_id: str | None=None, request: Request | None=None
+) -> tuple[Credentials, str | None]:
     """Loads Google credentials from a dict.
 
     The credentials file must be a service account key, stored authorized
@@ -568,7 +570,7 @@ def _get_gdch_service_account_credentials(filename, info):
     return credentials, info.get("project")
 
 
-def get_api_key_credentials(key):
+def get_api_key_credentials(key: str) -> _ApiKeyCredentials:
     """Return credentials with the given API key."""
     from google.auth import api_key
 

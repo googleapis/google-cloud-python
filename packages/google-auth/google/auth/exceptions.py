@@ -18,13 +18,13 @@
 class GoogleAuthError(Exception):
     """Base class for all google.auth errors."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(GoogleAuthError, self).__init__(*args)
         retryable = kwargs.get("retryable", False)
         self._retryable = retryable
 
     @property
-    def retryable(self):
+    def retryable(self) -> bool:
         return self._retryable
 
 
@@ -54,7 +54,7 @@ class ClientCertError(GoogleAuthError):
     """Used to indicate that client certificate is missing or invalid."""
 
     @property
-    def retryable(self):
+    def retryable(self) -> bool:
         return False
 
 
@@ -66,7 +66,7 @@ class OAuthError(GoogleAuthError):
 class ReauthFailError(RefreshError):
     """An exception for when reauth failed."""
 
-    def __init__(self, message=None, **kwargs):
+    def __init__(self, message: str | None=None, **kwargs) -> None:
         super(ReauthFailError, self).__init__(
             "Reauthentication failed. {0}".format(message), **kwargs
         )

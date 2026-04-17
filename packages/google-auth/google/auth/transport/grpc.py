@@ -21,6 +21,7 @@ import logging
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
+from typing import Any
 
 try:
     import grpc  # type: ignore
@@ -49,7 +50,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             account credentials.
     """
 
-    def __init__(self, credentials, request, default_host=None):
+    def __init__(self, credentials: Any, request: Any, default_host: str | None=None) -> None:
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
         # because this class is the same name as the superclass.
@@ -82,7 +83,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
         return list(headers.items())
 
-    def __call__(self, context, callback):
+    def __call__(self, context: Any, callback: Any) -> None:
         """Passes authorization metadata into the given callback.
 
         Args:
@@ -94,13 +95,13 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
 
 def secure_authorized_channel(
-    credentials,
-    request,
-    target,
-    ssl_credentials=None,
-    client_cert_callback=None,
+    credentials: Any,
+    request: Any,
+    target: str,
+    ssl_credentials: Any=None,
+    client_cert_callback: Any=None,
     **kwargs
-):
+) -> grpc.Channel:
     """Creates a secure authorized gRPC channel.
 
     This creates a channel with SSL and :class:`AuthMetadataPlugin`. This
@@ -290,7 +291,7 @@ class SslCredentials:
     See https://cloud.google.com/endpoint-verification/docs/overview.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         use_client_cert = _mtls_helper.check_use_client_cert()
         if not use_client_cert:
             self._is_mtls = False
@@ -332,6 +333,6 @@ class SslCredentials:
         return self._ssl_credentials
 
     @property
-    def is_mtls(self):
+    def is_mtls(self) -> bool:
         """Indicates if the created SSL channel credentials is mutual TLS."""
         return self._is_mtls

@@ -36,6 +36,10 @@ from google.auth import _helpers
 from google.auth import exceptions
 from google.oauth2 import _reauth_async as reauth
 from google.oauth2 import credentials as oauth2_credentials
+from google.auth.transport import Request as _Request, Request as _Request
+from collections.abc import Mapping
+from datetime import datetime
+from google.oauth2.credentials import Credentials, UserAccessTokenCredentials
 
 
 class Credentials(oauth2_credentials.Credentials):
@@ -48,7 +52,7 @@ class Credentials(oauth2_credentials.Credentials):
     """
 
     @_helpers.copy_docstring(credentials.Credentials)
-    async def refresh(self, request):
+    async def refresh(self, request: _Request) -> None:
         if (
             self._refresh_token is None
             or self._token_uri is None
@@ -97,7 +101,7 @@ class Credentials(oauth2_credentials.Credentials):
                 )
 
     @_helpers.copy_docstring(credentials.Credentials)
-    async def before_request(self, request, method, url, headers):
+    async def before_request(self, request: _Request, method: str, url: str, headers: Mapping[str, str]) -> None:
         if not self.valid:
             await self.refresh(request)
         self.apply(headers)

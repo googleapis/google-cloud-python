@@ -19,6 +19,9 @@ import abc
 import inspect
 
 from google.auth import credentials
+from google.auth.transport import Request as _Request, Request as _Request
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import AnonymousCredentials, Credentials, CredentialsWithQuotaProject, ReadOnlyScoped, Scoped, Signing
 
 
 class Credentials(credentials.Credentials, metaclass=abc.ABCMeta):
@@ -41,7 +44,7 @@ class Credentials(credentials.Credentials, metaclass=abc.ABCMeta):
     with modifications such as :meth:`ScopedCredentials.with_scopes`.
     """
 
-    async def before_request(self, request, method, url, headers):
+    async def before_request(self, request: _Request, method: str, url: str, headers: Mapping[str, str]) -> None:
         """Performs credential-specific before request logic.
 
         Refreshes the credentials if necessary, then calls :meth:`apply` to
@@ -141,7 +144,7 @@ class Scoped(credentials.Scoped):
     """
 
 
-def with_scopes_if_required(credentials, scopes):
+def with_scopes_if_required(credentials: Credentials, scopes: Sequence[str]) -> Credentials:
     """Creates a copy of the credentials with scopes if scoping is required.
 
     This helper function is useful when you do not know (or care to know) the

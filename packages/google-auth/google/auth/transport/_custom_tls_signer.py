@@ -26,6 +26,7 @@ import sys
 import cffi  # type: ignore
 
 from google.auth import exceptions
+from typing import Any
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ _LOGGER = logging.getLogger(__name__)
 # the callback computes the signature, and write the signature and its length
 # into `sig` and `sig_len`.
 # If the signing is successful, the callback returns 1, otherwise it returns 0.
-SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
+SIGN_CALLBACK_CTYPE: Any = ctypes.CFUNCTYPE(
     ctypes.c_int,  # return type
     ctypes.POINTER(ctypes.c_ubyte),  # sig
     ctypes.POINTER(ctypes.c_size_t),  # sig_len
@@ -58,7 +59,7 @@ def _cast_ssl_ctx_to_void_p_stdlib(context):
 
 
 # Load offload library and set up the function types.
-def load_offload_lib(offload_lib_path):
+def load_offload_lib(offload_lib_path: str):
     _LOGGER.debug("loading offload library from %s", offload_lib_path)
 
     # winmode parameter is only available for python 3.8+.
@@ -82,7 +83,7 @@ def load_offload_lib(offload_lib_path):
 
 # Load signer library and set up the function types.
 # See: https://github.com/googleapis/enterprise-certificate-proxy/blob/main/cshared/main.go
-def load_signer_lib(signer_lib_path):
+def load_signer_lib(signer_lib_path: str):
     _LOGGER.debug("loading signer library from %s", signer_lib_path)
 
     # winmode parameter is only available for python 3.8+.
@@ -114,7 +115,7 @@ def load_signer_lib(signer_lib_path):
     return lib
 
 
-def load_provider_lib(provider_lib_path):
+def load_provider_lib(provider_lib_path: str):
     _LOGGER.debug("loading provider library from %s", provider_lib_path)
 
     # winmode parameter is only available for python 3.8+.
@@ -142,7 +143,7 @@ def _compute_sha256_digest(to_be_signed, to_be_signed_len):
 
 # Create the signing callback. The actual signing work is done by the
 # `SignForPython` method from the signer lib.
-def get_sign_callback(signer_lib, config_file_path):
+def get_sign_callback(signer_lib: Any, config_file_path: str):
     def sign_callback(sig, sig_len, tbs, tbs_len):
         _LOGGER.debug("calling sign callback...")
 
@@ -180,7 +181,7 @@ def get_sign_callback(signer_lib, config_file_path):
 # the signer lib. The method is called twice, the first time is to compute the
 # cert length, then we create a buffer to hold the cert, and call it again to
 # fill the buffer.
-def get_cert(signer_lib, config_file_path):
+def get_cert(signer_lib: Any, config_file_path: str) -> bytes:
     # First call to calculate the cert length
     cert_len = signer_lib.GetCertPemForPython(
         config_file_path.encode(),  # configFilePath
@@ -201,7 +202,7 @@ def get_cert(signer_lib, config_file_path):
 
 
 class CustomTlsSigner(object):
-    def __init__(self, enterprise_cert_file_path):
+    def __init__(self, enterprise_cert_file_path: str) -> None:
         """
         This class loads the offload and signer library, and calls APIs from
         these libraries to obtain the cert and a signing callback, and attach
@@ -224,7 +225,7 @@ class CustomTlsSigner(object):
         self._sign_callback = None
         self._provider_lib = None
 
-    def load_libraries(self):
+    def load_libraries(self) -> None:
         with open(self._enterprise_cert_file_path, "r") as f:
             enterprise_cert_json = json.load(f)
             libs = enterprise_cert_json.get("libs", {})
@@ -248,7 +249,7 @@ class CustomTlsSigner(object):
 
         raise exceptions.MutualTLSChannelError("enterprise cert file is invalid")
 
-    def set_up_custom_key(self):
+    def set_up_custom_key(self) -> None:
         # We need to keep a reference of the cert and sign callback so it won't
         # be garbage collected, otherwise it will crash when used by signer lib.
         self._cert = get_cert(self._signer_lib, self._enterprise_cert_file_path)
@@ -256,12 +257,12 @@ class CustomTlsSigner(object):
             self._signer_lib, self._enterprise_cert_file_path
         )
 
-    def should_use_provider(self):
+    def should_use_provider(self) -> bool:
         if self._provider_lib:
             return True
         return False
 
-    def attach_to_ssl_context(self, ctx):
+    def attach_to_ssl_context(self, ctx: Any) -> None:
         if self.should_use_provider():
             if not self._provider_lib.ECP_attach_to_ctx(
                 _cast_ssl_ctx_to_void_p_stdlib(ctx),

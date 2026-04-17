@@ -23,12 +23,16 @@ from google.auth import credentials
 from google.auth import exceptions
 from google.auth import jwt
 from google.oauth2 import _client
+from google.auth.crypt import Signer as _Signer
+from collections.abc import Mapping
+from google.auth.credentials import Credentials
+from google.auth.transport import Request
 
 
 TOKEN_EXCHANGE_TYPE = "urn:ietf:params:oauth:token-type:token-exchange"
 ACCESS_TOKEN_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 SERVICE_ACCOUNT_TOKEN_TYPE = "urn:k8s:params:oauth:token-type:serviceaccount"
-JWT_LIFETIME = datetime.timedelta(seconds=3600)  # 1 hour
+JWT_LIFETIME: datetime.timedelta = datetime.timedelta(seconds=3600)  # 1 hour
 
 
 class ServiceAccountCredentials(credentials.Credentials):
@@ -81,8 +85,8 @@ class ServiceAccountCredentials(credentials.Credentials):
     """
 
     def __init__(
-        self, signer, service_identity_name, project, audience, token_uri, ca_cert_path
-    ):
+        self, signer: _Signer, service_identity_name: str, project: str, audience: str | None, token_uri: str, ca_cert_path: str | None
+    ) -> None:
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -121,7 +125,7 @@ class ServiceAccountCredentials(credentials.Credentials):
         return _helpers.from_bytes(jwt.encode(self._signer, payload))
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         import google.auth.transport.requests
 
         if not isinstance(request, google.auth.transport.requests.Request):
@@ -151,7 +155,7 @@ class ServiceAccountCredentials(credentials.Credentials):
             response_data, None
         )
 
-    def with_gdch_audience(self, audience):
+    def with_gdch_audience(self, audience: str) -> "ServiceAccountCredentials":
         """Create a copy of GDCH credentials with the specified audience.
 
         Args:

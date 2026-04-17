@@ -26,8 +26,9 @@ for the return value of :class:`Request`.
 
 import abc
 import http.client as http_client
+from collections.abc import Mapping, Sequence
 
-DEFAULT_RETRYABLE_STATUS_CODES = (
+DEFAULT_RETRYABLE_STATUS_CODES: Sequence[int] = (
     http_client.INTERNAL_SERVER_ERROR,
     http_client.SERVICE_UNAVAILABLE,
     http_client.GATEWAY_TIMEOUT,
@@ -38,7 +39,7 @@ DEFAULT_RETRYABLE_STATUS_CODES = (
 """
 
 
-DEFAULT_REFRESH_STATUS_CODES = (http_client.UNAUTHORIZED,)
+DEFAULT_REFRESH_STATUS_CODES: Sequence[int] = (http_client.UNAUTHORIZED,)
 """Sequence[int]:  Which HTTP status code indicate that credentials should be
 refreshed.
 """
@@ -51,17 +52,17 @@ class Response(metaclass=abc.ABCMeta):
     """HTTP Response data."""
 
     @abc.abstractproperty
-    def status(self):
+    def status(self) -> int:
         """int: The HTTP status code."""
         raise NotImplementedError("status must be implemented.")
 
     @abc.abstractproperty
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         """Mapping[str, str]: The HTTP response headers."""
         raise NotImplementedError("headers must be implemented.")
 
     @abc.abstractproperty
-    def data(self):
+    def data(self) -> bytes:
         """bytes: The response body."""
         raise NotImplementedError("data must be implemented.")
 
@@ -77,8 +78,8 @@ class Request(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def __call__(
-        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
-    ):
+        self, url: str, method: str="GET", body: bytes | None=None, headers: Mapping[str, str] | None=None, timeout: float | None=None, **kwargs
+    ) -> Response:
         """Make an HTTP request.
 
         Args:

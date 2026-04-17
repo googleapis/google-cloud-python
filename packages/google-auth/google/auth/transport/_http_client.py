@@ -22,6 +22,9 @@ import urllib
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
+from collections.abc import Mapping
+from google.auth.transport import Request, Response
+from typing import Any
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,21 +36,21 @@ class Response(transport.Response):
         response (http.client.HTTPResponse): The raw http client response.
     """
 
-    def __init__(self, response):
+    def __init__(self, response: Any) -> None:
         self._status = response.status
         self._headers = {key.lower(): value for key, value in response.getheaders()}
         self._data = response.read()
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._status
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         return self._headers
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self._data
 
 
@@ -55,8 +58,8 @@ class Request(transport.Request):
     """http.client transport request adapter."""
 
     def __call__(
-        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
-    ):
+        self, url: str, method: str="GET", body: bytes | None=None, headers: Mapping[str, str] | None=None, timeout: float | None=None, **kwargs
+    ) -> Response:
         """Make an HTTP request using http.client.
 
         Args:

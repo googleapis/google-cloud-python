@@ -32,6 +32,9 @@ from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import jwt
 from google.oauth2 import _client as client
+from collections.abc import Mapping, Sequence
+from datetime import datetime
+from google.auth.transport import Request
 
 
 async def _token_endpoint_request_no_throw(
@@ -144,7 +147,7 @@ async def _token_endpoint_request(
     return response_data
 
 
-async def jwt_grant(request, token_uri, assertion, can_retry=True):
+async def jwt_grant(request: Request, token_uri: str, assertion: str, can_retry: bool=True) -> tuple[str, datetime | None, Mapping[str, str]]:
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants.
 
     For more details, see `rfc7523 section 4`_.
@@ -186,7 +189,7 @@ async def jwt_grant(request, token_uri, assertion, can_retry=True):
     return access_token, expiry, response_data
 
 
-async def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
+async def id_token_jwt_grant(request: Request, token_uri: str, assertion: str, can_retry: bool=True) -> tuple[str, datetime | None, Mapping[str, str]]:
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants, but
     requests an OpenID Connect ID Token instead of an access token.
 
@@ -233,15 +236,15 @@ async def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
 
 
 async def refresh_grant(
-    request,
-    token_uri,
-    refresh_token,
-    client_id,
-    client_secret,
-    scopes=None,
-    rapt_token=None,
-    can_retry=True,
-):
+    request: Request,
+    token_uri: str,
+    refresh_token: str,
+    client_id: str,
+    client_secret: str,
+    scopes: Sequence[str] | None=None,
+    rapt_token: str | None=None,
+    can_retry: bool=True,
+) -> tuple[str, str | None, datetime | None, Mapping[str, str]]:
     """Implements the OAuth 2.0 refresh token grant.
 
     For more details, see `rfc678 section 6`_.

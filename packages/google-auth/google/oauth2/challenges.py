@@ -28,6 +28,7 @@ from google.oauth2.webauthn_types import (
     GetRequest,
     PublicKeyCredentialDescriptor,
 )
+from collections.abc import Mapping
 
 
 REAUTH_ORIGIN = "https://accounts.google.com"
@@ -37,7 +38,7 @@ SAML_CHALLENGE_MESSAGE = (
 WEBAUTHN_TIMEOUT_MS = 120000  # Two minute timeout
 
 
-def get_user_password(text):
+def get_user_password(text: str) -> str:
     """Get password from user.
 
     Override this function with a different logic if you are using this library
@@ -57,18 +58,18 @@ class ReauthChallenge(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def name(self):  # pragma: NO COVER
+    def name(self) -> str:  # pragma: NO COVER
         """Returns the name of the challenge."""
         raise NotImplementedError("name property must be implemented")
 
     @property
     @abc.abstractmethod
-    def is_locally_eligible(self):  # pragma: NO COVER
+    def is_locally_eligible(self) -> bool:  # pragma: NO COVER
         """Returns true if a challenge is supported locally on this machine."""
         raise NotImplementedError("is_locally_eligible property must be implemented")
 
     @abc.abstractmethod
-    def obtain_challenge_input(self, metadata):  # pragma: NO COVER
+    def obtain_challenge_input(self, metadata: Mapping[str, object]) -> dict[str, object] | None:  # pragma: NO COVER
         """Performs logic required to obtain credentials and returns it.
 
         Args:
@@ -89,15 +90,15 @@ class PasswordChallenge(ReauthChallenge):
     """Challenge that asks for user's password."""
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "PASSWORD"
 
     @property
-    def is_locally_eligible(self):
+    def is_locally_eligible(self) -> bool:
         return True
 
     @_helpers.copy_docstring(ReauthChallenge)
-    def obtain_challenge_input(self, unused_metadata):
+    def obtain_challenge_input(self, unused_metadata: Mapping[str, object]) -> dict[str, object] | None:
         passwd = get_user_password("Please enter your password:")
         if not passwd:
             passwd = " "  # avoid the server crashing in case of no password :D
@@ -108,15 +109,15 @@ class SecurityKeyChallenge(ReauthChallenge):
     """Challenge that asks for user's security key touch."""
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "SECURITY_KEY"
 
     @property
-    def is_locally_eligible(self):
+    def is_locally_eligible(self) -> bool:
         return True
 
     @_helpers.copy_docstring(ReauthChallenge)
-    def obtain_challenge_input(self, metadata):
+    def obtain_challenge_input(self, metadata: Mapping[str, object]) -> dict[str, object] | None:
         # Check if there is an available Webauthn Handler, if not use pyu2f
         try:
             factory = webauthn_handler_factory.WebauthnHandlerFactory()
@@ -261,21 +262,21 @@ class SamlChallenge(ReauthChallenge):
     """
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "SAML"
 
     @property
-    def is_locally_eligible(self):
+    def is_locally_eligible(self) -> bool:
         return True
 
-    def obtain_challenge_input(self, metadata):
+    def obtain_challenge_input(self, metadata: Mapping[str, object]) -> dict[str, object] | None:
         # Magic Arch has not fully supported returning a proper dedirect URL
         # for programmatic SAML users today. So we error our here and request
         # users to use gcloud to complete a login.
         raise exceptions.ReauthSamlChallengeFailError(SAML_CHALLENGE_MESSAGE)
 
 
-AVAILABLE_CHALLENGES = {
+AVAILABLE_CHALLENGES: dict[str, ReauthChallenge] = {
     challenge.name: challenge
     for challenge in [SecurityKeyChallenge(), PasswordChallenge(), SamlChallenge()]
 }
