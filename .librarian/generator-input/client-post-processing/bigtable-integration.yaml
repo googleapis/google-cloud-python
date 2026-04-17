@@ -247,7 +247,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/__init__.py
     ]
-    before: '"UpdateTableRequest",\n\)\n\z'
+    before: '"UpdateTableRequest",\n\)\n\Z'
     after: |
       "UpdateTableRequest",
       )
@@ -259,7 +259,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin/__init__.py
     ]
-    before: '"Type",\n\)\n\z'
+    before: '"Type",\n\)\n\Z'
     after: |
       "Type",
       )
