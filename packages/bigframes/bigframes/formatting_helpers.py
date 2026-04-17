@@ -152,7 +152,12 @@ def progress_callback(
         # This will allow cleanup to continue.
         return
 
-    progress_bar = bigframes._config.options.display.progress_bar
+    # Prioritize progress_bar set on the event, falling back to thread-local option.
+    progress_bar = getattr(
+        event, "progress_bar", bigframes.core.events._FALLBACK_TO_GLOBAL
+    )
+    if progress_bar == bigframes.core.events._FALLBACK_TO_GLOBAL:
+        progress_bar = bigframes._config.options.display.progress_bar
 
     if progress_bar == "auto":
         progress_bar = "notebook" if in_ipython() else "terminal"

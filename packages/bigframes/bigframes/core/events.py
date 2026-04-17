@@ -27,6 +27,9 @@ import google.cloud.bigquery.table
 import bigframes.session.executor
 
 
+_FALLBACK_TO_GLOBAL = "fallback_to_global"
+
+
 class Subscriber:
     def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):
         self._publisher = publisher
@@ -125,15 +128,21 @@ class BigQuerySentEvent(ExecutionRunning):
     location: Optional[str] = None
     job_id: Optional[str] = None
     request_id: Optional[str] = None
+    progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL
 
     @classmethod
-    def from_bqclient(cls, event: google.cloud.bigquery._job_helpers.QuerySentEvent):
+    def from_bqclient(
+        cls,
+        event: google.cloud.bigquery._job_helpers.QuerySentEvent,
+        progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL,
+    ):
         return cls(
             query=event.query,
             billing_project=event.billing_project,
             location=event.location,
             job_id=event.job_id,
             request_id=event.request_id,
+            progress_bar=progress_bar,
         )
 
 
@@ -146,15 +155,21 @@ class BigQueryRetryEvent(ExecutionRunning):
     location: Optional[str] = None
     job_id: Optional[str] = None
     request_id: Optional[str] = None
+    progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL
 
     @classmethod
-    def from_bqclient(cls, event: google.cloud.bigquery._job_helpers.QueryRetryEvent):
+    def from_bqclient(
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryRetryEvent,
+        progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL,
+    ):
         return cls(
             query=event.query,
             billing_project=event.billing_project,
             location=event.location,
             job_id=event.job_id,
             request_id=event.request_id,
+            progress_bar=progress_bar,
         )
 
 
@@ -171,10 +186,13 @@ class BigQueryReceivedEvent(ExecutionRunning):
     created: Optional[datetime.datetime] = None
     started: Optional[datetime.datetime] = None
     ended: Optional[datetime.datetime] = None
+    progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL
 
     @classmethod
     def from_bqclient(
-        cls, event: google.cloud.bigquery._job_helpers.QueryReceivedEvent
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryReceivedEvent,
+        progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -186,6 +204,7 @@ class BigQueryReceivedEvent(ExecutionRunning):
             created=event.created,
             started=event.started,
             ended=event.ended,
+            progress_bar=progress_bar,
         )
 
 
@@ -204,10 +223,13 @@ class BigQueryFinishedEvent(ExecutionRunning):
     created: Optional[datetime.datetime] = None
     started: Optional[datetime.datetime] = None
     ended: Optional[datetime.datetime] = None
+    progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL
 
     @classmethod
     def from_bqclient(
-        cls, event: google.cloud.bigquery._job_helpers.QueryFinishedEvent
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryFinishedEvent,
+        progress_bar: Optional[str] = _FALLBACK_TO_GLOBAL,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -221,6 +243,7 @@ class BigQueryFinishedEvent(ExecutionRunning):
             created=event.created,
             started=event.started,
             ended=event.ended,
+            progress_bar=progress_bar,
         )
 
 
