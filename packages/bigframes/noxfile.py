@@ -392,9 +392,6 @@ def system_noextras(session: nox.sessions.Session):
 @nox.session(python="3.12")
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
-    session.skip(
-        "Temporary skip to enable a PR merge. Remove skip as part of closing https://github.com/googleapis/google-cloud-python/issues/16489"
-    )
 
     run_system(
         session=session,
