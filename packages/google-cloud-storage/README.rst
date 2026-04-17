@@ -4,7 +4,7 @@ Python Client for Google Cloud Storage
 |stable| |pypi| |versions|
 
 `Google Cloud Storage`_ is a managed service for storing unstructured data. Cloud Storage
-allows world-wide storage and retrieval of any amount of data at any time. You can use
+allows worldwide storage and retrieval of any amount of data at any time. You can use
 Cloud Storage for a range of scenarios including serving website content, storing data
 for archival and disaster recovery, or distributing large data objects to users via direct download.
 
@@ -43,13 +43,13 @@ Google APIs Client Libraries, in `Client Libraries Explained`_.
 Quick Start
 -----------
 
-In order to use this library, you first need to go through the following steps.
+To use this library, you first need to follow these steps.
 A step-by-step guide may also be found in `Get Started with Client Libraries`_.
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
 3. `Enable the Google Cloud Storage API.`_
-4. `Setup Authentication.`_
+4. `Set up Authentication.`_
 
 .. _Get Started with Client Libraries: https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
@@ -145,7 +145,7 @@ Tracing With OpenTelemetry
 This is a PREVIEW FEATURE: Coverage and functionality are still in development and subject to change.
 
 This library can be configured to use `OpenTelemetry`_ to generate traces on calls to Google Cloud Storage.
-For information on the benefits and utility of tracing, read the `Cloud Trace Overview <https://cloud.google.com/trace/docs/overview>`_.
+For information on the benefits and utility of tracing, read the Cloud Trace Overview <https://cloud.google.com/trace/docs/overview>_.
 
 To enable OpenTelemetry tracing in the Cloud Storage client, first install OpenTelemetry:
 
@@ -153,7 +153,7 @@ To enable OpenTelemetry tracing in the Cloud Storage client, first install OpenT
 
     pip install google-cloud-storage[tracing]
 
-Set the ``ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES`` environment variable to selectively opt-in tracing for the Cloud Storage client:
+Set the ``ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES`` environment variable to opt in selectively to tracing for the Cloud Storage client:
 
 .. code-block:: console
 
@@ -199,8 +199,8 @@ For a list of libraries that can be instrumented, refer to the `OpenTelemetry Re
 Feedback Welcome
 ~~~~~~~~~~~~~~~~
 
-If you experience that backwards compatibility for your application is broken
-with this major version release, please let us know through the Github issues
+If you experience any break in backwards compatibility for your application
+with this major version release, please let us know through the GitHub issues
 system. While some breaks of backwards compatibility may be unavoidable due to
 new features in the major version release, we will do our best to minimize
 them. Thank you.
@@ -226,11 +226,10 @@ Some users may be using the original exception classes from the
 ``google-resumable-media`` library without explicitly installing that library. So
 as not to break user applications following this pattern,
 ``google-resumable-media`` is still in the list of dependencies in this package's
-setup.py file. Applications which do not import directly from
+setup.py file. Applications that do not import directly from
 ``google-resumable-media`` can safely disregard this dependency.
 This backwards compatibility feature **will be removed** in a future major
-version update. Please migrate to using the ``google.cloud.storage.exceptions``
-classes as above.
+version update. Please migrate to using the ``google.cloud.storage.exceptions`` classes as above.
 
 Checksum Defaults
 ~~~~~~~~~~~~~~~~~
@@ -239,12 +238,11 @@ In Python Storage 3.0, uploads and downloads now have a default of "auto" where
 applicable. "Auto" will use crc32c checksums, except for unusual cases where the
 fast (C extension) crc32c implementation is not available, in which case it will
 use md5 instead. Before Python Storage 3.0, the default was md5 for most
-downloads and None for most uploads. Note that ranged downloads ("start" or
-"end" set) still do not support any checksumming, and some features in
+downloads and None for most uploads. Note that ranged downloads ("start" or "end" set) still do not support any checksumming, and some features in
 ``transfer_manager.py`` still support crc32c only.
 
 Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
-when checksum is set to None, as was the previous default, would not throw an
+when checksum is set to None, as was the previous default, it would not throw an
 error if passed a file in string mode under some circumstances. With the new
 defaults, it will now raise a TypeError. Please use a file opened in bytes
 reading mode as required.
@@ -255,13 +253,12 @@ Miscellaneous
 - The ``BlobWriter`` class now attempts to terminate an ongoing resumable upload if
   the writer exits with an exception.
 - Retry behavior is now identical between media operations (uploads and
-  downloads) and other operations, and custom predicates are now supported for
-  media operations as well.
+  downloads) and other operations, and custom predicates are now supported
+  for media operations as well.
 - ``Blob.download_as_filename()`` will now delete the empty file if it results in a
   google.cloud.exceptions.NotFound exception (HTTP 404).
 - Previously, object upload, metadata update, and delete methods had retries
-  disabled by default unless the generation or metageneration was specified in
-  the request. This has now changed so that retries are enabled by default.
+  disabled by default unless the generation or metageneration was specified in the request. This has now changed so that retries are enabled by default.
 
 
 Next Steps
