@@ -409,7 +409,8 @@ class GQL(object):
         if identifier.lower() == "ancestor":
             self._has_ancestor = True
             filter_rule = (self._ANCESTOR, "is")
-            assert condition.lower() == "is"
+            if condition.lower() != "is":
+                raise ValueError("condition must be 'is'")
 
         if operator == "list" and condition.lower() not in ["in", "not_in"]:
             self._Error("Only IN can process a list of values, given '%s'" % condition)

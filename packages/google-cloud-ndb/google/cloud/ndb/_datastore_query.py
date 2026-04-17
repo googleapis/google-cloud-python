@@ -342,8 +342,10 @@ class _QueryIteratorImpl(QueryIterator):
         if self._batch is None:
             yield self._next_batch()  # First time
 
-        assert self._batch is not None
-        assert self._index is not None
+        if self._batch is None:
+            raise TypeError("self._batch cannot be None")
+        if self._index is None:
+            raise TypeError("self._index cannot be None")
         if self._index < len(self._batch):
             raise tasklets.Return(True)
 
@@ -425,8 +427,10 @@ class _QueryIteratorImpl(QueryIterator):
             self._cursor_before = None
             raise StopIteration
 
-        assert self._batch is not None
-        assert self._index is not None
+        if self._batch is None:
+            raise TypeError("self._batch cannot be None")
+        if self._index is None:
+            raise TypeError("self._index cannot be None")
         # Won't block
         next_result = self._batch[self._index]
         self._index += 1
@@ -560,7 +564,8 @@ class _PostFilterQueryIteratorImpl(QueryIterator):
         if not self.has_next():
             raise StopIteration()
 
-        assert self._next_result is not None
+        if self._next_result is None:
+            raise TypeError("self._next_result cannot be None")
         # Won't block
         next_result = self._next_result
         self._next_result = None
@@ -725,7 +730,8 @@ class _MultiQueryIteratorImpl(QueryIterator):
         if not self.has_next():
             raise StopIteration()
 
-        assert self._next_result is not None
+        if self._next_result is None:
+            raise TypeError("self._next_result cannot be None")
         # Won't block
         next_result = self._next_result
         self._next_result = None

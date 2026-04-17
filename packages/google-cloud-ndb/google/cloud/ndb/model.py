@@ -611,7 +611,8 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 subvalue = value
                 value = structprop._get_base_value(entity)
                 if value in (None, []):  # empty list for repeated props
-                    assert structprop._model_class is not None
+                    if structprop._model_class is None:
+                        raise TypeError("structprop._model_class cannot be None")
                     kind = structprop._model_class._get_kind()
                     key = key_module.Key(kind, None)
                     if structprop._repeated:
@@ -642,7 +643,8 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                         # the other entries in the value list
                         while len(subvalue) > len(value):
                             # Need to make some more subentities
-                            assert structprop._model_class is not None
+                            if structprop._model_class is None:
+                                raise TypeError("structprop._model_class cannot be None")
                             expando_kind = structprop._model_class._get_kind()
                             expando_key = key_module.Key(expando_kind, None)
                             value.append(new_entity(expando_key._key))
@@ -2055,7 +2057,8 @@ class Property(ModelAttribute):
         if self._repeated:
             if self._has_value(entity):
                 value = self._retrieve_value(entity)
-                assert isinstance(value, list), repr(value)
+                if not isinstance(value, list):
+                    raise TypeError(f"Expected list, got {type(value)}")
                 value.append(val)
             else:
                 # We promote single values to lists if we are a list property
@@ -4161,7 +4164,8 @@ class StructuredProperty(Property):
 
     def __getattr__(self, attrname):
         """Dynamically get a subproperty."""
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         # Optimistically try to use the dict key.
         prop = self._model_class._properties.get(attrname)
 
@@ -4180,7 +4184,8 @@ class StructuredProperty(Property):
             )
 
         prop_copy = copy.copy(prop)
-        assert self._name is not None
+        if self._name is None:
+            raise TypeError("self._name cannot be None")
         prop_copy._name = self._name + "." + prop_copy._name
 
         # Cache the outcome, so subsequent requests for the same attribute
@@ -4211,7 +4216,8 @@ class StructuredProperty(Property):
         value = self._do_validate(value)
         filters = []
         match_keys = []
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         for prop_name, prop in self._model_class._properties.items():
             subvalue = prop._get_value(value)
             if prop._repeated:
@@ -4264,7 +4270,8 @@ class StructuredProperty(Property):
     IN = _IN
 
     def _validate(self, value):
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
             return self._model_class(**value)
@@ -4325,7 +4332,8 @@ class StructuredProperty(Property):
             raise InvalidPropertyError(
                 "Structured property %s requires a subproperty" % self._name
             )
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         self._model_class._check_properties([rest], require_indexed=require_indexed)
 
     def _to_base_type(self, value):
@@ -4340,7 +4348,8 @@ class StructuredProperty(Property):
         Raises:
             TypeError: If ``value`` is not the correct ``Model`` type.
         """
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         if not isinstance(value, self._model_class):
             raise TypeError(
                 "Cannot convert to protocol buffer. Expected {} value; "
@@ -4475,7 +4484,8 @@ class LocalStructuredProperty(BlobProperty):
         Raises:
             exceptions.BadValueError: If ``value`` is not a given class.
         """
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
             return self._model_class(**value)
@@ -4504,7 +4514,8 @@ class LocalStructuredProperty(BlobProperty):
         Raises:
             TypeError: If ``value`` is not the correct ``Model`` type.
         """
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         if not isinstance(value, self._model_class):
             raise TypeError(
                 "Cannot convert to bytes expected {} value; "
@@ -4522,7 +4533,8 @@ class LocalStructuredProperty(BlobProperty):
         Returns:
             The converted value with given class.
         """
-        assert self._model_class is not None
+        if self._model_class is None:
+            raise TypeError("self._model_class cannot be None")
         if isinstance(value, bytes):
             pb = entity_pb2.Entity()
             pb._pb.MergeFromString(value)
@@ -4699,7 +4711,8 @@ class ComputedProperty(GenericProperty):
         # UnprojectedPropertyError which will just bubble up.
         if entity._projection and self._name in entity._projection:
             return super(ComputedProperty, self)._get_value(entity)
-        assert self._func is not None
+        if self._func is None:
+            raise TypeError("self._func cannot be None")
         value = self._func(entity)
         self._store_value(entity, value)
         return value
@@ -5035,7 +5048,8 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         # A custom 'meaning' for compressed properties.
         _MEANING_URI_COMPRESSED = "ZLIB"
         self._clone_properties()
-        assert self._properties is not None
+        if self._properties is None:
+            raise TypeError("self._properties cannot be None")
         prop: Property
         if p.name() != next.encode("utf-8") and not p.name().endswith(
             b"." + next.encode("utf-8")
@@ -5349,13 +5363,15 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
             InvalidPropertyError: if one of the properties is invalid.
             AssertionError: if the argument is not a list or tuple of strings.
         """
-        assert isinstance(property_names, (list, tuple)), repr(property_names)
+        if not isinstance(property_names, (list, tuple)):
+            raise TypeError(f"Expected list or tuple, got {type(property_names)}")
         for name in property_names:
             if "." in name:
                 name, rest = name.split(".", 1)
             else:
                 rest = None
-            assert cls._properties is not None
+            if cls._properties is None:
+                raise TypeError("cls._properties cannot be None")
             prop = cls._properties.get(name)
             if prop is None:
                 raise InvalidPropertyError("Unknown property {}".format(name))
@@ -6199,7 +6215,8 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
                 to exclude. Default is to not exclude any names.
         """
         values = {}
-        assert self._properties is not None
+        if self._properties is None:
+            raise TypeError("self._properties cannot be None")
         for prop in self._properties.values():
             name = prop._code_name
             if include is not None and name not in include:
@@ -6221,7 +6238,8 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
     def _code_name_from_stored_name(cls, name):
         """Return the code name from a property when it's different from the
         stored name. Used in deserialization from datastore."""
-        assert cls._properties is not None
+        if cls._properties is None:
+            raise TypeError("cls._properties cannot be None")
         if name in cls._properties:
             return cls._properties[name]._code_name
 
@@ -6323,14 +6341,16 @@ class Expando(Model):
             setattr(self, name, value)
 
     def __getattr__(self, name):
-        assert self._properties is not None
+        if self._properties is None:
+            raise TypeError("self._properties cannot be None")
         prop = self._properties.get(name)
         if prop is None:
             return super(Expando, self).__getattribute__(name)
         return prop._get_value(self)
 
     def __setattr__(self, name, value):
-        assert self._properties is not None
+        if self._properties is None:
+            raise TypeError("self._properties cannot be None")
         if (
             name.startswith("_")
             or isinstance(getattr(self.__class__, name, None), (Property, property))
@@ -6365,7 +6385,8 @@ class Expando(Model):
         prop._set_value(self, value)
 
     def __delattr__(self, name):
-        assert self._properties is not None
+        if self._properties is None:
+            raise TypeError("self._properties cannot be None")
         if name.startswith("_") or isinstance(
             getattr(self.__class__, name, None), (Property, property)
         ):
