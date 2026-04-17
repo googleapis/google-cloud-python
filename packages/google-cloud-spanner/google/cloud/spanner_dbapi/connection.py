@@ -91,10 +91,28 @@ class Connection:
         the read-only transaction is semantically the same, and only indicates that the read-only transaction
         should end a that a new one should be started when the next statement is executed.
 
+    :type retry_aborts_internally: bool
+    :param retry_aborts_internally:
+        (Optional) Default True. When True, the connection will automatically retry aborted
+        transactions by replaying all statements and validating checksums of read results.
+        This is the recommended setting for interactive use and ORMs like Django that build
+        transactions incrementally through individual cursor.execute() calls.
+
+        Set to False when the application already implements its own transaction retry logic
+        (e.g. by wrapping the entire transaction in a callable and re-invoking it on abort,
+        similar to ``Session.run_in_transaction``). In this mode, ``Aborted`` errors from
+        ``commit()`` will be raised directly as ``RetryAborted`` without entering the
+        internal statement-replay loop. This avoids nested retry loops and the associated
+        contention amplification under concurrent writes.
+
+        This is equivalent to ``RETRY_ABORTS_INTERNALLY`` in the Spanner JDBC driver.
+
     **kwargs: Initial value for connection variables.
     """
 
-    def __init__(self, instance, database=None, read_only=False, **kwargs):
+    def __init__(
+        self, instance, database=None, read_only=False, retry_aborts_internally=True, **kwargs
+    ):
         self._instance = instance
         self._database = database
         self._ddl_statements = []
@@ -110,6 +128,7 @@ class Connection:
         # connection close
         self._own_pool = True
         self._read_only = read_only
+        self._retry_aborts_internally = retry_aborts_internally
         self._staleness = None
         self.request_priority = None
         self._transaction_begin_marked = False
@@ -247,6 +266,33 @@ class Connection:
                 "Commit or rollback the current transaction and try again."
             )
         self._read_only = value
+
+    @property
+    def retry_aborts_internally(self):
+        """Flag: whether the connection retries aborted transactions internally.
+
+        Returns:
+            bool:
+                True if the connection will retry aborted transactions using
+                statement replay with checksum validation (default). False if
+                aborted transactions will raise ``RetryAborted`` directly.
+        """
+        return self._retry_aborts_internally
+
+    @retry_aborts_internally.setter
+    def retry_aborts_internally(self, value):
+        """``retry_aborts_internally`` flag setter.
+
+        Args:
+            value (bool): True to enable internal retry (default), False to disable.
+        """
+        if self._spanner_transaction_started:
+            raise ValueError(
+                "retry_aborts_internally can't be changed while a transaction "
+                "is in progress. Commit or rollback the current transaction "
+                "and try again."
+            )
+        self._retry_aborts_internally = value
 
     @property
     def request_options(self):
@@ -491,9 +537,12 @@ class Connection:
         try:
             if self._spanner_transaction_started and not self._read_only:
                 self._transaction.commit()
-        except Aborted:
-            self._transaction_helper.retry_transaction()
-            self.commit()
+        except Aborted as exc:
+            if self._retry_aborts_internally:
+                self._transaction_helper.retry_transaction()
+                self.commit()
+            else:
+                raise RetryAborted(str(exc)) from exc
         finally:
             self._reset_post_commit_or_rollback()
 
@@ -747,6 +796,7 @@ def connect(
     ca_certificate=None,
     client_certificate=None,
     client_key=None,
+    retry_aborts_internally=True,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -822,6 +872,13 @@ def connect(
     :param client_key: (Optional) The path to the client key file used for mTLS connection.
         This is intended only for experimental host spanner endpoints.
         This is mandatory if the experimental_host requires an mTLS connection.
+
+    :type retry_aborts_internally: bool
+    :param retry_aborts_internally:
+        (Optional) Default True. When True, the connection will automatically retry
+        aborted transactions internally by replaying all statements and validating
+        checksums. Set to False when the application manages its own transaction retry
+        logic. See ``Connection.retry_aborts_internally`` for details.
     """
     if client is None:
         client_info = ClientInfo(
@@ -866,7 +923,12 @@ def connect(
         database = instance.database(
             database_id, pool=pool, database_role=database_role, logger=logger
         )
-    conn = Connection(instance, database, **kwargs)
+    conn = Connection(
+        instance,
+        database,
+        retry_aborts_internally=retry_aborts_internally,
+        **kwargs,
+    )
     if pool is not None:
         conn._own_pool = False
 
