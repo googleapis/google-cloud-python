@@ -174,8 +174,8 @@ class Block:
 
         blocks: List[Block] = []
         ens = _get_target_object(objects, entities)
-        if not isinstance(ens, list):
-            raise TypeError("Expected list for entities")
+        if not isinstance(ens, (list, dict)):
+            raise TypeError("Expected list or dict for entities")
         for i in ens:
             entity = i
 
