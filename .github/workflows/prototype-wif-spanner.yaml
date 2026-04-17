@@ -1,6 +1,9 @@
 name: Prototype - WIF Spanner System Tests
 
 on:
+  push:
+    branches:
+      - experiment-testing-infra
   workflow_dispatch: 
 
 permissions:
