@@ -62,7 +62,9 @@ def test_sync_up_to_date(sync_file):
     path = sync_file.output_path
     new_render = sync_file.render(with_formatter=True, save_to_disk=False)
     found_render = CrossSyncOutputFile(
-        output_path="dummy.py", ast_tree=ast.parse(open(path).read()), header=sync_file.header
+        output_path="dummy.py",
+        ast_tree=ast.parse(open(path).read()),
+        header=sync_file.header,
     ).render(with_formatter=True, save_to_disk=False)
     # compare by content
     diff = unified_diff(found_render.splitlines(), new_render.splitlines(), lineterm="")
