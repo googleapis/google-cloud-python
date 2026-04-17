@@ -190,7 +190,7 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
     y_multiplier = 1.0
     normalized_vertices: List[documentai.NormalizedVertex] = []
 
-    if block.page_width and block.page_height:
+    if block.page_width and block.page_height and block.docproto_width is not None and block.docproto_height is not None:
         x_multiplier = _get_multiplier(
             docproto_coordinate=block.docproto_width,
             external_coordinate=block.page_width,

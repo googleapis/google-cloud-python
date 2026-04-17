@@ -63,7 +63,10 @@ class Entity:
 
     _image: Optional[Image.Image] = dataclasses.field(init=False, default=None)
 
-    def __post_init__(self, page_offset: int) -> None:
+    def __post_init__(self, page_offset: Optional[int]) -> None:
+        if page_offset is None:
+            page_offset = 0
+            
         self.type_ = self.documentai_object.type_
 
         if self.documentai_object.mention_text:
