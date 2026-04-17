@@ -19,13 +19,14 @@ import copy
 import datetime
 import json
 import warnings
+from typing import Any, Optional, Set, Tuple, Union, TYPE_CHECKING
 from urllib.parse import urlsplit
 
 from google.api_core import datetime_helpers
 from google.api_core.iam import Policy
+from google.api_core.retry import Retry
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
-
 from google.cloud.storage import _signing
 from google.cloud.storage._helpers import (
     _NOW,
@@ -65,7 +66,11 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY_IF_ETAG_IN_JSON,
     DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ConditionalRetryPolicy,
 )
+
+if TYPE_CHECKING:
+    from google.cloud.storage.client import Client
 
 _UBLA_BPO_ENABLED_MESSAGE = (
     "Pass only one of 'uniform_bucket_level_access_enabled' / "
@@ -846,12 +851,12 @@ class Bucket(_PropertyMixin):
 
     def blob(
         self,
-        blob_name,
-        chunk_size=None,
-        encryption_key=None,
-        kms_key_name=None,
-        generation=None,
-    ):
+        blob_name: str,
+        chunk_size: Optional[int] = None,
+        encryption_key: Optional[bytes] = None,
+        kms_key_name: Optional[str] = None,
+        generation: Optional[int] = None,
+    ) -> "Blob":
         """Factory constructor for blob object.
 
         .. note::
@@ -862,9 +867,11 @@ class Bucket(_PropertyMixin):
         :param blob_name: The name of the blob to be instantiated.
 
         :type chunk_size: int
-        :param chunk_size: The size of a chunk of data whenever iterating
-                           (in bytes). This must be a multiple of 256 KB per
-                           the API specification.
+        :param chunk_size:
+            (Optional) The size of a chunk of data whenever iterating (in bytes).
+            This must be a multiple of 256 KB per the API specification. If not
+            specified, the chunk_size of the blob itself is used. If that is not
+            specified, a default value of 40 MB is used.
 
         :type encryption_key: bytes
         :param encryption_key:
@@ -1289,21 +1296,21 @@ class Bucket(_PropertyMixin):
 
     def get_blob(
         self,
-        blob_name,
-        client=None,
-        encryption_key=None,
-        generation=None,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        soft_deleted=None,
-        **kwargs,
-    ):
+        blob_name: str,
+        client: Optional["Client"] = None,
+        encryption_key: Optional[bytes] = None,
+        generation: Optional[int] = None,
+        if_etag_match: Optional[Union[str, Set[str]]] = None,
+        if_etag_not_match: Optional[Union[str, Set[str]]] = None,
+        if_generation_match: Optional[int] = None,
+        if_generation_not_match: Optional[int] = None,
+        if_metageneration_match: Optional[int] = None,
+        if_metageneration_not_match: Optional[int] = None,
+        timeout: Optional[Union[float, Tuple[float, float]]] = _DEFAULT_TIMEOUT,
+        retry: Optional[Union[Retry, ConditionalRetryPolicy]] = DEFAULT_RETRY,
+        soft_deleted: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> Optional[Blob]:
         """Get a blob object by name.
 
         See a [code sample](https://cloud.google.com/storage/docs/samples/storage-get-metadata#storage_get_metadata-python)
