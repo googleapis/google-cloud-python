@@ -3544,7 +3544,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
