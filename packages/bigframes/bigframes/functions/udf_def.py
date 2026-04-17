@@ -457,6 +457,14 @@ class CodeDef:
 
         return hash_val.digest()
 
+    def to_callable(self):
+        """
+        Reconstructs the python callable from the pickled code.
+
+        Assumption: package_requirements match local environment
+        """
+        return cloudpickle.loads(self.pickled_code)
+
 
 @dataclasses.dataclass(frozen=True)
 class ManagedFunctionConfig:

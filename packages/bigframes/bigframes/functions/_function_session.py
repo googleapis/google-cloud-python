@@ -20,18 +20,18 @@ import functools
 import inspect
 import sys
 import threading
-import warnings
 from typing import (
-    TYPE_CHECKING,
     Any,
+    cast,
     Dict,
     Literal,
     Mapping,
     Optional,
     Sequence,
+    TYPE_CHECKING,
     Union,
-    cast,
 )
+import warnings
 
 import google.api_core.exceptions
 from google.cloud import (
@@ -41,9 +41,9 @@ from google.cloud import (
     resourcemanager_v3,
 )
 
+from bigframes import clients
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-from bigframes import clients
 from bigframes.functions import function as bq_functions
 from bigframes.functions import udf_def
 
@@ -630,25 +630,15 @@ class FunctionSession:
             if udf_sig.is_row_processor:
                 msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-                return decorator(
-                    bq_functions.BigqueryCallableRowRoutine(
-                        udf_definition,
-                        session,
-                        cloud_function_ref=bigframes_cloud_function,
-                        local_func=func,
-                        is_managed=False,
-                    )
+            return decorator(
+                bq_functions.BigqueryCallableRoutine(
+                    udf_definition,
+                    session,
+                    cloud_function_ref=bigframes_cloud_function,
+                    local_func=func,
+                    is_managed=False,
                 )
-            else:
-                return decorator(
-                    bq_functions.BigqueryCallableRoutine(
-                        udf_definition,
-                        session,
-                        cloud_function_ref=bigframes_cloud_function,
-                        local_func=func,
-                        is_managed=False,
-                    )
-                )
+            )
 
         return wrapper
 
@@ -834,8 +824,9 @@ class FunctionSession:
                 bq_connection_manager,
                 session=session,  # type: ignore
             )
+            code_def = udf_def.CodeDef.from_func(func)
             config = udf_def.ManagedFunctionConfig(
-                code=udf_def.CodeDef.from_func(func),
+                code=code_def,
                 signature=udf_sig,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
@@ -859,28 +850,18 @@ class FunctionSession:
                 signature=udf_sig,
             )
 
-            if not name:
-                self._update_temp_artifacts(full_rf_name, "")
-
-            decorator = functools.wraps(func)
             if udf_sig.is_row_processor:
                 msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-                assert session is not None  # appease mypy
-                return decorator(
-                    bq_functions.BigqueryCallableRowRoutine(
-                        udf_definition, session, local_func=func, is_managed=True
-                    )
-                )
+
+            if not name:  # session-owned resource - will be cleaned up automatically
+                self._update_temp_artifacts(full_rf_name, "")
+                return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
+
+            # user-managed permanent resource - will not be cleaned up automatically
             else:
-                assert session is not None  # appease mypy
-                return decorator(
-                    bq_functions.BigqueryCallableRoutine(
-                        udf_definition,
-                        session,
-                        local_func=func,
-                        is_managed=True,
-                    )
+                return bq_functions.BigqueryCallableRoutine(
+                    udf_definition, session, local_func=func, is_managed=True
                 )
 
         return wrapper

@@ -62,8 +62,7 @@ def test_deploy_udf():
 
     deployed = session.deploy_udf(my_remote_func)
 
-    # Test that the function would have been deployed somewhere.
-    assert deployed.bigframes_bigquery_function
+    assert deployed.udf_def is not None
 
 
 def test_deploy_udf_with_name():
