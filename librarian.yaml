@@ -1478,7 +1478,6 @@ libraries:
       - tests/system
       - tests/system/__init__.py
       - tests/system/smoke_test.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/container/v1:
