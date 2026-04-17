@@ -761,7 +761,7 @@ def _entity_to_ds_entity(entity, set_key=True):
     Raises:
         ndb.exceptions.BadValueError: If entity has uninitialized properties.
     """
-    data: dict[str, Any] = {"_exclude_from_indexes": []}
+    data: dict[str, typing.Any] = {"_exclude_from_indexes": []}
     uninitialized = []
 
     for prop in _properties_of(entity):
@@ -3577,6 +3577,31 @@ class UserProperty(Property):
                 )
 
 
+def _handle_key_property_positional(wrapped):
+    @functools.wraps(wrapped)
+    def wrapper(self, *args, **kwargs):
+        for arg in args:
+            if isinstance(arg, str):
+                if "name" in kwargs:
+                    raise TypeError("You can only specify name once")
+
+                kwargs["name"] = arg
+
+            elif isinstance(arg, type):
+                if "kind" in kwargs:
+                    raise TypeError("You can only specify kind once")
+
+                kwargs["kind"] = arg
+
+            elif arg is not None:
+                raise TypeError("Unexpected positional argument: {!r}".format(arg))
+
+        return wrapped(self, **kwargs)
+
+    wrapper._wrapped = wrapped  # type: ignore[attr-defined]
+    return wrapper
+
+
 class KeyProperty(Property):
     """A property that contains :class:`~google.cloud.ndb.key.Key` values.
 
@@ -3633,32 +3658,8 @@ class KeyProperty(Property):
 
     _kind = None
 
-    def _handle_positional(wrapped):
-        @functools.wraps(wrapped)
-        def wrapper(self, *args, **kwargs):
-            for arg in args:
-                if isinstance(arg, str):
-                    if "name" in kwargs:
-                        raise TypeError("You can only specify name once")
-
-                    kwargs["name"] = arg
-
-                elif isinstance(arg, type):
-                    if "kind" in kwargs:
-                        raise TypeError("You can only specify kind once")
-
-                    kwargs["kind"] = arg
-
-                elif arg is not None:
-                    raise TypeError("Unexpected positional argument: {!r}".format(arg))
-
-            return wrapped(self, **kwargs)
-
-        wrapper._wrapped = wrapped  # type: ignore[attr-defined]
-        return wrapper
-
     @utils.positional(3)
-    @_handle_positional
+    @_handle_key_property_positional
     def __init__(
         self,
         name=None,

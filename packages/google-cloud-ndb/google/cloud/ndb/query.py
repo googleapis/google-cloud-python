@@ -1620,7 +1620,7 @@ class Query(object):
                 return True
 
         bindings = MockBindings()
-        used: dict[Any, Any] = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
@@ -1650,10 +1650,10 @@ class Query(object):
             google.cloud.ndb.exceptions.BadArgumentError: If one of
                 the positional parameters is not used in the query.
         """
-        bindings: dict[Any, Any] = dict(keyword)
+        bindings: dict[typing.Any, typing.Any] = dict(keyword)
         for i, arg in enumerate(positional):
             bindings[i + 1] = arg
-        used: dict[Any, Any] = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
