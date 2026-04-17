@@ -24,7 +24,6 @@ from typing import Any
 
 import pytest
 import yaml
-from google.api_core.exceptions import GoogleAPIError
 from google.protobuf.json_format import MessageToDict
 from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB, system_test_lock
 
@@ -124,9 +123,9 @@ def test_pipeline_expected_errors(test_dict, client):
     Finds assert_error statements in yaml, and ensures the pipeline raises the expected error
     """
     error_regex = test_dict["assert_error"]
-    pipeline = parse_pipeline(client, test_dict["pipeline"])
-    # check if server responds as expected
-    with pytest.raises(GoogleAPIError) as err:
+
+    with pytest.raises(Exception) as err:
+        pipeline = parse_pipeline(client, test_dict["pipeline"])
         pipeline.execute()
     found_error = str(err.value)
     match = re.search(error_regex, found_error)
@@ -215,9 +214,8 @@ async def test_pipeline_expected_errors_async(test_dict, async_client):
     Finds assert_error statements in yaml, and ensures the pipeline raises the expected error
     """
     error_regex = test_dict["assert_error"]
-    pipeline = parse_pipeline(async_client, test_dict["pipeline"])
-    # check if server responds as expected
-    with pytest.raises(GoogleAPIError) as err:
+    with pytest.raises(Exception) as err:
+        pipeline = parse_pipeline(async_client, test_dict["pipeline"])
         await pipeline.execute()
     found_error = str(err.value)
     match = re.search(error_regex, found_error)

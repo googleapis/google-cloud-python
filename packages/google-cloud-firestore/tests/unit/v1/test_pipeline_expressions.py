@@ -260,6 +260,24 @@ class TestSelectable:
             assert result[0] == "alias1"
             assert result[1] == Value(field_reference_value="field1")
 
+        def test_chaining_aliases(self):
+            with pytest.raises(
+                TypeError, match="Cannot call as_\\(\\) on an AliasedExpression"
+            ):
+                Field.of("field1").as_("alias1").as_("alias2")
+
+        def test_expr_method_on_aliased_raises_error(self):
+            with pytest.raises(
+                TypeError, match="Cannot call 'add' on AliasedExpression"
+            ):
+                Field.of("field1").as_("alias1").add(5)
+
+        def test_static_expr_method_on_aliased_raises_error(self):
+            with pytest.raises(
+                TypeError, match="Cannot call 'add' on AliasedExpression"
+            ):
+                expr.Expression.add(Field.of("field1").as_("alias1"), 5)
+
 
 class TestBooleanExpression:
     def test__from_query_filter_pb_composite_filter_or(self, mock_client):
