@@ -73,7 +73,7 @@ class Block:
     """
     type_: Any = dataclasses.field(init=True, repr=False)
     text: str = dataclasses.field(init=True, repr=False)
-    bounding_box: Optional[SimpleNamespace] = dataclasses.field(init=True, repr=False, default=None)
+    bounding_box: Optional[Union[SimpleNamespace, List[Any]]] = dataclasses.field(init=True, repr=False, default=None)
     block_references: Any = dataclasses.field(
         init=True, repr=False, default=None
     )

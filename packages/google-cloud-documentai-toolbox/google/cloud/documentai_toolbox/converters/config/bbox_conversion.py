@@ -199,12 +199,12 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
         x_multiplier = _get_multiplier(
             docproto_coordinate=block.docproto_width,
             external_coordinate=block.page_width,
-            input_bbox_units=block.bounding_unit,
+            input_bbox_units=block.bounding_unit or "normalized",
         )
         y_multiplier = _get_multiplier(
             docproto_coordinate=block.docproto_height,
             external_coordinate=block.page_height,
-            input_bbox_units=block.bounding_unit,
+            input_bbox_units=block.bounding_unit or "normalized",
         )
 
     if block.bounding_type == "1":
@@ -213,13 +213,13 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
             for coordinate in block.bounding_box:
                 x = _convert_bbox_units(
                     coordinate[f"{block.bounding_x}"],
-                    input_bbox_units=block.bounding_unit,
+                    input_bbox_units=block.bounding_unit or "normalized",
                     width=block.docproto_width,
                     multiplier=x_multiplier,
                 )
                 y = _convert_bbox_units(
                     coordinate[f"{block.bounding_y}"],
-                    input_bbox_units=block.bounding_unit,
+                    input_bbox_units=block.bounding_unit or "normalized",
                     height=block.docproto_height,
                     multiplier=y_multiplier,
                 )
@@ -229,15 +229,17 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
     elif block.bounding_type == "2":
         # Type 2 : bounding box has 1 (x,y) coordinates for the top left corner
         #          and (width, height)
+        if not isinstance(block.bounding_box, SimpleNamespace):
+            raise TypeError("Expected SimpleNamespace for bounding_box in Type 2")
         x_min = _convert_bbox_units(
-            block.bounding_box[f"{block.bounding_x}"],
-            input_bbox_units=block.bounding_unit,
+            getattr(block.bounding_box, f"{block.bounding_x}"),
+            input_bbox_units=block.bounding_unit or "normalized",
             width=block.page_width,
             multiplier=x_multiplier,
         )
         y_min = _convert_bbox_units(
-            block.bounding_box[f"{block.bounding_y}"],
-            input_bbox_units=block.bounding_unit,
+            getattr(block.bounding_box, f"{block.bounding_y}"),
+            input_bbox_units=block.bounding_unit or "normalized",
             width=block.page_height,
             multiplier=y_multiplier,
         )
@@ -254,16 +256,18 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
 
     elif block.bounding_type == "3":
         #   Type 3 : bounding_box: [x1, y1, x2, y2, x3, y3, x4, y4]
+        if not isinstance(block.bounding_box, list):
+            raise TypeError("Expected list for bounding_box in Type 3")
         for idx in range(0, len(block.bounding_box), 2):
             x = _convert_bbox_units(
                 block.bounding_box[idx],
-                input_bbox_units=block.bounding_unit,
+                input_bbox_units=block.bounding_unit or "normalized",
                 width=block.docproto_width,
                 multiplier=x_multiplier,
             )
             y = _convert_bbox_units(
                 block.bounding_box[idx + 1],
-                input_bbox_units=block.bounding_unit,
+                input_bbox_units=block.bounding_unit or "normalized",
                 width=block.docproto_height,
                 multiplier=y_multiplier,
             )
