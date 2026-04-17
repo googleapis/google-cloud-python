@@ -991,7 +991,8 @@ class FilterNode(UnaryNode):
 @dataclasses.dataclass(frozen=True, eq=False)
 class OrderByNode(UnaryNode):
     by: Tuple[OrderingExpression, ...]
-    # This is an optimization, if true, can discard previous orderings.
+    stable: bool = True
+    # This is an optimization, if true, can discard previous orderings, even if doing a stable sort
     # might be a total ordering even if false
     is_total_order: bool = False
 

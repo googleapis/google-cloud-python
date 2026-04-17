@@ -55,3 +55,6 @@ WriteEngineType = Literal[
     "_deferred",
 ]
 VALID_WRITE_ENGINES = typing.get_args(WriteEngineType)
+
+DEFAULT_SORT_KIND = "stable"
+STABLE_SORT_KINDS = ("stable", "mergesort")
