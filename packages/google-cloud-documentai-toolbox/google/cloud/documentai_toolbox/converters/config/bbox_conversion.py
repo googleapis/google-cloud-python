@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+from types import SimpleNamespace
 from typing import Callable, List, Optional
 
 from intervaltree import intervaltree
@@ -243,6 +244,8 @@ def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
             width=block.page_height,
             multiplier=y_multiplier,
         )
+        if block.bounding_width is None or block.bounding_height is None:
+            raise ValueError("bounding_width and bounding_height must be set for Type 2")
         x_max = x_min + block.bounding_width
         y_max = y_min + block.bounding_height
         normalized_vertices.extend(
