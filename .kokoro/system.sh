@@ -14,6 +14,10 @@ git config --global --add safe.directory $(realpath .)
 echo "Installing uv globally..."
 python3 -m pip install uv
 
+# --- NEW: Set maximum concurrent jobs ---
+MAX_CONCURRENT=4
+# --------------------------------------
+
 RETVAL=0
 pwd
 
@@ -114,7 +118,16 @@ for path in `find 'packages' \
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
 
-if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
+  if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
+      
+      # --- NEW: Bounded Concurrency Throttle ---
+      # Check how many background jobs are currently running.
+      # If we hit our limit, pause for 5 seconds and check again.
+      while (( $(jobs -pr | wc -l) >= MAX_CONCURRENT )); do
+          sleep 5
+      done
+      # -----------------------------------------
+
       echo ">>> Dispatching ${package_name} in the background <<<"
       
       # Execute inside an isolated subshell ( ) to prevent GCP credential collisions
