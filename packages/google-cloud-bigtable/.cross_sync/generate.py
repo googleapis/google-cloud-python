@@ -59,9 +59,9 @@ class CrossSyncOutputFile:
             import subprocess
 
             try:
-                # Run ruff check --select I --fix
+                # Run ruff check --select I,F401 --fix
                 result = subprocess.run(
-                    ["ruff", "check", "--select", "I", "--fix", "-", "--stdin-filename", self.output_path],
+                    ["ruff", "check", "--select", "I,F401", "--fix", "-", "--stdin-filename", self.output_path],
                     input=full_str,
                     text=True,
                     capture_output=True,
