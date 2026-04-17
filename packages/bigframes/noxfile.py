@@ -461,7 +461,6 @@ def cover(session):
     omitted_paths = [
         # non-prod, unit tested
         "bigframes/core/compile/polars/*",
-        "bigframes/core/compile/sqlglot/*",
         # untested
         "bigframes/streaming/*",
         # utils
