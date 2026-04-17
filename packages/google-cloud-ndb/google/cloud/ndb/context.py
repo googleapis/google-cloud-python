@@ -319,8 +319,8 @@ class _Context(_ContextTuple):
             legacy_data=legacy_data,
         )
 
-        # 'context' is dynamically composed at runtime and may include methods 
-        # from multiple sources that Mypy cannot statically resolve here. 
+        # 'context' is dynamically composed at runtime and may include methods
+        # from multiple sources that Mypy cannot statically resolve here.
         # We cast to `Any` to access the extended policy interface.
         ctx = cast(Any, context)
         ctx.set_cache_policy(cache_policy)
