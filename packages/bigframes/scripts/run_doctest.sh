@@ -36,9 +36,16 @@ if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"conti
     echo "Running doctest for: ${package_name}"
     echo "------------------------------------------------------------"
     
+    # Ensure credentials are set for system tests in Kokoro
+    if [[ -z "${GOOGLE_APPLICATION_CREDENTIALS}" && -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
+        export GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
+    fi
+
     export GOOGLE_CLOUD_PROJECT="bigframes-testing"
     cd "${package_path}"
-    python3 -m nox -s cleanup -s doctest
+    
+    python3 -m nox -s cleanup
+    python3 -m nox -s doctest
 else
     echo "No changes in ${package_name} and not a continuous build, skipping."
 fi
