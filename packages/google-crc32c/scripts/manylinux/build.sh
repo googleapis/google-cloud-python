@@ -52,6 +52,15 @@ docker run \
     quay.io/pypa/manylinux2014_aarch64 \
     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
 
+docker pull quay.io/pypa/manylinux_2_39_riscv64
+docker run \
+    --rm \
+    --interactive \
+    --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
+    --env BUILD_PYTHON=${BUILD_PYTHON} \
+    quay.io/pypa/manylinux_2_39_riscv64 \
+    /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
+
 if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
     . /${MANYLINUX_DIR}/publish_python_wheel.sh
 fi
