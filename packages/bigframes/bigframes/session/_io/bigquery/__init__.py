@@ -249,26 +249,19 @@ def create_bq_event_callback(publisher):
 
     progress_bar = bigframes._config.options.display.progress_bar
 
-    def publish_bq_event(event):
-        if isinstance(event, google.cloud.bigquery._job_helpers.QueryFinishedEvent):
-            bf_event = bigframes.core.events.BigQueryFinishedEvent.from_bqclient(
-                event, progress_bar=progress_bar
-            )
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QueryReceivedEvent):
-            bf_event = bigframes.core.events.BigQueryReceivedEvent.from_bqclient(
-                event, progress_bar=progress_bar
-            )
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QueryRetryEvent):
-            bf_event = bigframes.core.events.BigQueryRetryEvent.from_bqclient(
-                event, progress_bar=progress_bar
-            )
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QuerySentEvent):
-            bf_event = bigframes.core.events.BigQuerySentEvent.from_bqclient(
-                event, progress_bar=progress_bar
-            )
-        else:
-            bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
+    event_map = {
+        google.cloud.bigquery._job_helpers.QueryFinishedEvent: bigframes.core.events.BigQueryFinishedEvent,
+        google.cloud.bigquery._job_helpers.QueryReceivedEvent: bigframes.core.events.BigQueryReceivedEvent,
+        google.cloud.bigquery._job_helpers.QueryRetryEvent: bigframes.core.events.BigQueryRetryEvent,
+        google.cloud.bigquery._job_helpers.QuerySentEvent: bigframes.core.events.BigQuerySentEvent,
+    }
 
+    def publish_bq_event(event):
+        bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
+        for bq_type, bf_type in event_map.items():
+            if isinstance(event, bq_type):
+                bf_event = bf_type.from_bqclient(event, progress_bar=progress_bar)
+                break
         publisher.publish(bf_event)
 
     return publish_bq_event
