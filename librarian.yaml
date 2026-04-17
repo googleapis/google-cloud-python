@@ -4024,7 +4024,6 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_generate: true
     python:
       library_type: OTHER
       name_pretty_override: A python wrapper of the C library 'Google CRC32C'
