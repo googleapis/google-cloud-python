@@ -1677,7 +1677,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       product_documentation_override: https://cloud.google.com/dataplex
       metadata_name_override: dataplex
