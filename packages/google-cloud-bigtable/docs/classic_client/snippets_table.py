@@ -30,17 +30,13 @@ need to be deleted during teardown.
 """
 
 from datetime import datetime, timezone
+
 import pytest
-
-from google.api_core.exceptions import TooManyRequests
-from google.api_core.exceptions import ServiceUnavailable
-from test_utils.system import unique_resource_id
+from google.api_core.exceptions import ServiceUnavailable, TooManyRequests
 from test_utils.retry import RetryErrors
+from test_utils.system import unique_resource_id
 
-from google.cloud.bigtable import Client
-from google.cloud.bigtable import enums
-from google.cloud.bigtable import column_family
-
+from google.cloud.bigtable import Client, column_family, enums
 
 INSTANCE_ID = "snippet" + unique_resource_id("-")
 CLUSTER_ID = "clus-1" + unique_resource_id("-")
@@ -53,9 +49,7 @@ SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
 LABEL_KEY = "python-snippet"
 LABEL_STAMP = (
-    datetime.now(timezone.utc)
-    .replace(microsecond=0)
-    .strftime("%Y-%m-%dt%H-%M-%S")
+    datetime.now(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COLUMN_FAMILY_ID = "col_fam_id1"
@@ -112,8 +106,7 @@ def teardown_module():
 
 def test_bigtable_create_table():
     # [START bigtable_api_create_table]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -392,8 +385,7 @@ def test_bigtable_table_set_iam_policy_then_get_iam_policy():
 
     # [START bigtable_api_table_set_iam_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -580,8 +572,7 @@ def test_bigtable_column_family_name():
 
 def test_bigtable_create_update_delete_column_family():
     # [START bigtable_api_create_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -597,8 +588,7 @@ def test_bigtable_create_update_delete_column_family():
     assert column_families[column_family_id].gc_rule == gc_rule
 
     # [START bigtable_api_update_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -616,8 +606,7 @@ def test_bigtable_create_update_delete_column_family():
     assert updated_families[column_family_id].gc_rule == max_age_rule
 
     # [START bigtable_api_delete_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -670,8 +659,7 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
 
     # [START bigtable_api_add_row_range]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.row_set import RowSet
-    from google.cloud.bigtable.row_set import RowRange
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -828,8 +816,7 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
 
 def test_bigtable_create_family_gc_max_age():
     # [START bigtable_api_create_family_gc_max_age]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -850,8 +837,7 @@ def test_bigtable_create_family_gc_max_age():
 
 def test_bigtable_create_family_gc_max_versions():
     # [START bigtable_api_create_family_gc_max_versions]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -871,8 +857,7 @@ def test_bigtable_create_family_gc_max_versions():
 
 def test_bigtable_create_family_gc_union():
     # [START bigtable_api_create_family_gc_union]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -897,8 +882,7 @@ def test_bigtable_create_family_gc_union():
 
 def test_bigtable_create_family_gc_intersection():
     # [START bigtable_api_create_family_gc_intersection]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -926,8 +910,7 @@ def test_bigtable_create_family_gc_intersection():
 
 def test_bigtable_create_family_gc_nested():
     # [START bigtable_api_create_family_gc_nested]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)

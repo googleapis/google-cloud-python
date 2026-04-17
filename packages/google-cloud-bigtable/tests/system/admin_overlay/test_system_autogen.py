@@ -18,11 +18,15 @@
 import os
 from datetime import datetime, timedelta
 from typing import Tuple
+
 import pytest
+from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
 from google.cloud import bigtable_admin_v2 as admin_v2
 from google.cloud.bigtable.data import mutations, read_rows_query
 from google.cloud.bigtable.data._cross_sync import CrossSync
+
 from .conftest import (
     BACKUP_PREFIX,
     DEFAULT_CLUSTER_LOCATIONS,
@@ -38,7 +42,6 @@ from .conftest import (
     TEST_TABLE_NAME,
     generate_unique_suffix,
 )
-from google.api_core import operation as api_core_operation
 
 if os.getenv(BIGTABLE_EMULATOR):
     pytest.skip(
