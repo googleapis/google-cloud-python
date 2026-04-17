@@ -57,6 +57,56 @@ class JsonObject(dict):
         if not self._is_null:
             super(JsonObject, self).__init__(*args, **kwargs)
 
+    def __len__(self):
+        if self._is_null:
+            return 0
+        if self._is_array:
+            return len(self._array_value)
+        if self._is_scalar_value:
+            return 1
+        return super(JsonObject, self).__len__()
+
+    def __bool__(self):
+        if self._is_null:
+            return False
+        if self._is_array:
+            return bool(self._array_value)
+        if self._is_scalar_value:
+            return True
+        return len(self) > 0
+
+    def __iter__(self):
+        if self._is_array:
+            return iter(self._array_value)
+        if self._is_scalar_value:
+            raise TypeError(f"'{type(self._simple_value).__name__}' object is not iterable")
+        return super(JsonObject, self).__iter__()
+
+    def __getitem__(self, key):
+        if self._is_array:
+            return self._array_value[key]
+        if self._is_scalar_value:
+            raise TypeError(f"'{type(self._simple_value).__name__}' object is not subscriptable")
+        return super(JsonObject, self).__getitem__(key)
+
+    def __contains__(self, item):
+        if self._is_array:
+            return item in self._array_value
+        if self._is_scalar_value:
+            raise TypeError(f"argument of type '{type(self._simple_value).__name__}' is not iterable")
+        return super(JsonObject, self).__contains__(item)
+
+    def __eq__(self, other):
+        if isinstance(other, JsonObject):
+            return self.serialize() == other.serialize()
+        if self._is_array:
+            return self._array_value == other
+        if self._is_scalar_value:
+            return self._simple_value == other
+        if self._is_null:
+            return other is None or (isinstance(other, dict) and len(other) == 0)
+        return super(JsonObject, self).__eq__(other)
+
     def __repr__(self):
         if self._is_array:
             return str(self._array_value)
