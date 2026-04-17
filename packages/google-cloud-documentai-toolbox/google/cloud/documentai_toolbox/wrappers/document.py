@@ -22,7 +22,7 @@ from functools import cached_property
 import glob
 import os
 import re
-from typing import Dict, Iterator, List, Optional, Type, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Type, Union
 
 from google.api_core.client_options import ClientOptions
 from google.api_core.operation import from_gapic as operation_from_gapic
@@ -51,7 +51,7 @@ def _document_layout_blocks_from_shards(
     shards: List[documentai.Document],
 ) -> Iterator[documentai.Document.DocumentLayout.DocumentLayoutBlock]:
     def extract_blocks(
-        blocks: List[documentai.Document.DocumentLayout.DocumentLayoutBlock],
+        blocks: Iterable[documentai.Document.DocumentLayout.DocumentLayoutBlock],
     ) -> Iterator[documentai.Document.DocumentLayout.DocumentLayoutBlock]:
         queue = collections.deque(blocks)
 
@@ -325,8 +325,9 @@ def _dict_to_bigquery(
     bq_client = bigquery.Client(
         project=project_id, client_info=gcs_utilities._get_client_info()
     )
+    resolved_project_id = project_id or bq_client.project
     table_ref = bigquery.DatasetReference(
-        project=project_id, dataset_id=dataset_name
+        project=resolved_project_id, dataset_id=dataset_name
     ).table(table_name)
 
     job_config = bigquery.LoadJobConfig(
@@ -345,7 +346,7 @@ def _dict_to_bigquery(
 
 
 def _apply_text_offset(
-    documentai_object: Union[Dict[str, Dict], List], text_offset: int
+    documentai_object: Union[Dict[str, Any], List[Any]], text_offset: int
 ) -> None:
     r"""Applies a text offset to all text_segments in `documentai_object`.
 

@@ -20,7 +20,9 @@ from typing import Dict, List, Optional, Tuple
 
 from google.api_core.gapic_v1 import client_info
 
-from google.cloud import documentai, documentai_toolbox, storage
+from google.cloud import documentai  # type: ignore[attr-defined]
+from google.cloud import documentai_toolbox
+from google.cloud import storage  # type: ignore[attr-defined]
 from google.cloud.documentai_toolbox import constants
 
 
@@ -91,6 +93,8 @@ def get_blobs(
     if gcs_uri:
         gcs_bucket_name, gcs_prefix = split_gcs_uri(gcs_uri)
 
+    if gcs_prefix is None:
+        raise TypeError("gcs_prefix cannot be None")
     if re.match(constants.FILE_CHECK_REGEX, gcs_prefix):
         raise ValueError("gcs_prefix cannot contain file types")
 
