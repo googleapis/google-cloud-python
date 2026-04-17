@@ -21,10 +21,10 @@ from typing import Any, List, Optional, Type, Union, cast
 
 from google.cloud import documentai
 
-ConfigOrData = Union[SimpleNamespace, str, int, float, None]
+ConfigOrData = Union[SimpleNamespace, str, int, float, List[Any], None]
 
 
-def _get_target_object(json_data: Any, target_object: str) -> Any:
+def _get_target_object(json_data: Any, target_object: str) -> ConfigOrData:
     r"""Returns SimpleNamespace of target_object.
 
     Args:
