@@ -18,12 +18,14 @@ import grpc
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
+_BLOB_SYNC_ATTRS = ("content_type", "metadata")
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     """Class representing a gRPC bidi-stream for writing data from a GCS
@@ -64,6 +66,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         client: AsyncGrpcClient.grpc_client,
         bucket_name: str,
         object_name: str,
+        blob: Optional[Blob] = None,
         generation_number: Optional[int] = None,  # None means new object
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         routing_token: Optional[str] = None,
@@ -83,7 +86,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.client: AsyncGrpcClient.grpc_client = client
         self.write_handle: Optional[_storage_v2.BidiWriteHandle] = write_handle
         self.routing_token: Optional[str] = routing_token
-
+        self.blob: Optional[Blob] = blob
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
         self.rpc = self.client._client._transport._wrapped_methods[
@@ -118,10 +121,20 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         # if `generation_number` == 0 new object will be created only if there
         # isn't any existing object.
         if self.generation_number is None or self.generation_number == 0:
+            resource_params = {
+            "name": self.object_name,
+            "bucket": self._full_bucket_name,
+            }
+            if self.blob:
+                resource_params.update({
+                    attr: getattr(self.blob, attr)
+                    for attr in _BLOB_SYNC_ATTRS
+                    if getattr(self.blob, attr, None) is not None
+                })
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
                     resource=_storage_v2.Object(
-                        name=self.object_name, bucket=self._full_bucket_name
+                        **resource_params
                     ),
                     appendable=True,
                     if_generation_match=self.generation_number,

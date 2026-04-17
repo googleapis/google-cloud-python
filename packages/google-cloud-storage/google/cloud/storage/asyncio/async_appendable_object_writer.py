@@ -24,6 +24,7 @@ from google.rpc import status_pb2
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
@@ -212,6 +213,31 @@ class AsyncAppendableObjectWriter:
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
 
+    @classmethod
+    def from_blob(
+        cls,
+        client: AsyncGrpcClient,
+        blob: Blob,
+        generation: Optional[int] = None,
+        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
+        writer_options: Optional[dict] = None,
+    ) -> "AsyncAppendableObjectWriter":
+        """Creates an AsyncAppendableObjectWriter from an existing Blob object.
+
+        This removes the need for the user to specify bucket_name and object_name
+        separately if they already have a Blob instance.
+        """
+        instance = cls(
+            client=client,
+            bucket_name=blob.bucket.name,
+            object_name=blob.name,
+            generation=generation,
+            write_handle=write_handle,
+            writer_options=writer_options,
+        )
+        instance.blob = blob
+        return instance
+
     async def state_lookup(self) -> int:
         """Returns the persisted_size
 
@@ -297,6 +323,7 @@ class AsyncAppendableObjectWriter:
                 client=self.client.grpc_client,
                 bucket_name=self.bucket_name,
                 object_name=self.object_name,
+                blob=self.blob,
                 generation_number=self.generation,
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
