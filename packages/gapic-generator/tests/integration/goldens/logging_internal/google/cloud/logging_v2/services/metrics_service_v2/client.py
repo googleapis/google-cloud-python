@@ -13,27 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
+from collections import OrderedDict
+from http import HTTPStatus
+from typing import (
+    Callable,
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
-from google.cloud.logging_v2 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
-from google.auth.transport.grpc import SslCredentials             # type: ignore
-from google.auth.exceptions import MutualTLSChannelError          # type: ignore
-from google.oauth2 import service_account                         # type: ignore
-import google.protobuf
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.logging_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -42,19 +53,21 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.logging_v2.services.metrics_service_v2 import pagers
-from google.cloud.logging_v2.types import logging_metrics
-from google.longrunning import operations_pb2 # type: ignore
 import google.api.distribution_pb2 as distribution_pb2  # type: ignore
 import google.api.metric_pb2 as metric_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
+from google.cloud.logging_v2.services.metrics_service_v2 import pagers
+from google.cloud.logging_v2.types import logging_metrics
+from google.longrunning import operations_pb2  # type: ignore
+
+from .transports.base import DEFAULT_CLIENT_INFO, MetricsServiceV2Transport
 from .transports.grpc import MetricsServiceV2GrpcTransport
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
 
@@ -66,13 +79,15 @@ class BaseMetricsServiceV2ClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
+
     _transport_registry = OrderedDict()  # type: Dict[str, Type[MetricsServiceV2Transport]]
     _transport_registry["grpc"] = MetricsServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = MetricsServiceV2GrpcAsyncIOTransport
 
-    def get_transport_class(cls,
-            label: Optional[str] = None,
-        ) -> Type[MetricsServiceV2Transport]:
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[MetricsServiceV2Transport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -148,14 +163,16 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             bool: whether client certificate should be used for mTLS
         Raises:
             ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
+        else:  # pragma: NO COVER
             # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            use_client_cert_str = os.getenv(
+                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+            ).lower()
             if use_client_cert_str not in ("true", "false"):
                 raise ValueError(
                     "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
@@ -194,8 +211,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         Returns:
             BaseMetricsServiceV2Client: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
+        credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -212,73 +228,103 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         return self._transport
 
     @staticmethod
-    def log_metric_path(project: str,metric: str,) -> str:
+    def log_metric_path(
+        project: str,
+        metric: str,
+    ) -> str:
         """Returns a fully-qualified log_metric string."""
-        return "projects/{project}/metrics/{metric}".format(project=project, metric=metric, )
+        return "projects/{project}/metrics/{metric}".format(
+            project=project,
+            metric=metric,
+        )
 
     @staticmethod
-    def parse_log_metric_path(path: str) -> Dict[str,str]:
+    def parse_log_metric_path(path: str) -> Dict[str, str]:
         """Parses a log_metric path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/metrics/(?P<metric>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str, ) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str, ) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder, )
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str,str]:
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str, ) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization, )
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str,str]:
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str, ) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project, )
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str,str]:
+    def parse_common_project_path(path: str) -> Dict[str, str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str, ) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(project=project, location=location, )
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str,str]:
+    def parse_common_location_path(path: str) -> Dict[str, str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+    ):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -310,14 +356,18 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning)
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = BaseMetricsServiceV2Client._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
 
         # Figure out the client cert source to use.
         client_cert_source = None
@@ -330,7 +380,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -355,7 +407,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
         return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
@@ -378,7 +432,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
+    def _get_api_endpoint(
+        api_override, client_cert_source, universe_domain, use_mtls_endpoint
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -394,17 +450,25 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
             _default_universe = BaseMetricsServiceV2Client._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {_default_universe}."
+                )
             api_endpoint = BaseMetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = BaseMetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
+            api_endpoint = BaseMetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=universe_domain
+            )
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
+    def _get_universe_domain(
+        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
+    ) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -440,15 +504,18 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         return True
 
     def _add_cred_info_for_auth_errors(
-        self,
-        error: core_exceptions.GoogleAPICallError
+        self, error: core_exceptions.GoogleAPICallError
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
+        if error.code not in [
+            HTTPStatus.UNAUTHORIZED,
+            HTTPStatus.FORBIDDEN,
+            HTTPStatus.NOT_FOUND,
+        ]:
             return
 
         cred = self._transport._credentials
@@ -481,12 +548,18 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         """
         return self._universe_domain
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, MetricsServiceV2Transport, Callable[..., MetricsServiceV2Transport]]] = None,
-            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[
+            Union[
+                str, MetricsServiceV2Transport, Callable[..., MetricsServiceV2Transport]
+            ]
+        ] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the base metrics service v2 client.
 
         Args:
@@ -541,13 +614,21 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
+        self._client_options = cast(
+            client_options_lib.ClientOptions, self._client_options
+        )
 
-        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = BaseMetricsServiceV2Client._read_environment_variables()
-        self._client_cert_source = BaseMetricsServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = BaseMetricsServiceV2Client._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            BaseMetricsServiceV2Client._read_environment_variables()
+        )
+        self._client_cert_source = BaseMetricsServiceV2Client._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
+        )
+        self._universe_domain = BaseMetricsServiceV2Client._get_universe_domain(
+            universe_domain_opt, self._universe_domain_env
+        )
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -559,7 +640,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -568,30 +651,41 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         if transport_provided:
             # transport is a MetricsServiceV2Transport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError("When providing a transport instance, "
-                                 "provide its credentials directly.")
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(MetricsServiceV2Transport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (self._api_endpoint or
-            BaseMetricsServiceV2Client._get_api_endpoint(
+        self._api_endpoint = (
+            self._api_endpoint
+            or BaseMetricsServiceV2Client._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
-                self._use_mtls_endpoint))
+                self._use_mtls_endpoint,
+            )
+        )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
-                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
 
-            transport_init: Union[Type[MetricsServiceV2Transport], Callable[..., MetricsServiceV2Transport]] = (
+            transport_init: Union[
+                Type[MetricsServiceV2Transport],
+                Callable[..., MetricsServiceV2Transport],
+            ] = (
                 BaseMetricsServiceV2Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetricsServiceV2Transport], transport)
@@ -610,28 +704,37 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.logging_v2.BaseMetricsServiceV2Client`.",
-                    extra = {
+                    extra={
                         "serviceName": "google.logging.v2.MetricsServiceV2",
-                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    } if hasattr(self._transport, "_credentials") else {
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
                         "serviceName": "google.logging.v2.MetricsServiceV2",
                         "credentialsType": None,
-                    }
+                    },
                 )
 
-    def _list_log_metrics(self,
-            request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLogMetricsPager:
+    def _list_log_metrics(
+        self,
+        request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
 
         .. code-block:: python
@@ -696,10 +799,14 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -717,9 +824,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -747,14 +852,15 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_log_metric(self,
-            request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    def _get_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
         .. code-block:: python
@@ -824,10 +930,14 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [metric_name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -845,9 +955,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("metric_name", request.metric_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -864,15 +974,16 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _create_log_metric(self,
-            request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            metric: Optional[logging_metrics.LogMetric] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    def _create_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
 
         .. code-block:: python
@@ -958,10 +1069,14 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, metric]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -981,9 +1096,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -1000,15 +1113,16 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_log_metric(self,
-            request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            metric: Optional[logging_metrics.LogMetric] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    def _update_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
         .. code-block:: python
@@ -1093,10 +1207,14 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [metric_name, metric]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1116,9 +1234,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("metric_name", request.metric_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -1135,14 +1253,15 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _delete_log_metric(self,
-            request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def _delete_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a logs-based metric.
 
         .. code-block:: python
@@ -1193,10 +1312,14 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [metric_name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1214,9 +1337,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("metric_name", request.metric_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -1285,8 +1408,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1295,7 +1417,11 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -1345,8 +1471,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1355,7 +1480,11 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -1408,27 +1537,26 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
-
-
-
-
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = (
-    "BaseMetricsServiceV2Client",
-)
+__all__ = ("BaseMetricsServiceV2Client",)

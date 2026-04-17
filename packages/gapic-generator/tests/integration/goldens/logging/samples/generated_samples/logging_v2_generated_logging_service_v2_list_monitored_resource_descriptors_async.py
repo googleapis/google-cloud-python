@@ -39,8 +39,7 @@ async def sample_list_monitored_resource_descriptors():
     client = logging_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    request = logging_v2.ListMonitoredResourceDescriptorsRequest(
-    )
+    request = logging_v2.ListMonitoredResourceDescriptorsRequest()
 
     # Make the request
     page_result = client.list_monitored_resource_descriptors(request=request)
@@ -48,5 +47,6 @@ async def sample_list_monitored_resource_descriptors():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END logging_v2_generated_LoggingServiceV2_ListMonitoredResourceDescriptors_async]

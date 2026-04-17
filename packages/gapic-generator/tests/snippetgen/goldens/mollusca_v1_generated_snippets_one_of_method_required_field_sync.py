@@ -50,4 +50,5 @@ def sample_one_of_method_required_field():
     # Handle the response
     print(response)
 
+
 # [END mollusca_v1_generated_Snippets_OneOfMethodRequiredField_sync]

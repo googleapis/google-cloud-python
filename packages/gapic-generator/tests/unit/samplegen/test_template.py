@@ -13,14 +13,16 @@
 # limitations under the License.
 
 
-import jinja2
 import os.path as path
+from textwrap import dedent
+
+import jinja2
+
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.utils as sample_utils
 import gapic.utils as utils
-
 from gapic.samplegen_utils.types import CallingForm
-from textwrap import dedent
+
 from .. import common_types
 
 

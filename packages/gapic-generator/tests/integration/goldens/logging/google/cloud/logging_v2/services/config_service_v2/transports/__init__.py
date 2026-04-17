@@ -20,14 +20,13 @@ from .base import ConfigServiceV2Transport
 from .grpc import ConfigServiceV2GrpcTransport
 from .grpc_asyncio import ConfigServiceV2GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ConfigServiceV2Transport]]
-_transport_registry['grpc'] = ConfigServiceV2GrpcTransport
-_transport_registry['grpc_asyncio'] = ConfigServiceV2GrpcAsyncIOTransport
+_transport_registry["grpc"] = ConfigServiceV2GrpcTransport
+_transport_registry["grpc_asyncio"] = ConfigServiceV2GrpcAsyncIOTransport
 
 __all__ = (
-    'ConfigServiceV2Transport',
-    'ConfigServiceV2GrpcTransport',
-    'ConfigServiceV2GrpcAsyncIOTransport',
+    "ConfigServiceV2Transport",
+    "ConfigServiceV2GrpcTransport",
+    "ConfigServiceV2GrpcAsyncIOTransport",
 )

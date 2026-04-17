@@ -58,4 +58,5 @@ def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedis_UpdateInstance_sync]

@@ -16,7 +16,7 @@ import abc
 import dataclasses
 import os
 import re
-from typing import cast, List, Match, Tuple
+from typing import List, Match, Tuple, cast
 
 from google.protobuf import descriptor_pb2
 

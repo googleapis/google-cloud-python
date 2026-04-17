@@ -57,4 +57,5 @@ def sample_method_one_signature():
     # Handle the response
     print(response)
 
+
 # [END mollusca_v1_generated_Snippets_MethodOneSignature_sync]

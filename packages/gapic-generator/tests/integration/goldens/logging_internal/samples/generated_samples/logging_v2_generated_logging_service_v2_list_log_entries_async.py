@@ -40,7 +40,7 @@ async def sample_list_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogEntriesRequest(
-        resource_names=['resource_names_value1', 'resource_names_value2'],
+        resource_names=["resource_names_value1", "resource_names_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_list_log_entries():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END logging_v2_generated_LoggingServiceV2_ListLogEntries_async]

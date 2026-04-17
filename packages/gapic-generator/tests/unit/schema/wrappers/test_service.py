@@ -22,7 +22,6 @@ from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
 from gapic.schema.wrappers import CommonResource
-
 from test_utils.test_utils import (
     get_method,
     make_enum,

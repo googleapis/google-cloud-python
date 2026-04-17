@@ -13,22 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Iterator,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[
+        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
+    ]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    eventarc,
+    trigger,
+)
 
 
 class ListTriggersPager:
@@ -48,14 +64,17 @@ class ListTriggersPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., eventarc.ListTriggersResponse],
-            request: eventarc.ListTriggersRequest,
-            response: eventarc.ListTriggersResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., eventarc.ListTriggersResponse],
+        request: eventarc.ListTriggersRequest,
+        response: eventarc.ListTriggersResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -88,7 +107,12 @@ class ListTriggersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[trigger.Trigger]:
@@ -96,7 +120,7 @@ class ListTriggersPager:
             yield from page.triggers
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListTriggersAsyncPager:
@@ -116,14 +140,17 @@ class ListTriggersAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[eventarc.ListTriggersResponse]],
-            request: eventarc.ListTriggersRequest,
-            response: eventarc.ListTriggersResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[eventarc.ListTriggersResponse]],
+        request: eventarc.ListTriggersRequest,
+        response: eventarc.ListTriggersResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -156,8 +183,14 @@ class ListTriggersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[trigger.Trigger]:
         async def async_generator():
             async for page in self.pages:
@@ -167,7 +200,7 @@ class ListTriggersAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListChannelsPager:
@@ -187,14 +220,17 @@ class ListChannelsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., eventarc.ListChannelsResponse],
-            request: eventarc.ListChannelsRequest,
-            response: eventarc.ListChannelsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., eventarc.ListChannelsResponse],
+        request: eventarc.ListChannelsRequest,
+        response: eventarc.ListChannelsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -227,7 +263,12 @@ class ListChannelsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[channel.Channel]:
@@ -235,7 +276,7 @@ class ListChannelsPager:
             yield from page.channels
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListChannelsAsyncPager:
@@ -255,14 +296,17 @@ class ListChannelsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[eventarc.ListChannelsResponse]],
-            request: eventarc.ListChannelsRequest,
-            response: eventarc.ListChannelsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[eventarc.ListChannelsResponse]],
+        request: eventarc.ListChannelsRequest,
+        response: eventarc.ListChannelsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -295,8 +339,14 @@ class ListChannelsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[channel.Channel]:
         async def async_generator():
             async for page in self.pages:
@@ -306,7 +356,7 @@ class ListChannelsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProvidersPager:
@@ -326,14 +376,17 @@ class ListProvidersPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., eventarc.ListProvidersResponse],
-            request: eventarc.ListProvidersRequest,
-            response: eventarc.ListProvidersResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., eventarc.ListProvidersResponse],
+        request: eventarc.ListProvidersRequest,
+        response: eventarc.ListProvidersResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -366,7 +419,12 @@ class ListProvidersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[discovery.Provider]:
@@ -374,7 +432,7 @@ class ListProvidersPager:
             yield from page.providers
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProvidersAsyncPager:
@@ -394,14 +452,17 @@ class ListProvidersAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[eventarc.ListProvidersResponse]],
-            request: eventarc.ListProvidersRequest,
-            response: eventarc.ListProvidersResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[eventarc.ListProvidersResponse]],
+        request: eventarc.ListProvidersRequest,
+        response: eventarc.ListProvidersResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -434,8 +495,14 @@ class ListProvidersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[discovery.Provider]:
         async def async_generator():
             async for page in self.pages:
@@ -445,7 +512,7 @@ class ListProvidersAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListChannelConnectionsPager:
@@ -465,14 +532,17 @@ class ListChannelConnectionsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., eventarc.ListChannelConnectionsResponse],
-            request: eventarc.ListChannelConnectionsRequest,
-            response: eventarc.ListChannelConnectionsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., eventarc.ListChannelConnectionsResponse],
+        request: eventarc.ListChannelConnectionsRequest,
+        response: eventarc.ListChannelConnectionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -505,7 +575,12 @@ class ListChannelConnectionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[channel_connection.ChannelConnection]:
@@ -513,7 +588,7 @@ class ListChannelConnectionsPager:
             yield from page.channel_connections
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListChannelConnectionsAsyncPager:
@@ -533,14 +608,17 @@ class ListChannelConnectionsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[eventarc.ListChannelConnectionsResponse]],
-            request: eventarc.ListChannelConnectionsRequest,
-            response: eventarc.ListChannelConnectionsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[eventarc.ListChannelConnectionsResponse]],
+        request: eventarc.ListChannelConnectionsRequest,
+        response: eventarc.ListChannelConnectionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -573,8 +651,14 @@ class ListChannelConnectionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[channel_connection.ChannelConnection]:
         async def async_generator():
             async for page in self.pages:
@@ -584,4 +668,4 @@ class ListChannelConnectionsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

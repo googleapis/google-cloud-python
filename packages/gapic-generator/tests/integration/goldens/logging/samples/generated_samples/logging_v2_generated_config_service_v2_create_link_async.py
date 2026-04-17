@@ -54,4 +54,5 @@ async def sample_create_link():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CreateLink_async]

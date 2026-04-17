@@ -18,38 +18,42 @@ from google.cloud.redis import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.redis_v1.services.cloud_redis.async_client import (
+    CloudRedisAsyncClient,
+)
 from google.cloud.redis_v1.services.cloud_redis.client import CloudRedisClient
-from google.cloud.redis_v1.services.cloud_redis.async_client import CloudRedisAsyncClient
+from google.cloud.redis_v1.types.cloud_redis import (
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    MaintenancePolicy,
+    MaintenanceSchedule,
+    NodeInfo,
+    OperationMetadata,
+    PersistenceConfig,
+    TlsCertificate,
+    UpdateInstanceRequest,
+    WeeklyMaintenanceWindow,
+)
 
-from google.cloud.redis_v1.types.cloud_redis import CreateInstanceRequest
-from google.cloud.redis_v1.types.cloud_redis import DeleteInstanceRequest
-from google.cloud.redis_v1.types.cloud_redis import GetInstanceRequest
-from google.cloud.redis_v1.types.cloud_redis import Instance
-from google.cloud.redis_v1.types.cloud_redis import ListInstancesRequest
-from google.cloud.redis_v1.types.cloud_redis import ListInstancesResponse
-from google.cloud.redis_v1.types.cloud_redis import MaintenancePolicy
-from google.cloud.redis_v1.types.cloud_redis import MaintenanceSchedule
-from google.cloud.redis_v1.types.cloud_redis import NodeInfo
-from google.cloud.redis_v1.types.cloud_redis import OperationMetadata
-from google.cloud.redis_v1.types.cloud_redis import PersistenceConfig
-from google.cloud.redis_v1.types.cloud_redis import TlsCertificate
-from google.cloud.redis_v1.types.cloud_redis import UpdateInstanceRequest
-from google.cloud.redis_v1.types.cloud_redis import WeeklyMaintenanceWindow
-
-__all__ = ('CloudRedisClient',
-    'CloudRedisAsyncClient',
-    'CreateInstanceRequest',
-    'DeleteInstanceRequest',
-    'GetInstanceRequest',
-    'Instance',
-    'ListInstancesRequest',
-    'ListInstancesResponse',
-    'MaintenancePolicy',
-    'MaintenanceSchedule',
-    'NodeInfo',
-    'OperationMetadata',
-    'PersistenceConfig',
-    'TlsCertificate',
-    'UpdateInstanceRequest',
-    'WeeklyMaintenanceWindow',
+__all__ = (
+    "CloudRedisClient",
+    "CloudRedisAsyncClient",
+    "CreateInstanceRequest",
+    "DeleteInstanceRequest",
+    "GetInstanceRequest",
+    "Instance",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
+    "MaintenancePolicy",
+    "MaintenanceSchedule",
+    "NodeInfo",
+    "OperationMetadata",
+    "PersistenceConfig",
+    "TlsCertificate",
+    "UpdateInstanceRequest",
+    "WeeklyMaintenanceWindow",
 )

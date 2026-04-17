@@ -17,7 +17,6 @@ import sys
 import typing
 
 import click
-
 from google.protobuf.compiler import plugin_pb2
 
 from gapic import generator

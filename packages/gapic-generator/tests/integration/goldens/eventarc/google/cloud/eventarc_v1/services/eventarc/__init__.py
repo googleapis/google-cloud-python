@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import EventarcClient
 from .async_client import EventarcAsyncClient
+from .client import EventarcClient
 
 __all__ = (
-    'EventarcClient',
-    'EventarcAsyncClient',
+    "EventarcClient",
+    "EventarcAsyncClient",
 )

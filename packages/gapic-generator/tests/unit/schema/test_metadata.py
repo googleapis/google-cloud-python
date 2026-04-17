@@ -16,11 +16,9 @@ import typing
 
 from google.protobuf import descriptor_pb2
 
-from test_utils.test_utils import make_doc_meta
-
-from gapic.schema import metadata
-from gapic.schema import naming
+from gapic.schema import metadata, naming
 from gapic.utils import RESERVED_NAMES
+from test_utils.test_utils import make_doc_meta
 
 
 def test_address_str():

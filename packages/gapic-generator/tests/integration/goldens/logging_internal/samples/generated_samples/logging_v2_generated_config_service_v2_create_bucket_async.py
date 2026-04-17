@@ -50,4 +50,5 @@ async def sample_create_bucket():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CreateBucket_async]

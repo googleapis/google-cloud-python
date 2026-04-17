@@ -14,18 +14,24 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from typing import Dict, Type, Tuple
+from typing import Dict, Tuple, Type
 
 from .base import CloudRedisTransport
 from .grpc import CloudRedisGrpcTransport
 from .grpc_asyncio import CloudRedisGrpcAsyncIOTransport
-from .rest import CloudRedisRestTransport
-from .rest import CloudRedisRestInterceptor
+from .rest import CloudRedisRestInterceptor, CloudRedisRestTransport
+
 ASYNC_REST_CLASSES: Tuple[str, ...]
 try:
-    from .rest_asyncio import AsyncCloudRedisRestTransport
-    from .rest_asyncio import AsyncCloudRedisRestInterceptor
-    ASYNC_REST_CLASSES = ('AsyncCloudRedisRestTransport', 'AsyncCloudRedisRestInterceptor')
+    from .rest_asyncio import (
+        AsyncCloudRedisRestInterceptor,
+        AsyncCloudRedisRestTransport,
+    )
+
+    ASYNC_REST_CLASSES = (
+        "AsyncCloudRedisRestTransport",
+        "AsyncCloudRedisRestInterceptor",
+    )
     HAS_REST_ASYNC = True
 except ImportError:  # pragma: NO COVER
     ASYNC_REST_CLASSES = ()
@@ -34,16 +40,16 @@ except ImportError:  # pragma: NO COVER
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]]
-_transport_registry['grpc'] = CloudRedisGrpcTransport
-_transport_registry['grpc_asyncio'] = CloudRedisGrpcAsyncIOTransport
-_transport_registry['rest'] = CloudRedisRestTransport
+_transport_registry["grpc"] = CloudRedisGrpcTransport
+_transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
+_transport_registry["rest"] = CloudRedisRestTransport
 if HAS_REST_ASYNC:  # pragma: NO COVER
-    _transport_registry['rest_asyncio'] = AsyncCloudRedisRestTransport
+    _transport_registry["rest_asyncio"] = AsyncCloudRedisRestTransport
 
 __all__ = (
-    'CloudRedisTransport',
-    'CloudRedisGrpcTransport',
-    'CloudRedisGrpcAsyncIOTransport',
-    'CloudRedisRestTransport',
-    'CloudRedisRestInterceptor',
+    "CloudRedisTransport",
+    "CloudRedisGrpcTransport",
+    "CloudRedisGrpcAsyncIOTransport",
+    "CloudRedisRestTransport",
+    "CloudRedisRestInterceptor",
 ) + ASYNC_REST_CLASSES

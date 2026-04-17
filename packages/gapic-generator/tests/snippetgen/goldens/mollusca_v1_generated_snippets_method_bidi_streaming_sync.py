@@ -60,4 +60,5 @@ def sample_method_bidi_streaming():
     for response in stream:
         print(response)
 
+
 # [END mollusca_v1_generated_Snippets_MethodBidiStreaming_sync]

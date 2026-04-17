@@ -36,35 +36,30 @@ from typing import (
     Set,
     Tuple,
 )
-import yaml
 
-from google.api_core import exceptions
-from google.api import client_pb2  # type: ignore
-from google.api import http_pb2  # type: ignore
-from google.api import resource_pb2  # type: ignore
-from google.api import service_pb2  # type: ignore
-from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
-from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import descriptor_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-from google.protobuf.json_format import ParseDict
-from google.protobuf.descriptor import ServiceDescriptor
 import grpc  # type: ignore
+import yaml
+from google.api import (
+    annotations_pb2,  # type: ignore
+    client_pb2,  # type: ignore
+    http_pb2,  # type: ignore
+    resource_pb2,  # type: ignore
+    service_pb2,  # type: ignore
+)
+from google.api_core import exceptions
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import descriptor_pb2  # type: ignore
+from google.protobuf.descriptor import ServiceDescriptor
 from google.protobuf.descriptor_pb2 import MethodDescriptorProto
-from google.api import annotations_pb2  # type: ignore
-from gapic.schema import metadata
-from gapic.schema import mixins
-from gapic.schema import wrappers
-from gapic.schema import naming as api_naming
-from gapic.utils import cached_property
-from gapic.utils import nth
-from gapic.utils import Options
-from gapic.utils import to_snake_case
-from gapic.utils import RESERVED_NAMES
+from google.protobuf.json_format import MessageToJson, ParseDict
 
+from gapic.schema import metadata, mixins, wrappers
+from gapic.schema import naming as api_naming
+from gapic.utils import RESERVED_NAMES, Options, cached_property, nth, to_snake_case
 
 TRANSPORT_GRPC = "grpc"
 TRANSPORT_GRPC_ASYNC = "grpc-async"

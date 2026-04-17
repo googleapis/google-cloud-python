@@ -54,4 +54,5 @@ async def sample_copy_log_entries():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CopyLogEntries_async_internal]

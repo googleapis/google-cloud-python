@@ -14,15 +14,12 @@
 
 import dataclasses
 import itertools
-
 from collections import namedtuple
 from typing import Any, Dict, Iterable, Optional
 
 from google.protobuf import descriptor_pb2
 
-from gapic.schema import metadata
-from gapic.schema import wrappers
-
+from gapic.schema import metadata, wrappers
 from test_utils.test_utils import make_method
 
 # Injected dummy test types

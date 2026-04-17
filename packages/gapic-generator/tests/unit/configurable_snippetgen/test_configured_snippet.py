@@ -15,16 +15,17 @@
 
 from pathlib import Path
 
-from google.protobuf import json_format
-from google.protobuf.compiler import plugin_pb2
 import libcst
 import pytest
+from google.protobuf import json_format
+from google.protobuf.compiler import plugin_pb2
 
 from gapic import utils
-from gapic.configurable_snippetgen import configured_snippet
-from gapic.configurable_snippetgen import snippet_config_language_pb2
+from gapic.configurable_snippetgen import (
+    configured_snippet,
+    snippet_config_language_pb2,
+)
 from gapic.schema import api
-
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / "resources" / "speech" / "request.desc"

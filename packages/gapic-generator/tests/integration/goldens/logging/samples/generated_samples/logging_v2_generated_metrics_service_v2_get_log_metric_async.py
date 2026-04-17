@@ -49,4 +49,5 @@ async def sample_get_log_metric():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_MetricsServiceV2_GetLogMetric_async]

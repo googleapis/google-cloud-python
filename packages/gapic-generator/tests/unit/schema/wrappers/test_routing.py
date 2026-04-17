@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.schema import wrappers
-
 import json
+
 import proto
 import pytest
+
+from gapic.schema import wrappers
 
 
 class RoutingTestRequest(proto.Message):

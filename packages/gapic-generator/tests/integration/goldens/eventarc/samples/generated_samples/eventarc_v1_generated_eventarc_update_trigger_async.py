@@ -53,4 +53,5 @@ async def sample_update_trigger():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_UpdateTrigger_async]

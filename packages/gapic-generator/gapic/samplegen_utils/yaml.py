@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import dataclasses
-
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from textwrap import indent
 from typing import List, Optional
 

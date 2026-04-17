@@ -17,32 +17,30 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
 import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.redis.v1',
+    package="google.cloud.redis.v1",
     manifest={
-        'NodeInfo',
-        'Instance',
-        'PersistenceConfig',
-        'MaintenancePolicy',
-        'WeeklyMaintenanceWindow',
-        'MaintenanceSchedule',
-        'ListInstancesRequest',
-        'ListInstancesResponse',
-        'GetInstanceRequest',
-        'CreateInstanceRequest',
-        'UpdateInstanceRequest',
-        'DeleteInstanceRequest',
-        'OperationMetadata',
-        'TlsCertificate',
+        "NodeInfo",
+        "Instance",
+        "PersistenceConfig",
+        "MaintenancePolicy",
+        "WeeklyMaintenanceWindow",
+        "MaintenanceSchedule",
+        "ListInstancesRequest",
+        "ListInstancesResponse",
+        "GetInstanceRequest",
+        "CreateInstanceRequest",
+        "UpdateInstanceRequest",
+        "DeleteInstanceRequest",
+        "OperationMetadata",
+        "TlsCertificate",
     },
 )
 
@@ -253,6 +251,7 @@ class Instance(proto.Message):
             Optional. The available maintenance versions
             that an instance could update to.
     """
+
     class State(proto.Enum):
         r"""Represents the different states of a Redis instance.
 
@@ -284,6 +283,7 @@ class Instance(proto.Message):
                 Redis instance is failing over (availability
                 may be affected).
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -305,6 +305,7 @@ class Instance(proto.Message):
             STANDARD_HA (3):
                 STANDARD_HA tier: highly available primary/replica instances
         """
+
         TIER_UNSPECIFIED = 0
         BASIC = 1
         STANDARD_HA = 3
@@ -324,6 +325,7 @@ class Instance(proto.Message):
                 access provides an IP address range for multiple
                 Google Cloud services, including Memorystore.
         """
+
         CONNECT_MODE_UNSPECIFIED = 0
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
@@ -340,6 +342,7 @@ class Instance(proto.Message):
             DISABLED (2):
                 TLS is disabled for the instance.
         """
+
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         SERVER_AUTHENTICATION = 1
         DISABLED = 2
@@ -360,6 +363,7 @@ class Instance(proto.Message):
                 and the instance can scale up and down the
                 number of replicas. Not valid for basic tier.
         """
+
         READ_REPLICAS_MODE_UNSPECIFIED = 0
         READ_REPLICAS_DISABLED = 1
         READ_REPLICAS_ENABLED = 2
@@ -375,6 +379,7 @@ class Instance(proto.Message):
                 Something wrong with the CMEK key provided by
                 customer.
         """
+
         SUSPENSION_REASON_UNSPECIFIED = 0
         CUSTOMER_MANAGED_KEY_ISSUE = 1
 
@@ -468,34 +473,34 @@ class Instance(proto.Message):
         proto.BOOL,
         number=23,
     )
-    server_ca_certs: MutableSequence['TlsCertificate'] = proto.RepeatedField(
+    server_ca_certs: MutableSequence["TlsCertificate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=25,
-        message='TlsCertificate',
+        message="TlsCertificate",
     )
     transit_encryption_mode: TransitEncryptionMode = proto.Field(
         proto.ENUM,
         number=26,
         enum=TransitEncryptionMode,
     )
-    maintenance_policy: 'MaintenancePolicy' = proto.Field(
+    maintenance_policy: "MaintenancePolicy" = proto.Field(
         proto.MESSAGE,
         number=27,
-        message='MaintenancePolicy',
+        message="MaintenancePolicy",
     )
-    maintenance_schedule: 'MaintenanceSchedule' = proto.Field(
+    maintenance_schedule: "MaintenanceSchedule" = proto.Field(
         proto.MESSAGE,
         number=28,
-        message='MaintenanceSchedule',
+        message="MaintenanceSchedule",
     )
     replica_count: int = proto.Field(
         proto.INT32,
         number=31,
     )
-    nodes: MutableSequence['NodeInfo'] = proto.RepeatedField(
+    nodes: MutableSequence["NodeInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=32,
-        message='NodeInfo',
+        message="NodeInfo",
     )
     read_endpoint: str = proto.Field(
         proto.STRING,
@@ -514,10 +519,10 @@ class Instance(proto.Message):
         proto.STRING,
         number=36,
     )
-    persistence_config: 'PersistenceConfig' = proto.Field(
+    persistence_config: "PersistenceConfig" = proto.Field(
         proto.MESSAGE,
         number=37,
-        message='PersistenceConfig',
+        message="PersistenceConfig",
     )
     suspension_reasons: MutableSequence[SuspensionReason] = proto.RepeatedField(
         proto.ENUM,
@@ -559,6 +564,7 @@ class PersistenceConfig(proto.Message):
             future snapshots will be aligned. If not
             provided, the current time will be used.
     """
+
     class PersistenceMode(proto.Enum):
         r"""Available Persistence modes.
 
@@ -571,6 +577,7 @@ class PersistenceConfig(proto.Message):
             RDB (2):
                 RDB based Persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -590,6 +597,7 @@ class PersistenceConfig(proto.Message):
             TWENTY_FOUR_HOURS (6):
                 Snapshot every 24 hours.
         """
+
         SNAPSHOT_PERIOD_UNSPECIFIED = 0
         ONE_HOUR = 3
         SIX_HOURS = 4
@@ -652,10 +660,12 @@ class MaintenancePolicy(proto.Message):
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window: MutableSequence['WeeklyMaintenanceWindow'] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message='WeeklyMaintenanceWindow',
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -801,10 +811,10 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances: MutableSequence['Instance'] = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Instance',
+        message="Instance",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -863,10 +873,10 @@ class CreateInstanceRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    instance: 'Instance' = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Instance',
+        message="Instance",
     )
 
 
@@ -896,10 +906,10 @@ class UpdateInstanceRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    instance: 'Instance' = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Instance',
+        message="Instance",
     )
 
 

@@ -54,4 +54,5 @@ async def sample_create_sink():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_ConfigServiceV2_CreateSink_async_internal]

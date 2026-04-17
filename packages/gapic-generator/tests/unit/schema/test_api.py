@@ -16,31 +16,27 @@ import collections
 import re
 from typing import Any, Dict, Sequence
 from unittest import mock
-import yaml
 
 import pytest
-
-from google.api import annotations_pb2  # type: ignore
-from google.api import client_pb2
-from google.api import field_behavior_pb2
-from google.api import field_info_pb2
-from google.api import resource_pb2
+import yaml
+from google.api import (
+    annotations_pb2,  # type: ignore
+    client_pb2,
+    field_behavior_pb2,
+    field_info_pb2,
+    resource_pb2,
+)
 from google.api_core import exceptions
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
+from google.cloud.location import locations_pb2
 from google.gapic.metadata import gapic_metadata_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
-from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-from gapic.schema import api
-from gapic.schema import imp
-from gapic.schema import mixins
-from gapic.schema import naming
-from gapic.schema import wrappers
+from gapic.schema import api, imp, mixins, naming, wrappers
 from gapic.utils import Options
-
 from test_utils.test_utils import (
     make_enum_pb2,
     make_field,

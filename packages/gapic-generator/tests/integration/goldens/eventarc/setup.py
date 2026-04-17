@@ -17,20 +17,22 @@ import io
 import os
 import re
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = 'google-cloud-eventarc'
+name = "google-cloud-eventarc"
 
 
 description = "Google Cloud Eventarc API client library"
 
 version = None
 
-with open(os.path.join(package_root, 'google/cloud/eventarc_v1/gapic_version.py')) as fp:
+with open(
+    os.path.join(package_root, "google/cloud/eventarc_v1/gapic_version.py")
+) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
-    assert (len(version_candidates) == 1)
+    assert len(version_candidates) == 1
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -50,8 +52,7 @@ dependencies = [
     "protobuf >= 4.25.8, < 8.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
-extras = {
-}
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc"
 
 package_root = os.path.abspath(os.path.dirname(__file__))

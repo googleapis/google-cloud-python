@@ -15,13 +15,10 @@
 import collections
 import typing
 
-from gapic.schema import metadata
-from gapic.schema import naming
-from gapic.schema import wrappers
-from google.api import annotations_pb2, routing_pb2
-from google.api import client_pb2
-from google.api import http_pb2
+from google.api import annotations_pb2, client_pb2, http_pb2, routing_pb2
 from google.protobuf import descriptor_pb2 as desc
+
+from gapic.schema import metadata, naming, wrappers
 
 
 def make_service(

@@ -14,22 +14,13 @@
 
 import dataclasses
 import itertools
-import jinja2
 import json
 import keyword
 import os
 import re
 import time
-import yaml
-
-from gapic import utils
-
-from gapic.samplegen_utils import types, snippet_metadata_pb2  # type: ignore
-from gapic.samplegen_utils.utils import is_valid_sample_cfg
-from gapic.schema import api
-from gapic.schema import wrappers
-
-from collections import defaultdict, namedtuple, ChainMap as chainmap
+from collections import ChainMap as chainmap
+from collections import defaultdict, namedtuple
 from typing import (
     Any,
     ChainMap,
@@ -43,9 +34,17 @@ from typing import (
     Tuple,
 )
 
+import jinja2
+import yaml
+
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
+
+from gapic import utils
+from gapic.samplegen_utils import snippet_metadata_pb2, types  # type: ignore
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.schema import api, wrappers
 
 # Outstanding issues:
 # * In real sample configs, many variables are

@@ -28,15 +28,12 @@ with the things they describe for easy access in templates.
 
 import dataclasses
 import re
-from typing import FrozenSet, Set, Tuple, Optional
+from typing import FrozenSet, Optional, Set, Tuple
 
 from google.protobuf import descriptor_pb2
 
-from gapic.schema import imp
-from gapic.schema import naming
-from gapic.utils import cached_property
-from gapic.utils import cached_proto_context
-from gapic.utils import RESERVED_NAMES
+from gapic.schema import imp, naming
+from gapic.utils import RESERVED_NAMES, cached_property, cached_proto_context
 
 # This class is a minor hack to optimize Address's __eq__ method.
 

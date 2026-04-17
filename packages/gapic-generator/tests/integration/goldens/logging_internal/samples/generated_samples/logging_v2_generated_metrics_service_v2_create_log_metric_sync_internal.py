@@ -54,4 +54,5 @@ def sample_create_log_metric():
     # Handle the response
     print(response)
 
+
 # [END logging_v2_generated_MetricsServiceV2_CreateLogMetric_sync_internal]

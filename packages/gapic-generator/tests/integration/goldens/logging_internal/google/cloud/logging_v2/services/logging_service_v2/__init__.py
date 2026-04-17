@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import LoggingServiceV2Client
 from .async_client import LoggingServiceV2AsyncClient
+from .client import LoggingServiceV2Client
 
 __all__ = (
-    'LoggingServiceV2Client',
-    'LoggingServiceV2AsyncClient',
+    "LoggingServiceV2Client",
+    "LoggingServiceV2AsyncClient",
 )

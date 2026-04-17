@@ -20,10 +20,8 @@ metadata, and a roll-up view of an API as a whole.
 These three parts are divided into the three component modules.
 """
 
+from gapic.schema import metadata, wrappers
 from gapic.schema.api import API
-from gapic.schema import metadata
-from gapic.schema import wrappers
-
 
 __all__ = (
     "API",

@@ -19,33 +19,37 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
-import google.auth                         # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.auth  # type: ignore
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    eventarc,
+    google_channel_config,
+    trigger,
+)
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
-from google.cloud.eventarc_v1.types import trigger
-from google.cloud.location import locations_pb2 # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2 # type: ignore
-from .base import EventarcTransport, DEFAULT_CLIENT_INFO
+from .base import DEFAULT_CLIENT_INFO, EventarcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -55,7 +59,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -76,7 +82,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -87,7 +93,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -102,7 +112,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
@@ -126,23 +136,26 @@ class EventarcGrpcTransport(EventarcTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'eventarc.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "eventarc.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -270,19 +283,23 @@ class EventarcGrpcTransport(EventarcTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'eventarc.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "eventarc.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -318,13 +335,12 @@ class EventarcGrpcTransport(EventarcTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
-        """
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
@@ -344,9 +360,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._operations_client
 
     @property
-    def get_trigger(self) -> Callable[
-            [eventarc.GetTriggerRequest],
-            trigger.Trigger]:
+    def get_trigger(self) -> Callable[[eventarc.GetTriggerRequest], trigger.Trigger]:
         r"""Return a callable for the get trigger method over gRPC.
 
         Get a single trigger.
@@ -361,18 +375,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_trigger' not in self._stubs:
-            self._stubs['get_trigger'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/GetTrigger',
+        if "get_trigger" not in self._stubs:
+            self._stubs["get_trigger"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetTrigger",
                 request_serializer=eventarc.GetTriggerRequest.serialize,
                 response_deserializer=trigger.Trigger.deserialize,
             )
-        return self._stubs['get_trigger']
+        return self._stubs["get_trigger"]
 
     @property
-    def list_triggers(self) -> Callable[
-            [eventarc.ListTriggersRequest],
-            eventarc.ListTriggersResponse]:
+    def list_triggers(
+        self,
+    ) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
         r"""Return a callable for the list triggers method over gRPC.
 
         List triggers.
@@ -387,18 +401,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_triggers' not in self._stubs:
-            self._stubs['list_triggers'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/ListTriggers',
+        if "list_triggers" not in self._stubs:
+            self._stubs["list_triggers"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListTriggers",
                 request_serializer=eventarc.ListTriggersRequest.serialize,
                 response_deserializer=eventarc.ListTriggersResponse.deserialize,
             )
-        return self._stubs['list_triggers']
+        return self._stubs["list_triggers"]
 
     @property
-    def create_trigger(self) -> Callable[
-            [eventarc.CreateTriggerRequest],
-            operations_pb2.Operation]:
+    def create_trigger(
+        self,
+    ) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the create trigger method over gRPC.
 
         Create a new trigger in a particular project and
@@ -414,18 +428,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_trigger' not in self._stubs:
-            self._stubs['create_trigger'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/CreateTrigger',
+        if "create_trigger" not in self._stubs:
+            self._stubs["create_trigger"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateTrigger",
                 request_serializer=eventarc.CreateTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_trigger']
+        return self._stubs["create_trigger"]
 
     @property
-    def update_trigger(self) -> Callable[
-            [eventarc.UpdateTriggerRequest],
-            operations_pb2.Operation]:
+    def update_trigger(
+        self,
+    ) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the update trigger method over gRPC.
 
         Update a single trigger.
@@ -440,18 +454,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_trigger' not in self._stubs:
-            self._stubs['update_trigger'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/UpdateTrigger',
+        if "update_trigger" not in self._stubs:
+            self._stubs["update_trigger"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateTrigger",
                 request_serializer=eventarc.UpdateTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_trigger']
+        return self._stubs["update_trigger"]
 
     @property
-    def delete_trigger(self) -> Callable[
-            [eventarc.DeleteTriggerRequest],
-            operations_pb2.Operation]:
+    def delete_trigger(
+        self,
+    ) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete trigger method over gRPC.
 
         Delete a single trigger.
@@ -466,18 +480,16 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_trigger' not in self._stubs:
-            self._stubs['delete_trigger'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/DeleteTrigger',
+        if "delete_trigger" not in self._stubs:
+            self._stubs["delete_trigger"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteTrigger",
                 request_serializer=eventarc.DeleteTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_trigger']
+        return self._stubs["delete_trigger"]
 
     @property
-    def get_channel(self) -> Callable[
-            [eventarc.GetChannelRequest],
-            channel.Channel]:
+    def get_channel(self) -> Callable[[eventarc.GetChannelRequest], channel.Channel]:
         r"""Return a callable for the get channel method over gRPC.
 
         Get a single Channel.
@@ -492,18 +504,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_channel' not in self._stubs:
-            self._stubs['get_channel'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/GetChannel',
+        if "get_channel" not in self._stubs:
+            self._stubs["get_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetChannel",
                 request_serializer=eventarc.GetChannelRequest.serialize,
                 response_deserializer=channel.Channel.deserialize,
             )
-        return self._stubs['get_channel']
+        return self._stubs["get_channel"]
 
     @property
-    def list_channels(self) -> Callable[
-            [eventarc.ListChannelsRequest],
-            eventarc.ListChannelsResponse]:
+    def list_channels(
+        self,
+    ) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
         r"""Return a callable for the list channels method over gRPC.
 
         List channels.
@@ -518,18 +530,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_channels' not in self._stubs:
-            self._stubs['list_channels'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/ListChannels',
+        if "list_channels" not in self._stubs:
+            self._stubs["list_channels"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListChannels",
                 request_serializer=eventarc.ListChannelsRequest.serialize,
                 response_deserializer=eventarc.ListChannelsResponse.deserialize,
             )
-        return self._stubs['list_channels']
+        return self._stubs["list_channels"]
 
     @property
-    def create_channel_(self) -> Callable[
-            [eventarc.CreateChannelRequest],
-            operations_pb2.Operation]:
+    def create_channel_(
+        self,
+    ) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the create channel method over gRPC.
 
         Create a new channel in a particular project and
@@ -545,18 +557,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_channel_' not in self._stubs:
-            self._stubs['create_channel_'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/CreateChannel',
+        if "create_channel_" not in self._stubs:
+            self._stubs["create_channel_"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateChannel",
                 request_serializer=eventarc.CreateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_channel_']
+        return self._stubs["create_channel_"]
 
     @property
-    def update_channel(self) -> Callable[
-            [eventarc.UpdateChannelRequest],
-            operations_pb2.Operation]:
+    def update_channel(
+        self,
+    ) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the update channel method over gRPC.
 
         Update a single channel.
@@ -571,18 +583,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_channel' not in self._stubs:
-            self._stubs['update_channel'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/UpdateChannel',
+        if "update_channel" not in self._stubs:
+            self._stubs["update_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateChannel",
                 request_serializer=eventarc.UpdateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_channel']
+        return self._stubs["update_channel"]
 
     @property
-    def delete_channel(self) -> Callable[
-            [eventarc.DeleteChannelRequest],
-            operations_pb2.Operation]:
+    def delete_channel(
+        self,
+    ) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete channel method over gRPC.
 
         Delete a single channel.
@@ -597,18 +609,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_channel' not in self._stubs:
-            self._stubs['delete_channel'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/DeleteChannel',
+        if "delete_channel" not in self._stubs:
+            self._stubs["delete_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteChannel",
                 request_serializer=eventarc.DeleteChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_channel']
+        return self._stubs["delete_channel"]
 
     @property
-    def get_provider(self) -> Callable[
-            [eventarc.GetProviderRequest],
-            discovery.Provider]:
+    def get_provider(
+        self,
+    ) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
         r"""Return a callable for the get provider method over gRPC.
 
         Get a single Provider.
@@ -623,18 +635,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_provider' not in self._stubs:
-            self._stubs['get_provider'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/GetProvider',
+        if "get_provider" not in self._stubs:
+            self._stubs["get_provider"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetProvider",
                 request_serializer=eventarc.GetProviderRequest.serialize,
                 response_deserializer=discovery.Provider.deserialize,
             )
-        return self._stubs['get_provider']
+        return self._stubs["get_provider"]
 
     @property
-    def list_providers(self) -> Callable[
-            [eventarc.ListProvidersRequest],
-            eventarc.ListProvidersResponse]:
+    def list_providers(
+        self,
+    ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
         r"""Return a callable for the list providers method over gRPC.
 
         List providers.
@@ -649,18 +661,20 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_providers' not in self._stubs:
-            self._stubs['list_providers'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/ListProviders',
+        if "list_providers" not in self._stubs:
+            self._stubs["list_providers"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListProviders",
                 request_serializer=eventarc.ListProvidersRequest.serialize,
                 response_deserializer=eventarc.ListProvidersResponse.deserialize,
             )
-        return self._stubs['list_providers']
+        return self._stubs["list_providers"]
 
     @property
-    def get_channel_connection(self) -> Callable[
-            [eventarc.GetChannelConnectionRequest],
-            channel_connection.ChannelConnection]:
+    def get_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection
+    ]:
         r"""Return a callable for the get channel connection method over gRPC.
 
         Get a single ChannelConnection.
@@ -675,18 +689,21 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_channel_connection' not in self._stubs:
-            self._stubs['get_channel_connection'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/GetChannelConnection',
+        if "get_channel_connection" not in self._stubs:
+            self._stubs["get_channel_connection"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetChannelConnection",
                 request_serializer=eventarc.GetChannelConnectionRequest.serialize,
                 response_deserializer=channel_connection.ChannelConnection.deserialize,
             )
-        return self._stubs['get_channel_connection']
+        return self._stubs["get_channel_connection"]
 
     @property
-    def list_channel_connections(self) -> Callable[
-            [eventarc.ListChannelConnectionsRequest],
-            eventarc.ListChannelConnectionsResponse]:
+    def list_channel_connections(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelConnectionsRequest],
+        eventarc.ListChannelConnectionsResponse,
+    ]:
         r"""Return a callable for the list channel connections method over gRPC.
 
         List channel connections.
@@ -701,18 +718,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_channel_connections' not in self._stubs:
-            self._stubs['list_channel_connections'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/ListChannelConnections',
+        if "list_channel_connections" not in self._stubs:
+            self._stubs["list_channel_connections"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListChannelConnections",
                 request_serializer=eventarc.ListChannelConnectionsRequest.serialize,
                 response_deserializer=eventarc.ListChannelConnectionsResponse.deserialize,
             )
-        return self._stubs['list_channel_connections']
+        return self._stubs["list_channel_connections"]
 
     @property
-    def create_channel_connection(self) -> Callable[
-            [eventarc.CreateChannelConnectionRequest],
-            operations_pb2.Operation]:
+    def create_channel_connection(
+        self,
+    ) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create channel connection method over gRPC.
 
         Create a new ChannelConnection in a particular
@@ -728,18 +745,18 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_channel_connection' not in self._stubs:
-            self._stubs['create_channel_connection'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/CreateChannelConnection',
+        if "create_channel_connection" not in self._stubs:
+            self._stubs["create_channel_connection"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateChannelConnection",
                 request_serializer=eventarc.CreateChannelConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_channel_connection']
+        return self._stubs["create_channel_connection"]
 
     @property
-    def delete_channel_connection(self) -> Callable[
-            [eventarc.DeleteChannelConnectionRequest],
-            operations_pb2.Operation]:
+    def delete_channel_connection(
+        self,
+    ) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete channel connection method over gRPC.
 
         Delete a single ChannelConnection.
@@ -754,18 +771,21 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_channel_connection' not in self._stubs:
-            self._stubs['delete_channel_connection'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection',
+        if "delete_channel_connection" not in self._stubs:
+            self._stubs["delete_channel_connection"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection",
                 request_serializer=eventarc.DeleteChannelConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_channel_connection']
+        return self._stubs["delete_channel_connection"]
 
     @property
-    def get_google_channel_config(self) -> Callable[
-            [eventarc.GetGoogleChannelConfigRequest],
-            google_channel_config.GoogleChannelConfig]:
+    def get_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleChannelConfigRequest],
+        google_channel_config.GoogleChannelConfig,
+    ]:
         r"""Return a callable for the get google channel config method over gRPC.
 
         Get a GoogleChannelConfig
@@ -780,18 +800,21 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_google_channel_config' not in self._stubs:
-            self._stubs['get_google_channel_config'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig',
+        if "get_google_channel_config" not in self._stubs:
+            self._stubs["get_google_channel_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig",
                 request_serializer=eventarc.GetGoogleChannelConfigRequest.serialize,
                 response_deserializer=google_channel_config.GoogleChannelConfig.deserialize,
             )
-        return self._stubs['get_google_channel_config']
+        return self._stubs["get_google_channel_config"]
 
     @property
-    def update_google_channel_config(self) -> Callable[
-            [eventarc.UpdateGoogleChannelConfigRequest],
-            gce_google_channel_config.GoogleChannelConfig]:
+    def update_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateGoogleChannelConfigRequest],
+        gce_google_channel_config.GoogleChannelConfig,
+    ]:
         r"""Return a callable for the update google channel config method over gRPC.
 
         Update a single GoogleChannelConfig
@@ -806,13 +829,15 @@ class EventarcGrpcTransport(EventarcTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_google_channel_config' not in self._stubs:
-            self._stubs['update_google_channel_config'] = self._logged_channel.unary_unary(
-                '/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig',
-                request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
-                response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
+        if "update_google_channel_config" not in self._stubs:
+            self._stubs["update_google_channel_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
+                    request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
+                    response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
+                )
             )
-        return self._stubs['update_google_channel_config']
+        return self._stubs["update_google_channel_config"]
 
     def close(self):
         self._logged_channel.close()
@@ -821,8 +846,7 @@ class EventarcGrpcTransport(EventarcTransport):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
-        r"""Return a callable for the delete_operation method over gRPC.
-        """
+        r"""Return a callable for the delete_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -839,8 +863,7 @@ class EventarcGrpcTransport(EventarcTransport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC.
-        """
+        r"""Return a callable for the cancel_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -857,8 +880,7 @@ class EventarcGrpcTransport(EventarcTransport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC.
-        """
+        r"""Return a callable for the get_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -874,9 +896,10 @@ class EventarcGrpcTransport(EventarcTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
-        r"""Return a callable for the list_operations method over gRPC.
-        """
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -892,9 +915,10 @@ class EventarcGrpcTransport(EventarcTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -911,8 +935,7 @@ class EventarcGrpcTransport(EventarcTransport):
     def get_location(
         self,
     ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
+        r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -980,7 +1003,8 @@ class EventarcGrpcTransport(EventarcTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
@@ -1009,6 +1033,4 @@ class EventarcGrpcTransport(EventarcTransport):
         return "grpc"
 
 
-__all__ = (
-    'EventarcGrpcTransport',
-)
+__all__ = ("EventarcGrpcTransport",)

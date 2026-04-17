@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import os
-import pytest
 
+import pytest
 from google import showcase
 
 

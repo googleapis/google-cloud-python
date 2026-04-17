@@ -16,8 +16,7 @@
 import libcst
 import pytest
 
-from gapic.configurable_snippetgen import libcst_utils
-from gapic.configurable_snippetgen import snippet_config_language_pb2
+from gapic.configurable_snippetgen import libcst_utils, snippet_config_language_pb2
 
 
 def _assert_code_equal(node: libcst.CSTNode, code: str) -> str:

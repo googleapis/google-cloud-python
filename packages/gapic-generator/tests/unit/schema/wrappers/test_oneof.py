@@ -15,13 +15,10 @@
 import collections
 
 import pytest
-
 from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
 
-from gapic.schema import metadata
-from gapic.schema import wrappers
-
+from gapic.schema import metadata, wrappers
 from test_utils.test_utils import (
     make_oneof_pb2,
 )
