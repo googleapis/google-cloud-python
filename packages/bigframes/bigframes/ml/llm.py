@@ -397,7 +397,7 @@ class MultimodalEmbeddingGenerator(base.RetriableRemotePredictor):
 
         # TODO(garrettwu): remove transform to ObjRefRuntime when BQML supports ObjRef as input
         if X["content"].dtype == dtypes.OBJ_REF_DTYPE:
-            X["content"] = X["content"].blob._get_runtime("R", with_metadata=True)
+            X["content"] = X["content"]._blob._get_runtime("R", with_metadata=True)
 
         options: dict = {}
 
@@ -731,7 +731,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                     isinstance(item, bigframes.series.Series)
                     and item.dtype == dtypes.OBJ_REF_DTYPE
                 ):
-                    item = item.blob._get_runtime("R", with_metadata=True)
+                    item = item._blob._get_runtime("R", with_metadata=True)
 
                 df_prompt[label] = item
             df_prompt = df_prompt.drop(columns="bigframes_placeholder_col")

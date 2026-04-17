@@ -305,37 +305,6 @@ class StringMethods(Generic[T]):
             ops.ArrayReduceOp(aggregation=agg_ops.StringAggOp(sep=sep))
         )
 
-    def to_blob(self, connection: Optional[str] = None) -> T:
-        """Create a BigFrames Blob series from a series of URIs.
-
-        .. note::
-            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).
-
-
-        Args:
-            connection (str or None, default None):
-                Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-                If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-                permission if the connection isn't fully set up.
-
-        Returns:
-            bigframes.series.Series: Blob Series.
-
-        """
-        import bigframes.core.blocks
-
-        if hasattr(self._data, "_block") and isinstance(
-            self._data._block, bigframes.core.blocks.Block
-        ):
-            session = self._data._block.session
-        else:
-            raise ValueError("to_blob is only supported via Series.str")
-        connection = session._create_bq_connection(connection=connection)
-        return self._data._apply_binary_op(connection, ops.obj_make_ref_op)
-
 
 def _parse_flags(flags: int) -> Optional[str]:
     re2flags = []

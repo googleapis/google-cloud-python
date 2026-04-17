@@ -5919,9 +5919,34 @@ def test_to_gbq_table_labels(scalars_df_index):
 
 def test_to_gbq_obj_ref_persists(session):
     # Test that saving and loading an Object Reference retains its dtype
-    bdf = session.from_glob_path(
-        "gs://cloud-samples-data/vision/ocr/*.jpg", name="uris"
-    ).head(1)
+    import uuid
+    import google.cloud.bigquery
+
+    sql = """
+        SELECT STRUCT('gs://cloud-samples-data/vision/ocr/sign.jpg' AS uri, CAST(NULL AS STRING) AS version, CAST(NULL AS STRING) AS authorizer, PARSE_JSON('{}') AS details) AS uris
+    """
+    df_init = session.read_gbq(sql)
+
+    tmp_table_id = f"bigframes-dev.bigframes_tests_sys.tmp_obj_ref_{uuid.uuid4().hex}"
+    df_init.to_gbq(tmp_table_id, if_exists="replace")
+
+    client = session.bqclient
+    table = client.get_table(tmp_table_id)
+    schema = list(table.schema)
+    for i, field in enumerate(schema):
+        if field.name == "uris":
+            schema[i] = google.cloud.bigquery.SchemaField(
+                name=field.name,
+                field_type=field.field_type,
+                mode=field.mode,
+                description="bigframes_dtype: OBJ_REF_DTYPE",
+                fields=field.fields,
+            )
+            break
+    table.schema = schema
+    client.update_table(table, ["schema"])
+
+    bdf = session.read_gbq(tmp_table_id)
 
     destination_table = "bigframes-dev.bigframes_tests_sys.test_obj_ref_persistence"
     bdf.to_gbq(destination_table, if_exists="replace")

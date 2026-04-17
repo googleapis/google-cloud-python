@@ -22,6 +22,31 @@ import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
 from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
+import uuid
+import google.cloud.bigquery
+
+
+def _create_mock_obj_ref_df(session, uris, name="image"):
+    df = bpd.DataFrame({name: uris}, session=session)
+    table_id = f"bigframes-dev.bigframes_tests_sys.tmp_obj_ref_{uuid.uuid4().hex}"
+    df.to_gbq(table_id, if_exists="replace")
+
+    client = session.bqclient
+    table = client.get_table(table_id)
+    schema = list(table.schema)
+    for i, field in enumerate(schema):
+        if field.name == name:
+            schema[i] = google.cloud.bigquery.SchemaField(
+                name=field.name,
+                field_type=field.field_type,
+                mode=field.mode,
+                description="bigframes_dtype: OBJ_REF_DTYPE",
+            )
+            break
+    table.schema = schema
+    client.update_table(table, ["schema"])
+
+    return session.read_gbq(table_id)
 
 
 def test_ai_function_pandas_input(session):
@@ -159,8 +184,8 @@ def test_ai_generate_bool(session):
 
 
 def test_ai_generate_bool_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
     result = bbq.ai.generate_bool((df["image"], " contains an animal"))
@@ -196,8 +221,8 @@ def test_ai_generate_int(session):
 
 
 def test_ai_generate_int_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
     result = bbq.ai.generate_int(
@@ -235,8 +260,8 @@ def test_ai_generate_double(session):
 
 
 def test_ai_generate_double_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
     result = bbq.ai.generate_double(
@@ -267,10 +292,8 @@ def test_ai_if(session):
 
 
 def test_ai_if_multi_model(session, bq_connection):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
-        name="image",
-        connection=bq_connection,
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
     result = bbq.ai.if_((df["image"], " contains an animal"))
@@ -289,10 +312,8 @@ def test_ai_classify(session):
 
 
 def test_ai_classify_multi_model(session, bq_connection):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
-        name="image",
-        connection=bq_connection,
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
     result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
@@ -312,8 +333,8 @@ def test_ai_score(session):
 
 
 def test_ai_score_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    df = _create_mock_obj_ref_df(
+        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
     prompt = ("Rank the liveliness of ", df["image"], "on the scale from 1 to 3")
 

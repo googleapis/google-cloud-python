@@ -321,16 +321,8 @@ class Series:
         return lists.ListAccessor(self)
 
     @property
-    def blob(self) -> blob.BlobAccessor:
-        """
-        Accessor for Blob operations.
-        """
-        warnings.warn(
-            "The blob accessor is deprecated and will be removed in a future release. Use bigframes.bigquery.obj functions instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        return blob.BlobAccessor(self)
+    def _blob(self) -> blob._BlobAccessor:
+        return blob._BlobAccessor(self)
 
     @property
     @validations.requires_ordering()

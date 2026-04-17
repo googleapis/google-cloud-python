@@ -833,7 +833,7 @@ class DataFrame:
                 df = self.copy()
                 for col in blob_cols:
                     # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
+                    df[col] = df[col]._blob._get_runtime(mode="R", with_metadata=True)
         return df, blob_cols
 
     def _repr_mimebundle_(self, include=None, exclude=None):

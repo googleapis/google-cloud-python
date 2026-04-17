@@ -394,21 +394,6 @@ def read_gbq_model(model_name: str):
 read_gbq_model.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_model)
 
 
-def read_gbq_object_table(
-    object_table: str, *, name: Optional[str] = None
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.read_gbq_object_table,
-        object_table,
-        name=name,
-    )
-
-
-read_gbq_object_table.__doc__ = inspect.getdoc(
-    bigframes.session.Session.read_gbq_object_table
-)
-
-
 @overload
 def read_gbq_query(  # type: ignore[overload-overlap]
     query: str,
@@ -634,19 +619,6 @@ def read_gbq_function(
 
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
-
-def from_glob_path(
-    path: str, *, connection: Optional[str] = None, name: Optional[str] = None
-) -> bigframes.dataframe.DataFrame:
-    return global_session.with_default_session(
-        bigframes.session.Session.from_glob_path,
-        path=path,
-        connection=connection,
-        name=name,
-    )
-
-
-from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session.from_glob_path)
 
 _default_location_lock = threading.Lock()
 
