@@ -251,6 +251,7 @@ Documentation for writing a Property subclass is in the docs for the
 """
 
 
+from typing import Any, Optional
 import copy
 import datetime
 import functools
@@ -401,6 +402,9 @@ class _NotEqualMixin(object):
 class IndexProperty(_NotEqualMixin):
     """Immutable object representing a single property in an index."""
 
+    _name: str
+    _direction: str
+
     @utils.positional(1)
     def __new__(cls, name, direction):
         instance = super(IndexProperty, cls).__new__(cls)
@@ -436,6 +440,10 @@ class IndexProperty(_NotEqualMixin):
 
 class Index(_NotEqualMixin):
     """Immutable object representing an index."""
+
+    _kind: str
+    _properties: list
+    _ancestor: bool
 
     @utils.positional(1)
     def __new__(cls, kind, properties, ancestor):
@@ -483,6 +491,10 @@ class Index(_NotEqualMixin):
 
 class IndexState(_NotEqualMixin):
     """Immutable object representing an index and its state."""
+
+    _definition: "Index"
+    _state: str
+    _id: int
 
     @utils.positional(1)
     def __new__(cls, definition, state, id):
@@ -599,6 +611,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 subvalue = value
                 value = structprop._get_base_value(entity)
                 if value in (None, []):  # empty list for repeated props
+                    assert structprop._model_class is not None
                     kind = structprop._model_class._get_kind()
                     key = key_module.Key(kind, None)
                     if structprop._repeated:
@@ -629,6 +642,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                         # the other entries in the value list
                         while len(subvalue) > len(value):
                             # Need to make some more subentities
+                            assert structprop._model_class is not None
                             expando_kind = structprop._model_class._get_kind()
                             expando_key = key_module.Key(expando_kind, None)
                             value.append(new_entity(expando_key._key))
@@ -747,7 +761,7 @@ def _entity_to_ds_entity(entity, set_key=True):
     Raises:
         ndb.exceptions.BadValueError: If entity has uninitialized properties.
     """
-    data = {"_exclude_from_indexes": []}
+    data: dict[str, Any] = {"_exclude_from_indexes": []}
     uninitialized = []
 
     for prop in _properties_of(entity):
@@ -1017,7 +1031,7 @@ class Property(ModelAttribute):
     _verbose_name = None
     _write_empty_list = False
     # Non-public class attributes.
-    _FIND_METHODS_CACHE = {}
+    _FIND_METHODS_CACHE: dict[Any, Any] = {}
 
     @utils.positional(2)
     def __init__(
@@ -1151,8 +1165,8 @@ class Property(ModelAttribute):
         """
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
-        argspec = getattr(self.__init__, "_argspec", _getfullargspec(self.__init__))
-        positional = getattr(self.__init__, "_positional_args", 1)
+        argspec = getattr(self.__init__, "_argspec", _getfullargspec(self.__init__))  # type: ignore[misc]
+        positional = getattr(self.__init__, "_positional_args", 1)  # type: ignore[misc]
         for index, name in enumerate(argspec.args):
             if name == "self":
                 continue
@@ -3619,6 +3633,7 @@ class KeyProperty(Property):
 
     _kind = None
 
+    @staticmethod
     def _handle_positional(wrapped):
         @functools.wraps(wrapped)
         def wrapper(self, *args, **kwargs):
@@ -3640,7 +3655,7 @@ class KeyProperty(Property):
 
             return wrapped(self, **kwargs)
 
-        wrapper._wrapped = wrapped
+        wrapper._wrapped = wrapped  # type: ignore[attr-defined]
         return wrapper
 
     @utils.positional(3)
@@ -4146,6 +4161,7 @@ class StructuredProperty(Property):
 
     def __getattr__(self, attrname):
         """Dynamically get a subproperty."""
+        assert self._model_class is not None
         # Optimistically try to use the dict key.
         prop = self._model_class._properties.get(attrname)
 
@@ -4164,6 +4180,7 @@ class StructuredProperty(Property):
             )
 
         prop_copy = copy.copy(prop)
+        assert self._name is not None
         prop_copy._name = self._name + "." + prop_copy._name
 
         # Cache the outcome, so subsequent requests for the same attribute
@@ -4194,6 +4211,7 @@ class StructuredProperty(Property):
         value = self._do_validate(value)
         filters = []
         match_keys = []
+        assert self._model_class is not None
         for prop_name, prop in self._model_class._properties.items():
             subvalue = prop._get_value(value)
             if prop._repeated:
@@ -4226,7 +4244,7 @@ class StructuredProperty(Property):
 
         return ConjunctionNode(*filters)
 
-    def _IN(self, value):
+    def _IN(self, value, server_op=None):
         if not isinstance(value, (list, tuple, set, frozenset)):
             raise exceptions.BadArgumentError(
                 "Expected list, tuple or set, got %r" % (value,)
@@ -4246,6 +4264,7 @@ class StructuredProperty(Property):
     IN = _IN
 
     def _validate(self, value):
+        assert self._model_class is not None
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
             return self._model_class(**value)
@@ -4306,6 +4325,7 @@ class StructuredProperty(Property):
             raise InvalidPropertyError(
                 "Structured property %s requires a subproperty" % self._name
             )
+        assert self._model_class is not None
         self._model_class._check_properties([rest], require_indexed=require_indexed)
 
     def _to_base_type(self, value):
@@ -4320,6 +4340,7 @@ class StructuredProperty(Property):
         Raises:
             TypeError: If ``value`` is not the correct ``Model`` type.
         """
+        assert self._model_class is not None
         if not isinstance(value, self._model_class):
             raise TypeError(
                 "Cannot convert to protocol buffer. Expected {} value; "
@@ -4454,6 +4475,7 @@ class LocalStructuredProperty(BlobProperty):
         Raises:
             exceptions.BadValueError: If ``value`` is not a given class.
         """
+        assert self._model_class is not None
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
             return self._model_class(**value)
@@ -4482,6 +4504,7 @@ class LocalStructuredProperty(BlobProperty):
         Raises:
             TypeError: If ``value`` is not the correct ``Model`` type.
         """
+        assert self._model_class is not None
         if not isinstance(value, self._model_class):
             raise TypeError(
                 "Cannot convert to bytes expected {} value; "
@@ -4499,6 +4522,7 @@ class LocalStructuredProperty(BlobProperty):
         Returns:
             The converted value with given class.
         """
+        assert self._model_class is not None
         if isinstance(value, bytes):
             pb = entity_pb2.Entity()
             pb._pb.MergeFromString(value)
@@ -4507,9 +4531,9 @@ class LocalStructuredProperty(BlobProperty):
                 # No properties. Maybe dealing with legacy pb format.
                 from google.cloud.ndb._legacy_entity_pb import EntityProto
 
-                pb = EntityProto()
-                pb.MergePartialFromString(value)
-                entity_value.update(pb.entity_props())
+                legacy_pb = EntityProto()
+                legacy_pb.MergePartialFromString(value)
+                entity_value.update(legacy_pb.entity_props())
             value = entity_value
         if not self._keep_keys and value.key:
             value.key = None
@@ -4560,8 +4584,9 @@ class LocalStructuredProperty(BlobProperty):
                     ds_entity = _entity_to_ds_entity(value, set_key=self._keep_keys)
                 legacy_values.append(ds_entity)
             if not self._repeated:
-                legacy_values = legacy_values[0]
-            data[self._name] = legacy_values
+                data[self._name] = legacy_values[0]
+            else:
+                data[self._name] = legacy_values
 
         return keys
 
@@ -4674,6 +4699,7 @@ class ComputedProperty(GenericProperty):
         # UnprojectedPropertyError which will just bubble up.
         if entity._projection and self._name in entity._projection:
             return super(ComputedProperty, self)._get_value(entity)
+        assert self._func is not None
         value = self._func(entity)
         self._store_value(entity, value)
         return value
@@ -4700,11 +4726,11 @@ class MetaModel(type):
 
     def __init__(cls, name, bases, classdict):
         super(MetaModel, cls).__init__(name, bases, classdict)
-        cls._fix_up_properties()
+        cls._fix_up_properties()  # type: ignore[attr-defined]
 
     def __repr__(cls):
         props = []
-        for _, prop in sorted(cls._properties.items()):
+        for _, prop in sorted(cls._properties.items()):  # type: ignore[attr-defined]
             props.append("{}={!r}".format(prop._code_name, prop))
         return "{}<{}>".format(cls.__name__, ", ".join(props))
 
@@ -4886,13 +4912,13 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
     """
 
     # Class variables updated by _fix_up_properties()
-    _properties = None
+    _properties: Optional[dict] = None
     _has_repeated = False
-    _kind_map = {}  # Dict mapping {kind: Model subclass}
+    _kind_map: dict = {}  # Dict mapping {kind: Model subclass}
 
     # Defaults for instance variables.
     _entity_key = None
-    _values = None
+    _values: Optional[dict] = None
     _projection = ()  # Tuple of names of projected properties.
 
     # Hardcoded pseudo-property for the key.
@@ -4913,13 +4939,13 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
     def __setstate__(self, state):
         if type(state) is dict:
             # this is not a legacy pb. set __dict__
-            self.__init__()
+            self.__init__()  # type: ignore[misc]
             self.__dict__.update(state)
         else:
             # this is a legacy pickled object. We need to deserialize.
             pb = _legacy_entity_pb.EntityProto()
             pb.MergePartialFromString(state)
-            self.__init__()
+            self.__init__()  # type: ignore[misc]
             self.__class__._from_pb(pb, set_key=False, ent=self)
 
     def __init__(_self, **kwargs):
@@ -4987,7 +5013,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
             # since the latter doesn't match the current schema.)
             return None
         next = parts[depth]
-        prop = self._properties.get(next)
+        prop = self._properties.get(next) if self._properties is not None else None
         if prop is None:
             prop = self._fake_property(p, next, indexed)
         return prop
@@ -5000,13 +5026,15 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         """
         cls = type(self)
         if self._properties is cls._properties:
-            self._properties = dict(cls._properties)
+            self._properties = dict(cls._properties) if cls._properties is not None else {}
 
     def _fake_property(self, p, next, indexed=True):
         """Internal helper to create a fake Property. Ported from legacy datastore"""
         # A custom 'meaning' for compressed properties.
         _MEANING_URI_COMPRESSED = "ZLIB"
         self._clone_properties()
+        assert self._properties is not None
+        prop: Property
         if p.name() != next.encode("utf-8") and not p.name().endswith(
             b"." + next.encode("utf-8")
         ):
@@ -5114,23 +5142,24 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         """Return an unambiguous string representation of an entity."""
         by_args = []
         has_key_property = False
-        for prop in self._properties.values():
-            if prop._code_name == "key":
-                has_key_property = True
+        if self._properties is not None:
+            for prop in self._properties.values():
+                if prop._code_name == "key":
+                    has_key_property = True
 
-            if not prop._has_value(self):
-                continue
+                if not prop._has_value(self):
+                    continue
 
-            value = prop._retrieve_value(self)
-            if value is None:
-                arg_repr = "None"
-            elif prop._repeated:
-                arg_reprs = [prop._value_to_repr(sub_value) for sub_value in value]
-                arg_repr = "[{}]".format(", ".join(arg_reprs))
-            else:
-                arg_repr = prop._value_to_repr(value)
+                value = prop._retrieve_value(self)
+                if value is None:
+                    arg_repr = "None"
+                elif prop._repeated:
+                    arg_reprs = [prop._value_to_repr(sub_value) for sub_value in value]
+                    arg_repr = "[{}]".format(", ".join(arg_reprs))
+                else:
+                    arg_repr = prop._value_to_repr(value)
 
-            by_args.append("{}={}".format(prop._code_name, arg_repr))
+                by_args.append("{}={}".format(prop._code_name, arg_repr))
 
         by_args.sort()
 
@@ -5210,11 +5239,14 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         if set(self._projection) != set(other._projection):
             return False
 
-        if len(self._properties) != len(other._properties):
+        self_props = self._properties if self._properties is not None else {}
+        other_props = other._properties if other._properties is not None else {}
+
+        if len(self_props) != len(other_props):
             return False  # Can only happen for Expandos.
 
-        prop_names = set(self._properties.keys())
-        other_prop_names = set(other._properties.keys())
+        prop_names = set(self_props.keys())
+        other_prop_names = set(other_props.keys())
         if prop_names != other_prop_names:
             return False  # Again, only possible for Expandos
 
@@ -5223,8 +5255,8 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
             prop_names = set(self._projection)
 
         for name in prop_names:
-            value = self._properties[name]._get_value(self)
-            if value != other._properties[name]._get_value(other):
+            value = self_props[name]._get_value(self)
+            if value != other_props[name]._get_value(other):
                 return False
 
         return True
@@ -5282,20 +5314,22 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
 
         # Handle projections for structured properties by recursively setting
         # projections on sub-entities.
-        by_prefix = {}
+        by_prefix: dict[str, list] = {}
         for name in projection:
             if "." in name:
                 head, tail = name.split(".", 1)
                 by_prefix.setdefault(head, []).append(tail)
 
-        for name, projection in by_prefix.items():
-            prop = self._properties.get(name)
-            value = prop._get_user_value(self)
-            if prop._repeated:
-                for entity in value:
-                    entity._set_projection(projection)
-            else:
-                value._set_projection(projection)
+        if self._properties is not None:
+            for name, projection in by_prefix.items():
+                prop = self._properties.get(name)
+                if prop is not None:
+                    value = prop._get_user_value(self)
+                    if prop._repeated:
+                        for entity in value:
+                            entity._set_projection(projection)
+                    else:
+                        value._set_projection(projection)
 
     @classmethod
     def _check_properties(cls, property_names, require_indexed=True):
@@ -5319,6 +5353,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
                 name, rest = name.split(".", 1)
             else:
                 rest = None
+            assert cls._properties is not None
             prop = cls._properties.get(name)
             if prop is None:
                 raise InvalidPropertyError("Unknown property {}".format(name))
@@ -5366,6 +5401,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
                 if isinstance(attr, Property):
                     if attr._repeated or (
                         isinstance(attr, StructuredProperty)
+                        and attr._model_class is not None
                         and attr._model_class._has_repeated
                     ):
                         cls._has_repeated = True
@@ -5745,13 +5781,13 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
             kind = cls._get_kind()
             keys = [key_module.Key(kind, None, parent=parent)._key for _ in range(size)]
             key_pbs = yield _datastore_api.allocate(keys, _options)
-            keys = tuple(
+            allocated_keys = tuple(
                 (
                     key_module.Key._from_ds_key(helpers.key_from_protobuf(key_pb))
                     for key_pb in key_pbs
                 )
             )
-            raise tasklets.Return(keys)
+            raise tasklets.Return(allocated_keys)
 
         future = allocate_ids()
         future.add_done_callback(
@@ -5872,7 +5908,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         max_memcache_items=None,
         force_writes=None,
         _options=None,
-        database: str = None,
+        database: Optional[str] = None,
     ):
         """Get an instance of Model class by ID.
 
@@ -6161,6 +6197,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
                 to exclude. Default is to not exclude any names.
         """
         values = {}
+        assert self._properties is not None
         for prop in self._properties.values():
             name = prop._code_name
             if include is not None and name not in include:
@@ -6182,6 +6219,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
     def _code_name_from_stored_name(cls, name):
         """Return the code name from a property when it's different from the
         stored name. Used in deserialization from datastore."""
+        assert cls._properties is not None
         if name in cls._properties:
             return cls._properties[name]._code_name
 
@@ -6283,12 +6321,14 @@ class Expando(Model):
             setattr(self, name, value)
 
     def __getattr__(self, name):
+        assert self._properties is not None
         prop = self._properties.get(name)
         if prop is None:
             return super(Expando, self).__getattribute__(name)
         return prop._get_value(self)
 
     def __setattr__(self, name, value):
+        assert self._properties is not None
         if (
             name.startswith("_")
             or isinstance(getattr(self.__class__, name, None), (Property, property))
@@ -6306,6 +6346,7 @@ class Expando(Model):
 
         self._clone_properties()
 
+        prop: Property
         if isinstance(value, Model):
             prop = StructuredProperty(Model, name)
         elif isinstance(value, dict):
@@ -6322,6 +6363,7 @@ class Expando(Model):
         prop._set_value(self, value)
 
     def __delattr__(self, name):
+        assert self._properties is not None
         if name.startswith("_") or isinstance(
             getattr(self.__class__, name, None), (Property, property)
         ):
@@ -6332,7 +6374,8 @@ class Expando(Model):
                 "Model properties must be Property instances; not %r" % prop
             )
         prop._delete_value(self)
-        if name in super(Expando, self)._properties:
+        base_props = super(Expando, self)._properties
+        if base_props is not None and name in base_props:
             raise RuntimeError(
                 "Property %s still in the list of properties for the "
                 "base class." % name

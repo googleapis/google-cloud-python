@@ -457,6 +457,7 @@ def mypy(session):
         "mypy<1.16.0",
         "types-requests",
         "types-protobuf",
+        "types-pytz",
     )
     session.install("-e", ".")
     session.run(

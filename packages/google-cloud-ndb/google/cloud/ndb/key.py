@@ -88,6 +88,7 @@ namespace. To explicitly select the empty namespace pass ``namespace=""``.
 """
 
 
+from typing import Optional
 import base64
 import functools
 
@@ -1315,7 +1316,7 @@ def _parse_from_ref(
     urlsafe=None,
     app=None,
     namespace=None,
-    database: str = None,
+    database: Optional[str] = None,
     **kwargs
 ):
     """Construct a key from a Reference.
@@ -1523,7 +1524,7 @@ def _clean_flat_path(flat):
         # Make sure the ``kind`` is either a string or a Model.
         kind = flat[i]
         if isinstance(kind, type):
-            kind = kind._get_kind()
+            kind = kind._get_kind()  # type: ignore[attr-defined]
             flat[i] = kind
         if not isinstance(kind, str):
             raise TypeError(
@@ -1607,7 +1608,7 @@ def _to_legacy_path(dict_path):
             element_kwargs["id"] = _verify_path_value(part["id"], False)
         elif "name" in part:
             element_kwargs["name"] = _verify_path_value(part["name"], True)
-        element = _app_engine_key_pb2.Path.Element(**element_kwargs)
+        element = _app_engine_key_pb2.Path.Element(**element_kwargs)  # type: ignore[attr-defined]
         elements.append(element)
 
     return _app_engine_key_pb2.Path(element=elements)

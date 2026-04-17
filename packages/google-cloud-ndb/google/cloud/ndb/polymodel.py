@@ -184,7 +184,7 @@ class PolyModel(model.Model):
 
     class_ = _ClassKeyProperty()
 
-    _class_map = {}  # Map class key -> suitable subclass.
+    _class_map: dict[tuple, type] = {}  # Map class key -> suitable subclass.
 
     @classmethod
     def _update_kind_map(cls):
@@ -224,7 +224,7 @@ class PolyModel(model.Model):
             # super(PolyModel, cls)._get_kind().  Second, we can't just call
             # Model._get_kind() because that always returns 'Model'.  Hence
             # the '__func__' hack.
-            return model.Model._get_kind.__func__(cls)
+            return model.Model._get_kind.__func__(cls)  # type: ignore[attr-defined]
         else:
             return bases[0]._class_name()
 

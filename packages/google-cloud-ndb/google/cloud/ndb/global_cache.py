@@ -26,6 +26,7 @@ import warnings
 
 import pymemcache
 import redis as redis_module
+from typing import Any
 
 # Python 2.7 doesn't have ConnectionError. In Python 3, ConnectionError is subclass of
 # OSError, which Python 2.7 does have.
@@ -71,7 +72,7 @@ class GlobalCache(object):
 
     __metaclass__ = abc.ABCMeta
 
-    transient_errors = ()
+    transient_errors: tuple[type, ...] = ()
     """Exceptions that should be treated as transient errors in non-strict modes.
 
     Instances of these exceptions, if raised, will be logged as warnings but will not
@@ -202,7 +203,7 @@ class _InProcessGlobalCache(GlobalCache):
     reference implementation. Thread safety is potentially a little sketchy.
     """
 
-    cache = {}
+    cache: dict[Any, Any] = {}
     """Dict: The cache.
 
     Relies on atomicity of ``__setitem__`` for thread safety. See:
@@ -521,9 +522,9 @@ class MemcacheCache(GlobalCache):
 
     @staticmethod
     def _key(key):
-        encoded = base64.b64encode(key)
+        encoded = base64.b64encode(key).decode("ascii")
         if len(encoded) > 250:
-            encoded = hashlib.sha1(encoded).hexdigest()
+            encoded = hashlib.sha1(encoded.encode("ascii")).hexdigest()
         return encoded
 
     @classmethod

@@ -19,11 +19,16 @@ import itertools
 import logging
 
 from google.cloud.ndb import exceptions
+from typing import Any
 
 log = logging.getLogger(__name__)
 
 
 class Options(object):
+    max_memcache_items: Any
+    force_writes: Any
+    propagation: Any
+
     __slots__ = (
         # Supported
         "retries",
