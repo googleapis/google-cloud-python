@@ -21,10 +21,7 @@ from typing import Any, List, Optional, Type, Union, cast
 
 from google.cloud import documentai
 
-ConfigOrData = Union[SimpleNamespace, str, int, float, List[Any], None]
-
-
-def _get_target_object(json_data: Any, target_object: str) -> ConfigOrData:
+def _get_target_object(json_data: Any, target_object: str) -> Any:
     r"""Returns SimpleNamespace of target_object.
 
     Args:
@@ -74,31 +71,31 @@ class Block:
         page_number:
             Optional.
     """
-    type_: ConfigOrData = dataclasses.field(init=True, repr=False)
-    text: ConfigOrData = dataclasses.field(init=True, repr=False)
-    bounding_box: ConfigOrData = dataclasses.field(init=True, repr=False, default=None)
-    block_references: ConfigOrData = dataclasses.field(
+    type_: Any = dataclasses.field(init=True, repr=False)
+    text: str = dataclasses.field(init=True, repr=False)
+    bounding_box: Optional[SimpleNamespace] = dataclasses.field(init=True, repr=False, default=None)
+    block_references: Any = dataclasses.field(
         init=True, repr=False, default=None
     )
-    block_id: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    confidence: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    page_number: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    page_width: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    page_height: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_width: ConfigOrData = dataclasses.field(
+    block_id: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
+    confidence: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    page_number: Optional[int] = dataclasses.field(init=False, repr=False, default=None)
+    page_width: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    page_height: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    bounding_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_height: ConfigOrData = dataclasses.field(
+    bounding_height: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_type: ConfigOrData = dataclasses.field(
+    bounding_type: Optional[str] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_unit: ConfigOrData = dataclasses.field(
+    bounding_unit: Optional[str] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_x: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_y: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_x: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
+    bounding_y: Optional[float] = dataclasses.field(init=False, repr=False, default=None)
     docproto_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
