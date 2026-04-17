@@ -156,7 +156,9 @@ class Block:
 
         blocks: List[Block] = []
         ens = _get_target_object(objects, entities)
-        for i in cast(Any, ens):
+        if not isinstance(ens, list):
+            raise TypeError("Expected list for entities")
+        for i in ens:
             entity = i
 
             block_text = ""
