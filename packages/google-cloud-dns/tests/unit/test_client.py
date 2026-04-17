@@ -38,6 +38,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from google.api_core.client_info import ClientInfo
+
         from google.cloud.dns._http import Connection
 
         creds = _make_credentials()
@@ -53,6 +54,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_client_info(self):
         from google.api_core.client_info import ClientInfo
+
         from google.cloud.dns._http import Connection
 
         client_info = ClientInfo()
@@ -70,6 +72,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_empty_client_options_object(self):
         from google.api_core.client_info import ClientInfo
         from google.api_core.client_options import ClientOptions
+
         from google.cloud.dns._http import Connection
 
         creds = _make_credentials()
