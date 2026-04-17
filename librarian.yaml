@@ -2703,7 +2703,6 @@ libraries:
       default_version: v1
   - name: google-cloud-ndb
     version: 2.4.2
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
