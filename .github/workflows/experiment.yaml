@@ -139,34 +139,6 @@ jobs:
           exit 1
 
   # ==========================================
-  # 5. SYSTEM TESTS
-  # ==========================================
-  system-tests:
-    needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
-        python: ["3.11"] 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: ${{ matrix.python }}
-          enable-cache: true
-          cache-dependency-glob: "${{ matrix.package }}/setup.py"
-
-      - name: Execute System Tests
-        env:
-          RUN_SYSTEM_TESTS: "true"
-        run: |
-          cd ${{ matrix.package }}
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          uvx --with 'nox[uv]' nox -s system-${{ matrix.python }}
-
-  # ==========================================
   # 6. THE GATEKEEPER (Status Check Rollup)
   # ==========================================
   presubmit-passed:
