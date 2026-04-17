@@ -838,6 +838,56 @@ class TestConnection(unittest.TestCase):
             sql, params, param_types=param_types, request_options=None
         )
 
+    def test_timeout_default_none(self):
+        connection = self._make_connection()
+        self.assertIsNone(connection.timeout)
+
+    def test_timeout_property(self):
+        connection = self._make_connection()
+        connection.timeout = 60
+        self.assertEqual(connection.timeout, 60)
+
+        connection.timeout = None
+        self.assertIsNone(connection.timeout)
+
+    def test_timeout_passed_to_run_statement(self):
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
+
+        sql = "SELECT 1"
+        params = []
+        param_types = {}
+
+        connection = self._make_connection()
+        connection._spanner_transaction_started = True
+        connection._transaction = mock.Mock()
+        connection._transaction.execute_sql = mock.Mock()
+
+        connection.timeout = 60
+
+        connection.run_statement(Statement(sql, params, param_types))
+
+        connection._transaction.execute_sql.assert_called_with(
+            sql, params, param_types=param_types, request_options=None, timeout=60
+        )
+
+    def test_timeout_not_passed_when_none(self):
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
+
+        sql = "SELECT 1"
+        params = []
+        param_types = {}
+
+        connection = self._make_connection()
+        connection._spanner_transaction_started = True
+        connection._transaction = mock.Mock()
+        connection._transaction.execute_sql = mock.Mock()
+
+        connection.run_statement(Statement(sql, params, param_types))
+
+        connection._transaction.execute_sql.assert_called_with(
+            sql, params, param_types=param_types, request_options=None
+        )
+
     def test_custom_client_connection(self):
         from google.cloud.spanner_dbapi import connect
 
