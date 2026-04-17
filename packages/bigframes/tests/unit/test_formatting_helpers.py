@@ -212,3 +212,28 @@ def test_get_job_url():
         job_id=job_id, location=location, project_id=project_id
     )
     assert actual_url == expected_url
+
+
+def test_progress_callback_respects_event_progress_bar():
+    event = bfevents.BigQuerySentEvent(
+        query="SELECT * FROM my_table",
+        progress_bar=None,
+    )
+
+    with mock.patch("bigframes._config.options.display.progress_bar", "terminal"):
+        with mock.patch("bigframes.formatting_helpers.in_ipython", return_value=False):
+            with mock.patch("builtins.print") as mock_print:
+                formatting_helpers.progress_callback(event)
+                mock_print.assert_not_called()
+
+
+def test_progress_callback_falls_back_to_global():
+    event = bfevents.BigQuerySentEvent(
+        query="SELECT * FROM my_table",
+    )
+
+    with mock.patch("bigframes._config.options.display.progress_bar", "terminal"):
+        with mock.patch("bigframes.formatting_helpers.in_ipython", return_value=False):
+            with mock.patch("builtins.print") as mock_print:
+                formatting_helpers.progress_callback(event)
+                mock_print.assert_called_once()

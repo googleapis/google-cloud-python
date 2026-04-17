@@ -245,15 +245,27 @@ def add_and_trim_labels(job_config, session=None):
 
 
 def create_bq_event_callback(publisher):
+    import bigframes._config
+
+    progress_bar = bigframes._config.options.display.progress_bar
+
     def publish_bq_event(event):
         if isinstance(event, google.cloud.bigquery._job_helpers.QueryFinishedEvent):
-            bf_event = bigframes.core.events.BigQueryFinishedEvent.from_bqclient(event)
+            bf_event = bigframes.core.events.BigQueryFinishedEvent.from_bqclient(
+                event, progress_bar=progress_bar
+            )
         elif isinstance(event, google.cloud.bigquery._job_helpers.QueryReceivedEvent):
-            bf_event = bigframes.core.events.BigQueryReceivedEvent.from_bqclient(event)
+            bf_event = bigframes.core.events.BigQueryReceivedEvent.from_bqclient(
+                event, progress_bar=progress_bar
+            )
         elif isinstance(event, google.cloud.bigquery._job_helpers.QueryRetryEvent):
-            bf_event = bigframes.core.events.BigQueryRetryEvent.from_bqclient(event)
+            bf_event = bigframes.core.events.BigQueryRetryEvent.from_bqclient(
+                event, progress_bar=progress_bar
+            )
         elif isinstance(event, google.cloud.bigquery._job_helpers.QuerySentEvent):
-            bf_event = bigframes.core.events.BigQuerySentEvent.from_bqclient(event)
+            bf_event = bigframes.core.events.BigQuerySentEvent.from_bqclient(
+                event, progress_bar=progress_bar
+            )
         else:
             bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
 
@@ -275,7 +287,8 @@ def start_query_with_client(
     query_with_job: Literal[True],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
+    ...
 
 
 @overload
@@ -291,7 +304,8 @@ def start_query_with_client(
     query_with_job: Literal[False],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
+    ...
 
 
 @overload
@@ -308,7 +322,8 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
+    ...
 
 
 @overload
@@ -325,7 +340,8 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
+    ...
 
 
 def start_query_with_client(
