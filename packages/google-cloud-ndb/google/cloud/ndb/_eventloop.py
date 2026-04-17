@@ -116,12 +116,15 @@ class EventLoop(object):
     """
 
     def __init__(self):
-        self.current = collections.deque()
-        self.idlers = collections.deque()
+        self._init()
+
+    def _init(self):
+        self.current: collections.deque = collections.deque()
+        self.idlers: collections.deque = collections.deque()
         self.inactive = 0
         self.queue = []
         self.rpcs = {}
-        self.rpc_results = queue.Queue()
+        self.rpc_results: queue.Queue = queue.Queue()
 
     def clear(self):
         """Remove all pending events without running any."""
@@ -139,7 +142,7 @@ class EventLoop(object):
                 utils.logging_debug(log, "  queue = {}", queue)
             if rpcs:
                 utils.logging_debug(log, "  rpcs = {}", rpcs)
-            self.__init__()
+            self._init()
             current.clear()
             idlers.clear()
             queue[:] = []
