@@ -65,12 +65,11 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         elif copy:
             values = values.copy()
 
-        # We must pass values and dtype to the base constructor. 
-        # Manual assignment (self._ndarray = values) will fail at runtime with 
-        # AttributeError because the base is a Cython-backed 'NDArrayBacked' 
+        # We must pass values and dtype to the base constructor.
+        # Manual assignment (self._ndarray = values) will fail at runtime with
+        # AttributeError because the base is a Cython-backed 'NDArrayBacked'
         # object with non-writable attributes.
         super().__init__(values=values, dtype=values.dtype)  # type: ignore[call-arg]
-
 
     @classmethod
     def __ndarray(cls, scalars):
