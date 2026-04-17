@@ -77,16 +77,26 @@ class Block:
     type_: ConfigOrData = dataclasses.field(init=True, repr=False)
     text: ConfigOrData = dataclasses.field(init=True, repr=False)
     bounding_box: ConfigOrData = dataclasses.field(init=True, repr=False, default=None)
-    block_references: ConfigOrData = dataclasses.field(init=True, repr=False, default=None)
+    block_references: ConfigOrData = dataclasses.field(
+        init=True, repr=False, default=None
+    )
     block_id: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     confidence: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     page_number: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     page_width: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     page_height: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_width: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_height: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_type: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
-    bounding_unit: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
+    bounding_width: ConfigOrData = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    bounding_height: ConfigOrData = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    bounding_type: ConfigOrData = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    bounding_unit: ConfigOrData = dataclasses.field(
+        init=False, repr=False, default=None
+    )
     bounding_x: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     bounding_y: ConfigOrData = dataclasses.field(init=False, repr=False, default=None)
     docproto_width: Optional[float] = dataclasses.field(
