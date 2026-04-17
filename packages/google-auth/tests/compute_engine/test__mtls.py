@@ -79,40 +79,39 @@ def test__parse_mds_mode_invalid(monkeypatch):
 
 
 @mock.patch("os.path.exists")
-def test__certs_exist_true(mock_exists, mock_mds_mtls_config):
+def test_mds_mtls_certificates_exist_true(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = True
-    assert _mtls._certs_exist(mock_mds_mtls_config) is True
+    assert _mtls.mds_mtls_certificates_exist(mock_mds_mtls_config) is True
 
 
 @mock.patch("os.path.exists")
-def test__certs_exist_false(mock_exists, mock_mds_mtls_config):
+def test_mds_mtls_certificates_exist_false(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = False
-    assert _mtls._certs_exist(mock_mds_mtls_config) is False
+    assert _mtls.mds_mtls_certificates_exist(mock_mds_mtls_config) is False
 
 
 @pytest.mark.parametrize(
     "mtls_mode, certs_exist, expected_result",
     [
-        ("strict", True, True),
-        ("strict", False, exceptions.MutualTLSChannelError),
-        ("none", True, False),
-        ("none", False, False),
-        ("default", True, True),
-        ("default", False, False),
+        (_mtls.MdsMtlsMode.STRICT, True, True),
+        (_mtls.MdsMtlsMode.STRICT, False, exceptions.MutualTLSChannelError),
+        (_mtls.MdsMtlsMode.NONE, True, False),
+        (_mtls.MdsMtlsMode.NONE, False, False),
+        (_mtls.MdsMtlsMode.DEFAULT, True, True),
+        (_mtls.MdsMtlsMode.DEFAULT, False, False),
     ],
 )
 @mock.patch("os.path.exists")
 def test_should_use_mds_mtls(
-    mock_exists, monkeypatch, mtls_mode, certs_exist, expected_result
+    mock_exists, mtls_mode, certs_exist, expected_result, mock_mds_mtls_config
 ):
-    monkeypatch.setenv(environment_vars.GCE_METADATA_MTLS_MODE, mtls_mode)
     mock_exists.return_value = certs_exist
 
     if isinstance(expected_result, type) and issubclass(expected_result, Exception):
         with pytest.raises(expected_result):
-            _mtls.should_use_mds_mtls()
+            _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config)
     else:
-        assert _mtls.should_use_mds_mtls() is expected_result
+        assert _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config) is expected_result
 
 
 @mock.patch("ssl.create_default_context")

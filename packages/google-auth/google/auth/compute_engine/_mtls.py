@@ -65,8 +65,16 @@ class MdsMtlsConfig:
     )  # path to file containing client certificate and key
 
 
-def _certs_exist(mds_mtls_config: MdsMtlsConfig):
-    """Checks if the mTLS certificates exist."""
+def mds_mtls_certificates_exist(mds_mtls_config: MdsMtlsConfig):
+    """Checks if the mTLS certificates exist.
+
+    Args:
+        mds_mtls_config (MdsMtlsConfig): The mTLS configuration containing the
+            paths to the CA and client certificates.
+
+    Returns:
+        bool: True if both certificates exist, False otherwise.
+    """
     return os.path.exists(mds_mtls_config.ca_cert_path) and os.path.exists(
         mds_mtls_config.client_combined_cert_path
     )
@@ -98,19 +106,33 @@ def _parse_mds_mode():
         )
 
 
-def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()):
-    """Determines if mTLS should be used for the metadata server."""
-    mode = _parse_mds_mode()
+def should_use_mds_mtls(
+    mode: MdsMtlsMode, mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()
+) -> bool:
+    """Determines if mTLS should be used for the metadata server.
+
+    Args:
+        mode (MdsMtlsMode): The mTLS mode configured for the metadata server,
+            parsed from the GCE_METADATA_MTLS_MODE environment variable.
+        mds_mtls_config (MdsMtlsConfig): The mTLS configuration containing the
+            paths to the CA and client certificates.
+
+    Returns:
+        bool: True if mTLS should be used, False otherwise.
+
+    Raises:
+        google.auth.exceptions.MutualTLSChannelError: if mTLS is required (STRICT mode)
+            but certificates are missing.
+    """
     if mode == MdsMtlsMode.STRICT:
-        if not _certs_exist(mds_mtls_config):
+        if not mds_mtls_certificates_exist(mds_mtls_config):
             raise exceptions.MutualTLSChannelError(
                 "mTLS certificates not found in strict mode."
             )
         return True
-    elif mode == MdsMtlsMode.NONE:
+    if mode == MdsMtlsMode.NONE:
         return False
-    else:  # Default mode
-        return _certs_exist(mds_mtls_config)
+    return mds_mtls_certificates_exist(mds_mtls_config)
 
 
 class MdsMtlsAdapter(HTTPAdapter):
