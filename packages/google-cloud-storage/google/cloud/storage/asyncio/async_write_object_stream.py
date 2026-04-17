@@ -25,6 +25,7 @@ from google.cloud.storage.asyncio.async_abstract_object_stream import (
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
+_BLOB_SYNC_ATTRS = ("content_type", "metadata")
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     """Class representing a gRPC bidi-stream for writing data from a GCS
@@ -124,11 +125,12 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             "name": self.object_name,
             "bucket": self._full_bucket_name,
             }
-            if self.blob: 
-                if self.blob.content_type:
-                    resource_params["content_type"] = self.blob.content_type
-                if self.blob.metadata:
-                    resource_params["metadata"] = self.blob.metadata
+            if self.blob:
+                resource_params.update({
+                    attr: getattr(self.blob, attr)
+                    for attr in _BLOB_SYNC_ATTRS
+                    if getattr(self.blob, attr, None) is not None
+                })
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
                     resource=_storage_v2.Object(

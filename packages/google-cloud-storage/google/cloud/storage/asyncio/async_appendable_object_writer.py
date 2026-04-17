@@ -108,7 +108,6 @@ class AsyncAppendableObjectWriter:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        blob: Optional[Blob] = None,
         generation: Optional[int] = None,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
@@ -187,7 +186,6 @@ class AsyncAppendableObjectWriter:
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
-        self.blob = blob
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -214,6 +212,31 @@ class AsyncAppendableObjectWriter:
         self._routing_token: Optional[str] = None
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
+
+    @classmethod
+    def from_blob(
+        cls,
+        client: AsyncGrpcClient,
+        blob: Blob,
+        generation: Optional[int] = None,
+        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
+        writer_options: Optional[dict] = None,
+    ) -> "AsyncAppendableObjectWriter":
+        """Creates an AsyncAppendableObjectWriter from an existing Blob object.
+
+        This removes the need for the user to specify bucket_name and object_name
+        separately if they already have a Blob instance.
+        """
+        instance = cls(
+            client=client,
+            bucket_name=blob.bucket.name,
+            object_name=blob.name,
+            generation=generation,
+            write_handle=write_handle,
+            writer_options=writer_options,
+        )
+        instance.blob = blob
+        return instance
 
     async def state_lookup(self) -> int:
         """Returns the persisted_size

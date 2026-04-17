@@ -34,10 +34,9 @@ async def storage_create_and_write_appendable_object(
         grpc_client = AsyncGrpcClient()
     blob = Blob.from_uri("gs://{}/{}".format(bucket_name, object_name))
     blob.content_type = "text/plain"
-    writer = AsyncAppendableObjectWriter(
+    blob.metadata = {"environment": "dev"}
+    writer = AsyncAppendableObjectWriter.from_blob(
         client=grpc_client,
-        bucket_name=bucket_name,
-        object_name=object_name,
         blob=blob,
         generation=0,  # throws `FailedPrecondition` if object already exists.
     )
