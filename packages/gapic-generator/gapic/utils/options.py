@@ -51,6 +51,7 @@ class Options:
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
     gapic_version: str = "0.0.0"
+    resource_name_aliases: Dict[str, str] = dataclasses.field(default_factory=dict)
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -73,6 +74,7 @@ class Options:
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
             "gapic-version",  # A version string following https://peps.python.org/pep-0440
+            "resource-name-alias",
         )
     )
 
@@ -187,6 +189,39 @@ class Options:
         proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
             proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
+        
+        # Parse the resource name aliases dictionary (Format: "path/to/Resource:AliasName")
+        resource_name_aliases = {}
+        raw_aliases = opts.pop("resource-name-alias", [])
+        
+        # Normalize: protoc can return a string (1 flag) or list (multiple flags)
+        if not isinstance(raw_aliases, list):
+            raw_aliases = [raw_aliases]
+            
+        # Parse explicitly and safely
+        for mapping in raw_aliases:
+            if not mapping or not mapping.strip():
+                continue
+                
+            try:
+                # split(":", 1) ensures we only split on the FIRST colon 
+                res_path, alias_name = mapping.split(":", 1)
+                
+                clean_path = res_path.strip()
+                clean_alias = alias_name.strip()
+                
+                if not clean_path or not clean_alias:
+                    raise ValueError()
+                    
+                resource_name_aliases[clean_path] = clean_alias
+                
+            except ValueError:
+                warnings.warn(
+                    f"Ignored malformed resource-name-alias: '{mapping}'. "
+                    "Expected format is 'resource.path/Name:AliasName'."
+                )
+                
+        Options.resource_name_aliases_global = resource_name_aliases
 
         answer = Options(
             name=opts.pop("name", [""]).pop(),
@@ -210,6 +245,7 @@ class Options:
             rest_numeric_enums=rest_numeric_enums,
             proto_plus_deps=proto_plus_deps,
             gapic_version=opts.pop("gapic-version", ["0.0.0"]).pop(),
+            resource_name_aliases=resource_name_aliases,
         )
 
         # Note: if we ever need to recursively check directories for sample

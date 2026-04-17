@@ -70,6 +70,7 @@ from gapic.schema import metadata
 from gapic.utils import cached_proto_context
 from gapic.utils import uri_sample
 from gapic.utils import make_private
+from gapic.utils import Options
 
 
 @dataclasses.dataclass(frozen=True)
@@ -688,7 +689,16 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find("/") + 1 :] if resource else None
+        if not resource:
+            return None
+            
+        # Extract the standard short name (e.g., "Tool" from "ces.googleapis.com/Tool")
+        default_type = resource.type[resource.type.find("/") + 1 :]
+        
+        # Check if the CLI provided an alias for this specific resource path
+        aliases = getattr(Options, "resource_name_aliases_global", {})
+        
+        return aliases.get(resource.type, default_type)
 
     @property
     def resource_type_full_path(self) -> Optional[str]:
@@ -2278,9 +2288,9 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
-        request and response fields in the service."""
+        request and response fields in the service, deterministically sorted."""
 
         def gen_resources(message):
             if message.resource_path:
@@ -2301,7 +2311,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2315,6 +2325,33 @@ class Service:
                 ),
             )
         )
+
+        # 1. Deterministic AST Sort to avoid potential pipeline flakiness.
+        sorted_messages = sorted(
+            unique_messages, 
+            key=lambda m: m.resource_type_full_path or m.name
+        )
+
+        # 2. Fail-fast collision detection
+        seen_types = {}
+        for msg in sorted_messages:
+            res_type = msg.resource_type
+            if not res_type:
+                continue
+                
+            if res_type in seen_types:
+                incumbent = seen_types[res_type]
+                raise ValueError(
+                    f"\n\nFatal: Namespace collision detected for resource type '{res_type}'.\n"
+                    f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
+                    f"both flatten to the exact same method name.\n"
+                    f"To protect backward compatibility, explicitly alias one of these using "
+                    f"the `--resource-name-alias` CLI parameter.\n"
+                    f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
+                )
+            seen_types[res_type] = msg
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:

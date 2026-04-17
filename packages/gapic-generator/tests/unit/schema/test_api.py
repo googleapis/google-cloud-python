@@ -1740,17 +1740,17 @@ def test_file_level_resources():
     expected = collections.OrderedDict(
         (
             (
-                "nomenclature.linnaen.com/Species",
-                wrappers.CommonResource(
-                    type_name="nomenclature.linnaen.com/Species",
-                    pattern="families/{family}/genera/{genus}/species/{species}",
-                ).message_type,
-            ),
-            (
                 "nomenclature.linnaen.com/Phylum",
                 wrappers.CommonResource(
                     type_name="nomenclature.linnaen.com/Phylum",
                     pattern="kingdoms/{kingdom}/phyla/{phylum}",
+                ).message_type,
+            ),
+            (
+                "nomenclature.linnaen.com/Species",
+                wrappers.CommonResource(
+                    type_name="nomenclature.linnaen.com/Species",
+                    pattern="families/{family}/genera/{genus}/species/{species}",
                 ).message_type,
             ),
         )
@@ -1767,7 +1767,7 @@ def test_file_level_resources():
     # The service doesn't own any method that owns a message that references
     # Phylum, so the service doesn't count it among its resource messages.
     expected.pop("nomenclature.linnaen.com/Phylum")
-    expected = frozenset(expected.values())
+    expected = tuple(expected.values())
     actual = service.resource_messages
 
     assert actual == expected
@@ -1822,7 +1822,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
         name_resource_opts.child_type = species_resource_opts.type
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
-    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
+    expected = (api_schema.messages["nomenclature.linneaen.v1.Species"],)
     actual = api_schema.services[
         "nomenclature.linneaen.v1.SpeciesService"
     ].resource_messages
