@@ -57,11 +57,22 @@ class CrossSyncOutputFile:
         full_str = self.header + ast.unparse(self.tree)
         if with_formatter:
             import subprocess
+            import sys
 
             try:
-                # Run ruff check --select I,F401 --fix
+                # Run ruff check
                 result = subprocess.run(
-                    ["ruff", "check", "--select", "I,F401", "--fix", "-", "--stdin-filename", self.output_path],
+                    [
+                        sys.executable,
+                        "-m",
+                        "ruff",
+                        "check",
+                        "--select",
+                        "I",
+                        "--fix",
+                        "--line-length=88",
+                        "-",
+                    ],
                     input=full_str,
                     text=True,
                     capture_output=True,
@@ -71,7 +82,14 @@ class CrossSyncOutputFile:
 
                 # Run ruff format
                 result = subprocess.run(
-                    ["ruff", "format", "-", "--stdin-filename", self.output_path],
+                    [
+                        sys.executable,
+                        "-m",
+                        "ruff",
+                        "format",
+                        "--line-length=88",
+                        "-",
+                    ],
                     input=full_str,
                     text=True,
                     capture_output=True,
