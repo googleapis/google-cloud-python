@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This script will run after ``nox -s docfx`` is run. docfx is the api doc format used by 
+This script will run after ``nox -s docfx`` is run. docfx is the api doc format used by
 google cloud. It is described here: https://github.com/googleapis/docuploader?tab=readme-ov-file#requirements-for-docfx-yaml-tarballs.
 
 One of the file used by docfx is toc.yml which is used to generate the table of contents sidebar.
 This script will patch file to create subfolders for each of the clients
 """
 
-
 import glob
-import yaml
 import os
 import shutil
+
+import yaml
 
 # set working directory to /docs
 os.chdir(f"{os.path.dirname(os.path.abspath(__file__))}/{os.pardir}")
@@ -234,9 +234,9 @@ def validate_toc(toc_file_path, expected_section_list, added_sections):
     current_toc = yaml.safe_load(open(toc_file_path, "r"))
     # make sure the set of sections matches what we expect
     found_sections = [d["name"] for d in current_toc[0]["items"]]
-    assert (
-        found_sections == expected_section_list
-    ), f"Expected {expected_section_list}, found {found_sections}"
+    assert found_sections == expected_section_list, (
+        f"Expected {expected_section_list}, found {found_sections}"
+    )
     # make sure each customs ection is in the toc
     for section in added_sections:
         assert section.title in found_sections
