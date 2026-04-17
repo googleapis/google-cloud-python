@@ -563,7 +563,9 @@ class TestSystemAsync(SystemTestRunner):
             assert len(batcher._flush_jobs) == 0
             # ensure cells were not updated
             assert (await temp_rows.retrieve_cell_value(target, row_key)) == start_value
-            assert (await temp_rows.retrieve_cell_value(target, row_key2)) == start_value
+            assert (
+                await temp_rows.retrieve_cell_value(target, row_key2)
+            ) == start_value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")

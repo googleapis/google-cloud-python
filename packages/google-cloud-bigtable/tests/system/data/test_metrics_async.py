@@ -265,7 +265,7 @@ class TestMetricsAsync(SystemTestRunner):
         assert attempt.end_status.value[0] == 0
         assert attempt.backoff_before_attempt_ns == 0
         assert (
-            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns 
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
         )
         assert attempt.application_blocking_time_ns == 0
 
@@ -315,12 +315,12 @@ class TestMetricsAsync(SystemTestRunner):
         for i in range(num_retryable):
             attempt = handler.completed_attempts[i]
             assert isinstance(attempt, CompletedAttemptMetric)
-            assert attempt.end_status.name == "ABORTED" 
+            assert attempt.end_status.name == "ABORTED"
             assert attempt.gfe_latency_ns is None
         final_attempt = handler.completed_attempts[num_retryable]
         assert isinstance(final_attempt, CompletedAttemptMetric)
         assert final_attempt.end_status.name == "PERMISSION_DENIED"
-        assert final_attempt.gfe_latency_ns is None 
+        assert final_attempt.gfe_latency_ns is None
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)), reason="not supported by emulator"
