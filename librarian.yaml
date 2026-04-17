@@ -4621,7 +4621,6 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
