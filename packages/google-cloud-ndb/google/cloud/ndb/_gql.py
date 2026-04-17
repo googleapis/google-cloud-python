@@ -777,12 +777,16 @@ def _time_function(values):
         value = values[0]
         if isinstance(value, str):
             try:
-                st = time.strptime(value, "%H:%M:%S")
+                parsed_time = time.strptime(value, "%H:%M:%S")
             except ValueError as error:
                 _raise_cast_error(
                     "Error during time conversion, {}, {}".format(error, values)
                 )
-            t_tuple = (st.tm_hour, st.tm_min, st.tm_sec)
+            t_tuple = (
+                parsed_time.tm_hour,
+                parsed_time.tm_min,
+                parsed_time.tm_sec,
+            )
         elif isinstance(value, int):
             t_tuple = (value,)
         else:
