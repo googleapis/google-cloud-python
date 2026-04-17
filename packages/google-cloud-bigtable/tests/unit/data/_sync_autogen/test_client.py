@@ -1120,8 +1120,12 @@ class TestTable:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
-                    assert retry_call_args[1] is expected_predicate
+                    retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
+                    if "predicate" in retry_call_kwargs:
+                        assert retry_call_kwargs["predicate"] is expected_predicate
+                    else:
+                        retry_call_args = retry_fn_mock.call_args_list[0].args
+                        assert retry_call_args[1] is expected_predicate
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",
