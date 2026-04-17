@@ -177,7 +177,7 @@ class SQLGlotIR:
         project_id: str,
         dataset_id: str,
         table_id: str,
-        uid_gen: guid.SequentialUIDGenerator,
+        uid_gen: guid.SequentialUIDGenerator | None = None,
         columns: typing.Sequence[str] = (),
         sql_predicate: typing.Optional[str] = None,
         system_time: typing.Optional[datetime.datetime] = None,
@@ -202,6 +202,8 @@ class SQLGlotIR:
             if system_time
             else None
         )
+        if uid_gen is None:
+            uid_gen = guid.SequentialUIDGenerator()
         table_alias = next(uid_gen.get_uid_stream("bft_"))
         table_expr = sge.Table(
             this=sql.identifier(table_id),

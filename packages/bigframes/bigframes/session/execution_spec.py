@@ -22,24 +22,43 @@ from google.cloud import bigquery
 
 @dataclasses.dataclass(frozen=True)
 class ExecutionSpec:
-    destination_spec: Union[TableOutputSpec, GcsOutputSpec, CacheSpec, None] = None
+    # destination for the result of the operation. Executor may also incidentally create other temporary tables for its own purposes.
+    destination_spec: Union[TableOutputSpec, GcsOutputSpec, TempTableSpec, None] = None
+    # If set, the result will be truncated to the given number of rows. Which N rows is
+    # implementation dependent and not stable.
     peek: Optional[int] = None
-    ordered: bool = (
-        False  # ordered and promise_under_10gb must both be together for bq execution
-    )
+    # Controls whether output iterator is ordered. Cannot be true if destination is not
+    # guaranteed to be ordered. 
+    ordered: bool = False
     # This is an optimization flag for gbq execution, it doesn't change semantics, but if promise is falsely made, errors may occur
     promise_under_10gb: bool = False
 
 
-# This one is temporary, in future, caching will not be done through immediate execution, but will label nodes
-# that will be cached only when a super-tree is executed
+# Used internally by execution
 @dataclasses.dataclass(frozen=True)
-class CacheSpec:
-    cluster_cols: tuple[str, ...]
+class TempTableSpec:
+    """
+    Specifies that the result of an operation should be a session temp table.
+    The table will be automatically deleted after the session ends.
+    """
+    cluster_cols: tuple[str, ...]   # if empty, will cluster using order key if ordering_key is set
+    lifetime: Literal["session", "ephemeral"] = "session"
+    # Controls ordering and whether extra columns are materialized to preserve ordering
+    # Any extra columns will be appended to the end of the schema.
+    # None: ordering may be discarded entirely (ordering metadata will still be provided if ordering is derivable from materialized columns)
+    # order_rows: the result iterator itself will be ordered. For gbq execution, result cannot exceed 10GB.
+    # order_key: the result set ordered by a key, may materialize extra columns.
+    # offsets_col: order the result set by an offsets column, materializes one extra column.
+    ordering: Literal["order_rows", "offsets_col", "order_key"] | None = None
 
 
 @dataclasses.dataclass(frozen=True)
 class TableOutputSpec:
+    """
+    Specifies that the result of an operation should be exported to a specific named table.
+
+    The executor is not responsible for managing lifecycle of the table.
+    """
     table: bigquery.TableReference
     cluster_cols: tuple[str, ...]
     if_exists: Literal["fail", "replace", "append"] = "fail"

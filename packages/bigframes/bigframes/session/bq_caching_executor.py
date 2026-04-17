@@ -20,8 +20,6 @@ import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
 
 import google.api_core.exceptions
-import google.cloud.bigquery.job as bq_job
-import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
 from google.cloud import bigquery
 
@@ -31,6 +29,7 @@ import bigframes.core
 import bigframes.core.events
 import bigframes.core.guid
 import bigframes.core.identifiers
+import bigframes.core.ordering
 import bigframes.core.nodes as nodes
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
@@ -41,8 +40,7 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes import exceptions as bfe
-from bigframes.core import bq_data, compile, local_data, rewrite
+from bigframes.core import compile, guid, local_data, rewrite
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (
@@ -51,7 +49,9 @@ from bigframes.session import (
     local_scan_executor,
     read_api_execution,
     semi_executor,
+    direct_gbq_execution,
 )
+import dataclasses
 
 # Max complexity that should be executed as a single query
 QUERY_COMPLEXITY_LIMIT = 1e7
@@ -108,6 +108,9 @@ class BigQueryCachingExecutor(executor.Executor):
                 polars_executor.PolarsExecutor(),
             )
         self._upload_lock = threading.Lock()
+        self._gbq_executor = direct_gbq_execution.DirectGbqExecutor(
+            bqclient, compile.compiler, metrics=self.metrics, publisher=self._publisher
+        )
 
     def to_sql(
         self,
@@ -129,60 +132,100 @@ class BigQueryCachingExecutor(executor.Executor):
         )
         return compiled.sql
 
+
     def execute(
         self,
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
         self._publisher.publish(bigframes.core.events.ExecutionStarted())
-
-        # TODO: Support export jobs in combination with semi executors
-        if execution_spec.destination_spec is None:
-            plan = self.prepare_plan(array_value.node, target="simplify")
-            for exec in self._semi_executors:
-                maybe_result = exec.execute(
-                    plan, ordered=execution_spec.ordered, peek=execution_spec.peek
-                )
-                if maybe_result:
-                    self._publisher.publish(
-                        bigframes.core.events.ExecutionFinished(
-                            result=maybe_result,
-                        )
-                    )
-                    return maybe_result
-
-        if isinstance(execution_spec.destination_spec, ex_spec.TableOutputSpec):
-            if execution_spec.peek or execution_spec.ordered:
-                raise NotImplementedError(
-                    "Ordering and peeking not supported for gbq export"
-                )
-            # separate path for export_gbq, as it has all sorts of annoying logic, such as possibly running as dml
-            result = self._export_gbq(array_value, execution_spec.destination_spec)
-            self._publisher.publish(
-                bigframes.core.events.ExecutionFinished(
-                    result=result,
-                )
-            )
-            return result
-
-        result = self._execute_plan_gbq(
-            array_value.node,
-            ordered=execution_spec.ordered,
-            peek=execution_spec.peek,
-            cache_spec=execution_spec.destination_spec
-            if isinstance(execution_spec.destination_spec, ex_spec.CacheSpec)
-            else None,
-            must_create_table=not execution_spec.promise_under_10gb,
-        )
-        # post steps: export
-        if isinstance(execution_spec.destination_spec, ex_spec.GcsOutputSpec):
-            self._export_result_gcs(result, execution_spec.destination_spec)
-
+        maybe_result = self._try_execute_semi_executors(array_value, execution_spec)
+        if maybe_result is not None:
+            return maybe_result
+        result = self._execute_bigquery(array_value, execution_spec)
         self._publisher.publish(
             bigframes.core.events.ExecutionFinished(
                 result=result,
             )
         )
+        return result
+
+    def _try_execute_semi_executors(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        execution_spec: ex_spec.ExecutionSpec,
+    ) -> Optional[executor.ExecuteResult]:
+        plan = self.prepare_plan(array_value.node, target="simplify")
+        for exec in self._semi_executors:
+            maybe_result = exec.execute(plan, execution_spec)
+            if maybe_result:
+                self._publisher.publish(
+                    bigframes.core.events.ExecutionFinished(
+                        result=maybe_result,
+                    )
+                )
+                return maybe_result
+        return None
+
+
+    def _execute_bigquery(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        execution_spec: ex_spec.ExecutionSpec,
+    ) -> executor.ExecuteResult:
+        dest_spec = execution_spec.destination_spec
+        # Recursive handlers for different cases, maybe extract to explicit interface.
+        if isinstance(dest_spec, ex_spec.GcsOutputSpec):
+            execution_spec = dataclasses.replace(
+                execution_spec, destination_spec=ex_spec.TempTableSpec(cluster_cols=dest_spec.cluster_cols, lifetime="ephemeral")
+            )
+            results = self._execute_bigquery(array_value, execution_spec)
+            self._export_result_gcs(results, dest_spec)
+            return results
+        if isinstance(dest_spec, ex_spec.TableOutputSpec):
+            # Special DML path - maybe this should be configurable, dml vs query destination has tradeoffs
+            existing_table = self._maybe_find_existing_table(dest_spec)
+            if execution_spec.ordered:
+                raise ValueError("Ordering not supported with table outputs")
+            if (existing_table is not None) and _is_schema_match(
+                existing_table.schema, array_value.schema
+            ):
+                execution_spec = dataclasses.replace(
+                    execution_spec, destination_spec=ex_spec.TempTableSpec(cluster_cols=execution_spec.destination_spec.cluster_cols, lifetime="ephemeral")
+                )
+                results = self._execute_bigquery(array_value, execution_spec)
+                self._export_gbq_with_dml(results, dest_spec)
+                return results
+        if isinstance(dest_spec, ex_spec.TempTableSpec):
+            # "ephemeral" temp tables created in the course of exeuction, don't need to be allocated
+            # materialized ordering only really makes sense for internal temp tables used by caching
+            cluster_cols = dest_spec.cluster_cols
+            plan = array_value.node
+            if dest_spec.ordering == "offsets_col":
+                order_col_id = guid.generate_guid()
+                plan = nodes.PromoteOffsetsNode(plan, order_col_id)
+                cluster_cols = [order_col_id]
+            elif dest_spec.ordering == "order_key":
+                plan = nodes.defer_order(plan, output_hidden_row_keys=True)
+            if dest_spec.lifetime == "session":
+                destination_table = self.storage_manager.create_temp_table(
+                    plan.schema, cluster_cols
+                )
+                arr_value = bigframes.core.ArrayValue(plan)
+                execution_spec = dataclasses.replace(
+                    execution_spec, destination_spec=ex_spec.TableOutputSpec(table=destination_table, cluster_cols=dest_spec.cluster_cols, if_exists="replace")
+                )
+                return self._execute_bigquery(arr_value, execution_spec)
+                
+
+        # At this point, dst should be unspecified, a specific bq table, or an ephemeral temp table
+        # Also, ordering mode will either be none or row-sorted
+        gbq_plan = self.prepare_plan(array_value.node, target="bq_execution")
+        result = self._gbq_executor.execute(gbq_plan, execution_spec)
+        if result is None:
+            raise ValueError(
+                f"Couldn't execute plan {array_value.node} with {execution_spec}"
+            )
         return result
 
     def _export_result_gcs(
@@ -231,75 +274,33 @@ class BigQueryCachingExecutor(executor.Executor):
         except google.api_core.exceptions.NotFound:
             return None
 
-    def _export_gbq(
-        self, array_value: bigframes.core.ArrayValue, spec: ex_spec.TableOutputSpec
+    def _export_gbq_with_dml(
+        self, result: executor.ExecuteResult, spec: ex_spec.TableOutputSpec
     ) -> executor.ExecuteResult:
         """
-        Export the ArrayValue to an existing BigQuery table.
+        Export the ArrayValue to an existing BigQuery table, using DML.
         """
-        plan = self.prepare_plan(array_value.node, target="bq_execution")
-
-        # validate destination table
-        existing_table = self._maybe_find_existing_table(spec)
-
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(plan, sort_rows=False)
+        # b/409086472: Uses DML for table appends and replacements to avoid
+        # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
+        # https://cloud.google.com/bigquery/quotas#standard_tables
+        ir = sqlglot_ir.SQLGlotIR.from_table(
+            result.query_job.destination.project,
+            result.query_job.destination.dataset_id,
+            result.query_job.destination.table_id,
         )
-        sql = compiled.sql
+        sql = ""
+        if spec.if_exists == "append":
+            sql = sg_sql.to_sql(sg_sql.insert(ir.expr.as_select_all(), spec.table))
+        else:  # for "replace"
+            assert spec.if_exists == "replace"
+            sql = sg_sql.to_sql(sg_sql.replace(ir.expr.as_select_all(), spec.table))
 
-        if (existing_table is not None) and _is_schema_match(
-            existing_table.schema, array_value.schema
-        ):
-            # b/409086472: Uses DML for table appends and replacements to avoid
-            # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
-            # https://cloud.google.com/bigquery/quotas#standard_tables
-            job_config = bigquery.QueryJobConfig()
-
-            ir = sqlglot_ir.SQLGlotIR.from_unparsed_query(sql)
-            if spec.if_exists == "append":
-                sql = sg_sql.to_sql(sg_sql.insert(ir.expr.as_select_all(), spec.table))
-            else:  # for "replace"
-                assert spec.if_exists == "replace"
-                sql = sg_sql.to_sql(sg_sql.replace(ir.expr.as_select_all(), spec.table))
-        else:
-            dispositions = {
-                "fail": bigquery.WriteDisposition.WRITE_EMPTY,
-                "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
-                "append": bigquery.WriteDisposition.WRITE_APPEND,
-            }
-            job_config = bigquery.QueryJobConfig(
-                write_disposition=dispositions[spec.if_exists],
-                destination=spec.table,
-                clustering_fields=spec.cluster_cols if spec.cluster_cols else None,
-            )
-
-        # Attach data type usage to the job labels
-        job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
-        # TODO(swast): plumb through the api_name of the user-facing api that
-        # caused this query.
-        iterator, job = self._run_execute_query(
-            sql=sql,
-            job_config=job_config,
-            session=array_value.session,
-        )
-
-        has_special_dtype_col = any(
-            t in (bigframes.dtypes.TIMEDELTA_DTYPE, bigframes.dtypes.OBJ_REF_DTYPE)
-            for t in array_value.schema.dtypes
-        )
-
-        if spec.if_exists != "append" and has_special_dtype_col:
-            # Only update schema if this is not modifying an existing table, and the
-            # new table contains special columns (like timedelta or obj_ref).
-            table = self.bqclient.get_table(spec.table)
-            table.schema = array_value.schema.to_bigquery()
-            self.bqclient.update_table(table, ["schema"])
-
-        return executor.EmptyExecuteResult(
-            bf_schema=array_value.schema,
-            execution_metadata=executor.ExecutionMetadata.from_iterator_and_job(
-                iterator, job
-            ),
+        bq_io.start_query_with_client(
+            self.bqclient,
+            sql,
+            job_config=bigquery.QueryJobConfig(),
+            metrics=self.metrics,
+            publisher=self._publisher,
         )
 
     def dry_run(
@@ -343,62 +344,6 @@ class BigQueryCachingExecutor(executor.Executor):
             )
 
     # Helpers
-    def _run_execute_query(
-        self,
-        sql: str,
-        job_config: Optional[bq_job.QueryJobConfig] = None,
-        query_with_job: bool = True,
-        session=None,
-    ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
-        """
-        Starts BigQuery query job and waits for results.
-        """
-        job_config = bq_job.QueryJobConfig() if job_config is None else job_config
-        if bigframes.options.compute.maximum_bytes_billed is not None:
-            job_config.maximum_bytes_billed = (
-                bigframes.options.compute.maximum_bytes_billed
-            )
-
-        if self._labels:
-            job_config.labels.update(self._labels)
-
-        try:
-            # Trick the type checker into thinking we got a literal.
-            if query_with_job:
-                return bq_io.start_query_with_client(
-                    self.bqclient,
-                    sql,
-                    job_config=job_config,
-                    metrics=self.metrics,
-                    project=None,
-                    location=None,
-                    timeout=None,
-                    query_with_job=True,
-                    publisher=self._publisher,
-                    session=session,
-                )
-            else:
-                return bq_io.start_query_with_client(
-                    self.bqclient,
-                    sql,
-                    job_config=job_config,
-                    metrics=self.metrics,
-                    project=None,
-                    location=None,
-                    timeout=None,
-                    query_with_job=False,
-                    publisher=self._publisher,
-                    session=session,
-                )
-
-        except google.api_core.exceptions.BadRequest as e:
-            # Unfortunately, this error type does not have a separate error code or exception type
-            if "Resources exceeded during query execution" in e.message:
-                new_message = "Computation is too complex to execute as a single query. Try using DataFrame.cache() on intermediate results, or setting bigframes.options.compute.enable_multi_query_execution."
-                raise bfe.QueryComplexityError(new_message) from e
-            else:
-                raise
-
     def _is_trivially_executable(self, array_value: bigframes.core.ArrayValue):
         """
         Can the block be evaluated very cheaply?
@@ -441,23 +386,33 @@ class BigQueryCachingExecutor(executor.Executor):
         self, array_value: bigframes.core.ArrayValue, cluster_cols: Sequence[str]
     ):
         """Executes the query and uses the resulting table to rewrite future executions."""
+        cluster_cols = [
+            col
+            for col in cluster_cols
+            if bigframes.dtypes.is_clusterable(array_value.schema.get_type(col))
+        ]
+        cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.CacheSpec(cluster_cols=tuple(cluster_cols))
+            destination_spec=ex_spec.TempTableSpec(cluster_cols=tuple(cluster_cols), lifetime="session", ordering="order_key")
         )
-        self.execute(
+        result_bq_data = self.execute(
             array_value,
             execution_spec=execution_spec,
         )
+        assert isinstance(result_bq_data, bigframes.core.BigqueryDataSource)
+        self.cache.cache_results_table(array_value.node, result_bq_data)
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.CacheSpec(cluster_cols=tuple())
+            destination_spec=ex_spec.TempTableSpec(cluster_cols=(), lifetime="session", ordering="offsets_col")
         )
-        self.execute(
+        result_bq_data = self.execute(
             array_value,
             execution_spec=execution_spec,
         )
+        assert isinstance(result_bq_data, bigframes.core.BigqueryDataSource)
+        self.cache.cache_results_table(array_value.node, result_bq_data)
 
     def _cache_with_session_awareness(
         self,
@@ -500,8 +455,9 @@ class BigQueryCachingExecutor(executor.Executor):
             max_complexity=QUERY_COMPLEXITY_LIMIT,
             cache=self.cache,
             # Heuristic: subtree_compleixty * (copies of subtree)^2
-            heuristic=lambda complexity, count: math.log(complexity)
-            + 2 * math.log(count),
+            heuristic=lambda complexity, count: (
+                math.log(complexity) + 2 * math.log(count)
+            ),
         )
         if selection is None:
             # No good subtrees to cache, just return original tree
@@ -568,126 +524,11 @@ class BigQueryCachingExecutor(executor.Executor):
         return original_root.bottom_up(map_local_scans)
 
     def _execute_plan_gbq(
-        self,
-        plan: nodes.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
-        cache_spec: Optional[ex_spec.CacheSpec] = None,
-        must_create_table: bool = True,
+        self, plan: nodes.BigFrameNode, execution_spec: ex_spec.ExecutionSpec
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
-        # TODO(swast): plumb through the api_name of the user-facing api that
-        # caused this query.
-
-        og_plan = plan
-        og_schema = plan.schema
-
         plan = self.prepare_plan(plan, target="bq_execution")
-        create_table = must_create_table
-        cluster_cols: Sequence[str] = []
-        if cache_spec is not None:
-            if peek is not None:
-                raise ValueError("peek is not compatible with caching.")
-
-            create_table = True
-            if not cache_spec.cluster_cols:
-                offsets_id = bigframes.core.identifiers.ColumnId(
-                    bigframes.core.guid.generate_guid()
-                )
-                plan = nodes.PromoteOffsetsNode(plan, offsets_id)
-                cluster_cols = [offsets_id.sql]
-            else:
-                cluster_cols = [
-                    col
-                    for col in cache_spec.cluster_cols
-                    if bigframes.dtypes.is_clusterable(plan.schema.get_type(col))
-                ]
-                cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
-
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(
-                plan,
-                sort_rows=ordered,
-                peek_count=peek,
-                materialize_all_order_keys=(cache_spec is not None),
-            )
-        )
-        # might have more columns than og schema, for hidden ordering columns
-        compiled_schema = compiled.sql_schema
-
-        destination_table: Optional[bigquery.TableReference] = None
-
-        job_config = bigquery.QueryJobConfig()
-        if create_table:
-            destination_table = self.storage_manager.create_temp_table(
-                compiled_schema, cluster_cols
-            )
-            job_config.destination = destination_table
-
-        # Attach data type usage to the job labels
-        job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
-        iterator, query_job = self._run_execute_query(
-            sql=compiled.sql,
-            job_config=job_config,
-            query_with_job=(destination_table is not None),
-            session=plan.session,
-        )
-
-        # we could actually cache even when caching is not explicitly requested, but being conservative for now
-        result_bq_data = None
-        if query_job and query_job.destination:
-            # we might add extra sql columns in compilation, esp if caching w ordering, infer a bigframes type for them
-            result_bf_schema = _result_schema(og_schema, list(compiled.sql_schema))
-            dst = query_job.destination
-            result_bq_data = bq_data.BigqueryDataSource(
-                table=bq_data.GbqNativeTable.from_ref_and_schema(
-                    dst,
-                    tuple(compiled_schema),
-                    cluster_cols=tuple(cluster_cols),
-                    location=iterator.location or self.storage_manager.location,
-                    table_type="TABLE",
-                ),
-                schema=result_bf_schema,
-                ordering=compiled.row_order,
-                n_rows=iterator.total_rows,
-            )
-
-        if cache_spec is not None:
-            assert result_bq_data is not None
-            assert compiled.row_order is not None
-            self.cache.cache_results_table(og_plan, result_bq_data)
-
-        execution_metadata = executor.ExecutionMetadata.from_iterator_and_job(
-            iterator, query_job
-        )
-        result_mostly_cached = (
-            hasattr(iterator, "_is_almost_completely_cached")
-            and iterator._is_almost_completely_cached()
-        )
-        if result_bq_data is not None and not result_mostly_cached:
-            return executor.BQTableExecuteResult(
-                data=result_bq_data,
-                project_id=self.bqclient.project,
-                storage_client=self.bqstoragereadclient,
-                execution_metadata=execution_metadata,
-                selected_fields=tuple((col, col) for col in og_schema.names),
-            )
-        else:
-            return executor.LocalExecuteResult(
-                data=iterator.to_arrow().select(og_schema.names),
-                bf_schema=plan.schema,
-                execution_metadata=execution_metadata,
-            )
-
-
-def _result_schema(
-    logical_schema: schemata.ArraySchema, sql_schema: list[bigquery.SchemaField]
-) -> schemata.ArraySchema:
-    inferred_schema = bigframes.dtypes.bf_type_from_type_kind(sql_schema)
-    inferred_schema.update(logical_schema._mapping)
-    return schemata.ArraySchema(
-        tuple(schemata.SchemaItem(col, dtype) for col, dtype in inferred_schema.items())
-    )
+        return self._gbq_executor.execute(plan, execution_spec)
 
 
 def _is_schema_match(
