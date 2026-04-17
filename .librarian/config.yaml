@@ -1,6 +1,5 @@
 # This file is being migrated to librarian@latest, and is no longer maintained by hand.
 
-release_only_mode: true
 global_files_allowlist:
   - path: CHANGELOG.md
     permissions: read-write
@@ -10,8 +9,6 @@ libraries:
   - generate_blocked: true
     id: google-cloud-storage
     release_blocked: true
-  - generate_blocked: true
-    id: google-cloud-bigtable
   - generate_blocked: true
     id: bigframes
     release_blocked: true
