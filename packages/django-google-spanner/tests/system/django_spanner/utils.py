@@ -125,6 +125,19 @@ def setup_database():
 
 
 def teardown_database():
+    from django.db import connections
+
+    connections.close_all()
+
     Config.DATABASE = Config.INSTANCE.database(DATABASE_NAME)
     if Config.DATABASE.exists():
         Config.DATABASE.drop()
+
+    # Clear the global client cache to avoid Stale Session errors
+    # when the next test class creates a new database.
+    try:
+        import django_spanner.base
+
+        django_spanner.base._SPANNER_CLIENT_CACHE = None
+    except ImportError:
+        pass

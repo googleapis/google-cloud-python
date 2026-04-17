@@ -1,5 +1,4 @@
-pip install django==3.2
-
+rm -rf django_test
 mkdir django_test
 cd django_test
 
@@ -31,12 +30,25 @@ class EnqueuedRoutesTest(TestCase):
         self.city = City.objects.create(name='City123', country=self.country)
     
     def test_foreign_key(self):
-        city = City.objects.get(pk=1)
-        assert city.country == Country.objects.get(pk=1)" > applic/tests.py
+        city = City.objects.get(pk=self.city.pk)
+        assert city.country == self.country" > applic/tests.py
 
 sed -i -- 's/INSTALLED_APPS = \[/INSTALLED_APPS = \[\"applic\.apps\.ApplicConfig\"\,/g' foreign_keys/settings.py
 
 python manage.py makemigrations
-python manage.py migrate
+
+echo "
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_spanner',
+        'PROJECT': '$GOOGLE_CLOUD_PROJECT',
+        'INSTANCE': '$SPANNER_TEST_INSTANCE',
+        'NAME': 'test_foreign_keys',
+    }
+}
+" >> foreign_keys/settings.py
 
 python manage.py test
+
+cd ../..
+rm -rf django_test

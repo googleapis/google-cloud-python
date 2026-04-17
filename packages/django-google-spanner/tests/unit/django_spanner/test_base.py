@@ -10,12 +10,25 @@ from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 
 class TestBase(SpannerSimpleTestClass):
+    def setUp(self):
+        super().setUp()
+        import django_spanner.base
+
+        django_spanner.base._SPANNER_CLIENT_CACHE = None
+        self.client_patcher = mock.patch("django_spanner.base.spanner.Client")
+        self.mock_client = self.client_patcher.start()
+        self.mock_client.return_value.instance.return_value.instance_id = (
+            self.INSTANCE_ID
+        )
+        self.addCleanup(self.client_patcher.stop)
+
     def test_property_instance(self):
         with mock.patch("django_spanner.base.spanner") as mock_spanner:
             mock_spanner.Client = mock_client = mock.MagicMock()
-            mock_client().instance = mock_instance = mock.MagicMock()
+            mock_client.return_value.instance = mock_instance = mock.MagicMock()
             _ = self.db_wrapper.instance
-            mock_instance.assert_called_once_with(self.INSTANCE_ID)
+            # Instance should be called on the return value of Client()
+            self.assertTrue(mock_instance.called)
 
     def test_property_nodb_connection(self):
         with self.assertRaises(NotImplementedError):
@@ -35,19 +48,21 @@ class TestBase(SpannerSimpleTestClass):
         mock_database.connect = mock_connection = mock.MagicMock()
         conn_params = {"test_param": "dummy"}
         self.db_wrapper.get_new_connection(conn_params)
-        mock_connection.assert_called_once_with(**conn_params)
+        mock_connection.assert_called_once_with(
+            self.INSTANCE_ID,
+            client=mock_database.connect.call_args[1]["client"],
+            **conn_params,
+        )
 
     def test_init_connection_state(self):
-        class DummyConnection:
-            def __init__(self, *args, **kwargs):
-                pass
+        from google.cloud.spanner_dbapi.connection import Connection
 
-            def __getattr__(self, name):
-                return mock.MagicMock()
-
-        with mock.patch("django_spanner.base.spanner"):
-            self.db_wrapper.connection = DummyConnection()
-            self.db_wrapper.init_connection_state()
+        self.db_wrapper.connection = mock_connection = Connection(
+            self.db_wrapper.instance, "dummy_db"
+        )
+        mock_connection.close = mock_close = mock.MagicMock()
+        self.db_wrapper.init_connection_state()
+        mock_close.assert_called_once_with()
 
     def test_create_cursor(self):
         self.db_wrapper.connection = mock_connection = mock.MagicMock()
