@@ -41,7 +41,7 @@ if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"conti
         export GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
     fi
 
-    export GOOGLE_CLOUD_PROJECT="bigframes-testing"
+    export GOOGLE_CLOUD_PROJECT="precise-truck-742"
     cd "${package_path}"
     
     python3 -m nox -s cleanup || echo "Warning: Cleanup session failed, proceeding to doctest."
