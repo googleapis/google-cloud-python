@@ -25,16 +25,7 @@ import random
 import time
 import warnings
 from functools import partial
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Iterable,
-    Optional,
-    Sequence,
-    Set,
-    cast,
-)
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Optional, Sequence, Set, cast
 
 import google.auth._default
 import google.auth.credentials
