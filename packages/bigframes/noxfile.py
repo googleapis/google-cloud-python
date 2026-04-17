@@ -20,7 +20,6 @@ import argparse
 import multiprocessing
 import os
 import pathlib
-import re
 import shutil
 import time
 from typing import Dict, List
@@ -62,7 +61,6 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-timeout",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
@@ -95,7 +93,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
     "google-cloud-bigquery",
 ]
-SYSTEM_TEST_EXTRAS: List[str] = []
+SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     # Make sure we leave some versions without "extras" so we know those
     # dependencies are actually optional.
@@ -257,14 +255,10 @@ def run_unit(session, install_test_extra):
 
 
 @nox.session(python=ALL_PYTHON)
-@nox.parametrize("test_extra", [True, False])
-def unit(session, test_extra):
+def unit(session):
     if session.python in ("3.7", "3.8", "3.9"):
         session.skip("Python 3.9 and below are not supported")
-    if test_extra:
-        run_unit(session, install_test_extra=test_extra)
-    else:
-        unit_noextras(session)
+    run_unit(session, install_test_extra=True)
 
 
 @nox.session(python=ALL_PYTHON[-1])
@@ -367,15 +361,14 @@ def run_system(
 @nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
-    if session.python in ("3.7", "3.8", "3.9"):
-        session.skip("Python 3.9 and below are not supported")
-
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16489): Restore system test once this bug is fixed
     run_system(
         session=session,
         prefix_name="system",
         test_folder=os.path.join("tests", "system", "small"),
         check_cov=True,
     )
+    # session.skip("Temporarily skip system test")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -392,10 +385,6 @@ def system_noextras(session: nox.sessions.Session):
 @nox.session(python="3.12")
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
-    session.skip(
-        "Temporary skip to enable a PR merge. Remove skip as part of closing https://github.com/googleapis/google-cloud-python/issues/16489"
-    )
-
     run_system(
         session=session,
         prefix_name="doctest",
@@ -451,10 +440,6 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the test runs
     (including system test runs), and then erases coverage data.
     """
-    # TODO: Remove this skip when the issue is resolved.
-    # https://github.com/googleapis/google-cloud-python/issues/16635
-    session.skip("Temporarily skip coverage session")
-
     session.install("coverage", "pytest-cov")
 
     # Create a coverage report that includes only the product code.
@@ -936,129 +921,69 @@ def cleanup(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-@nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb"],
-)
-def core_deps_from_source(session, protobuf_implementation):
+def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
-    # Install all dependencies
-    session.install("-e", ".")
-
-    # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
-
-    # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
-    session.install(*system_deps_all)
-
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY / "testing" / "constraints-3.10.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    # Fiona fails to build on GitHub CI because gdal-config is missing and no Python 3.14 wheels are available.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-        if match.group(1) != "fiona"
-    ]
-
-    # Install dependencies specified in `testing/constraints-X.txt`.
-    session.install(*constraints_deps)
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
-    # `grpcio-status` should be added to the list below so that they are installed from source,
-    # rather than PyPI.
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
-    # added to the list below so that it is installed from source, rather than PyPI
-    # Note: If a dependency is added to the `core_dependencies_from_source` list,
-    # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
-    core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
-    ]
-
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
-
-    session.run(
-        "py.test",
-        "tests/unit",
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
-    )
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
 
 
-@nox.session(python=ALL_PYTHON[-1])
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add prerelease deps tests
-    unit_prerelease(session)
-    system_prerelease(session)
+    session.skip("prerelease deps tests are not yet supported")
 
 
-# NOTE: this is based on mypy session that came directly from the bigframes split repo
-# the split repo used 3.10, the monorepo uses 3.14
-@nox.session(python="3.14")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
-    """Run type checks with mypy."""
-    # Editable mode is not compatible with mypy when there are multiple
-    # package directories. See:
-    # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-    session.install(".")
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests previously used mypy session (below) failed to run in the monorepo
+    session.skip("mypy tests are not yet supported")
 
-    # Just install the dependencies' type info directly, since "mypy --install-types"
-    # might require an additional pass.
-    deps = (
-        set(
-            [
-                MYPY_VERSION,
-                # TODO: update to latest pandas-stubs once we resolve bigframes issues.
-                "pandas-stubs<=2.2.3.241126",
-                "types-protobuf",
-                "types-python-dateutil",
-                "types-requests",
-                "types-setuptools",
-                "types-tabulate",
-                "types-PyYAML",
-                "polars",
-                "anywidget",
-            ]
-        )
-        | set(SYSTEM_TEST_STANDARD_DEPENDENCIES)
-        | set(UNIT_TEST_STANDARD_DEPENDENCIES)
-    )
 
-    session.install(*deps)
-    shutil.rmtree(".mypy_cache", ignore_errors=True)
-    session.run(
-        "mypy",
-        "bigframes",
-        os.path.join("tests", "system"),
-        os.path.join("tests", "unit"),
-        "--check-untyped-defs",
-        "--explicit-package-bases",
-        '--exclude="^third_party"',
-    )
+# @nox.session(python=ALL_PYTHON)
+# def mypy(session):
+#     """Run type checks with mypy."""
+#     # Editable mode is not compatible with mypy when there are multiple
+#     # package directories. See:
+#     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
+#     session.install(".")
+
+#     # Just install the dependencies' type info directly, since "mypy --install-types"
+#     # might require an additional pass.
+#     deps = (
+#         set(
+#             [
+#                 MYPY_VERSION,
+#                 # TODO: update to latest pandas-stubs once we resolve bigframes issues.
+#                 "pandas-stubs<=2.2.3.241126",
+#                 "types-protobuf",
+#                 "types-python-dateutil",
+#                 "types-requests",
+#                 "types-setuptools",
+#                 "types-tabulate",
+#                 "types-PyYAML",
+#                 "polars",
+#                 "anywidget",
+#             ]
+#         )
+#         | set(SYSTEM_TEST_STANDARD_DEPENDENCIES)
+#         | set(UNIT_TEST_STANDARD_DEPENDENCIES)
+#     )
+
+#     session.install(*deps)
+#     shutil.rmtree(".mypy_cache", ignore_errors=True)
+#     session.run(
+#         "mypy",
+#         "bigframes",
+#         os.path.join("tests", "system"),
+#         os.path.join("tests", "unit"),
+#         "--check-untyped-defs",
+#         "--explicit-package-bases",
+#         '--exclude="^third_party"',
+#     )

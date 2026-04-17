@@ -22,6 +22,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 CLICK_VERSION = "click"
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = [
     "google",
     "tests",
@@ -51,6 +52,7 @@ nox.options.error_on_missing_interpreters = True
 nox.options.sessions = [
     "lint",
     "blacken",
+    "format",
     "mypy",
     # cover must be last to avoid error `No data to report`
     "docs",
@@ -95,6 +97,36 @@ def blacken(session):
     """
     session.install(CLICK_VERSION, BLACK_VERSION)
     session.run("black", *BLACK_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
