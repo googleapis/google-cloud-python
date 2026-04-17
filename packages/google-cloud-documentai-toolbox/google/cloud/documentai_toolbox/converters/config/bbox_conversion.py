@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from types import SimpleNamespace
+
 from typing import Callable, List, Optional
 
 from intervaltree import intervaltree
