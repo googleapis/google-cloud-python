@@ -25,7 +25,11 @@ def verify___all__(module_obj):
             if not isinstance(value, types.ModuleType):
                 expected.append(name)
     expected.sort(key=str.lower)
-    assert sorted(module_obj.__all__, key=str.lower) == expected
+    actual = sorted(module_obj.__all__, key=str.lower)
+    if actual != expected:
+        print("In __all__ but not expected:", set(actual) - set(expected))
+        print("In expected but not __all__:", set(expected) - set(actual))
+    assert actual == expected
 
 
 def future_result(result):

@@ -251,7 +251,7 @@ Documentation for writing a Property subclass is in the docs for the
 """
 
 
-from typing import Any, Optional
+import typing
 import copy
 import datetime
 import functools
@@ -1031,7 +1031,7 @@ class Property(ModelAttribute):
     _verbose_name = None
     _write_empty_list = False
     # Non-public class attributes.
-    _FIND_METHODS_CACHE: dict[Any, Any] = {}
+    _FIND_METHODS_CACHE: dict[typing.Any, typing.Any] = {}
 
     @utils.positional(2)
     def __init__(
@@ -3633,7 +3633,6 @@ class KeyProperty(Property):
 
     _kind = None
 
-    @staticmethod
     def _handle_positional(wrapped):
         @functools.wraps(wrapped)
         def wrapper(self, *args, **kwargs):
@@ -4912,13 +4911,13 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
     """
 
     # Class variables updated by _fix_up_properties()
-    _properties: Optional[dict] = None
+    _properties: typing.Optional[dict] = None
     _has_repeated = False
     _kind_map: dict = {}  # Dict mapping {kind: Model subclass}
 
     # Defaults for instance variables.
     _entity_key = None
-    _values: Optional[dict] = None
+    _values: typing.Optional[dict] = None
     _projection = ()  # Tuple of names of projected properties.
 
     # Hardcoded pseudo-property for the key.
@@ -5026,7 +5025,9 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         """
         cls = type(self)
         if self._properties is cls._properties:
-            self._properties = dict(cls._properties) if cls._properties is not None else {}
+            self._properties = (
+                dict(cls._properties) if cls._properties is not None else {}
+            )
 
     def _fake_property(self, p, next, indexed=True):
         """Internal helper to create a fake Property. Ported from legacy datastore"""
@@ -5908,7 +5909,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         max_memcache_items=None,
         force_writes=None,
         _options=None,
-        database: Optional[str] = None,
+        database: typing.Optional[str] = None,
     ):
         """Get an instance of Model class by ID.
 

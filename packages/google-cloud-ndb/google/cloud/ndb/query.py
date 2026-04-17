@@ -137,7 +137,7 @@ tasklet, properly yielding when appropriate::
         print(emp.name, emp.age)
 """
 
-from typing import Any, Optional
+import typing
 import functools
 import logging
 
@@ -517,9 +517,9 @@ class ParameterNode(Node):
             :class:`.ParameterizedFunction`.
     """
 
-    _prop: Any
+    _prop: typing.Any
     _op: str
-    _param: Any
+    _param: typing.Any
 
     def __new__(cls, prop, op, param):
         # Avoid circular import in Python 2.7
@@ -730,7 +730,7 @@ class PostFilterNode(Node):
             the given filter.
     """
 
-    predicate: Any
+    predicate: typing.Any
 
     def __new__(cls, predicate):
         instance = super(PostFilterNode, cls).__new__(cls)
@@ -1217,9 +1217,9 @@ def _query_options(wrapped):
 
 
 class QueryOptions(_options.ReadOptions):
-    namespace: Optional[str]
-    project: Optional[str]
-    ancestor: Any
+    namespace: typing.Optional[str]
+    project: typing.Optional[str]
+    ancestor: typing.Any
 
     __slots__ = (
         # Query options

@@ -361,7 +361,9 @@ class _QueryIteratorImpl(QueryIterator):
         return (
             self._batch is None  # Haven't even started yet
             or self._has_next_batch  # There's another batch to fetch
-            or (self._index is not None and self._index < len(self._batch))  # Not done with current batch
+            or (
+                self._index is not None and self._index < len(self._batch)
+            )  # Not done with current batch
         )
 
     @tasklets.tasklet

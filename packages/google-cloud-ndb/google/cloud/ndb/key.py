@@ -88,7 +88,7 @@ namespace. To explicitly select the empty namespace pass ``namespace=""``.
 """
 
 
-from typing import Optional
+import typing
 import base64
 import functools
 
@@ -1316,7 +1316,7 @@ def _parse_from_ref(
     urlsafe=None,
     app=None,
     namespace=None,
-    database: Optional[str] = None,
+    database: typing.Optional[str] = None,
     **kwargs
 ):
     """Construct a key from a Reference.
