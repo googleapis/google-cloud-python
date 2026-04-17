@@ -44,7 +44,7 @@ if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"conti
     export GOOGLE_CLOUD_PROJECT="bigframes-testing"
     cd "${package_path}"
     
-    python3 -m nox -s cleanup
+    python3 -m nox -s cleanup || echo "Warning: Cleanup session failed, proceeding to doctest."
     python3 -m nox -s doctest
 else
     echo "No changes in ${package_name} and not a continuous build, skipping."
