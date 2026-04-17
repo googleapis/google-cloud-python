@@ -51,18 +51,35 @@ class CrossSyncOutputFile:
         Render the file to a string, and optionally save to disk
 
         Args:
-            with_formatter: whether to run the output through black before returning
+            with_formatter: whether to run the output through ruff before returning
             save_to_disk: whether to write the output to the file path
         """
         full_str = self.header + ast.unparse(self.tree)
         if with_formatter:
-            import black  # type: ignore
-            import autoflake  # type: ignore
+            import subprocess
 
-            full_str = black.format_str(
-                autoflake.fix_code(full_str, remove_all_unused_imports=True),
-                mode=black.FileMode(),
-            )
+            try:
+                # Run ruff check --select I --fix
+                result = subprocess.run(
+                    ["ruff", "check", "--select", "I", "--fix", "-", "--stdin-filename", self.output_path],
+                    input=full_str,
+                    text=True,
+                    capture_output=True,
+                    check=True,
+                )
+                full_str = result.stdout
+
+                # Run ruff format
+                result = subprocess.run(
+                    ["ruff", "format", "-", "--stdin-filename", self.output_path],
+                    input=full_str,
+                    text=True,
+                    capture_output=True,
+                    check=True,
+                )
+                full_str = result.stdout
+            except subprocess.CalledProcessError as e:
+                print(f"ruff formatting failed: {e.stderr}")
         if save_to_disk:
             import os
             os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
