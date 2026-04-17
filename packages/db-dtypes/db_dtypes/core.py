@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
+from typing import Optional, Callable, Any
 
 import numpy
 import pandas
@@ -50,6 +50,13 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
     # https://github.com/pandas-dev/pandas/blob/main/pandas/core/arrays/_mixins.py
     _internal_fill_value = numpy.datetime64("NaT")
 
+    _box_func: Callable[[Any], Any]
+    _from_backing_data: Callable[[Any], Any]
+
+    @classmethod
+    def _datetime(cls, value: Any) -> Any:
+        raise NotImplementedError
+
     def __init__(self, values, dtype=None, copy: bool = False):
         if not (
             isinstance(values, numpy.ndarray) and values.dtype == numpy.dtype("<M8[ns]")
@@ -58,7 +65,11 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
         elif copy:
             values = values.copy()
 
-        super().__init__(values=values, dtype=values.dtype)
+        # We must pass values and dtype to the base constructor.
+        # Manual assignment (self._ndarray = values) will fail at runtime with
+        # AttributeError because the base is a Cython-backed 'NDArrayBacked'
+        # object with non-writable attributes.
+        super().__init__(values=values, dtype=values.dtype)  # type: ignore[call-arg]
 
     @classmethod
     def __ndarray(cls, scalars):
