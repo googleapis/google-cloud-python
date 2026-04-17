@@ -57,7 +57,7 @@ class BaseDatetimeArray(pandas_backports.OpsMixin, _mixins.NDArrayBackedExtensio
     def _datetime(cls, value: Any) -> Any:
         raise NotImplementedError
 
-def __init__(self, values, dtype=None, copy: bool = False):
+    def __init__(self, values, dtype=None, copy: bool = False):
         if not (
             isinstance(values, numpy.ndarray) and values.dtype == numpy.dtype("<M8[ns]")
         ):
