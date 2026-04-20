@@ -54,6 +54,7 @@ class TestAsyncGrpcClient:
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
+            quota_project_id=None,
             attempt_direct_path=True,
             credentials=mock_creds,
             options=expected_options,
@@ -84,26 +85,28 @@ class TestAsyncGrpcClient:
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
+            quota_project_id=None,
             attempt_direct_path=True,
             credentials=mock_creds,
             options=expected_options,
         )
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
-    def test_constructor_with_quota_project_and_endpoint(self, mock_async_storage_client):
+    def test_constructor_with_quota_project_and_endpoint(
+        self, mock_async_storage_client
+    ):
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_creds = _make_credentials()
-        
+
         from google.api_core import client_options
+
         mock_client_options = client_options.ClientOptions(
-            api_endpoint="custom-endpoint.com",
-            quota_project_id="my-quota-project"
+            api_endpoint="custom-endpoint.com", quota_project_id="my-quota-project"
         )
 
         async_grpc_client.AsyncGrpcClient(
-            credentials=mock_creds,
-            client_options=mock_client_options
+            credentials=mock_creds, client_options=mock_client_options
         )
 
         kwargs = mock_async_storage_client.call_args.kwargs
@@ -138,6 +141,7 @@ class TestAsyncGrpcClient:
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
+            quota_project_id=None,
             attempt_direct_path=False,
             credentials=mock_creds,
             options=expected_options,
@@ -181,6 +185,7 @@ class TestAsyncGrpcClient:
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage.googleapis.com",
+            quota_project_id=None,
             attempt_direct_path=mock_attempt_direct_path,
             credentials=mock_creds,
             options=expected_options,
