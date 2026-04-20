@@ -22,8 +22,8 @@ from typing import Any, Callable, Optional, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
-from google.cloud.bigquery.job.query import QueryPlanEntry
 import google.cloud.bigquery.table
+from google.cloud.bigquery.job.query import QueryPlanEntry
 
 import bigframes.session.executor
 
