@@ -46,7 +46,6 @@ _REFRESH_GRANT_TYPE = "refresh_token"
 _BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT = 3
 
 
-
 def _handle_error_response(response_data, retryable_error):
     """Translates an error response into an exception.
 
@@ -616,9 +615,7 @@ def _lookup_regional_access_boundary_request_no_throw(
     response_data = {}
     retryable_error = False
 
-    timeout = (
-        _BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if blocking else None
-    )
+    timeout = _BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if blocking else None
     total_attempts = 1 if blocking else 6
     retries = _exponential_backoff.ExponentialBackoff(total_attempts=total_attempts)
 

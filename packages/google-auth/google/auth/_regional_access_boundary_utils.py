@@ -226,7 +226,9 @@ class _RegionalAccessBoundaryManager(object):
 
             if regional_access_boundary_info:
                 # On success, update the boundary and its expiry, and clear any cooldown.
-                encoded_locations = regional_access_boundary_info.get("encodedLocations")
+                encoded_locations = regional_access_boundary_info.get(
+                    "encodedLocations"
+                )
                 updated_data = _RegionalAccessBoundaryData(
                     encoded_locations=encoded_locations,
                     expiry=_helpers.utcnow() + DEFAULT_REGIONAL_ACCESS_BOUNDARY_TTL,
@@ -242,7 +244,9 @@ class _RegionalAccessBoundaryManager(object):
                         "Regional Access Boundary lookup failed. Entering cooldown."
                     )
 
-                next_cooldown_expiry = _helpers.utcnow() + current_data.cooldown_duration
+                next_cooldown_expiry = (
+                    _helpers.utcnow() + current_data.cooldown_duration
+                )
                 next_cooldown_duration = min(
                     current_data.cooldown_duration * 2,
                     MAX_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
@@ -266,8 +270,6 @@ class _RegionalAccessBoundaryManager(object):
 
             # Perform the atomic swap of the state object.
             self._data = updated_data
-
-
 
 
 class _RegionalAccessBoundaryRefreshThread(threading.Thread):

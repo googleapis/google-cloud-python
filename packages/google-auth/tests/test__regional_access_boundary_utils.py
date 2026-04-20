@@ -241,7 +241,6 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert new_creds._rab_manager._data.expiry == seed["expiry"]
         assert new_creds._rab_manager._data.cooldown_expiry is None
 
-
     def test_copy_regional_access_boundary_state(self):
         source_creds = CredentialsImpl()
         snapshot = _regional_access_boundary_utils._RegionalAccessBoundaryData(
@@ -366,8 +365,6 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.encoded_locations is None
         assert rab_manager._data.expiry is None
         assert rab_manager._data.cooldown_expiry is not None
-
-
 
     def test_credentials_with_regional_access_boundary_initialization(self):
         creds = CredentialsImpl()

@@ -658,6 +658,7 @@ def test_lookup_regional_access_boundary():
         method="GET", url=url, headers=headers, timeout=None
     )
 
+
 def test_lookup_regional_access_boundary_error():
     mock_response = mock.create_autospec(transport.Response, instance=True)
     mock_response.status = http_client.INTERNAL_SERVER_ERROR
@@ -673,7 +674,10 @@ def test_lookup_regional_access_boundary_error():
     )
     assert result is None
 
-    mock_request.assert_called_with(method="GET", url=url, headers=headers, timeout=None)
+    mock_request.assert_called_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
+
 
 @pytest.mark.parametrize(
     "status_code",
@@ -700,6 +704,7 @@ def test_lookup_regional_access_boundary_non_retryable_error(status_code):
     mock_request.assert_called_once_with(
         method="GET", url=url, headers=headers, timeout=None
     )
+
 
 def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error():
     retryable_error = mock.create_autospec(transport.Response, instance=True)
