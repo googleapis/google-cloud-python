@@ -15,23 +15,17 @@
 """User-friendly container for Google Cloud Bigtable Instance."""
 
 import re
+import warnings
+
+from google.api_core.exceptions import NotFound
+from google.iam.v1 import options_pb2  # type: ignore
+from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable.app_profile import AppProfile
 from google.cloud.bigtable.cluster import Cluster
-from google.cloud.bigtable.table import Table
-
-from google.protobuf import field_mask_pb2
-
-from google.cloud.bigtable_admin_v2.types import instance
-
-from google.iam.v1 import options_pb2  # type: ignore
-
-from google.api_core.exceptions import NotFound
-
 from google.cloud.bigtable.policy import Policy
-
-import warnings
-
+from google.cloud.bigtable.table import Table
+from google.cloud.bigtable_admin_v2.types import instance
 
 _INSTANCE_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/" r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$"
@@ -156,12 +150,12 @@ class Instance(object):
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
             raise ValueError(
-                "Instance protobuf name was not in the " "expected format.",
+                "Instance protobuf name was not in the expected format.",
                 instance_pb.name,
             )
         if match.group("project") != client.project:
             raise ValueError(
-                "Project ID on instance does not match the " "project ID on the client"
+                "Project ID on instance does not match the project ID on the client"
             )
         instance_id = match.group("instance_id")
 

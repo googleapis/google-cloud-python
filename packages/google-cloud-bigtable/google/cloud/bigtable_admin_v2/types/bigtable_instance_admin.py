@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import instance as gba_instance
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -481,6 +480,7 @@ class CreateClusterMetadata(proto.Message):
                     deleted after completion will stay marked as
                     COMPLETED, not CANCELLED.
             """
+
             STATE_UNSPECIFIED = 0
             PENDING = 1
             COPYING = 2
@@ -1262,12 +1262,12 @@ class ListMaterializedViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    materialized_views: MutableSequence[
-        gba_instance.MaterializedView
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gba_instance.MaterializedView,
+    materialized_views: MutableSequence[gba_instance.MaterializedView] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gba_instance.MaterializedView,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

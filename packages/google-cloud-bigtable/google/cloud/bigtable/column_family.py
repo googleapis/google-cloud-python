@@ -14,13 +14,13 @@
 
 """User friendly container for Google Cloud Bigtable Column Family."""
 
+from google.api_core.gapic_v1.method import DEFAULT
 
 from google.cloud import _helpers
-from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 from google.cloud.bigtable_admin_v2.types import (
     bigtable_table_admin as table_admin_v2_pb2,
 )
-from google.api_core.gapic_v1.method import DEFAULT
+from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
 
 class GarbageCollectionRule(object):

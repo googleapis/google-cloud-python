@@ -33,6 +33,7 @@ from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
 from google.cloud.firestore_v1.async_query import AsyncQuery
 from google.cloud.firestore_v1.async_transaction import (
     AsyncTransaction,
@@ -40,13 +41,36 @@ from google.cloud.firestore_v1.async_transaction import (
 )
 from google.cloud.firestore_v1.base_aggregation import CountAggregation
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.base_pipeline import SubPipeline
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1.pipeline import Pipeline
+from google.cloud.firestore_v1.pipeline_result import (
+    AsyncPipelineStream,
+    PipelineResult,
+    PipelineSnapshot,
+    PipelineStream,
+)
+from google.cloud.firestore_v1.pipeline_source import PipelineSource
+from google.cloud.firestore_v1.pipeline_types import (
+    FindNearestOptions,
+    Ordering,
+    PipelineDataType,
+    SampleOptions,
+    SearchOptions,
+    TimeGranularity,
+    TimePart,
+    TimeUnit,
+    UnnestOptions,
+)
 from google.cloud.firestore_v1.query import CollectionGroup, Query
-from google.cloud.firestore_v1.query_profile import ExplainOptions
+from google.cloud.firestore_v1.query_profile import (
+    ExplainOptions,
+    PipelineExplainOptions,
+)
 from google.cloud.firestore_v1.transaction import Transaction, transactional
 from google.cloud.firestore_v1.transforms import (
     DELETE_FIELD,
@@ -115,6 +139,8 @@ __all__: List[str] = [
     "AsyncClient",
     "AsyncCollectionReference",
     "AsyncDocumentReference",
+    "AsyncPipeline",
+    "AsyncPipelineStream",
     "AsyncQuery",
     "async_transactional",
     "AsyncTransaction",
@@ -130,18 +156,34 @@ __all__: List[str] = [
     "ExistsOption",
     "ExplainOptions",
     "FieldFilter",
+    "FindNearestOptions",
     "GeoPoint",
     "Increment",
     "LastUpdateOption",
     "Maximum",
     "Minimum",
     "Or",
+    "Ordering",
+    "Pipeline",
+    "PipelineDataType",
+    "PipelineExplainOptions",
+    "PipelineResult",
+    "PipelineSnapshot",
+    "PipelineSource",
+    "PipelineStream",
     "Query",
     "ReadAfterWriteError",
     "SERVER_TIMESTAMP",
+    "SampleOptions",
+    "SearchOptions",
+    "SubPipeline",
+    "TimeGranularity",
+    "TimePart",
+    "TimeUnit",
     "Transaction",
     "transactional",
     "types",
+    "UnnestOptions",
     "Watch",
     "WriteBatch",
     "WriteOption",

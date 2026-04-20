@@ -5994,6 +5994,7 @@ def test_create_workflow_template_rest_call_success(request_type):
                 "config": {
                     "cluster_type": 1,
                     "cluster_tier": 1,
+                    "engine": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",
                     "gce_cluster_config": {
@@ -6127,6 +6128,9 @@ def test_create_workflow_template_rest_call_success(request_type):
                         "idle_delete_ttl": {},
                         "auto_delete_time": {},
                         "auto_delete_ttl": {},
+                        "idle_stop_ttl": {},
+                        "auto_stop_time": {},
+                        "auto_stop_ttl": {},
                         "idle_start_time": {},
                     },
                     "endpoint_config": {
@@ -6786,6 +6790,7 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
                 "config": {
                     "cluster_type": 1,
                     "cluster_tier": 1,
+                    "engine": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",
                     "gce_cluster_config": {
@@ -6919,6 +6924,9 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
                         "idle_delete_ttl": {},
                         "auto_delete_time": {},
                         "auto_delete_ttl": {},
+                        "idle_stop_ttl": {},
+                        "auto_stop_time": {},
+                        "auto_stop_ttl": {},
                         "idle_start_time": {},
                     },
                     "endpoint_config": {
@@ -7296,6 +7304,7 @@ def test_update_workflow_template_rest_call_success(request_type):
                 "config": {
                     "cluster_type": 1,
                     "cluster_tier": 1,
+                    "engine": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",
                     "gce_cluster_config": {
@@ -7429,6 +7438,9 @@ def test_update_workflow_template_rest_call_success(request_type):
                         "idle_delete_ttl": {},
                         "auto_delete_time": {},
                         "auto_delete_ttl": {},
+                        "idle_stop_ttl": {},
+                        "auto_stop_time": {},
+                        "auto_stop_ttl": {},
                         "idle_start_time": {},
                     },
                     "endpoint_config": {

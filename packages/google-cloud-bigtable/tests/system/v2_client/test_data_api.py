@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime, timedelta, timezone
 import operator
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -158,8 +158,7 @@ def test_table_drop_by_prefix(data_table, rows_to_delete):
 
 
 def test_table_read_rows_w_row_set(data_table, rows_to_delete):
-    from google.cloud.bigtable.row_set import RowSet
-    from google.cloud.bigtable.row_set import RowRange
+    from google.cloud.bigtable.row_set import RowRange, RowSet
 
     row_keys = [
         b"row_key_1",
@@ -231,8 +230,11 @@ def test_table_read_row_large_cell(data_table, rows_to_delete, skip_on_emulator)
 
 
 def _write_to_row(row1, row2, row3, row4):
-    from google.cloud._helpers import _datetime_from_microseconds
-    from google.cloud._helpers import _microseconds_from_datetime
+    from google.cloud._helpers import (
+        _datetime_from_microseconds,
+        _microseconds_from_datetime,
+    )
+
     from google.cloud.bigtable.row_data import Cell
 
     timestamp1 = datetime.now(timezone.utc)
@@ -325,10 +327,12 @@ def test_table_read_rows(data_table, rows_to_delete):
 
 
 def test_read_with_label_applied(data_table, rows_to_delete, skip_on_emulator):
-    from google.cloud.bigtable.row_filters import ApplyLabelFilter
-    from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
-    from google.cloud.bigtable.row_filters import RowFilterChain
-    from google.cloud.bigtable.row_filters import RowFilterUnion
+    from google.cloud.bigtable.row_filters import (
+        ApplyLabelFilter,
+        ColumnQualifierRegexFilter,
+        RowFilterChain,
+        RowFilterUnion,
+    )
 
     row = data_table.direct_row(ROW_KEY)
     rows_to_delete.append(row)
@@ -387,8 +391,10 @@ def test_mutations_batcher_threading(data_table, rows_to_delete):
     Test the mutations batcher by sending a bunch of mutations using different
     flush methods
     """
-    import mock
     import time
+
+    import mock
+
     from google.cloud.bigtable.batcher import MutationsBatcher
 
     num_sent = 20

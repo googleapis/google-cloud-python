@@ -1377,7 +1377,7 @@ class AIInference(proto.Message):
             that specifies this field must have
             ``iam.serviceAccounts.actAs`` permission on the service
             account. If not specified, the Pub/Sub `service
-            agent <{$universe.dns_names.final_documentation_domain}/iam/docs/service-agents>`__,
+            agent <https://cloud.google.com/iam/docs/service-agents>`__,
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
             is used.
     """

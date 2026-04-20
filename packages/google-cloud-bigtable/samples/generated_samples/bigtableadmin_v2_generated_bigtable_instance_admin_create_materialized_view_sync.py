@@ -58,4 +58,5 @@ def sample_create_materialized_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_CreateMaterializedView_sync]

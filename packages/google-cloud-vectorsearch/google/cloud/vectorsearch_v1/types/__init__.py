@@ -57,6 +57,9 @@ from .embedding_config import (
     EmbeddingTaskType,
     VertexEmbeddingConfig,
 )
+from .encryption_spec import (
+    EncryptionSpec,
+)
 from .vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
@@ -82,6 +85,7 @@ from .vectorsearch_service import (
     OperationMetadata,
     SparseVectorField,
     UpdateCollectionRequest,
+    UpdateIndexRequest,
     VectorField,
 )
 
@@ -120,6 +124,7 @@ __all__ = (
     "UpdateDataObjectRequest",
     "VertexEmbeddingConfig",
     "EmbeddingTaskType",
+    "EncryptionSpec",
     "Collection",
     "CreateCollectionRequest",
     "CreateIndexRequest",
@@ -144,5 +149,6 @@ __all__ = (
     "OperationMetadata",
     "SparseVectorField",
     "UpdateCollectionRequest",
+    "UpdateIndexRequest",
     "VectorField",
 )

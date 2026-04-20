@@ -435,8 +435,9 @@ def create_database_with_default_leader(instance_id, database_id, default_leader
                 AlbumTitle   STRING(MAX)
             ) PRIMARY KEY (SingerId, AlbumId),
             INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
-            "ALTER DATABASE {}"
-            " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader),
+            "ALTER DATABASE {} SET OPTIONS (default_leader = '{}')".format(
+                database_id, default_leader
+            ),
         ],
     )
     operation = database_admin_api.create_database(request=request)
@@ -467,8 +468,9 @@ def update_database_with_default_leader(instance_id, database_id, default_leader
             spanner_client.project, instance_id, database_id
         ),
         statements=[
-            "ALTER DATABASE {}"
-            " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader)
+            "ALTER DATABASE {} SET OPTIONS (default_leader = '{}')".format(
+                database_id, default_leader
+            )
         ],
     )
     operation = database_admin_api.update_database_ddl(request)
@@ -811,7 +813,7 @@ def query_data_with_index(
         )
 
         for row in results:
-            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(*row))
+            print("AlbumId: {}, AlbumTitle: {}, MarketingBudget: {}".format(*row))
 
 
 # [END spanner_query_data_with_index]
@@ -905,7 +907,7 @@ def read_data_with_storing_index(instance_id, database_id):
         )
 
         for row in results:
-            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(*row))
+            print("AlbumId: {}, AlbumTitle: {}, MarketingBudget: {}".format(*row))
 
 
 # [END spanner_read_data_with_storing_index]
@@ -1439,7 +1441,7 @@ def query_with_struct(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT SingerId FROM Singers WHERE " "(FirstName, LastName) = @name",
+            "SELECT SingerId FROM Singers WHERE (FirstName, LastName) = @name",
             params={"name": record_value},
             param_types={"name": record_type},
         )
@@ -1503,7 +1505,7 @@ def query_struct_field(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT SingerId FROM Singers " "WHERE FirstName = @name.FirstName",
+            "SELECT SingerId FROM Singers WHERE FirstName = @name.FirstName",
             params={"name": ("Elena", "Campbell")},
             param_types={"name": name_type},
         )
@@ -1924,7 +1926,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # Transfer marketing budget from one album to another. Performed in a
         # single transaction to ensure that the transfer is atomic.
         second_album_result = transaction.execute_sql(
-            "SELECT MarketingBudget from Albums " "WHERE SingerId = 2 and AlbumId = 2"
+            "SELECT MarketingBudget from Albums WHERE SingerId = 2 and AlbumId = 2"
         )
         second_album_row = list(second_album_result)[0]
         second_album_budget = second_album_row[0]
@@ -1936,8 +1938,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # will be rerun by the client library
         if second_album_budget >= transfer_amount:
             first_album_result = transaction.execute_sql(
-                "SELECT MarketingBudget from Albums "
-                "WHERE SingerId = 1 and AlbumId = 1"
+                "SELECT MarketingBudget from Albums WHERE SingerId = 1 and AlbumId = 1"
             )
             first_album_row = list(first_album_result)[0]
             first_album_budget = first_album_row[0]
@@ -2226,7 +2227,7 @@ def query_data_with_bytes(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueInfo = @venue_info",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueInfo = @venue_info",
             params=param,
             param_types=param_type,
         )
@@ -2329,7 +2330,7 @@ def query_data_with_string(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueName = @venue_name",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueName = @venue_name",
             params=param,
             param_types=param_type,
         )
@@ -2354,7 +2355,7 @@ def query_data_with_numeric_parameter(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, Revenue FROM Venues " "WHERE Revenue < @revenue",
+            "SELECT VenueId, Revenue FROM Venues WHERE Revenue < @revenue",
             params=param,
             param_types=param_type,
         )
@@ -3192,7 +3193,7 @@ def isolation_level_options(
     # [START spanner_isolation_level]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
-    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
+    from google.cloud.spanner_v1 import DefaultTransactionOptions, TransactionOptions
 
     # The isolation level specified at the client-level will be applied to all RW transactions.
     isolation_options_for_client = TransactionOptions.IsolationLevel.SERIALIZABLE
@@ -3241,11 +3242,13 @@ def read_lock_mode_options(
     # [START spanner_read_lock_mode]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
-    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
+    from google.cloud.spanner_v1 import DefaultTransactionOptions, TransactionOptions
 
     # The read lock mode specified at the client-level will be applied to all
     # RW transactions.
-    read_lock_mode_options_for_client = TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC
+    read_lock_mode_options_for_client = (
+        TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC
+    )
 
     # Create a client that uses Serializable isolation (default) with
     # optimistic locking for read-write transactions.
@@ -3280,7 +3283,7 @@ def read_lock_mode_options(
 
     database.run_in_transaction(
         update_albums_with_read_lock_mode,
-        read_lock_mode=read_lock_mode_options_for_transaction
+        read_lock_mode=read_lock_mode_options_for_transaction,
     )
     # [END spanner_read_lock_mode]
 
@@ -3909,9 +3912,7 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser(
         "isolation_level_options", help=isolation_level_options.__doc__
     )
-    subparsers.add_parser(
-        "read_lock_mode_options", help=read_lock_mode_options.__doc__
-    )
+    subparsers.add_parser("read_lock_mode_options", help=read_lock_mode_options.__doc__)
     subparsers.add_parser(
         "set_custom_timeout_and_retry", help=set_custom_timeout_and_retry.__doc__
     )

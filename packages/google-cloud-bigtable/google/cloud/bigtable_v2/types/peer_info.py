@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.bigtable.v2",
     manifest={
@@ -83,6 +82,7 @@ class PeerInfo(proto.Message):
                 The client connected to this peer via
                 Bigtable Sessions using DirectAccess.
         """
+
         TRANSPORT_TYPE_UNKNOWN = 0
         TRANSPORT_TYPE_EXTERNAL = 1
         TRANSPORT_TYPE_CLOUD_PATH = 2

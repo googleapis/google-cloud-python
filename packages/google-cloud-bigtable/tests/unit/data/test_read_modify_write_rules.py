@@ -72,9 +72,7 @@ class TestIncrementRule:
             self._target_class()("fam", b"qual", input_amount)
         assert "increment_amount must be an integer" in str(e.value)
 
-    @pytest.mark.parametrize(
-        "large_value", [2**64, 2**64 + 1, -(2**64), -(2**64) - 1]
-    )
+    @pytest.mark.parametrize("large_value", [2**64, 2**64 + 1, -(2**64), -(2**64) - 1])
     def test_ctor_large_values(self, large_value):
         with pytest.raises(ValueError) as e:
             self._target_class()("fam", b"qual", large_value)

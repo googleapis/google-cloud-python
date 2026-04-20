@@ -16,11 +16,12 @@ Contains a set of pytest fixtures for setting up and populating a
 Bigtable database for testing purposes.
 """
 
-import pytest
 import os
 import uuid
 
-from . import TEST_FAMILY, TEST_FAMILY_2, TEST_AGGREGATE_FAMILY
+import pytest
+
+from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2
 
 # authorized view subset to allow all qualifiers
 ALLOW_ALL = ""
@@ -43,9 +44,10 @@ def instance_id(admin_client, project_id, cluster_config):
     """
     Returns BIGTABLE_TEST_INSTANCE if set, otherwise creates a new temporary instance for the test session
     """
-    from google.cloud.bigtable_admin_v2 import types
     from google.api_core import exceptions
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+    from google.cloud.bigtable_admin_v2 import types
 
     # use user-specified instance if available
     user_specified_instance = os.getenv("BIGTABLE_TEST_INSTANCE")
@@ -109,8 +111,7 @@ def table_id(
             Supplied by the init_table_id fixture.
       - column_split_config: A list of row keys to use as initial splits when creating the test table.
     """
-    from google.api_core import exceptions
-    from google.api_core import retry
+    from google.api_core import exceptions, retry
 
     # use user-specified instance if available
     user_specified_table = os.getenv("BIGTABLE_TEST_TABLE")
@@ -162,8 +163,7 @@ def authorized_view_id(
       - instance_id: The ID of the Bigtable instance to test against. Supplied by the instance_id fixture.
       - table_id: The ID of the table to create the authorized view for. Supplied by the table_id fixture.
     """
-    from google.api_core import exceptions
-    from google.api_core import retry
+    from google.api_core import exceptions, retry
 
     retry = retry.Retry(
         predicate=retry.if_exception_type(exceptions.FailedPrecondition)

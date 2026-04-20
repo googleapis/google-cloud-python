@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -29,36 +29,35 @@ from typing import (
     Union,
 )
 
-from google.cloud.bigtable_admin_v2 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.bigtable_admin_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.types import table
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table, types
 from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.cloud.bigtable_admin_v2.types import types
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
+
 from .client import BaseBigtableTableAdminClient
+from .transports.base import DEFAULT_CLIENT_INFO, BigtableTableAdminTransport
+from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -153,7 +152,10 @@ class BaseBigtableTableAdminAsyncClient:
         Returns:
             BaseBigtableTableAdminAsyncClient: The constructed client.
         """
-        return BaseBigtableTableAdminClient.from_service_account_info.__func__(BaseBigtableTableAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            BaseBigtableTableAdminClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(BaseBigtableTableAdminAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -169,7 +171,12 @@ class BaseBigtableTableAdminAsyncClient:
         Returns:
             BaseBigtableTableAdminAsyncClient: The constructed client.
         """
-        return BaseBigtableTableAdminClient.from_service_account_file.__func__(BaseBigtableTableAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            BaseBigtableTableAdminClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            BaseBigtableTableAdminAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -207,7 +214,9 @@ class BaseBigtableTableAdminAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return BaseBigtableTableAdminClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return BaseBigtableTableAdminClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> BigtableTableAdminTransport:
@@ -219,7 +228,7 @@ class BaseBigtableTableAdminAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -3915,7 +3924,7 @@ class BaseBigtableTableAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -4054,7 +4063,7 @@ class BaseBigtableTableAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client
@@ -4194,7 +4203,7 @@ class BaseBigtableTableAdminAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigtable_admin_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_test_iam_permissions():
                 # Create a client

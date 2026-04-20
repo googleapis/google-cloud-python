@@ -49,4 +49,5 @@ def sample_generate_consistency_token():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GenerateConsistencyToken_sync]

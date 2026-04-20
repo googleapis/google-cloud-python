@@ -14,6 +14,7 @@
 
 from dataclasses import dataclass
 from typing import Optional
+import warnings
 
 import google.api_core.client_options as client_options
 import google.cloud.bigquery as bigquery
@@ -183,10 +184,15 @@ class Context(object):
 
     @property
     def engine(self) -> str:
-        """Engine to run the query. Could either be "pandas" or "bigframes".
+        """[Deprecated] Engine to run the query. Could either be "pandas" or
+        "bigframes".
 
         If using "pandas", the query result will be stored in a Pandas dataframe.
-        If using "bigframes", the query result will be stored in a bigframes dataframe instead.
+        If using "bigframes", the query result will be stored in a bigframes
+        dataframe instead.
+
+        Please use ``%load_ext bigframes`` and the ``%%bqsql`` magic instead.
+        See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html
 
         Example:
             Manully setting the content engine:
@@ -200,6 +206,14 @@ class Context(object):
     def engine(self, value):
         if value != "pandas" and value != "bigframes":
             raise ValueError("engine must be either 'pandas' or 'bigframes'")
+        if value == "bigframes":
+            warnings.warn(
+                "The bigframes engine is deprecated. Please use %load_ext bigframes "
+                "and the %%bqsql magic instead. "
+                "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html",
+                FutureWarning,
+                stacklevel=2,
+            )
         self._engine = value
 
 

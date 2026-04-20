@@ -28,23 +28,24 @@ description = "Google BigQuery magics for Jupyter and IPython"
 # 'Development Status :: 5 - Production/Stable'``
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "db-dtypes>=0.3.0,<2.0.0",
-    "google-cloud-bigquery >= 3.13.0, <4.0.0",
+    "db-dtypes>=1.1.1,<2.0.0",
+    "google-cloud-bigquery >= 3.41.0, <4.0.0",
     "ipywidgets>=7.7.1",
     "ipython>=7.23.1",
     "ipykernel>=5.5.6",
-    "packaging >= 20.0.0",
-    "pandas>=1.2.0",
-    "pyarrow >= 3.0.0",
+    "packaging >= 24.2.0",
+    "pandas>=1.5.3",
+    "pyarrow >= 12.0.0",
     "pydata-google-auth >=1.5.0",
     "tqdm >= 4.7.4, <5.0.0",
+    "pyopenssl >= 23.3.0",
 ]
 extras = {
     # bqstorage had a period where it was a required dependency, and has been
     # moved back to optional due to bloat.  See
     # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
     "bqstorage": [
-        "google-cloud-bigquery-storage >= 2.6.0, <3.0.0",
+        "google-cloud-bigquery-storage >= 2.25.0, <3.0.0",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
@@ -106,7 +107,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -119,7 +119,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )

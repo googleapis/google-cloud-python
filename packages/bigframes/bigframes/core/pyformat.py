@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import string
 import typing
-from typing import Any, Optional, Union
+from typing import Any, Optional, Tuple, Union
 
 import google.cloud.bigquery
 import pandas
@@ -39,7 +39,11 @@ _BQ_TABLE_TYPES = Union[
 
 
 def _table_to_sql(table: _BQ_TABLE_TYPES) -> str:
-    return f"`{table.project}`.`{table.dataset_id}`.`{table.table_id}`"
+    # BiglakeIcebergTable IDs have 4 parts. BigFrames packs catalog.namespace
+    # into the dataset_id.
+    dataset_parts = table.dataset_id.split(".")
+    dataset_sql = ".".join(f"`{part}`" for part in dataset_parts)
+    return f"`{table.project}`.{dataset_sql}.`{table.table_id}`"
 
 
 def _pandas_df_to_sql_dry_run(pd_df: pandas.DataFrame) -> str:
@@ -102,6 +106,24 @@ def _field_to_template_value(
         return _pandas_df_to_sql(value, session=session, dry_run=dry_run, name=name)
 
     if isinstance(value, bigframes.dataframe.DataFrame):
+        import bigframes.core.bq_data as bq_data
+        import bigframes.core.nodes as nodes
+
+        # TODO(b/493608478): Remove this workaround for BigLake/Iceberg tables,
+        # which cannot currently be used in views, once a fix rolls out.
+        def is_biglake(
+            node: nodes.BigFrameNode, child_results: Tuple[bool, ...]
+        ) -> bool:
+            if isinstance(node, nodes.ReadTableNode):
+                return isinstance(node.source.table, bq_data.BiglakeIcebergTable)
+            return any(child_results)
+
+        contains_biglake = value._block.expr.node.reduce_up(is_biglake)
+
+        if contains_biglake:
+            sql_query, _, _ = value._to_sql_query(include_index=True)
+            return f"({sql_query})"
+
         return _table_to_sql(value._to_placeholder_table(dry_run=dry_run))
 
     if isinstance(value, str):

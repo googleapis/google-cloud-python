@@ -14,7 +14,6 @@
 
 """Mocks used to emulate gRPC generated objects."""
 
-
 import mock
 
 

@@ -157,7 +157,9 @@ def tpch_session():
         kwargs["enable_snapshot"] = False
         return original_read_gbq_table(*args, **kwargs)
 
-    session._loader.read_gbq_table = read_gbq_table_no_snapshot
-
     session._executor = compiler_session.SQLCompilerExecutor()
-    return session
+
+    with mock.patch.object(
+        session._loader, "read_gbq_table", new=read_gbq_table_no_snapshot
+    ):
+        yield session

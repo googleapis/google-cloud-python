@@ -49,4 +49,5 @@ async def sample_get_logical_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_GetLogicalView_async]

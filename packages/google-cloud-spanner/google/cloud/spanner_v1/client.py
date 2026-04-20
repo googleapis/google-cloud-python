@@ -276,6 +276,7 @@ class Client(ClientWithProject):
             self._client_certificate = client_certificate
             self._client_key = client_key
             credentials = AnonymousCredentials()
+            disable_builtin_metrics = True
         elif isinstance(credentials, AnonymousCredentials):
             self._emulator_host = self._client_options.api_endpoint
         super(Client, self).__init__(
@@ -547,6 +548,7 @@ class Client(ClientWithProject):
             self._emulator_host,
             labels,
             processing_units,
+            self._experimental_host,
         )
 
     def list_instances(self, filter_="", page_size=None):

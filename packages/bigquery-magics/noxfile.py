@@ -35,12 +35,15 @@ LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    # Not supported, but included so that we can explicitly skip the session
+    # from here. Keep unsupported versions last so that they don't conflict with
+    # the prerelease_deps session.
+    "3.9",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -62,8 +65,6 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     ],
     "3.10": [
         "bqstorage",
-        "bigframes",
-        "geopandas",
     ],
     "3.11": [],
     "3.12": [
@@ -223,6 +224,9 @@ def install_unittest_dependencies(session, *constraints):
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
+    if session.python == "3.9":
+        session.skip("Python 3.9 is not supported.")
+
     # Install all test dependencies, then install this package in-place.
 
     constraints_path = str(
@@ -277,6 +281,9 @@ def install_systemtest_dependencies(session, with_extras, *constraints):
 @nox.parametrize("with_extras", [True, False])
 def system(session, with_extras):
     """Run the system test suite."""
+    if session.python == "3.9":
+        session.skip("Python 3.9 is not supported.")
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )

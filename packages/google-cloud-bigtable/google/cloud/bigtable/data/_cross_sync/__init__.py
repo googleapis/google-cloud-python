@@ -14,7 +14,6 @@
 
 from .cross_sync import CrossSync
 
-
 __all__ = [
     "CrossSync",
 ]

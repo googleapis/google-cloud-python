@@ -183,6 +183,8 @@ class ClusterConfig(proto.Message):
             Optional. The type of the cluster.
         cluster_tier (google.cloud.dataproc_v1.types.ClusterConfig.ClusterTier):
             Optional. The cluster tier.
+        engine (google.cloud.dataproc_v1.types.ClusterConfig.Engine):
+            Optional. The cluster engine.
         config_bucket (str):
             Optional. A Cloud Storage bucket used to stage job
             dependencies, config files, and job driver console output.
@@ -300,6 +302,23 @@ class ClusterConfig(proto.Message):
         CLUSTER_TIER_STANDARD = 1
         CLUSTER_TIER_PREMIUM = 2
 
+    class Engine(proto.Enum):
+        r"""The cluster engine.
+
+        Values:
+            ENGINE_UNSPECIFIED (0):
+                The engine is not specified. Works the same as
+                ENGINE_DEFAULT.
+            DEFAULT (1):
+                The cluster is a default engine cluster.
+            LIGHTNING (2):
+                The cluster is a lightning engine cluster.
+        """
+
+        ENGINE_UNSPECIFIED = 0
+        DEFAULT = 1
+        LIGHTNING = 2
+
     cluster_type: ClusterType = proto.Field(
         proto.ENUM,
         number=27,
@@ -309,6 +328,11 @@ class ClusterConfig(proto.Message):
         proto.ENUM,
         number=29,
         enum=ClusterTier,
+    )
+    engine: Engine = proto.Field(
+        proto.ENUM,
+        number=30,
+        enum=Engine,
     )
     config_bucket: str = proto.Field(
         proto.STRING,
@@ -1911,6 +1935,28 @@ class LifecycleConfig(proto.Message):
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
 
             This field is a member of `oneof`_ ``ttl``.
+        idle_stop_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. The duration to keep the cluster started while
+            idling (when no jobs are running). Passing this threshold
+            will cause the cluster to be stopped. Minimum value is 5
+            minutes; maximum value is 14 days (see JSON representation
+            of
+            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+        auto_stop_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The time when cluster will be auto-stopped (see
+            JSON representation of
+            `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+
+            This field is a member of `oneof`_ ``stop_ttl``.
+        auto_stop_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. The lifetime duration of the cluster. The cluster
+            will be auto-stopped at the end of this period, calculated
+            from the time of submission of the create or update cluster
+            request. Minimum value is 10 minutes; maximum value is 14
+            days (see JSON representation of
+            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+
+            This field is a member of `oneof`_ ``stop_ttl``.
         idle_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when cluster became idle (most recent
             job finished) and became eligible for deletion due to
@@ -1933,6 +1979,23 @@ class LifecycleConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         oneof="ttl",
+        message=duration_pb2.Duration,
+    )
+    idle_stop_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    auto_stop_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="stop_ttl",
+        message=timestamp_pb2.Timestamp,
+    )
+    auto_stop_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="stop_ttl",
         message=duration_pb2.Duration,
     )
     idle_start_time: timestamp_pb2.Timestamp = proto.Field(

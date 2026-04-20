@@ -100,8 +100,8 @@ def test_backup_constructor_explicit():
 
 
 def test_backup_from_pb_w_project_mismatch():
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud.bigtable.backup import Backup
+    from google.cloud.bigtable_admin_v2.types import table
 
     alt_project_id = "alt-project-id"
     client = _Client(project=alt_project_id)
@@ -113,8 +113,8 @@ def test_backup_from_pb_w_project_mismatch():
 
 
 def test_backup_from_pb_w_instance_mismatch():
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud.bigtable.backup import Backup
+    from google.cloud.bigtable_admin_v2.types import table
 
     alt_instance = "/projects/%s/instances/alt-instance" % PROJECT_ID
     client = _Client()
@@ -126,8 +126,8 @@ def test_backup_from_pb_w_instance_mismatch():
 
 
 def test_backup_from_pb_w_bad_name():
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud.bigtable.backup import Backup
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     instance = _Instance(INSTANCE_NAME, client)
@@ -138,12 +138,13 @@ def test_backup_from_pb_w_bad_name():
 
 
 def test_backup_from_pb_success():
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+    from google.rpc.code_pb2 import Code
+
+    from google.cloud.bigtable.backup import Backup
     from google.cloud.bigtable.encryption_info import EncryptionInfo
     from google.cloud.bigtable.error import Status
     from google.cloud.bigtable_admin_v2.types import table
-    from google.cloud.bigtable.backup import Backup
-    from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.rpc.code_pb2 import Code
 
     client = _Client()
     instance = _Instance(INSTANCE_NAME, client)
@@ -345,9 +346,9 @@ def test_backup___ne__():
 
 
 def test_backup_create_w_grpc_error():
-    from google.api_core.exceptions import GoogleAPICallError
-    from google.api_core.exceptions import Unknown
+    from google.api_core.exceptions import GoogleAPICallError, Unknown
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
     from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
@@ -377,8 +378,9 @@ def test_backup_create_w_grpc_error():
 
 def test_backup_create_w_already_exists():
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud.exceptions import Conflict
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -407,8 +409,9 @@ def test_backup_create_w_already_exists():
 
 def test_backup_create_w_instance_not_found():
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud.exceptions import NotFound
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -471,8 +474,9 @@ def test_backup_create_w_expire_time_not_set():
 
 def test_backup_create_success():
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
+
     from google.cloud.bigtable import Client
+    from google.cloud.bigtable_admin_v2.types import table
 
     op_future = object()
     credentials = _make_credentials()
@@ -503,8 +507,9 @@ def test_backup_create_success():
 
 
 def test_backup_get():
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     timestamp = _datetime_to_pb_timestamp(_make_timestamp())
     state = table.Backup.State.READY
@@ -529,8 +534,9 @@ def test_backup_get():
 
 
 def test_backup_reload():
-    from google.cloud.bigtable_admin_v2.types import table
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     timestamp = _datetime_to_pb_timestamp(_make_timestamp())
     state = table.Backup.State.READY
@@ -655,8 +661,9 @@ def test_backup_delete_success():
 def test_backup_update_expire_time_w_grpc_error():
     from google.api_core.exceptions import Unknown
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
     from google.protobuf import field_mask_pb2
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -681,8 +688,9 @@ def test_backup_update_expire_time_w_grpc_error():
 def test_backup_update_expire_time_w_not_found():
     from google.api_core.exceptions import NotFound
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
     from google.protobuf import field_mask_pb2
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -706,8 +714,9 @@ def test_backup_update_expire_time_w_not_found():
 
 def test_backup_update_expire_time_success():
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.bigtable_admin_v2.types import table
     from google.protobuf import field_mask_pb2
+
+    from google.cloud.bigtable_admin_v2.types import table
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -729,8 +738,7 @@ def test_backup_update_expire_time_success():
 
 
 def test_backup_restore_w_grpc_error():
-    from google.api_core.exceptions import GoogleAPICallError
-    from google.api_core.exceptions import Unknown
+    from google.api_core.exceptions import GoogleAPICallError, Unknown
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
@@ -805,12 +813,13 @@ def test_backup_restore_to_another_instance():
 
 
 def test_backup_get_iam_policy():
+    from google.iam.v1 import policy_pb2
+
     from google.cloud.bigtable.client import Client
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
         BaseBigtableTableAdminClient,
     )
-    from google.iam.v1 import policy_pb2
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
     credentials = _make_credentials()
     client = Client(project=PROJECT_ID, credentials=credentials, admin=True)
@@ -841,13 +850,13 @@ def test_backup_get_iam_policy():
 
 
 def test_backup_set_iam_policy():
+    from google.iam.v1 import policy_pb2
+
     from google.cloud.bigtable.client import Client
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
         BaseBigtableTableAdminClient,
     )
-    from google.iam.v1 import policy_pb2
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
     credentials = _make_credentials()
     client = Client(project=PROJECT_ID, credentials=credentials, admin=True)
@@ -886,11 +895,12 @@ def test_backup_set_iam_policy():
 
 
 def test_backup_test_iam_permissions():
+    from google.iam.v1 import iam_policy_pb2
+
     from google.cloud.bigtable.client import Client
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
         BaseBigtableTableAdminClient,
     )
-    from google.iam.v1 import iam_policy_pb2
 
     credentials = _make_credentials()
     client = Client(project=PROJECT_ID, credentials=credentials, admin=True)

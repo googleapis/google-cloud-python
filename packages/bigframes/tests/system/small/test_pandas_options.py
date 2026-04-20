@@ -316,7 +316,9 @@ def test_credentials_need_reauthentication(
         with warnings.catch_warnings(record=True) as warned:
             bpd.close_session()  # CleanupFailedWarning: can't clean up
 
-        assert len(warned) == 1
+        # The test forces a failure during cleanup and asserts that one or more warning is generated
+        # when/if multiple temp tables might have been left over.
+        assert len(warned) >= 1
         assert warned[0].category == bigframes.exceptions.CleanupFailedWarning
 
         assert (

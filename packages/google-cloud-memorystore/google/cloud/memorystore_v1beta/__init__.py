@@ -38,6 +38,7 @@ from .types.memorystore import (
     DiscoveryEndpoint,
     GetCertificateAuthorityRequest,
     GetInstanceRequest,
+    GetSharedRegionalCertificateAuthorityRequest,
     Instance,
     ListInstancesRequest,
     ListInstancesResponse,
@@ -47,6 +48,7 @@ from .types.memorystore import (
     PscAutoConnection,
     PscConnection,
     PscConnectionStatus,
+    SharedRegionalCertificateAuthority,
     UpdateInstanceRequest,
     ZoneDistributionConfig,
 )
@@ -153,6 +155,7 @@ __all__ = (
     "DiscoveryEndpoint",
     "GetCertificateAuthorityRequest",
     "GetInstanceRequest",
+    "GetSharedRegionalCertificateAuthorityRequest",
     "Instance",
     "ListInstancesRequest",
     "ListInstancesResponse",
@@ -163,6 +166,7 @@ __all__ = (
     "PscAutoConnection",
     "PscConnection",
     "PscConnectionStatus",
+    "SharedRegionalCertificateAuthority",
     "UpdateInstanceRequest",
     "ZoneDistributionConfig",
 )

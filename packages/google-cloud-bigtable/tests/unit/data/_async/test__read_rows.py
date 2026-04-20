@@ -96,9 +96,9 @@ class TestReadRowsOperationAsync:
     def test_revise_request_rowset_keys_with_range(
         self, in_keys, last_key, expected, with_range
     ):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         in_keys = [key.encode("utf-8") for key in in_keys]
         expected = [key.encode("utf-8") for key in expected]
@@ -167,9 +167,9 @@ class TestReadRowsOperationAsync:
     def test_revise_request_rowset_ranges(
         self, in_ranges, last_key, expected, with_key
     ):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         # convert to protobuf
         next_key = (last_key + "a").encode("utf-8")
@@ -199,8 +199,8 @@ class TestReadRowsOperationAsync:
 
     @pytest.mark.parametrize("last_key", ["a", "b", "c"])
     def test_revise_request_full_table(self, last_key):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         # convert to protobuf
         last_key = last_key.encode("utf-8")
@@ -216,8 +216,8 @@ class TestReadRowsOperationAsync:
     def test_revise_to_empty_rowset(self):
         """revising to an empty rowset should raise error"""
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         row_keys = [b"a", b"b", b"c"]
         row_range = RowRangePB(end_key_open=b"c")
@@ -284,8 +284,8 @@ class TestReadRowsOperationAsync:
         (unless start_num == 0, which represents unlimited)
         """
         from google.cloud.bigtable.data import ReadRowsQuery
-        from google.cloud.bigtable_v2.types import ReadRowsResponse
         from google.cloud.bigtable.data.exceptions import InvalidChunk
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
 
         async def awaitable_stream():
             async def mock_stream():

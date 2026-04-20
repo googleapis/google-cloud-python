@@ -3,7 +3,7 @@ Python Client for Cloud Workstations
 
 |preview| |pypi| |versions|
 
-`Cloud Workstations`_: 
+`Cloud Workstations`_: Allows administrators to create managed developer environments in the cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

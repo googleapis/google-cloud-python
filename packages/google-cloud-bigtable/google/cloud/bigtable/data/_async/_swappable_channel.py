@@ -16,9 +16,9 @@ from __future__ import annotations
 
 from typing import Callable
 
-from google.cloud.bigtable.data._cross_sync import CrossSync
-
 from grpc import ChannelConnectivity
+
+from google.cloud.bigtable.data._cross_sync import CrossSync
 
 if CrossSync.is_async:
     from grpc.aio import Channel

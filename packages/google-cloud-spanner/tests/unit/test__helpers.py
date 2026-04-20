@@ -771,6 +771,59 @@ class Test_parse_value_pb(unittest.TestCase):
             self._callFUT(value_pb, field_type, field_name, column_info), VALUE
         )
 
+    def test_w_proto_message_decode_error(self):
+        import base64
+        from unittest import mock
+
+        from google.protobuf.message import DecodeError
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        from .testdata import singer_pb2
+
+        VALUE = singer_pb2.SingerInfo(singer_id=1, nationality="Canadian")
+        field_type = Type(code=TypeCode.PROTO)
+        field_name = "proto_message_column"
+        raw_bytes = VALUE.SerializeToString()
+        value_pb = Value(string_value=base64.b64encode(raw_bytes).decode("utf-8"))
+        column_info = {"proto_message_column": singer_pb2.SingerInfo()}
+
+        # Mock ParseFromString to raise DecodeError
+        with mock.patch.object(
+            singer_pb2.SingerInfo,
+            "ParseFromString",
+            side_effect=DecodeError("Mock Decode Error"),
+        ):
+            result = self._callFUT(value_pb, field_type, field_name, column_info)
+            # Should return raw bytes
+            self.assertEqual(result, raw_bytes)
+
+    def test_w_proto_message_recursion_error(self):
+        import base64
+        from unittest import mock
+
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        from .testdata import singer_pb2
+
+        VALUE = singer_pb2.SingerInfo(singer_id=1, nationality="Canadian")
+        field_type = Type(code=TypeCode.PROTO)
+        field_name = "proto_message_column"
+        raw_bytes = VALUE.SerializeToString()
+        value_pb = Value(string_value=base64.b64encode(raw_bytes).decode("utf-8"))
+        column_info = {"proto_message_column": singer_pb2.SingerInfo()}
+
+        with mock.patch.object(
+            singer_pb2.SingerInfo,
+            "ParseFromString",
+            side_effect=RecursionError("Mock Recursion Error"),
+        ):
+            result = self._callFUT(value_pb, field_type, field_name, column_info)
+            self.assertEqual(result, raw_bytes)
+
     def test_w_proto_enum(self):
         from google.protobuf.struct_pb2 import Value
 

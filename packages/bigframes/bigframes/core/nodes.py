@@ -674,7 +674,9 @@ class ReadLocalNode(LeafNode):
             Field(
                 col_id,
                 self.local_data_source.schema.get_type(source_id),
-                nullable=self.local_data_source.is_nullable(source_id),
+                nullable=self.local_data_source.is_nullable(
+                    identifiers.ColumnId(source_id)
+                ),
             )
             for col_id, source_id in self.scan_list.items
         )

@@ -5,9 +5,9 @@ from typing import List
 import proto
 import pytest
 
-from google.cloud.bigtable.row_data import PartialRowsData, PartialRowData, InvalidChunk
-from google.cloud.bigtable_v2.types.bigtable import ReadRowsResponse
+from google.cloud.bigtable.row_data import InvalidChunk, PartialRowData, PartialRowsData
 from google.cloud.bigtable.row_merger import _RowMerger
+from google.cloud.bigtable_v2.types.bigtable import ReadRowsResponse
 
 
 # TODO: autogenerate protos from

@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import mock
+import pytest
 
 from google.cloud.bigtable.data._metrics.data_model import OperationState as State
 from google.cloud.bigtable_v2.types import ResponseParams
@@ -627,8 +627,9 @@ class TestActiveOperationMetric:
 
         If BigtableExceptionGroup, use the most recent exception in the group
         """
-        from grpc import StatusCode
         from google.api_core import exceptions as core_exc
+        from grpc import StatusCode
+
         from google.cloud.bigtable.data import exceptions as bt_exc
 
         cls = type(self._make_one(object()))

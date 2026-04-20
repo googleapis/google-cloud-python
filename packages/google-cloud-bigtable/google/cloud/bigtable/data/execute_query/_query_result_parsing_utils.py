@@ -13,14 +13,15 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, Type, Optional, Union
+from typing import Any, Callable, Dict, Optional, Type, Union
 
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
-from google.cloud.bigtable.data.execute_query.values import Struct
-from google.cloud.bigtable.data.execute_query.metadata import SqlType
-from google.cloud.bigtable_v2 import Value as PBValue
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
+
+from google.cloud.bigtable.data.execute_query.metadata import SqlType
+from google.cloud.bigtable.data.execute_query.values import Struct
+from google.cloud.bigtable_v2 import Value as PBValue
 
 _REQUIRED_PROTO_FIELDS = {
     SqlType.Bytes: "bytes_value",

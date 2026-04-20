@@ -49,4 +49,5 @@ async def sample_get_schema_bundle():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GetSchemaBundle_async]

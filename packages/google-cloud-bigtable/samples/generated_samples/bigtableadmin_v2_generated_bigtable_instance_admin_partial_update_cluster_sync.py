@@ -39,8 +39,7 @@ def sample_partial_update_cluster():
     client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
     # Initialize request argument(s)
-    request = bigtable_admin_v2.PartialUpdateClusterRequest(
-    )
+    request = bigtable_admin_v2.PartialUpdateClusterRequest()
 
     # Make the request
     operation = client.partial_update_cluster(request=request)
@@ -51,5 +50,6 @@ def sample_partial_update_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_PartialUpdateCluster_sync]

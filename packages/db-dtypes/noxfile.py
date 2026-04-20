@@ -487,6 +487,18 @@ def core_deps_from_source(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+        "pandas-stubs",
+    )
+    session.install("-e", ".")
+    session.run(
+        "mypy",
+        "-p",
+        "db_dtypes",
+        "--check-untyped-defs",
+        "--ignore-missing-imports",
+        *session.posargs,
+    )

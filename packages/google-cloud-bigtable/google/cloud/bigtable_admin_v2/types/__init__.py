@@ -136,12 +136,12 @@ from .table import (
     GcRule,
     ProtoSchema,
     RestoreInfo,
+    RestoreSourceType,
     SchemaBundle,
     Snapshot,
     Table,
     TieredStorageConfig,
     TieredStorageRule,
-    RestoreSourceType,
 )
 from .types import (
     Type,

@@ -49,4 +49,5 @@ async def sample_get_snapshot():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GetSnapshot_async]

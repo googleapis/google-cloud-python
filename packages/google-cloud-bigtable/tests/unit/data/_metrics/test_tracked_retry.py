@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import inspect
-import mock
 import sys
-from grpc import StatusCode
+
+import google.api_core.retry as retry_module
+import mock
+import pytest
 from google.api_core import exceptions as core_exceptions
 from google.api_core.retry import RetryFailureReason
-import google.api_core.retry as retry_module
+from grpc import StatusCode
 
 
 class TestTrackRetryableError:

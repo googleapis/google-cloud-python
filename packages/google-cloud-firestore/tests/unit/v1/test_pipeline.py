@@ -403,6 +403,8 @@ def test_pipeline_execute_stream_equivalence():
         ("replace_with", (Field.of("n"),), stages.ReplaceWith),
         ("sort", (Field.of("n").descending(),), stages.Sort),
         ("sort", (Field.of("n").descending(), Field.of("m").ascending()), stages.Sort),
+        ("search", ("my query",), stages.Search),
+        ("search", (stages.SearchOptions(query="my query"),), stages.Search),
         ("sample", (10,), stages.Sample),
         ("sample", (stages.SampleOptions.doc_limit(10),), stages.Sample),
         ("union", (_make_pipeline(),), stages.Union),
@@ -437,6 +439,19 @@ def test_pipeline_aggregate_with_groups():
     assert isinstance(result_ppl.stages[0], stages.Aggregate)
     assert list(result_ppl.stages[0].groups) == [Field.of("author")]
     assert list(result_ppl.stages[0].accumulators) == [Field.of("title")]
+
+
+def test_pipeline_raw_stage_with_options():
+    from google.cloud.firestore_v1.pipeline_stages import RawStage
+
+    start_ppl = _make_pipeline()
+    result_ppl = start_ppl.raw_stage(
+        "stage_name", Field.of("n"), options={"key": "val"}
+    )
+    assert len(start_ppl.stages) == 0
+    assert len(result_ppl.stages) == 1
+    assert isinstance(result_ppl.stages[0], RawStage)
+    assert result_ppl.stages[0].options == {"key": "val"}
 
 
 def test_pipeline_union_relative_error():

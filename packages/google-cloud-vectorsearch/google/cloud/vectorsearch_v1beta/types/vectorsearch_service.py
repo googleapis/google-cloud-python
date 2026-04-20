@@ -24,6 +24,9 @@ import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vectorsearch_v1beta.types import common, embedding_config
+from google.cloud.vectorsearch_v1beta.types import (
+    encryption_spec as gcv_encryption_spec,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.vectorsearch.v1beta",
@@ -40,6 +43,7 @@ __protobuf__ = proto.module(
         "DeleteCollectionRequest",
         "Index",
         "CreateIndexRequest",
+        "UpdateIndexRequest",
         "DeleteIndexRequest",
         "ListIndexesRequest",
         "ListIndexesResponse",
@@ -84,9 +88,16 @@ class Collection(proto.Message):
             Field names must contain only alphanumeric
             characters, underscores, and hyphens.
         data_schema (google.protobuf.struct_pb2.Struct):
-            Optional. JSON Schema for data.
-            Field names must contain only alphanumeric
-            characters, underscores, and hyphens.
+            Optional. JSON Schema for data. Field names must contain
+            only alphanumeric characters, underscores, and hyphens. The
+            schema must be compliant with `JSON Schema Draft
+            7 <https://json-schema.org/draft-07/schema>`__.
+        encryption_spec (google.cloud.vectorsearch_v1beta.types.EncryptionSpec):
+            Optional. Immutable. Specifies the
+            customer-managed encryption key spec for a
+            Collection. If set, this Collection and all
+            sub-resources of this Collection will be secured
+            by this key.
     """
 
     name: str = proto.Field(
@@ -131,6 +142,11 @@ class Collection(proto.Message):
         proto.MESSAGE,
         number=10,
         message=struct_pb2.Struct,
+    )
+    encryption_spec: gcv_encryption_spec.EncryptionSpec = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=gcv_encryption_spec.EncryptionSpec,
     )
 
 
@@ -603,6 +619,68 @@ class CreateIndexRequest(proto.Message):
     )
 
 
+class UpdateIndexRequest(proto.Message):
+    r"""Message for updating an Index.
+
+    Attributes:
+        index (google.cloud.vectorsearch_v1beta.types.Index):
+            Required. The resource being updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Specifies the fields to be overwritten in the
+            Index resource by the update. The fields specified in the
+            update_mask are relative to the resource, not the full
+            request. A field will be overwritten if it is in the mask.
+            If the user does not provide a mask then all fields present
+            in the request with non-empty values will be overwritten.
+
+            The following fields support update:
+
+            - ``display_name``
+            - ``description``
+            - ``labels``
+            - ``dedicated_infrastructure.autoscaling_spec.min_replica_count``
+            - ``dedicated_infrastructure.autoscaling_spec.max_replica_count``
+
+            If ``*`` is provided in the ``update_mask``, full
+            replacement of mutable fields will be performed.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    index: "Index" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Index",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class DeleteIndexRequest(proto.Message):
     r"""Message for deleting an Index.
 
@@ -947,12 +1025,15 @@ class ExportDataObjectsRequest(proto.Message):
                 FORMAT_UNSPECIFIED (0):
                     Unspecified format.
                 JSON (1):
-                    The exported Data Objects will be in JSON
-                    format.
+                    Deprecated: Exports Data Objects in ``JSON`` format. Use
+                    ``JSONL`` instead.
+                JSONL (2):
+                    Exports Data Objects in ``JSONL`` format.
             """
 
             FORMAT_UNSPECIFIED = 0
             JSON = 1
+            JSONL = 2
 
         export_uri: str = proto.Field(
             proto.STRING,
@@ -1041,12 +1122,15 @@ class DedicatedInfrastructure(proto.Message):
         Attributes:
             min_replica_count (int):
                 Optional. The minimum number of replicas. If not set or set
-                to ``0``, defaults to ``2``. Must be >= ``2`` and <=
+                to ``0``, defaults to ``2``. Must be >= ``1`` and <=
                 ``1000``.
             max_replica_count (int):
-                Optional. The maximum number of replicas. If not set or set
-                to ``0``, defaults to the greater of ``min_replica_count``
-                and ``5``. Must be >= ``min_replica_count`` and <= ``1000``.
+                Optional. The maximum number of replicas. Must be >=
+                ``min_replica_count`` and <= ``1000``. For the v1beta
+                version, if not set or set to ``0``, defaults to the greater
+                of ``min_replica_count`` and ``5``. For all other versions,
+                if not set or set to ``0``, defaults to the greater of
+                ``min_replica_count`` and ``2``.
         """
 
         min_replica_count: int = proto.Field(

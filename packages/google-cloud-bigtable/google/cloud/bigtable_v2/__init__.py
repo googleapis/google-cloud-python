@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.bigtable_v2 import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -28,63 +29,67 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .services.bigtable import BigtableClient
-from .services.bigtable import BigtableAsyncClient
-
-from .types.bigtable import CheckAndMutateRowRequest
-from .types.bigtable import CheckAndMutateRowResponse
-from .types.bigtable import ExecuteQueryRequest
-from .types.bigtable import ExecuteQueryResponse
-from .types.bigtable import GenerateInitialChangeStreamPartitionsRequest
-from .types.bigtable import GenerateInitialChangeStreamPartitionsResponse
-from .types.bigtable import MutateRowRequest
-from .types.bigtable import MutateRowResponse
-from .types.bigtable import MutateRowsRequest
-from .types.bigtable import MutateRowsResponse
-from .types.bigtable import PingAndWarmRequest
-from .types.bigtable import PingAndWarmResponse
-from .types.bigtable import PrepareQueryRequest
-from .types.bigtable import PrepareQueryResponse
-from .types.bigtable import RateLimitInfo
-from .types.bigtable import ReadChangeStreamRequest
-from .types.bigtable import ReadChangeStreamResponse
-from .types.bigtable import ReadModifyWriteRowRequest
-from .types.bigtable import ReadModifyWriteRowResponse
-from .types.bigtable import ReadRowsRequest
-from .types.bigtable import ReadRowsResponse
-from .types.bigtable import SampleRowKeysRequest
-from .types.bigtable import SampleRowKeysResponse
-from .types.data import ArrayValue
-from .types.data import Cell
-from .types.data import Column
-from .types.data import ColumnMetadata
-from .types.data import ColumnRange
-from .types.data import Family
-from .types.data import Idempotency
-from .types.data import Mutation
-from .types.data import PartialResultSet
-from .types.data import ProtoFormat
-from .types.data import ProtoRows
-from .types.data import ProtoRowsBatch
-from .types.data import ProtoSchema
-from .types.data import ReadModifyWriteRule
-from .types.data import ResultSetMetadata
-from .types.data import Row
-from .types.data import RowFilter
-from .types.data import RowRange
-from .types.data import RowSet
-from .types.data import StreamContinuationToken
-from .types.data import StreamContinuationTokens
-from .types.data import StreamPartition
-from .types.data import TimestampRange
-from .types.data import Value
-from .types.data import ValueRange
+from .services.bigtable import BigtableAsyncClient, BigtableClient
+from .types.bigtable import (
+    CheckAndMutateRowRequest,
+    CheckAndMutateRowResponse,
+    ExecuteQueryRequest,
+    ExecuteQueryResponse,
+    GenerateInitialChangeStreamPartitionsRequest,
+    GenerateInitialChangeStreamPartitionsResponse,
+    MutateRowRequest,
+    MutateRowResponse,
+    MutateRowsRequest,
+    MutateRowsResponse,
+    PingAndWarmRequest,
+    PingAndWarmResponse,
+    PrepareQueryRequest,
+    PrepareQueryResponse,
+    RateLimitInfo,
+    ReadChangeStreamRequest,
+    ReadChangeStreamResponse,
+    ReadModifyWriteRowRequest,
+    ReadModifyWriteRowResponse,
+    ReadRowsRequest,
+    ReadRowsResponse,
+    SampleRowKeysRequest,
+    SampleRowKeysResponse,
+)
+from .types.data import (
+    ArrayValue,
+    Cell,
+    Column,
+    ColumnMetadata,
+    ColumnRange,
+    Family,
+    Idempotency,
+    Mutation,
+    PartialResultSet,
+    ProtoFormat,
+    ProtoRows,
+    ProtoRowsBatch,
+    ProtoSchema,
+    ReadModifyWriteRule,
+    ResultSetMetadata,
+    Row,
+    RowFilter,
+    RowRange,
+    RowSet,
+    StreamContinuationToken,
+    StreamContinuationTokens,
+    StreamPartition,
+    TimestampRange,
+    Value,
+    ValueRange,
+)
 from .types.feature_flags import FeatureFlags
 from .types.peer_info import PeerInfo
-from .types.request_stats import FullReadStatsView
-from .types.request_stats import ReadIterationStats
-from .types.request_stats import RequestLatencyStats
-from .types.request_stats import RequestStats
+from .types.request_stats import (
+    FullReadStatsView,
+    ReadIterationStats,
+    RequestLatencyStats,
+    RequestStats,
+)
 from .types.response_params import ResponseParams
 from .types.types import Type
 
@@ -97,8 +102,8 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.bigtable_v2"

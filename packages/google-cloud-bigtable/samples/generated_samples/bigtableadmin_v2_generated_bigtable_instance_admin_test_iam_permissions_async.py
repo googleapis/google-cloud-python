@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import bigtable_admin_v2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -42,7 +43,7 @@ async def sample_test_iam_permissions():
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
-        permissions=['permissions_value1', 'permissions_value2'],
+        permissions=["permissions_value1", "permissions_value2"],
     )
 
     # Make the request
@@ -50,5 +51,6 @@ async def sample_test_iam_permissions():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_TestIamPermissions_async]

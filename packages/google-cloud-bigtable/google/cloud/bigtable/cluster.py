@@ -14,12 +14,12 @@
 
 """User friendly container for Google Cloud Bigtable Cluster."""
 
-
 import re
-from google.cloud.bigtable_admin_v2.types import instance
+
 from google.api_core.exceptions import NotFound
 from google.protobuf import field_mask_pb2
 
+from google.cloud.bigtable_admin_v2.types import instance
 
 _CLUSTER_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/"
@@ -166,16 +166,16 @@ class Cluster(object):
         match_cluster_name = _CLUSTER_NAME_RE.match(cluster_pb.name)
         if match_cluster_name is None:
             raise ValueError(
-                "Cluster protobuf name was not in the " "expected format.",
+                "Cluster protobuf name was not in the expected format.",
                 cluster_pb.name,
             )
         if match_cluster_name.group("instance") != instance.instance_id:
             raise ValueError(
-                "Instance ID on cluster does not match the " "instance ID on the client"
+                "Instance ID on cluster does not match the instance ID on the client"
             )
         if match_cluster_name.group("project") != instance._client.project:
             raise ValueError(
-                "Project ID on cluster does not match the " "project ID on the client"
+                "Project ID on cluster does not match the project ID on the client"
             )
         cluster_id = match_cluster_name.group("cluster_id")
 
@@ -191,15 +191,9 @@ class Cluster(object):
         self.location_id = cluster_pb.location.split("/")[-1]
         self.serve_nodes = cluster_pb.serve_nodes
 
-        self.min_serve_nodes = (
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.min_serve_nodes
-        )
-        self.max_serve_nodes = (
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.max_serve_nodes
-        )
-        self.cpu_utilization_percent = (
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_targets.cpu_utilization_percent
-        )
+        self.min_serve_nodes = cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.min_serve_nodes
+        self.max_serve_nodes = cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.max_serve_nodes
+        self.cpu_utilization_percent = cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_targets.cpu_utilization_percent
 
         self.default_storage_type = cluster_pb.default_storage_type
         if cluster_pb.encryption_config:
@@ -528,16 +522,10 @@ class Cluster(object):
             )
 
         if self.min_serve_nodes:
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.min_serve_nodes = (
-                self.min_serve_nodes
-            )
+            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.min_serve_nodes = self.min_serve_nodes
         if self.max_serve_nodes:
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.max_serve_nodes = (
-                self.max_serve_nodes
-            )
+            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_limits.max_serve_nodes = self.max_serve_nodes
         if self.cpu_utilization_percent:
-            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_targets.cpu_utilization_percent = (
-                self.cpu_utilization_percent
-            )
+            cluster_pb.cluster_config.cluster_autoscaling_config.autoscaling_targets.cpu_utilization_percent = self.cpu_utilization_percent
 
         return cluster_pb

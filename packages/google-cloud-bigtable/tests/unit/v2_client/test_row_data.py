@@ -34,9 +34,11 @@ def _make_cell(*args, **kwargs):
 
 def _cell_from_pb_test_helper(labels=None):
     import datetime
+
     from google.cloud._helpers import _EPOCH
-    from google.cloud.bigtable_v2.types import data as data_v2_pb2
+
     from google.cloud.bigtable.row_data import Cell
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     timestamp = _EPOCH + datetime.timedelta(microseconds=TIMESTAMP_MICROS)
     value = b"value-bytes"
@@ -267,8 +269,7 @@ def test_partial_row_data_row_key_getter():
 
 
 def _make_grpc_call_error(exception):
-    from grpc import Call
-    from grpc import RpcError
+    from grpc import Call, RpcError
 
     class TestingException(Call, RpcError):
         def __init__(self, exception):
@@ -288,6 +289,7 @@ def _make_grpc_call_error(exception):
 
 def test__retry_read_rows_exception_miss():
     from google.api_core.exceptions import Conflict
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     exception = Conflict("testing")
@@ -296,6 +298,7 @@ def test__retry_read_rows_exception_miss():
 
 def test__retry_read_rows_exception_service_unavailable():
     from google.api_core.exceptions import ServiceUnavailable
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     exception = ServiceUnavailable("testing")
@@ -304,6 +307,7 @@ def test__retry_read_rows_exception_service_unavailable():
 
 def test__retry_read_rows_exception_deadline_exceeded():
     from google.api_core.exceptions import DeadlineExceeded
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     exception = DeadlineExceeded("testing")
@@ -312,9 +316,10 @@ def test__retry_read_rows_exception_deadline_exceeded():
 
 def test__retry_read_rows_exception_internal_server_not_retriable():
     from google.api_core.exceptions import InternalServerError
+
     from google.cloud.bigtable.row_data import (
-        _retry_read_rows_exception,
         RETRYABLE_INTERNAL_ERROR_MESSAGES,
+        _retry_read_rows_exception,
     )
 
     err_message = "500 Error"
@@ -325,9 +330,10 @@ def test__retry_read_rows_exception_internal_server_not_retriable():
 
 def test__retry_read_rows_exception_internal_server_retriable():
     from google.api_core.exceptions import InternalServerError
+
     from google.cloud.bigtable.row_data import (
-        _retry_read_rows_exception,
         RETRYABLE_INTERNAL_ERROR_MESSAGES,
+        _retry_read_rows_exception,
     )
 
     for err_message in RETRYABLE_INTERNAL_ERROR_MESSAGES:
@@ -337,6 +343,7 @@ def test__retry_read_rows_exception_internal_server_retriable():
 
 def test__retry_read_rows_exception_miss_wrapped_in_grpc():
     from google.api_core.exceptions import Conflict
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     wrapped = Conflict("testing")
@@ -346,6 +353,7 @@ def test__retry_read_rows_exception_miss_wrapped_in_grpc():
 
 def test__retry_read_rows_exception_service_unavailable_wrapped_in_grpc():
     from google.api_core.exceptions import ServiceUnavailable
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     wrapped = ServiceUnavailable("testing")
@@ -355,6 +363,7 @@ def test__retry_read_rows_exception_service_unavailable_wrapped_in_grpc():
 
 def test__retry_read_rows_exception_deadline_exceeded_wrapped_in_grpc():
     from google.api_core.exceptions import DeadlineExceeded
+
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
 
     wrapped = DeadlineExceeded("testing")
@@ -1099,8 +1108,8 @@ def test_RRRM_build_updated_request_last_row_read_raises_invalid_retry_request()
 
 
 def test_RRRM_build_updated_request_row_ranges_read_raises_invalid_retry_request():
-    from google.cloud.bigtable.row_data import InvalidRetryRequest
     from google.cloud.bigtable import row_set
+    from google.cloud.bigtable.row_data import InvalidRetryRequest
 
     row_range1 = row_set.RowRange(b"row_key21", b"row_key29")
 
@@ -1176,6 +1185,7 @@ def _ReadRowsResponseV2(chunks, last_scanned_row_key=b""):
 
 def _generate_cell_chunks(chunk_text_pbs):
     from google.protobuf.text_format import Merge
+
     from google.cloud.bigtable_v2.types.bigtable import ReadRowsResponse
 
     chunks = []

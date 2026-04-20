@@ -49,4 +49,5 @@ def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_GetCluster_sync]

@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User-friendly container for Google Cloud Bigtable RowSet """
-
+"""User-friendly container for Google Cloud Bigtable RowSet"""
 
 from google.cloud._helpers import _to_bytes  # type: ignore
 

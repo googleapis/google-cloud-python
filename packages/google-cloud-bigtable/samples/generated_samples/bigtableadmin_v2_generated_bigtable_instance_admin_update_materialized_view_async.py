@@ -56,4 +56,5 @@ async def sample_update_materialized_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_UpdateMaterializedView_async]

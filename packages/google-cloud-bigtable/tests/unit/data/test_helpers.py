@@ -14,6 +14,7 @@
 #
 
 import pytest
+
 from google.cloud.bigtable.helpers import batched
 
 

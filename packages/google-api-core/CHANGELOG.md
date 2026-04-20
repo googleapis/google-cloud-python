@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.30.3](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.2...google-api-core-v2.30.3) (2026-04-09)
+
+
+### Bug Fixes
+
+* avoid repeated scan of entire venv via packages_distributions() at import time (#16579) ([c5728b24fac3363c10a8cfb315b96d3e6459cf06](https://github.com/googleapis/google-cloud-python/commit/c5728b24fac3363c10a8cfb315b96d3e6459cf06))
+
 ## [2.30.2](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.1...google-api-core-v2.30.2) (2026-04-02)
 
 

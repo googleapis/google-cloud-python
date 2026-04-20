@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.7.0...google-apps-chat-v0.8.0) (2026-04-09)
+
+
+### Documentation
+
+* Update reference documentation for Chat API ListMessages, GetMessage, GetSpaceEvent and ListSpaceEvents. ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
+
+### Features
+
+* Support app authentication with admin-consent scopes for Chat API ListMessages, GetMessage, GetSpaceEvent and ListSpaceEvents ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+* Addition of Section and SectionItem APIs ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.6.0...google-apps-chat-v0.7.0) (2026-03-26)
 
 

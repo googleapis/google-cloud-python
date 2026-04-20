@@ -11,16 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveAttemptMetric,
+    ActiveOperationMetric,
+    CompletedAttemptMetric,
+    CompletedOperationMetric,
+    OperationState,
+    OperationType,
+)
 from google.cloud.bigtable.data._metrics.metrics_controller import (
     BigtableClientSideMetricsController,
 )
-
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import ActiveAttemptMetric
-from google.cloud.bigtable.data._metrics.data_model import CompletedOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import CompletedAttemptMetric
-from google.cloud.bigtable.data._metrics.data_model import OperationState
-from google.cloud.bigtable.data._metrics.data_model import OperationType
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 
 __all__ = (

@@ -15,6 +15,7 @@
 from datetime import datetime, timedelta
 from typing import List
 
+import google_crc32c  # type: ignore
 from google.protobuf import timestamp_pb2
 
 from google.cloud.bigtable_v2.types.bigtable import (
@@ -22,14 +23,13 @@ from google.cloud.bigtable_v2.types.bigtable import (
     PrepareQueryResponse,
 )
 from google.cloud.bigtable_v2.types.data import (
-    Value,
+    ColumnMetadata,
     ProtoRows,
     ProtoRowsBatch,
     ResultSetMetadata,
-    ColumnMetadata,
+    Value,
 )
 from google.cloud.bigtable_v2.types.types import Type
-import google_crc32c  # type: ignore
 
 
 def checksum(data: bytearray) -> int:

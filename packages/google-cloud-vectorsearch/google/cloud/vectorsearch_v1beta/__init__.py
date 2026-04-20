@@ -76,6 +76,7 @@ from .types.data_object_service import (
     UpdateDataObjectRequest,
 )
 from .types.embedding_config import EmbeddingTaskType, VertexEmbeddingConfig
+from .types.encryption_spec import EncryptionSpec
 from .types.vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
@@ -101,6 +102,7 @@ from .types.vectorsearch_service import (
     OperationMetadata,
     SparseVectorField,
     UpdateCollectionRequest,
+    UpdateIndexRequest,
     VectorField,
 )
 
@@ -228,6 +230,7 @@ __all__ = (
     "DenseVectorField",
     "DistanceMetric",
     "EmbeddingTaskType",
+    "EncryptionSpec",
     "ExportDataObjectsMetadata",
     "ExportDataObjectsRequest",
     "ExportDataObjectsResponse",
@@ -260,6 +263,7 @@ __all__ = (
     "TextSearch",
     "UpdateCollectionRequest",
     "UpdateDataObjectRequest",
+    "UpdateIndexRequest",
     "Vector",
     "VectorField",
     "VectorSearch",

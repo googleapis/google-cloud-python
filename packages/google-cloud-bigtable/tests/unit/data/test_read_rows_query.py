@@ -206,8 +206,8 @@ class TestReadRowsQuery:
         assert query.limit is None
 
     def test_ctor_explicit(self):
-        from google.cloud.bigtable.data.row_filters import RowFilterChain
         from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.data.row_filters import RowFilterChain
 
         filter_ = RowFilterChain()
         query = self._make_one(
@@ -559,8 +559,7 @@ class TestReadRowsQuery:
         ],
     )
     def test___eq__(self, first_args, second_args, expected):
-        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 
         # replace row_range placeholders with a RowRange object
         if len(first_args) > 1:

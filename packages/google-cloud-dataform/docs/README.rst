@@ -3,7 +3,8 @@ Python Client for Cloud Dataform
 
 |preview| |pypi| |versions|
 
-`Cloud Dataform`_: 
+`Cloud Dataform`_: Service to develop, version control, and operationalize SQL pipelines in
+BigQuery.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

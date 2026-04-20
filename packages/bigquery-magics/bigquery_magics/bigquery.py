@@ -78,8 +78,10 @@
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
     * ``--engine <engine>`` (Optional[line argument]):
-          Set the execution engine, either 'pandas' (default) or 'bigframes'
-          (experimental).
+          [Deprecated] Set the execution engine, either 'pandas' (default) or
+          'bigframes'.
+          Please use ``%load_ext bigframes`` and the ``%%bqsql`` magic instead.
+          See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html
     * ``--pyformat`` (Optional[line argument]):
           Warning! Do not use with user-provided values.
           This doesn't escape values. Use --params instead for proper SQL escaping.
@@ -397,8 +399,10 @@ def _create_dataset_if_necessary(client, dataset_id):
     type=str,
     default=None,
     help=(
-        "Set the execution engine, either 'pandas' or 'bigframes'."
-        "Defaults to engine set in the query setting in console."
+        "[Deprecated] Set the execution engine, either 'pandas' or 'bigframes'. "
+        "Defaults to engine set in the query setting in console. "
+        "Please use %%load_ext bigframes and the %%%%bqsql magic instead. "
+        "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html"
     ),
 )
 @magic_arguments.argument(
@@ -510,6 +514,13 @@ def _split_args_line(line: str) -> Tuple[str, str]:
 
 
 def _query_with_bigframes(query: str, params: List[Any], args: Any):
+    warnings.warn(
+        "The bigframes engine is deprecated. Please use %load_ext bigframes "
+        "and the %%bqsql magic instead. "
+        "See: https://dataframes.bigquery.dev/notebooks/getting_started/magics.html",
+        FutureWarning,
+        stacklevel=2,
+    )
     if args.dry_run:
         raise ValueError("Dry run is not supported by bigframes engine.")
 
@@ -635,41 +646,26 @@ MAX_GRAPH_VISUALIZATION_SIZE = 2_000_000
 MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE = 100_000
 
 
-def _get_graph_name(query_text: str):
-    """Returns the name of the graph queried.
-
-    Supports GRAPH only, not GRAPH_TABLE.
-
-    Args:
-        query_text: The SQL query text.
-
-    Returns:
-        A (dataset_id, graph_id) tuple, or None if the graph name cannot be determined.
-    """
-    match = re.match(r"\s*GRAPH\s+(\S+)\.(\S+)", query_text, re.IGNORECASE)
-    if match:
-        (dataset_id, graph_id) = (match.group(1)), match.group(2)
-        if "`" in dataset_id or "`" in graph_id:
-            return None  # Backticks in graph name not support for schema view
-        return (dataset_id, graph_id)
-    return None
-
-
 def _get_graph_schema(
     bq_client: bigquery.client.Client, query_text: str, query_job: bigquery.job.QueryJob
 ):
-    graph_name_result = _get_graph_name(query_text)
-    if graph_name_result is None:
+    property_graphs = query_job.referenced_property_graphs
+    if len(property_graphs) != 1:
         return None
-    dataset_id, graph_id = graph_name_result
+
+    graph_ref = property_graphs[0]
 
     info_schema_query = f"""
         select PROPERTY_GRAPH_METADATA_JSON
-        FROM `{query_job.configuration.destination.project}.{dataset_id}`.INFORMATION_SCHEMA.PROPERTY_GRAPHS
+        FROM `{graph_ref.project}.{graph_ref.dataset_id}`.INFORMATION_SCHEMA.PROPERTY_GRAPHS
         WHERE PROPERTY_GRAPH_NAME = @graph_id
     """
     job_config = bigquery.QueryJobConfig(
-        query_parameters=[bigquery.ScalarQueryParameter("graph_id", "STRING", graph_id)]
+        query_parameters=[
+            bigquery.ScalarQueryParameter(
+                "graph_id", "STRING", graph_ref.property_graph_id
+            )
+        ]
     )
     job_config.use_legacy_sql = False
     try:

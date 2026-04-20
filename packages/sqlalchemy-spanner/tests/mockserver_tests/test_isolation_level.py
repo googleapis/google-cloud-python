@@ -19,7 +19,6 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
-    BeginTransactionRequest,
     TransactionOptions,
 )
 
@@ -150,12 +149,12 @@ class TestIsolationLevel(MockServerTestBase):
     def verify_isolation_level(self, level):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
-        begin_request: BeginTransactionRequest = requests[1]
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        execute_request: ExecuteSqlRequest = requests[1]
         eq_(
             TransactionOptions(
                 dict(
@@ -163,7 +162,7 @@ class TestIsolationLevel(MockServerTestBase):
                     read_write=TransactionOptions.ReadWrite(),
                 )
             ),
-            begin_request.options,
+            execute_request.transaction.begin,
         )
 
     def add_insert_result(self, sql):

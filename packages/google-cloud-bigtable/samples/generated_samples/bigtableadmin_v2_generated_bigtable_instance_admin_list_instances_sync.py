@@ -49,4 +49,5 @@ def sample_list_instances():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_ListInstances_sync]

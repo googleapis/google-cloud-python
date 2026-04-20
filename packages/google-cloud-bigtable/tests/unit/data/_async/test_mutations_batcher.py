@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-import mock
 import asyncio
 import time
+
 import google.api_core.exceptions as core_exceptions
 import google.api_core.retry
-from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-from google.cloud.bigtable.data.mutations import RowMutationEntry
-from google.cloud.bigtable.data.mutations import DeleteAllFromRow
-from google.cloud.bigtable.data import TABLE_DEFAULT
+import mock
+import pytest
 
+from google.cloud.bigtable.data import TABLE_DEFAULT
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow, RowMutationEntry
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_mutations_batcher"
 
@@ -305,8 +305,7 @@ class TestMutationsBatcherAsync:
         return CrossSync.MutationsBatcher
 
     def _make_one(self, table=None, **kwargs):
-        from google.api_core.exceptions import DeadlineExceeded
-        from google.api_core.exceptions import ServiceUnavailable
+        from google.api_core.exceptions import DeadlineExceeded, ServiceUnavailable
 
         if table is None:
             table = mock.Mock()
@@ -887,8 +886,9 @@ class TestMutationsBatcherAsync:
 
     @CrossSync.convert
     async def _mock_gapic_return(self, num=5):
-        from google.cloud.bigtable_v2.types import MutateRowsResponse
         from google.rpc import status_pb2
+
+        from google.cloud.bigtable_v2.types import MutateRowsResponse
 
         @CrossSync.convert
         async def gen(num):
@@ -949,8 +949,8 @@ class TestMutationsBatcherAsync:
     async def test__execute_mutate_rows_returns_errors(self):
         """Errors from operation should be retruned as list"""
         from google.cloud.bigtable.data.exceptions import (
-            MutationsExceptionGroup,
             FailedMutationEntryError,
+            MutationsExceptionGroup,
         )
 
         with mock.patch.object(CrossSync._MutateRowsOperation, "start") as mutate_rows:

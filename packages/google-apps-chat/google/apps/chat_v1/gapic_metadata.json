@@ -35,6 +35,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -58,6 +63,11 @@
             "DeleteReaction": {
               "methods": [
                 "delete_reaction"
+              ]
+            },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
               ]
             },
             "DeleteSpace": {
@@ -135,6 +145,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -143,6 +163,16 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
               ]
             },
             "SearchSpaces": {
@@ -163,6 +193,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {
@@ -215,6 +250,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -238,6 +278,11 @@
             "DeleteReaction": {
               "methods": [
                 "delete_reaction"
+              ]
+            },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
               ]
             },
             "DeleteSpace": {
@@ -315,6 +360,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -323,6 +378,16 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
               ]
             },
             "SearchSpaces": {
@@ -343,6 +408,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {
@@ -395,6 +465,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -418,6 +493,11 @@
             "DeleteReaction": {
               "methods": [
                 "delete_reaction"
+              ]
+            },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
               ]
             },
             "DeleteSpace": {
@@ -495,6 +575,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -503,6 +593,16 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
               ]
             },
             "SearchSpaces": {
@@ -523,6 +623,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {

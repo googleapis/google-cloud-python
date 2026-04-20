@@ -92,11 +92,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_12` AS (
   SELECT
     *,
-    `bfcol_61` IN ((
+    COALESCE(`bfcol_61` IN ((
         SELECT
           *
         FROM `bfcte_6`
-    )) AS `bfcol_64`
+    )), FALSE) AS `bfcol_64`
   FROM `bfcte_11`
 ), `bfcte_13` AS (
   SELECT

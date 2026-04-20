@@ -49,4 +49,5 @@ def sample_get_table():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_GetTable_sync]

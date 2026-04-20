@@ -56,4 +56,5 @@ def sample_update_logical_view():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_UpdateLogicalView_sync]

@@ -17,14 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import types
 from google.cloud.bigtable_admin_v2.utils import oneof_message
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -58,6 +57,7 @@ class RestoreSourceType(proto.Enum):
             A backup was used as the source of the
             restore.
     """
+
     RESTORE_SOURCE_TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -247,6 +247,7 @@ class Table(proto.Message):
                 The table keeps data versioned at a
                 granularity of 1ms.
         """
+
         TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
         MILLIS = 1
 
@@ -271,6 +272,7 @@ class Table(proto.Message):
             FULL (4):
                 Populates all fields.
         """
+
         VIEW_UNSPECIFIED = 0
         NAME_ONLY = 1
         SCHEMA_VIEW = 2
@@ -328,6 +330,7 @@ class Table(proto.Message):
                     optimizations are complete, the table will transition to
                     ``READY`` state.
             """
+
             STATE_NOT_KNOWN = 0
             INITIALIZING = 1
             PLANNED_MAINTENANCE = 2
@@ -470,6 +473,7 @@ class AuthorizedView(proto.Message):
             FULL (3):
                 Populates every fields.
         """
+
         RESPONSE_VIEW_UNSPECIFIED = 0
         NAME_ONLY = 1
         BASIC = 2
@@ -520,13 +524,13 @@ class AuthorizedView(proto.Message):
             proto.BYTES,
             number=1,
         )
-        family_subsets: MutableMapping[
-            str, "AuthorizedView.FamilySubsets"
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=2,
-            message="AuthorizedView.FamilySubsets",
+        family_subsets: MutableMapping[str, "AuthorizedView.FamilySubsets"] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=2,
+                message="AuthorizedView.FamilySubsets",
+            )
         )
 
     name: str = proto.Field(
@@ -723,6 +727,7 @@ class EncryptionInfo(proto.Message):
                 version is populated but its status is not tracked and is
                 reported as ``UNKNOWN``.
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -798,6 +803,7 @@ class Snapshot(proto.Message):
                 encounters an error. A snapshot may not be
                 restored to a table while it is being created.
         """
+
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
@@ -917,6 +923,7 @@ class Backup(proto.Message):
             READY (2):
                 The backup is complete and ready for use.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -939,6 +946,7 @@ class Backup(proto.Message):
                 a hot backup reaches production performance more
                 quickly than a standard backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         STANDARD = 1
         HOT = 2

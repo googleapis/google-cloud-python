@@ -55,4 +55,5 @@ def sample_copy_backup():
     # Handle the response
     print(response)
 
+
 # [END bigtableadmin_v2_generated_BigtableTableAdmin_CopyBackup_sync]
