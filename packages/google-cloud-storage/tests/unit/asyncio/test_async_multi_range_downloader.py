@@ -324,10 +324,10 @@ class TestAsyncMultiRangeDownloader:
         )
 
     @pytest.mark.asyncio
-    @mock.patch("google.cloud.storage.asyncio.retry.reads_resumption_strategy.google_crc32c.value")
-    async def test_download_ranges_raises_on_checksum_mismatch(
-        self, mock_crc32c_value
-    ):
+    @mock.patch(
+        "google.cloud.storage.asyncio.retry.reads_resumption_strategy.google_crc32c.value"
+    )
+    async def test_download_ranges_raises_on_checksum_mismatch(self, mock_crc32c_value):
         from google.cloud.storage.asyncio._stream_multiplexer import _StreamMultiplexer
         from google.cloud.storage.asyncio.async_multi_range_downloader import (
             AsyncMultiRangeDownloader,
