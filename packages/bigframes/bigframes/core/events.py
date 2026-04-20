@@ -22,16 +22,18 @@ from typing import Any, Callable, Optional, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
+from google.cloud.bigquery.job.query import QueryPlanEntry
 import google.cloud.bigquery.table
 
 import bigframes.session.executor
-
 
 _FALLBACK_TO_GLOBAL = "fallback_to_global"
 
 
 class Subscriber:
-    def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):
+    def __init__(
+        self, callback: Callable[[Event], None], *, publisher: Publisher
+    ):  # noqa: E501
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
@@ -182,7 +184,7 @@ class BigQueryReceivedEvent(ExecutionRunning):
     job_id: Optional[str] = None
     statement_type: Optional[str] = None
     state: Optional[str] = None
-    query_plan: Optional[list[google.cloud.bigquery.job.query.QueryPlanEntry]] = None
+    query_plan: Optional[list[QueryPlanEntry]] = None
     created: Optional[datetime.datetime] = None
     started: Optional[datetime.datetime] = None
     ended: Optional[datetime.datetime] = None
