@@ -15,7 +15,7 @@
 import logging
 from typing import IO, Any, Dict, List
 
-from google_crc32c import Checksum
+import google_crc32c
 
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud.storage.asyncio.retry._helpers import (
@@ -127,7 +127,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
 
             if checksummed_data.HasField("crc32c"):
                 server_checksum = checksummed_data.crc32c
-                client_checksum = int.from_bytes(Checksum(data).digest(), "big")
+                client_checksum = google_crc32c.value(data)
                 if server_checksum != client_checksum:
                     raise DataCorruption(
                         response,

@@ -324,9 +324,9 @@ class TestAsyncMultiRangeDownloader:
         )
 
     @pytest.mark.asyncio
-    @mock.patch("google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum")
+    @mock.patch("google.cloud.storage.asyncio.retry.reads_resumption_strategy.google_crc32c.value")
     async def test_download_ranges_raises_on_checksum_mismatch(
-        self, mock_checksum_class
+        self, mock_crc32c_value
     ):
         from google.cloud.storage.asyncio._stream_multiplexer import _StreamMultiplexer
         from google.cloud.storage.asyncio.async_multi_range_downloader import (
@@ -340,8 +340,7 @@ class TestAsyncMultiRangeDownloader:
 
         test_data = b"some-data"
         server_checksum = 12345
-        mock_checksum_instance = mock_checksum_class.return_value
-        mock_checksum_instance.digest.return_value = (54321).to_bytes(4, "big")
+        mock_crc32c_value.return_value = 54321
 
         mock_response = _storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
@@ -372,7 +371,7 @@ class TestAsyncMultiRangeDownloader:
                 await mrd.download_ranges([(0, len(test_data), BytesIO())])
 
         assert "Checksum mismatch" in str(exc_info.value)
-        mock_checksum_class.assert_called_once_with(test_data)
+        mock_crc32c_value.assert_called_once_with(test_data)
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.open",
@@ -575,18 +574,11 @@ class TestAsyncMultiRangeDownloader:
         # Act
         buffer = BytesIO()
 
-        # Patch Checksum where it is likely used (reads_resumption_strategy or similar),
-        # but actually if we use google_crc32c directly, we should patch that or provide valid CRC.
-        # Since we can't reliably predict where Checksum is imported/used without more digging,
-        # let's provide a valid CRC for b"data".
-        # Checksum(b"data").digest() -> needs to match crc32c=123.
-        # But we can't force b"data" to have crc=123.
-        # So we MUST patch Checksum.
-        # It is used in google.cloud.storage.asyncio.retry.reads_resumption_strategy
+        # Patch google_crc32c.value where it is used in reads_resumption_strategy
         with mock.patch(
-            "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
-        ) as mock_chk:
-            mock_chk.return_value.digest.return_value = (123).to_bytes(4, "big")
+            "google.cloud.storage.asyncio.retry.reads_resumption_strategy.google_crc32c.value"
+        ) as mock_crc_value:
+            mock_crc_value.return_value = 123
             await mock_mrd.download_ranges([(0, 4, buffer)])
 
         # Assert
