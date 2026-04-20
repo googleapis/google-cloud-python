@@ -20,6 +20,7 @@ import pytest
 
 from google.cloud import _storage_v2
 from google.cloud.storage import Blob
+from google.cloud.storage import Bucket
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
@@ -161,9 +162,15 @@ class TestAsyncWriteObjectStream:
         mock_rpc.open = AsyncMock()
         mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
 
+        mock_bucket = mock.Mock(spec=Bucket)
+        mock_bucket.name = BUCKET
+
         mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket = mock_bucket
         mock_blob.content_type = "text/plain"
         mock_blob.metadata = {"test-key": "test-value"}
+        mock_blob.kms_key_name = None
 
         stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
         await stream.open()
