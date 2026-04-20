@@ -18,7 +18,6 @@ import pathlib
 import nox
 
 DEFAULT_PYTHON_VERSION = "3.14"
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 REPO_ROOT = CURRENT_DIRECTORY.parent.parent
 
@@ -32,11 +31,7 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "unit",
-    "mypy",
-    "prerelease_deps",
-    "core_deps_from_source",
     "docfx",
-    "docs",
 ]
 
 # Error if a python version is missing
@@ -48,33 +43,9 @@ def lint_setup_py(session: nox.Session) -> None:
     session.install("setuptools")
     session.run("python", "setup.py", "check", "--strict")
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def unit(session: nox.Session) -> None:
     """Run unit tests."""
-    session.install("pytest", "pytest-cov")
-    session.install("-e", ".")
-    session.run("pytest", "tests")
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session: nox.Session) -> None:
-    """Run mypy."""
-    session.install("mypy", "types-PyYAML")
-    session.install("-e", ".")
-    session.run("mypy", "help", "tests", "noxfile.py", "docfx_helper.py")
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease_deps(session: nox.Session) -> None:
-    """Run unit tests with prerelease dependencies."""
-    # Since we have no dependencies, this is just a normal unit test run
-    # but with --pre enabled for any test tools.
-    session.install("pytest", "pytest-cov")
-    session.install("-e", ".")
-    session.run("pytest", "tests")
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session: nox.Session) -> None:
-    """Run unit tests with core dependencies installed from source."""
-    # We don't depend on core, so we just run unit tests.
     session.install("pytest", "pytest-cov")
     session.install("-e", ".")
     session.run("pytest", "tests")
@@ -85,7 +56,7 @@ def lint(session: nox.Session) -> None:
     session.install("ruff")
     session.run("ruff", "check", ".")
 
-@nox.session(python="3.10")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docfx(session: nox.Session) -> None:
     """Build the docfx yaml files for this library."""
     session.install("PyYAML", "pypandoc")
@@ -99,7 +70,3 @@ def docfx(session: nox.Session) -> None:
     
     session.run("python", "docfx_helper.py", *args)
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def docs(session: nox.Session) -> None:
-    """No-op session for docs."""
-    session.log("This package does not have Sphinx documentation.")
