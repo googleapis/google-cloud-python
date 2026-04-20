@@ -92,7 +92,6 @@ libraries:
       issue_tracker_override: https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open
   - name: gapic-generator
     version: 1.30.14
-    skip_generate: true
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
@@ -1382,7 +1381,6 @@ libraries:
       - tests/system/test_instance_group.py
       - tests/system/test_pagination.py
       - tests/system/test_smoke.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/compute/v1:
@@ -1398,7 +1396,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/compute/v1beta:
@@ -1478,7 +1475,6 @@ libraries:
       - tests/system
       - tests/system/__init__.py
       - tests/system/smoke_test.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/container/v1:
@@ -1677,7 +1673,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       product_documentation_override: https://cloud.google.com/dataplex
       metadata_name_override: dataplex
@@ -1817,7 +1812,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/dialogflow/cx/v3:
@@ -1883,7 +1877,6 @@ libraries:
   - name: google-cloud-dns
     version: 0.36.1
     description_override: provides methods that you can use to manage DNS for your applications.
-    skip_generate: true
     python:
       library_type: REST
       name_pretty_override: Cloud DNS
@@ -2734,7 +2727,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/networkconnectivity/v1:
@@ -3127,7 +3119,6 @@ libraries:
     keep:
       - CHANGELOG.md
       - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/recaptchaenterprise/v1:
