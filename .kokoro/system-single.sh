@@ -17,9 +17,10 @@ for attempt in 1 2 3; do
   echo "Execution attempt $attempt of 3..."
   echo "============================================"
   
-  if uvx --with 'nox[uv]' nox ${NOX_SESSION_ARG} ${NOX_FILE_ARG}; then
-    echo "Tests passed successfully!"
-    exit 0
+  # Use the installed nox directly with the uv backend
+  if nox --backend uv ${NOX_SESSION_ARG} ${NOX_FILE_ARG}; then
+      echo "Tests passed successfully!"
+      exit 0
   fi
   
   if [[ $attempt -lt 3 ]]; then

@@ -13,6 +13,8 @@ git config --global --add safe.directory $(realpath .)
 # HOISTED: Install uv exactly once globally before we fan out
 echo "Installing uv globally..."
 python3 -m pip install uv
+# Pre-install nox and the uv plugin so background jobs don't fight over locks
+python3 -m pip install nox nox-uv
 
 # --- NEW: Set maximum concurrent jobs ---
 MAX_CONCURRENT=4
