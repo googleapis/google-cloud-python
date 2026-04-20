@@ -19,13 +19,13 @@ from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
 from google.cloud.storage import Blob
+from google.cloud.storage import _grpc_conversions
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
-_BLOB_SYNC_ATTRS = ("content_type", "metadata")
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     """Class representing a gRPC bidi-stream for writing data from a GCS
@@ -121,21 +121,15 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         # if `generation_number` == 0 new object will be created only if there
         # isn't any existing object.
         if self.generation_number is None or self.generation_number == 0:
-            resource_params = {
-            "name": self.object_name,
-            "bucket": self._full_bucket_name,
-            }
             if self.blob:
-                resource_params.update({
-                    attr: getattr(self.blob, attr)
-                    for attr in _BLOB_SYNC_ATTRS
-                    if getattr(self.blob, attr, None) is not None
-                })
+                resource = _grpc_conversions.blob_to_proto(self.blob)
+            else:
+                resource = _storage_v2.Object(
+                    name=self.object_name, bucket=self._full_bucket_name
+                )
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
-                    resource=_storage_v2.Object(
-                        **resource_params
-                    ),
+                    resource=resource,
                     appendable=True,
                     if_generation_match=self.generation_number,
                 ),

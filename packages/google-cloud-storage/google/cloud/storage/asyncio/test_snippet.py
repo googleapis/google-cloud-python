@@ -18,6 +18,7 @@ import asyncio
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
+from google.cloud import storage
 from google.cloud.storage import Blob
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
 
@@ -32,7 +33,11 @@ async def storage_create_and_write_appendable_object(
 
     if grpc_client is None:
         grpc_client = AsyncGrpcClient()
-    blob = Blob.from_uri("gs://{}/{}".format(bucket_name, object_name))
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    bucket_location = bucket.location.lower()
+    kms_key_name = f"projects/{storage_client.project}/locations/{bucket_location}/keyRings/gcs-test/cryptoKeys/gcs-test"
+    blob = Blob(bucket=bucket, name=object_name, kms_key_name=kms_key_name)
     blob.content_type = "text/plain"
     blob.metadata = {"environment": "dev"}
     writer = AsyncAppendableObjectWriter.from_blob(
@@ -53,6 +58,8 @@ async def storage_create_and_write_appendable_object(
     print(new_object)
     print(new_object.size)
     print(new_object.content_type)
+    print(new_object.metadata)
+    print(new_object.kms_key)
     print(
         f"Appended object {object_name} created of size {writer.persisted_size} bytes."
     )

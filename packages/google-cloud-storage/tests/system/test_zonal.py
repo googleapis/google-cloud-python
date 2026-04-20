@@ -28,7 +28,7 @@ pytestmark = pytest.mark.skipif(
 
 
 # TODO: replace this with a fixture once zonal bucket creation / deletion
-# is supported in grpc client or json client client.
+# is supported in grpc client or json client.
 _ZONAL_BUCKET = os.getenv("ZONAL_BUCKET")
 _CROSS_REGION_BUCKET = os.getenv("CROSS_REGION_BUCKET")
 _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
@@ -281,6 +281,84 @@ def test_wrd_with_non_default_flush_interval(
         del writer
         del mrd
         gc.collect()
+
+    event_loop.run_until_complete(_run())
+
+
+def test_write_from_blob(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client,
+):
+    object_name = f"test_from_blob-{str(uuid.uuid4())[:4]}"
+    content_type = "text/plain"
+    metadata = {"environment": "system-test"}
+    test_data = b"system-test-data"
+
+    async def _run():
+        # 1. Create a Blob instance
+        blob = storage_client.bucket(_ZONAL_BUCKET).blob(object_name)
+        blob.content_type = content_type
+        blob.metadata = metadata
+
+        # 2. Use from_blob to create the writer
+        writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
+        await writer.open()
+        await writer.append(test_data)
+        await writer.close(finalize_on_close=True)
+
+        # 3. Verify the object metadata
+        obj = await grpc_client.get_object(
+            bucket_name=_ZONAL_BUCKET,
+            object_name=object_name,
+        )
+
+        assert obj.content_type == content_type
+        assert obj.metadata["environment"] == "system-test"
+
+        blobs_to_delete.append(blob)
+
+    event_loop.run_until_complete(_run())
+
+
+def test_write_from_blob_with_kms_key(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client,
+):
+    """Verifies AsyncAppendableObjectWriter.from_blob correctly applies KMS encryption."""
+
+    object_name = f"test_from_blob_kms-{str(uuid.uuid4())[:4]}"
+    test_data = b"kms-protected-data"
+    test_bucket = storage_client.bucket(_ZONAL_BUCKET)
+    bucket_location = test_bucket.location.lower()
+    # TODO: Use a fixture for a zonal kms key once we have fixture for zonal bucket
+    kms_key_name = f"projects/{storage_client.project}/locations/{bucket_location}/keyRings/gcs-test/cryptoKeys/gcs-test"
+
+    async def _run():
+        # Create a local Blob instance with the KMS key
+        blob = test_bucket.blob(object_name, kms_key_name=kms_key_name)
+
+        writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
+
+        await writer.open()
+        await writer.append(test_data)
+
+        await writer.close(finalize_on_close=True)
+
+        # Verify the encryption metadata
+        obj = await grpc_client.get_object(
+            bucket_name=_ZONAL_BUCKET,
+            object_name=object_name,
+        )
+
+        # Assert that the object was encrypted with the correct key
+        # GCS appends a version suffix, so we use startswith()
+        assert obj.kms_key_name.startswith(kms_key_name)
+
+        blobs_to_delete.append(blob)
 
     event_loop.run_until_complete(_run())
 

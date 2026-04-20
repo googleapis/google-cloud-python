@@ -212,6 +212,7 @@ class AsyncAppendableObjectWriter:
         self._routing_token: Optional[str] = None
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
+        self.blob: Optional[Blob] = None
 
     @classmethod
     def from_blob(

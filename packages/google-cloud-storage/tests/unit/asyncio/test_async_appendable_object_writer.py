@@ -19,6 +19,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from google.api_core import exceptions
 from google.rpc import status_pb2
+from google.cloud.storage import Blob
 
 from google.cloud._storage_v2.types import storage as storage_type
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
@@ -166,6 +167,24 @@ class TestAsyncAppendableObjectWriter:
             with pytest.raises(exceptions.FailedPrecondition):
                 self._make_one(mock_appendable_writer["mock_client"])
 
+    def test_from_blob(self, mock_appendable_writer):
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket.name = BUCKET
+
+        writer = AsyncAppendableObjectWriter.from_blob(
+            mock_appendable_writer["mock_client"],
+            mock_blob,
+            generation=GENERATION,
+            writer_options={"FLUSH_INTERVAL_BYTES": EIGHT_MIB},
+        )
+
+        assert writer.bucket_name == BUCKET
+        assert writer.object_name == OBJECT
+        assert writer.generation == GENERATION
+        assert writer.flush_interval == EIGHT_MIB
+        assert writer.blob == mock_blob
+
     # -------------------------------------------------------------------------
     # Stream Lifecycle Tests
     # -------------------------------------------------------------------------
@@ -176,9 +195,9 @@ class TestAsyncAppendableObjectWriter:
         writer._is_stream_open = True
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=100)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=100)
+        )
 
         size = await writer.state_lookup()
 
@@ -389,9 +408,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.bytes_appended_since_last_flush = 100
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=200)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=200)
+        )
 
         await writer.flush()
 
@@ -432,9 +451,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(resource=resource)
+        )
 
         res = await writer.finalize()
 
