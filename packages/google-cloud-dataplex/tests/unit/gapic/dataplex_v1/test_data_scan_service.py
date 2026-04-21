@@ -7499,6 +7499,21 @@ def test_create_data_scan_rest_call_success(request_type):
             },
         },
         "data_documentation_result": {
+            "dataset_result": {
+                "overview": "overview_value",
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [4],
+                        "type_": 1,
+                    }
+                ],
+                "queries": [{"sql": "sql_value", "description": "description_value"}],
+            },
             "table_result": {
                 "name": "name_value",
                 "overview": "overview_value",
@@ -7511,8 +7526,8 @@ def test_create_data_scan_rest_call_success(request_type):
                         }
                     ]
                 },
-                "queries": [{"sql": "sql_value", "description": "description_value"}],
-            }
+                "queries": {},
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7955,6 +7970,21 @@ def test_update_data_scan_rest_call_success(request_type):
             },
         },
         "data_documentation_result": {
+            "dataset_result": {
+                "overview": "overview_value",
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [4],
+                        "type_": 1,
+                    }
+                ],
+                "queries": [{"sql": "sql_value", "description": "description_value"}],
+            },
             "table_result": {
                 "name": "name_value",
                 "overview": "overview_value",
@@ -7967,8 +7997,8 @@ def test_update_data_scan_rest_call_success(request_type):
                         }
                     ]
                 },
-                "queries": [{"sql": "sql_value", "description": "description_value"}],
-            }
+                "queries": {},
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

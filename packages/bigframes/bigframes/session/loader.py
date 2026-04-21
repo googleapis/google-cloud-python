@@ -52,6 +52,8 @@ import google.cloud.bigquery.table
 import pandas
 import pyarrow as pa
 from google.cloud import bigquery_storage_v1
+from google.cloud.bigquery.job.load import LoadJob
+from google.cloud.bigquery.job.query import QueryJob
 from google.cloud.bigquery_storage_v1 import (
     types as bq_storage_types,
 )
@@ -622,6 +624,9 @@ class GbqDataLoader:
             )  # Wait for the job to complete
         else:
             job.result()
+
+        if self._metrics is not None and isinstance(job, (QueryJob, LoadJob)):
+            self._metrics.count_job_stats(query_job=job)
 
     @overload
     def read_gbq_table(  # type: ignore[overload-overlap]

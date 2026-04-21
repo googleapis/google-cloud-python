@@ -231,6 +231,7 @@ __protobuf__ = proto.module(
         "ListSubpropertySyncConfigsResponse",
         "UpdateSubpropertySyncConfigRequest",
         "GetReportingIdentitySettingsRequest",
+        "GetUserProvidedDataSettingsRequest",
     },
 )
 
@@ -483,18 +484,18 @@ class ListAccountsRequest(proto.Message):
 
     Attributes:
         page_size (int):
-            The maximum number of resources to return.
-            The service may return fewer than this value,
-            even if there are additional pages. If
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
             unspecified, at most 50 resources will be
             returned. The maximum value is 200; (higher
             values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous ``ListAccounts``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``ListAccounts`` must match the call that provided the page
-            token.
+            Optional. A page token, received from a previous
+            ``ListAccounts`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListAccounts`` must match the call that
+            provided the page token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
             "trashed") Accounts in the results. Accounts can
@@ -660,18 +661,18 @@ class ListPropertiesRequest(proto.Message):
                | firebase_project:project-id | The firebase project with id: project-id. |
                | firebase_project:123        | The firebase project with number: 123.    |
         page_size (int):
-            The maximum number of resources to return.
-            The service may return fewer than this value,
-            even if there are additional pages. If
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
             unspecified, at most 50 resources will be
             returned. The maximum value is 200; (higher
             values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous ``ListProperties``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``ListProperties`` must match the call that provided the
-            page token.
+            Optional. A page token, received from a previous
+            ``ListProperties`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListProperties`` must match the call that
+            provided the page token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
             "trashed") Properties in the results. Properties
@@ -832,18 +833,18 @@ class ListFirebaseLinksRequest(proto.Message):
 
             Example: ``properties/1234``
         page_size (int):
-            The maximum number of resources to return.
-            The service may return fewer than this value,
-            even if there are additional pages. If
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
             unspecified, at most 50 resources will be
             returned. The maximum value is 200; (higher
             values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous ``ListFirebaseLinks``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``ListFirebaseLinks`` must match the call that provided the
-            page token.
+            Optional. A page token, received from a previous
+            ``ListFirebaseLinks`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListFirebaseLinks`` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -975,12 +976,12 @@ class ListGoogleAdsLinksRequest(proto.Message):
         parent (str):
             Required. Example format: properties/1234
         page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200 (higher
-            values will be coerced to the maximum).
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200
+            (higher values will be coerced to the maximum).
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListGoogleAdsLinks`` call. Provide this to retrieve the
             subsequent page.
 
@@ -1052,15 +1053,15 @@ class ListAccountSummariesRequest(proto.Message):
 
     Attributes:
         page_size (int):
-            The maximum number of AccountSummary
-            resources to return. The service may return
-            fewer than this value, even if there are
-            additional pages. If unspecified, at most 50
+            Optional. The maximum number of
+            AccountSummary resources to return. The service
+            may return fewer than this value, even if there
+            are additional pages. If unspecified, at most 50
             resources will be returned. The maximum value is
             200; (higher values will be coerced to the
             maximum)
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListAccountSummaries`` call. Provide this to retrieve the
             subsequent page. When paginating, all other parameters
             provided to ``ListAccountSummaries`` must match the call
@@ -1357,12 +1358,12 @@ class ListMeasurementProtocolSecretsRequest(proto.Message):
 
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
         page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 10 resources will be
-            returned. The maximum value is 10. Higher values
-            will be coerced to the maximum.
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 10 resources
+            will be returned. The maximum value is 10.
+            Higher values will be coerced to the maximum.
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListMeasurementProtocolSecrets`` call. Provide this to
             retrieve the subsequent page. When paginating, all other
             parameters provided to ``ListMeasurementProtocolSecrets``
@@ -1509,14 +1510,14 @@ class ListSKAdNetworkConversionValueSchemasRequest(proto.Message):
             Format: properties/{property_id}/dataStreams/{dataStream}
             Example: properties/1234/dataStreams/5678
         page_size (int):
-            The maximum number of resources to return.
-            The service may return fewer than this value,
-            even if there are additional pages. If
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
             unspecified, at most 50 resources will be
             returned. The maximum value is 200; (higher
             values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListSKAdNetworkConversionValueSchemas`` call. Provide this
             to retrieve the subsequent page. When paginating, all other
             parameters provided to
@@ -1704,12 +1705,12 @@ class ListConversionEventsRequest(proto.Message):
             Required. The resource name of the parent
             property. Example: 'properties/123'
         page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200; (higher
-            values will be coerced to the maximum)
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200;
+            (higher values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListConversionEvents`` call. Provide this to retrieve the
             subsequent page. When paginating, all other parameters
             provided to ``ListConversionEvents`` must match the call
@@ -1846,16 +1847,16 @@ class ListKeyEventsRequest(proto.Message):
             Required. The resource name of the parent
             property. Example: 'properties/123'
         page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200; (higher
-            values will be coerced to the maximum)
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200;
+            (higher values will be coerced to the maximum)
         page_token (str):
-            A page token, received from a previous ``ListKeyEvents``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``ListKeyEvents`` must match the call that provided the page
-            token.
+            Optional. A page token, received from a previous
+            ``ListKeyEvents`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListKeyEvents`` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -2421,12 +2422,12 @@ class ListCustomDimensionsRequest(proto.Message):
         parent (str):
             Required. Example format: properties/1234
         page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200 (higher
-            values will be coerced to the maximum).
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200
+            (higher values will be coerced to the maximum).
         page_token (str):
-            A page token, received from a previous
+            Optional. A page token, received from a previous
             ``ListCustomDimensions`` call. Provide this to retrieve the
             subsequent page.
 
@@ -5226,6 +5227,22 @@ class GetReportingIdentitySettingsRequest(proto.Message):
             properties/{property}/reportingIdentitySettings
             Example:
             "properties/1000/reportingIdentitySettings".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetUserProvidedDataSettingsRequest(proto.Message):
+    r"""Request message for GetUserProvidedDataSettings RPC
+
+    Attributes:
+        name (str):
+            Required. The name of the user provided data
+            settings to retrieve. Format:
+            properties/{property}/userProvidedDataSettings
     """
 
     name: str = proto.Field(

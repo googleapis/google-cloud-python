@@ -89,7 +89,7 @@ def arrow_to_pandas(
             # Preserve NA/NaN distinction. Note: This is currently needed, even if we use
             # nullable Float64Dtype in the types_mapper. See:
             # https://github.com/pandas-dev/pandas/issues/55668
-            mask = pyarrow.compute.is_null(column)
+            mask = pyarrow.compute.is_null(column)  # type: ignore[attr-defined]
             nonnull = pyarrow.compute.fill_null(column, float("nan"))
             # Regarding type: ignore, this class has been public at this
             # location since pandas 1.2.0. See:
@@ -106,7 +106,7 @@ def arrow_to_pandas(
         elif dtype == pandas.Int64Dtype():
             # Avoid out-of-bounds errors in Pandas 1.5.x, which incorrectly
             # casts to float64 in an intermediate step.
-            mask = pyarrow.compute.is_null(column)
+            mask = pyarrow.compute.is_null(column)  # type: ignore[attr-defined]
             nonnull = pyarrow.compute.fill_null(column, 0)
             pd_array = pandas.arrays.IntegerArray(
                 nonnull.to_numpy()

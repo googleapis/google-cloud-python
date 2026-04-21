@@ -153,6 +153,7 @@ from .types.analytics_admin import (
     GetSKAdNetworkConversionValueSchemaRequest,
     GetSubpropertyEventFilterRequest,
     GetSubpropertySyncConfigRequest,
+    GetUserProvidedDataSettingsRequest,
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     ListAccountsRequest,
@@ -329,6 +330,7 @@ from .types.resources import (
     ServiceLevel,
     SKAdNetworkConversionValueSchema,
     SubpropertySyncConfig,
+    UserProvidedDataSettings,
 )
 from .types.subproperty_event_filter import (
     SubpropertyEventFilter,
@@ -597,6 +599,7 @@ __all__ = (
     "GetSearchAds360LinkRequest",
     "GetSubpropertyEventFilterRequest",
     "GetSubpropertySyncConfigRequest",
+    "GetUserProvidedDataSettingsRequest",
     "GlobalSiteTag",
     "GoogleAdsLink",
     "GoogleSignalsConsent",
@@ -723,4 +726,5 @@ __all__ = (
     "UpdateSearchAds360LinkRequest",
     "UpdateSubpropertyEventFilterRequest",
     "UpdateSubpropertySyncConfigRequest",
+    "UserProvidedDataSettings",
 )
