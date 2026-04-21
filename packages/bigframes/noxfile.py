@@ -921,13 +921,58 @@ def cleanup(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+    # Install dependencies for the unit test environment
+    # We use install_unittest_dependencies to get standard deps and extras
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, True, "-c", constraints_path)
+
+    # Now override core dependencies with source installs from this repo
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    # Run py.test against the unit tests (mimicking run_unit)
+    scripts_path = "scripts"
+    tests_path = os.path.join("tests", "unit")
+    third_party_tests_path = os.path.join("third_party", "bigframes_vendored")
+    session.run(
+        "py.test",
+        "--quiet",
+        "--timeout=60",
+        "--durations=20",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=bigframes",
+        f"--cov={tests_path}",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=term-missing",
+        "--cov-fail-under=0",
+        tests_path,
+        third_party_tests_path,
+        scripts_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
