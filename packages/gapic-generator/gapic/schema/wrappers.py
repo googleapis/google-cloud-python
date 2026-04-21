@@ -2278,7 +2278,7 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
         request and response fields in the service."""
 
@@ -2317,7 +2317,7 @@ class Service:
         )
 
         sorted_messages = sorted(
-            unique_messages, 
+            unique_messages,
             key=lambda m: m.resource_type_full_path or m.name
         )
 
