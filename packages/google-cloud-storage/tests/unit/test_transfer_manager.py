@@ -563,8 +563,8 @@ def test_download_many_to_path_raises_invalid_path_error():
         and "will **NOT** be downloaded" in str(warning.message)
     ]
 
-    assert len(invalid_path_warnings) == 1, "---".join(
-        [str(warning.message) for warning in w]
+    assert len(invalid_path_warnings) == 1, (
+        f"Expected 1 invalid path warning, found {len(invalid_path_warnings)}. All warnings: {[str(warning.message) for warning in w]}"
     )
 
     assert len(results) == 1
