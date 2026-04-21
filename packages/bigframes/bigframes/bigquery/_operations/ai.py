@@ -706,6 +706,61 @@ def generate_table(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def embed(
+    content: str | series.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    task_type: (
+        Literal[
+            "retrieval_query",
+            "retrieval_document",
+            "semantic_similarity",
+            "classification",
+            "clustering",
+            "question_answering",
+            "fact_verification",
+            "code_retrieval_query",
+        ]
+        | None
+    ) = None,
+    title: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str = None,
+) -> series.Series:
+    """
+    Creates embeddings from text or image data in BigQuery.
+    """
+
+    if model is not None:
+        if any([x is not None for x in [endpoint, title, model_params, connection_id]]):
+            raise ValueError(
+                "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
+            )
+    elif endpoint is None:
+        raise ValueError("You must specify exactly one of 'endpoint' or 'model' argument.")
+
+    if title is not None and task_type != "retrieval_document":
+        raise ValueError("You can only use 'title' parameter if you specify retrieval_document for the task_type value.")
+
+    operator = ai_ops.AIEmbed(
+        endpoint=endpoint,
+        model=model,
+        task_type=task_type,
+        title=title,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id
+    )
+
+    if isinstance(content, str):
+        return series.Series([content])._apply_unary_op(operator)
+    elif isinstance(content, series.Series):
+        return content._apply_unary_op(operator)
+    else:
+        raise ValueError(f"Unsupported 'content' parameter type: {type(content)}")
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def if_(
     prompt: PROMPT_TYPE,
     *,

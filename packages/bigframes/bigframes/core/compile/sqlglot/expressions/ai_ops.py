@@ -23,6 +23,7 @@ from bigframes.core.compile.sqlglot import expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_nary_op = expression_compiler.expression_compiler.register_nary_op
+register_unary_op = expression_compiler.expression_compiler.register_unary_op
 
 
 @register_nary_op(ops.AIGenerate, pass_op=True)
@@ -51,6 +52,12 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
 
     return sge.func("AI.GENERATE_DOUBLE", *args)
+
+@register_unary_op(ops.AIEmbed, pass_op=True)
+def _(expr: TypedExpr, op: ops.AIEmbed) -> sge.Expression:
+    args = [expr.expr] + _construct_named_args(op)
+
+    return sge.func("AI.EMBED", *args)
 
 
 @register_nary_op(ops.AIIf, pass_op=True)
