@@ -119,17 +119,13 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
                     expression=sge.JSON(this=sge.Literal.string(value)),
                 )
             )
-        elif field == 'request_type':
+        elif field == "request_type":
             args.append(
-                sge.Kwarg(
-                    this=field, expression=sge.Literal.string(value.upper())
-                )
+                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
             )
         else:
             args.append(
-                sge.Kwarg(
-                    this=field, expression=sge.Literal.string(str(value))
-                )
+                sge.Kwarg(this=field, expression=sge.Literal.string(str(value)))
             )
 
     return args
