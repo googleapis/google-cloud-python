@@ -32,8 +32,8 @@ from google.cloud.bigtable.data.mutations import (
 )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data.mutations import RowMutationEntry
     from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+    from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.client import (  # type: ignore

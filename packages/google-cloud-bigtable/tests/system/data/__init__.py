@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import pytest
 import os
 import uuid
+
+import pytest
 
 TEST_FAMILY = "test-family"
 TEST_FAMILY_2 = "test-family-2"
@@ -89,9 +90,10 @@ class SystemTestRunner:
         """
         Returns BIGTABLE_TEST_INSTANCE if set, otherwise creates a new temporary instance for the test session
         """
-        from google.cloud.bigtable_admin_v2 import types
         from google.api_core import exceptions
         from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+        from google.cloud.bigtable_admin_v2 import types
 
         # use user-specified instance if available
         user_specified_instance = os.getenv("BIGTABLE_TEST_INSTANCE")
@@ -154,8 +156,7 @@ class SystemTestRunner:
                 Supplied by the init_table_id fixture.
           - column_split_config: A list of row keys to use as initial splits when creating the test table.
         """
-        from google.api_core import exceptions
-        from google.api_core import retry
+        from google.api_core import exceptions, retry
 
         # use user-specified instance if available
         user_specified_table = os.getenv("BIGTABLE_TEST_TABLE")
@@ -207,8 +208,7 @@ class SystemTestRunner:
           - instance_id: The ID of the Bigtable instance to test against. Supplied by the instance_id fixture.
           - table_id: The ID of the table to create the authorized view for. Supplied by the table_id fixture.
         """
-        from google.api_core import exceptions
-        from google.api_core import retry
+        from google.api_core import exceptions, retry
 
         retry = retry.Retry(
             predicate=retry.if_exception_type(exceptions.FailedPrecondition)

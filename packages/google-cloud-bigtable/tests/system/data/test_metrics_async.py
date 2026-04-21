@@ -13,37 +13,38 @@
 # limitations under the License.
 import asyncio
 import os
-import pytest
 import uuid
 
+import pytest
+from google.api_core.exceptions import Aborted, GoogleAPICallError, PermissionDenied
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from grpc import StatusCode
 
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import PermissionDenied
-from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
+from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._metrics.data_model import (
-    CompletedOperationMetric,
     CompletedAttemptMetric,
+    CompletedOperationMetric,
 )
+from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable_v2.types import ResponseParams
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
-
-from google.cloud.bigtable.data._cross_sync import CrossSync
 
 from . import TEST_FAMILY, SystemTestRunner
 
 if CrossSync.is_async:
-    from grpc.aio import UnaryUnaryClientInterceptor
-    from grpc.aio import UnaryStreamClientInterceptor
-    from grpc.aio import AioRpcError
-    from grpc.aio import Metadata
+    from grpc.aio import (
+        AioRpcError,
+        Metadata,
+        UnaryStreamClientInterceptor,
+        UnaryUnaryClientInterceptor,
+    )
 else:
-    from grpc import UnaryUnaryClientInterceptor
-    from grpc import UnaryStreamClientInterceptor
-    from grpc import RpcError
-    from grpc import intercept_channel
+    from grpc import (
+        RpcError,
+        UnaryStreamClientInterceptor,
+        UnaryUnaryClientInterceptor,
+        intercept_channel,
+    )
 
 __CROSS_SYNC_OUTPUT__ = "tests.system.data.test_metrics_autogen"
 
@@ -900,9 +901,10 @@ class TestMetricsAsync(SystemTestRunner):
 
         No grpc headers expected
         """
-        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
         from google.api_core.exceptions import DeadlineExceeded
+
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -939,9 +941,9 @@ class TestMetricsAsync(SystemTestRunner):
         """
         Test failure in backend by accessing an unauthorized family
         """
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
         from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
         from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
-        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
         query1 = ReadRowsQuery(row_filter=FamilyNameRegexFilter("unauthorized"))
         query2 = ReadRowsQuery(row_filter=FamilyNameRegexFilter(TEST_FAMILY))
@@ -996,8 +998,8 @@ class TestMetricsAsync(SystemTestRunner):
         """
         Test failure in grpc stream
         """
-        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
         from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -1092,8 +1094,8 @@ class TestMetricsAsync(SystemTestRunner):
         Test failure in grpc layer by injecting errors into an interceptor
         with retryable errors, then a terminal one
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
@@ -1143,8 +1145,8 @@ class TestMetricsAsync(SystemTestRunner):
 
         No grpc headers expected
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
@@ -1178,8 +1180,8 @@ class TestMetricsAsync(SystemTestRunner):
         """
         Test failure in backend by accessing an unauthorized family
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell("unauthorized", b"q", b"v")
@@ -1221,8 +1223,8 @@ class TestMetricsAsync(SystemTestRunner):
         For this reason, We expect the attempts to be marked as successful, even though
         the underlying mutation is retried
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell("unauthorized", b"q", b"v")
@@ -1314,8 +1316,8 @@ class TestMetricsAsync(SystemTestRunner):
         Test failure in grpc layer by injecting errors into an interceptor
         with retryable errors, then a terminal one
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
@@ -1366,8 +1368,8 @@ class TestMetricsAsync(SystemTestRunner):
 
         No grpc headers expected
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell(TEST_FAMILY, b"q", b"v")
@@ -1401,8 +1403,8 @@ class TestMetricsAsync(SystemTestRunner):
         """
         Test failure in backend by accessing an unauthorized family
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
         from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
         row_key = b"row_key_1"
         mutation = SetCell("unauthorized", b"q", b"v")

@@ -306,6 +306,7 @@ class TestMutationsBatcherAsync:
 
     def _make_one(self, table=None, **kwargs):
         from google.api_core.exceptions import DeadlineExceeded, ServiceUnavailable
+
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
         )

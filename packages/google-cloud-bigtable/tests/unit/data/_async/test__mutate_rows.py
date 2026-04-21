@@ -14,10 +14,10 @@
 
 import pytest
 from google.api_core.exceptions import DeadlineExceeded, Forbidden
-from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 from google.rpc import status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 from google.cloud.bigtable.data.mutations import DeleteAllFromRow, RowMutationEntry
 from google.cloud.bigtable_v2.types import MutateRowsResponse
 

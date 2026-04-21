@@ -21,10 +21,10 @@ import mock
 import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 from google.cloud.bigtable.data.exceptions import InvalidChunk
 from google.cloud.bigtable.data.row import Row
 from google.cloud.bigtable_v2 import ReadRowsResponse
-from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 
 from ...v2_client.test_row_merger import ReadRowsTest, TestFile
 

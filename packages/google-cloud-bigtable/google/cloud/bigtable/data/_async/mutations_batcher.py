@@ -27,20 +27,19 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_timeouts,
 )
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
 from google.cloud.bigtable.data.exceptions import (
     FailedMutationEntryError,
     MutationsExceptionGroup,
 )
-from google.cloud.bigtable.data._metrics import OperationType
-from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     Mutation,
 )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data.mutations import RowMutationEntry
     from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
+    from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.client import (

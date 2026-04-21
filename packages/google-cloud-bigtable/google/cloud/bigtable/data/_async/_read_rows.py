@@ -15,11 +15,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence
 import time
-from grpc import StatusCode
+from typing import TYPE_CHECKING, Sequence
 
 from google.api_core import retry as retries
+from grpc import StatusCode
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
