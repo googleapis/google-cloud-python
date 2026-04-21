@@ -15,6 +15,7 @@
 #
 import os
 import uuid
+import datetime
 
 import pytest
 
@@ -35,9 +36,12 @@ class SystemTestRunner:
     """
 
     @pytest.fixture(scope="session")
-    def init_table_id(self):
+    def init_table_id(self, start_timestamp):
         """
         The table_id to use when creating a new test table
+
+        Args
+            start_timestamp: accessed when building table to ensure timestamp data is loaded before tests are run
         """
         return f"test-table-{uuid.uuid4().hex}"
 
@@ -74,6 +78,13 @@ class SystemTestRunner:
                 value_type=types.Type(aggregate_type=int_aggregate_type)
             ),
         }
+
+    @pytest.fixture(scope="session")
+    def start_timestamp(self):
+        """
+        A timestamp taken before any tests are run. Used to fetch back metrics relevant to the tests
+        """
+        return datetime.datetime.now(datetime.timezone.utc)
 
     @pytest.fixture(scope="session")
     def admin_client(self):

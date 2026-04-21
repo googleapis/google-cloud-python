@@ -68,6 +68,10 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
+from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+    BigtableMetricsExporter,
+    GoogleCloudMetricsHandler
+)
 from google.cloud.bigtable.data.exceptions import (
     FailedQueryShardError,
     ShardedReadRowsExceptionGroup,
@@ -260,6 +264,12 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
+        # create a metrics exporter using the same client configuration
+        self._gcp_metrics_exporter = BigtableMetricsExporter(
+            project_id=self.project,
+            credentials=credentials,
+            client_options=client_options,
+        )
         self.transport = cast(TransportType, self._gapic_client.transport)
         # keep track of active instances to for warmup on channel refresh
         self._active_instances: Set[_WarmedInstanceKey] = set()
@@ -1055,7 +1065,17 @@ class _DataApiTargetAsync(abc.ABC):
             default_retryable_errors or ()
         )
 
-        self._metrics = BigtableClientSideMetricsController()
+        self._metrics = BigtableClientSideMetricsController(
+            handlers=[
+                GoogleCloudMetricsHandler(
+                    exporter=client._gcp_metrics_exporter,
+                    instance_id=instance_id,
+                    table_id=table_id,
+                    app_profile_id=app_profile_id,
+                    client_version=client._client_version(),
+                )
+            ]
+        )
 
         try:
             self._register_instance_future = CrossSync.create_task(

@@ -59,6 +59,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
+    "pytest-order==1.3.0",
     BLACK_VERSION,
     "pyyaml==6.0.2",
 ]
