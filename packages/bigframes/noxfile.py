@@ -945,6 +945,7 @@ def core_deps_from_source(session, protobuf_implementation):
     rather than pulling the dependencies from PyPI.
     """
 
+    # Trigger CI run for core_deps_from_source
     # Install all dependencies
     session.install("-e", ".")
 
