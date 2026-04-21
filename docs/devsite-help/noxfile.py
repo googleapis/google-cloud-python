@@ -24,7 +24,7 @@ REPO_ROOT = CURRENT_DIRECTORY.parent.parent
 # Hardcoded dictionary of documentation files.
 # Format: {"Display Title": "filename.md" or absolute path}
 DOCS_MAP = {
-    "Getting started": str(REPO_ROOT / "README.rst"),
+    "Getting started": str(CURRENT_DIRECTORY / "getting-started.md"),
 }
 
 nox.options.sessions = [
