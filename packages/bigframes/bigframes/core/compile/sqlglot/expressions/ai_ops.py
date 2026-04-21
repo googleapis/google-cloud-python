@@ -104,7 +104,7 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
             continue
 
         if field == "categories":
-            category_literals = [sge.Literal.string(cat) for cat in op.categories]
+            category_literals = [sge.Literal.string(cat) for cat in value]
             categories_arg = sge.Kwarg(
                 this="categories", expression=sge.array(*category_literals)
             )
