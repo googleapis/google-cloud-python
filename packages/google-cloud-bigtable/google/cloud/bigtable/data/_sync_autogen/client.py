@@ -62,6 +62,10 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
+from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+    BigtableMetricsExporter,
+    GoogleCloudMetricsHandler,
+)
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
 )
@@ -191,6 +195,11 @@ class BigtableDataClient(ClientWithProject):
                 f"The configured universe domain ({self.universe_domain}) does not match the universe domain found in the credentials ({self._credentials.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
             )
         self._is_closed = CrossSync._Sync_Impl.Event()
+        self._gcp_metrics_exporter = BigtableMetricsExporter(
+            project_id=self.project,
+            credentials=credentials,
+            client_options=client_options,
+        )
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
@@ -837,7 +846,17 @@ class _DataApiTarget(abc.ABC):
         self.default_retryable_errors: Sequence[type[Exception]] = (
             default_retryable_errors or ()
         )
-        self._metrics = BigtableClientSideMetricsController()
+        self._metrics = BigtableClientSideMetricsController(
+            handlers=[
+                GoogleCloudMetricsHandler(
+                    exporter=client._gcp_metrics_exporter,
+                    instance_id=instance_id,
+                    table_id=table_id,
+                    app_profile_id=app_profile_id,
+                    client_version=client._client_version(),
+                )
+            ]
+        )
         try:
             self._register_instance_future = CrossSync._Sync_Impl.create_task(
                 self.client._register_instance,

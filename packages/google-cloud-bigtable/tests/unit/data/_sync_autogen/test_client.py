@@ -83,6 +83,10 @@ class TestBigtableDataClient:
             return cls._get_target_class()(*args, **kwargs)
 
     def test_ctor(self):
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
+
         expected_project = "project-id"
         expected_credentials = AnonymousCredentials()
         client = self._make_client(
@@ -96,6 +100,8 @@ class TestBigtableDataClient:
         assert isinstance(
             client._metrics_interceptor, CrossSync._Sync_Impl.MetricsInterceptor
         )
+        assert client._gcp_metrics_exporter is not None
+        assert isinstance(client._gcp_metrics_exporter, BigtableMetricsExporter)
         client.close()
 
     def test_ctor_super_inits(self):
@@ -157,6 +163,31 @@ class TestBigtableDataClient:
             )
             start_background_refresh.assert_called_once()
             client.close()
+
+    def test_metrics_exporter_init_shares_arguments(self):
+        expected_credentials = AnonymousCredentials()
+        expected_project = "custom_project"
+        expected_options = client_options.ClientOptions()
+        expected_options.credentials_file = None
+        expected_options.quota_project_id = None
+        with mock.patch(
+            "google.cloud.bigtable.data._metrics.handlers.gcp_exporter.BigtableMetricsExporter.__init__",
+            return_value=None,
+        ) as exporter_mock:
+            with self._make_client(
+                project=expected_project,
+                credentials=expected_credentials,
+                client_options=expected_options,
+            ):
+                exporter_mock.assert_called_once_with(
+                    project_id=expected_project,
+                    credentials=expected_credentials,
+                    client_options=expected_options,
+                )
+
+    def test_metrics_exporter_init_implicit_project(self):
+        with self._make_client() as client:
+            assert client._gcp_metrics_exporter.project_id == client.project
 
     def test_veneer_grpc_headers(self):
         client_component = "data-async" if CrossSync._Sync_Impl.is_async else "data"
@@ -957,6 +988,7 @@ class TestTable:
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
         )
 
         expected_table_id = "table-id"
@@ -999,6 +1031,8 @@ class TestTable:
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
         assert isinstance(table._metrics, BigtableClientSideMetricsController)
+        assert len(table._metrics.handlers) == 1
+        assert isinstance(table._metrics.handlers[0], GoogleCloudMetricsHandler)
         assert table.default_operation_timeout == expected_operation_timeout
         assert table.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1234,6 +1268,7 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
         )
 
         expected_table_id = "table-id"
@@ -1283,6 +1318,8 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
         assert isinstance(view._metrics, BigtableClientSideMetricsController)
+        assert len(view._metrics.handlers) == 1
+        assert isinstance(view._metrics.handlers[0], GoogleCloudMetricsHandler)
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (

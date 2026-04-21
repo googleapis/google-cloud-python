@@ -215,15 +215,12 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
             attempt.duration_ns / NS_TO_MS,
             {"streaming": is_streaming, "status": status, **labels},
         )
-        combined_throttling = attempt.grpc_throttling_time_ns / NS_TO_MS
-        if not op.completed_attempts:
-            # add flow control latency to first attempt's throttling latency
-            combined_throttling += (
-                op.flow_throttling_time_ns / NS_TO_MS
-                if op.flow_throttling_time_ns
-                else 0
-            )
-        self.otel.throttling_latencies.record(combined_throttling, labels)
+        flow_throttling = (
+            op.flow_throttling_time_ns / NS_TO_MS
+            if op.flow_throttling_time_ns
+            else 0
+        )
+        self.otel.throttling_latencies.record(flow_throttling, labels)
         self.otel.application_latencies.record(
             (attempt.application_blocking_time_ns + attempt.backoff_before_attempt_ns)
             / NS_TO_MS,

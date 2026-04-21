@@ -193,7 +193,6 @@ class TestOpentelemetryMetricsHandler:
         )
         op = CompletedOperationMetric(
             op_type=OperationType.READ_ROWS,
-            uuid="test-uuid",
             duration_ns=1234567,
             completed_attempts=[],
             final_status=StatusCode.OK,
@@ -231,7 +230,6 @@ class TestOpentelemetryMetricsHandler:
         )
         op = CompletedOperationMetric(
             op_type=op_type,
-            uuid="test-uuid",
             duration_ns=1234567,
             completed_attempts=[],
             final_status=StatusCode.OK,
@@ -264,7 +262,6 @@ class TestOpentelemetryMetricsHandler:
         attempts = [mock.Mock()] * attempts_count
         op = CompletedOperationMetric(
             op_type=OperationType.READ_ROWS,
-            uuid="test-uuid",
             duration_ns=1234567,
             completed_attempts=attempts,
             final_status=StatusCode.OK,
@@ -337,6 +334,12 @@ class TestOpentelemetryMetricsHandler:
         if not is_first_attempt:
             op.completed_attempts.append(mock.Mock())
         handler.on_attempt_complete(attempt, op)
+        expected_throttling = 0
+        if is_first_attempt:
+            expected_throttling += flow_throttling_ns / 1e6
+        mock_instruments.throttling_latencies.record.assert_called_once_with(
+            pytest.approx(expected_throttling), mock.ANY
+        )
 
     def test_on_attempt_complete_application_latencies(self):
         mock_instruments = mock.Mock(application_latencies=mock.Mock())
