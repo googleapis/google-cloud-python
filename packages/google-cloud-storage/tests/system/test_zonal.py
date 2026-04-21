@@ -17,6 +17,7 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
 )
 
 # current library imports
+from google.cloud import kms
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
@@ -38,6 +39,58 @@ _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 async def create_async_grpc_client(attempt_direct_path=True):
     """Initializes async client and gets the current event loop."""
     return AsyncGrpcClient(attempt_direct_path=attempt_direct_path)
+
+
+@pytest.fixture(scope="session")
+def zonal_kms_key(storage_client, kms_client):
+    """Provisions a KMS key in the same location as of the zonal bucket."""
+    # Get the zonal bucket and extract its location
+    bucket = storage_client.get_bucket(_ZONAL_BUCKET)
+    location = bucket.location.lower()
+
+    project = storage_client.project
+    keyring_name = "gcs-test-zonal-ring"
+    key_name = "gcs-test-zonal-key"
+
+    keyring_path = kms_client.key_ring_path(project, location, keyring_name)
+
+    # Create the KeyRing if it doesn't exist
+    try:
+        kms_client.get_key_ring(name=keyring_path)
+    except NotFound:
+        parent = f"projects/{project}/locations/{location}"
+        kms_client.create_key_ring(
+            request={"parent": parent, "key_ring_id": keyring_name, "key_ring": {}}
+        )
+
+        # Grant GCS service account permissions to use the key
+        service_account_email = storage_client.get_service_account_email()
+        policy = {
+            "bindings": [
+                {
+                    "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+                    "members": [f"serviceAccount:{service_account_email}"],
+                }
+            ]
+        }
+        kms_client.set_iam_policy(request={"resource": keyring_path, "policy": policy})
+
+    # Create the CryptoKey if it doesn't exist
+    key_path = kms_client.crypto_key_path(project, location, keyring_name, key_name)
+    try:
+        kms_client.get_crypto_key(name=key_path)
+    except NotFound:
+        purpose = kms.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
+        key = {"purpose": purpose}
+        kms_client.create_crypto_key(
+            request={
+                "parent": keyring_path,
+                "crypto_key_id": key_name,
+                "crypto_key": key,
+            }
+        )
+
+    return key_path
 
 
 @pytest.fixture(scope="session")
@@ -328,19 +381,18 @@ def test_write_from_blob_with_kms_key(
     blobs_to_delete,
     event_loop,
     grpc_client,
+    zonal_kms_key,
 ):
     """Verifies AsyncAppendableObjectWriter.from_blob correctly applies KMS encryption."""
 
     object_name = f"test_from_blob_kms-{str(uuid.uuid4())[:4]}"
     test_data = b"kms-protected-data"
-    test_bucket = storage_client.get_bucket(_ZONAL_BUCKET)
-    bucket_location = test_bucket.location.lower()
-    # TODO: Use a fixture for a zonal kms key once we have fixture for zonal bucket
-    kms_key_name = f"projects/{storage_client.project}/locations/{bucket_location}/keyRings/gcs-test/cryptoKeys/gcs-test"
 
     async def _run():
         # Create a local Blob instance with the KMS key
-        blob = test_bucket.blob(object_name, kms_key_name=kms_key_name)
+        blob = storage_client.bucket(_ZONAL_BUCKET).blob(
+            object_name, kms_key_name=zonal_kms_key
+        )
 
         writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
 
@@ -357,7 +409,7 @@ def test_write_from_blob_with_kms_key(
 
         # Assert that the object was encrypted with the correct key
         # GCS appends a version suffix, so we use startswith()
-        assert obj.kms_key_name.startswith(kms_key_name)
+        assert obj.kms_key.startswith(zonal_kms_key)
 
         blobs_to_delete.append(blob)
 
