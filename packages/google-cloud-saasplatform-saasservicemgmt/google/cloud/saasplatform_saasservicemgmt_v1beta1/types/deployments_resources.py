@@ -179,15 +179,16 @@ class Tenant(proto.Message):
             representing.
 
             The relationship with a consumer resource can be
-            used by SaaS Runtime for retrieving
+            used by App Lifecycle Manager for retrieving
             consumer-defined settings and policies such as
             maintenance policies (using Unified Maintenance
             Policy API).
         saas (str):
             Required. Immutable. A reference to the Saas
             that defines the product (managed service) that
-            the producer wants to manage with SaaS Runtime.
-            Part of the SaaS Runtime common data model.
+            the producer wants to manage with App Lifecycle
+            Manager. Part of the App Lifecycle Manager
+            common data model.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -307,9 +308,9 @@ class UnitKind(proto.Message):
         saas (str):
             Required. Immutable. A reference to the Saas
             that defines the product (managed service) that
-            the producer wants to manage with SaaS Runtime.
-            Part of the SaaS Runtime common data model.
-            Immutable once set.
+            the producer wants to manage with App Lifecycle
+            Manager. Part of the App Lifecycle Manager
+            common data model. Immutable once set.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -1298,8 +1299,8 @@ class ToMapping(proto.Message):
             Required. Name of the inputVariable on the
             dependency
         ignore_for_lookup (bool):
-            Optional. Tells SaaS Runtime if this mapping
-            should be used during lookup or not
+            Optional. Tells App Lifecycle Manager if this
+            mapping should be used during lookup or not
     """
 
     dependency: str = proto.Field(

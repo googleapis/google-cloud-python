@@ -14,6 +14,7 @@
 
 
 import unittest
+import os
 
 import mock
 
@@ -51,6 +52,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(positional), 1)
         return positional[0]
 
+    @mock.patch.dict(os.environ, clear=True)
     @mock.patch("google.cloud.client._determine_default_project")
     def test_ctor_defaults(self, default_mock):
         from google.api_core.client_info import ClientInfo

@@ -20,12 +20,13 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import common, example, search_suggestions
+from google.cloud.ces_v1beta.types import common, example, mocks, search_suggestions
 
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
         "AudioEncoding",
+        "MockConfig",
         "InputAudioConfig",
         "OutputAudioConfig",
         "SessionConfig",
@@ -67,6 +68,49 @@ class AudioEncoding(proto.Enum):
     LINEAR16 = 1
     MULAW = 2
     ALAW = 3
+
+
+class MockConfig(proto.Message):
+    r"""Mock tool calls configuration for the session.
+
+    Attributes:
+        mocked_tool_calls (MutableSequence[google.cloud.ces_v1beta.types.MockedToolCall]):
+            Optional. All tool calls to mock for the
+            duration of the session.
+        unmatched_tool_call_behavior (google.cloud.ces_v1beta.types.MockConfig.UnmatchedToolCallBehavior):
+            Required. Beavhior for tool calls that don't match any args
+            patterns in mocked_tool_calls.
+    """
+
+    class UnmatchedToolCallBehavior(proto.Enum):
+        r"""What to do when a tool call doesn't match any mocked tool
+        calls.
+
+        Values:
+            UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED (0):
+                Default value. This value is unused.
+            FAIL (1):
+                Throw an error for any tool calls that don't
+                match a mock expected input pattern.
+            PASS_THROUGH (2):
+                For unmatched tool calls, pass the tool call
+                through to real tool.
+        """
+
+        UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED = 0
+        FAIL = 1
+        PASS_THROUGH = 2
+
+    mocked_tool_calls: MutableSequence[mocks.MockedToolCall] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=mocks.MockedToolCall,
+    )
+    unmatched_tool_call_behavior: UnmatchedToolCallBehavior = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=UnmatchedToolCallBehavior,
+    )
 
 
 class InputAudioConfig(proto.Message):
