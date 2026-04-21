@@ -304,6 +304,11 @@ class EvaluationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_evaluations: gapic_v1.method.wrap_method(
+                self.export_evaluations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -668,6 +673,15 @@ class EvaluationServiceTransport(abc.ABC):
             evaluation_service.TestPersonaVoiceResponse,
             Awaitable[evaluation_service.TestPersonaVoiceResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluations(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

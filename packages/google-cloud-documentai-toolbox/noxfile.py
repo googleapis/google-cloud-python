@@ -480,10 +480,21 @@ def prerelease_deps(session, protobuf_implementation):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable mypy once this bug is fixed.
-    session.skip("Temporarily skip mypy. See issue 16014")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+        "pandas-stubs",
+    )
+    session.install("-e", ".")
+    session.run(
+        "mypy",
+        "-p",
+        "google.cloud.documentai_toolbox",
+        "--check-untyped-defs",
+        "--ignore-missing-imports",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
