@@ -1048,16 +1048,18 @@ class TestBigtableDataClientAsync:
         assert client._channel_refresh_task is None
 
     @CrossSync.pytest
-    @pytest.mark.paramtrize(
+    @pytest.mark.parametrize(
         "use_mtls, expected_domain",
-        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")]
+        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")],
     )
     async def test_default_universe_domain(self, use_mtls, expected_domain):
         """
         When not passed, universe_domain should default to googleapis.com
         """
-        async with self._make_client(project="project-id", credentials=None, use_mtls=expected_domain) as client:
-            assert client.universe_domain == expected_domain
+        async with self._make_client(
+            project="project-id", credentials=None, use_mtls=use_mtls
+        ) as client:
+            assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == f"bigtable.{expected_domain}"
 
     @CrossSync.pytest
@@ -1097,7 +1099,9 @@ class TestBigtableDataClientAsync:
     async def test_anomynous_credential_universe_domain(self):
         """Anomynopus credentials should use default universe domain"""
         creds = AnonymousCredentials()
-        async with self._make_client(project="project_id", credentials=creds, use_mtls="never") as client:
+        async with self._make_client(
+            project="project_id", credentials=creds, use_mtls="never"
+        ) as client:
             assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == "bigtable.googleapis.com"
 
@@ -1137,7 +1141,10 @@ class TestBigtableDataClientAsync:
         creds = AnonymousCredentials()
         creds._universe_domain = universe_domain
         async with self._make_client(
-            project="project_id", credentials=creds, client_options=options, use_mtls="never"
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"

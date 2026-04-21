@@ -13,36 +13,37 @@
 # limitations under the License.
 import asyncio
 import os
-import pytest
 import uuid
 
+import pytest
+from google.api_core.exceptions import Aborted, GoogleAPICallError, PermissionDenied
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from grpc import StatusCode
 
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import PermissionDenied
-from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
-from google.cloud.bigtable.data._metrics.data_model import (
-    CompletedOperationMetric,
-    CompletedAttemptMetric,
-)
-from google.cloud.bigtable_v2.types import ResponseParams
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
-
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics.data_model import (
+    CompletedAttemptMetric,
+    CompletedOperationMetric,
+)
+from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
+from google.cloud.bigtable_v2.types import ResponseParams
 
 from . import TEST_FAMILY, SystemTestRunner
 
 if CrossSync.is_async:
-    from grpc.aio import UnaryUnaryClientInterceptor
-    from grpc.aio import UnaryStreamClientInterceptor
-    from grpc.aio import AioRpcError
-    from grpc.aio import Metadata
+    from grpc.aio import (
+        AioRpcError,
+        Metadata,
+        UnaryStreamClientInterceptor,
+        UnaryUnaryClientInterceptor,
+    )
 else:
-    from grpc import UnaryUnaryClientInterceptor
-    from grpc import UnaryStreamClientInterceptor
-    from grpc import RpcError
-    from grpc import intercept_channel
+    from grpc import (
+        RpcError,
+        UnaryStreamClientInterceptor,
+        UnaryUnaryClientInterceptor,
+        intercept_channel,
+    )
 
 __CROSS_SYNC_OUTPUT__ = "tests.system.data.test_metrics_autogen"
 

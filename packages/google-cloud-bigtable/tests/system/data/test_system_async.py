@@ -26,7 +26,7 @@ from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 
-from . import SystemTestRunner, TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2
+from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2, SystemTestRunner
 
 if CrossSync.is_async:
     from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
