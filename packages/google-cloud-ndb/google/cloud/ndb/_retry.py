@@ -33,7 +33,7 @@ def wraps_safely(obj, attr_names=functools.WRAPPER_ASSIGNMENTS):
     are not copied to the wrappers and thus cause attribute errors. This
     wrapper prevents that problem."""
     return functools.wraps(
-        obj, assigned=(name for name in attr_names if hasattr(obj, name))
+        obj, assigned=tuple(name for name in attr_names if hasattr(obj, name))
     )
 
 
@@ -84,7 +84,7 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
                 error = e
             except BaseException as e:
                 # `e` is removed from locals at end of block
-                error = e  # See: https://goo.gl/5J8BMK
+                error = e  # type: ignore[assignment]  # See: https://goo.gl/5J8BMK
 
                 if not is_transient_error(error):
                     # If we are in an inner retry block, use special nested
@@ -107,7 +107,7 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
 
         # Unknown errors really want to show up as None, so manually set the error.
         if isinstance(error, core_exceptions.Unknown):
-            error = "google.api_core.exceptions.Unknown"
+            error = "google.api_core.exceptions.Unknown"  # type: ignore[assignment]
 
         raise core_exceptions.RetryError(
             "Maximum number of {} retries exceeded while calling {}".format(

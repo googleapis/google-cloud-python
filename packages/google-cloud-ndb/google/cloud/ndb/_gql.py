@@ -1,6 +1,7 @@
 import datetime
 import re
 import time
+from typing import Any
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
@@ -408,7 +409,8 @@ class GQL(object):
         if identifier.lower() == "ancestor":
             self._has_ancestor = True
             filter_rule = (self._ANCESTOR, "is")
-            assert condition.lower() == "is"
+            if condition.lower() != "is":
+                raise ValueError("condition must be 'is'")
 
         if operator == "list" and condition.lower() not in ["in", "not_in"]:
             self._Error("Only IN can process a list of values, given '%s'" % condition)
@@ -485,7 +487,7 @@ class GQL(object):
                 a string, integer, floating point value, boolean or None).
         """
 
-        literal = None
+        literal: Any = None
 
         if self._next_symbol < len(self._symbols):
             try:
@@ -770,27 +772,38 @@ def _raise_cast_error(message):
 
 
 def _time_function(values):
+    t_tuple: tuple[int, ...]
     if len(values) == 1:
         value = values[0]
         if isinstance(value, str):
             try:
-                time_tuple = time.strptime(value, "%H:%M:%S")
+                parsed_time = time.strptime(value, "%H:%M:%S")
             except ValueError as error:
                 _raise_cast_error(
                     "Error during time conversion, {}, {}".format(error, values)
                 )
-            time_tuple = time_tuple[3:]
-            time_tuple = time_tuple[0:3]
+            t_tuple = (
+                parsed_time.tm_hour,
+                parsed_time.tm_min,
+                parsed_time.tm_sec,
+            )
         elif isinstance(value, int):
-            time_tuple = (value,)
+            t_tuple = (value,)
         else:
             _raise_cast_error("Invalid argument for time(), {}".format(value))
     elif len(values) < 4:
-        time_tuple = tuple(values)
+        t_tuple = tuple(values)
     else:
         _raise_cast_error("Too many arguments for time(), {}".format(values))
     try:
-        return datetime.time(*time_tuple)
+        if len(t_tuple) == 1:
+            return datetime.time(t_tuple[0])
+        elif len(t_tuple) == 2:
+            return datetime.time(t_tuple[0], t_tuple[1])
+        elif len(t_tuple) == 3:
+            return datetime.time(t_tuple[0], t_tuple[1], t_tuple[2])
+        else:
+            _raise_cast_error("Invalid arguments for time()")
     except ValueError as error:
         _raise_cast_error("Error during time conversion, {}, {}".format(error, values))
 
