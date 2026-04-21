@@ -333,7 +333,7 @@ def test_write_from_blob_with_kms_key(
 
     object_name = f"test_from_blob_kms-{str(uuid.uuid4())[:4]}"
     test_data = b"kms-protected-data"
-    test_bucket = storage_client.bucket(_ZONAL_BUCKET)
+    test_bucket = storage_client.get_bucket(_ZONAL_BUCKET)
     bucket_location = test_bucket.location.lower()
     # TODO: Use a fixture for a zonal kms key once we have fixture for zonal bucket
     kms_key_name = f"projects/{storage_client.project}/locations/{bucket_location}/keyRings/gcs-test/cryptoKeys/gcs-test"
