@@ -142,6 +142,7 @@ def _calculate_duration(func):
 
     return wrapper
 
+
 # COMMENT ADDED FOR TESTING PURPOSES ONLY. REMOVE BEFORE MERGE.
 
 
