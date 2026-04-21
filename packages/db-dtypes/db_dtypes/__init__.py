@@ -55,7 +55,8 @@ class TimeDtype(core.BaseDatetimeDtype):
     name = time_dtype_name
     type = datetime.time
 
-    def construct_array_type(self):
+    @classmethod
+    def construct_array_type(cls):
         return TimeArray
 
     @staticmethod
@@ -213,7 +214,8 @@ class DateDtype(core.BaseDatetimeDtype):
     name = date_dtype_name
     type = datetime.date
 
-    def construct_array_type(self):
+    @classmethod
+    def construct_array_type(cls):
         return DateArray
 
     @staticmethod
@@ -322,7 +324,7 @@ class DateArray(core.BaseDatetimeArray):
         if isinstance(other, TimeArray):
             return (other._ndarray - _NPEPOCH) + self._ndarray
 
-        return super().__add__(other)
+        return super().__add__(other)  # type: ignore[misc]
 
     def __radd__(self, other):
         return self.__add__(other)
@@ -334,7 +336,7 @@ class DateArray(core.BaseDatetimeArray):
         if isinstance(other, self.__class__):
             return self._ndarray - other._ndarray
 
-        return super().__sub__(other)
+        return super().__sub__(other)  # type: ignore[misc]
 
 
 def _check_python_version():

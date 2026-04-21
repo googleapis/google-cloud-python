@@ -1,14 +1,12 @@
 {
-    "name": "documentai-toolbox",
-    "name_pretty": "Document AI Toolbox",
-    "issue_tracker": "https://github.com/googleapis/python-documentai-toolbox/issues",
     "client_documentation": "https://cloud.google.com/python/docs/reference/documentai-toolbox/latest",
-    "release_level": "preview",
+    "default_version": "v1",
+    "distribution_name": "google-cloud-documentai-toolbox",
+    "issue_tracker": "https://github.com/googleapis/python-documentai-toolbox/issues",
     "language": "python",
     "library_type": "OTHER",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-documentai-toolbox",
-    "requires_billing": true,
-    "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "name": "documentai-toolbox",
+    "name_pretty": "Document AI Toolbox",
+    "release_level": "preview",
+    "repo": "googleapis/google-cloud-python"
 }

@@ -13,14 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .affiliation import (
+    Affiliation,
+)
 from .machine_config import (
     MachineConfig,
 )
 from .maintenance import (
     MaintenanceInfo,
+    MaintenanceState,
     Phase,
+    PossibleFailureReason,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
+    UpcomingMaintenance,
 )
 from .metric_data import (
     MetricData,
@@ -93,11 +99,15 @@ from .suspension_reason import (
 )
 
 __all__ = (
+    "Affiliation",
     "MachineConfig",
     "MaintenanceInfo",
     "ResourceMaintenanceDenySchedule",
     "ResourceMaintenanceSchedule",
+    "UpcomingMaintenance",
+    "MaintenanceState",
     "Phase",
+    "PossibleFailureReason",
     "MetricData",
     "Metrics",
     "TypedValue",

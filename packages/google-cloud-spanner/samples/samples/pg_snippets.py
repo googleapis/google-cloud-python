@@ -19,6 +19,7 @@ Spanner PostgreSql dialect.
 
 For more information, see the README.rst under /spanner.
 """
+
 import argparse
 import base64
 import datetime
@@ -491,7 +492,7 @@ def read_data_with_storing_index(instance_id, database_id):
         )
 
         for row in results:
-            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(*row))
+            print("AlbumId: {}, AlbumTitle: {}, MarketingBudget: {}".format(*row))
 
 
 # [END spanner_postgresql_read_data_with_storing_index]
@@ -600,7 +601,7 @@ def query_data_with_parameter(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT SingerId, FirstName, LastName FROM Singers " "WHERE LastName = $1",
+            "SELECT SingerId, FirstName, LastName FROM Singers WHERE LastName = $1",
             params={"p1": "Garcia"},
             param_types={"p1": spanner.param_types.STRING},
         )
@@ -624,7 +625,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # Transfer marketing budget from one album to another. Performed in a
         # single transaction to ensure that the transfer is atomic.
         second_album_result = transaction.execute_sql(
-            "SELECT MarketingBudget from Albums " "WHERE SingerId = 2 and AlbumId = 2"
+            "SELECT MarketingBudget from Albums WHERE SingerId = 2 and AlbumId = 2"
         )
         second_album_row = list(second_album_result)[0]
         second_album_budget = second_album_row[0]
@@ -636,8 +637,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # will be rerun by the client library
         if second_album_budget >= transfer_amount:
             first_album_result = transaction.execute_sql(
-                "SELECT MarketingBudget from Albums "
-                "WHERE SingerId = 1 and AlbumId = 1"
+                "SELECT MarketingBudget from Albums WHERE SingerId = 1 and AlbumId = 1"
             )
             first_album_row = list(first_album_result)[0]
             first_album_budget = first_album_row[0]
@@ -969,8 +969,7 @@ def delete_data_with_dml_returning(instance_id, database_id):
     # deleted records by using 'RETURNING *'.
     def delete_singers(transaction):
         results = transaction.execute_sql(
-            "DELETE FROM Singers WHERE FirstName = 'David' "
-            "RETURNING SingerId, FullName"
+            "DELETE FROM Singers WHERE FirstName = 'David' RETURNING SingerId, FullName"
         )
         for result in results:
             print("SingerId: {}, FullName: {}".format(*result))
@@ -1226,7 +1225,7 @@ def query_data_with_bytes(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueInfo = $1",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueInfo = $1",
             params=param,
             param_types=param_type,
         )
@@ -1277,7 +1276,7 @@ def query_data_with_int(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName, Capacity FROM Venues " "WHERE Capacity >= $1",
+            "SELECT VenueId, VenueName, Capacity FROM Venues WHERE Capacity >= $1",
             params=param,
             param_types=param_type,
         )
@@ -1302,7 +1301,7 @@ def query_data_with_string(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueName = $1",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueName = $1",
             params=param,
             param_types=param_type,
         )

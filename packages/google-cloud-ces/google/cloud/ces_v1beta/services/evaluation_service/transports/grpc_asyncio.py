@@ -1277,6 +1277,35 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             )
         return self._stubs["test_persona_voice"]
 
+    @property
+    def export_evaluations(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluations method over gRPC.
+
+        Exports evaluations.
+
+        Returns:
+            Callable[[~.ExportEvaluationsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluations" not in self._stubs:
+            self._stubs["export_evaluations"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluations",
+                request_serializer=evaluation_service.ExportEvaluationsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluations"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1432,6 +1461,11 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             ),
             self.test_persona_voice: self._wrap_method(
                 self.test_persona_voice,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluations: self._wrap_method(
+                self.export_evaluations,
                 default_timeout=None,
                 client_info=client_info,
             ),

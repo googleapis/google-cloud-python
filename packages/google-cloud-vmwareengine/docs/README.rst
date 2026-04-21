@@ -3,7 +3,8 @@ Python Client for Google Cloud VMware Engine
 
 |preview| |pypi| |versions|
 
-`Google Cloud VMware Engine`_: 
+`Google Cloud VMware Engine`_: The Google VMware Engine API lets you programmatically manage VMware
+environments.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

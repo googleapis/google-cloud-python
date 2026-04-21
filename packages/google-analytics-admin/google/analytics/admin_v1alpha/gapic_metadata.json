@@ -470,6 +470,11 @@
                 "get_subproperty_sync_config"
               ]
             },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -1245,6 +1250,11 @@
                 "get_subproperty_sync_config"
               ]
             },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -2018,6 +2028,11 @@
             "GetSubpropertySyncConfig": {
               "methods": [
                 "get_subproperty_sync_config"
+              ]
+            },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
               ]
             },
             "ListAccessBindings": {

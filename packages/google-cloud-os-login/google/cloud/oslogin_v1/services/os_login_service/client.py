@@ -62,8 +62,8 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.cloud.oslogin_v1.common.types import common
 
+from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.types import oslogin
 
 from .transports.base import DEFAULT_CLIENT_INFO, OsLoginServiceTransport

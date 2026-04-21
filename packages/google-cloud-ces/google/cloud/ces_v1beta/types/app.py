@@ -719,6 +719,13 @@ class ErrorHandlingSettings(proto.Message):
         error_handling_strategy (google.cloud.ces_v1beta.types.ErrorHandlingSettings.ErrorHandlingStrategy):
             Optional. The strategy to use for error
             handling.
+        fallback_response_config (google.cloud.ces_v1beta.types.ErrorHandlingSettings.FallbackResponseConfig):
+            Optional. Configuration for handling fallback
+            responses.
+        end_session_config (google.cloud.ces_v1beta.types.ErrorHandlingSettings.EndSessionConfig):
+            Optional. Configuration for ending the
+            session in case of system errors (e.g. LLM
+            errors).
     """
 
     class ErrorHandlingStrategy(proto.Enum):
@@ -742,10 +749,70 @@ class ErrorHandlingSettings(proto.Message):
         FALLBACK_RESPONSE = 2
         END_SESSION = 3
 
+    class FallbackResponseConfig(proto.Message):
+        r"""Configuration for handling fallback responses.
+
+        Attributes:
+            custom_fallback_messages (MutableMapping[str, str]):
+                Optional. The fallback messages in case of system errors
+                (e.g. LLM errors), mapped by `supported language
+                code <https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/reference/language>`__.
+            max_fallback_attempts (int):
+                Optional. The maximum number of fallback attempts to make
+                before the agent emitting
+                [EndSession][google.cloud.ces.v1beta.EndSession] Signal.
+        """
+
+        custom_fallback_messages: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=1,
+        )
+        max_fallback_attempts: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    class EndSessionConfig(proto.Message):
+        r"""Configuration for ending the session in case of system errors
+        (e.g. LLM errors).
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            escalate_session (bool):
+                Optional. Whether to escalate the session in
+                [EndSession][google.cloud.ces.v1beta.EndSession]. If session
+                is escalated, [metadata in
+                EndSession][google.cloud.ces.v1beta.EndSession.metadata]
+                will contain ``session_escalated = true``. See
+                https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/deploy/google-telephony-platform#transfer_a_call_to_a_human_agent
+                for details.
+
+                This field is a member of `oneof`_ ``_escalate_session``.
+        """
+
+        escalate_session: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+
     error_handling_strategy: ErrorHandlingStrategy = proto.Field(
         proto.ENUM,
         number=1,
         enum=ErrorHandlingStrategy,
+    )
+    fallback_response_config: FallbackResponseConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=FallbackResponseConfig,
+    )
+    end_session_config: EndSessionConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=EndSessionConfig,
     )
 
 
@@ -1062,11 +1129,20 @@ class ConversationLoggingSettings(proto.Message):
         disable_conversation_logging (bool):
             Optional. Whether to disable conversation
             logging for the sessions.
+        retention_window (google.protobuf.duration_pb2.Duration):
+            Optional. Controls the retention window for
+            the conversation. If not set, the conversation
+            will be retained for 365 days.
     """
 
     disable_conversation_logging: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    retention_window: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 

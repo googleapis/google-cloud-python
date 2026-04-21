@@ -1,13 +1,11 @@
 {
-    "name": "google-cloud-core",
-    "name_pretty": "Google API client core library",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-core/latest",
+    "distribution_name": "google-cloud-core",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "stable",
     "language": "python",
     "library_type": "CORE",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-core",
-    "default_version": "",
-    "codeowner_team": ""
+    "name": "google-cloud-core",
+    "name_pretty": "Google API client core library",
+    "release_level": "stable",
+    "repo": "googleapis/google-cloud-python"
 }
