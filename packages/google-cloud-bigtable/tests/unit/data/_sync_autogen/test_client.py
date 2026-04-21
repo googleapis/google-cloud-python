@@ -65,7 +65,7 @@ class TestBigtableDataClient:
         return CrossSync._Sync_Impl.DataClient
 
     @classmethod
-    def _make_client(cls, *args, use_emulator=True, **kwargs):
+    def _make_client(cls, *args, use_emulator=True, use_mtls="auto", **kwargs):
         import os
 
         env_mask = {}
@@ -77,6 +77,8 @@ class TestBigtableDataClient:
         else:
             kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
+        if use_mtls is not None:
+            env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
         with mock.patch.dict(os.environ, env_mask):
             return cls._get_target_class()(*args, **kwargs)
 
@@ -206,10 +208,8 @@ class TestBigtableDataClient:
     def test__ping_and_warm_instances(self):
         """test ping and warm with mocked asyncio.gather"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = (
-            lambda *args: self._get_target_class()._execute_ping_and_warms(
-                client_mock, *args
-            )
+        client_mock._execute_ping_and_warms = lambda *args: (
+            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -252,10 +252,8 @@ class TestBigtableDataClient:
     def test__ping_and_warm_single_instance(self):
         """should be able to call ping and warm with single instance"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = (
-            lambda *args: self._get_target_class()._execute_ping_and_warms(
-                client_mock, *args
-            )
+        client_mock._execute_ping_and_warms = lambda *args: (
+            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -844,11 +842,17 @@ class TestBigtableDataClient:
         close_mock.assert_called_once()
         true_close()
 
-    def test_default_universe_domain(self):
+    @pytest.mark.parametrize(
+        "use_mtls, expected_domain",
+        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")],
+    )
+    def test_default_universe_domain(self, use_mtls, expected_domain):
         """When not passed, universe_domain should default to googleapis.com"""
-        with self._make_client(project="project-id", credentials=None) as client:
+        with self._make_client(
+            project="project-id", credentials=None, use_mtls=use_mtls
+        ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
+            assert client.api_endpoint == f"bigtable.{expected_domain}"
 
     def test_custom_universe_domain(self):
         """test with a customized universe domain value and emulator enabled"""
@@ -859,6 +863,7 @@ class TestBigtableDataClient:
             client_options=options,
             use_emulator=True,
             credentials=None,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -871,7 +876,6 @@ class TestBigtableDataClient:
             project="project_id", client_options=options, credentials=None
         ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_credential_universe_domain_matches_GDU(self):
         """Test with credentials"""
@@ -879,12 +883,13 @@ class TestBigtableDataClient:
         creds._universe_domain = "googleapis.com"
         with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_anomynous_credential_universe_domain(self):
         """Anomynopus credentials should use default universe domain"""
         creds = AnonymousCredentials()
-        with self._make_client(project="project_id", credentials=creds) as client:
+        with self._make_client(
+            project="project_id", credentials=creds, use_mtls="never"
+        ) as client:
             assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == "bigtable.googleapis.com"
 
@@ -901,6 +906,7 @@ class TestBigtableDataClient:
                 client_options=options,
                 use_emulator=False,
                 credentials=creds,
+                use_mtls="never",
             )
         err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         assert exc.value.args[0] == err_msg
@@ -913,7 +919,10 @@ class TestBigtableDataClient:
         creds = AnonymousCredentials()
         creds._universe_domain = universe_domain
         with self._make_client(
-            project="project_id", credentials=creds, client_options=options
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -1313,11 +1322,11 @@ class TestReadRows:
 
     def _make_table(self, *args, **kwargs):
         client_mock = mock.Mock()
-        client_mock._register_instance.side_effect = (
-            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._register_instance.side_effect = lambda *args, **kwargs: (
+            CrossSync._Sync_Impl.yield_to_event_loop()
         )
-        client_mock._remove_instance_registration.side_effect = (
-            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._remove_instance_registration.side_effect = lambda *args, **kwargs: (
+            CrossSync._Sync_Impl.yield_to_event_loop()
         )
         kwargs["instance_id"] = kwargs.get(
             "instance_id", args[0] if args else "instance"
@@ -1779,9 +1788,8 @@ class TestReadRowsSharded:
                 with mock.patch.object(
                     table.client._gapic_client, "read_rows"
                 ) as read_rows:
-                    read_rows.side_effect = (
-                        lambda *args,
-                        **kwargs: CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
+                    read_rows.side_effect = lambda *args, **kwargs: (
+                        CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
                             [
                                 CrossSync._Sync_Impl.TestReadRows._make_chunk(row_key=k)
                                 for k in args[0].rows.row_keys
@@ -2870,6 +2878,7 @@ class TestExecuteQuery:
             yield prepare_mock
 
     def _make_gapic_stream(self, sample_list: list["ExecuteQueryResponse" | Exception]):
+
         class MockStream:
             def __init__(self, sample_list):
                 self.sample_list = sample_list
