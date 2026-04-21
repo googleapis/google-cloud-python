@@ -19,7 +19,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 from google.api_core import exceptions
-from google_crc32c import Checksum
+import google_crc32c
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream
@@ -106,11 +106,8 @@ class TestAsyncMultiRangeDownloader:
         self, mock_cls_async_read_object_stream, mock_random_int
     ):
         data = b"these_are_18_chars"
-        crc32c = Checksum(data).digest()
-        crc32c_int = int.from_bytes(crc32c, "big")
-        crc32c_checksum_for_data_slice = int.from_bytes(
-            Checksum(data[10:16]).digest(), "big"
-        )
+        crc32c_int = google_crc32c.value(data)
+        crc32c_checksum_for_data_slice = google_crc32c.value(data[10:16])
 
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
         mock_random_int.side_effect = [456, 91011]
@@ -187,8 +184,7 @@ class TestAsyncMultiRangeDownloader:
     ):
         # Arrange
         data = b"these_are_18_chars"
-        crc32c = Checksum(data).digest()
-        crc32c_int = int.from_bytes(crc32c, "big")
+        crc32c_int = google_crc32c.value(data)
 
         mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
         mock_random_int.side_effect = [456]
