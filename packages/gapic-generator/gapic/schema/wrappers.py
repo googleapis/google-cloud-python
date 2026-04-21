@@ -2301,7 +2301,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2315,6 +2315,13 @@ class Service:
                 ),
             )
         )
+
+        sorted_messages = sorted(
+            unique_messages, 
+            key=lambda m: m.resource_type_full_path or m.name
+        )
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:
