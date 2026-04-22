@@ -75,7 +75,7 @@ steps:
       - "--image-family=debian-13"
       - "--image-project=debian-cloud"
       - "--service-account=${_ZONAL_VM_SERVICE_ACCOUNT}"
-      - "--scopes=https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/devstorage.read_write"
+      - "--scopes=https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/devstorage.read_write,https://www.googleapis.com/auth/cloudkms"
       - "--metadata=enable-oslogin=TRUE"
     waitFor: ["-"]
 

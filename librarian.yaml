@@ -16,8 +16,8 @@ version: v0.10.1
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 2233f63baf69c2a481f30180045fcf036242781d
-    sha256: fe0d4bb6d640fa6e0b48aa828c833c458f6835b6643b664062a288995b244c3c
+    commit: 4ad1b6750926701f94ae8a88525395fd17b42cfe
+    sha256: 4a54e2829977dea29fb0dde856b182a009873c9f1296e4df3ccb35c62511137b
 release:
   ignored_changes:
     - .repo-metadata.json
@@ -92,7 +92,6 @@ libraries:
       issue_tracker_override: https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open
   - name: gapic-generator
     version: 1.30.14
-    skip_generate: true
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
@@ -113,9 +112,6 @@ libraries:
     apis:
       - path: google/ads/admanager/v1
     description_override: Manage your Ad Manager inventory, run reports and more.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       default_version: v1
   - name: google-ads-datamanager
@@ -125,9 +121,6 @@ libraries:
     description_override: |-
       A unified ingestion API for data partners, agencies and advertisers to
       connect first-party data across Google advertising products.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Data Manager API
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-ads-datamanager/latest
@@ -137,9 +130,6 @@ libraries:
     apis:
       - path: google/marketingplatform/admin/v1alpha
     description_override: The Google Marketing Platform Admin API allows for programmatic access to the Google Marketing Platform configuration data. You can use the Google Marketing Platform Admin API to manage links between your Google Marketing Platform organization and Google Analytics accounts, and to set the service level of your GA4 properties.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/marketingplatform/admin/v1alpha:
@@ -159,9 +149,6 @@ libraries:
       - path: google/ai/generativelanguage/v1beta
       - path: google/ai/generativelanguage/v1alpha
     description_override: The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Generative Language API
       metadata_name_override: generativelanguage
@@ -172,9 +159,6 @@ libraries:
       - path: google/analytics/admin/v1beta
       - path: google/analytics/admin/v1alpha
     description_override: allows you to manage Google Analytics accounts and properties.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/analytics/admin/v1alpha:
@@ -188,9 +172,6 @@ libraries:
       - path: google/analytics/data/v1beta
       - path: google/analytics/data/v1alpha
     description_override: provides programmatic methods to access report data in Google Analytics App+Web properties.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Analytics Data
       metadata_name_override: analyticsdata
@@ -207,8 +188,6 @@ libraries:
       - path: google/apps/card/v1
     description_override: Google Apps Card Protos
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/card_v1/test_card.py
     python:
       name_pretty_override: Google Apps Card Protos
@@ -220,9 +199,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/chat/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/chat/v1:
@@ -239,9 +215,6 @@ libraries:
       - path: google/apps/events/subscriptions/v1
       - path: google/apps/events/subscriptions/v1beta
     description_override: The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/apps/events/subscriptions/v1:
@@ -261,9 +234,6 @@ libraries:
       - path: google/apps/meet/v2
       - path: google/apps/meet/v2beta
     description_override: Create and manage meetings in Google Meet.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Meet API
       default_version: v2
@@ -278,8 +248,6 @@ libraries:
       - path: google/apps/script/type/calendar
       - path: google/apps/script/type/slides
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/calendar/test_calendar.py
       - tests/unit/gapic/docs/test_docs.py
       - tests/unit/gapic/drive/test_drive.py
@@ -312,9 +280,6 @@ libraries:
     apis:
       - path: google/area120/tables/v1alpha1
     description_override: provides programmatic methods to the Area 120 Tables API.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Area 120 Tables
       metadata_name_override: area120tables
@@ -344,12 +309,6 @@ libraries:
     apis:
       - path: google/cloud/accessapproval/v1
     description_override: enables controlling access to your organization's data by Google personnel.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/accessapproval/v1:
@@ -376,9 +335,6 @@ libraries:
     apis:
       - path: google/cloud/advisorynotifications/v1
     description_override: Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       metadata_name_override: advisorynotifications
@@ -389,9 +345,6 @@ libraries:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
       - path: google/cloud/alloydb/v1alpha
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/alloydb/
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -405,8 +358,6 @@ libraries:
       - path: google/cloud/alloydb/connectors/v1alpha
     description_override: provides enterprise-grade performance and availability while maintaining 100% compatibility with open-source PostgreSQL.
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/connectors_v1/test_connectors.py
     python:
       api_shortname_override: connectors
@@ -417,9 +368,6 @@ libraries:
     apis:
       - path: google/cloud/apigateway/v1
     description_override: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/apigateway/v1:
@@ -430,9 +378,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/api/apikeys/v2
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/api/apikeys/v2:
@@ -446,9 +391,6 @@ libraries:
     apis:
       - path: google/cloud/apigeeconnect/v1
     description_override: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/apigeeconnect/v1:
@@ -461,9 +403,6 @@ libraries:
     apis:
       - path: google/cloud/apigeeregistry/v1
     description_override: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/apigeeregistry/v1:
@@ -479,9 +418,6 @@ libraries:
     apis:
       - path: google/cloud/apihub/v1
     description_override: API hub lets you consolidate and organize information about all of the APIs of interest to your organization. API hub lets you capture critical information about APIs that allows developers to discover and evaluate them easily and leverage the work of other teams wherever possible. API platform teams can use API hub to have visibility into and manage their portfolio of APIs.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: API Hub API
       product_documentation_override: https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
@@ -490,9 +426,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/cloud/apiregistry/v1beta
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud API Registry API
       product_documentation_override: https://docs.cloud.google.com/api-registry/docs/overview
@@ -502,9 +435,6 @@ libraries:
     apis:
       - path: google/appengine/v1
     description_override: allows you to manage your App Engine applications.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/appengine/v1:
@@ -519,8 +449,6 @@ libraries:
     apis:
       - path: google/appengine/logging/v1
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/appengine_logging_v1/test_appengine_logging_v1.py
     python:
       library_type: OTHER
@@ -539,9 +467,6 @@ libraries:
     apis:
       - path: google/cloud/apphub/v1
     description_override: 'null '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: App Hub API
       product_documentation_override: https://cloud.google.com/app-hub/docs/overview
@@ -554,9 +479,6 @@ libraries:
       The App Optimize API provides developers and platform teams with tools to
       monitor, analyze, and improve the performance and cost-efficiency of their
       cloud applications.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: App Optimize API
       default_version: v1beta
@@ -566,9 +488,6 @@ libraries:
       - path: google/devtools/artifactregistry/v1
       - path: google/devtools/artifactregistry/v1beta2
     description_override: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/devtools/artifactregistry/v1:
@@ -589,9 +508,6 @@ libraries:
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
     description_override: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -606,9 +522,6 @@ libraries:
       - path: google/cloud/assuredworkloads/v1
       - path: google/cloud/assuredworkloads/v1beta1
     description_override: allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/assuredworkloads/v1:
@@ -636,9 +549,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/cloud/auditmanager/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Audit Manager API
       default_version: v1
@@ -649,19 +559,10 @@ libraries:
       - path: google/cloud/automl/v1beta1
     description_override: '**AutoML API Python Client is now available in Vertex AI. Please visit** `Vertex SDK for Python <https://github.com/googleapis/python-aiplatform>`_ **for the new Python Vertex AI client.** Vertex AI is our next generation AI Platform, with many new features that are unavailable in the current platform. `Migrate your resources to Vertex AI <https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai>`_ to get the latest machine learning features, simplify end-to-end journeys, and productionize models with MLOps. The `Cloud AutoML API <https://cloud.google.com/automl>`_ is a suite of machine learning products that enables developers with limited machine learning expertise to train high-quality models specific to their business needs, by leveraging Google''s state-of-the-art transfer learning, and Neural Architecture Search technology.'
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - docs/automl_v1beta1/tables.rst
-      - google/cloud/automl_v1beta1/services/tables
       - google/cloud/automl_v1beta1/services/tables/__init__.py
       - google/cloud/automl_v1beta1/services/tables/gcs_client.py
       - google/cloud/automl_v1beta1/services/tables/tables_client.py
-      - samples/README
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-      - tests/unit/test_gcs_client_v1beta1.py
-      - tests/unit/test_tables_client_v1beta1.py
     python:
       library_type: GAPIC_COMBO
       product_documentation_override: https://cloud.google.com/automl/docs/
@@ -672,9 +573,6 @@ libraries:
     apis:
       - path: google/cloud/backupdr/v1
     description_override: Backup and DR Service ensures that your data is managed, protected, and accessible using both hybrid and cloud-based backup/recovery appliances that are managed using the Backup and DR management console.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Backup and DR Service API
       product_documentation_override: https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
@@ -685,9 +583,6 @@ libraries:
     apis:
       - path: google/cloud/baremetalsolution/v2
     description_override: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/baremetalsolution/v2:
@@ -701,9 +596,6 @@ libraries:
     apis:
       - path: google/cloud/batch/v1
       - path: google/cloud/batch/v1alpha
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Batch
       metadata_name_override: batch
@@ -713,9 +605,6 @@ libraries:
     apis:
       - path: google/cloud/beyondcorp/appconnections/v1
     description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/beyondcorp/appconnections/v1:
@@ -730,9 +619,6 @@ libraries:
     apis:
       - path: google/cloud/beyondcorp/appconnectors/v1
     description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/beyondcorp/appconnectors/v1:
@@ -747,9 +633,6 @@ libraries:
     apis:
       - path: google/cloud/beyondcorp/appgateways/v1
     description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/beyondcorp/appgateways/v1:
@@ -764,9 +647,6 @@ libraries:
     apis:
       - path: google/cloud/beyondcorp/clientconnectorservices/v1
     description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/beyondcorp/clientconnectorservices/v1:
@@ -781,9 +661,6 @@ libraries:
     apis:
       - path: google/cloud/beyondcorp/clientgateways/v1
     description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/beyondcorp/clientgateways/v1:
@@ -798,9 +675,6 @@ libraries:
     apis:
       - path: google/cloud/biglake/v1
     description_override: The BigLake API provides access to BigLake Metastore, a serverless, fully managed, and highly available metastore for open-source data that can be used for querying Apache Iceberg tables in BigQuery.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: BigLake API
       product_documentation_override: https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
@@ -814,9 +688,6 @@ libraries:
       The BigLake API provides access to BigLake Metastore, a serverless, fully
       managed, and highly available metastore for open-source data that can be
       used for querying Apache Iceberg tables in BigQuery.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/biglake/hive/v1beta:
@@ -846,9 +717,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/analyticshub/v1
     description_override: Analytics Hub is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost. Curate a library of internal and external assets, including unique datasets like Google Trends, backed by the power of BigQuery.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/bigquery/analyticshub/v1:
@@ -863,9 +731,6 @@ libraries:
       - path: google/cloud/bigquery/biglake/v1
       - path: google/cloud/bigquery/biglake/v1alpha1
     description_override: BigLake API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/bigquery/biglake/v1:
@@ -883,12 +748,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/connection/v1
     description_override: Manage BigQuery connections to external data sources.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/bigquery/connection/v1:
@@ -902,9 +761,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/dataexchange/v1beta1
     description_override: is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/bigquery/dataexchange/v1beta1:
@@ -923,9 +779,6 @@ libraries:
       - path: google/cloud/bigquery/datapolicies/v2beta1
       - path: google/cloud/bigquery/datapolicies/v1beta1
     description_override: Allows users to manage BigQuery data policies.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/bigquery/datapolicies/v1:
@@ -952,12 +805,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/datatransfer/v1
     description_override: allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/bigquery/datatransfer/v1:
@@ -970,8 +817,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/logging/v1
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/bigquery_logging_v1/test_bigquery_logging_v1.py
     python:
       library_type: OTHER
@@ -991,9 +836,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/migration/v2
       - path: google/cloud/bigquery/migration/v2alpha
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/bigquery/migration/v2:
@@ -1011,12 +853,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/reservation/v1
     description_override: Modify BigQuery flat-rate reservations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/bigquery/reservation/v1:
@@ -1033,101 +869,8 @@ libraries:
       - path: google/cloud/bigquery/storage/v1beta
       - path: google/cloud/bigquery/storage/v1alpha
     keep:
-      - CHANGELOG.md
-      - CONTRIBUTING.rst
-      - docs/CHANGELOG.md
       - docs/bigquery_storage_v1/library.rst
       - docs/bigquery_storage_v1beta2/library.rst
-      - docs/samples
-      - google/cloud/bigquery_storage_v1/client.py
-      - google/cloud/bigquery_storage_v1/exceptions.py
-      - google/cloud/bigquery_storage_v1/gapic_types.py
-      - google/cloud/bigquery_storage_v1/reader.py
-      - google/cloud/bigquery_storage_v1/writer.py
-      - google/cloud/bigquery_storage_v1beta2/client.py
-      - google/cloud/bigquery_storage_v1beta2/exceptions.py
-      - google/cloud/bigquery_storage_v1beta2/writer.py
-      - samples/__init__.py
-      - samples/conftest.py
-      - samples/pyarrow
-      - samples/pyarrow/__init__.py
-      - samples/pyarrow/__pycache__
-      - samples/pyarrow/__pycache__/noxfile.cpython-311.pyc
-      - samples/pyarrow/__pycache__/noxfile.cpython-314.pyc
-      - samples/pyarrow/append_rows_with_arrow.py
-      - samples/pyarrow/append_rows_with_arrow_test.py
-      - samples/pyarrow/noxfile.py
-      - samples/pyarrow/requirements-test.txt
-      - samples/pyarrow/requirements.txt
-      - samples/pyarrow/test_generate_write_requests.py
-      - samples/quickstart
-      - samples/quickstart/__init__.py
-      - samples/quickstart/__pycache__
-      - samples/quickstart/__pycache__/noxfile.cpython-311.pyc
-      - samples/quickstart/__pycache__/noxfile.cpython-314.pyc
-      - samples/quickstart/noxfile.py
-      - samples/quickstart/quickstart.py
-      - samples/quickstart/quickstart_test.py
-      - samples/quickstart/requirements-test.txt
-      - samples/quickstart/requirements.txt
-      - samples/snippets
-      - samples/snippets/__init__.py
-      - samples/snippets/__pycache__
-      - samples/snippets/__pycache__/noxfile.cpython-311.pyc
-      - samples/snippets/__pycache__/noxfile.cpython-314.pyc
-      - samples/snippets/append_rows_pending.py
-      - samples/snippets/append_rows_pending_test.py
-      - samples/snippets/append_rows_proto2.py
-      - samples/snippets/append_rows_proto2_test.py
-      - samples/snippets/conftest.py
-      - samples/snippets/customer_record.proto
-      - samples/snippets/customer_record_pb2.py
-      - samples/snippets/customer_record_schema.json
-      - samples/snippets/noxfile.py
-      - samples/snippets/requirements-test.txt
-      - samples/snippets/requirements.txt
-      - samples/snippets/sample_data.proto
-      - samples/snippets/sample_data_pb2.py
-      - samples/snippets/sample_data_schema.json
-      - samples/to_dataframe
-      - samples/to_dataframe/__init__.py
-      - samples/to_dataframe/__pycache__
-      - samples/to_dataframe/__pycache__/noxfile.cpython-311.pyc
-      - samples/to_dataframe/__pycache__/noxfile.cpython-314.pyc
-      - samples/to_dataframe/jupyter_test.py
-      - samples/to_dataframe/noxfile.py
-      - samples/to_dataframe/read_query_results.py
-      - samples/to_dataframe/read_query_results_test.py
-      - samples/to_dataframe/read_table_bigquery.py
-      - samples/to_dataframe/read_table_bigquery_test.py
-      - samples/to_dataframe/read_table_bqstorage.py
-      - samples/to_dataframe/read_table_bqstorage_test.py
-      - samples/to_dataframe/requirements-test.txt
-      - samples/to_dataframe/requirements.txt
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/assets
-      - tests/system/assets/people_data.csv
-      - tests/system/assets/public_samples_copy.sql
-      - tests/system/conftest.py
-      - tests/system/helpers.py
-      - tests/system/reader
-      - tests/system/reader/__init__.py
-      - tests/system/reader/conftest.py
-      - tests/system/reader/test_reader.py
-      - tests/system/reader/test_reader_dataframe.py
-      - tests/system/resources
-      - tests/system/resources/README.md
-      - tests/system/resources/person.proto
-      - tests/system/resources/person_pb2.py
-      - tests/system/test_writer.py
-      - tests/unit/helpers.py
-      - tests/unit/test_packaging.py
-      - tests/unit/test_read_client_v1.py
-      - tests/unit/test_reader_v1.py
-      - tests/unit/test_reader_v1_arrow.py
-      - tests/unit/test_writer_v1.py
-      - tests/unit/test_writer_v1beta2.py
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1157,9 +900,6 @@ libraries:
       is Google's NoSQL Big Data database service. It's the
       same database that powers many core Google services, including Search,
       Analytics, Maps, and Gmail.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     skip_generate: true
     python:
       library_type: GAPIC_COMBO
@@ -1180,9 +920,6 @@ libraries:
     apis:
       - path: google/cloud/billing/v1
     description_override: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: cloudbilling
       default_version: v1
@@ -1192,9 +929,6 @@ libraries:
       - path: google/cloud/billing/budgets/v1
       - path: google/cloud/billing/budgets/v1beta1
     description_override: The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/billing/budgets/v1:
@@ -1210,9 +944,6 @@ libraries:
       - path: google/cloud/binaryauthorization/v1
       - path: google/cloud/binaryauthorization/v1beta1
     description_override: ' is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/binaryauthorization/v1:
@@ -1227,9 +958,6 @@ libraries:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
     description_override: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/devtools/cloudbuild/v1:
@@ -1246,9 +974,6 @@ libraries:
     apis:
       - path: google/cloud/capacityplanner/v1beta
     description_override: Provides programmatic access to Capacity Planner features.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Capacity Planner API
       default_version: v1beta
@@ -1257,9 +982,6 @@ libraries:
     apis:
       - path: google/cloud/certificatemanager/v1
     description_override: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/certificatemanager/v1:
@@ -1274,9 +996,6 @@ libraries:
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Gemini Enterprise for Customer Experience API
       default_version: v1
@@ -1285,9 +1004,6 @@ libraries:
     apis:
       - path: google/cloud/channel/v1
     description_override: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Channel Services
       metadata_name_override: cloudchannel
@@ -1297,9 +1013,6 @@ libraries:
     apis:
       - path: google/cloud/chronicle/v1
     description_override: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Chronicle API
       product_documentation_override: https://cloud.google.com/chronicle/docs/secops/secops-overview
@@ -1310,9 +1023,6 @@ libraries:
       - path: google/cloud/cloudcontrolspartner/v1
       - path: google/cloud/cloudcontrolspartner/v1beta
     description_override: Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Controls Partner API
       product_documentation_override: https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest
@@ -1323,9 +1033,6 @@ libraries:
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
     description_override: 'null '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Security Compliance API
       product_documentation_override: https://cloud.google.com/security-command-center/docs/compliance-manager-overview
@@ -1336,9 +1043,6 @@ libraries:
       - path: google/cloud/commerce/consumer/procurement/v1
       - path: google/cloud/commerce/consumer/procurement/v1alpha1
     description_override: Cloud Commerce Consumer Procurement API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/commerce/consumer/procurement/v1:
@@ -1358,8 +1062,6 @@ libraries:
       - path: google/cloud/common
     description_override: This package contains generated Python types for google.cloud.common
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/common/test_common.py
     python:
       library_type: CORE
@@ -1372,17 +1074,6 @@ libraries:
     apis:
       - path: google/cloud/compute/v1
     description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/base.py
-      - tests/system/test_addresses.py
-      - tests/system/test_instance_group.py
-      - tests/system/test_pagination.py
-      - tests/system/test_smoke.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/compute/v1:
@@ -1395,10 +1086,6 @@ libraries:
     apis:
       - path: google/cloud/compute/v1beta
     description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/compute/v1beta:
@@ -1413,9 +1100,6 @@ libraries:
     apis:
       - path: google/cloud/confidentialcomputing/v1
     description_override: Protect data in-use with Confidential VMs, Confidential GKE, Confidential Dataproc, and Confidential Space.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Confidential Computing API
       issue_tracker_override: https://issuetracker.google.com/issues/new?component=1166820
@@ -1426,9 +1110,6 @@ libraries:
     apis:
       - path: google/cloud/config/v1
     description_override: Infrastructure Manager API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Infrastructure Manager API
       product_documentation_override: https://cloud.google.com/infrastructure-manager/docs/overview
@@ -1442,9 +1123,6 @@ libraries:
       - path: google/cloud/configdelivery/v1beta
       - path: google/cloud/configdelivery/v1alpha
     description_override: ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Config Delivery API
       product_documentation_override: https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/reference/rest
@@ -1455,9 +1133,6 @@ libraries:
     apis:
       - path: google/cloud/contactcenterinsights/v1
     description_override: ' helps users detect and visualize patterns in their contact center data.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/contactcenterinsights/v1:
@@ -1472,13 +1147,6 @@ libraries:
       - path: google/container/v1
       - path: google/container/v1beta1
     description_override: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-    skip_generate: true
     python:
       opt_args_by_api:
         google/container/v1:
@@ -1496,10 +1164,6 @@ libraries:
     apis:
       - path: google/devtools/containeranalysis/v1
     description_override: is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/unit/test_get_grafeas_client.py
     python:
       opt_args_by_api:
         google/devtools/containeranalysis/v1:
@@ -1512,9 +1176,6 @@ libraries:
     version: 0.10.0
     apis:
       - path: google/cloud/contentwarehouse/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/contentwarehouse/v1:
@@ -1533,9 +1194,6 @@ libraries:
     apis:
       - path: google/cloud/datafusion/v1
     description_override: is a fully managed, cloud-native, enterprise data integration service for quickly building and managing data pipelines.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/datafusion/v1:
@@ -1549,9 +1207,6 @@ libraries:
     apis:
       - path: google/cloud/dataqna/v1alpha
     description_override: Data QnA is a natural language question and answer service for BigQuery data.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/dataqna/v1alpha:
@@ -1571,9 +1226,6 @@ libraries:
       provides a unified view through its dashboard and API, enabling teams
       focused on reliability, compliance, security, cost, and administration to
       quickly identify and address relevant issues within their database fleets.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Database Center API
       product_documentation_override: https://cloud.google.com/database-center/docs/overview
@@ -1584,9 +1236,6 @@ libraries:
       - path: google/cloud/datacatalog/v1
       - path: google/cloud/datacatalog/v1beta1
     description_override: is a fully managed and highly scalable data discovery and metadata management service.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/data-catalog
       metadata_name_override: datacatalog
@@ -1596,9 +1245,6 @@ libraries:
     apis:
       - path: google/cloud/datacatalog/lineage/v1
     description_override: 'Data lineage is a Dataplex feature that lets you track how data moves through your systems: where it comes from, where it is passed to, and what transformations are applied to it.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/datacatalog/lineage/v1:
@@ -1614,9 +1260,6 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/datacatalog/lineage/configmanagement/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     skip_generate: true
     python:
       opt_args_by_api:
@@ -1632,9 +1275,6 @@ libraries:
     apis:
       - path: google/dataflow/v1beta3
     description_override: Unified stream and batch data processing that's serverless, fast, and cost-effective.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/dataflow/v1beta3:
@@ -1648,9 +1288,6 @@ libraries:
     apis:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Dataform
       product_documentation_override: https://cloud.google.com
@@ -1661,9 +1298,6 @@ libraries:
     apis:
       - path: google/cloud/datalabeling/v1beta1
     description_override: is a service that lets you work with human labelers to generate highly accurate labels for a collection of data that you can use to train your machine learning models.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud Data Labeling
       product_documentation_override: https://cloud.google.com/data-labeling/docs/
@@ -1674,10 +1308,6 @@ libraries:
     apis:
       - path: google/cloud/dataplex/v1
     description_override: provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       product_documentation_override: https://cloud.google.com/dataplex
       metadata_name_override: dataplex
@@ -1687,13 +1317,6 @@ libraries:
     apis:
       - path: google/cloud/dataproc/v1
     description_override: is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-    skip_generate: true
     python:
       name_pretty_override: Google Cloud Dataproc
       metadata_name_override: dataproc
@@ -1705,9 +1328,6 @@ libraries:
       - path: google/cloud/metastore/v1beta
       - path: google/cloud/metastore/v1alpha
     description_override: is a fully managed, highly available, autoscaled, autohealing, OSS-native metastore service that greatly simplifies technical metadata management. Dataproc Metastore service is based on Apache Hive metastore and serves as a critical component towards enterprise data lakes.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/metastore/v1:
@@ -1729,10 +1349,6 @@ libraries:
       your users and supports ACID transactions, high availability of reads and
       writes, strong consistency for reads and ancestor queries, and eventual
       consistency for all other queries.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1753,9 +1369,6 @@ libraries:
       - path: google/cloud/datastream/v1
       - path: google/cloud/datastream/v1alpha1
     description_override: is a serverless and easy-to-use change data capture (CDC) and replication service. It allows you to synchronize data across heterogeneous databases and applications reliably, and with minimal latency and downtime.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: datastream
       default_version: v1
@@ -1764,9 +1377,6 @@ libraries:
     apis:
       - path: google/cloud/deploy/v1
     description_override: is a service that automates delivery of your applications to a series of target environments in a defined sequence
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud Deploy
       metadata_name_override: clouddeploy
@@ -1776,9 +1386,6 @@ libraries:
     apis:
       - path: google/cloud/developerconnect/v1
     description_override: Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Developer Connect API
       product_documentation_override: https://cloud.google.com/developer-connect/docs/overview
@@ -1788,9 +1395,6 @@ libraries:
     apis:
       - path: google/cloud/devicestreaming/v1
     description_override: The Cloud API for device streaming usage.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Device Streaming API
       default_version: v1
@@ -1800,9 +1404,6 @@ libraries:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
     description_override: is an end-to-end, build-once deploy-everywhere development suite for creating conversational interfaces for websites, mobile applications, popular messaging platforms, and IoT devices. You can use it to build interfaces (such as chatbots and conversational IVR) that enable natural and rich interactions between your users and your business. Dialogflow Enterprise Edition users have access to Google Cloud Support and a service level agreement (SLA) for production deployments.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     skip_generate: true
     python:
       product_documentation_override: https://www.dialogflow.com/
@@ -1814,10 +1415,6 @@ libraries:
     apis:
       - path: google/cloud/dialogflow/cx/v3
       - path: google/cloud/dialogflow/cx/v3beta1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/dialogflow/cx/v3:
@@ -1837,9 +1434,6 @@ libraries:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
       - path: google/cloud/discoveryengine/v1alpha
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Discovery Engine API
       product_documentation_override: https://cloud.google.com/discovery-engine/
@@ -1851,12 +1445,6 @@ libraries:
     apis:
       - path: google/privacy/dlp/v2
     description_override: provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/privacy/dlp/v2:
@@ -1870,9 +1458,6 @@ libraries:
     apis:
       - path: google/cloud/clouddms/v1
     description_override: makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/clouddms/v1:
@@ -1883,7 +1468,6 @@ libraries:
   - name: google-cloud-dns
     version: 0.36.1
     description_override: provides methods that you can use to manage DNS for your applications.
-    skip_generate: true
     python:
       library_type: REST
       name_pretty_override: Cloud DNS
@@ -1897,9 +1481,6 @@ libraries:
       - path: google/cloud/documentai/v1
       - path: google/cloud/documentai/v1beta3
     description_override: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/documentai/v1:
@@ -1923,9 +1504,6 @@ libraries:
       - path: google/cloud/domains/v1
       - path: google/cloud/domains/v1beta1
     description_override: allows you to register and manage domains by using Cloud Domains.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: domains
       default_version: v1
@@ -1934,9 +1512,6 @@ libraries:
     apis:
       - path: google/cloud/edgecontainer/v1
     description_override: Google Distributed Cloud Edge allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: edgecontainer
       default_version: v1
@@ -1945,9 +1520,6 @@ libraries:
     apis:
       - path: google/cloud/edgenetwork/v1
     description_override: Network management API for Distributed Cloud Edge
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Distributed Cloud Edge Network API
       product_documentation_override: https://cloud.google.com/distributed-cloud/edge/latest/docs/overview
@@ -1956,9 +1528,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/enterpriseknowledgegraph/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       metadata_name_override: enterpriseknowledgegraph
@@ -1968,10 +1537,6 @@ libraries:
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
     description_override: 'counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1987,9 +1552,6 @@ libraries:
     apis:
       - path: google/cloud/essentialcontacts/v1
     description_override: helps you customize who receives notifications by providing your own list of contacts in many Google Cloud services.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/essentialcontacts/v1:
@@ -2004,9 +1566,6 @@ libraries:
     apis:
       - path: google/cloud/eventarc/v1
     description_override: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: eventarc
       default_version: v1
@@ -2015,9 +1574,6 @@ libraries:
     apis:
       - path: google/cloud/eventarc/publishing/v1
     description_override: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/eventarc/publishing/v1:
@@ -2031,9 +1587,6 @@ libraries:
     apis:
       - path: google/cloud/filestore/v1
     description_override: Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/filestore/v1:
@@ -2046,9 +1599,6 @@ libraries:
     apis:
       - path: google/cloud/financialservices/v1
     description_override: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Anti Money Laundering AI API
       product_documentation_override: https://cloud.google.com/financial-services/anti-money-laundering/docs/concepts/overview
@@ -2062,8 +1612,6 @@ libraries:
       - path: google/firestore/bundle
     description_override: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - docs/firestore_admin_v1/admin_client.rst
       - docs/firestore_v1/aggregation.rst
       - docs/firestore_v1/batch.rst
@@ -2076,7 +1624,6 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2102,9 +1649,6 @@ libraries:
       - path: google/cloud/functions/v2
       - path: google/cloud/functions/v1
     description_override: is a scalable pay as you go Functions-as-a-Service (FaaS) to run your code with zero server management.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: cloudfunctions
       default_version: v1
@@ -2113,9 +1657,6 @@ libraries:
     apis:
       - path: google/cloud/gdchardwaremanagement/v1alpha
     description_override: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: GDC Hardware Management API
       default_version: v1alpha
@@ -2125,9 +1666,6 @@ libraries:
       - path: google/cloud/geminidataanalytics/v1beta
       - path: google/cloud/geminidataanalytics/v1alpha
     description_override: Developers can use the Conversational Analytics API, accessed through geminidataanalytics.googleapis.com, to build an artificial intelligence (AI)-powered chat interface, or data agent, that answers questions about structured data in BigQuery, Looker, and Looker Studio using natural language.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/gemini/docs/conversational-analytics-api/overview
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -2137,9 +1675,6 @@ libraries:
     apis:
       - path: google/cloud/gkebackup/v1
     description_override: An API for backing up and restoring workloads in GKE.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/gkebackup/v1:
@@ -2155,9 +1690,6 @@ libraries:
       - path: google/cloud/gkeconnect/gateway/v1
       - path: google/cloud/gkeconnect/gateway/v1beta1
     description_override: builds on the power of fleets to let Anthos users connect to and run commands against registered Anthos clusters in a simple, consistent, and secured way, whether the clusters are on Google Cloud, other public clouds, or on premises, and makes it easier to automate DevOps processes across all your clusters.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/gkeconnect/gateway/v1:
@@ -2175,47 +1707,13 @@ libraries:
       - path: google/cloud/gkehub/v1beta1
     description_override: provides a unified way to work with Kubernetes clusters as part of Anthos, extending GKE to work in multiple environments. You have consistent, unified, and secure infrastructure, cluster, and container management, whether you're using Anthos on Google Cloud (with traditional GKE), hybrid cloud, or multiple public clouds.
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/gkehub_v1/configmanagement_v1
       - docs/gkehub_v1/configmanagement_v1/services_.rst
       - docs/gkehub_v1/configmanagement_v1/types_.rst
-      - docs/gkehub_v1/multiclusteringress_v1
       - docs/gkehub_v1/multiclusteringress_v1/services_.rst
       - docs/gkehub_v1/multiclusteringress_v1/types_.rst
       - docs/gkehub_v1/rbacrolebindingactuation_v1
       - docs/gkehub_v1/rbacrolebindingactuation_v1/services_.rst
       - docs/gkehub_v1/rbacrolebindingactuation_v1/types_.rst
-      - google/cloud/gkehub_v1/configmanagement_v1
-      - google/cloud/gkehub_v1/configmanagement_v1/__init__.py
-      - google/cloud/gkehub_v1/configmanagement_v1/gapic_metadata.json
-      - google/cloud/gkehub_v1/configmanagement_v1/gapic_version.py
-      - google/cloud/gkehub_v1/configmanagement_v1/py.typed
-      - google/cloud/gkehub_v1/configmanagement_v1/services
-      - google/cloud/gkehub_v1/configmanagement_v1/services/__init__.py
-      - google/cloud/gkehub_v1/configmanagement_v1/types
-      - google/cloud/gkehub_v1/configmanagement_v1/types/__init__.py
-      - google/cloud/gkehub_v1/configmanagement_v1/types/configmanagement.py
-      - google/cloud/gkehub_v1/multiclusteringress_v1
-      - google/cloud/gkehub_v1/multiclusteringress_v1/__init__.py
-      - google/cloud/gkehub_v1/multiclusteringress_v1/gapic_metadata.json
-      - google/cloud/gkehub_v1/multiclusteringress_v1/gapic_version.py
-      - google/cloud/gkehub_v1/multiclusteringress_v1/py.typed
-      - google/cloud/gkehub_v1/multiclusteringress_v1/services
-      - google/cloud/gkehub_v1/multiclusteringress_v1/services/__init__.py
-      - google/cloud/gkehub_v1/multiclusteringress_v1/types
-      - google/cloud/gkehub_v1/multiclusteringress_v1/types/__init__.py
-      - google/cloud/gkehub_v1/multiclusteringress_v1/types/multiclusteringress.py
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/__init__.py
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/gapic_metadata.json
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/gapic_version.py
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/py.typed
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/services
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/services/__init__.py
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/__init__.py
-      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1/types/rbacrolebindingactuation.py
     python:
       opt_args_by_api:
         google/cloud/gkehub/v1:
@@ -2230,9 +1728,6 @@ libraries:
     apis:
       - path: google/cloud/gkemulticloud/v1
     description_override: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/gkemulticloud/v1:
@@ -2248,9 +1743,6 @@ libraries:
     apis:
       - path: google/cloud/gkerecommender/v1
     description_override: GKE Recommender API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: GKE Recommender API
       product_documentation_override: https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference-quickstart
@@ -2260,9 +1752,6 @@ libraries:
     apis:
       - path: google/cloud/gsuiteaddons/v1
     description_override: Add-ons are customized applications that integrate with Google Workspace applications.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/gsuiteaddons/v1:
@@ -2276,9 +1765,6 @@ libraries:
       - path: google/cloud/hypercomputecluster/v1
       - path: google/cloud/hypercomputecluster/v1beta
     description_override: The Cluster Director API allows you to deploy, manage, and monitor clusters that run AI, ML, or HPC workloads.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cluster Director API
       product_documentation_override: https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
@@ -2293,9 +1779,6 @@ libraries:
       - path: google/iam/v3beta
       - path: google/iam/v2beta
     description_override: Manages identity and access control for Google Cloud Platform resources, including the creation of service accounts, which you can use to authenticate to Google and make API calls.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/iam/admin/v1:
@@ -2339,8 +1822,6 @@ libraries:
     apis:
       - path: google/iam/v1/logging
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/iam_logging_v1/test_iam_logging.py
     python:
       library_type: OTHER
@@ -2359,9 +1840,6 @@ libraries:
     apis:
       - path: google/cloud/iamconnectorcredentials/v1alpha
     description_override: iamconnectorcredentials.googleapis.com API.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: iamconnectorcredentials.googleapis.com API
       product_documentation_override: https://cloud.google.com/iamconnectorcredentials/docs/overview
@@ -2371,9 +1849,6 @@ libraries:
     apis:
       - path: google/cloud/iap/v1
     description_override: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Identity-Aware Proxy
       metadata_name_override: iap
@@ -2383,9 +1858,6 @@ libraries:
     apis:
       - path: google/cloud/ids/v1
     description_override: Cloud IDS is an intrusion detection service that provides threat detection for intrusions, malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating a Google-managed peered network with mirrored VMs. Traffic in the peered network is mirrored, and then inspected by Palo Alto Networks threat protection technologies to provide advanced threat detection.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: ids
       default_version: v1
@@ -2394,12 +1866,6 @@ libraries:
     apis:
       - path: google/cloud/kms/v1
     description_override: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       name_pretty_override: Google Cloud Key Management Service
       metadata_name_override: cloudkms
@@ -2409,9 +1875,6 @@ libraries:
     apis:
       - path: google/cloud/kms/inventory/v1
     description_override: KMS Inventory API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/kms/inventory/v1:
@@ -2431,10 +1894,6 @@ libraries:
       - path: google/cloud/language/v1
       - path: google/cloud/language/v1beta2
     description_override: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - samples/README.txt
     python:
       name_pretty_override: Natural Language
       product_documentation_override: https://cloud.google.com/natural-language/docs/
@@ -2445,9 +1904,6 @@ libraries:
     apis:
       - path: google/cloud/licensemanager/v1
     description_override: 'License Manager is a tool to manage and track third-party licenses on Google Cloud. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: License Manager API
       product_documentation_override: https://cloud.google.com/compute/docs/instances/windows/ms-licensing
@@ -2457,9 +1913,6 @@ libraries:
     apis:
       - path: google/cloud/lifesciences/v2beta
     description_override: is a suite of services and tools for managing, processing, and transforming life sciences data.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/lifesciences/v2beta:
@@ -2471,9 +1924,6 @@ libraries:
     apis:
       - path: google/cloud/locationfinder/v1
     description_override: Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Location Finder API
       product_documentation_override: https://issuetracker.google.com/issues/new?component=1569265&template=1988535
@@ -2484,9 +1934,6 @@ libraries:
     apis:
       - path: google/logging/v2
     description_override: Writes log entries and manages your Cloud Logging configuration.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2503,9 +1950,6 @@ libraries:
     apis:
       - path: google/cloud/lustre/v1
     description_override: 'null '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud Managed Lustre API
       default_version: v1
@@ -2515,9 +1959,6 @@ libraries:
       - path: google/cloud/maintenance/api/v1
       - path: google/cloud/maintenance/api/v1beta
     description_override: The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/maintenance/api/v1:
@@ -2536,9 +1977,6 @@ libraries:
     apis:
       - path: google/cloud/managedidentities/v1
     description_override: is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/managedidentities/v1:
@@ -2550,9 +1988,6 @@ libraries:
     apis:
       - path: google/cloud/managedkafka/v1
     description_override: Managed Service for Apache Kafka API is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/managed-kafka
       default_version: v1
@@ -2561,9 +1996,6 @@ libraries:
     apis:
       - path: google/cloud/managedkafka/schemaregistry/v1
     description_override: 'Manage Apache Kafka clusters and resources. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/managedkafka/schemaregistry/v1:
@@ -2578,9 +2010,6 @@ libraries:
     apis:
       - path: google/cloud/mediatranslation/v1beta1
     description_override: provides enterprise quality translation from/to various media types.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/mediatranslation/v1beta1:
@@ -2593,9 +2022,6 @@ libraries:
       - path: google/cloud/memcache/v1
       - path: google/cloud/memcache/v1beta2
     description_override: is a fully-managed in-memory data store service for Memcache.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/memorystore/docs/memcached/
       metadata_name_override: memcache
@@ -2606,9 +2032,6 @@ libraries:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
     description_override: Memorystore for Valkey is a fully managed Valkey Cluster service for Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Valkey service without the burden of managing complex Valkey deployments.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/memorystore/docs/valkey
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -2618,9 +2041,6 @@ libraries:
     apis:
       - path: google/cloud/migrationcenter/v1
     description_override: A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Migration Center API
       product_documentation_override: https://cloud.google.com/migration-center/docs/migration-center-overview
@@ -2633,9 +2053,6 @@ libraries:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
     description_override: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Model Armor API
       product_documentation_override: https://cloud.google.com/security-command-center/docs/model-armor-overview
@@ -2647,17 +2064,6 @@ libraries:
     apis:
       - path: google/monitoring/v3
     description_override: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/query.rst
-      - google/cloud/monitoring_v3/_dataframe.py
-      - google/cloud/monitoring_v3/query.py
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-      - tests/unit/test__dataframe.py
-      - tests/unit/test_query.py
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2672,8 +2078,6 @@ libraries:
       - path: google/monitoring/dashboard/v1
     description_override: are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration.
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
     python:
@@ -2690,9 +2094,6 @@ libraries:
     apis:
       - path: google/monitoring/metricsscope/v1
     description_override: Manages your Cloud Monitoring data and configurations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/monitoring/metricsscope/v1:
@@ -2703,7 +2104,6 @@ libraries:
       default_version: v1
   - name: google-cloud-ndb
     version: 2.4.2
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
@@ -2717,9 +2117,6 @@ libraries:
     apis:
       - path: google/cloud/netapp/v1
     description_override: NetApp API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: NetApp API
       product_documentation_override: https://cloud.google.com/netapp/volumes/docs/discover/overview
@@ -2732,10 +2129,6 @@ libraries:
       - path: google/cloud/networkconnectivity/v1beta
       - path: google/cloud/networkconnectivity/v1alpha1
     description_override: The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/networkconnectivity/v1:
@@ -2752,9 +2145,6 @@ libraries:
     apis:
       - path: google/cloud/networkmanagement/v1
     description_override: provides a collection of network performance monitoring and diagnostic capabilities.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/networkmanagement/v1:
@@ -2769,9 +2159,6 @@ libraries:
       - path: google/cloud/networksecurity/v1
       - path: google/cloud/networksecurity/v1beta1
       - path: google/cloud/networksecurity/v1alpha1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/networksecurity/v1:
@@ -2793,9 +2180,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/networkservices/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/networkservices/v1:
@@ -2812,9 +2196,6 @@ libraries:
       - path: google/cloud/notebooks/v1
       - path: google/cloud/notebooks/v1beta1
     description_override: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/notebooks/v1:
@@ -2832,9 +2213,6 @@ libraries:
     apis:
       - path: google/cloud/optimization/v1
     description_override: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: optimization
       default_version: v1
@@ -2843,9 +2221,6 @@ libraries:
     apis:
       - path: google/cloud/oracledatabase/v1
     description_override: The Oracle Database@Google Cloud API provides a set of APIs to manage Oracle database services, such as Exadata and Autonomous Databases.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Oracle Database@Google Cloud API
       default_version: v1
@@ -2855,9 +2230,6 @@ libraries:
       - path: google/cloud/orchestration/airflow/service/v1
       - path: google/cloud/orchestration/airflow/service/v1beta1
     description_override: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/orchestration/airflow/service/v1:
@@ -2870,11 +2242,6 @@ libraries:
       - path: google/cloud/orgpolicy/v2
       - path: google/cloud/orgpolicy/v1
     description_override: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - google/cloud/orgpolicy/v1/__init__.py
-      - tests/unit/test_packaging.py
     python:
       opt_args_by_api:
         google/cloud/orgpolicy/v2:
@@ -2890,12 +2257,6 @@ libraries:
       - path: google/cloud/osconfig/v1
       - path: google/cloud/osconfig/v1alpha
     description_override: provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/osconfig/v1:
@@ -2910,16 +2271,7 @@ libraries:
     apis:
       - path: google/cloud/oslogin/v1
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - docs/oslogin_v1/common/types.rst
-      - google/cloud/oslogin_v1/common
-      - google/cloud/oslogin_v1/common/__init__.py
-      - google/cloud/oslogin_v1/common/gapic_metadata.json
-      - google/cloud/oslogin_v1/common/py.typed
-      - google/cloud/oslogin_v1/common/types
-      - google/cloud/oslogin_v1/common/types/__init__.py
-      - google/cloud/oslogin_v1/common/types/common.py
     python:
       opt_args_by_api:
         google/cloud/oslogin/v1:
@@ -2935,9 +2287,6 @@ libraries:
       - path: google/cloud/parallelstore/v1
       - path: google/cloud/parallelstore/v1beta
     description_override: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Parallelstore API
       product_documentation_override: https://cloud.google.com/parallelstore
@@ -2948,9 +2297,6 @@ libraries:
     apis:
       - path: google/cloud/parametermanager/v1
     description_override: '(Public Preview) Parameter Manager is a single source of truth to store, access and manage the lifecycle of your workload parameters. Parameter Manager aims to make management of sensitive application parameters effortless for customers without diminishing focus on security. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Parameter Manager API
       product_documentation_override: https://cloud.google.com/secret-manager/parameter-manager/docs/overview
@@ -2961,9 +2307,6 @@ libraries:
     apis:
       - path: google/cloud/phishingprotection/v1beta1
     description_override: helps prevent users from accessing phishing sites by identifying various signals associated with malicious content, including the use of your brand assets, classifying malicious content that uses your brand and reporting the unsafe URLs to Google Safe Browsing. Once a site is propagated to Safe Browsing, users will see warnings across more than 4 billion devices.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/phishingprotection/v1beta1:
@@ -2976,9 +2319,6 @@ libraries:
     apis:
       - path: google/cloud/policytroubleshooter/v1
     description_override: makes it easier to understand why a user has access to a resource or doesn't have permission to call an API. Given an email, resource, and permission, Policy Troubleshooter examines all Identity and Access Management (IAM) policies that apply to the resource. It then reveals whether the member's roles include the permission on that resource and, if so, which policies bind the member to those roles.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/policytroubleshooter/v1:
@@ -2992,9 +2332,6 @@ libraries:
     apis:
       - path: google/cloud/policysimulator/v1
     description_override: Policy Simulator is a collection of endpoints for creating, running, and viewing a `Replay`. A `Replay` is a type of simulation that lets you see how your members' access to resources might change if you changed your IAM policy.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/policysimulator/v1:
@@ -3008,9 +2345,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/policytroubleshooter/iam/v3:
@@ -3027,9 +2361,6 @@ libraries:
       - path: google/cloud/security/privateca/v1
       - path: google/cloud/security/privateca/v1beta1
     description_override: simplifies the deployment and management of private CAs without managing infrastructure.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/security/privateca/v1:
@@ -3044,9 +2375,6 @@ libraries:
     apis:
       - path: google/cloud/privatecatalog/v1beta1
     description_override: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/privatecatalog/v1beta1:
@@ -3060,9 +2388,6 @@ libraries:
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
     description_override: Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Privileged Access Manager API
       product_documentation_override: https://cloud.google.com/iam/docs/pam-overview
@@ -3073,9 +2398,6 @@ libraries:
     apis:
       - path: google/pubsub/v1
     description_override: is designed to provide reliable, many-to-many, asynchronous messaging between applications. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3092,9 +2414,6 @@ libraries:
       - path: google/api/cloudquotas/v1
       - path: google/api/cloudquotas/v1beta
     description_override: Cloud Quotas API provides Google Cloud service consumers with management and observability for resource usage, quotas, and restrictions of the services they consume.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/api/cloudquotas/v1:
@@ -3112,9 +2431,6 @@ libraries:
     apis:
       - path: google/cloud/rapidmigrationassessment/v1
     description_override: The Rapid Migration Assessment service is our first-party migration assessment and planning tool.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Rapid Migration Assessment API
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -3125,10 +2441,6 @@ libraries:
     apis:
       - path: google/cloud/recaptchaenterprise/v1
     description_override: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/recaptchaenterprise/v1:
@@ -3140,9 +2452,6 @@ libraries:
     apis:
       - path: google/cloud/recommendationengine/v1beta1
     description_override: delivers highly personalized product recommendations at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/recommendationengine/v1beta1:
@@ -3155,9 +2464,6 @@ libraries:
       - path: google/cloud/recommender/v1
       - path: google/cloud/recommender/v1beta1
     description_override: delivers highly personalized product recommendations at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Recommender
       metadata_name_override: recommender
@@ -3168,9 +2474,6 @@ libraries:
       - path: google/cloud/redis/v1
       - path: google/cloud/redis/v1beta1
     description_override: is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Redis
       product_documentation_override: https://cloud.google.com/memorystore/docs/redis/
@@ -3183,9 +2486,6 @@ libraries:
       - path: google/cloud/redis/cluster/v1
       - path: google/cloud/redis/cluster/v1beta1
     description_override: Creates and manages Redis instances on the Google Cloud Platform.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/redis/cluster/v1:
@@ -3204,9 +2504,6 @@ libraries:
     apis:
       - path: google/cloud/resourcemanager/v3
     description_override: provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/resourcemanager/v3:
@@ -3221,9 +2518,6 @@ libraries:
       - path: google/cloud/retail/v2beta
       - path: google/cloud/retail/v2alpha
     description_override: Cloud Retail service enables customers to build end-to-end personalized recommendation systems without requiring a high level of expertise in machine learning, recommendation system, or Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Retail
       product_documentation_override: https://cloud.google.com/retail/docs/
@@ -3234,9 +2528,6 @@ libraries:
     apis:
       - path: google/cloud/run/v2
     description_override: is a managed compute platform that enables you to run containers that are invocable via requests or events.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Run
       metadata_name_override: run
@@ -3256,9 +2547,6 @@ libraries:
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
     description_override: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/saasplatform/saasservicemgmt/v1beta1:
@@ -3274,12 +2562,6 @@ libraries:
       - path: google/cloud/scheduler/v1
       - path: google/cloud/scheduler/v1beta1
     description_override: lets you set up scheduled units of work to be executed at defined times or regular intervals. These work units are commonly known as cron jobs. Typical use cases might include sending out a report email on a daily basis, updating some cached data every 10 minutes, or updating some summary information once an hour.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       metadata_name_override: cloudscheduler
       default_version: v1
@@ -3290,9 +2572,6 @@ libraries:
       - path: google/cloud/secretmanager/v1beta2
       - path: google/cloud/secrets/v1beta1
     description_override: Stores, manages, and secures access to application secrets.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/secretmanager/v1:
@@ -3307,9 +2586,6 @@ libraries:
     apis:
       - path: google/cloud/securesourcemanager/v1
     description_override: Regionally deployed, single-tenant managed source code repository hosted on Google Cloud.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Secure Source Manager API
       product_documentation_override: https://cloud.google.com/secure-source-manager/docs/overview
@@ -3322,9 +2598,6 @@ libraries:
       - path: google/cloud/security/publicca/v1
       - path: google/cloud/security/publicca/v1beta1
     description_override: simplifies the deployment and management of public CAs without managing infrastructure.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/security/publicca/v1beta1:
@@ -3340,9 +2613,6 @@ libraries:
       - path: google/cloud/securitycenter/v1p1beta1
       - path: google/cloud/securitycenter/v1beta1
     description_override: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud Security Command Center
       product_documentation_override: https://cloud.google.com/security-command-center
@@ -3353,9 +2623,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/securitycentermanagement/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Security Center Management API
       product_documentation_override: https://cloud.google.com/securitycentermanagement/docs/overview
@@ -3369,9 +2636,6 @@ libraries:
       - path: google/api/servicecontrol/v2
       - path: google/api/servicecontrol/v1
     description_override: ' is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/api/servicecontrol/v1:
@@ -3391,9 +2655,6 @@ libraries:
       - path: google/cloud/servicedirectory/v1
       - path: google/cloud/servicedirectory/v1beta1
     description_override: Allows the registration and lookup of services.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/servicedirectory/v1:
@@ -3407,9 +2668,6 @@ libraries:
     apis:
       - path: google/api/servicemanagement/v1
     description_override: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/api/servicemanagement/v1:
@@ -3424,9 +2682,6 @@ libraries:
     apis:
       - path: google/api/serviceusage/v1
     description_override: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/api/serviceusage/v1:
@@ -3440,9 +2695,6 @@ libraries:
     apis:
       - path: google/cloud/servicehealth/v1
     description_override: Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Service Health API
       product_documentation_override: https://cloud.google.com/service-health/docs/overview
@@ -3452,9 +2704,6 @@ libraries:
     apis:
       - path: google/cloud/shell/v1
     description_override: is an interactive shell environment for Google Cloud that makes it easy for you to learn and experiment with Google Cloud and manage your projects and resources from your web browser.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: cloudshell
       default_version: v1
@@ -3463,8 +2712,6 @@ libraries:
     apis:
       - path: google/devtools/source/v1
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/source_context_v1/test_source_context_v1.py
     python:
       library_type: OTHER
@@ -3488,8 +2735,6 @@ libraries:
       - path: google/spanner/admin/database/v1
     description_override: "is the world's first fully managed relational database service \nto offer both strong consistency and horizontal scalability for \nmission-critical online transaction processing (OLTP) applications. With Cloud \nSpanner you enjoy all the traditional benefits of a relational database; but \nunlike any other relational database service, Cloud Spanner scales horizontally \nto hundreds or thousands of servers to handle the biggest transactional \nworkloads."
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - docs/spanner_v1/batch.rst
       - docs/spanner_v1/client.rst
       - docs/spanner_v1/database.rst
@@ -3523,14 +2768,6 @@ libraries:
       - path: google/cloud/speech/v1
       - path: google/cloud/speech/v1p1beta1
     description_override: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - google/cloud/speech_v1/helpers.py
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-      - tests/unit/test_helpers.py
     python:
       library_type: GAPIC_COMBO
       name_pretty_override: Cloud Speech
@@ -3542,10 +2779,6 @@ libraries:
     apis:
       - path: google/storage/v2
     description_override: 'is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
@@ -3563,9 +2796,6 @@ libraries:
     apis:
       - path: google/storage/control/v2
     description_override: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/storage/control/v2:
@@ -3580,9 +2810,6 @@ libraries:
     apis:
       - path: google/storagetransfer/v1
     description_override: Secure, low-cost services for transferring data from cloud or on-premises sources.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/storagetransfer/v1:
@@ -3597,9 +2824,6 @@ libraries:
     apis:
       - path: google/cloud/storagebatchoperations/v1
     description_override: 'null '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Storage Batch Operations API
       product_documentation_override: https://cloud.google.com/storage/docs/batch-operations/overview
@@ -3609,9 +2833,6 @@ libraries:
     apis:
       - path: google/cloud/storageinsights/v1
     description_override: The Storage Insights inventory report feature helps you manage your object storage at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Storage Insights API
       product_documentation_override: https://cloud.google.com/storage/docs/insights/storage-insights
@@ -3623,9 +2844,6 @@ libraries:
       - path: google/cloud/support/v2
       - path: google/cloud/support/v2beta
     description_override: Manages Google Cloud technical support cases for Customer Care support offerings.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud Support API
       product_documentation_override: https://cloud.google.com/support/docs/reference/support-api
@@ -3639,9 +2857,6 @@ libraries:
       - path: google/cloud/talent/v4
       - path: google/cloud/talent/v4beta1
     description_override: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Talent Solution
       metadata_name_override: talent
@@ -3653,12 +2868,6 @@ libraries:
       - path: google/cloud/tasks/v2beta3
       - path: google/cloud/tasks/v2beta2
     description_override: a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       product_documentation_override: https://cloud.google.com/tasks/docs/
       metadata_name_override: cloudtasks
@@ -3669,9 +2878,6 @@ libraries:
       - path: google/cloud/telcoautomation/v1
       - path: google/cloud/telcoautomation/v1alpha1
     description_override: APIs to automate 5G deployment and management of cloud infrastructure and network functions.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Telco Automation API
       default_version: v1
@@ -3689,12 +2895,6 @@ libraries:
       - path: google/cloud/texttospeech/v1
       - path: google/cloud/texttospeech/v1beta1
     description_override: enables easy integration of Google text recognition technologies into developer applications. Send text and receive synthesized audio output from the Cloud Text-to-Speech API service.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       name_pretty_override: Google Cloud Text-to-Speech
       metadata_name_override: texttospeech
@@ -3706,9 +2906,6 @@ libraries:
       - path: google/cloud/tpu/v1
       - path: google/cloud/tpu/v2alpha1
     description_override: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/tpu/v1:
@@ -3725,9 +2922,6 @@ libraries:
       - path: google/devtools/cloudtrace/v2
       - path: google/devtools/cloudtrace/v1
     description_override: is a distributed tracing system that collects latency data from your applications and displays it in the Google Cloud Platform Console. You can track how requests propagate through your application and receive detailed near real-time performance insights.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/devtools/cloudtrace/v1:
@@ -3744,21 +2938,6 @@ libraries:
       - path: google/cloud/translate/v3
       - path: google/cloud/translate/v3beta1
     description_override: can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/client.rst
-      - docs/v2.rst
-      - google/cloud/translate_v2
-      - google/cloud/translate_v2/__init__.py
-      - google/cloud/translate_v2/_http.py
-      - google/cloud/translate_v2/client.py
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-      - tests/unit/v2
-      - tests/unit/v2/test__http.py
-      - tests/unit/v2/test_client.py
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -3784,10 +2963,6 @@ libraries:
       automatically generate embeddings from your data, and perform fast
       approximate nearest neighbor (ANN) searches to find semantically similar
       items at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-    skip_generate: true
     python:
       name_pretty_override: Vector Search API
       product_documentation_override: https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
@@ -3797,9 +2972,6 @@ libraries:
     apis:
       - path: google/cloud/video/livestream/v1
     description_override: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/video/livestream/v1:
@@ -3813,9 +2985,6 @@ libraries:
     apis:
       - path: google/cloud/video/stitcher/v1
     description_override: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: videostitcher
       default_version: v1
@@ -3824,9 +2993,6 @@ libraries:
     apis:
       - path: google/cloud/video/transcoder/v1
     description_override: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       metadata_name_override: transcoder
       default_version: v1
@@ -3839,12 +3005,6 @@ libraries:
       - path: google/cloud/videointelligence/v1p1beta1
       - path: google/cloud/videointelligence/v1beta2
     description_override: makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
     python:
       opt_args_by_api:
         google/cloud/videointelligence/v1:
@@ -3870,17 +3030,6 @@ libraries:
       - path: google/cloud/vision/v1p2beta1
       - path: google/cloud/vision/v1p1beta1
     description_override: allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - google/cloud/vision_helpers
-      - google/cloud/vision_helpers/__init__.py
-      - google/cloud/vision_helpers/decorators.py
-      - tests/system
-      - tests/system/__init__.py
-      - tests/system/smoke_test.py
-      - tests/unit/test_decorators.py
-      - tests/unit/test_helpers.py
     python:
       library_type: GAPIC_COMBO
       product_documentation_override: https://cloud.google.com/vision/docs/
@@ -3892,9 +3041,6 @@ libraries:
       - path: google/cloud/visionai/v1
       - path: google/cloud/visionai/v1alpha1
     description_override: Easily build and deploy Vertex AI Vision applications using a single platform.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Vision AI API
       issue_tracker_override: https://issuetracker.google.com/issues/new?component=187174&pli=1&template=1161261
@@ -3904,9 +3050,6 @@ libraries:
     apis:
       - path: google/cloud/vmmigration/v1
     description_override: ' for Compute Engine migrates VMs from your on-premises data center into Compute Engine.'
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/vmmigration/v1:
@@ -3918,9 +3061,6 @@ libraries:
     version: 1.11.0
     apis:
       - path: google/cloud/vmwareengine/v1
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Google Cloud VMware Engine
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -3931,9 +3071,6 @@ libraries:
     apis:
       - path: google/cloud/vpcaccess/v1
     description_override: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/vpcaccess/v1:
@@ -3947,9 +3084,6 @@ libraries:
       - path: google/cloud/webrisk/v1
       - path: google/cloud/webrisk/v1beta1
     description_override: is a Google Cloud service that lets client applications check URLs against Google's constantly updated lists of unsafe web resources. Unsafe web resources include social engineering sites—such as phishing and deceptive sites—and sites that host malware or unwanted software. With the Web Risk API, you can quickly identify known bad sites, warn users before they click infected links, and prevent users from posting links to known infected pages from your site. The Web Risk API includes data on more than a million unsafe URLs and stays up to date by examining billions of URLs each day.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/web-risk/docs/
       metadata_name_override: webrisk
@@ -3961,9 +3095,6 @@ libraries:
       - path: google/cloud/websecurityscanner/v1beta
       - path: google/cloud/websecurityscanner/v1alpha
     description_override: identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Cloud Security Scanner
       product_documentation_override: https://cloud.google.com/security-scanner/docs/
@@ -3979,9 +3110,6 @@ libraries:
       - path: google/cloud/workflows/executions/v1beta
       - path: google/cloud/workflows/v1beta
     description_override: Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/cloud/workflows/executions/v1:
@@ -4003,9 +3131,6 @@ libraries:
       Workload Manager is a service that provides tooling for enterprise
       workloads to automate the deployment and validation of your workloads
       against best practices and recommendations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Workload Manager API
       default_version: v1
@@ -4014,9 +3139,6 @@ libraries:
     apis:
       - path: google/cloud/workstations/v1
       - path: google/cloud/workstations/v1beta
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       product_documentation_override: https://cloud.google.com/workstations/
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
@@ -4024,7 +3146,6 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_generate: true
     python:
       library_type: OTHER
       name_pretty_override: A python wrapper of the C library 'Google CRC32C'
@@ -4036,8 +3157,6 @@ libraries:
     apis:
       - path: google/geo/type
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/type/test_type.py
     python:
       library_type: OTHER
@@ -4052,9 +3171,6 @@ libraries:
     apis:
       - path: google/maps/addressvalidation/v1
     description_override: Address Validation lets you validate and correct address inputs with Places data powered by Google Maps Platform.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/addressvalidation/v1:
@@ -4068,9 +3184,6 @@ libraries:
     apis:
       - path: google/maps/areainsights/v1
     description_override: 'Places Insights API. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Places Insights API
       api_shortname_override: areainsights
@@ -4080,9 +3193,6 @@ libraries:
     apis:
       - path: google/maps/fleetengine/v1
     description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/fleetengine/v1:
@@ -4097,9 +3207,6 @@ libraries:
     apis:
       - path: google/maps/fleetengine/delivery/v1
     description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/fleetengine/delivery/v1:
@@ -4119,9 +3226,6 @@ libraries:
       Convert addresses into geographic coordinates (geocoding), which you can
       use     to place markers or position the map. This API also allows you to
       convert     geographic coordinates into an address (reverse geocoding).
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/geocode/v4:
@@ -4135,9 +3239,6 @@ libraries:
     apis:
       - path: google/maps/mapsplatformdatasets/v1
     description_override: Maps Platform Datasets API
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Maps Platform Datasets API
       product_documentation_override: https://developers.google.com/maps
@@ -4149,9 +3250,6 @@ libraries:
     apis:
       - path: google/maps/navconnect/v1
     description_override: Navigation Connect API.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Navigation Connect API
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-maps-navconnect/latest
@@ -4161,9 +3259,6 @@ libraries:
     apis:
       - path: google/maps/places/v1
     description_override: The Places API allows developers to access a variety of search and retrieval endpoints for a Place.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/places/v1:
@@ -4178,9 +3273,6 @@ libraries:
     apis:
       - path: google/maps/routeoptimization/v1
     description_override: The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Route Optimization API
       default_version: v1
@@ -4189,9 +3281,6 @@ libraries:
     apis:
       - path: google/maps/routing/v2
     description_override: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/maps/routing/v2:
@@ -4207,9 +3296,6 @@ libraries:
     apis:
       - path: google/maps/solar/v1
     description_override: The Google Maps Platform Solar API is a service focused on helping accelerate solar and energy system installations.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       name_pretty_override: Solar API
       default_version: v1
@@ -4224,9 +3310,6 @@ libraries:
     apis:
       - path: google/shopping/css/v1
     description_override: Programmatically manage your Comparison Shopping Service (CSS) account data at scale.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/css/v1:
@@ -4239,9 +3322,6 @@ libraries:
       - path: google/shopping/merchant/accounts/v1
       - path: google/shopping/merchant/accounts/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/accounts/v1:
@@ -4263,9 +3343,6 @@ libraries:
       - path: google/shopping/merchant/conversions/v1
       - path: google/shopping/merchant/conversions/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/conversions/v1:
@@ -4284,9 +3361,6 @@ libraries:
       - path: google/shopping/merchant/datasources/v1
       - path: google/shopping/merchant/datasources/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/datasources/v1:
@@ -4308,9 +3382,6 @@ libraries:
       - path: google/shopping/merchant/inventories/v1
       - path: google/shopping/merchant/inventories/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/inventories/v1:
@@ -4331,9 +3402,6 @@ libraries:
       - path: google/shopping/merchant/issueresolution/v1
       - path: google/shopping/merchant/issueresolution/v1beta
     description_override: 'Programmatically manage your Merchant Center Accounts. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/issueresolution/v1:
@@ -4354,9 +3422,6 @@ libraries:
       - path: google/shopping/merchant/lfp/v1
       - path: google/shopping/merchant/lfp/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/lfp/v1:
@@ -4377,9 +3442,6 @@ libraries:
       - path: google/shopping/merchant/notifications/v1
       - path: google/shopping/merchant/notifications/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/notifications/v1:
@@ -4399,9 +3461,6 @@ libraries:
       - path: google/shopping/merchant/ordertracking/v1
       - path: google/shopping/merchant/ordertracking/v1beta
     description_override: 'Programmatically manage your Merchant Center Accounts. '
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/ordertracking/v1:
@@ -4422,9 +3481,6 @@ libraries:
       - path: google/shopping/merchant/products/v1
       - path: google/shopping/merchant/products/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/products/v1:
@@ -4445,9 +3501,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/productstudio/v1alpha
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/productstudio/v1alpha:
@@ -4464,9 +3517,6 @@ libraries:
       - path: google/shopping/merchant/promotions/v1
       - path: google/shopping/merchant/promotions/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/promotions/v1:
@@ -4488,9 +3538,6 @@ libraries:
       - path: google/shopping/merchant/quota/v1
       - path: google/shopping/merchant/quota/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/quota/v1:
@@ -4508,9 +3555,6 @@ libraries:
       - path: google/shopping/merchant/reports/v1beta
       - path: google/shopping/merchant/reports/v1alpha
     description_override: Programmatically manage your Merchant Center accounts
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/reports/v1:
@@ -4534,9 +3578,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/reviews/v1beta
     description_override: Programmatically manage your Merchant Center Accounts
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
     python:
       opt_args_by_api:
         google/shopping/merchant/reviews/v1beta:
@@ -4553,8 +3594,6 @@ libraries:
     apis:
       - path: google/shopping/type
     keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
       - tests/unit/gapic/type/test_type.py
     python:
       name_pretty_override: Shopping Type Protos
@@ -4593,12 +3632,6 @@ libraries:
     apis:
       - path: grafeas/v1
     description_override: An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.
-    keep:
-      - CHANGELOG.md
-      - docs/CHANGELOG.md
-      - grafeas.py
-      - grafeas/__init__.py
-      - grafeas/grafeas_v1/types.py
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -4623,7 +3656,6 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
@@ -4641,7 +3673,6 @@ libraries:
       skip_readme_copy: true
   - name: sqlalchemy-bigquery
     version: 1.16.0
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: SQLAlchemy dialect for BigQuery
@@ -4649,7 +3680,6 @@ libraries:
       client_documentation_override: https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html
   - name: sqlalchemy-spanner
     version: 1.17.3
-    skip_generate: true
     python:
       library_type: INTEGRATION
       name_pretty_override: Spanner dialect for SQLAlchemy

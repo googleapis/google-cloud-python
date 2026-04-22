@@ -2312,7 +2312,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.27.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: a78b5838b801428bfe5b85758727a46d830b7f39
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml

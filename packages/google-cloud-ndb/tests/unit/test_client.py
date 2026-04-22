@@ -56,6 +56,7 @@ class TestClient:
         patch_environ = mock.patch.dict(
             "google.cloud.ndb.client.os.environ",
             {"DATASTORE_EMULATOR_HOST": "foo"},
+            clear=True,
         )
         with patch_environ:
             with patch_credentials("testing"):
@@ -69,9 +70,14 @@ class TestClient:
 
     @staticmethod
     def test_constructor_get_project_from_environ(environ):
-        environ[environment_vars.GCD_DATASET] = "gcd-project"
-        with patch_credentials(None):
-            client = client_module.Client()
+        patch_environ = mock.patch.dict(
+            "google.cloud.ndb.client.os.environ",
+            {environment_vars.GCD_DATASET: "gcd-project"},
+            clear=True,
+        )
+        with patch_environ:
+            with patch_credentials(None):
+                client = client_module.Client()
         assert client.project == "gcd-project"
 
     @staticmethod

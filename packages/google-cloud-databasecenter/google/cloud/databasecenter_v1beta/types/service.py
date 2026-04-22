@@ -21,18 +21,23 @@ import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.databasecenter_v1beta.types import (
+    affiliation,
+    maintenance,
+    metric_data,
+    signals,
+)
+from google.cloud.databasecenter_v1beta.types import (
     machine_config as gcd_machine_config,
 )
-from google.cloud.databasecenter_v1beta.types import maintenance, metric_data, signals
 from google.cloud.databasecenter_v1beta.types import product as gcd_product
 
 __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
     manifest={
-        "ResourceCategory",
         "Edition",
         "SubResourceType",
         "ManagementType",
+        "ResourceCategory",
         "QueryProductsRequest",
         "QueryProductsResponse",
         "QueryDatabaseResourceGroupsRequest",
@@ -58,27 +63,6 @@ __protobuf__ = proto.module(
         "DeltaDetails",
     },
 )
-
-
-class ResourceCategory(proto.Enum):
-    r"""The enum value corresponds to 'type' suffix in the resource_type
-    field.
-
-    Values:
-        RESOURCE_CATEGORY_UNSPECIFIED (0):
-            Unspecified.
-        INSTANCE (1):
-            A resource that is an Instance.
-        CLUSTER (2):
-            A resource that is a Cluster.
-        DATABASE (3):
-            A resource that is a Database.
-    """
-
-    RESOURCE_CATEGORY_UNSPECIFIED = 0
-    INSTANCE = 1
-    CLUSTER = 2
-    DATABASE = 3
 
 
 class Edition(proto.Enum):
@@ -152,6 +136,33 @@ class ManagementType(proto.Enum):
     MANAGEMENT_TYPE_UNSPECIFIED = 0
     MANAGEMENT_TYPE_GCP_MANAGED = 1
     MANAGEMENT_TYPE_SELF_MANAGED = 2
+
+
+class ResourceCategory(proto.Enum):
+    r"""The enum value corresponds to 'type' suffix in the resource_type
+    field.
+
+    Values:
+        RESOURCE_CATEGORY_UNSPECIFIED (0):
+            Unspecified.
+        INSTANCE (1):
+            A resource that is an Instance.
+        CLUSTER (2):
+            A resource that is a Cluster.
+        DATABASE (3):
+            A resource that is a Database.
+        DATASET (4):
+            A resource that is a Dataset.
+        RESERVATION (5):
+            A resource that is a Reservation.
+    """
+
+    RESOURCE_CATEGORY_UNSPECIFIED = 0
+    INSTANCE = 1
+    CLUSTER = 2
+    DATABASE = 3
+    DATASET = 4
+    RESERVATION = 5
 
 
 class QueryProductsRequest(proto.Message):
@@ -533,6 +544,9 @@ class DatabaseResource(proto.Message):
         maintenance_info (google.cloud.databasecenter_v1beta.types.MaintenanceInfo):
             Optional. The maintenance information of the
             resource.
+        affiliations (MutableSequence[google.cloud.databasecenter_v1beta.types.Affiliation]):
+            Optional. Affiliation details of the
+            resource.
     """
 
     child_resources: MutableSequence["DatabaseResource"] = proto.RepeatedField(
@@ -614,6 +628,11 @@ class DatabaseResource(proto.Message):
         proto.MESSAGE,
         number=19,
         message=maintenance.MaintenanceInfo,
+    )
+    affiliations: MutableSequence[affiliation.Affiliation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=20,
+        message=affiliation.Affiliation,
     )
 
 

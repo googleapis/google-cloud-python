@@ -62,9 +62,9 @@ class PolicyBinding(proto.Message):
             https://google.aip.dev/148#annotations for more
             details such as format and size limitations
         target (google.cloud.iam_v3beta.types.PolicyBinding.Target):
-            Required. Immutable. Target is the full
-            resource name of the resource to which the
-            policy will be bound. Immutable once set.
+            Required. Immutable. The full resource name
+            of the resource to which the policy will be
+            bound. Immutable once set.
         policy_kind (google.cloud.iam_v3beta.types.PolicyBinding.PolicyKind):
             Immutable. The kind of the policy to attach
             in this binding. This field must be one of the
@@ -111,14 +111,16 @@ class PolicyBinding(proto.Message):
             - ``principal.type != <principal type string>``
             - ``principal.type in [<list of principal types>]``
 
-            Supported principal types are Workspace, Workforce Pool,
-            Workload Pool and Service Account. Allowed string must be
-            one of:
+            Supported principal types are workspace, workforce pool,
+            workload pool, service account, and Agent Identity. Allowed
+            string must be one of:
 
-            - iam.googleapis.com/WorkspaceIdentity
-            - iam.googleapis.com/WorkforcePoolIdentity
-            - iam.googleapis.com/WorkloadPoolIdentity
-            - iam.googleapis.com/ServiceAccount
+            - ``iam.googleapis.com/WorkspaceIdentity``
+            - ``iam.googleapis.com/WorkforcePoolIdentity``
+            - ``iam.googleapis.com/WorkloadPoolIdentity``
+            - ``iam.googleapis.com/ServiceAccount``
+            - ``iam.googleapis.com/AgentPoolIdentity`` (available in
+              Preview)
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the policy binding
             was created.
@@ -128,35 +130,43 @@ class PolicyBinding(proto.Message):
     """
 
     class PolicyKind(proto.Enum):
-        r"""Different policy kinds supported in this binding.
+        r"""The different policy kinds supported in this binding.
 
         Values:
             POLICY_KIND_UNSPECIFIED (0):
                 Unspecified policy kind; Not a valid state
             PRINCIPAL_ACCESS_BOUNDARY (1):
                 Principal access boundary policy kind
+            ACCESS (2):
+                Access policy kind.
         """
 
         POLICY_KIND_UNSPECIFIED = 0
         PRINCIPAL_ACCESS_BOUNDARY = 1
+        ACCESS = 2
 
     class Target(proto.Message):
-        r"""Target is the full resource name of the resource to which the
-        policy will be bound. Immutable once set.
+        r"""The full resource name of the resource to which the policy
+        will be bound. Immutable once set.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             principal_set (str):
-                Immutable. Full Resource Name used for principal access
-                boundary policy bindings. The principal set must be directly
-                parented by the policy binding's parent or same as the
-                parent if the target is a project/folder/organization.
+                Immutable. The full resource name that's used for principal
+                access boundary policy bindings. The principal set must be
+                directly parented by the policy binding's parent or same as
+                the parent if the target is a project, folder, or
+                organization.
 
                 Examples:
 
-                - For binding's parented by an organization:
+                - For bindings parented by an organization:
 
                   - Organization:
                     ``//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID``
@@ -165,12 +175,12 @@ class PolicyBinding(proto.Message):
                   - Workspace Identity:
                     ``//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID``
 
-                - For binding's parented by a folder:
+                - For bindings parented by a folder:
 
                   - Folder:
                     ``//cloudresourcemanager.googleapis.com/folders/FOLDER_ID``
 
-                - For binding's parented by a project:
+                - For bindings parented by a project:
 
                   - Project:
 
@@ -181,11 +191,32 @@ class PolicyBinding(proto.Message):
                     ``//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID``
 
                 This field is a member of `oneof`_ ``target``.
+            resource (str):
+                Immutable. The full resource name that's used for access
+                policy bindings.
+
+                Examples:
+
+                - Organization:
+                  ``//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID``
+                - Folder:
+                  ``//cloudresourcemanager.googleapis.com/folders/FOLDER_ID``
+                - Project:
+
+                  - ``//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER``
+                  - ``//cloudresourcemanager.googleapis.com/projects/PROJECT_ID``
+
+                This field is a member of `oneof`_ ``target``.
         """
 
         principal_set: str = proto.Field(
             proto.STRING,
             number=1,
+            oneof="target",
+        )
+        resource: str = proto.Field(
+            proto.STRING,
+            number=2,
             oneof="target",
         )
 

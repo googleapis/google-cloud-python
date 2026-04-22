@@ -18,7 +18,6 @@ import re
 
 import setuptools
 
-
 # Package metadata.
 
 name = "google-cloud-dns"
