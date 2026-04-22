@@ -2316,6 +2316,8 @@ class Service:
             )
         )
 
+        # Convert the set to a sorted tuple using the resource path or message name.
+        # This is needed to prevent non-deterministic code generation.
         sorted_messages = sorted(
             unique_messages,
             key=lambda m: m.resource_type_full_path or m.name

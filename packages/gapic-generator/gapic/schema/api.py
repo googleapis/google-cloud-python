@@ -169,6 +169,9 @@ class Proto:
             for msg in self.messages.values()
             if msg.options.Extensions[resource_pb2.resource].type
         )
+
+        # Convert the set to a sorted tuple using the resource path or message name.
+        # This is needed to prevent non-deterministic code generation.
         return collections.OrderedDict(
             sorted(
                 itertools.chain(
