@@ -70,7 +70,7 @@ from google.cloud.bigtable.data._metrics import (
 )
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
-    GoogleCloudMetricsHandler
+    GoogleCloudMetricsHandler,
 )
 from google.cloud.bigtable.data.exceptions import (
     FailedQueryShardError,

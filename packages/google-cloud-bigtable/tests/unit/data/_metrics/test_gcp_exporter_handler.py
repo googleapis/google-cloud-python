@@ -11,32 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import pytest
 import mock
-
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics.export import (
-    NumberDataPoint,
-    HistogramDataPoint,
-    MetricExportResult,
-    MetricsData,
-    ResourceMetrics,
-    ScopeMetrics,
-    Metric,
-    Sum,
-    AggregationTemporality,
-)
+import pytest
+from google.api.distribution_pb2 import Distribution
 from google.cloud.monitoring_v3 import (
     Point,
     TimeSeries,
 )
-from google.api.distribution_pb2 import Distribution
-
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import (
+    AggregationTemporality,
+    HistogramDataPoint,
+    Metric,
+    MetricExportResult,
+    MetricsData,
+    NumberDataPoint,
+    ResourceMetrics,
+    ScopeMetrics,
+    Sum,
+)
 
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
-)
-from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     GoogleCloudMetricsHandler,
 )
 from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
@@ -284,6 +280,7 @@ class TestBigtableMetricsExporter:
     def test__batch_write_with_deadline(self):
         """Test that _batch_write passes deadlines to gapic correctly."""
         import time
+
         from google.api_core import gapic_v1
 
         instance = self._make_one("project")

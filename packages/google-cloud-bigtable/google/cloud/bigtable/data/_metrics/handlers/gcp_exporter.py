@@ -16,21 +16,10 @@ from __future__ import annotations
 
 import time
 
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics import view
-from opentelemetry.sdk.metrics.export import (
-    HistogramDataPoint,
-    MetricExporter,
-    MetricExportResult,
-    MetricsData,
-    NumberDataPoint,
-    PeriodicExportingMetricReader,
-)
-from google.protobuf.timestamp_pb2 import Timestamp
 from google.api.distribution_pb2 import Distribution
 from google.api.metric_pb2 import Metric as GMetric
-from google.api.monitored_resource_pb2 import MonitoredResource
 from google.api.metric_pb2 import MetricDescriptor
+from google.api.monitored_resource_pb2 import MonitoredResource
 from google.api_core import gapic_v1
 from google.cloud.monitoring_v3 import (
     CreateTimeSeriesRequest,
@@ -40,14 +29,21 @@ from google.cloud.monitoring_v3 import (
     TimeSeries,
     TypedValue,
 )
+from google.protobuf.timestamp_pb2 import Timestamp
+from opentelemetry.sdk.metrics import MeterProvider, view
+from opentelemetry.sdk.metrics.export import (
+    HistogramDataPoint,
+    MetricExporter,
+    MetricExportResult,
+    MetricsData,
+    NumberDataPoint,
+    PeriodicExportingMetricReader,
+)
 
 from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
     OpenTelemetryMetricsHandler,
-)
-from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
     _OpenTelemetryInstruments,
 )
-
 
 # create OpenTelemetry views for Bigtable metrics
 # avoid reformatting into individual lines

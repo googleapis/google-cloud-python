@@ -115,6 +115,7 @@ class TestBigtableDataClientAsync:
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
         )
+
         expected_project = "project-id"
         expected_credentials = AnonymousCredentials()
         client = self._make_client(
@@ -1210,8 +1211,8 @@ class TestTableAsync:
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
         )
-        from google.cloud.bigtable.data._metrics import GoogleCloudMetricsHandler
 
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
@@ -1665,6 +1666,7 @@ class TestReadRowsAsync:
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
         )
+
         client_mock = mock.Mock()
         client_mock._register_instance.side_effect = (
             lambda *args, **kwargs: CrossSync.yield_to_event_loop()

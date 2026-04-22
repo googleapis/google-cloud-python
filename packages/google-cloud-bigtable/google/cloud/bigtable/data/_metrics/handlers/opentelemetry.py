@@ -18,13 +18,15 @@ import socket
 import uuid
 
 from google.cloud.bigtable import __version__ as bigtable_version
+from google.cloud.bigtable.data._metrics.data_model import (
+    DEFAULT_CLUSTER_ID,
+    DEFAULT_ZONE,
+    ActiveOperationMetric,
+    CompletedAttemptMetric,
+    CompletedOperationMetric,
+    OperationType,
+)
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
-from google.cloud.bigtable.data._metrics.data_model import OperationType
-from google.cloud.bigtable.data._metrics.data_model import DEFAULT_CLUSTER_ID
-from google.cloud.bigtable.data._metrics.data_model import DEFAULT_ZONE
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
-from google.cloud.bigtable.data._metrics.data_model import CompletedAttemptMetric
-from google.cloud.bigtable.data._metrics.data_model import CompletedOperationMetric
 
 # conversion factor for converting from nanoseconds to milliseconds
 NS_TO_MS = 1e6
@@ -216,9 +218,7 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
             {"streaming": is_streaming, "status": status, **labels},
         )
         flow_throttling = (
-            op.flow_throttling_time_ns / NS_TO_MS
-            if op.flow_throttling_time_ns
-            else 0
+            op.flow_throttling_time_ns / NS_TO_MS if op.flow_throttling_time_ns else 0
         )
         self.otel.throttling_latencies.record(flow_throttling, labels)
         self.otel.application_latencies.record(

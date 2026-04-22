@@ -11,9 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import pytest
 import mock
-
+import pytest
 from grpc import StatusCode
 
 from google.cloud.bigtable.data._metrics.data_model import (
@@ -23,8 +22,8 @@ from google.cloud.bigtable.data._metrics.data_model import (
     OperationType,
 )
 from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-    _OpenTelemetryInstruments,
     OpenTelemetryMetricsHandler,
+    _OpenTelemetryInstruments,
 )
 
 
