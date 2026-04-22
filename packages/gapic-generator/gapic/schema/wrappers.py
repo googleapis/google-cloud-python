@@ -2331,7 +2331,7 @@ class Service:
         )
 
         # Fail-fast collision detection
-        seen_types = {}
+        seen_types: Dict[str, "MessageType"] = {}
         for msg in sorted_messages:
             res_type = msg.resource_type
             if not res_type:

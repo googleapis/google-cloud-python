@@ -275,3 +275,39 @@ def test_options_resource_name_aliases():
         # Verify that warnings were safely emitted for
         # the two malformed aliases
         assert warn.call_count == 2
+
+
+def test_options_resource_name_aliases():
+    with mock.patch.object(warnings, "warn") as warn:
+        opts = Options.build(
+            "resource-name-alias=ces.googleapis.com/Tool:CesTool,"
+            "resource-name-alias=workspace.googleapis.com/Tool:WorkspaceTool,"
+            "resource-name-alias=bad_string_without_colon,"
+            "resource-name-alias=:MissingPath,"
+            "resource-name-alias=MissingAlias:,"  # <-- Covers 'not clean_alias' (Line 207)
+            "resource-name-alias= ,"              # <-- Covers 'not mapping.strip()' (Line 202)
+        )
+
+        # Verify the dictionary is perfectly formed
+        expected = {
+            "ces.googleapis.com/Tool": "CesTool",
+            "workspace.googleapis.com/Tool": "WorkspaceTool",
+        }
+        assert opts.resource_name_aliases == expected
+        
+        # We expect exactly 3 warnings: 
+        # 1. bad_string
+        # 2. :MissingPath 
+        # 3. MissingAlias: 
+        # (The empty ' ' string safely 'continues' without warning, as intended)
+        assert warn.call_count == 3
+
+
+def test_options_resource_name_aliases_single_string():
+    # Because there is only one flag, the parser treats it as a single string 
+    # instead of a list. This forces the `if not isinstance(..., list):` block to execute
+    opts = Options.build("resource-name-alias=single.googleapis.com/Tool:SingleTool")
+    
+    assert opts.resource_name_aliases == {
+        "single.googleapis.com/Tool": "SingleTool"
+    }

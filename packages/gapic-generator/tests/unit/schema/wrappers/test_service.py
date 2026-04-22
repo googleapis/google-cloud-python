@@ -729,3 +729,42 @@ def test_resource_messages_throws_informative_collision_error():
     
     with pytest.raises(ValueError, match=expected_error_regex):
         _ = service.resource_messages
+
+
+def test_resource_messages_collision_resolved_by_alias():
+    # 1. Colliding types, but valid patterns
+    opts_1 = descriptor_pb2.MessageOptions()
+    opts_1.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
+    opts_1.Extensions[resource_pb2.resource].pattern.append("ces/{ces}/tool")
+    
+    opts_2 = descriptor_pb2.MessageOptions()
+    opts_2.Extensions[resource_pb2.resource].type = "workspace.googleapis.com/Tool"
+    opts_2.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}/tool")
+    
+    # 2. Build the messages WITH the alias injected into one of them!
+    msg_1 = wrappers.MessageType(
+        message_pb=descriptor_pb2.DescriptorProto(name="MessageOne", options=opts_1), 
+        fields={}, nested_enums={}, nested_messages={},
+        resource_name_aliases={"ces.googleapis.com/Tool": "CesTool"} # Resolved!
+    )
+    msg_2 = wrappers.MessageType(
+        message_pb=descriptor_pb2.DescriptorProto(name="MessageTwo", options=opts_2), 
+        fields={}, nested_enums={}, nested_messages={}
+    )
+
+    # 3. Build the service
+    service = make_service(
+        name="MyService",
+        methods=(
+            make_method("GetToolOne", input_message=msg_1),
+            make_method("GetToolTwo", input_message=msg_2),
+        ),
+        visible_resources={
+            "ces.googleapis.com/Tool": msg_1,
+            "workspace.googleapis.com/Tool": msg_2,
+        }
+    )
+
+    # 4. Assert that calling the property succeeds and returns BOTH resources safely
+    resources = service.resource_messages
+    assert len(resources) == 2
