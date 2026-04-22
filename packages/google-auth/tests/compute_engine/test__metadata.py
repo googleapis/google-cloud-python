@@ -876,7 +876,9 @@ def test__get_metadata_ip_root_no_mtls():
     )
 
 
-@mock.patch("google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True)
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True
+)
 @mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
 def test__try_mount_mds_mtls_adapter_mtls(mock_mds_mtls_adapter, mock_certs_exist):
     request = google_auth_requests.Request(mock.create_autospec(requests.Session))
@@ -897,7 +899,8 @@ def test__try_mount_mds_mtls_adapter_no_mtls():
 
 @mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
 @mock.patch(
-    "google.auth.compute_engine._metadata._try_mount_mds_mtls_adapter", return_value=True
+    "google.auth.compute_engine._metadata._try_mount_mds_mtls_adapter",
+    return_value=True,
 )
 @mock.patch(
     "google.auth.compute_engine._mtls._parse_mds_mode",
@@ -925,7 +928,8 @@ def test_ping_mtls(
 
 
 @mock.patch(
-    "google.auth.compute_engine._metadata._try_mount_mds_mtls_adapter", return_value=True
+    "google.auth.compute_engine._metadata._try_mount_mds_mtls_adapter",
+    return_value=True,
 )
 @mock.patch(
     "google.auth.compute_engine._mtls._parse_mds_mode",
@@ -989,7 +993,9 @@ def test_validate_gce_mds_configured_environment(
         _metadata._validate_gce_mds_configured_environment(mds_mode, metadata_url)
 
 
-@mock.patch("google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True)
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True
+)
 @mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
 def test__try_mount_mds_mtls_adapter_mtls_session_exists(
     mock_mds_mtls_adapter, mock_certs_exist
@@ -1004,7 +1010,9 @@ def test__try_mount_mds_mtls_adapter_mtls_session_exists(
     assert mock_session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)
 
 
-@mock.patch("google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True)
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True
+)
 @mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
 def test__try_mount_mds_mtls_adapter_mtls_no_session(
     mock_mds_mtls_adapter, mock_certs_exist
@@ -1023,7 +1031,9 @@ def test__try_mount_mds_mtls_adapter_mtls_no_session(
         assert request.session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)
 
 
-@mock.patch("google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True)
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist", return_value=True
+)
 @mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
 def test__try_mount_mds_mtls_adapter_mtls_http_request(
     mock_mds_mtls_adapter, mock_certs_exist

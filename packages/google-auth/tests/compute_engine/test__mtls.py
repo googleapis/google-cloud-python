@@ -111,7 +111,10 @@ def test_should_use_mds_mtls(
         with pytest.raises(expected_result):
             _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config)
     else:
-        assert _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config) is expected_result
+        assert (
+            _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config)
+            is expected_result
+        )
 
 
 @mock.patch("ssl.create_default_context")
