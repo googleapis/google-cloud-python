@@ -31,9 +31,7 @@ _FALLBACK_TO_GLOBAL = "fallback_to_global"
 
 
 class Subscriber:
-    def __init__(
-        self, callback: Callable[[Event], None], *, publisher: Publisher
-    ):  # noqa: E501
+    def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):  # noqa: E501
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
