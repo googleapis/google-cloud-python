@@ -1331,7 +1331,7 @@ class TestTableAsync:
     @CrossSync.drop
     def test_table_ctor_sync(self):
         # initializing client in a sync context should raise RuntimeError
-        client = mock.Mock()
+        client = self._make_client()
         with pytest.raises(RuntimeError) as e:
             TableAsync(client, "instance-id", "table-id")
         assert e.match("TableAsync must be created within an async event loop context.")
@@ -1662,6 +1662,9 @@ class TestReadRowsAsync:
 
     @CrossSync.convert
     def _make_table(self, *args, **kwargs):
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
         client_mock = mock.Mock()
         client_mock._register_instance.side_effect = (
             lambda *args, **kwargs: CrossSync.yield_to_event_loop()
@@ -1677,6 +1680,7 @@ class TestReadRowsAsync:
         )
         client_mock._gapic_client.table_path.return_value = kwargs["table_id"]
         client_mock._gapic_client.instance_path.return_value = kwargs["instance_id"]
+        client_mock._gcp_metrics_exporter = BigtableMetricsExporter("project")
         return CrossSync.TestTable._get_target_class()(client_mock, *args, **kwargs)
 
     def _make_stats(self):

@@ -1358,6 +1358,10 @@ class TestReadRows:
         return CrossSync._Sync_Impl.TestBigtableDataClient._make_client(*args, **kwargs)
 
     def _make_table(self, *args, **kwargs):
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
+
         client_mock = mock.Mock()
         client_mock._register_instance.side_effect = (
             lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
@@ -1373,6 +1377,7 @@ class TestReadRows:
         )
         client_mock._gapic_client.table_path.return_value = kwargs["table_id"]
         client_mock._gapic_client.instance_path.return_value = kwargs["instance_id"]
+        client_mock._gcp_metrics_exporter = BigtableMetricsExporter("project")
         return CrossSync._Sync_Impl.TestTable._get_target_class()(
             client_mock, *args, **kwargs
         )
