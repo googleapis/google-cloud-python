@@ -117,6 +117,7 @@ class AIGenerateDouble(base_ops.NaryOp):
             )
         )
 
+
 @dataclasses.dataclass(frozen=True)
 class AIEmbed(base_ops.UnaryOp):
     name: ClassVar[str] = "ai_embed"
@@ -133,7 +134,7 @@ class AIEmbed(base_ops.UnaryOp):
             pa.struct(
                 (
                     pa.field("result", pa.list_(pa.float64())),
-                    pa.field("status", pa.string())
+                    pa.field("status", pa.string()),
                 )
             )
         )

@@ -784,10 +784,14 @@ def embed(
                 "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
             )
     elif endpoint is None:
-        raise ValueError("You must specify exactly one of 'endpoint' or 'model' argument.")
+        raise ValueError(
+            "You must specify exactly one of 'endpoint' or 'model' argument."
+        )
 
     if title is not None and task_type != "retrieval_document":
-        raise ValueError("You can only use 'title' parameter if you specify retrieval_document for the task_type value.")
+        raise ValueError(
+            "You can only use 'title' parameter if you specify retrieval_document for the task_type value."
+        )
 
     operator = ai_ops.AIEmbed(
         endpoint=endpoint,
@@ -795,7 +799,7 @@ def embed(
         task_type=task_type,
         title=title,
         model_params=json.dumps(model_params) if model_params else None,
-        connection_id=connection_id
+        connection_id=connection_id,
     )
 
     if isinstance(content, str):

@@ -53,6 +53,7 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
 
     return sge.func("AI.GENERATE_DOUBLE", *args)
 
+
 @register_unary_op(ops.AIEmbed, pass_op=True)
 def _(expr: TypedExpr, op: ops.AIEmbed) -> sge.Expression:
     args = [expr.expr] + _construct_named_args(op)

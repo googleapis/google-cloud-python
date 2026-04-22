@@ -107,6 +107,7 @@ class AIGenerateDouble(Value):
             )
         )
 
+
 @public
 class AIEmbed(Value):
     """Create embeddings from text or image data."""
