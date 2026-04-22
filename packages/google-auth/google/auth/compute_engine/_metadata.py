@@ -51,26 +51,45 @@ if not _GCE_METADATA_HOST:
         environment_vars.GCE_METADATA_ROOT, _GCE_DEFAULT_HOST
     )
 
-
-def _validate_gce_mds_configured_environment(mode: _mtls.MdsMtlsMode, mds_url: str):
-    """Validates that the environment is properly configured for GCE MDS if mTLS is enabled.
-
-    mTLS is only supported when connecting to the default metadata server hosts.
-    If we are in strict mode (which requires mTLS), ensure that the metadata host
-    has not been overridden to a custom value (which means mTLS will fail).
+def _get_mds_mtls_root(
+    request,
+    root,
+) -> str:
+    """Returns the metadata server root URL, with the appropriate scheme based on mTLS configuration.
 
     Args:
-        mode (_mtls.MdsMtlsMode): The mTLS mode configured for the metadata server, parsed from the GCE_METADATA_MTLS_MODE environment variable.
-        mds_url (str): The metadata server URL to which the request will be made.
-    Raises:
-        google.auth.exceptions.MutualTLSChannelError: if the environment
-            configuration is invalid for mTLS.
+        mds_mtls_mode (_mtls.MdsMtlsMode): The mTLS mode configured for the metadata server, parsed from the GCE_METADATA_MTLS_MODE environment variable.
+        mds_mtls_adapter_mounted (bool): Whether the mTLS adapter was successfully mounted to the request's session.
+    Returns:
+        str: The metadata server root URL. The URL will use HTTPS if mTLS is enabled or required, and HTTP otherwise.
     """
-    if mode == _mtls.MdsMtlsMode.STRICT:
+    mds_mtls_config = _mtls.MdsMtlsConfig()
+
+    should_mount_adapter = _mtls.should_use_mds_mtls(
+        mds_mtls_config=mds_mtls_config
+    )
+
+    mds_mtls_adapter_mounted = False
+    if should_mount_adapter:
+        mds_mtls_adapter_mounted = _try_mount_mds_mtls_adapter(request, mds_mtls_config)
+
+    use_https = mds_mtls_adapter_mounted or (mds_mtls_config.mode == _mtls.MdsMtlsMode.STRICT)
+
+    scheme = "https" if use_https else "http"
+    mds_mtls_root = "{}://{}/computeMetadata/v1/".format(scheme, root)
+    # mTLS is only supported when connecting to the default metadata host.
+    # If we are in strict mode (which requires mTLS), ensure that the metadata host
+    # has not been overridden to a non-default host value (which means mTLS will fail).
+
+    if mds_mtls_config.mode == _mtls.MdsMtlsMode.STRICT:
         # mTLS is only supported when connecting to the default metadata host.
         # Raise an exception if we are in strict mode (which requires mTLS)
         # but the metadata host has been overridden to a custom MDS. (which means mTLS will fail)
-        parsed = urlparse(mds_url)
+        if not _mtls.mds_mtls_certificates_exist(mds_mtls_config):
+            raise exceptions.MutualTLSChannelError(
+                "Mutual TLS is required, but mTLS certificates were not found."
+            )
+        parsed = urlparse(mds_mtls_root)
         if parsed.hostname not in _GCE_DEFAULT_MDS_HOSTS:
             raise exceptions.MutualTLSChannelError(
                 "Mutual TLS is required, but the metadata host has been overridden. "
@@ -82,44 +101,7 @@ def _validate_gce_mds_configured_environment(mode: _mtls.MdsMtlsMode, mds_url: s
                 "mTLS requires HTTPS."
             )
 
-
-def _get_metadata_root(
-    mds_mtls_mode: _mtls.MdsMtlsMode, mds_mtls_adapter_mounted: bool
-) -> str:
-    """Returns the metadata server root URL, with the appropriate scheme based on mTLS configuration.
-
-    Args:
-        mds_mtls_mode (_mtls.MdsMtlsMode): The mTLS mode configured for the metadata server, parsed from the GCE_METADATA_MTLS_MODE environment variable.
-        mds_mtls_adapter_mounted (bool): Whether the mTLS adapter was successfully mounted to the request's session.
-    Returns:
-        str: The metadata server root URL. The URL will use HTTPS if mTLS is enabled or required, and HTTP otherwise.
-    """
-
-    scheme = "http"
-    if mds_mtls_adapter_mounted or (mds_mtls_mode == _mtls.MdsMtlsMode.STRICT):
-        scheme = "https"
-    return "{}://{}/computeMetadata/v1/".format(scheme, _GCE_METADATA_HOST)
-
-
-def _get_metadata_ip_root(
-    mds_mtls_mode: _mtls.MdsMtlsMode, mds_mtls_adapter_mounted: bool
-) -> str:
-    """Returns the metadata server IP root URL, with the appropriate scheme based on mTLS configuration.
-
-    Args:
-        mds_mtls_mode (_mtls.MdsMtlsMode): The mTLS mode configured for the metadata server, parsed from the GCE_METADATA_MTLS_MODE environment variable.
-        mds_mtls_adapter_mounted (bool): Whether the mTLS adapter was successfully mounted to the request's session.
-    Returns:
-        str: The metadata server IP root URL. The URL will use HTTPS if mTLS is enabled or required, and HTTP otherwise.
-    """
-
-    scheme = "http"
-    if mds_mtls_adapter_mounted or (mds_mtls_mode == _mtls.MdsMtlsMode.STRICT):
-        scheme = "https"
-    return "{}://{}".format(
-        scheme, os.getenv(environment_vars.GCE_METADATA_IP, _GCE_DEFAULT_MDS_IP)
-    )
-
+    return mds_mtls_root
 
 _METADATA_FLAVOR_HEADER = "metadata-flavor"
 _METADATA_FLAVOR_VALUE = "Google"
@@ -190,7 +172,7 @@ def detect_gce_residency_linux():
     return content.startswith(_GOOGLE)
 
 
-def _try_mount_mds_mtls_adapter(request, mode: _mtls.MdsMtlsMode) -> bool:
+def _try_mount_mds_mtls_adapter(request, mds_mtls_config: _mtls.MdsMtlsConfig) -> bool:
     """Tries to mount the mTLS adapter to the request's session if mTLS is enabled and certificates are present.
 
     Args:
@@ -198,7 +180,8 @@ def _try_mount_mds_mtls_adapter(request, mode: _mtls.MdsMtlsMode) -> bool:
             HTTP requests. If mTLS is enabled, and the request supports sessions,
             the request will have the mTLS adapter mounted. Otherwise, there
             will be no change.
-        mode (_mtls.MdsMtlsMode): The mTLS mode configured for the metadata server, parsed from the GCE_METADATA_MTLS_MODE environment variable.
+        mds_mtls_config (_mtls.MdsMtlsConfig): The mTLS configuration containing the
+            paths to the CA and client certificates.
     Returns:
         bool: True if the mTLS adapter was mounted, False otherwise.
     """
@@ -207,21 +190,15 @@ def _try_mount_mds_mtls_adapter(request, mode: _mtls.MdsMtlsMode) -> bool:
         # If the request does not support sessions, we cannot mount the mTLS adapter.
         return False
 
-    mds_mtls_config = _mtls.MdsMtlsConfig()
-    should_mount_adapter = _mtls.should_use_mds_mtls(
-        mode, mds_mtls_config=mds_mtls_config
-    )
-    if not should_mount_adapter:
-        return False
-
     # Only modify the request if mTLS is enabled, and request supports sessions.
-    mds_mtls_adapter_mounted = False
     # Ensure the request has a session to mount the adapter to.
     if not request.session:
         request.session = requests.Session()
 
     adapter = _mtls.MdsMtlsAdapter(mds_mtls_config=mds_mtls_config)
+
     # Mount the adapter for all default GCE metadata hosts.
+    mds_mtls_adapter_mounted = False
     for host in _GCE_DEFAULT_MDS_HOSTS:
         request.session.mount(f"https://{host}/", adapter)
         mds_mtls_adapter_mounted = True
@@ -249,11 +226,7 @@ def ping(
             configuration is invalid for mTLS (for example, the metadata host
             has been overridden in strict mTLS mode).
     """
-    mds_mtls_mode = _mtls._parse_mds_mode()
-    mds_mtls_adapter_mounted = _try_mount_mds_mtls_adapter(request, mds_mtls_mode)
-
-    metadata_ip_root = _get_metadata_ip_root(mds_mtls_mode, mds_mtls_adapter_mounted)
-    _validate_gce_mds_configured_environment(mds_mtls_mode, metadata_ip_root)
+    metadata_ip_root = _get_mds_mtls_root(request, root=os.getenv(environment_vars.GCE_METADATA_IP, _GCE_DEFAULT_MDS_IP))
 
     # NOTE: The explicit ``timeout`` is a workaround. The underlying
     #       issue is that resolving an unknown host on some networks will take
@@ -338,18 +311,9 @@ def get(
             has been overridden in strict mTLS mode).
 
     """
-    mds_mtls_mode = _mtls._parse_mds_mode()
-    mds_mtls_adapter_mounted = _try_mount_mds_mtls_adapter(request, mds_mtls_mode)
+    metadata_server_root = _get_mds_mtls_root(request, root=root if root else _GCE_METADATA_HOST)
 
-    if root is None:
-        root = _get_metadata_root(mds_mtls_mode, mds_mtls_adapter_mounted)
-
-    # mTLS is only supported when connecting to the default metadata host.
-    # If we are in strict mode (which requires mTLS), ensure that the metadata host
-    # has not been overridden to a non-default host value (which means mTLS will fail).
-    _validate_gce_mds_configured_environment(mds_mtls_mode, root)
-
-    base_url = urljoin(root, path)
+    base_url = urljoin(metadata_server_root, path)
     query_params = {} if params is None else params
 
     headers_to_use = _METADATA_HEADERS.copy()
