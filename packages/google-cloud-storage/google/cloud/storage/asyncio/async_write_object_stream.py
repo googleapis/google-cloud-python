@@ -66,10 +66,10 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         client: AsyncGrpcClient.grpc_client,
         bucket_name: str,
         object_name: str,
-        blob: Optional[Blob] = None,
         generation_number: Optional[int] = None,  # None means new object
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         routing_token: Optional[str] = None,
+        blob: Optional[Blob] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
