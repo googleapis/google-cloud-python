@@ -146,6 +146,20 @@ class AIScore(Value):
 
     shape = rlz.shape_like("prompt")
 
+
+@public
+class AISimilarity(Value):
+    """Calculate the similarity between two contents"""
+
+    content1: Value
+    content2: Value
+    endpoint: Optional[Value[dt.String]]
+    model: Optional[Value[dt.String]]
+    model_params: Optional[Value[dt.String]]
+    connection_id: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("content1")
+
     @attribute
     def dtype(self) -> dt.Struct:
         return dt.float64

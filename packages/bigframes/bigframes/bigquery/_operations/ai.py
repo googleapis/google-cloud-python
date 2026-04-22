@@ -870,6 +870,87 @@ def score(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def similarity(
+    content1: str | series.Series | pd.Series,
+    content2: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Returns a FLOAT64 value that represents the cosine similarity between the two inputs.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({'word': ['happy', 'sad']})
+        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005') # doctest: +SKIP
+        0    0.916601
+        1    0.660579
+
+    Args:
+        content1 (str | Series):
+            A string or series that provides the first value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        content2 (str | Series):
+            A string or series that provides the second value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the text embedding model.
+            If you specify the model name, such as `'text-embedding-005'`, rather than a URL, then BigQuery ML automatically identifies the model and uses the model's full endpoint.
+        model (str, optional):
+            Specifies a built-in text embedding model. The only supported value is the embeddinggemma-300m model.
+            If you specify this parameter, you can't specify the `endpoint`, `model_params`, or `connection_id` parameters.
+        model_params (Mapping[Any, Any], optional):
+            Provides additional parameters to the model. You can use any of the parameters object fields.
+            One of these fields, `outputDimensionality`, lets you specify the number of dimensions to use when generating embeddings.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+
+    Returns:
+        bigframes.series.Series: A new series of FLOAT64 values representing the cosine similarity.
+    """
+    if model is not None:
+        if any(x is not None for x in [endpoint, model_params, connection_id]):
+            raise ValueError(
+                "If 'model' is specified, you cannot specify 'endpoint', 'model_params', or 'connection_id'."
+            )
+    elif endpoint is None:
+        raise ValueError("You must specify either 'model' or 'endpoint'.")
+
+    operator = ai_ops.AISimilarity(
+        endpoint=endpoint,
+        model=model,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    # Find a unifying session for the subsequent operations.
+    bf_session = None
+    if isinstance(content1, series.Series):
+        bf_session = content1._session
+    elif isinstance(content2, series.Series):
+        bf_session = content2._session
+
+    if isinstance(content1, str) and isinstance(content2, str):
+        content1 = series.Series([content1], session=bf_session)
+        return content1._apply_binary_op(content2, operator)
+    elif isinstance(content1, str):
+        # content2 must be a series
+        content2 = convert.to_bf_series(
+            content2, default_index=None, session=bf_session
+        )
+        return content2._apply_binary_op(content1, operator)
+    else:
+        # content1 must be a series.
+        content1 = convert.to_bf_series(
+            content1, default_index=None, session=bf_session
+        )
+        return content1._apply_binary_op(content2, operator)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def forecast(
     df: dataframe.DataFrame | pd.DataFrame,
     *,

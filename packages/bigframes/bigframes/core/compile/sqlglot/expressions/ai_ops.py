@@ -23,6 +23,7 @@ from bigframes.core.compile.sqlglot import expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_nary_op = expression_compiler.expression_compiler.register_nary_op
+register_binary_op = expression_compiler.expression_compiler.register_binary_op
 
 
 @register_nary_op(ops.AIGenerate, pass_op=True)
@@ -76,6 +77,16 @@ def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
     return sge.func("AI.SCORE", *args)
 
 
+@register_binary_op(ops.AISimilarity, pass_op=True)
+def _(content1: TypedExpr, content2: TypedExpr, op: ops.AISimilarity) -> sge.Expression:
+    args = [
+        sge.Kwarg(this="content1", expression=content1.expr),
+        sge.Kwarg(this="content2", expression=content2.expr),
+    ] + _construct_named_args(op)
+
+    return sge.func("AI.SIMILARITY", *args)
+
+
 def _construct_prompt(
     exprs: tuple[TypedExpr, ...],
     prompt_context: tuple[str | None, ...],
@@ -94,7 +105,7 @@ def _construct_prompt(
     return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
 
 
-def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
+def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
     args = []
 
     op_args = asdict(op)

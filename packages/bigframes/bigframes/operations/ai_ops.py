@@ -150,3 +150,16 @@ class AIScore(base_ops.NaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class AISimilarity(base_ops.BinaryOp):
+    name: ClassVar[str] = "ai_similarity"
+
+    endpoint: str | None
+    model: str | None
+    model_params: str | None
+    connection_id: str | None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.FLOAT_DTYPE

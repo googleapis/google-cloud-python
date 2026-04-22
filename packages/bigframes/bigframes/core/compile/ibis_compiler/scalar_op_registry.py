@@ -1992,6 +1992,20 @@ def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructVal
     ).to_expr()
 
 
+@scalar_op_compiler.register_binary_op(ops.AISimilarity, pass_op=True)
+def ai_similarity(
+    content1: ibis_types.Value, content2: ibis_types.Value, op: ops.AISimilarity
+) -> ibis_types.Value:
+    return ai_ops.AISimilarity(
+        content1, # type: ignore
+        content2, # type: ignore
+        op.endpoint,  # type: ignore
+        op.model,  # type: ignore
+        op.model_params,  # type: ignore
+        op.connection_id,  # type: ignore
+    ).to_expr()
+
+
 def _construct_prompt(
     col_refs: tuple[ibis_types.Value], prompt_context: tuple[str | None]
 ) -> ibis_types.StructValue:

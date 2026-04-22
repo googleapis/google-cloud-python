@@ -370,5 +370,53 @@ def test_forecast_w_params(time_series_df_default_index: dataframe.DataFrame):
     )
 
 
+def test_ai_similarity(session):
+    s1 = bpd.Series(["happy", "sad"], session=session)
+    s2 = pd.Series(["glad", "angry"])
+
+    result = bbq.ai.similarity(s1, s2, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_similarity_one_content_is_string_literal(session):
+    s1 = "happy"
+    s2 = bpd.Series(["glad", "angry"], session=session)
+
+    result = bbq.ai.similarity(s1, s2, model="embeddinggemma-300m")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_similarity_both_contents_are_string_literals(session):
+    s1 = "happy"
+    s2 = "glad"
+
+    result = bbq.ai.similarity(s1, s2, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_similarity_no_endpoint_or_model__raises_error(session):
+    s1 = bpd.Series(["happy", "sad"], session=session)
+    s2 = bpd.Series(["glad", "angry"], session=session)
+
+    with pytest.raises(ValueError):
+        bbq.ai.similarity(s1, s2)
+
+
+def test_ai_similarity_both_endpoint_and_model__raises_error(session):
+    s1 = "happy"
+    s2 = "glad"
+
+    with pytest.raises(ValueError):
+        bbq.ai.similarity(
+            s1, s2, endpoint="text-embedding-005", model="embeddinggemma-300m"
+        )
+
+
 def _contains_no_nulls(s: series.Series) -> bool:
     return len(s) == s.count()

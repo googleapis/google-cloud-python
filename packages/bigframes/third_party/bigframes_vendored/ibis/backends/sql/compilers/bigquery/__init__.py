@@ -1143,6 +1143,9 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_AIScore(self, op, **kwargs):
         return sge.func("AI.SCORE", *self._compile_ai_args(**kwargs))
 
+    def visit_AISimilarity(self, op, **kwargs):
+        return sge.func("AI.SIMILARITY", *self._compile_ai_args(**kwargs))
+
     def _compile_ai_args(self, **kwargs):
         args = []
 

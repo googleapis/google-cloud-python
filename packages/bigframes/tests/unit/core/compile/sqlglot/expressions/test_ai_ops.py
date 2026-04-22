@@ -326,3 +326,55 @@ def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot, connection_id)
     )
 
     snapshot.assert_match(sql, "out.sql")
+
+
+@pytest.mark.parametrize("connection_id", [None, CONNECTION_ID])
+def test_ai_similarity(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint="text-embedding-005",
+        model=None,
+        model_params=None,
+        connection_id=connection_id,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_similarity_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint=None,
+        model="embeddinggemma-300m",
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_similarity_with_model_param(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint="text-embedding-005",
+        model=None,
+        model_params=json.dumps({"outputDimensionality": 256}),
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")

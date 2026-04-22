@@ -22,6 +22,7 @@ from bigframes.operations.ai_ops import (
     AIGenerateInt,
     AIIf,
     AIScore,
+    AISimilarity,
 )
 from bigframes.operations.array_ops import (
     ArrayIndexOp,
@@ -436,6 +437,7 @@ __all__ = [
     "AIGenerateInt",
     "AIIf",
     "AIScore",
+    "AISimilarity",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
