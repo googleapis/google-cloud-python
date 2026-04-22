@@ -171,11 +171,11 @@ class TestAsyncAppendableObjectWriter:
         mock_blob = mock.Mock(spec=Blob)
         mock_blob.name = OBJECT
         mock_blob.bucket.name = BUCKET
+        mock_blob.generation = GENERATION
 
         writer = AsyncAppendableObjectWriter.from_blob(
             mock_appendable_writer["mock_client"],
             mock_blob,
-            generation=GENERATION,
             writer_options={"FLUSH_INTERVAL_BYTES": EIGHT_MIB},
         )
 
