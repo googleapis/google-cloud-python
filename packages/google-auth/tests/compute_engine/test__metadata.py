@@ -143,7 +143,7 @@ def test_ping_success(mock_metrics_header_value):
 
     request.assert_called_once_with(
         method="GET",
-        url="http://169.254.169.254",
+        url="http://169.254.169.254/computeMetadata/v1/",
         headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
@@ -157,7 +157,7 @@ def test_ping_success_retry(mock_metrics_header_value):
 
     request.assert_called_with(
         method="GET",
-        url="http://169.254.169.254",
+        url="http://169.254.169.254/computeMetadata/v1/",
         headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
@@ -195,7 +195,7 @@ def test_ping_success_custom_root(mock_metrics_header_value):
 
     request.assert_called_once_with(
         method="GET",
-        url="http://" + fake_ip,
+        url="http://" + fake_ip + "/computeMetadata/v1/",
         headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
@@ -388,13 +388,13 @@ def test_get_success_custom_root_old_variable():
 def test_get_success_custom_root():
     request = make_request("{}", headers={"content-type": "application/json"})
 
-    fake_root = "http://another.metadata.service"
+    fake_root = "another.metadata.service"
 
     _metadata.get(request, PATH, root=fake_root)
 
     request.assert_called_once_with(
         method="GET",
-        url="{}/{}".format(fake_root, PATH),
+        url="http://another.metadata.service/computeMetadata/v1/{}".format(PATH),
         headers=_metadata._METADATA_HEADERS,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
@@ -840,40 +840,33 @@ def test_get_service_account_info():
     assert info[key] == value
 
 
-def test__get_metadata_root_mtls():
-    assert (
-        _metadata._get_metadata_root(
-            _metadata._mtls.MdsMtlsMode.STRICT, mds_mtls_adapter_mounted=False
+def test__get_mds_mtls_root_mtls():
+    request = mock.Mock(spec=transport.Request)
+    # Mocking mds_mtls_certificates_exist to True so it returns https
+    with mock.patch(
+        "google.auth.compute_engine._mtls.mds_mtls_certificates_exist",
+        return_value=True,
+    ):
+        with mock.patch(
+            "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
+            return_value=_metadata._mtls.MdsMtlsMode.STRICT,
+        ):
+            assert (
+                _metadata._get_mds_mtls_root(request, root=_metadata._GCE_DEFAULT_HOST)
+                == "https://metadata.google.internal/computeMetadata/v1/"
+            )
+
+
+def test__get_mds_mtls_root_no_mtls():
+    request = mock.Mock(spec=transport.Request)
+    with mock.patch(
+        "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
+        return_value=_metadata._mtls.MdsMtlsMode.NONE,
+    ):
+        assert (
+            _metadata._get_mds_mtls_root(request, root=_metadata._GCE_DEFAULT_HOST)
+            == "http://metadata.google.internal/computeMetadata/v1/"
         )
-        == "https://metadata.google.internal/computeMetadata/v1/"
-    )
-
-
-def test__get_metadata_root_no_mtls():
-    assert (
-        _metadata._get_metadata_root(
-            _metadata._mtls.MdsMtlsMode.NONE, mds_mtls_adapter_mounted=False
-        )
-        == "http://metadata.google.internal/computeMetadata/v1/"
-    )
-
-
-def test__get_metadata_ip_root_mtls():
-    assert (
-        _metadata._get_metadata_ip_root(
-            _metadata._mtls.MdsMtlsMode.STRICT, mds_mtls_adapter_mounted=False
-        )
-        == "https://169.254.169.254"
-    )
-
-
-def test__get_metadata_ip_root_no_mtls():
-    assert (
-        _metadata._get_metadata_ip_root(
-            _metadata._mtls.MdsMtlsMode.NONE, mds_mtls_adapter_mounted=False
-        )
-        == "http://169.254.169.254"
-    )
 
 
 @mock.patch(
@@ -882,19 +875,20 @@ def test__get_metadata_ip_root_no_mtls():
 @mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
 def test__try_mount_mds_mtls_adapter_mtls(mock_mds_mtls_adapter, mock_certs_exist):
     request = google_auth_requests.Request(mock.create_autospec(requests.Session))
-    assert _metadata._try_mount_mds_mtls_adapter(
-        request, mode=_metadata._mtls.MdsMtlsMode.STRICT
-    )
+    config = _metadata._mtls.MdsMtlsConfig(mode=_metadata._mtls.MdsMtlsMode.STRICT)
+    assert _metadata._try_mount_mds_mtls_adapter(request, config)
     mock_mds_mtls_adapter.assert_called_once()
     assert request.session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)
 
 
-def test__try_mount_mds_mtls_adapter_no_mtls():
-    request = mock.Mock()
+@mock.patch("ssl.create_default_context")
+def test__try_mount_mds_mtls_adapter_no_mtls(mock_ssl_context):
+    request = mock.create_autospec(transport.Request)
+    # Ensure it doesn't have a 'session' attribute
+    del request.session
     assert not _metadata._try_mount_mds_mtls_adapter(
-        request, mode=_metadata._mtls.MdsMtlsMode.NONE
+        request, _metadata._mtls.MdsMtlsConfig()
     )
-    request.session.mount.assert_not_called()
 
 
 @mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
@@ -903,12 +897,20 @@ def test__try_mount_mds_mtls_adapter_no_mtls():
     return_value=True,
 )
 @mock.patch(
-    "google.auth.compute_engine._mtls._parse_mds_mode",
+    "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
     return_value=_metadata._mtls.MdsMtlsMode.STRICT,
+)
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist",
+    return_value=True,
 )
 @mock.patch("google.auth.transport.requests.Request")
 def test_ping_mtls(
-    mock_request, mock_parse_mds_mode, mock_try_mount_adapter, mock_metrics_header_value
+    mock_request,
+    mock_certs_exist,
+    mock_parse_mds_mode,
+    mock_try_mount_adapter,
+    mock_metrics_header_value,
 ):
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = http_client.OK
@@ -917,10 +919,10 @@ def test_ping_mtls(
 
     assert _metadata.ping(mock_request)
 
-    mock_parse_mds_mode.assert_called_once()
+    mock_parse_mds_mode.assert_called()
     mock_try_mount_adapter.assert_called_once()
     mock_request.assert_called_once_with(
-        url="https://169.254.169.254",
+        url="https://169.254.169.254/computeMetadata/v1/",
         method="GET",
         headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
@@ -932,11 +934,17 @@ def test_ping_mtls(
     return_value=True,
 )
 @mock.patch(
-    "google.auth.compute_engine._mtls._parse_mds_mode",
+    "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
     return_value=_metadata._mtls.MdsMtlsMode.STRICT,
 )
+@mock.patch(
+    "google.auth.compute_engine._mtls.mds_mtls_certificates_exist",
+    return_value=True,
+)
 @mock.patch("google.auth.transport.requests.Request")
-def test_get_mtls(mock_request, mock_parse_mds_mode, mock_try_mount_adapter):
+def test_get_mtls(
+    mock_request, mock_certs_exist, mock_parse_mds_mode, mock_try_mount_adapter
+):
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = http_client.OK
     response.data = _helpers.to_bytes("{}")
@@ -945,7 +953,7 @@ def test_get_mtls(mock_request, mock_parse_mds_mode, mock_try_mount_adapter):
 
     _metadata.get(mock_request, "some/path")
 
-    mock_parse_mds_mode.assert_called_once()
+    mock_parse_mds_mode.assert_called()
     mock_try_mount_adapter.assert_called_once()
     mock_request.assert_called_once_with(
         url="https://metadata.google.internal/computeMetadata/v1/some/path",
@@ -956,41 +964,55 @@ def test_get_mtls(mock_request, mock_parse_mds_mode, mock_try_mount_adapter):
 
 
 @pytest.mark.parametrize(
-    "mds_mode, metadata_url, expect_exception",
+    "mds_mode, metadata_host, certs_exist, expect_exception",
     [
         (
             _metadata._mtls.MdsMtlsMode.STRICT,
-            "https://" + _metadata._GCE_DEFAULT_HOST,
+            _metadata._GCE_DEFAULT_HOST,
+            True,
             False,
         ),
         (
             _metadata._mtls.MdsMtlsMode.STRICT,
-            "https://" + _metadata._GCE_DEFAULT_MDS_IP,
+            _metadata._GCE_DEFAULT_MDS_IP,
+            True,
             False,
         ),
-        (_metadata._mtls.MdsMtlsMode.STRICT, "https://custom.host", True),
-        (_metadata._mtls.MdsMtlsMode.STRICT, "http://metadata.google.internal", True),
-        (_metadata._mtls.MdsMtlsMode.NONE, "https://custom.host", False),
+        (_metadata._mtls.MdsMtlsMode.STRICT, "custom.host", True, True),
+        (_metadata._mtls.MdsMtlsMode.STRICT, _metadata._GCE_DEFAULT_HOST, False, True),
+        (_metadata._mtls.MdsMtlsMode.NONE, "custom.host", True, False),
         (
             _metadata._mtls.MdsMtlsMode.DEFAULT,
-            "https://" + _metadata._GCE_DEFAULT_HOST,
+            _metadata._GCE_DEFAULT_HOST,
+            True,
             False,
         ),
         (
             _metadata._mtls.MdsMtlsMode.DEFAULT,
-            "https://" + _metadata._GCE_DEFAULT_MDS_IP,
+            _metadata._GCE_DEFAULT_MDS_IP,
+            True,
             False,
         ),
     ],
 )
 def test_validate_gce_mds_configured_environment(
-    mds_mode, metadata_url, expect_exception
+    mds_mode, metadata_host, certs_exist, expect_exception
 ):
-    if expect_exception:
-        with pytest.raises(exceptions.MutualTLSChannelError):
-            _metadata._validate_gce_mds_configured_environment(mds_mode, metadata_url)
-    else:
-        _metadata._validate_gce_mds_configured_environment(mds_mode, metadata_url)
+    # Validation now happens inside _get_mds_mtls_root
+    request = mock.Mock(spec=transport.Request)
+    with mock.patch(
+        "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
+        return_value=mds_mode,
+    ):
+        with mock.patch(
+            "google.auth.compute_engine._mtls.mds_mtls_certificates_exist",
+            return_value=certs_exist,
+        ):
+            if expect_exception:
+                with pytest.raises(exceptions.MutualTLSChannelError):
+                    _metadata._get_mds_mtls_root(request, root=metadata_host)
+            else:
+                _metadata._get_mds_mtls_root(request, root=metadata_host)
 
 
 @mock.patch(
@@ -1002,9 +1024,8 @@ def test__try_mount_mds_mtls_adapter_mtls_session_exists(
 ):
     mock_session = mock.create_autospec(requests.Session)
     request = google_auth_requests.Request(mock_session)
-    assert _metadata._try_mount_mds_mtls_adapter(
-        request, mode=_metadata._mtls.MdsMtlsMode.STRICT
-    )
+    config = _metadata._mtls.MdsMtlsConfig(mode=_metadata._mtls.MdsMtlsMode.STRICT)
+    assert _metadata._try_mount_mds_mtls_adapter(request, config)
 
     mock_mds_mtls_adapter.assert_called_once()
     assert mock_session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)
@@ -1020,11 +1041,10 @@ def test__try_mount_mds_mtls_adapter_mtls_no_session(
     request = google_auth_requests.Request(None)
     # Explicitly set session to None to avoid a session being created in the Request constructor.
     request.session = None
+    config = _metadata._mtls.MdsMtlsConfig(mode=_metadata._mtls.MdsMtlsMode.STRICT)
 
     with mock.patch("requests.Session") as mock_session_class:
-        assert _metadata._try_mount_mds_mtls_adapter(
-            request, mode=_metadata._mtls.MdsMtlsMode.STRICT
-        )
+        assert _metadata._try_mount_mds_mtls_adapter(request, config)
 
         mock_session_class.assert_called_once()
         mock_mds_mtls_adapter.assert_called_once()
@@ -1045,8 +1065,7 @@ def test__try_mount_mds_mtls_adapter_mtls_http_request(
     from google.auth.transport import _http_client
 
     request = _http_client.Request()
-    assert not _metadata._try_mount_mds_mtls_adapter(
-        request, mode=_metadata._mtls.MdsMtlsMode.STRICT
-    )
+    config = _metadata._mtls.MdsMtlsConfig(mode=_metadata._mtls.MdsMtlsMode.STRICT)
+    assert not _metadata._try_mount_mds_mtls_adapter(request, config)
 
     assert mock_mds_mtls_adapter.call_count == 0

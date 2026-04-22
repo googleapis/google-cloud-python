@@ -51,6 +51,7 @@ if not _GCE_METADATA_HOST:
         environment_vars.GCE_METADATA_ROOT, _GCE_DEFAULT_HOST
     )
 
+
 def _get_mds_mtls_root(
     request,
     root,
@@ -65,15 +66,15 @@ def _get_mds_mtls_root(
     """
     mds_mtls_config = _mtls.MdsMtlsConfig()
 
-    should_mount_adapter = _mtls.should_use_mds_mtls(
-        mds_mtls_config=mds_mtls_config
-    )
+    should_mount_adapter = _mtls.should_use_mds_mtls(mds_mtls_config=mds_mtls_config)
 
     mds_mtls_adapter_mounted = False
     if should_mount_adapter:
         mds_mtls_adapter_mounted = _try_mount_mds_mtls_adapter(request, mds_mtls_config)
 
-    use_https = mds_mtls_adapter_mounted or (mds_mtls_config.mode == _mtls.MdsMtlsMode.STRICT)
+    use_https = mds_mtls_adapter_mounted or (
+        mds_mtls_config.mode == _mtls.MdsMtlsMode.STRICT
+    )
 
     scheme = "https" if use_https else "http"
     mds_mtls_root = "{}://{}/computeMetadata/v1/".format(scheme, root)
@@ -102,6 +103,7 @@ def _get_mds_mtls_root(
             )
 
     return mds_mtls_root
+
 
 _METADATA_FLAVOR_HEADER = "metadata-flavor"
 _METADATA_FLAVOR_VALUE = "Google"
@@ -226,7 +228,9 @@ def ping(
             configuration is invalid for mTLS (for example, the metadata host
             has been overridden in strict mTLS mode).
     """
-    metadata_ip_root = _get_mds_mtls_root(request, root=os.getenv(environment_vars.GCE_METADATA_IP, _GCE_DEFAULT_MDS_IP))
+    metadata_ip_root = _get_mds_mtls_root(
+        request, root=os.getenv(environment_vars.GCE_METADATA_IP, _GCE_DEFAULT_MDS_IP)
+    )
 
     # NOTE: The explicit ``timeout`` is a workaround. The underlying
     #       issue is that resolving an unknown host on some networks will take
@@ -311,7 +315,9 @@ def get(
             has been overridden in strict mTLS mode).
 
     """
-    metadata_server_root = _get_mds_mtls_root(request, root=root if root else _GCE_METADATA_HOST)
+    metadata_server_root = _get_mds_mtls_root(
+        request, root=root if root else _GCE_METADATA_HOST
+    )
 
     base_url = urljoin(metadata_server_root, path)
     query_params = {} if params is None else params

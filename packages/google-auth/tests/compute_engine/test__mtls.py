@@ -21,7 +21,7 @@ from unittest import mock
 import pytest  # type: ignore
 import requests
 
-from google.auth import environment_vars, exceptions
+from google.auth import environment_vars
 from google.auth.compute_engine import _mtls
 
 
@@ -55,7 +55,7 @@ def test__MdsMtlsConfig_non_windows_defaults():
 
 def test__parse_mds_mode_default(monkeypatch):
     monkeypatch.delenv(environment_vars.GCE_METADATA_MTLS_MODE, raising=False)
-    assert _mtls._parse_mds_mode() == _mtls.MdsMtlsMode.DEFAULT
+    assert _mtls.MdsMtlsConfig()._parse_mds_mode() == _mtls.MdsMtlsMode.DEFAULT
 
 
 @pytest.mark.parametrize(
@@ -69,13 +69,13 @@ def test__parse_mds_mode_default(monkeypatch):
 )
 def test__parse_mds_mode_valid(monkeypatch, mode_str, expected_mode):
     monkeypatch.setenv(environment_vars.GCE_METADATA_MTLS_MODE, mode_str)
-    assert _mtls._parse_mds_mode() == expected_mode
+    assert _mtls.MdsMtlsConfig()._parse_mds_mode() == expected_mode
 
 
 def test__parse_mds_mode_invalid(monkeypatch):
     monkeypatch.setenv(environment_vars.GCE_METADATA_MTLS_MODE, "invalid_mode")
     with pytest.raises(ValueError):
-        _mtls._parse_mds_mode()
+        _mtls.MdsMtlsConfig()._parse_mds_mode()
 
 
 @mock.patch("os.path.exists")
@@ -94,7 +94,7 @@ def test_mds_mtls_certificates_exist_false(mock_exists, mock_mds_mtls_config):
     "mtls_mode, certs_exist, expected_result",
     [
         (_mtls.MdsMtlsMode.STRICT, True, True),
-        (_mtls.MdsMtlsMode.STRICT, False, exceptions.MutualTLSChannelError),
+        (_mtls.MdsMtlsMode.STRICT, False, True),
         (_mtls.MdsMtlsMode.NONE, True, False),
         (_mtls.MdsMtlsMode.NONE, False, False),
         (_mtls.MdsMtlsMode.DEFAULT, True, True),
@@ -106,15 +106,13 @@ def test_should_use_mds_mtls(
     mock_exists, mtls_mode, certs_exist, expected_result, mock_mds_mtls_config
 ):
     mock_exists.return_value = certs_exist
+    mock_mds_mtls_config.mode = mtls_mode
 
     if isinstance(expected_result, type) and issubclass(expected_result, Exception):
         with pytest.raises(expected_result):
-            _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config)
+            _mtls.should_use_mds_mtls(mock_mds_mtls_config)
     else:
-        assert (
-            _mtls.should_use_mds_mtls(mtls_mode, mock_mds_mtls_config)
-            is expected_result
-        )
+        assert _mtls.should_use_mds_mtls(mock_mds_mtls_config) is expected_result
 
 
 @mock.patch("ssl.create_default_context")
@@ -173,14 +171,13 @@ def test_mds_mtls_adapter_session_request(
     mock_super_send.assert_called_once()
 
 
-@mock.patch("requests.adapters.HTTPAdapter.send")
-@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+@mock.patch("requests.adapters.HTTPAdapter.send")  # Patch the PARENT class method
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_success(
-    mock_ssl_context, mock_parse_mds_mode, mock_super_send, mock_mds_mtls_config
+    mock_ssl_context, mock_super_send, mock_mds_mtls_config
 ):
     """Test the explicit 'happy path' where mTLS succeeds without error."""
-    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    mock_mds_mtls_config.mode = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
     # Setup the parent class send return value to be successful (200 OK)
@@ -199,12 +196,11 @@ def test_mds_mtls_adapter_send_success(
 
 
 @mock.patch("google.auth.compute_engine._mtls.HTTPAdapter")
-@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_fallback_default_mode(
-    mock_ssl_context, mock_parse_mds_mode, mock_http_adapter_class, mock_mds_mtls_config
+    mock_ssl_context, mock_http_adapter_class, mock_mds_mtls_config
 ):
-    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    mock_mds_mtls_config.mode = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
     mock_fallback_send = mock.Mock()
@@ -225,12 +221,11 @@ def test_mds_mtls_adapter_send_fallback_default_mode(
 
 
 @mock.patch("google.auth.compute_engine._mtls.HTTPAdapter")
-@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_fallback_http_error(
-    mock_ssl_context, mock_parse_mds_mode, mock_http_adapter_class, mock_mds_mtls_config
+    mock_ssl_context, mock_http_adapter_class, mock_mds_mtls_config
 ):
-    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    mock_mds_mtls_config.mode = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
     mock_fallback_send = mock.Mock()
@@ -253,12 +248,11 @@ def test_mds_mtls_adapter_send_fallback_http_error(
 
 
 @mock.patch("requests.adapters.HTTPAdapter.send")
-@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_no_fallback_other_exception(
-    mock_ssl_context, mock_parse_mds_mode, mock_http_adapter_send, mock_mds_mtls_config
+    mock_ssl_context, mock_http_adapter_send, mock_mds_mtls_config
 ):
-    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    mock_mds_mtls_config.mode = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
     # Simulate HTTP exception
@@ -273,12 +267,11 @@ def test_mds_mtls_adapter_send_no_fallback_other_exception(
     mock_http_adapter_send.assert_not_called()
 
 
-@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_no_fallback_strict_mode(
-    mock_ssl_context, mock_parse_mds_mode, mock_mds_mtls_config
+    mock_ssl_context, mock_mds_mtls_config
 ):
-    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.STRICT
+    mock_mds_mtls_config.mode = _mtls.MdsMtlsMode.STRICT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
     # Simulate SSLError on the super().send() call

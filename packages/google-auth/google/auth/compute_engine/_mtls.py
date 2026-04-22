@@ -16,7 +16,6 @@
 #
 """Mutual TLS for Google Compute Engine metadata server."""
 
-from dataclasses import dataclass, field
 import enum
 import logging
 import os
@@ -27,7 +26,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 from requests.adapters import HTTPAdapter
 
-from google.auth import environment_vars, exceptions
+from google.auth import environment_vars
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -39,6 +38,7 @@ _WINDOWS_OS_NAME = "nt"
 # https://cloud.google.com/compute/docs/metadata/overview#https-mds-certificates
 _WINDOWS_MTLS_COMPONENTS_BASE_PATH = Path("C:/ProgramData/Google/ComputeEngine")
 _MTLS_COMPONENTS_BASE_PATH = Path("/run/google-mds-mtls")
+
 
 class MdsMtlsMode(enum.Enum):
     """MDS mTLS mode. Used to configure connection behavior when connecting to MDS.
@@ -52,6 +52,7 @@ class MdsMtlsMode(enum.Enum):
     NONE = "none"
     DEFAULT = "default"
 
+
 class MdsMtlsConfig:
     def __init__(
         self,
@@ -60,22 +61,23 @@ class MdsMtlsConfig:
         mode: MdsMtlsMode = None,
     ):
         self.ca_cert_path = ca_cert_path or self._get_default_mds_root_crt_path()
-        self.client_combined_cert_path = client_combined_cert_path or self._get_default_mds_client_combined_cert_path()
+        self.client_combined_cert_path = (
+            client_combined_cert_path
+            or self._get_default_mds_client_combined_cert_path()
+        )
         self.mode = mode or self._parse_mds_mode()
-    
+
     def _get_default_mds_root_crt_path(self):
         if os.name == _WINDOWS_OS_NAME:
             return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-root.crt"
         else:
             return _MTLS_COMPONENTS_BASE_PATH / "root.crt"
 
-
     def _get_default_mds_client_combined_cert_path(self):
         if os.name == _WINDOWS_OS_NAME:
             return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-client.key"
         else:
             return _MTLS_COMPONENTS_BASE_PATH / "client.key"
-
 
     def _parse_mds_mode(self) -> MdsMtlsMode:
         """Parses the GCE_METADATA_MTLS_MODE environment variable."""
@@ -88,6 +90,7 @@ class MdsMtlsConfig:
             raise ValueError(
                 "Invalid value for GCE_METADATA_MTLS_MODE. Must be one of 'strict', 'none', or 'default'."
             )
+
 
 def mds_mtls_certificates_exist(mds_mtls_config: MdsMtlsConfig):
     """Checks if the mTLS certificates exist.
@@ -129,9 +132,7 @@ def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig) -> bool:
 class MdsMtlsAdapter(HTTPAdapter):
     """An HTTP adapter that uses mTLS for the metadata server."""
 
-    def __init__(
-        self, mds_mtls_config: MdsMtlsConfig, *args, **kwargs
-    ):
+    def __init__(self, mds_mtls_config: MdsMtlsConfig, *args, **kwargs):
         self.mds_mtls_config = mds_mtls_config
         self.ssl_context = ssl.create_default_context()
         self.ssl_context.load_verify_locations(cafile=mds_mtls_config.ca_cert_path)
