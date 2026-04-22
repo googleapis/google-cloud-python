@@ -68,7 +68,6 @@ import bigframes.formatting_helpers as formatter
 import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.operations.blob as blob
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
@@ -319,10 +318,6 @@ class Series:
     @property
     def list(self) -> lists.ListAccessor:
         return lists.ListAccessor(self)
-
-    @property
-    def _blob(self) -> blob._BlobAccessor:
-        return blob._BlobAccessor(self)
 
     @property
     @validations.requires_ordering()
