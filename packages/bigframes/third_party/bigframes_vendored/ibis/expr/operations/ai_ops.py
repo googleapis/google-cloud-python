@@ -109,7 +109,7 @@ class AIGenerateDouble(Value):
 
 @public
 class AIEmbed(Value):
-    """Generate doubles based on the prompt"""
+    """Create embeddings from text or image data."""
 
     content: Value
     connection_id: Optional[Value[dt.String]]

@@ -320,7 +320,7 @@ def test_ai_embed_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIEmbed(
         endpoint=None,
-        model="project.dataset.my_model",
+        model="embeddinggemma-300m",
         task_type=None,
         title=None,
         model_params=None,
@@ -332,7 +332,7 @@ def test_ai_embed_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
-def test_ai_embed_with_model_param_and_title(
+def test_ai_embed_with_task_type_and_title(
     scalar_types_df: dataframe.DataFrame, snapshot
 ):
     col_name = "string_col"
