@@ -284,8 +284,8 @@ def test_options_resource_name_aliases():
             "resource-name-alias=workspace.googleapis.com/Tool:WorkspaceTool,"
             "resource-name-alias=bad_string_without_colon,"
             "resource-name-alias=:MissingPath,"
-            "resource-name-alias=MissingAlias:,"  # <-- Covers 'not clean_alias' (Line 207)
-            "resource-name-alias= ,"              # <-- Covers 'not mapping.strip()' (Line 202)
+            "resource-name-alias=MissingAlias:,"
+            "resource-name-alias= ,"
         )
 
         # Verify the dictionary is perfectly formed
