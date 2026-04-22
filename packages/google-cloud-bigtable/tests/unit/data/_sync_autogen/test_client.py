@@ -189,7 +189,11 @@ class TestBigtableDataClient:
         with self._make_client() as client:
             assert client._gcp_metrics_exporter.project_id == client.project
 
-    def test_veneer_grpc_headers(self):
+    @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+    )
+    def test_veneer_grpc_headers(self, exporter_mock, exporter_mock_sync):
         client_component = "data-async" if CrossSync._Sync_Impl.is_async else "data"
         VENEER_HEADER_REGEX = re.compile(
             "gapic\\/[0-9]+\\.[\\w.-]+ gax\\/[0-9]+\\.[\\w.-]+ gccl\\/[0-9]+\\.[\\w.-]+-"
