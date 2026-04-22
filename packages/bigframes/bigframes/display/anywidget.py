@@ -172,7 +172,7 @@ class TableWidget(_WIDGET_BASE):
     @functools.cached_property
     def _esm(self):
         """Load JavaScript code from external file."""
-        return resources.read_text(bigframes.display, "table_widget.js")
+        return resources.read_text(bigframes.display, "table_widget.esm.js")
 
     @functools.cached_property
     def _css(self):
