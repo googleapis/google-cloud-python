@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from typing import Any
 
 import bigframes_vendored.sqlglot.expressions as sge
 
@@ -56,7 +57,7 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
 
 @register_unary_op(ops.AIEmbed, pass_op=True)
 def _(expr: TypedExpr, op: ops.AIEmbed) -> sge.Expression:
-    args = [expr.expr] + _construct_named_args(op)
+    args: list[Any] = [expr.expr] + _construct_named_args(op)
 
     return sge.func("AI.EMBED", *args)
 
@@ -102,7 +103,7 @@ def _construct_prompt(
     return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
 
 
-def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
+def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
     args = []
 
     op_args = asdict(op)
