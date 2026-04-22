@@ -1689,6 +1689,7 @@ class _ProtoBuilder:
                 documentation=self.docs.get(path, self.EMPTY),
             ),
             oneofs=oneofs,
+            resource_name_aliases=self.opts.resource_name_aliases,
         )
         return self.proto_messages[address.proto]
 

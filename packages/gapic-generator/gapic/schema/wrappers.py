@@ -520,6 +520,7 @@ class MessageType:
         default_factory=metadata.Metadata,
     )
     oneofs: Optional[Mapping[str, "Oneof"]] = None
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -688,7 +689,13 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find("/") + 1 :] if resource else None
+        if not resource:
+            return None
+            
+        default_type = resource.type[resource.type.find("/") + 1 :]
+        
+        # 2. Safely read from the class's own strictly-typed dictionary!
+        return self.resource_name_aliases.get(resource.type, default_type)
 
     @property
     def resource_type_full_path(self) -> Optional[str]:
@@ -2322,6 +2329,25 @@ class Service:
             unique_messages,
             key=lambda m: m.resource_type_full_path or m.name
         )
+
+        # Fail-fast collision detection
+        seen_types = {}
+        for msg in sorted_messages:
+            res_type = msg.resource_type
+            if not res_type:
+                continue
+                
+            if res_type in seen_types:
+                incumbent = seen_types[res_type]
+                raise ValueError(
+                    f"\n\nFatal: Namespace collision detected for resource type '{res_type}'.\n"
+                    f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
+                    f"both flatten to the exact same method name.\n"
+                    f"To protect backward compatibility, explicitly alias one of these using "
+                    f"the `--resource-name-alias` CLI parameter.\n"
+                    f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
+                )
+            seen_types[res_type] = msg
 
         return tuple(sorted_messages)
 
