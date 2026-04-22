@@ -22,7 +22,7 @@ from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
-from gapic.schema.wrappers import CommonResource
+from gapic.schema.wrappers import CommonResource, MessageType
 
 from test_utils.test_utils import (
     get_method,
@@ -742,12 +742,12 @@ def test_resource_messages_collision_resolved_by_alias():
     opts_2.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}/tool")
     
     # 2. Build the messages WITH the alias injected into one of them!
-    msg_1 = wrappers.MessageType(
+    msg_1 = MessageType(
         message_pb=descriptor_pb2.DescriptorProto(name="MessageOne", options=opts_1), 
         fields={}, nested_enums={}, nested_messages={},
         resource_name_aliases={"ces.googleapis.com/Tool": "CesTool"} # Resolved!
     )
-    msg_2 = wrappers.MessageType(
+    msg_2 = MessageType(
         message_pb=descriptor_pb2.DescriptorProto(name="MessageTwo", options=opts_2), 
         fields={}, nested_enums={}, nested_messages={}
     )
