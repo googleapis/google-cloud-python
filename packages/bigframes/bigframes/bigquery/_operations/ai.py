@@ -707,7 +707,7 @@ def generate_table(
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
 def embed(
-    content: str | series.Series,
+    content: str | series.Series | pd.Series,
     *,
     endpoint: str | None = None,
     model: str | None = None,
@@ -744,7 +744,7 @@ def embed(
 
     Args:
         content (str | Series):
-            A string literal or a Series that provides the text or image to embed.
+            A string literal or a Series (either BigFrames series or pandas Series) that provides the text or image to embed.
         endpoint (str, optional):
             A string value that specifies a supported Vertex AI embedding model endpoint to use.
             The endpoint value that you specify must include the model version, for example,
@@ -804,6 +804,8 @@ def embed(
 
     if isinstance(content, str):
         return series.Series([content])._apply_unary_op(operator)
+    elif isinstance(content, pd.Series):
+        return series.Series(content)._apply_unary_op(operator)
     elif isinstance(content, series.Series):
         return content._apply_unary_op(operator)
     else:
