@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
 import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
@@ -26,8 +27,11 @@ __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
     manifest={
         "Phase",
+        "MaintenanceState",
+        "PossibleFailureReason",
         "ResourceMaintenanceSchedule",
         "ResourceMaintenanceDenySchedule",
+        "UpcomingMaintenance",
         "MaintenanceInfo",
     },
 )
@@ -58,6 +62,50 @@ class Phase(proto.Enum):
     PHASE_WEEK2 = 2
     PHASE_WEEK5 = 3
     PHASE_ANY = 4
+
+
+class MaintenanceState(proto.Enum):
+    r"""Resource maintenance state.
+
+    Values:
+        MAINTENANCE_STATE_UNSPECIFIED (0):
+            Status is unspecified.
+        MAINTENANCE_STATE_SCHEDULED (1):
+            Maintenance is scheduled.
+        MAINTENANCE_STATE_IN_PROGRESS (2):
+            Maintenance is in progress.
+        MAINTENANCE_STATE_COMPLETED (3):
+            Maintenance is completed.
+        MAINTENANCE_STATE_FAILED (4):
+            Maintenance has failed.
+    """
+
+    MAINTENANCE_STATE_UNSPECIFIED = 0
+    MAINTENANCE_STATE_SCHEDULED = 1
+    MAINTENANCE_STATE_IN_PROGRESS = 2
+    MAINTENANCE_STATE_COMPLETED = 3
+    MAINTENANCE_STATE_FAILED = 4
+
+
+class PossibleFailureReason(proto.Enum):
+    r"""Possible reasons why the maintenance is not completed. STATE_FAILED
+    maintenance state may not always have a failure reason.
+
+    Values:
+        POSSIBLE_FAILURE_REASON_UNSPECIFIED (0):
+            Failure reason is unspecified.
+        POSSIBLE_FAILURE_REASON_DENY_POLICY_CONFLICT (1):
+            Maintenance may not be completed because
+            there is a deny policy overlapping with upcoming
+            maintenance schedule.
+        POSSIBLE_FAILURE_REASON_INSTANCE_IN_STOPPED_STATE (2):
+            Maintenance may not be completed because the
+            instance is stopped.
+    """
+
+    POSSIBLE_FAILURE_REASON_UNSPECIFIED = 0
+    POSSIBLE_FAILURE_REASON_DENY_POLICY_CONFLICT = 1
+    POSSIBLE_FAILURE_REASON_INSTANCE_IN_STOPPED_STATE = 2
 
 
 class ResourceMaintenanceSchedule(proto.Message):
@@ -133,6 +181,32 @@ class ResourceMaintenanceDenySchedule(proto.Message):
     )
 
 
+class UpcomingMaintenance(proto.Message):
+    r"""Upcoming maintenance window for the database resource.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Start time of the upcoming
+            maintenance. Start time is always populated when
+            an upcoming maintenance is scheduled.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. End time of the upcoming
+            maintenance. This is only populated for an
+            engine, if end time is public for the engine.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class MaintenanceInfo(proto.Message):
     r"""MaintenanceInfo to capture the maintenance details of
     database resource.
@@ -147,6 +221,34 @@ class MaintenanceInfo(proto.Message):
         maintenance_version (str):
             Output only. Current Maintenance version of the database
             resource. Example: "MYSQL_8_0_41.R20250531.01_15".
+        current_version_release_date (google.type.date_pb2.Date):
+            Output only. The date when the maintenance
+            version was released.
+        upcoming_maintenance (google.cloud.databasecenter_v1beta.types.UpcomingMaintenance):
+            Output only. Upcoming maintenance window for the database
+            resource. This is only populated for an engine, if upcoming
+            maintenance is scheduled for the resource. This schedule is
+            generated per engine and engine version, and there is only
+            one upcoming maintenance window at any given time. In case
+            of upcoming maintenance, the maintenance_state will be set
+            to SCHEDULED first, and then IN_PROGRESS when the
+            maintenance window starts.
+        state (google.cloud.databasecenter_v1beta.types.MaintenanceState):
+            Output only. Resource maintenance state. This
+            is to capture the current state of the
+            maintenance.
+        possible_failure_reasons (MutableSequence[google.cloud.databasecenter_v1beta.types.PossibleFailureReason]):
+            Output only. List of possible reasons why the
+            maintenance is not completed. This is an
+            optional field and is only populated if there
+            are any reasons for failures recorded for the
+            maintenance by DB Center. FAILURE maintenance
+            status may not always have a failure reason.
+        previous_maintenance_version (str):
+            Output only. Previous maintenance version of the database
+            resource. Example: "MYSQL_8_0_41.R20250531.01_15". This is
+            available once a minor version maintenance is complete on a
+            database resource.
     """
 
     maintenance_schedule: "ResourceMaintenanceSchedule" = proto.Field(
@@ -164,6 +266,32 @@ class MaintenanceInfo(proto.Message):
     maintenance_version: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    current_version_release_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=date_pb2.Date,
+    )
+    upcoming_maintenance: "UpcomingMaintenance" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="UpcomingMaintenance",
+    )
+    state: "MaintenanceState" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="MaintenanceState",
+    )
+    possible_failure_reasons: MutableSequence["PossibleFailureReason"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=7,
+            enum="PossibleFailureReason",
+        )
+    )
+    previous_maintenance_version: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

@@ -17,7 +17,7 @@ import io
 import unittest
 
 from google.api_core import exceptions
-from google_crc32c import Checksum
+import google_crc32c
 
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
@@ -77,8 +77,7 @@ class TestReadResumptionStrategy(unittest.TestCase):
         checksummed_data = None
         if content is not None:
             if crc is None:
-                c = Checksum(content)
-                crc = int.from_bytes(c.digest(), "big")
+                crc = google_crc32c.value(content)
             checksummed_data = storage_v2.ChecksummedData(content=content, crc32c=crc)
 
         read_range = None

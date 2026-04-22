@@ -2785,6 +2785,15 @@ class Digest(proto.Message):
             algorithm.
 
             This field is a member of `oneof`_ ``digest``.
+        external_mu (bytes):
+            A message digest produced with SHAKE-256, to
+            be used with ML-DSA external-μ algorithms only.
+            See "message representative" note in section
+            6.2, algorithm 7 of the FIPS-204 standard:
+
+            https://doi.org/10.6028/nist.fips.204
+
+            This field is a member of `oneof`_ ``digest``.
     """
 
     sha256: bytes = proto.Field(
@@ -2800,6 +2809,11 @@ class Digest(proto.Message):
     sha512: bytes = proto.Field(
         proto.BYTES,
         number=3,
+        oneof="digest",
+    )
+    external_mu: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
         oneof="digest",
     )
 

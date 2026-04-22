@@ -1952,6 +1952,7 @@ def test_insert_local_inventory(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = localinventory.LocalInventory(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             account=749,
             store_code="store_code_value",
         )
@@ -1966,6 +1967,7 @@ def test_insert_local_inventory(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, localinventory.LocalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.store_code == "store_code_value"
 
@@ -2104,6 +2106,7 @@ async def test_insert_local_inventory_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             localinventory.LocalInventory(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 account=749,
                 store_code="store_code_value",
             )
@@ -2119,6 +2122,7 @@ async def test_insert_local_inventory_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, localinventory.LocalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.store_code == "store_code_value"
 
@@ -3334,6 +3338,7 @@ async def test_insert_local_inventory_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             localinventory.LocalInventory(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 account=749,
                 store_code="store_code_value",
             )
@@ -3560,6 +3565,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
     request_init = {"parent": "accounts/sample1/products/sample2"}
     request_init["local_inventory"] = {
         "name": "name_value",
+        "base64_encoded_name": "base64_encoded_name_value",
         "account": 749,
         "store_code": "store_code_value",
         "local_inventory_attributes": {
@@ -3574,6 +3580,17 @@ def test_insert_local_inventory_rest_call_success(request_type):
             "pickup_method": 1,
             "pickup_sla": 1,
             "instore_product_location": "instore_product_location_value",
+            "loyalty_programs": [
+                {
+                    "program_label": "program_label_value",
+                    "tier_label": "tier_label_value",
+                    "price": {},
+                    "cashback_for_future_use": {},
+                    "loyalty_points": 1546,
+                    "member_price_effective_interval": {},
+                    "shipping_label": "shipping_label_value",
+                }
+            ],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -3652,6 +3669,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = localinventory.LocalInventory(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             account=749,
             store_code="store_code_value",
         )
@@ -3671,6 +3689,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, localinventory.LocalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.store_code == "store_code_value"
 

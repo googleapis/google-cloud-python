@@ -95,6 +95,8 @@ packages_with_system_tests=(
   "google-auth"
   "google-cloud-bigquery-storage"
   "google-cloud-bigtable"
+  "google-cloud-compute"
+  "google-cloud-compute-v1beta"
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"

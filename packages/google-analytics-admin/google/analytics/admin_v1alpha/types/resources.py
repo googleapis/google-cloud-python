@@ -80,6 +80,7 @@ __protobuf__ = proto.module(
         "ReportingDataAnnotation",
         "SubpropertySyncConfig",
         "ReportingIdentitySettings",
+        "UserProvidedDataSettings",
     },
 )
 
@@ -300,6 +301,8 @@ class ChangeHistoryResourceType(proto.Enum):
             SubpropertySyncConfig resource
         REPORTING_IDENTITY_SETTINGS (34):
             ReportingIdentitySettings resource
+        USER_PROVIDED_DATA_SETTINGS (35):
+            UserProvidedDataSettings resource
     """
 
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
@@ -332,6 +335,7 @@ class ChangeHistoryResourceType(proto.Enum):
     REPORTING_DATA_ANNOTATION = 32
     SUBPROPERTY_SYNC_CONFIG = 33
     REPORTING_IDENTITY_SETTINGS = 34
+    USER_PROVIDED_DATA_SETTINGS = 35
 
 
 class GoogleSignalsState(proto.Enum):
@@ -484,7 +488,7 @@ class Account(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this account.
+            Identifier. Resource name of this account.
             Format: accounts/{account}
             Example: "accounts/100".
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -548,7 +552,7 @@ class Property(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this property. Format:
+            Identifier. Resource name of this property. Format:
             properties/{property_id} Example: "properties/1000".
         property_type (google.analytics.admin_v1alpha.types.PropertyType):
             Immutable. The property type for this Property resource.
@@ -697,7 +701,7 @@ class DataStream(proto.Message):
 
             This field is a member of `oneof`_ ``stream_data``.
         name (str):
-            Output only. Resource name of this Data Stream. Format:
+            Identifier. Resource name of this Data Stream. Format:
             properties/{property_id}/dataStreams/{stream_id} Example:
             "properties/1000/dataStreams/2000".
         type_ (google.analytics.admin_v1alpha.types.DataStream.DataStreamType):
@@ -862,7 +866,7 @@ class FirebaseLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Example format:
+            Identifier. Example format:
             properties/1234/firebaseLinks/5678
         project (str):
             Immutable. Firebase project resource name. When creating a
@@ -899,7 +903,7 @@ class GlobalSiteTag(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this GlobalSiteTag resource.
+            Identifier. Resource name for this GlobalSiteTag resource.
             Format:
             properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
             Example: "properties/123/dataStreams/456/globalSiteTag".
@@ -925,7 +929,7 @@ class GoogleAdsLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Format:
+            Identifier. Format:
 
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
 
@@ -996,7 +1000,7 @@ class DataSharingSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name.
+            Identifier. Resource name.
             Format: accounts/{account}/dataSharingSettings
             Example: "accounts/1000/dataSharingSettings".
         sharing_with_google_support_enabled (bool):
@@ -1077,7 +1081,7 @@ class AccountSummary(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this account summary. Format:
+            Identifier. Resource name for this account summary. Format:
             accountSummaries/{account_id} Example:
             "accountSummaries/1000".
         account (str):
@@ -1157,7 +1161,7 @@ class MeasurementProtocolSecret(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this secret.
+            Identifier. Resource name of this secret.
             This secret may be a child of any type of
             stream. Format:
 
@@ -1191,9 +1195,9 @@ class SKAdNetworkConversionValueSchema(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the schema.
-            This will be child of ONLY an iOS stream, and
-            there can be at most one such child under an iOS
+            Identifier. Resource name of the schema. This
+            will be child of ONLY an iOS stream, and there
+            can be at most one such child under an iOS
             stream. Format:
 
             properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
@@ -1665,6 +1669,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            user_provided_data_settings (google.analytics.admin_v1alpha.types.UserProvidedDataSettings):
+                A snapshot of a UserProvidedDataSettings
+                resource in change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1845,6 +1854,12 @@ class ChangeHistoryChange(proto.Message):
             oneof="resource",
             message="ReportingIdentitySettings",
         )
+        user_provided_data_settings: "UserProvidedDataSettings" = proto.Field(
+            proto.MESSAGE,
+            number=35,
+            oneof="resource",
+            message="UserProvidedDataSettings",
+        )
 
     resource: str = proto.Field(
         proto.STRING,
@@ -1873,7 +1888,7 @@ class DisplayVideo360AdvertiserLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             DisplayVideo360AdvertiserLink resource. Format:
 
             properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
@@ -1945,7 +1960,7 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             DisplayVideo360AdvertiserLinkProposal resource.
             Format:
 
@@ -2032,7 +2047,7 @@ class SearchAds360Link(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             SearchAds360Link resource. Format:
             properties/{propertyId}/searchAds360Links/{linkId}
 
@@ -2140,7 +2155,7 @@ class ConversionEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this conversion event. Format:
+            Identifier. Resource name of this conversion event. Format:
             properties/{property}/conversionEvents/{conversion_event}
         event_name (str):
             Immutable. The event name for this conversion
@@ -2410,7 +2425,7 @@ class CustomDimension(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             CustomDimension resource. Format:
             properties/{property}/customDimensions/{customDimension}
         parameter_name (str):
@@ -2502,7 +2517,7 @@ class CustomMetric(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             CustomMetric resource. Format:
             properties/{property}/customMetrics/{customMetric}
         parameter_name (str):
@@ -2649,8 +2664,7 @@ class CalculatedMetric(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this CalculatedMetric.
-            Format:
+            Identifier. Resource name for this CalculatedMetric. Format:
             'properties/{property_id}/calculatedMetrics/{calculated_metric_id}'
         description (str):
             Optional. Description for this calculated
@@ -2790,7 +2804,7 @@ class DataRetentionSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             DataRetentionSetting resource. Format:
             properties/{property}/dataRetentionSettings
         event_data_retention (google.analytics.admin_v1alpha.types.DataRetentionSettings.RetentionDuration):
@@ -3606,6 +3620,41 @@ class ReportingIdentitySettings(proto.Message):
         proto.ENUM,
         number=2,
         enum=ReportingIdentity,
+    )
+
+
+class UserProvidedDataSettings(proto.Message):
+    r"""Configuration for user-provided data collection. This is a
+    singleton resource for a Google Analytics property.
+
+    Attributes:
+        name (str):
+            Identifier. Resource name of this setting.
+            Format:
+            properties/{property}/userProvidedDataSettings
+            Example:
+            "properties/1000/userProvidedDataSettings".
+        user_provided_data_collection_enabled (bool):
+            Optional. Whether this property accepts
+            user-provided data sent to it.
+        automatically_detected_data_collection_enabled (bool):
+            Optional. Whether this property allows a Google Tag to
+            automatically collect user-provided data from your website.
+            This setting only takes effect if
+            ``user_provided_data_collection_enabled`` is also true.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_provided_data_collection_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    automatically_detected_data_collection_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

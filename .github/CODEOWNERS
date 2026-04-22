@@ -21,6 +21,7 @@
 # - @googleapis/gcs-team
 # - @googleapis/pubsub-team
 # - @googleapis/spanner-team
+# - @googleapis/cloud-sdk-librarian-team
 
 # As per the above, the following list is only used for notifications, not for approvals.
 # Googlers see b/477912165 and corresponding design doc
@@ -44,3 +45,4 @@
 /packages/pandas-gbq/                         @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/sqlalchemy-bigquery/                @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/sqlalchemy-spanner/                 @googleapis/spanner-team
+/librarian.yaml                               @googleapis/cloud-sdk-librarian-team

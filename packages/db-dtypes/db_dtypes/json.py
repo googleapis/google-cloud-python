@@ -181,9 +181,9 @@ class JSONArray(arrays.ArrowExtensionArray):
 
     def _cmp_method(self, other, op):
         if op.__name__ == "eq":
-            result = pyarrow.compute.equal(self.pa_data, self._box_pa(other))
+            result = pyarrow.compute.equal(self.pa_data, self._box_pa(other))  # type: ignore[attr-defined]
         elif op.__name__ == "ne":
-            result = pyarrow.compute.not_equal(self.pa_data, self._box_pa(other))
+            result = pyarrow.compute.not_equal(self.pa_data, self._box_pa(other))  # type: ignore[attr-defined]
         else:
             # Comparison is not a meaningful one. We don't want to support sorting by JSON columns.
             raise TypeError(f"{op.__name__} not supported for JSONArray")

@@ -137,6 +137,7 @@ tasklet, properly yielding when appropriate::
         print(emp.name, emp.age)
 """
 
+import typing
 import functools
 import logging
 
@@ -287,6 +288,9 @@ class ParameterizedThing(object):
         if eq is not NotImplemented:
             eq = not eq
         return eq
+
+    def resolve(self, bindings, used):
+        raise NotImplementedError
 
 
 class Parameter(ParameterizedThing):
@@ -513,6 +517,10 @@ class ParameterNode(Node):
             :class:`.ParameterizedFunction`.
     """
 
+    _prop: typing.Any
+    _op: str
+    _param: typing.Any
+
     def __new__(cls, prop, op, param):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import model
@@ -722,6 +730,8 @@ class PostFilterNode(Node):
             the given filter.
     """
 
+    predicate: typing.Any
+
     def __new__(cls, predicate):
         instance = super(PostFilterNode, cls).__new__(cls)
         instance.predicate = predicate
@@ -797,7 +807,7 @@ class _BooleanClauses(object):
         self.combine_or = combine_or
         if combine_or:
             # For ``OR()`` the parts are just nodes.
-            self.or_parts = []
+            self.or_parts: list = []
         else:
             # For ``AND()`` the parts are "segments", i.e. node lists.
             self.or_parts = [[]]
@@ -882,6 +892,8 @@ class ConjunctionNode(Node):
         RuntimeError: If the ``nodes`` combine to an "empty" boolean
             expression.
     """
+
+    _nodes: list
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -1037,6 +1049,7 @@ class DisjunctionNode(Node):
     """
 
     _multiquery = True
+    _nodes: list
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -1204,6 +1217,10 @@ def _query_options(wrapped):
 
 
 class QueryOptions(_options.ReadOptions):
+    namespace: typing.Optional[str]
+    project: typing.Optional[str]
+    ancestor: typing.Any
+
     __slots__ = (
         # Query options
         "kind",
@@ -1535,13 +1552,13 @@ class Query(object):
                 )
             new_filters.append(filter)
         if len(new_filters) == 1:
-            new_filters = new_filters[0]
+            final_filters = new_filters[0]
         else:
-            new_filters = ConjunctionNode(*new_filters)
+            final_filters = ConjunctionNode(*new_filters)
         return self.__class__(
             kind=self.kind,
             ancestor=self.ancestor,
-            filters=new_filters,
+            filters=final_filters,
             order_by=self.order_by,
             project=self.project,
             namespace=self.namespace,
@@ -1603,7 +1620,7 @@ class Query(object):
                 return True
 
         bindings = MockBindings()
-        used = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
@@ -1633,10 +1650,10 @@ class Query(object):
             google.cloud.ndb.exceptions.BadArgumentError: If one of
                 the positional parameters is not used in the query.
         """
-        bindings = dict(keyword)
+        bindings: dict[typing.Any, typing.Any] = dict(keyword)
         for i, arg in enumerate(positional):
             bindings[i + 1] = arg
-        used = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
