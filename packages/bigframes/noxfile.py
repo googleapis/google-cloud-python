@@ -186,6 +186,8 @@ def format(session):
         "--select",
         "I",
         "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
