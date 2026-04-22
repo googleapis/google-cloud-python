@@ -361,9 +361,10 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         new_manager._data = self._rab_manager._data
         target._rab_manager = new_manager
 
-    def with_regional_access_boundary(self, seed):
+    def _with_regional_access_boundary(self, seed):
         """Returns a copy of these credentials with the the regional_access_boundary
-        set to the provided seed.
+        set to the provided seed. This is intended for internal use only as invalid
+        seeds would produce unexpected results until automatic recovery is supported.
 
         Returns:
             google.auth.credentials.Credentials: A new credentials instance.
