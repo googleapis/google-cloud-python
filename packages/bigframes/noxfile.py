@@ -186,6 +186,13 @@ def format(session):
         "--select",
         "I",
         "--fix",
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
