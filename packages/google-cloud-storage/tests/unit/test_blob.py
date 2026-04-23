@@ -6034,6 +6034,14 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.name, "b")
         self.assertEqual(blob.bucket.name, "buckets.example.com")
         self.assertEqual(blob.uri, uri)
+    
+    def test_get_uri_from_blob_w_unset_bucket_name(self):
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client()
+        blob = self._make_one(name="b", bucket=None)
+        with pytest.raises(ValueError, match="Bucket name must be set to generate a URI."):
+            blob.uri
 
     @mock.patch("warnings.warn")
     def test_from_string(self, mock_warn):
