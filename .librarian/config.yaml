@@ -31,10 +31,6 @@ libraries:
   # Allow release for google-crc32c once this bug is fixed.
   - id: "google-crc32c"
     release_blocked: true
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/16600):
-  # Allow release for google-cloud-spanner after tests are fixed.
-  - id: "google-cloud-spanner"
-    release_blocked: true
   # TODO(https://github.com/googleapis/google-cloud-python/issues/16780):
   # Allow release for google-cloud-compute (and beta) after we've checked that
   # the gRPC service config is okay.
