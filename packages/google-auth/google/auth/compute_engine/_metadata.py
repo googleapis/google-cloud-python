@@ -87,11 +87,6 @@ def _mount_mds_adapter_and_get_url(
     mds_mtls_root = "{}://{}/computeMetadata/v1/".format(scheme, root)
 
     if mds_mtls_config.mode == _mtls.MdsMtlsMode.STRICT:
-        if not _mtls.mds_mtls_certificates_exist(mds_mtls_config):
-            raise exceptions.MutualTLSChannelError(
-                "Mutual TLS is required, but mTLS certificates were not found."
-            )
-
         # mTLS is only supported when connecting to the default metadata host.
         # Raise an exception if we are in strict mode (which requires mTLS)
         # but the metadata host has been overridden to a custom MDS. (which means mTLS will fail)
@@ -100,12 +95,6 @@ def _mount_mds_adapter_and_get_url(
             raise exceptions.MutualTLSChannelError(
                 "Mutual TLS is required, but the metadata host has been overridden. "
                 "mTLS is only supported when connecting to the default metadata host."
-            )
-
-        if parsed.scheme != "https":  # pragma: NO COVER
-            raise exceptions.MutualTLSChannelError(
-                "Mutual TLS is required, but the metadata URL scheme is not HTTPS. "
-                "mTLS requires HTTPS."
             )
 
     return mds_mtls_root
@@ -203,12 +192,10 @@ def _try_mount_mds_mtls_adapter(request, mds_mtls_config: _mtls.MdsMtlsConfig) -
     adapter = _mtls.MdsMtlsAdapter(mds_mtls_config=mds_mtls_config)
 
     # Mount the adapter for all default GCE metadata hosts.
-    mds_mtls_adapter_mounted = False
     for host in _GCE_DEFAULT_MDS_HOSTS:
         request.session.mount(f"https://{host}/", adapter)
-        mds_mtls_adapter_mounted = True
 
-    return mds_mtls_adapter_mounted
+    return True
 
 
 def ping(

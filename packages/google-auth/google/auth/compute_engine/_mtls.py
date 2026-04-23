@@ -26,8 +26,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 from requests.adapters import HTTPAdapter
 
-from google.auth import environment_vars
-
+from google.auth import environment_vars, exceptions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -121,10 +120,16 @@ def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig) -> bool:
 
     Returns:
         bool: True if mTLS should be used, False otherwise.
+    Raises:
+        google.auth.exceptions.MutualTLSChannelError: if mode is strict but certificates do not exist.
     """
 
     mds_mtls_mode = mds_mtls_config.mode
     if mds_mtls_mode == MdsMtlsMode.STRICT:
+        if not mds_mtls_certificates_exist(mds_mtls_config):
+            raise exceptions.MutualTLSChannelError(
+                "mTLS certificates not found in strict mode."
+            )
         return True
     if mds_mtls_mode == MdsMtlsMode.NONE:
         return False
