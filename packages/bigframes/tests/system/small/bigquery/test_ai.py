@@ -195,6 +195,7 @@ def test_ai_generate_int(session):
     )
 
 
+@pytest.mark.timeout(1200)
 def test_ai_generate_int_multi_model(session):
     df = session.from_glob_path(
         "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
