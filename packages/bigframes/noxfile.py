@@ -61,6 +61,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     PYTEST_VERSION,
     "pytest-cov",
     "pytest-timeout",
+    "pluggy",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
