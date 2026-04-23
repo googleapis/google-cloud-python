@@ -785,3 +785,28 @@ def test_lookup_regional_access_boundary_with_headers():
     mock_request.assert_called_once_with(
         method="GET", url="http://example.com", headers=headers, timeout=None
     )
+
+
+def test_lookup_regional_access_boundary_blocking():
+    response_data = {
+        "locations": ["us-central1"],
+        "encodedLocations": "0xABC",
+    }
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    response = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, blocking=True
+    )
+
+    assert response["encodedLocations"] == "0xABC"
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
+    )
