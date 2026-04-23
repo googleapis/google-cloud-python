@@ -307,7 +307,6 @@ def unpadded_urlsafe_b64encode(value):
     return base64.urlsafe_b64encode(value).rstrip(b"=")
 
 
-
 def is_python_3():
     """Check if the Python interpreter is Python 2 or 3.
 
