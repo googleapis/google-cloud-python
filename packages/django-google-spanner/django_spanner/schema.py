@@ -565,6 +565,34 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             "constraint": self.sql_check_constraint % {"check": check},
         }
 
+    def _unique_sql(
+        self,
+        model,
+        fields,
+        name,
+        condition=None,
+        deferrable=None,
+        include=None,
+        opclasses=None,
+        expressions=None,
+        nulls_distinct=None,
+    ):
+        # Inline constraints aren't supported, so create the index separately.
+        sql = self._create_unique_sql(
+            model,
+            fields,
+            name=name,
+            condition=condition,
+            deferrable=deferrable,
+            include=include,
+            opclasses=opclasses,
+            expressions=expressions,
+            nulls_distinct=nulls_distinct,
+        )
+        if sql:
+            self.deferred_sql.append(sql)
+        return None
+
     def skip_default(self, field):
         """
         Cloud Spanner doesn't support column defaults, except for

@@ -116,6 +116,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     ops_class = DatabaseOperations
     client_class = DatabaseClient
 
+    def _get_project_id(self):
+        return os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project")
+
     @property
     def instance(self):
         """Reference to a Cloud Spanner Instance containing the Database.
@@ -131,12 +134,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             )
 
         if _SPANNER_CLIENT_CACHE is None:
-            _SPANNER_CLIENT_CACHE = spanner.Client(
-                project=os.environ.get("GOOGLE_CLOUD_PROJECT")
-                or self.settings_dict.get("project")
-                or self.settings_dict.get("PROJECT")
-                or "test-project"
-            )
+            _SPANNER_CLIENT_CACHE = spanner.Client(project=self._get_project_id())
 
         return _SPANNER_CLIENT_CACHE.instance(self.settings_dict["INSTANCE"])
 
@@ -158,10 +156,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                   in Django Spanner format.
         """
         return {
-            "project": os.environ.get("GOOGLE_CLOUD_PROJECT")
-            or self.settings_dict.get("project")
-            or self.settings_dict.get("PROJECT")
-            or "test-project",
+            "project": self._get_project_id(),
             "instance_id": self.settings_dict["INSTANCE"],
             "database_id": self.settings_dict["NAME"],
             "user_agent": "django_spanner/2.2.0a1",

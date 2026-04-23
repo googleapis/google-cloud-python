@@ -48,8 +48,6 @@ class SQLCompiler(BaseSQLCompiler):
         """
         # This method copies the complete code of this overridden method from
         # Django core and modify it for Spanner by adding one line
-        # This method copies the complete code of this overridden method from
-        # Django core and modify it for Spanner by adding one line
         features = self.connection.features
         compilers = [
             query.get_compiler(self.using, self.connection, self.elide_empty)
