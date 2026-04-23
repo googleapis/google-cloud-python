@@ -19,6 +19,7 @@ import pytest
 from google.cloud import bigquery
 
 import bigframes
+import google.cloud.bigquery_storage_v1
 from bigframes.core import ArrayValue, events, local_data
 from bigframes.session import (
     direct_gbq_execution,
@@ -45,7 +46,11 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
 
 
 @pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
-def engine(request, bigquery_client: bigquery.Client) -> semi_executor.SemiExecutor:
+def engine(
+    request,
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return local_scan_executor.LocalScanExecutor()
     if request.param == "polars":
@@ -53,11 +58,16 @@ def engine(request, bigquery_client: bigquery.Client) -> semi_executor.SemiExecu
     publisher = events.Publisher()
     if request.param == "bq":
         return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client, publisher=publisher
+            bigquery_client,
+            bqstoragereadclient=bigquery_storage_read_client,
+            publisher=publisher,
         )
     if request.param == "bq-sqlglot":
         return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client, compiler="sqlglot", publisher=publisher
+            bigquery_client,
+            bqstoragereadclient=bigquery_storage_read_client,
+            compiler="sqlglot",
+            publisher=publisher,
         )
     raise ValueError(f"Unrecognized param: {request.param}")
 

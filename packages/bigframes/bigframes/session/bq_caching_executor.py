@@ -108,7 +108,7 @@ class BigQueryCachingExecutor(executor.Executor):
         self._upload_lock = threading.Lock()
         self._gbq_executor = direct_gbq_execution.DirectGbqExecutor(
             bqclient,
-            compiler=compile.compiler,
+            compiler=compile.compiler().compile_sql,
             bqstoragereadclient=bqstoragereadclient,
             metrics=self.metrics,
             publisher=self._publisher,

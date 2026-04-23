@@ -15,7 +15,12 @@
 import pandas.testing
 
 from bigframes.core import nodes
-from bigframes.session import semi_executor
+from bigframes.session import semi_executor, execution_spec
+
+
+SPEC = execution_spec.ExecutionSpec(
+    ordered=True,
+)
 
 
 def assert_equivalence_execution(
@@ -23,8 +28,8 @@ def assert_equivalence_execution(
     engine1: semi_executor.SemiExecutor,
     engine2: semi_executor.SemiExecutor,
 ):
-    e1_result = engine1.execute(node, ordered=True)
-    e2_result = engine2.execute(node, ordered=True)
+    e1_result = engine1.execute(node, SPEC)
+    e2_result = engine2.execute(node, SPEC)
     assert e1_result is not None
     assert e2_result is not None
     # Convert to pandas, as pandas has better comparison utils than arrow
