@@ -236,7 +236,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             "encodedLocations": "0xABC",
             "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
         }
-        new_creds = creds.with_regional_access_boundary(seed)
+        new_creds = creds._with_regional_access_boundary(seed)
         assert new_creds._rab_manager._data.encoded_locations == "0xABC"
         assert new_creds._rab_manager._data.expiry == seed["expiry"]
         assert new_creds._rab_manager._data.cooldown_expiry is None
@@ -326,6 +326,41 @@ class TestCredentialsWithRegionalAccessBoundary(object):
                 request, "http://example.com"
             )
         mock_start_blocking_refresh.assert_called_once_with(creds, request)
+
+    def test_start_blocking_refresh_success(self):
+        creds = CredentialsImpl()
+        request = mock.Mock()
+        
+        with mock.patch.object(
+            creds, "_lookup_regional_access_boundary", return_value={"encodedLocations": "0xABC"}
+        ) as mock_lookup:
+            creds._rab_manager.start_blocking_refresh(creds, request)
+            
+            mock_lookup.assert_called_once_with(request, True)
+            assert creds._rab_manager._data.encoded_locations == "0xABC"
+
+    def test_start_blocking_refresh_failure(self):
+        creds = CredentialsImpl()
+        request = mock.Mock()
+        
+        with mock.patch.object(
+            creds, "_lookup_regional_access_boundary", side_effect=Exception("error")
+        ) as mock_lookup:
+            creds._rab_manager.start_blocking_refresh(creds, request)
+            
+            mock_lookup.assert_called_once_with(request, True)
+            assert creds._rab_manager._data.encoded_locations is None
+            assert creds._rab_manager._data.cooldown_expiry is not None
+
+    @mock.patch("copy.deepcopy")
+    def test_start_refresh_deepcopy_failure(self, mock_deepcopy):
+        mock_deepcopy.side_effect = Exception("deepcopy error")
+        creds = CredentialsImpl()
+        request = mock.Mock()
+        
+        creds._rab_manager.refresh_manager.start_refresh(creds, request, creds._rab_manager)
+        
+        assert creds._rab_manager.refresh_manager._worker is None
 
     @mock.patch.object(CredentialsImpl, "_lookup_regional_access_boundary")
     def test_lookup_regional_access_boundary_success(self, mock_lookup_rab):
