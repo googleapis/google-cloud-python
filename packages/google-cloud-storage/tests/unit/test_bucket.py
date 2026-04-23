@@ -4554,6 +4554,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertEqual(bucket.uri, uri)
 
     def test_get_bucket_from_uri_w_invalid_uri(self):
         from google.cloud.storage.bucket import Bucket
@@ -4575,6 +4576,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertEqual(bucket.uri, uri)
 
     @mock.patch("warnings.warn")
     def test_get_bucket_from_string(self, mock_warn):
