@@ -735,7 +735,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                 f"--junitxml=system_{session.python}_async_sponge_log.xml",
             ]
             if not session.posargs:
-                async_args.append(os.path.join("tests", "system", "_async"))
+                async_args.append(os.path.join(system_test_folder_path, "_async"))
             else:
                 # If posargs are provided, only run if they match async tests
                 # or just skip if they were already run in sync.
