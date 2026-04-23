@@ -815,6 +815,10 @@ class Bucket(_PropertyMixin):
             raise ValueError("URI scheme must be gs")
 
         return cls(client, name=netloc)
+    
+    @property
+    def uri(self) -> str:
+        return f"gs://{self.name}"
 
     @classmethod
     def from_string(cls, uri, client=None):

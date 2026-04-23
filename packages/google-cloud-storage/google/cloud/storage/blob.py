@@ -421,6 +421,10 @@ class Blob(_PropertyMixin):
             raise ValueError("URI pattern must be gs://bucket/object")
         bucket = Bucket(client, name=match.group("bucket_name"))
         return cls(match.group("object_name"), bucket)
+    
+    @property
+    def uri(self) -> str:
+        return f"{self.bucket.uri}/{self.name}"
 
     @classmethod
     def from_string(cls, uri, client=None):
