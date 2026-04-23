@@ -34,16 +34,21 @@ def test_list_instances(
     existing_instances,
     shared_instance,
 ):
+    # Retrieve all instances currently visible in the project.
     instances = list(spanner_client.list_instances())
 
-    existing_names = {single_instance.name for single_instance in existing_instances}
-    shared_instance_name = shared_instance.name
+    # We use the instance name (the full resource path) rather than the object itself.
+    # Protobuf objects may fail equality (==) if one has extra metadata populated
+    # by the server (like 'edition' or 'backup_schedules') that the other lacks.
+    instance_names = {instance.name for instance in instances}
 
-    for instance in instances:
-        # We compare by '.name' (the full resource path) rather than the object itself.
-        # Protobuf objects may fail equality (==) if one has extra metadata populated
-        # by the server (like 'edition' or 'backup_schedules') that the other lacks.
-        assert instance.name in existing_names or instance.name == shared_instance_name
+    # In a parallel CI environment, other tests may create instances
+    # (like 'multi-region-...') simultaneously.
+    # Only verify `shared_instance.name` is in the list of instances.
+    assert shared_instance.name in instance_names, (
+        f"Expected instance {shared_instance.name} was not found in the "
+        f"list of project instances: {instance_names}"
+    )
 
 
 def test_reload_instance(spanner_client, shared_instance_id, shared_instance):
