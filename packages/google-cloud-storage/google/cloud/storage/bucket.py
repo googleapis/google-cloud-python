@@ -818,6 +818,20 @@ class Bucket(_PropertyMixin):
     
     @property
     def uri(self) -> str:
+        """Get the URI associated to the bucket object.
+
+        .. code-block:: python
+
+            from google.cloud import storage
+            from google.cloud.storage.bucket import Bucket
+            client = storage.Client()
+            uri = "gs://bucket"
+            bucket = Bucket.from_uri(uri, client=client)
+            assert bucket.uri == uri
+        
+        :rtype: str
+        :returns: The bucket uri.
+        """
         return f"gs://{self.name}"
 
     @classmethod

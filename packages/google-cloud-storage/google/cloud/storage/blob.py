@@ -424,6 +424,20 @@ class Blob(_PropertyMixin):
     
     @property
     def uri(self) -> str:
+        """Get the URI associated to the blob object.
+
+        .. code-block:: python
+
+            from google.cloud import storage
+            from google.cloud.storage.blob import Blob
+            client = storage.Client()
+            uri = "gs://bucket/object"
+            blob = Blob.from_uri(uri, client=client)
+            assert blob.uri == uri
+        
+        :rtype: str
+        :returns: The blob uri.
+        """
         return f"{self.bucket.uri}/{self.name}"
 
     @classmethod
