@@ -110,15 +110,6 @@ class _RegionalAccessBoundaryManager(object):
         self.__dict__.update(state)
         self._update_lock = threading.Lock()
 
-    def __eq__(self, other):
-        if not isinstance(other, _RegionalAccessBoundaryManager):
-            return False
-        return (
-            self._data == other._data
-            and self.refresh_manager == other.refresh_manager
-            and self._use_blocking_regional_access_boundary_lookup
-            == other._use_blocking_regional_access_boundary_lookup
-        )
 
     def use_blocking_regional_access_boundary_lookup(self):
         """Enables blocking regional access boundary lookup to true"""
@@ -332,12 +323,6 @@ class _RegionalAccessBoundaryRefreshManager(object):
         self.__dict__.update(state)
         self._lock = threading.Lock()
         self._worker = None
-
-    def __eq__(self, other):
-        if not isinstance(other, _RegionalAccessBoundaryRefreshManager):
-            return False
-        # Note: We only compare public/pickled properties.
-        return self._worker == other._worker
 
     def start_refresh(self, credentials, request, rab_manager):
         """
