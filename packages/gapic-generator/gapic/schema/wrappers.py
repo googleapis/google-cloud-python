@@ -693,8 +693,7 @@ class MessageType:
             return None
             
         default_type = resource.type[resource.type.find("/") + 1 :]
-        
-        # 2. Safely read from the class's own strictly-typed dictionary!
+
         return self.resource_name_aliases.get(resource.type, default_type)
 
     @property
