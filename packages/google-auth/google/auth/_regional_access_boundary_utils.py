@@ -110,7 +110,6 @@ class _RegionalAccessBoundaryManager(object):
         self.__dict__.update(state)
         self._update_lock = threading.Lock()
 
-
     def use_blocking_regional_access_boundary_lookup(self):
         """Enables blocking regional access boundary lookup to true"""
         self._use_blocking_regional_access_boundary_lookup = True

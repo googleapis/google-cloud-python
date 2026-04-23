@@ -330,24 +330,26 @@ class TestCredentialsWithRegionalAccessBoundary(object):
     def test_start_blocking_refresh_success(self):
         creds = CredentialsImpl()
         request = mock.Mock()
-        
+
         with mock.patch.object(
-            creds, "_lookup_regional_access_boundary", return_value={"encodedLocations": "0xABC"}
+            creds,
+            "_lookup_regional_access_boundary",
+            return_value={"encodedLocations": "0xABC"},
         ) as mock_lookup:
             creds._rab_manager.start_blocking_refresh(creds, request)
-            
+
             mock_lookup.assert_called_once_with(request, True)
             assert creds._rab_manager._data.encoded_locations == "0xABC"
 
     def test_start_blocking_refresh_failure(self):
         creds = CredentialsImpl()
         request = mock.Mock()
-        
+
         with mock.patch.object(
             creds, "_lookup_regional_access_boundary", side_effect=Exception("error")
         ) as mock_lookup:
             creds._rab_manager.start_blocking_refresh(creds, request)
-            
+
             mock_lookup.assert_called_once_with(request, True)
             assert creds._rab_manager._data.encoded_locations is None
             assert creds._rab_manager._data.cooldown_expiry is not None
@@ -357,9 +359,11 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         mock_deepcopy.side_effect = Exception("deepcopy error")
         creds = CredentialsImpl()
         request = mock.Mock()
-        
-        creds._rab_manager.refresh_manager.start_refresh(creds, request, creds._rab_manager)
-        
+
+        creds._rab_manager.refresh_manager.start_refresh(
+            creds, request, creds._rab_manager
+        )
+
         assert creds._rab_manager.refresh_manager._worker is None
 
     @mock.patch.object(CredentialsImpl, "_lookup_regional_access_boundary")
