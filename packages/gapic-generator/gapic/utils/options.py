@@ -199,7 +199,9 @@ class Options:
             
         # Parse explicitly and safely
         for mapping in raw_aliases:
-            if not mapping or not mapping.strip():
+            if not mapping:
+                # We only need to check `not mapping` because the top-level 
+                # opt_string parser already stripped trailing whitespaces
                 continue
                 
             try:

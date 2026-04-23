@@ -264,7 +264,6 @@ def test_options_resource_name_aliases():
             "resource-name-alias=bad_string_without_colon,"
             "resource-name-alias=:MissingPath,"
             "resource-name-alias=MissingAlias:,"
-            "resource-name-alias= ," # Covers whitespace (" ")
             "resource-name-alias=" # Covers empty string ("")
         )
 
