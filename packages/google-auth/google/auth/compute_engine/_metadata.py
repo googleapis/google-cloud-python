@@ -57,7 +57,7 @@ def _mount_mds_adapter_and_get_url(
     root,
 ) -> str:
     """Prepares the metadata server root URL based on the mTLS configuration and environment.
-    
+
     This method mounts the mTLS adapter to the request if needed.
     It also determines the appropriate URL scheme (HTTP vs HTTPS) to use when connecting to the metadata server based on the mTLS configuration and environment, and performes appropriate checks.
 

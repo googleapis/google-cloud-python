@@ -852,7 +852,9 @@ def test__mount_mds_adapter_and_get_url_mtls():
             return_value=_metadata._mtls.MdsMtlsMode.STRICT,
         ):
             assert (
-                _metadata._mount_mds_adapter_and_get_url(request, root=_metadata._GCE_DEFAULT_HOST)
+                _metadata._mount_mds_adapter_and_get_url(
+                    request, root=_metadata._GCE_DEFAULT_HOST
+                )
                 == "https://metadata.google.internal/computeMetadata/v1/"
             )
 
@@ -864,7 +866,9 @@ def test__mount_mds_adapter_and_get_url_no_mtls():
         return_value=_metadata._mtls.MdsMtlsMode.NONE,
     ):
         assert (
-            _metadata._mount_mds_adapter_and_get_url(request, root=_metadata._GCE_DEFAULT_HOST)
+            _metadata._mount_mds_adapter_and_get_url(
+                request, root=_metadata._GCE_DEFAULT_HOST
+            )
             == "http://metadata.google.internal/computeMetadata/v1/"
         )
 
@@ -1010,7 +1014,9 @@ def test_validate_gce_mds_configured_environment(
         ):
             if expect_exception:
                 with pytest.raises(exceptions.MutualTLSChannelError):
-                    _metadata._mount_mds_adapter_and_get_url(request, root=metadata_host)
+                    _metadata._mount_mds_adapter_and_get_url(
+                        request, root=metadata_host
+                    )
             else:
                 _metadata._mount_mds_adapter_and_get_url(request, root=metadata_host)
 
