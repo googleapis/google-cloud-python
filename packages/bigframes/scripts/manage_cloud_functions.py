@@ -64,9 +64,14 @@ GCF_CLIENT = functions_v2.FunctionServiceClient()
 
 def get_bigframes_functions(project, region):
     parent = f"projects/{project}/locations/{region}"
-    functions = GCF_CLIENT.list_functions(
-        functions_v2.ListFunctionsRequest(parent=parent)
-    )
+    try:
+        functions = GCF_CLIENT.list_functions(
+            functions_v2.ListFunctionsRequest(parent=parent)
+        )
+    except google.api_core.exceptions.PermissionDenied:
+        print(f"Warning: Permission denied for region {region}")
+        return []
+    
     # Filter bigframes created functions
     functions = [
         function
