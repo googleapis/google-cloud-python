@@ -87,10 +87,8 @@ class BigQueryCachingExecutor(executor.Executor):
         self.cache: execution_cache.ExecutionCache = execution_cache.ExecutionCache()
         self.metrics = metrics
         self.loader = loader
-        self.bqstoragereadclient = bqstoragereadclient
         self._enable_polars_execution = enable_polars_execution
         self._publisher = publisher
-        self._labels = labels
 
         # TODO(tswast): Send events from semi-executors, too.
         self._semi_executors: Sequence[semi_executor.SemiExecutor] = (
@@ -109,7 +107,12 @@ class BigQueryCachingExecutor(executor.Executor):
             )
         self._upload_lock = threading.Lock()
         self._gbq_executor = direct_gbq_execution.DirectGbqExecutor(
-            bqclient, compile.compiler, metrics=self.metrics, publisher=self._publisher
+            bqclient,
+            compiler=compile.compiler,
+            bqstoragereadclient=bqstoragereadclient,
+            metrics=self.metrics,
+            publisher=self._publisher,
+            labels=labels,
         )
 
     def to_sql(
@@ -131,7 +134,6 @@ class BigQueryCachingExecutor(executor.Executor):
             compile.CompileRequest(node, sort_rows=ordered)
         )
         return compiled.sql
-
 
     def execute(
         self,
@@ -167,7 +169,6 @@ class BigQueryCachingExecutor(executor.Executor):
                 return maybe_result
         return None
 
-
     def _execute_bigquery(
         self,
         array_value: bigframes.core.ArrayValue,
@@ -177,7 +178,10 @@ class BigQueryCachingExecutor(executor.Executor):
         # Recursive handlers for different cases, maybe extract to explicit interface.
         if isinstance(dest_spec, ex_spec.GcsOutputSpec):
             execution_spec = dataclasses.replace(
-                execution_spec, destination_spec=ex_spec.TempTableSpec(cluster_cols=dest_spec.cluster_cols, lifetime="ephemeral")
+                execution_spec,
+                destination_spec=ex_spec.TempTableSpec(
+                    cluster_cols=dest_spec.cluster_cols, lifetime="ephemeral"
+                ),
             )
             results = self._execute_bigquery(array_value, execution_spec)
             self._export_result_gcs(results, dest_spec)
@@ -191,7 +195,11 @@ class BigQueryCachingExecutor(executor.Executor):
                 existing_table.schema, array_value.schema
             ):
                 execution_spec = dataclasses.replace(
-                    execution_spec, destination_spec=ex_spec.TempTableSpec(cluster_cols=execution_spec.destination_spec.cluster_cols, lifetime="ephemeral")
+                    execution_spec,
+                    destination_spec=ex_spec.TempTableSpec(
+                        cluster_cols=execution_spec.destination_spec.cluster_cols,
+                        lifetime="ephemeral",
+                    ),
                 )
                 results = self._execute_bigquery(array_value, execution_spec)
                 self._export_gbq_with_dml(results, dest_spec)
@@ -213,10 +221,14 @@ class BigQueryCachingExecutor(executor.Executor):
                 )
                 arr_value = bigframes.core.ArrayValue(plan)
                 execution_spec = dataclasses.replace(
-                    execution_spec, destination_spec=ex_spec.TableOutputSpec(table=destination_table, cluster_cols=dest_spec.cluster_cols, if_exists="replace")
+                    execution_spec,
+                    destination_spec=ex_spec.TableOutputSpec(
+                        table=destination_table,
+                        cluster_cols=dest_spec.cluster_cols,
+                        if_exists="replace",
+                    ),
                 )
                 return self._execute_bigquery(arr_value, execution_spec)
-                
 
         # At this point, dst should be unspecified, a specific bq table, or an ephemeral temp table
         # Also, ordering mode will either be none or row-sorted
@@ -393,7 +405,11 @@ class BigQueryCachingExecutor(executor.Executor):
         ]
         cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.TempTableSpec(cluster_cols=tuple(cluster_cols), lifetime="session", ordering="order_key")
+            destination_spec=ex_spec.TempTableSpec(
+                cluster_cols=tuple(cluster_cols),
+                lifetime="session",
+                ordering="order_key",
+            )
         )
         result_bq_data = self.execute(
             array_value,
@@ -405,7 +421,9 @@ class BigQueryCachingExecutor(executor.Executor):
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.TempTableSpec(cluster_cols=(), lifetime="session", ordering="offsets_col")
+            destination_spec=ex_spec.TempTableSpec(
+                cluster_cols=(), lifetime="session", ordering="offsets_col"
+            )
         )
         result_bq_data = self.execute(
             array_value,

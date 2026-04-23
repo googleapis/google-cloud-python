@@ -28,7 +28,7 @@ class ExecutionSpec:
     # implementation dependent and not stable.
     peek: Optional[int] = None
     # Controls whether output iterator is ordered. Cannot be true if destination is not
-    # guaranteed to be ordered. 
+    # guaranteed to be ordered.
     ordered: bool = False
     # This is an optimization flag for gbq execution, it doesn't change semantics, but if promise is falsely made, errors may occur
     promise_under_10gb: bool = False
@@ -41,7 +41,10 @@ class TempTableSpec:
     Specifies that the result of an operation should be a session temp table.
     The table will be automatically deleted after the session ends.
     """
-    cluster_cols: tuple[str, ...]   # if empty, will cluster using order key if ordering_key is set
+
+    cluster_cols: tuple[
+        str, ...
+    ]  # if empty, will cluster using order key if ordering_key is set
     lifetime: Literal["session", "ephemeral"] = "session"
     # Controls ordering and whether extra columns are materialized to preserve ordering
     # Any extra columns will be appended to the end of the schema.
@@ -59,6 +62,7 @@ class TableOutputSpec:
 
     The executor is not responsible for managing lifecycle of the table.
     """
+
     table: bigquery.TableReference
     cluster_cols: tuple[str, ...]
     if_exists: Literal["fail", "replace", "append"] = "fail"
