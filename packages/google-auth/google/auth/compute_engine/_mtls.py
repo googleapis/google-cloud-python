@@ -68,12 +68,16 @@ class MdsMtlsConfig:
         self.mode = mode or self._parse_mds_mode()
 
     def _get_default_mds_root_crt_path(self):
+        """Returns the default path to the CA certificate, based on the OS."""
+
         if os.name == _WINDOWS_OS_NAME:
             return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-root.crt"
         else:
             return _MTLS_COMPONENTS_BASE_PATH / "root.crt"
 
     def _get_default_mds_client_combined_cert_path(self):
+        """Returns the default path to the client certificate and key combined file, based on the OS."""
+
         if os.name == _WINDOWS_OS_NAME:
             return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-client.key"
         else:
@@ -81,6 +85,7 @@ class MdsMtlsConfig:
 
     def _parse_mds_mode(self) -> MdsMtlsMode:
         """Parses the GCE_METADATA_MTLS_MODE environment variable."""
+
         mode_str = os.environ.get(
             environment_vars.GCE_METADATA_MTLS_MODE, "default"
         ).lower()
@@ -112,15 +117,12 @@ def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig) -> bool:
 
     Args:
         mds_mtls_config (MdsMtlsConfig): The mTLS configuration containing the
-            paths to the CA and client certificates.
+            paths to the CA and client certificates as well as the mTLS mode.
 
     Returns:
         bool: True if mTLS should be used, False otherwise.
-
-    Raises:
-        google.auth.exceptions.MutualTLSChannelError: if mTLS is required (STRICT mode)
-            but certificates are missing.
     """
+
     mds_mtls_mode = mds_mtls_config.mode
     if mds_mtls_mode == MdsMtlsMode.STRICT:
         return True

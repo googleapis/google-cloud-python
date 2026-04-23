@@ -840,7 +840,7 @@ def test_get_service_account_info():
     assert info[key] == value
 
 
-def test__get_mds_mtls_root_mtls():
+def test__mount_mds_adapter_and_get_url_mtls():
     request = mock.Mock(spec=transport.Request)
     # Mocking mds_mtls_certificates_exist to True so it returns https
     with mock.patch(
@@ -852,19 +852,19 @@ def test__get_mds_mtls_root_mtls():
             return_value=_metadata._mtls.MdsMtlsMode.STRICT,
         ):
             assert (
-                _metadata._get_mds_mtls_root(request, root=_metadata._GCE_DEFAULT_HOST)
+                _metadata._mount_mds_adapter_and_get_url(request, root=_metadata._GCE_DEFAULT_HOST)
                 == "https://metadata.google.internal/computeMetadata/v1/"
             )
 
 
-def test__get_mds_mtls_root_no_mtls():
+def test__mount_mds_adapter_and_get_url_no_mtls():
     request = mock.Mock(spec=transport.Request)
     with mock.patch(
         "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
         return_value=_metadata._mtls.MdsMtlsMode.NONE,
     ):
         assert (
-            _metadata._get_mds_mtls_root(request, root=_metadata._GCE_DEFAULT_HOST)
+            _metadata._mount_mds_adapter_and_get_url(request, root=_metadata._GCE_DEFAULT_HOST)
             == "http://metadata.google.internal/computeMetadata/v1/"
         )
 
@@ -998,7 +998,7 @@ def test_get_mtls(
 def test_validate_gce_mds_configured_environment(
     mds_mode, metadata_host, certs_exist, expect_exception
 ):
-    # Validation now happens inside _get_mds_mtls_root
+    # Validation now happens inside _mount_mds_adapter_and_get_url
     request = mock.Mock(spec=transport.Request)
     with mock.patch(
         "google.auth.compute_engine._mtls.MdsMtlsConfig._parse_mds_mode",
@@ -1010,9 +1010,9 @@ def test_validate_gce_mds_configured_environment(
         ):
             if expect_exception:
                 with pytest.raises(exceptions.MutualTLSChannelError):
-                    _metadata._get_mds_mtls_root(request, root=metadata_host)
+                    _metadata._mount_mds_adapter_and_get_url(request, root=metadata_host)
             else:
-                _metadata._get_mds_mtls_root(request, root=metadata_host)
+                _metadata._mount_mds_adapter_and_get_url(request, root=metadata_host)
 
 
 @mock.patch(
