@@ -1997,8 +1997,8 @@ def ai_similarity(
     content1: ibis_types.Value, content2: ibis_types.Value, op: ops.AISimilarity
 ) -> ibis_types.Value:
     return ai_ops.AISimilarity(
-        content1, # type: ignore
-        content2, # type: ignore
+        content1,  # type: ignore
+        content2,  # type: ignore
         op.endpoint,  # type: ignore
         op.model,  # type: ignore
         op.model_params,  # type: ignore
