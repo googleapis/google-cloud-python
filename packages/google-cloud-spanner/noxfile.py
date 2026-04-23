@@ -712,8 +712,8 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                 f"--junitxml=system_{session.python}_sync_sponge_log.xml",
             ]
             if not session.posargs:
-                sync_args.append(os.path.join("tests", "system"))
-                sync_args.append("--ignore=tests/system/_async")
+                sync_args.append(system_test_folder_path)
+                sync_args.append(f"--ignore={os.path.join(system_test_folder_path, '_async')}")
             else:
                 sync_args.extend(session.posargs)
 
