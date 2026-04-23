@@ -365,6 +365,10 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         """Returns a copy of these credentials with the the regional_access_boundary
         set to the provided seed. This is intended for internal use only as invalid
         seeds would produce unexpected results until automatic recovery is supported.
+        Currently this is used by the gcloud CLI and therefore changes to the
+        contract MUST be backwards compatible (e.g. the method signature must be
+        unchanged and a copy of the credenials with the RAB set must be returned).
+
 
         Returns:
             google.auth.credentials.Credentials: A new credentials instance.
