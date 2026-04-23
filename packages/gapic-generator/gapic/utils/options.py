@@ -196,10 +196,6 @@ class Options:
         # Parse the resource name aliases dictionary (Format: "path/to/Resource:AliasName")
         resource_name_aliases = {}
         raw_aliases = opts.pop("resource-name-alias", [])
-        
-        # Normalize: protoc can return a string (1 flag) or list (multiple flags)
-        if not isinstance(raw_aliases, list):
-            raw_aliases = [raw_aliases]
             
         # Parse explicitly and safely
         for mapping in raw_aliases:

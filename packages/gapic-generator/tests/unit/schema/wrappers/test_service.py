@@ -23,6 +23,7 @@ from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
 from gapic.schema.wrappers import CommonResource, MessageType
+from gapic.schema import wrappers
 
 from test_utils.test_utils import (
     get_method,
@@ -731,40 +732,20 @@ def test_resource_messages_throws_informative_collision_error():
         _ = service.resource_messages
 
 
-def test_resource_messages_collision_resolved_by_alias():
-    # 1. Colliding types, but valid patterns
-    opts_1 = descriptor_pb2.MessageOptions()
-    opts_1.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
-    opts_1.Extensions[resource_pb2.resource].pattern.append("ces/{ces}/tool")
+def test_resource_messages_raises_on_malformed_typeless_resource():
+    # 1. Create a malformed resource: it has a pattern, but no type!
+    opts = descriptor_pb2.MessageOptions()
+    opts.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}")
     
-    opts_2 = descriptor_pb2.MessageOptions()
-    opts_2.Extensions[resource_pb2.resource].type = "workspace.googleapis.com/Tool"
-    opts_2.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}/tool")
+    malformed_msg = make_message("MalformedMessage", options=opts)
     
-    # 2. Build the messages WITH the alias injected into one of them!
-    msg_1 = MessageType(
-        message_pb=descriptor_pb2.DescriptorProto(name="MessageOne", options=opts_1), 
-        fields={}, nested_enums={}, nested_messages={},
-        resource_name_aliases={"ces.googleapis.com/Tool": "CesTool"} # Resolved!
-    )
-    msg_2 = MessageType(
-        message_pb=descriptor_pb2.DescriptorProto(name="MessageTwo", options=opts_2), 
-        fields={}, nested_enums={}, nested_messages={}
-    )
-
-    # 3. Build the service
     service = make_service(
         name="MyService",
         methods=(
-            make_method("GetToolOne", input_message=msg_1),
-            make_method("GetToolTwo", input_message=msg_2),
-        ),
-        visible_resources={
-            "ces.googleapis.com/Tool": msg_1,
-            "workspace.googleapis.com/Tool": msg_2,
-        }
+            make_method("DoThing", input_message=malformed_msg),
+        )
     )
-
-    # 4. Assert that calling the property succeeds and returns BOTH resources safely
-    resources = service.resource_messages
-    assert len(resources) == 2
+    
+    # 2. Trigger the property and expect it to fail fast with the AIP-123 URL
+    with pytest.raises(ValueError, match="https://google.aip.dev/123"):
+        _ = service.resource_messages

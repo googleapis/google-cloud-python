@@ -689,7 +689,7 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        if not resource:
+        if not resource.type:
             return None
             
         default_type = resource.type[resource.type.find("/") + 1 :]
@@ -2335,7 +2335,11 @@ class Service:
         for msg in sorted_messages:
             res_type = msg.resource_type
             if not res_type:
-                continue
+                # Fail fast if a resource is missing type
+                raise ValueError(
+                    f"\n\nFatal: Message '{msg.name}' defines a resource pattern but is missing a resource type. "
+                    f"This violates AIP-123 (https://google.aip.dev/123). Please define a 'type' in the google.api.resource option."
+                )
                 
             if res_type in seen_types:
                 incumbent = seen_types[res_type]
