@@ -18,9 +18,10 @@ from os import getenv
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
+from collections.abc import Callable
 
 
-def has_default_client_cert_source(include_context_aware=True):
+def has_default_client_cert_source(include_context_aware: bool=True) -> bool:
     """Check if default client SSL credentials exists on the device.
 
     Args:
@@ -52,7 +53,7 @@ def has_default_client_cert_source(include_context_aware=True):
     return False
 
 
-def default_client_cert_source():
+def default_client_cert_source() -> Callable[[], tuple[bytes, bytes]]:
     """Get a callback which returns the default client SSL credentials.
 
     Returns:
@@ -80,7 +81,7 @@ def default_client_cert_source():
     return callback
 
 
-def default_client_encrypted_cert_source(cert_path, key_path):
+def default_client_encrypted_cert_source(cert_path: str, key_path: str) -> Callable[[], tuple[str, str, bytes]]:
     """Get a callback which returns the default encrpyted client SSL credentials.
 
     Args:
@@ -125,7 +126,7 @@ def default_client_encrypted_cert_source(cert_path, key_path):
     return callback
 
 
-def should_use_client_cert():
+def should_use_client_cert() -> bool:
     """Returns boolean for whether the client certificate should be used for mTLS.
 
     This is a wrapper around _mtls_helper.check_use_client_cert().

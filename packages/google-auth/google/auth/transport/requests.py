@@ -21,7 +21,14 @@ import http.client as http_client
 import logging
 import numbers
 import time
-from typing import Optional
+from typing import Any, Optional
+from _typeshed import SupportsItems, SupportsRead
+from collections.abc import Callable, Iterable, Mapping, MutableMapping, Sequence
+from google.auth.transport import Request, Response
+from requests.auth import AuthBase
+from requests.sessions import PreparedRequest, RequestsCookieJar
+from types import TracebackType
+from typing_extensions import Self
 
 try:
     import requests
@@ -54,19 +61,19 @@ class _Response(transport.Response):
         response (requests.Response): The raw Requests response.
     """
 
-    def __init__(self, response):
+    def __init__(self, response: requests.Response) -> None:
         self._response = response
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._response.status_code
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         return self._response.headers
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self._response.content
 
 
@@ -84,16 +91,16 @@ class TimeoutGuard(object):
             :class:`requests.exceptions.Timeout`.
     """
 
-    def __init__(self, timeout, timeout_error_type=requests.exceptions.Timeout):
+    def __init__(self, timeout: Any, timeout_error_type: type[Exception]=requests.exceptions.Timeout) -> None:
         self._timeout = timeout
         self.remaining_timeout = timeout
         self._timeout_error_type = timeout_error_type
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         self._start = time.time()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if exc_value:
             return  # let the error bubble up automatically
 
@@ -144,7 +151,7 @@ class Request(transport.Request):
 
         self.session = session
 
-    def __del__(self):
+    def __del__(self) -> None:
         try:
             if hasattr(self, "session") and self.session is not None:
                 self.session.close()
@@ -156,13 +163,13 @@ class Request(transport.Request):
 
     def __call__(
         self,
-        url,
-        method="GET",
-        body=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
+        url: str,
+        method: str="GET",
+        body: bytes | None=None,
+        headers: Mapping[str, str] | None=None,
+        timeout: float | None=_DEFAULT_TIMEOUT,
         **kwargs
-    ):
+    ) -> _Response:
         """Make an HTTP request using requests.
 
         Args:
@@ -208,7 +215,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         OpenSSL.crypto.Error: if client cert or key is invalid
     """
 
-    def __init__(self, cert, key):
+    def __init__(self, cert: bytes, key: bytes) -> None:
         import certifi
         from OpenSSL import crypto
         import urllib3.contrib.pyopenssl  # type: ignore
@@ -232,7 +239,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
 
         super(_MutualTlsAdapter, self).__init__()
 
-    def init_poolmanager(self, *args, **kwargs):
+    def init_poolmanager(self, *args, **kwargs) -> None:
         kwargs["ssl_context"] = self._ctx_poolmanager
         super(_MutualTlsAdapter, self).init_poolmanager(*args, **kwargs)
 
@@ -263,7 +270,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
             creation failed for any reason.
     """
 
-    def __init__(self, enterprise_cert_file_path):
+    def __init__(self, enterprise_cert_file_path: str) -> None:
         import certifi
         from google.auth.transport import _custom_tls_signer
 
@@ -286,7 +293,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
 
         super(_MutualTlsOffloadAdapter, self).__init__()
 
-    def init_poolmanager(self, *args, **kwargs):
+    def init_poolmanager(self, *args, **kwargs) -> None:
         kwargs["ssl_context"] = self._ctx_poolmanager
         super(_MutualTlsOffloadAdapter, self).init_poolmanager(*args, **kwargs)
 
@@ -384,13 +391,13 @@ class AuthorizedSession(requests.Session):
 
     def __init__(
         self,
-        credentials,
-        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
-        refresh_timeout=None,
-        auth_request=None,
-        default_host=None,
-    ):
+        credentials: Any,
+        refresh_status_codes: Sequence[int]=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts: int=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+        refresh_timeout: float | None=None,
+        auth_request: Request | None=None,
+        default_host: str | None=None,
+    ) -> None:
         super(AuthorizedSession, self).__init__()
         self.credentials = credentials
         self._refresh_status_codes = refresh_status_codes
@@ -425,7 +432,7 @@ class AuthorizedSession(requests.Session):
                 "https://{}/".format(self._default_host) if self._default_host else None
             )
 
-    def configure_mtls_channel(self, client_cert_callback=None):
+    def configure_mtls_channel(self, client_cert_callback: Any | None=None) -> None:
         """Configure the client certificate and key for SSL connection.
 
         The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
@@ -624,7 +631,7 @@ class AuthorizedSession(requests.Session):
         return response
 
     @property
-    def is_mtls(self):
+    def is_mtls(self) -> bool:
         """Indicates if the created SSL channel is mutual TLS."""
         return self._is_mtls
 

@@ -28,9 +28,11 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import crypt
 from google.auth import exceptions
-from google.auth.transport import _mtls_helper
+from google.auth.transport import Request, _mtls_helper
+from google.auth.credentials import Credentials
+from google.auth.crypt.base import Signer
 
-IAM_RETRY_CODES = {
+IAM_RETRY_CODES: set[int] = {
     http_client.INTERNAL_SERVER_ERROR,
     http_client.BAD_GATEWAY,
     http_client.SERVICE_UNAVAILABLE,
@@ -71,7 +73,7 @@ class Signer(crypt.Signer):
         /signBlob
     """
 
-    def __init__(self, request, credentials, service_account_email):
+    def __init__(self, request: Request, credentials: Credentials, service_account_email: str) -> None:
         """
         Args:
             request (google.auth.transport.Request): The object used to make
@@ -122,7 +124,7 @@ class Signer(crypt.Signer):
         raise exceptions.TransportError("exhausted signBlob endpoint retries")
 
     @property
-    def key_id(self):
+    def key_id(self) -> str:
         """Optional[str]: The key ID used to identify this private key.
 
         .. warning::
@@ -132,6 +134,6 @@ class Signer(crypt.Signer):
         return None
 
     @_helpers.copy_docstring(crypt.Signer)
-    def sign(self, message):
+    def sign(self, message: str | bytes) -> bytes:
         response = self._make_signing_request(message)
         return base64.b64decode(response["signedBlob"])

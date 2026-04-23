@@ -19,6 +19,8 @@
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth._credentials_base import _BaseCredentials
+from google.auth.transport import Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest, Request as _TransportRequest
+from collections.abc import Mapping
 
 
 class Credentials(_BaseCredentials):
@@ -40,10 +42,10 @@ class Credentials(_BaseCredentials):
     with modifications such as :meth:`ScopedCredentials.with_scopes`.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super(Credentials, self).__init__()
 
-    async def apply(self, headers, token=None):
+    async def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Apply the token to the authentication header.
 
         Args:
@@ -53,7 +55,7 @@ class Credentials(_BaseCredentials):
         """
         self._apply(headers, token=token)
 
-    async def refresh(self, request):
+    async def refresh(self, request: _TransportRequest) -> None:
         """Refreshes the access token.
 
         Args:
@@ -66,7 +68,7 @@ class Credentials(_BaseCredentials):
         """
         raise NotImplementedError("Refresh must be implemented")
 
-    async def before_request(self, request, method, url, headers):
+    async def before_request(self, request: _TransportRequest, method: str, url: str, headers: Mapping[str, str]) -> None:
         """Performs credential-specific before request logic.
 
         Refreshes the credentials if necessary, then calls :meth:`apply` to
@@ -96,7 +98,7 @@ class StaticCredentials(Credentials):
     refresh the token.
     """
 
-    def __init__(self, token):
+    def __init__(self, token: str) -> None:
         """
         Args:
             token (str): The access token.
@@ -105,13 +107,13 @@ class StaticCredentials(Credentials):
         self.token = token
 
     @_helpers.copy_docstring(Credentials)
-    async def refresh(self, request):
+    async def refresh(self, request: _TransportRequest) -> None:
         raise exceptions.InvalidOperation("Static credentials cannot be refreshed.")
 
     # Note: before_request should never try to refresh access tokens.
     # StaticCredentials intentionally does not support it.
     @_helpers.copy_docstring(Credentials)
-    async def before_request(self, request, method, url, headers):
+    async def before_request(self, request: _TransportRequest, method: str, url: str, headers: Mapping[str, str]) -> None:
         await self.apply(headers)
 
 
@@ -122,12 +124,12 @@ class AnonymousCredentials(Credentials):
     local service emulators that do not use credentials.
     """
 
-    async def refresh(self, request):
+    async def refresh(self, request: _TransportRequest) -> None:
         """Raises :class:``InvalidOperation``, anonymous credentials cannot be
         refreshed."""
         raise exceptions.InvalidOperation("Anonymous credentials cannot be refreshed.")
 
-    async def apply(self, headers, token=None):
+    async def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Anonymous credentials do nothing to the request.
 
         The optional ``token`` argument is not supported.
@@ -138,6 +140,6 @@ class AnonymousCredentials(Credentials):
         if token is not None:
             raise exceptions.InvalidValue("Anonymous credentials don't support tokens.")
 
-    async def before_request(self, request, method, url, headers):
+    async def before_request(self, request: _TransportRequest, method: str, url: str, headers: Mapping[str, str]) -> None:
         """Anonymous credentials do nothing to the request."""
         pass

@@ -82,6 +82,11 @@ from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
 from google.oauth2 import _client
+from collections.abc import Coroutine, Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, CredentialsWithTokenUri, CredentialsWithTrustBoundary, Scoped, Signing
+from google.auth.crypt import Signer
+from google.auth.transport import Request
+from typing import Any
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
@@ -131,19 +136,19 @@ class Credentials(
 
     def __init__(
         self,
-        signer,
-        service_account_email,
-        token_uri,
-        scopes=None,
-        default_scopes=None,
-        subject=None,
-        project_id=None,
-        quota_project_id=None,
-        additional_claims=None,
-        always_use_jwt_access=False,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-        trust_boundary=None,
-    ):
+        signer: Signer,
+        service_account_email: str,
+        token_uri: str,
+        scopes: Sequence[str] | None=None,
+        default_scopes: Sequence[str] | None=None,
+        subject: str | None=None,
+        project_id: str | None=None,
+        quota_project_id: str | None=None,
+        additional_claims: Mapping[str, str] | None=None,
+        always_use_jwt_access: bool=False,
+        universe_domain: str | None=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        trust_boundary: Mapping[str, str] | None=None,
+    ) -> None:
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -227,7 +232,7 @@ class Credentials(
         )
 
     @classmethod
-    def from_service_account_info(cls, info, **kwargs):
+    def from_service_account_info(cls, info: Mapping[str, str], **kwargs) -> "Credentials":
         """Creates a Credentials instance from parsed service account info.
 
         Args:
@@ -248,7 +253,7 @@ class Credentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
+    def from_service_account_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates a Credentials instance from a service account json file.
 
         Args:
@@ -265,17 +270,17 @@ class Credentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         """The service account email."""
         return self._service_account_email
 
     @property
-    def project_id(self):
+    def project_id(self) -> str | None:
         """Project ID associated with this credential."""
         return self._project_id
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """Checks if the credentials requires scopes.
 
         Returns:
@@ -302,13 +307,13 @@ class Credentials(
         return cred
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Credentials":
         cred = self._make_copy()
         cred._scopes = scopes
         cred._default_scopes = default_scopes
         return cred
 
-    def with_always_use_jwt_access(self, always_use_jwt_access):
+    def with_always_use_jwt_access(self, always_use_jwt_access: bool) -> "Credentials":
         """Create a copy of these credentials with the specified always_use_jwt_access value.
 
         Args:
@@ -333,14 +338,14 @@ class Credentials(
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str) -> "Credentials":
         cred = self._make_copy()
         cred._universe_domain = universe_domain
         if universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             cred._always_use_jwt_access = True
         return cred
 
-    def with_subject(self, subject):
+    def with_subject(self, subject: str) -> "Credentials":
         """Create a copy of these credentials with the specified subject.
 
         Args:
@@ -354,7 +359,7 @@ class Credentials(
         cred._subject = subject
         return cred
 
-    def with_claims(self, additional_claims):
+    def with_claims(self, additional_claims: Mapping[str, str]) -> "Credentials":
         """Returns a copy of these credentials with modified claims.
 
         Args:
@@ -373,19 +378,19 @@ class Credentials(
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "Credentials":
         cred = self._make_copy()
         cred._token_uri = token_uri
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str]) -> "Credentials":
         cred = self._make_copy()
         cred._trust_boundary = trust_boundary
         return cred
@@ -523,21 +528,21 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(credentials.Signing)
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         return self._signer.sign(message)
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer(self):
+    def signer(self) -> Signer:
         return self._signer
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._service_account_email
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         if self._cred_file_path:
             return {
                 "credential_source": self._cred_file_path,
@@ -598,14 +603,14 @@ class IDTokenCredentials(
 
     def __init__(
         self,
-        signer,
-        service_account_email,
-        token_uri,
-        target_audience,
-        additional_claims=None,
-        quota_project_id=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-    ):
+        signer: Signer,
+        service_account_email: str,
+        token_uri: str,
+        target_audience: str,
+        additional_claims: Mapping[str, str] | None=None,
+        quota_project_id: str | None=None,
+        universe_domain: str | None=credentials.DEFAULT_UNIVERSE_DOMAIN,
+    ) -> None:
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -675,7 +680,7 @@ class IDTokenCredentials(
         return cls(signer, **kwargs)
 
     @classmethod
-    def from_service_account_info(cls, info, **kwargs):
+    def from_service_account_info(cls, info: Mapping[str, str], **kwargs) -> "IDTokenCredentials":
         """Creates a credentials instance from parsed service account info.
 
         Args:
@@ -696,7 +701,7 @@ class IDTokenCredentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
+    def from_service_account_file(cls, filename: str, **kwargs) -> "IDTokenCredentials":
         """Creates a credentials instance from a service account json file.
 
         Args:
@@ -726,7 +731,7 @@ class IDTokenCredentials(
         cred._use_iam_endpoint = self._use_iam_endpoint
         return cred
 
-    def with_target_audience(self, target_audience):
+    def with_target_audience(self, target_audience: str) -> "IDTokenCredentials":
         """Create a copy of these credentials with the specified target
         audience.
 
@@ -771,13 +776,13 @@ class IDTokenCredentials(
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "IDTokenCredentials":
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "IDTokenCredentials":
         cred = self._make_copy()
         cred._token_uri = token_uri
         return cred
@@ -849,7 +854,7 @@ class IDTokenCredentials(
         )
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None | Coroutine[Any, Any, None]:
         if self._use_iam_endpoint:
             self._refresh_with_iam_endpoint(request)
         else:
@@ -861,20 +866,20 @@ class IDTokenCredentials(
             self.expiry = expiry
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         """The service account email."""
         return self._service_account_email
 
     @_helpers.copy_docstring(credentials.Signing)
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         return self._signer.sign(message)
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer(self):
+    def signer(self) -> Signer:
         return self._signer
 
     @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._service_account_email

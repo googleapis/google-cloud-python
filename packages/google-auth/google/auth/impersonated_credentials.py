@@ -39,6 +39,11 @@ from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
 from google.oauth2 import _client
+from google.auth.crypt import Signer as _Signer
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import Credentials, CredentialsWithQuotaProject, CredentialsWithTokenUri, CredentialsWithTrustBoundary, Scoped, Signing
+from google.auth.transport import Request
+from typing import Any
 
 
 _REFRESH_ERROR = "Unable to acquire impersonated credentials"
@@ -196,16 +201,16 @@ class Credentials(
 
     def __init__(
         self,
-        source_credentials,
-        target_principal,
-        target_scopes,
-        delegates=None,
-        subject=None,
-        lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
-        quota_project_id=None,
-        iam_endpoint_override=None,
-        trust_boundary=None,
-    ):
+        source_credentials: "Credentials",
+        target_principal: str,
+        target_scopes: Sequence[str],
+        delegates: Sequence[str] | None=None,
+        subject: str | None=None,
+        lifetime: int=_DEFAULT_TOKEN_LIFETIME_SECS,
+        quota_project_id: str | None=None,
+        iam_endpoint_override: str | None=None,
+        trust_boundary: Mapping[str, str] | None=None,
+    ) -> None:
         """
         Args:
             source_credentials (google.auth.Credentials): The source credential
@@ -272,7 +277,7 @@ class Credentials(
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_SA_IMPERSONATE
 
-    def _perform_refresh_token(self, request):
+    def _perform_refresh_token(self, request: Request) -> None:
         """Updates credentials with a new access_token representing
         the impersonated account.
 
@@ -344,7 +349,7 @@ class Credentials(
             iam_endpoint_override=self._iam_endpoint_override,
         )
 
-    def _build_trust_boundary_lookup_url(self):
+    def _build_trust_boundary_lookup_url(self) -> str:
         """Builds and returns the URL for the trust boundary lookup API.
 
         This method constructs the specific URL for the IAM Credentials API's
@@ -366,7 +371,7 @@ class Credentials(
             self.universe_domain, self.service_account_email
         )
 
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         from google.auth.transport.requests import AuthorizedSession
 
         iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.replace(
@@ -401,23 +406,23 @@ class Credentials(
         raise exceptions.TransportError("exhausted signBlob endpoint retries")
 
     @property
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._target_principal
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         return self._target_principal
 
     @property
-    def signer(self):
+    def signer(self) -> _Signer:
         return self
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         return not self._target_scopes
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         if self._cred_file_path:
             return {
                 "credential_source": self._cred_file_path,
@@ -441,25 +446,25 @@ class Credentials(
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str]) -> "Credentials":
         cred = self._make_copy()
         cred._trust_boundary = trust_boundary
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Credentials":
         cred = self._make_copy()
         cred._target_scopes = scopes or default_scopes
         return cred
 
     @classmethod
-    def from_impersonated_service_account_info(cls, info, scopes=None):
+    def from_impersonated_service_account_info(cls: type[Credentials], info: Mapping[str, Any], scopes: Sequence[str] | None=None) -> "Credentials":
         """Creates a Credentials instance from parsed impersonated service account credentials info.
 
         **IMPORTANT**:
@@ -544,11 +549,11 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
 
     def __init__(
         self,
-        target_credentials,
-        target_audience=None,
-        include_email=False,
-        quota_project_id=None,
-    ):
+        target_credentials: Credentials,
+        target_audience: str | None=None,
+        include_email: bool=False,
+        quota_project_id: str | None=None,
+    ) -> None:
         """
         Args:
             target_credentials (google.auth.Credentials): The target
@@ -569,7 +574,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         self._include_email = include_email
         self._quota_project_id = quota_project_id
 
-    def from_credentials(self, target_credentials, target_audience=None):
+    def from_credentials(self, target_credentials: Credentials, target_audience: str | None=None) -> "IDTokenCredentials":
         return self.__class__(
             target_credentials=target_credentials,
             target_audience=target_audience,
@@ -577,7 +582,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
             quota_project_id=self._quota_project_id,
         )
 
-    def with_target_audience(self, target_audience):
+    def with_target_audience(self, target_audience: str) -> "IDTokenCredentials":
         return self.__class__(
             target_credentials=self._target_credentials,
             target_audience=target_audience,
@@ -585,7 +590,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
             quota_project_id=self._quota_project_id,
         )
 
-    def with_include_email(self, include_email):
+    def with_include_email(self, include_email: bool) -> "IDTokenCredentials":
         return self.__class__(
             target_credentials=self._target_credentials,
             target_audience=self._target_audience,
@@ -594,7 +599,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "IDTokenCredentials":
         return self.__class__(
             target_credentials=self._target_credentials,
             target_audience=self._target_audience,
@@ -603,7 +608,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         )
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         from google.auth.transport.requests import AuthorizedSession
 
         iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(

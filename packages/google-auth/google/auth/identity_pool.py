@@ -34,6 +34,9 @@ and used to create Identity Pool credentials. The credentials will then call the
 supplier instead of using pre-defined methods such as reading a local file or
 calling a URL.
 """
+import collections.abc
+from google.auth.external_account import Credentials
+from typing import Any, NamedTuple
 
 try:
     from collections.abc import Mapping
@@ -60,7 +63,7 @@ class SubjectTokenSupplier(metaclass=abc.ABCMeta):
     """
 
     @abc.abstractmethod
-    def get_subject_token(self, context, request):
+    def get_subject_token(self, context: Any, request: Any) -> str:
         """Returns the requested subject token. The subject token must be valid.
 
         .. warning: This is not cached by the calling Google credential, so caching logic should be implemented in the supplier.
@@ -95,13 +98,13 @@ class _TokenContent(NamedTuple):
 class _FileSupplier(SubjectTokenSupplier):
     """Internal implementation of subject token supplier which supports reading a subject token from a file."""
 
-    def __init__(self, path, format_type, subject_token_field_name):
+    def __init__(self, path: str, format_type: str, subject_token_field_name: str | None) -> None:
         self._path = path
         self._format_type = format_type
         self._subject_token_field_name = subject_token_field_name
 
     @_helpers.copy_docstring(SubjectTokenSupplier)
-    def get_subject_token(self, context, request):
+    def get_subject_token(self, context: Any, request: Any) -> str:
         if not os.path.exists(self._path):
             raise exceptions.RefreshError("File '{}' was not found.".format(self._path))
 
@@ -116,14 +119,14 @@ class _FileSupplier(SubjectTokenSupplier):
 class _UrlSupplier(SubjectTokenSupplier):
     """Internal implementation of subject token supplier which supports retrieving a subject token by calling a URL endpoint."""
 
-    def __init__(self, url, format_type, subject_token_field_name, headers):
+    def __init__(self, url: str, format_type: str, subject_token_field_name: str | None, headers: collections.abc.Mapping[str, str] | None) -> None:
         self._url = url
         self._format_type = format_type
         self._subject_token_field_name = subject_token_field_name
         self._headers = headers
 
     @_helpers.copy_docstring(SubjectTokenSupplier)
-    def get_subject_token(self, context, request):
+    def get_subject_token(self, context: Any, request: Any) -> str:
         response = request(url=self._url, method="GET", headers=self._headers)
 
         # support both string and bytes type response.data
@@ -146,12 +149,12 @@ class _UrlSupplier(SubjectTokenSupplier):
 class _X509Supplier(SubjectTokenSupplier):
     """Internal supplier for X509 workload credentials. This class is used internally and always returns an empty string as the subject token."""
 
-    def __init__(self, trust_chain_path, leaf_cert_callback):
+    def __init__(self, trust_chain_path: str | None, leaf_cert_callback: Any) -> None:
         self._trust_chain_path = trust_chain_path
         self._leaf_cert_callback = leaf_cert_callback
 
     @_helpers.copy_docstring(SubjectTokenSupplier)
-    def get_subject_token(self, context, request):
+    def get_subject_token(self, context: Any, request: Any) -> str:
         # Import OpennSSL inline because it is an extra import only required by customers
         # using mTLS.
         from OpenSSL import crypto
@@ -266,14 +269,14 @@ class Credentials(external_account.Credentials):
 
     def __init__(
         self,
-        audience,
-        subject_token_type,
-        token_url=external_account._DEFAULT_TOKEN_URL,
-        credential_source=None,
-        subject_token_supplier=None,
+        audience: str,
+        subject_token_type: str,
+        token_url: str=external_account._DEFAULT_TOKEN_URL,
+        credential_source: collections.abc.Mapping[str, Any] | None=None,
+        subject_token_supplier: SubjectTokenSupplier | None=None,
         *args,
         **kwargs
-    ):
+    ) -> None:
         """Instantiates an external account credentials object from a file/URL.
 
         Args:
@@ -390,7 +393,7 @@ class Credentials(external_account.Credentials):
                 )
 
     @_helpers.copy_docstring(external_account.Credentials)
-    def retrieve_subject_token(self, request):
+    def retrieve_subject_token(self, request: Any) -> str:
         return self._subject_token_supplier.get_subject_token(
             self._supplier_context, request
         )
@@ -503,7 +506,7 @@ class Credentials(external_account.Credentials):
             )
 
     @classmethod
-    def from_info(cls, info, **kwargs):
+    def from_info(cls, info: collections.abc.Mapping[str, Any], **kwargs) -> "Credentials":
         """Creates an Identity Pool Credentials instance from parsed external account info.
 
         **IMPORTANT**:
@@ -531,7 +534,7 @@ class Credentials(external_account.Credentials):
         return super(Credentials, cls).from_info(info, **kwargs)
 
     @classmethod
-    def from_file(cls, filename, **kwargs):
+    def from_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates an IdentityPool Credentials instance from an external account json file.
 
         **IMPORTANT**:
@@ -552,7 +555,7 @@ class Credentials(external_account.Credentials):
         """
         return super(Credentials, cls).from_file(filename, **kwargs)
 
-    def refresh(self, request):
+    def refresh(self, request: Any) -> None:
         """Refreshes the access token.
 
         Args:

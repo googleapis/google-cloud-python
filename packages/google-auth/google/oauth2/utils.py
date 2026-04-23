@@ -46,6 +46,7 @@ import enum
 import json
 
 from google.auth import exceptions
+from collections.abc import Mapping
 
 
 # OAuth client authentication based on
@@ -60,7 +61,7 @@ class ClientAuthentication(object):
     types based on https://tools.ietf.org/html/rfc6749#section-2.3.1.
     """
 
-    def __init__(self, client_auth_type, client_id, client_secret=None):
+    def __init__(self, client_auth_type: ClientAuthType, client_id: str, client_secret: str | None=None) -> None:
         """Instantiates a client authentication object containing the client ID
         and secret credentials for basic and response-body auth.
 
@@ -80,7 +81,7 @@ class OAuthClientAuthHandler(metaclass=abc.ABCMeta):
     operations.
     """
 
-    def __init__(self, client_authentication=None):
+    def __init__(self, client_authentication: ClientAuthentication | None=None) -> None:
         """Instantiates an OAuth client authentication handler.
 
         Args:
@@ -91,8 +92,8 @@ class OAuthClientAuthHandler(metaclass=abc.ABCMeta):
         self._client_authentication = client_authentication
 
     def apply_client_authentication_options(
-        self, headers, request_body=None, bearer_token=None
-    ):
+        self, headers: Mapping[str, str], request_body: Mapping[str, str] | None=None, bearer_token: str | None=None
+    ) -> None:
         """Applies client authentication on the OAuth request's headers or POST
         body.
 
@@ -141,7 +142,7 @@ class OAuthClientAuthHandler(metaclass=abc.ABCMeta):
                 )
 
 
-def handle_error_response(response_body):
+def handle_error_response(response_body: str) -> None:
     """Translates an error response from an OAuth operation into an
     OAuthError exception.
 

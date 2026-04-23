@@ -29,6 +29,10 @@ from google.auth import jwt
 from google.auth import metrics
 from google.auth.compute_engine import _metadata
 from google.oauth2 import _client
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, CredentialsWithTokenUri, CredentialsWithTrustBoundary, CredentialsWithUniverseDomain, Scoped, Signing
+from google.auth.crypt import Signer
+from google.auth.transport import Request
 
 _TRUST_BOUNDARY_LOOKUP_ENDPOINT = (
     "https://iamcredentials.{}/v1/projects/-/serviceAccounts/{}/allowedLocations"
@@ -61,13 +65,13 @@ class Credentials(
 
     def __init__(
         self,
-        service_account_email="default",
-        quota_project_id=None,
-        scopes=None,
-        default_scopes=None,
-        universe_domain=None,
-        trust_boundary=None,
-    ):
+        service_account_email: str="default",
+        quota_project_id: str | None=None,
+        scopes: Sequence[str] | None=None,
+        default_scopes: Sequence[str] | None=None,
+        universe_domain: str | None=None,
+        trust_boundary: Mapping[str, str] | None=None,
+    ) -> None:
         """
         Args:
             service_account_email (str): The service account email to use, or
@@ -123,7 +127,7 @@ class Credentials(
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_SA_MDS
 
-    def _perform_refresh_token(self, request):
+    def _perform_refresh_token(self, request: Request) -> None:
         """Refresh the access token and scopes.
 
         Args:
@@ -146,7 +150,7 @@ class Credentials(
             new_exc = exceptions.RefreshError(caught_exc)
             raise new_exc from caught_exc
 
-    def _build_trust_boundary_lookup_url(self):
+    def _build_trust_boundary_lookup_url(self) -> str:
         """Builds and returns the URL for the trust boundary lookup API for GCE."""
         # If the service account email is 'default', we need to get the
         # actual email address from the metadata server.
@@ -178,7 +182,7 @@ class Credentials(
         )
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         """The service account email.
 
         .. note:: This is not guaranteed to be set until :meth:`refresh` has been
@@ -187,11 +191,11 @@ class Credentials(
         return self._service_account_email
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         return not self._scopes
 
     @property
-    def universe_domain(self):
+    def universe_domain(self) -> str:
         if self._universe_domain_cached:
             return self._universe_domain
 
@@ -204,7 +208,7 @@ class Credentials(
         return self._universe_domain
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         return {
             "credential_source": "metadata server",
             "credential_type": "VM credentials",
@@ -212,7 +216,7 @@ class Credentials(
         }
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         creds = self.__class__(
             service_account_email=self._service_account_email,
             quota_project_id=quota_project_id,
@@ -225,7 +229,7 @@ class Credentials(
         return creds
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(self, scopes: Sequence[str], default_scopes: Sequence[str] | None=None) -> "Credentials":
         # Compute Engine credentials can not be scoped (the metadata service
         # ignores the scopes parameter). App Engine, Cloud Run and Flex support
         # requesting scopes.
@@ -241,7 +245,7 @@ class Credentials(
         return creds
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str | None) -> "Credentials":
         return self.__class__(
             scopes=self._scopes,
             default_scopes=self._default_scopes,
@@ -252,7 +256,7 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str]) -> "Credentials":
         creds = self.__class__(
             service_account_email=self._service_account_email,
             quota_project_id=self._quota_project_id,
@@ -289,15 +293,15 @@ class IDTokenCredentials(
 
     def __init__(
         self,
-        request,
-        target_audience,
-        token_uri=None,
-        additional_claims=None,
-        service_account_email=None,
-        signer=None,
-        use_metadata_identity_endpoint=False,
-        quota_project_id=None,
-    ):
+        request: Request,
+        target_audience: str | None,
+        token_uri: str | None=None,
+        additional_claims: Mapping[str, str] | None=None,
+        service_account_email: str | None=None,
+        signer: Signer | None=None,
+        use_metadata_identity_endpoint: bool=False,
+        quota_project_id: str | None=None,
+    ) -> None:
         """
         Args:
             request (google.auth.transport.Request): The object used to make
@@ -366,7 +370,7 @@ class IDTokenCredentials(
             else:
                 self._additional_claims = {}
 
-    def with_target_audience(self, target_audience):
+    def with_target_audience(self, target_audience: str) -> "IDTokenCredentials":
         """Create a copy of these credentials with the specified target
         audience.
         Args:
@@ -398,7 +402,7 @@ class IDTokenCredentials(
             )
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "IDTokenCredentials":
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
@@ -421,7 +425,7 @@ class IDTokenCredentials(
             )
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "IDTokenCredentials":
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
@@ -500,7 +504,7 @@ class IDTokenCredentials(
         _, payload, _, _ = jwt._unverified_decode(id_token)
         return id_token, _helpers.utcfromtimestamp(payload["exp"])
 
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         """Refreshes the ID token.
 
         Args:
@@ -527,7 +531,7 @@ class IDTokenCredentials(
     def signer(self):
         return self._signer
 
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         """Signs the given message.
 
         Args:
@@ -547,10 +551,10 @@ class IDTokenCredentials(
         return self._signer.sign(message)
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str:
         """The service account email."""
         return self._service_account_email
 
     @property
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._service_account_email

@@ -17,6 +17,7 @@
 # since it is currently unused.
 
 import abc
+from typing import Any
 
 
 _DEFAULT_TIMEOUT = 120  # in second
@@ -32,22 +33,22 @@ class _BaseAuthorizedSession(metaclass=abc.ABCMeta):
             add to the request.
     """
 
-    def __init__(self, credentials):
+    def __init__(self, credentials: Any) -> None:
         self.credentials = credentials
 
     @abc.abstractmethod
     def request(
         self,
-        method,
-        url,
-        data=None,
-        headers=None,
-        max_allowed_time=None,
-        timeout=_DEFAULT_TIMEOUT,
+        method: str,
+        url: str,
+        data: Any=None,
+        headers: Any=None,
+        max_allowed_time: Any=None,
+        timeout: float | None=_DEFAULT_TIMEOUT,
         **kwargs
     ):
         raise NotImplementedError("Request must be implemented")
 
     @abc.abstractmethod
-    def close(self):
+    def close(self) -> None:
         raise NotImplementedError("Close must be implemented")

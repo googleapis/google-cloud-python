@@ -19,6 +19,7 @@ import io
 import json
 
 from google.auth import exceptions
+from collections.abc import Mapping
 
 _JSON_FILE_PRIVATE_KEY = "private_key"
 _JSON_FILE_PRIVATE_KEY_ID = "private_key_id"
@@ -28,7 +29,7 @@ class Verifier(metaclass=abc.ABCMeta):
     """Abstract base class for crytographic signature verifiers."""
 
     @abc.abstractmethod
-    def verify(self, message, signature):
+    def verify(self, message: str | bytes, signature: str | bytes) -> bool:
         """Verifies a message against a cryptographic signature.
 
         Args:
@@ -48,12 +49,12 @@ class Signer(metaclass=abc.ABCMeta):
     """Abstract base class for cryptographic signers."""
 
     @abc.abstractproperty
-    def key_id(self):
+    def key_id(self) -> str:
         """Optional[str]: The key ID used to identify this private key."""
         raise NotImplementedError("Key id must be implemented")
 
     @abc.abstractmethod
-    def sign(self, message):
+    def sign(self, message: str | bytes) -> bytes:
         """Signs a message.
 
         Args:
@@ -71,7 +72,7 @@ class FromServiceAccountMixin(metaclass=abc.ABCMeta):
     """Mix-in to enable factory constructors for a Signer."""
 
     @abc.abstractmethod
-    def from_string(cls, key, key_id=None):
+    def from_string(cls, key: str, key_id: str | None=None) -> Signer:
         """Construct an Signer instance from a private key string.
 
         Args:
@@ -87,7 +88,7 @@ class FromServiceAccountMixin(metaclass=abc.ABCMeta):
         raise NotImplementedError("from_string must be implemented")
 
     @classmethod
-    def from_service_account_info(cls, info):
+    def from_service_account_info(cls, info: Mapping[str, str]) -> Signer:
         """Creates a Signer instance instance from a dictionary containing
         service account info in Google format.
 
@@ -111,7 +112,7 @@ class FromServiceAccountMixin(metaclass=abc.ABCMeta):
         )
 
     @classmethod
-    def from_service_account_file(cls, filename):
+    def from_service_account_file(cls, filename: str) -> Signer:
         """Creates a Signer instance from a service account .json file
         in Google format.
 

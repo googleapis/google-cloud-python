@@ -33,6 +33,9 @@ from google.auth import metrics
 from google.auth import transport
 from google.auth._exponential_backoff import ExponentialBackoff
 from google.auth.compute_engine import _mtls
+from google.auth.transport import Request as _Request, Request as _Request, Request as _Request, Request as _Request, Request as _Request, Request as _Request, Request as _Request
+from collections.abc import Mapping
+from typing import Any
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -119,7 +122,7 @@ _GOOGLE = "Google"
 _GCE_PRODUCT_NAME_FILE = "/sys/class/dmi/id/product_name"
 
 
-def is_on_gce(request):
+def is_on_gce(request: _Request) -> bool:
     """Checks to see if the code runs on Google Compute Engine
 
     Args:
@@ -143,7 +146,7 @@ def is_on_gce(request):
     return detect_gce_residency_linux()
 
 
-def detect_gce_residency_linux():
+def detect_gce_residency_linux() -> bool:
     """Detect Google Compute Engine residency by smbios check on Linux
 
     Returns:
@@ -186,8 +189,8 @@ def _prepare_request_for_mds(request, use_mtls=False) -> None:
 
 
 def ping(
-    request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=_METADATA_DETECT_RETRIES
-):
+    request: _Request, timeout: int=_METADATA_DEFAULT_TIMEOUT, retry_count: int=_METADATA_DETECT_RETRIES
+) -> bool:
     """Checks to see if the metadata server is available.
 
     Args:
@@ -241,16 +244,16 @@ def ping(
 
 
 def get(
-    request,
-    path,
-    root=None,
-    params=None,
-    recursive=False,
-    retry_count=5,
-    headers=None,
-    return_none_for_not_found_error=False,
-    timeout=_METADATA_DEFAULT_TIMEOUT,
-):
+    request: _Request,
+    path: str,
+    root: str | None=None,
+    params: Mapping[str, str] | None=None,
+    recursive: bool=False,
+    retry_count: int=5,
+    headers: Mapping[str, str] | None=None,
+    return_none_for_not_found_error: bool=False,
+    timeout: int=_METADATA_DEFAULT_TIMEOUT,
+) -> Mapping[str, Any] | str:
     """Fetch a resource from the metadata server.
 
     Args:
@@ -391,7 +394,7 @@ def get(
     )
 
 
-def get_project_id(request):
+def get_project_id(request: _Request) -> str | None:
     """Get the Google Cloud Project ID from the metadata server.
 
     Args:
@@ -408,7 +411,7 @@ def get_project_id(request):
     return get(request, "project/project-id")
 
 
-def get_universe_domain(request):
+def get_universe_domain(request: _Request) -> str:
     """Get the universe domain value from the metadata server.
 
     Args:
@@ -431,7 +434,7 @@ def get_universe_domain(request):
     return universe_domain
 
 
-def get_service_account_info(request, service_account="default"):
+def get_service_account_info(request: _Request, service_account: str="default") -> Mapping[str, Any]:
     """Get information about a service account from the metadata server.
 
     Args:
@@ -460,7 +463,7 @@ def get_service_account_info(request, service_account="default"):
     return get(request, path, params={"recursive": "true"})
 
 
-def get_service_account_token(request, service_account="default", scopes=None):
+def get_service_account_token(request: _Request, service_account: str="default", scopes: str | list[str] | None=None) -> tuple[str, datetime.datetime]:
     """Get the OAuth 2.0 access token for a service account.
 
     Args:

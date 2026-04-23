@@ -39,6 +39,9 @@ You can also skip verification::
 .. _rfc7519: https://tools.ietf.org/html/rfc7519
 
 """
+import collections.abc
+from google.auth.crypt import Signer as _Signer, Signer as _Signer, Signer as _Signer, Signer as _Signer, Signer as _Signer, Signer as _Signer
+from typing import Any
 
 try:
     from collections.abc import Mapping
@@ -64,15 +67,15 @@ except ImportError:  # pragma: NO COVER
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_MAX_CACHE_SIZE = 10
-_ALGORITHM_TO_VERIFIER_CLASS = {"RS256": crypt.RSAVerifier}
-_CRYPTOGRAPHY_BASED_ALGORITHMS = frozenset(["ES256", "ES384"])
+_ALGORITHM_TO_VERIFIER_CLASS: dict[str, type] = {"RS256": crypt.RSAVerifier}
+_CRYPTOGRAPHY_BASED_ALGORITHMS: frozenset[str] = frozenset(["ES256", "ES384"])
 
 if es is not None:  # pragma: NO COVER
     _ALGORITHM_TO_VERIFIER_CLASS["ES256"] = es.EsVerifier  # type: ignore
     _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 
-def encode(signer, payload, header=None, key_id=None):
+def encode(signer: _Signer, payload: collections.abc.Mapping[str, str], header: collections.abc.Mapping[str, str] | None=None, key_id: str | None=None) -> bytes:
     """Make a signed JWT.
 
     Args:
@@ -115,7 +118,7 @@ def encode(signer, payload, header=None, key_id=None):
     return b".".join(segments)
 
 
-def _decode_jwt_segment(encoded_section):
+def _decode_jwt_segment(encoded_section: bytes) -> collections.abc.Mapping[str, object]:
     """Decodes a single JWT segment."""
     section_bytes = _helpers.padded_urlsafe_b64decode(encoded_section)
     try:
@@ -127,7 +130,7 @@ def _decode_jwt_segment(encoded_section):
         raise new_exc from caught_exc
 
 
-def _unverified_decode(token):
+def _unverified_decode(token: str | bytes) -> tuple[collections.abc.Mapping[str, object], collections.abc.Mapping[str, object], bytes, bytes]:
     """Decodes a token and does no verification.
 
     Args:
@@ -168,7 +171,7 @@ def _unverified_decode(token):
     return header, payload, signed_section, signature
 
 
-def decode_header(token):
+def decode_header(token: str | bytes) -> collections.abc.Mapping[str, object]:
     """Return the decoded header of a token.
 
     No verification is done. This is useful to extract the key id from
@@ -185,7 +188,7 @@ def decode_header(token):
     return header
 
 
-def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
+def _verify_iat_and_exp(payload: collections.abc.Mapping[str, str], clock_skew_in_seconds: int=0) -> None:
     """Verifies the ``iat`` (Issued At) and ``exp`` (Expires) claims in a token
     payload.
 
@@ -228,7 +231,7 @@ def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
         raise exceptions.InvalidValue("Token expired, {} < {}".format(latest, now))
 
 
-def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=0):
+def decode(token: str, certs: str | bytes | collections.abc.Mapping[str, str | bytes] | None=None, verify: bool=True, audience: str | list[str] | None=None, clock_skew_in_seconds: int=0) -> collections.abc.Mapping[str, str]:
     """Decode and verify a JWT.
 
     Args:
@@ -370,14 +373,14 @@ class Credentials(
 
     def __init__(
         self,
-        signer,
-        issuer,
-        subject,
-        audience,
-        additional_claims=None,
-        token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
-        quota_project_id=None,
-    ):
+        signer: _Signer,
+        issuer: str,
+        subject: str,
+        audience: str,
+        additional_claims: collections.abc.Mapping[str, str] | None=None,
+        token_lifetime: int=_DEFAULT_TOKEN_LIFETIME_SECS,
+        quota_project_id: str | None=None,
+    ) -> None:
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -406,7 +409,7 @@ class Credentials(
         self._additional_claims = additional_claims
 
     @classmethod
-    def _from_signer_and_info(cls, signer, info, **kwargs):
+    def _from_signer_and_info(cls, signer: _Signer, info: collections.abc.Mapping[str, str], **kwargs) -> "Credentials":
         """Creates a Credentials instance from a signer and service account
         info.
 
@@ -426,7 +429,7 @@ class Credentials(
         return cls(signer, **kwargs)
 
     @classmethod
-    def from_service_account_info(cls, info, **kwargs):
+    def from_service_account_info(cls, info: collections.abc.Mapping[str, str], **kwargs) -> "Credentials":
         """Creates an Credentials instance from a dictionary.
 
         Args:
@@ -444,7 +447,7 @@ class Credentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
+    def from_service_account_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates a Credentials instance from a service account .json file
         in Google format.
 
@@ -461,7 +464,7 @@ class Credentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_signing_credentials(cls, credentials, audience, **kwargs):
+    def from_signing_credentials(cls, credentials: _credentials.Signing, audience: str, **kwargs) -> "Credentials":
         """Creates a new :class:`google.auth.jwt.Credentials` instance from an
         existing :class:`google.auth.credentials.Signing` instance.
 
@@ -493,8 +496,8 @@ class Credentials(
         return cls(credentials.signer, audience=audience, **kwargs)
 
     def with_claims(
-        self, issuer=None, subject=None, audience=None, additional_claims=None
-    ):
+        self, issuer: str | None=None, subject: str | None=None, audience: str | None=None, additional_claims: collections.abc.Mapping[str, str] | None=None
+    ) -> "Credentials":
         """Returns a copy of these credentials with modified claims.
 
         Args:
@@ -524,7 +527,7 @@ class Credentials(
         )
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         return self.__class__(
             self._signer,
             issuer=self._issuer,
@@ -559,7 +562,7 @@ class Credentials(
 
         return jwt, expiry
 
-    def refresh(self, request):
+    def refresh(self, request: Any) -> None:
         """Refreshes the access token.
 
         Args:
@@ -570,21 +573,21 @@ class Credentials(
         self.token, self.expiry = self._make_jwt()
 
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         return self._signer.sign(message)
 
     @property  # type: ignore
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._issuer
 
     @property  # type: ignore
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def signer(self):
+    def signer(self) -> _Signer:
         return self._signer
 
     @property  # type: ignore
-    def additional_claims(self):
+    def additional_claims(self) -> collections.abc.Mapping[str, str]:
         """Additional claims the JWT object was created with."""
         return self._additional_claims
 
@@ -611,14 +614,14 @@ class OnDemandCredentials(
 
     def __init__(
         self,
-        signer,
-        issuer,
-        subject,
-        additional_claims=None,
-        token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
-        max_cache_size=_DEFAULT_MAX_CACHE_SIZE,
-        quota_project_id=None,
-    ):
+        signer: _Signer,
+        issuer: str,
+        subject: str,
+        additional_claims: collections.abc.Mapping[str, str] | None=None,
+        token_lifetime: int=_DEFAULT_TOKEN_LIFETIME_SECS,
+        max_cache_size: int=_DEFAULT_MAX_CACHE_SIZE,
+        quota_project_id: str | None=None,
+    ) -> None:
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -668,7 +671,7 @@ class OnDemandCredentials(
         return cls(signer, **kwargs)
 
     @classmethod
-    def from_service_account_info(cls, info, **kwargs):
+    def from_service_account_info(cls, info: collections.abc.Mapping[str, str], **kwargs) -> "OnDemandCredentials":
         """Creates an OnDemandCredentials instance from a dictionary.
 
         Args:
@@ -686,7 +689,7 @@ class OnDemandCredentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
+    def from_service_account_file(cls, filename: str, **kwargs) -> "OnDemandCredentials":
         """Creates an OnDemandCredentials instance from a service account .json
         file in Google format.
 
@@ -703,7 +706,7 @@ class OnDemandCredentials(
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
-    def from_signing_credentials(cls, credentials, **kwargs):
+    def from_signing_credentials(cls, credentials: _credentials.Signing, **kwargs) -> "OnDemandCredentials":
         """Creates a new :class:`google.auth.jwt.OnDemandCredentials` instance
         from an existing :class:`google.auth.credentials.Signing` instance.
 
@@ -730,7 +733,7 @@ class OnDemandCredentials(
         kwargs.setdefault("subject", credentials.signer_email)
         return cls(credentials.signer, **kwargs)
 
-    def with_claims(self, issuer=None, subject=None, additional_claims=None):
+    def with_claims(self, issuer: str | None=None, subject: str | None=None, additional_claims: collections.abc.Mapping[str, str] | None=None) -> "OnDemandCredentials":
         """Returns a copy of these credentials with modified claims.
 
         Args:
@@ -758,7 +761,7 @@ class OnDemandCredentials(
         )
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "OnDemandCredentials":
         return self.__class__(
             self._signer,
             issuer=self._issuer,
@@ -769,7 +772,7 @@ class OnDemandCredentials(
         )
 
     @property
-    def valid(self):
+    def valid(self) -> bool:
         """Checks the validity of the credentials.
 
         These credentials are always valid because it generates tokens on
@@ -825,7 +828,7 @@ class OnDemandCredentials(
 
         return token
 
-    def refresh(self, request):
+    def refresh(self, request: Any) -> None:
         """Raises an exception, these credentials can not be directly
         refreshed.
 
@@ -841,7 +844,7 @@ class OnDemandCredentials(
             "OnDemandCredentials can not be directly refreshed."
         )
 
-    def before_request(self, request, method, url, headers):
+    def before_request(self, request: Any, method: str, url: str, headers: collections.abc.Mapping[str, str]) -> None | collections.abc.Coroutine[Any, Any, None]:
         """Performs credential-specific before request logic.
 
         Args:
@@ -863,15 +866,15 @@ class OnDemandCredentials(
         self.apply(headers, token=token)
 
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def sign_bytes(self, message):
+    def sign_bytes(self, message: bytes) -> bytes:
         return self._signer.sign(message)
 
     @property  # type: ignore
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def signer_email(self):
+    def signer_email(self) -> str:
         return self._issuer
 
     @property  # type: ignore
     @_helpers.copy_docstring(google.auth.credentials.Signing)
-    def signer(self):
+    def signer(self) -> _Signer:
         return self._signer

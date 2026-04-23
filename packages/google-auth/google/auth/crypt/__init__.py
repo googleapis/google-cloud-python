@@ -41,6 +41,7 @@ from google.auth.crypt import base
 from google.auth.crypt import es
 from google.auth.crypt import es256
 from google.auth.crypt import rsa
+from collections.abc import Sequence
 
 EsSigner = es.EsSigner
 EsVerifier = es.EsVerifier
@@ -56,7 +57,7 @@ RSASigner = rsa.RSASigner
 RSAVerifier = rsa.RSAVerifier
 
 
-def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
+def verify_signature(message: str | bytes, signature: str | bytes, certs: Sequence[str | bytes] | str | bytes, verifier_cls: type[Verifier]=rsa.RSAVerifier) -> bool:
     """Verify an RSA or ECDSA cryptographic signature.
 
     Checks that the provided ``signature`` was generated from ``bytes`` using

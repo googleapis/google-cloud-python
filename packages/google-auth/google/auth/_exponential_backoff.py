@@ -65,11 +65,11 @@ class _BaseExponentialBackoff:
 
     def __init__(
         self,
-        total_attempts=_DEFAULT_RETRY_TOTAL_ATTEMPTS,
-        initial_wait_seconds=_DEFAULT_INITIAL_INTERVAL_SECONDS,
-        randomization_factor=_DEFAULT_RANDOMIZATION_FACTOR,
-        multiplier=_DEFAULT_MULTIPLIER,
-    ):
+        total_attempts: int=_DEFAULT_RETRY_TOTAL_ATTEMPTS,
+        initial_wait_seconds: float=_DEFAULT_INITIAL_INTERVAL_SECONDS,
+        randomization_factor: float=_DEFAULT_RANDOMIZATION_FACTOR,
+        multiplier: float=_DEFAULT_MULTIPLIER,
+    ) -> None:
         if total_attempts < 1:
             raise exceptions.InvalidValue(
                 f"total_attempts must be greater than or equal to 1 but was {total_attempts}"
@@ -85,12 +85,12 @@ class _BaseExponentialBackoff:
         self._backoff_count = 0
 
     @property
-    def total_attempts(self):
+    def total_attempts(self) -> int:
         """The total amount of backoff attempts that will be made."""
         return self._total_attempts
 
     @property
-    def backoff_count(self):
+    def backoff_count(self) -> int:
         """The current amount of backoff attempts that have been made."""
         return self._backoff_count
 
@@ -113,14 +113,14 @@ class ExponentialBackoff(_BaseExponentialBackoff):
     perform requests with exponential backoff.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(ExponentialBackoff, self).__init__(*args, **kwargs)
 
-    def __iter__(self):
+    def __iter__(self) -> "ExponentialBackoff":
         self._reset()
         return self
 
-    def __next__(self):
+    def __next__(self) -> int:
         if self._backoff_count >= self._total_attempts:
             raise StopIteration
         self._backoff_count += 1
@@ -141,14 +141,14 @@ class AsyncExponentialBackoff(_BaseExponentialBackoff):
     perform async requests with exponential backoff.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(AsyncExponentialBackoff, self).__init__(*args, **kwargs)
 
-    def __aiter__(self):
+    def __aiter__(self) -> "AsyncExponentialBackoff":
         self._reset()
         return self
 
-    async def __anext__(self):
+    async def __anext__(self) -> int:
         if self._backoff_count >= self._total_attempts:
             raise StopAsyncIteration
         self._backoff_count += 1

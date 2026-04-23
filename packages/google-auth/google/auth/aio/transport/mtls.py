@@ -27,6 +27,7 @@ from typing import Optional
 from google.auth import exceptions
 import google.auth.transport._mtls_helper
 import google.auth.transport.mtls
+from collections.abc import Callable
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -100,7 +101,7 @@ async def _run_in_executor(func, *args):
         return await loop.run_in_executor(None, func, *args)
 
 
-def default_client_cert_source():
+def default_client_cert_source() -> Callable[[], tuple[bytes, bytes]]:
     """Get a callback which returns the default client SSL credentials.
 
     Returns:
@@ -131,8 +132,8 @@ def default_client_cert_source():
 
 
 async def get_client_ssl_credentials(
-    certificate_config_path=None,
-):
+    certificate_config_path: str | None=None,
+) -> tuple[bool, bytes | None, bytes | None, bytes | None]:
     """Returns the client side certificate, private key and passphrase.
 
     We look for certificates and keys with the following order of priority:
@@ -165,7 +166,7 @@ async def get_client_ssl_credentials(
     return False, None, None, None
 
 
-async def get_client_cert_and_key(client_cert_callback=None):
+async def get_client_cert_and_key(client_cert_callback: Callable[[], tuple[bytes, bytes]] | None=None) -> tuple[bool, bytes | None, bytes | None]:
     """Returns the client side certificate and private key. The function first
     tries to get certificate and key from client_cert_callback; if the callback
     is None or doesn't provide certificate and key, the function tries application

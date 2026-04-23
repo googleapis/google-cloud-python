@@ -27,6 +27,7 @@ from typing import Any, Dict, Mapping, Optional, Union
 import urllib
 
 from google.auth import exceptions
+import collections.abc
 
 
 # _BASE_LOGGER_NAME is the base logger for all google-based loggers.
@@ -39,7 +40,7 @@ _LOGGING_INITIALIZED = False
 
 # The smallest MDS cache used by this library stores tokens until 4 minutes from
 # expiry.
-REFRESH_THRESHOLD = datetime.timedelta(minutes=3, seconds=45)
+REFRESH_THRESHOLD: datetime.timedelta = datetime.timedelta(minutes=3, seconds=45)
 
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1684): Audit and update the list below.
 _SENSITIVE_FIELDS = {
@@ -52,7 +53,7 @@ _SENSITIVE_FIELDS = {
 }
 
 
-def copy_docstring(source_class):
+def copy_docstring(source_class: type) -> collections.abc.Callable[[Any], Any]:
     """Decorator that copies a method's docstring from another class.
 
     Args:
@@ -86,7 +87,7 @@ def copy_docstring(source_class):
     return decorator
 
 
-def parse_content_type(header_value):
+def parse_content_type(header_value: str) -> str:
     """Parse a 'content-type' header value to get just the plain media-type (without parameters).
 
     This is done using the class Message from email.message as suggested in PEP 594
@@ -108,7 +109,7 @@ def parse_content_type(header_value):
     )  # Despite the name, actually returns just the media-type
 
 
-def utcnow():
+def utcnow() -> datetime.datetime:
     """Returns the current UTC datetime.
 
     Returns:
@@ -124,7 +125,7 @@ def utcnow():
     return now
 
 
-def utcfromtimestamp(timestamp):
+def utcfromtimestamp(timestamp: float) -> datetime.datetime:
     """Returns the UTC datetime from a timestamp.
 
     Args:
@@ -144,7 +145,7 @@ def utcfromtimestamp(timestamp):
     return dt
 
 
-def datetime_to_secs(value):
+def datetime_to_secs(value: datetime.datetime) -> int:
     """Convert a datetime object to the number of seconds since the UNIX epoch.
 
     Args:
@@ -156,7 +157,7 @@ def datetime_to_secs(value):
     return calendar.timegm(value.utctimetuple())
 
 
-def to_bytes(value, encoding="utf-8"):
+def to_bytes(value: str | bytes, encoding: str="utf-8") -> bytes:
     """Converts a string value to bytes, if necessary.
 
     Args:
@@ -180,7 +181,7 @@ def to_bytes(value, encoding="utf-8"):
         )
 
 
-def from_bytes(value):
+def from_bytes(value: str | bytes) -> str:
     """Converts bytes to a string value, if necessary.
 
     Args:
@@ -202,7 +203,7 @@ def from_bytes(value):
         )
 
 
-def update_query(url, params, remove=None):
+def update_query(url: str, params: collections.abc.Mapping[str, str], remove: collections.abc.Sequence[str] | None=None) -> str:
     """Updates a URL's query parameters.
 
     Replaces any current values if they are already present in the URL.
@@ -247,7 +248,7 @@ def update_query(url, params, remove=None):
     return urllib.parse.urlunparse(new_parts)
 
 
-def scopes_to_string(scopes):
+def scopes_to_string(scopes: collections.abc.Sequence[str]) -> str:
     """Converts scope value to a string suitable for sending to OAuth 2.0
     authorization servers.
 
@@ -260,7 +261,7 @@ def scopes_to_string(scopes):
     return " ".join(scopes)
 
 
-def string_to_scopes(scopes):
+def string_to_scopes(scopes: collections.abc.Sequence[str] | str) -> list[str]:
     """Converts stringifed scopes value to a list.
 
     Args:
@@ -275,7 +276,7 @@ def string_to_scopes(scopes):
     return scopes.split(" ")
 
 
-def padded_urlsafe_b64decode(value):
+def padded_urlsafe_b64decode(value: str | bytes) -> bytes:
     """Decodes base64 strings lacking padding characters.
 
     Google infrastructure tends to omit the base64 padding characters.
@@ -291,7 +292,7 @@ def padded_urlsafe_b64decode(value):
     return base64.urlsafe_b64decode(padded)
 
 
-def unpadded_urlsafe_b64encode(value):
+def unpadded_urlsafe_b64encode(value: str | bytes) -> str | bytes:
     """Encodes base64 strings removing any padding characters.
 
     `rfc 7515`_ defines Base64url to NOT include any padding
@@ -308,7 +309,7 @@ def unpadded_urlsafe_b64encode(value):
     return base64.urlsafe_b64encode(value).rstrip(b"=")
 
 
-def get_bool_from_env(variable_name, default=False):
+def get_bool_from_env(variable_name: str, default: bool=False) -> bool:
     """Gets a boolean value from an environment variable.
 
     The environment variable is interpreted as a boolean with the following
@@ -348,7 +349,7 @@ def get_bool_from_env(variable_name, default=False):
         )
 
 
-def is_python_3():
+def is_python_3() -> bool:
     """Check if the Python interpreter is Python 2 or 3.
 
     Returns:

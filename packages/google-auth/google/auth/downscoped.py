@@ -54,6 +54,10 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
 from google.oauth2 import sts
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject
+from google.auth.transport import Request
+from typing import Any
 
 # The maximum number of access boundary rules a Credential Access Boundary can
 # contain.
@@ -76,7 +80,7 @@ class CredentialAccessBoundary(object):
     optional condition to further restrict permissions.
     """
 
-    def __init__(self, rules=[]):
+    def __init__(self, rules: list[AccessBoundaryRule]=[]) -> None:
         """Instantiates a Credential Access Boundary. A Credential Access Boundary
         can contain up to 10 access boundary rules.
 
@@ -91,7 +95,7 @@ class CredentialAccessBoundary(object):
         self.rules = rules
 
     @property
-    def rules(self):
+    def rules(self) -> tuple[AccessBoundaryRule, ...]:
         """Returns the list of access boundary rules defined on the Credential
         Access Boundary.
 
@@ -103,7 +107,7 @@ class CredentialAccessBoundary(object):
         return tuple(self._rules)
 
     @rules.setter
-    def rules(self, value):
+    def rules(self, value: list[AccessBoundaryRule]) -> None:
         """Updates the current rules on the Credential Access Boundary. This will overwrite
         the existing set of rules.
 
@@ -129,7 +133,7 @@ class CredentialAccessBoundary(object):
         # Make a copy of the original list.
         self._rules = list(value)
 
-    def add_rule(self, rule):
+    def add_rule(self, rule: "AccessBoundaryRule") -> None:
         """Adds a single access boundary rule to the existing rules.
 
         Args:
@@ -152,7 +156,7 @@ class CredentialAccessBoundary(object):
             )
         self._rules.append(rule)
 
-    def to_json(self):
+    def to_json(self) -> Mapping[str, Any]:
         """Generates the dictionary representation of the Credential Access Boundary.
         This uses the format expected by the Security Token Service API as documented in
         `Defining a Credential Access Boundary`_.
@@ -177,8 +181,8 @@ class AccessBoundaryRule(object):
     """
 
     def __init__(
-        self, available_resource, available_permissions, availability_condition=None
-    ):
+        self, available_resource: str, available_permissions: Sequence[str], availability_condition: AvailabilityCondition | None=None
+    ) -> None:
         """Instantiates a single access boundary rule.
 
         Args:
@@ -204,7 +208,7 @@ class AccessBoundaryRule(object):
         self.availability_condition = availability_condition
 
     @property
-    def available_resource(self):
+    def available_resource(self) -> str:
         """Returns the current available resource.
 
         Returns:
@@ -213,7 +217,7 @@ class AccessBoundaryRule(object):
         return self._available_resource
 
     @available_resource.setter
-    def available_resource(self, value):
+    def available_resource(self, value: str) -> None:
         """Updates the current available resource.
 
         Args:
@@ -229,7 +233,7 @@ class AccessBoundaryRule(object):
         self._available_resource = value
 
     @property
-    def available_permissions(self):
+    def available_permissions(self) -> tuple[str, ...]:
         """Returns the current available permissions.
 
         Returns:
@@ -239,7 +243,7 @@ class AccessBoundaryRule(object):
         return tuple(self._available_permissions)
 
     @available_permissions.setter
-    def available_permissions(self, value):
+    def available_permissions(self, value: Sequence[str]) -> None:
         """Updates the current available permissions.
 
         Args:
@@ -262,7 +266,7 @@ class AccessBoundaryRule(object):
         self._available_permissions = list(value)
 
     @property
-    def availability_condition(self):
+    def availability_condition(self) -> AvailabilityCondition | None:
         """Returns the current availability condition.
 
         Returns:
@@ -272,7 +276,7 @@ class AccessBoundaryRule(object):
         return self._availability_condition
 
     @availability_condition.setter
-    def availability_condition(self, value):
+    def availability_condition(self, value: AvailabilityCondition | None) -> None:
         """Updates the current availability condition.
 
         Args:
@@ -289,7 +293,7 @@ class AccessBoundaryRule(object):
             )
         self._availability_condition = value
 
-    def to_json(self):
+    def to_json(self) -> Mapping[str, Any]:
         """Generates the dictionary representation of the access boundary rule.
         This uses the format expected by the Security Token Service API as documented in
         `Defining a Credential Access Boundary`_.
@@ -313,7 +317,7 @@ class AvailabilityCondition(object):
     """An optional condition that can be used as part of a Credential Access Boundary
     to further restrict permissions."""
 
-    def __init__(self, expression, title=None, description=None):
+    def __init__(self, expression: str, title: str | None=None, description: str | None=None) -> None:
         """Instantiates an availability condition using the provided expression and
         optional title or description.
 
@@ -335,7 +339,7 @@ class AvailabilityCondition(object):
         self.description = description
 
     @property
-    def expression(self):
+    def expression(self) -> str:
         """Returns the current condition expression.
 
         Returns:
@@ -344,7 +348,7 @@ class AvailabilityCondition(object):
         return self._expression
 
     @expression.setter
-    def expression(self, value):
+    def expression(self, value: str) -> None:
         """Updates the current condition expression.
 
         Args:
@@ -358,7 +362,7 @@ class AvailabilityCondition(object):
         self._expression = value
 
     @property
-    def title(self):
+    def title(self) -> str | None:
         """Returns the current title.
 
         Returns:
@@ -367,7 +371,7 @@ class AvailabilityCondition(object):
         return self._title
 
     @title.setter
-    def title(self, value):
+    def title(self, value: str | None) -> None:
         """Updates the current title.
 
         Args:
@@ -381,7 +385,7 @@ class AvailabilityCondition(object):
         self._title = value
 
     @property
-    def description(self):
+    def description(self) -> str | None:
         """Returns the current description.
 
         Returns:
@@ -390,7 +394,7 @@ class AvailabilityCondition(object):
         return self._description
 
     @description.setter
-    def description(self, value):
+    def description(self, value: str | None) -> None:
         """Updates the current description.
 
         Args:
@@ -405,7 +409,7 @@ class AvailabilityCondition(object):
             )
         self._description = value
 
-    def to_json(self):
+    def to_json(self) -> Mapping[str, str]:
         """Generates the dictionary representation of the availability condition.
         This uses the format expected by the Security Token Service API as documented in
         `Defining a Credential Access Boundary`_.
@@ -438,11 +442,11 @@ class Credentials(credentials.CredentialsWithQuotaProject):
 
     def __init__(
         self,
-        source_credentials,
-        credential_access_boundary,
-        quota_project_id=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-    ):
+        source_credentials: "Credentials",
+        credential_access_boundary: CredentialAccessBoundary,
+        quota_project_id: str | None=None,
+        universe_domain: str=credentials.DEFAULT_UNIVERSE_DOMAIN,
+    ) -> None:
         """Instantiates a downscoped credentials object using the provided source
         credentials and credential access boundary rules.
         To downscope permissions of a source credential, a Credential Access Boundary
@@ -478,7 +482,7 @@ class Credentials(credentials.CredentialsWithQuotaProject):
         )
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         # Generate an access token from the source credentials.
         self._source_credentials.refresh(request)
         now = _helpers.utcnow()
@@ -504,7 +508,7 @@ class Credentials(credentials.CredentialsWithQuotaProject):
             self.expiry = self._source_credentials.expiry
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         return self.__class__(
             self._source_credentials,
             self._credential_access_boundary,

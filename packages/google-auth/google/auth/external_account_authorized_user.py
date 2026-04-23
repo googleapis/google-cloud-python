@@ -44,6 +44,10 @@ from google.auth import credentials
 from google.auth import exceptions
 from google.oauth2 import sts
 from google.oauth2 import utils
+from collections.abc import Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, CredentialsWithTokenUri, CredentialsWithTrustBoundary, ReadOnlyScoped
+from google.auth.transport import Request
+from typing import Any
 
 _EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE = "external_account_authorized_user"
 
@@ -75,20 +79,20 @@ class Credentials(
 
     def __init__(
         self,
-        token=None,
-        expiry=None,
-        refresh_token=None,
-        audience=None,
-        client_id=None,
-        client_secret=None,
-        token_url=None,
-        token_info_url=None,
-        revoke_url=None,
-        scopes=None,
-        quota_project_id=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-        trust_boundary=None,
-    ):
+        token: str | None=None,
+        expiry: datetime.datetime | None=None,
+        refresh_token: str | None=None,
+        audience: str | None=None,
+        client_id: str | None=None,
+        client_secret: str | None=None,
+        token_url: str | None=None,
+        token_info_url: str | None=None,
+        revoke_url: str | None=None,
+        scopes: Sequence[str] | None=None,
+        quota_project_id: str | None=None,
+        universe_domain: str=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        trust_boundary: Mapping[str, str] | None=None,
+    ) -> None:
         """Instantiates a external account authorized user credentials object.
 
         Args:
@@ -151,7 +155,7 @@ class Credentials(
         self._sts_client = sts.Client(self._token_url, self._client_auth)
 
     @property
-    def info(self):
+    def info(self) -> Mapping[str, object]:
         """Generates the serializable dictionary representation of the current
         credentials.
 
@@ -168,7 +172,7 @@ class Credentials(
 
         return {key: value for key, value in config_info.items() if value is not None}
 
-    def constructor_args(self):
+    def constructor_args(self) -> Mapping[str, object]:
         return {
             "audience": self._audience,
             "refresh_token": self._refresh_token,
@@ -186,59 +190,59 @@ class Credentials(
         }
 
     @property
-    def scopes(self):
+    def scopes(self) -> Sequence[str] | None:
         """Optional[str]: The OAuth 2.0 permission scopes."""
         return self._scopes
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
         return False
 
     @property
-    def client_id(self):
+    def client_id(self) -> str | None:
         """Optional[str]: The OAuth 2.0 client ID."""
         return self._client_id
 
     @property
-    def client_secret(self):
+    def client_secret(self) -> str | None:
         """Optional[str]: The OAuth 2.0 client secret."""
         return self._client_secret
 
     @property
-    def audience(self):
+    def audience(self) -> str | None:
         """Optional[str]: The STS audience which contains the resource name for the
         workforce pool and the provider identifier in that pool."""
         return self._audience
 
     @property
-    def refresh_token(self):
+    def refresh_token(self) -> str | None:
         """Optional[str]: The OAuth 2.0 refresh token."""
         return self._refresh_token
 
     @property
-    def token_url(self):
+    def token_url(self) -> str | None:
         """Optional[str]: The STS token exchange endpoint for refresh."""
         return self._token_url
 
     @property
-    def token_info_url(self):
+    def token_info_url(self) -> str | None:
         """Optional[str]: The STS endpoint for token info."""
         return self._token_info_url
 
     @property
-    def revoke_url(self):
+    def revoke_url(self) -> str | None:
         """Optional[str]: The STS endpoint for token revocation."""
         return self._revoke_url
 
     @property
-    def is_user(self):
+    def is_user(self) -> bool:
         """True: This credential always represents a user."""
         return True
 
     @property
-    def can_refresh(self):
+    def can_refresh(self) -> bool:
         return all(
             (
                 self._refresh_token,
@@ -248,7 +252,7 @@ class Credentials(
             )
         )
 
-    def get_project_id(self, request=None):
+    def get_project_id(self, request: Request | None=None) -> str | None:
         """Retrieves the project ID corresponding to the workload identity or workforce pool.
         For workforce pool credentials, it returns the project ID corresponding to
         the workforce_pool_user_project.
@@ -265,7 +269,7 @@ class Credentials(
 
         return None
 
-    def to_json(self, strip=None):
+    def to_json(self, strip: Sequence[str] | None=None) -> str:
         """Utility function that creates a JSON representation of this
         credential.
         Args:
@@ -279,7 +283,7 @@ class Credentials(
         strip = strip if strip else []
         return json.dumps({k: v for (k, v) in self.info.items() if k not in strip})
 
-    def _perform_refresh_token(self, request):
+    def _perform_refresh_token(self, request: Request) -> None:
         """Refreshes the access token.
 
         Args:
@@ -308,7 +312,7 @@ class Credentials(
         if "refresh_token" in response_data:
             self._refresh_token = response_data["refresh_token"]
 
-    def _build_trust_boundary_lookup_url(self):
+    def _build_trust_boundary_lookup_url(self) -> str:
         """Builds and returns the URL for the trust boundary lookup API."""
         # Audience format: //iam.googleapis.com/locations/global/workforcePools/POOL_ID/providers/PROVIDER_ID
         match = re.search(r"locations/[^/]+/workforcePools/([^/]+)", self._audience)
@@ -322,7 +326,7 @@ class Credentials(
             universe_domain=self._universe_domain, pool_id=pool_id
         )
 
-    def revoke(self, request):
+    def revoke(self, request: Request) -> None:
         """Revokes the refresh token.
 
         Args:
@@ -347,7 +351,7 @@ class Credentials(
         self._refresh_token = None
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         if self._cred_file_path:
             return {
                 "credential_source": self._cred_file_path,
@@ -362,31 +366,31 @@ class Credentials(
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "Credentials":
         cred = self._make_copy()
         cred._token_url = token_uri
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str) -> "Credentials":
         cred = self._make_copy()
         cred._universe_domain = universe_domain
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
+    def with_trust_boundary(self, trust_boundary: Mapping[str, str]) -> "Credentials":
         cred = self._make_copy()
         cred._trust_boundary = trust_boundary
         return cred
 
     @classmethod
-    def from_info(cls, info, **kwargs):
+    def from_info(cls, info: Mapping[str, Any], **kwargs) -> "Credentials":
         """Creates a Credentials instance from parsed external account info.
 
         **IMPORTANT**:
@@ -434,7 +438,7 @@ class Credentials(
         )
 
     @classmethod
-    def from_file(cls, filename, **kwargs):
+    def from_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates a Credentials instance from an external account json file.
 
         **IMPORTANT**:

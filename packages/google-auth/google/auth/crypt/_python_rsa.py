@@ -33,6 +33,8 @@ import rsa  # type: ignore
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth.crypt import base
+from google.auth.crypt.base import FromServiceAccountMixin, Signer, Verifier
+from typing import Any
 
 _POW2 = (128, 64, 32, 16, 8, 4, 2, 1)
 _CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
@@ -79,7 +81,7 @@ class RSAVerifier(base.Verifier):
             signatures.
     """
 
-    def __init__(self, public_key):
+    def __init__(self, public_key: Any) -> None:
         warnings.warn(
             _warning_msg,
             category=DeprecationWarning,
@@ -88,7 +90,7 @@ class RSAVerifier(base.Verifier):
         self._pubkey = public_key
 
     @_helpers.copy_docstring(base.Verifier)
-    def verify(self, message, signature):
+    def verify(self, message: Any, signature: Any) -> bool:
         message = _helpers.to_bytes(message)
         try:
             return rsa.pkcs1.verify(message, signature, self._pubkey)
@@ -96,7 +98,7 @@ class RSAVerifier(base.Verifier):
             return False
 
     @classmethod
-    def from_string(cls, public_key):
+    def from_string(cls, public_key: Any) -> "RSAVerifier":
         """Construct an Verifier instance from a public key or public
         certificate string.
 
@@ -142,7 +144,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
             public key or certificate.
     """
 
-    def __init__(self, private_key, key_id=None):
+    def __init__(self, private_key: Any, key_id: str | None=None) -> None:
         warnings.warn(
             _warning_msg,
             category=DeprecationWarning,
@@ -153,16 +155,16 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
 
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
-    def key_id(self):
+    def key_id(self) -> str:
         return self._key_id
 
     @_helpers.copy_docstring(base.Signer)
-    def sign(self, message):
+    def sign(self, message: Any) -> bytes:
         message = _helpers.to_bytes(message)
         return rsa.pkcs1.sign(message, self._key, "SHA-256")
 
     @classmethod
-    def from_string(cls, key, key_id=None):
+    def from_string(cls, key: Any, key_id: str | None=None) -> "RSASigner":
         """Construct an Signer instance from a private key in PEM format.
 
         Args:

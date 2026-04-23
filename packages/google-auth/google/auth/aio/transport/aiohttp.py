@@ -16,7 +16,9 @@
 
 import asyncio
 import logging
-from typing import AsyncGenerator, Mapping, Optional, TYPE_CHECKING, Union
+from typing import Any, TypeAlias, AsyncGenerator, Mapping, Optional, TYPE_CHECKING, Union
+import collections.abc
+from google.auth.aio.transport import Request, Response
 
 try:
     import aiohttp  # type: ignore
@@ -37,7 +39,7 @@ else:
     try:
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
-        ClientTimeout = None
+        ClientTimeout: TypeAlias = None
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -87,7 +89,7 @@ class Response(transport.Response):
             raise exceptions.ResponseError("Failed to read the response body.") from exc
 
     @_helpers.copy_docstring(transport.Response)
-    async def close(self):
+    async def close(self) -> None:
         self._response.close()
 
 

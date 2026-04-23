@@ -36,6 +36,9 @@ import json
 import urllib
 
 from google.oauth2 import utils
+from google.auth.transport import Request as _Request, Request as _Request, Request as _Request
+from collections.abc import Mapping, Sequence
+from google.oauth2.utils import ClientAuthentication, OAuthClientAuthHandler
 
 
 _URLENCODED_HEADERS = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -46,7 +49,7 @@ class Client(utils.OAuthClientAuthHandler):
     https://tools.ietf.org/html/rfc8693.
     """
 
-    def __init__(self, token_exchange_endpoint, client_authentication=None):
+    def __init__(self, token_exchange_endpoint: str, client_authentication: ClientAuthentication | None=None) -> None:
         """Initializes an STS client instance.
 
         Args:
@@ -99,19 +102,19 @@ class Client(utils.OAuthClientAuthHandler):
 
     def exchange_token(
         self,
-        request,
-        grant_type,
-        subject_token,
-        subject_token_type,
-        resource=None,
-        audience=None,
-        scopes=None,
-        requested_token_type=None,
-        actor_token=None,
-        actor_token_type=None,
-        additional_options=None,
-        additional_headers=None,
-    ):
+        request: _Request,
+        grant_type: str,
+        subject_token: str,
+        subject_token_type: str,
+        resource: str | None=None,
+        audience: str | None=None,
+        scopes: Sequence[str] | None=None,
+        requested_token_type: str | None=None,
+        actor_token: str | None=None,
+        actor_token_type: str | None=None,
+        additional_options: Mapping[str, str] | None=None,
+        additional_headers: Mapping[str, str] | None=None,
+    ) -> Mapping[str, str]:
         """Exchanges the provided token for another type of token based on the
         rfc8693 spec.
 
@@ -164,7 +167,7 @@ class Client(utils.OAuthClientAuthHandler):
 
         return self._make_request(request, additional_headers, request_body)
 
-    def refresh_token(self, request, refresh_token):
+    def refresh_token(self, request: _Request, refresh_token: str) -> Mapping[str, str]:
         """Exchanges a refresh token for an access token based on the
         RFC6749 spec.
 
@@ -180,7 +183,7 @@ class Client(utils.OAuthClientAuthHandler):
             {"grant_type": "refresh_token", "refresh_token": refresh_token},
         )
 
-    def revoke_token(self, request, token, token_type_hint, revoke_url):
+    def revoke_token(self, request: _Request, token: str, token_type_hint: str, revoke_url: str) -> Mapping[str, str]:
         """Revokes the provided token based on the RFC7009 spec.
 
         Args:

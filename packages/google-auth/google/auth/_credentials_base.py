@@ -18,6 +18,9 @@
 import abc
 
 from google.auth import _helpers
+from google.auth.transport import Request as _TransportRequest
+from collections.abc import Coroutine
+from typing import Any
 
 
 class _BaseCredentials(metaclass=abc.ABCMeta):
@@ -43,11 +46,11 @@ class _BaseCredentials(metaclass=abc.ABCMeta):
             authenticated requests.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.token = None
 
     @abc.abstractmethod
-    def refresh(self, request):
+    def refresh(self, request: _TransportRequest) -> None | Coroutine[Any, Any, None]:
         """Refreshes the access token.
 
         Args:

@@ -65,6 +65,9 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import jwt
 from google.auth import transport
+import collections.abc
+from google.auth.credentials import Credentials
+from google.auth.transport import Request
 
 
 # The URL that provides public certificates for verifying ID tokens issued
@@ -158,7 +161,7 @@ def verify_token(
         )
 
 
-def verify_oauth2_token(id_token, request, audience=None, clock_skew_in_seconds=0):
+def verify_oauth2_token(id_token: str | bytes, request: Request, audience: str | collections.abc.Sequence[str] | None=None, clock_skew_in_seconds: int=0) -> collections.abc.Mapping[str, Any]:
     """Verifies an ID Token issued by Google's OAuth 2.0 authorization server.
 
     Args:
@@ -196,7 +199,7 @@ def verify_oauth2_token(id_token, request, audience=None, clock_skew_in_seconds=
     return idinfo
 
 
-def verify_firebase_token(id_token, request, audience=None, clock_skew_in_seconds=0):
+def verify_firebase_token(id_token: str | bytes, request: Request, audience: str | collections.abc.Sequence[str] | None=None, clock_skew_in_seconds: int=0) -> collections.abc.Mapping[str, Any]:
     """Verifies an ID Token issued by Firebase Authentication.
 
     Args:
@@ -221,7 +224,7 @@ def verify_firebase_token(id_token, request, audience=None, clock_skew_in_second
     )
 
 
-def fetch_id_token_credentials(audience, request=None):
+def fetch_id_token_credentials(audience: str, request: Request | None=None) -> Credentials:
     """Create the ID Token credentials from the current environment.
 
     This function acquires ID token from the environment in the following order.
@@ -330,7 +333,7 @@ def fetch_id_token_credentials(audience, request=None):
     )
 
 
-def fetch_id_token(request, audience):
+def fetch_id_token(request: Request, audience: str) -> str:
     """Fetch the ID Token from the current environment.
 
     This function acquires ID token from the environment in the following order.

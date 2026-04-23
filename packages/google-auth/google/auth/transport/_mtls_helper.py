@@ -23,6 +23,7 @@ import subprocess
 from google.auth import _agent_identity_utils
 from google.auth import environment_vars
 from google.auth import exceptions
+from collections.abc import Callable
 
 CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 
@@ -321,10 +322,10 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
 
 
 def get_client_ssl_credentials(
-    generate_encrypted_key=False,
-    context_aware_metadata_path=CONTEXT_AWARE_METADATA_PATH,
-    certificate_config_path=None,
-):
+    generate_encrypted_key: bool=False,
+    context_aware_metadata_path: str=CONTEXT_AWARE_METADATA_PATH,
+    certificate_config_path: str | None=None,
+) -> tuple[bool, bytes | None, bytes | None, bytes | None]:
     """Returns the client side certificate, private key and passphrase.
 
     We look for certificates and keys with the following order of priority:
@@ -378,7 +379,7 @@ def get_client_ssl_credentials(
     return False, None, None, None
 
 
-def get_client_cert_and_key(client_cert_callback=None):
+def get_client_cert_and_key(client_cert_callback: Callable[[], tuple[bytes, bytes]] | None=None) -> tuple[bool, bytes | None, bytes | None]:
     """Returns the client side certificate and private key. The function first
     tries to get certificate and key from client_cert_callback; if the callback
     is None or doesn't provide certificate and key, the function tries application
@@ -406,7 +407,7 @@ def get_client_cert_and_key(client_cert_callback=None):
     return has_cert, cert, key
 
 
-def decrypt_private_key(key, passphrase):
+def decrypt_private_key(key: bytes, passphrase: bytes | None) -> bytes:
     """A helper function to decrypt the private key with the given passphrase.
     google-auth library doesn't support passphrase protected private key for
     mutual TLS channel. This helper function can be used to decrypt the
@@ -448,7 +449,7 @@ def decrypt_private_key(key, passphrase):
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
 
 
-def check_use_client_cert():
+def check_use_client_cert() -> bool:
     """Returns boolean for whether the client certificate should be used for mTLS.
 
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is set to true or false, a corresponding
@@ -497,7 +498,7 @@ def check_use_client_cert():
         return False
 
 
-def check_parameters_for_unauthorized_response(cached_cert):
+def check_parameters_for_unauthorized_response(cached_cert: bytes | None) -> tuple[bytes, bytes, str | None, str]:
     """Returns the cached and current cert fingerprint for reconfiguring mTLS.
 
     Args:
@@ -523,7 +524,7 @@ def check_parameters_for_unauthorized_response(cached_cert):
     return call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint
 
 
-def call_client_cert_callback():
+def call_client_cert_callback() -> tuple[bytes, bytes]:
     """Calls the client cert callback and returns the certificate and key."""
     _, cert_bytes, key_bytes, passphrase = get_client_ssl_credentials(
         generate_encrypted_key=True

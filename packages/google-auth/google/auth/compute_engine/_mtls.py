@@ -28,6 +28,7 @@ import requests
 from requests.adapters import HTTPAdapter
 
 from google.auth import environment_vars, exceptions
+from collections.abc import Mapping
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,14 +42,14 @@ _WINDOWS_MTLS_COMPONENTS_BASE_PATH = Path("C:/ProgramData/Google/ComputeEngine")
 _MTLS_COMPONENTS_BASE_PATH = Path("/run/google-mds-mtls")
 
 
-def _get_mds_root_crt_path():
+def _get_mds_root_crt_path() -> Path:
     if os.name == _WINDOWS_OS_NAME:
         return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-root.crt"
     else:
         return _MTLS_COMPONENTS_BASE_PATH / "root.crt"
 
 
-def _get_mds_client_combined_cert_path():
+def _get_mds_client_combined_cert_path() -> Path:
     if os.name == _WINDOWS_OS_NAME:
         return _WINDOWS_MTLS_COMPONENTS_BASE_PATH / "mds-mtls-client.key"
     else:
@@ -98,7 +99,7 @@ def _parse_mds_mode():
         )
 
 
-def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()):
+def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()) -> bool:
     """Determines if mTLS should be used for the metadata server."""
     mode = _parse_mds_mode()
     if mode == MdsMtlsMode.STRICT:
@@ -118,7 +119,7 @@ class MdsMtlsAdapter(HTTPAdapter):
 
     def __init__(
         self, mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig(), *args, **kwargs
-    ):
+    ) -> None:
         self.ssl_context = ssl.create_default_context()
         self.ssl_context.load_verify_locations(cafile=mds_mtls_config.ca_cert_path)
         self.ssl_context.load_cert_chain(
@@ -126,11 +127,11 @@ class MdsMtlsAdapter(HTTPAdapter):
         )
         super(MdsMtlsAdapter, self).__init__(*args, **kwargs)
 
-    def init_poolmanager(self, *args, **kwargs):
+    def init_poolmanager(self, *args, **kwargs) -> None:
         kwargs["ssl_context"] = self.ssl_context
         return super(MdsMtlsAdapter, self).init_poolmanager(*args, **kwargs)
 
-    def proxy_manager_for(self, *args, **kwargs):
+    def proxy_manager_for(self, *args, **kwargs) -> None:
         kwargs["ssl_context"] = self.ssl_context
         return super(MdsMtlsAdapter, self).proxy_manager_for(*args, **kwargs)
 

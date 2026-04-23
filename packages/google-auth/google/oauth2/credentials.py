@@ -43,6 +43,10 @@ from google.auth import credentials
 from google.auth import exceptions
 from google.auth import metrics
 from google.oauth2 import reauth
+from collections.abc import Coroutine, Mapping, Sequence
+from google.auth.credentials import CredentialsWithQuotaProject, ReadOnlyScoped
+from google.auth.transport import Request
+from typing import Any
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -73,24 +77,24 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     def __init__(
         self,
-        token,
-        refresh_token=None,
-        id_token=None,
-        token_uri=None,
-        client_id=None,
-        client_secret=None,
-        scopes=None,
-        default_scopes=None,
-        quota_project_id=None,
-        expiry=None,
-        rapt_token=None,
-        refresh_handler=None,
-        enable_reauth_refresh=False,
-        granted_scopes=None,
-        trust_boundary=None,
-        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-        account=None,
-    ):
+        token: str | None,
+        refresh_token: str | None=None,
+        id_token: str | None=None,
+        token_uri: str | None=None,
+        client_id: str | None=None,
+        client_secret: str | None=None,
+        scopes: Sequence[str] | None=None,
+        default_scopes: Sequence[str] | None=None,
+        quota_project_id: str | None=None,
+        expiry: datetime.datetime | None=None,
+        rapt_token: str | None=None,
+        refresh_handler: Any | None=None,
+        enable_reauth_refresh: bool=False,
+        granted_scopes: Sequence[str] | None=None,
+        trust_boundary: Mapping[str, str] | None=None,
+        universe_domain: str | None=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        account: str | None=None,
+    ) -> None:
         """
         Args:
             token (Optional(str)): The OAuth 2.0 access token. Can be None
@@ -204,28 +208,28 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._account = d.get("_account", "")
 
     @property
-    def refresh_token(self):
+    def refresh_token(self) -> str | None:
         """Optional[str]: The OAuth 2.0 refresh token."""
         return self._refresh_token
 
     @property
-    def scopes(self):
+    def scopes(self) -> Sequence[str] | None:
         """Optional[Sequence[str]]: The OAuth 2.0 permission scopes."""
         return self._scopes
 
     @property
-    def granted_scopes(self):
+    def granted_scopes(self) -> Sequence[str] | None:
         """Optional[Sequence[str]]: The OAuth 2.0 permission scopes that were granted by the user."""
         return self._granted_scopes
 
     @property
-    def token_uri(self):
+    def token_uri(self) -> str | None:
         """Optional[str]: The OAuth 2.0 authorization server's token endpoint
         URI."""
         return self._token_uri
 
     @property
-    def id_token(self):
+    def id_token(self) -> str | None:
         """Optional[str]: The Open ID Connect ID Token.
 
         Depending on the authorization server and the scopes requested, this
@@ -236,28 +240,28 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return self._id_token
 
     @property
-    def client_id(self):
+    def client_id(self) -> str | None:
         """Optional[str]: The OAuth 2.0 client ID."""
         return self._client_id
 
     @property
-    def client_secret(self):
+    def client_secret(self) -> str | None:
         """Optional[str]: The OAuth 2.0 client secret."""
         return self._client_secret
 
     @property
-    def requires_scopes(self):
+    def requires_scopes(self) -> bool:
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
         return False
 
     @property
-    def rapt_token(self):
+    def rapt_token(self) -> str | None:
         """Optional[str]: The reauth Proof Token."""
         return self._rapt_token
 
     @property
-    def refresh_handler(self):
+    def refresh_handler(self) -> Any | None:
         """Returns the refresh handler if available.
 
         Returns:
@@ -267,7 +271,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return self._refresh_handler
 
     @refresh_handler.setter
-    def refresh_handler(self, value):
+    def refresh_handler(self, value: Any | None) -> None:
         """Updates the current refresh handler.
 
         Args:
@@ -282,7 +286,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._refresh_handler = value
 
     @property
-    def account(self):
+    def account(self) -> str:
         """str: The user account associated with the credential. If the account is unknown an empty string is returned."""
         return self._account
 
@@ -308,7 +312,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return cred
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def get_cred_info(self):
+    def get_cred_info(self) -> Mapping[str, str] | None:
         if self._cred_file_path:
             cred_info = {
                 "credential_source": self._cred_file_path,
@@ -320,18 +324,18 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return None
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "Credentials":
         cred = self._make_copy()
         cred._quota_project_id = quota_project_id
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
-    def with_token_uri(self, token_uri):
+    def with_token_uri(self, token_uri: str) -> "Credentials":
         cred = self._make_copy()
         cred._token_uri = token_uri
         return cred
 
-    def with_account(self, account):
+    def with_account(self, account: str) -> "Credentials":
         """Returns a copy of these credentials with a modified account.
 
         Args:
@@ -345,7 +349,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
-    def with_universe_domain(self, universe_domain):
+    def with_universe_domain(self, universe_domain: str) -> "Credentials":
         cred = self._make_copy()
         cred._universe_domain = universe_domain
         return cred
@@ -354,7 +358,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         return metrics.CRED_TYPE_USER
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None | Coroutine[Any, Any, None]:
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(
                 "User credential refresh is only supported in the default "
@@ -444,7 +448,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 )
 
     @classmethod
-    def from_authorized_user_info(cls, info, scopes=None):
+    def from_authorized_user_info(cls, info: Mapping[str, str], scopes: Sequence[str] | None=None) -> "Credentials":
         """Creates a Credentials instance from parsed authorized user info.
 
         Args:
@@ -500,7 +504,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         )
 
     @classmethod
-    def from_authorized_user_file(cls, filename, scopes=None):
+    def from_authorized_user_file(cls, filename: str, scopes: Sequence[str] | None=None) -> "Credentials":
         """Creates a Credentials instance from an authorized user json file.
 
         Args:
@@ -519,7 +523,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             data = json.load(json_file)
             return cls.from_authorized_user_info(data, scopes)
 
-    def to_json(self, strip=None):
+    def to_json(self, strip: Sequence[str] | None=None) -> str:
         """Utility function that creates a JSON representation of a Credentials
         object.
 
@@ -569,7 +573,7 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
             and billing.
     """
 
-    def __init__(self, account=None, quota_project_id=None):
+    def __init__(self, account: str | None=None, quota_project_id: str | None=None) -> None:
         warnings.warn(
             "UserAccessTokenCredentials is deprecated, please use "
             "google.oauth2.credentials.Credentials instead. To use "
@@ -581,7 +585,7 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
         self._account = account
         self._quota_project_id = quota_project_id
 
-    def with_account(self, account):
+    def with_account(self, account: str) -> "UserAccessTokenCredentials":
         """Create a new instance with the given account.
 
         Args:
@@ -594,10 +598,10 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
         return self.__class__(account=account, quota_project_id=self._quota_project_id)
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
+    def with_quota_project(self, quota_project_id: str | None) -> "UserAccessTokenCredentials":
         return self.__class__(account=self._account, quota_project_id=quota_project_id)
 
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         """Refreshes the access token.
 
         Args:
@@ -612,6 +616,6 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
         self.token = _cloud_sdk.get_auth_access_token(self._account)
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def before_request(self, request, method, url, headers):
+    def before_request(self, request: Request, method: str, url: str, headers: Mapping[str, str]) -> None:
         self.refresh(request)
         self.apply(headers)

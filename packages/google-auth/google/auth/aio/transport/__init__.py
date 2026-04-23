@@ -28,11 +28,12 @@ import abc
 from typing import AsyncGenerator, Mapping, Optional
 
 import google.auth.transport
+import collections.abc
 
 
 _DEFAULT_TIMEOUT_SECONDS = 180
 
-DEFAULT_RETRYABLE_STATUS_CODES = google.auth.transport.DEFAULT_RETRYABLE_STATUS_CODES
+DEFAULT_RETRYABLE_STATUS_CODES: collections.abc.Sequence[int] = google.auth.transport.DEFAULT_RETRYABLE_STATUS_CODES
 """Sequence[int]:  HTTP status codes indicating a request can be retried.
 """
 
@@ -89,7 +90,7 @@ class Response(metaclass=abc.ABCMeta):
         raise NotImplementedError("read must be implemented.")
 
     @abc.abstractmethod
-    async def close(self):
+    async def close(self) -> None:
         """Close the response after it is fully consumed to resource."""
         raise NotImplementedError("close must be implemented.")
 

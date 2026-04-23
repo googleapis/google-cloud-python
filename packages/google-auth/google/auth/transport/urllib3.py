@@ -19,6 +19,12 @@ from __future__ import absolute_import
 import http.client as http_client
 import logging
 import warnings
+from collections.abc import Callable, Mapping, Sequence
+from google.auth.transport import Request, Response
+from requests.adapters import HTTPAdapter
+from types import TracebackType
+from typing import Any
+from typing_extensions import Self
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
 # to verify HTTPS requests, and certifi is the recommended and most reliable
@@ -56,12 +62,42 @@ from google.auth import transport
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
+class _RequestMethodsBase: ...
+
+class TimeoutGuard:
+    remaining_timeout: Any
+
+    def __init__(
+        self,
+        timeout: Any,
+        timeout_error_type: type[Exception] = requests.exceptions.Timeout,
+    ) -> None: ...
+    def __enter__(self) -> Self: ...
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: types.TracebackType | None,
+    ) -> None: ...
+
+class _MutualTlsAdapter(HTTPAdapter):
+    def __init__(self, cert: bytes, key: bytes) -> None: ...
+    def init_poolmanager(self, *args: Any, **kwargs: Any) -> None: ...
+    def proxy_manager_for(self, *args: Any, **kwargs: Any): ...
+
+class _MutualTlsOffloadAdapter(HTTPAdapter):
+    signer: Any
+
+    def __init__(self, enterprise_cert_file_path: str) -> None: ...
+    def init_poolmanager(self, *args: Any, **kwargs: Any) -> None: ...
+    def proxy_manager_for(self, *args: Any, **kwargs: Any): ...
+
 if version.parse(urllib3.__version__) >= version.parse("2.0.0"):  # pragma: NO COVER
     RequestMethods = urllib3._request_methods.RequestMethods  # type: ignore
 else:  # pragma: NO COVER
     RequestMethods = urllib3.request.RequestMethods  # type: ignore
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER: Any = logging.getLogger(__name__)
 
 
 class _Response(transport.Response):
@@ -71,19 +107,19 @@ class _Response(transport.Response):
         response (urllib3.response.HTTPResponse): The raw urllib3 response.
     """
 
-    def __init__(self, response):
+    def __init__(self, response: Any) -> None:
         self._response = response
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._response.status
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         return self._response.headers
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self._response.data
 
 
@@ -112,12 +148,12 @@ class Request(transport.Request):
     .. automethod:: __call__
     """
 
-    def __init__(self, http):
+    def __init__(self, http: Any | None) -> None:
         self.http = http
 
     def __call__(
-        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
-    ):
+        self, url: str, method: str="GET", body: bytes | None=None, headers: Mapping[str, str] | None=None, timeout: float | None=None, **kwargs
+    ) -> _Response:
         """Make an HTTP request using urllib3.
 
         Args:
@@ -280,12 +316,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def __init__(
         self,
-        credentials,
-        http=None,
-        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
-        default_host=None,
-    ):
+        credentials: Any,
+        http: Any | None=None,
+        refresh_status_codes: Sequence[int]=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts: int=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+        default_host: str | None=None,
+    ) -> None:
         if http is None:
             self.http = _make_default_http()
             self._has_user_provided_http = False
@@ -311,7 +347,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         super(AuthorizedHttp, self).__init__()
 
-    def configure_mtls_channel(self, client_cert_callback=None):
+    def configure_mtls_channel(self, client_cert_callback: Callable[[], tuple[bytes, bytes]] | None=None) -> bool:
         """Configures mutual TLS channel using the given client_cert_callback or
         application default SSL credentials. The behavior is controlled by
         `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable.
@@ -373,7 +409,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         return found_cert_key
 
-    def urlopen(self, method, url, body=None, headers=None, **kwargs):
+    def urlopen(self, method: str, url: str, body: Any=None, headers: Any=None, **kwargs) -> _Response:
         """Implementation of urllib3's urlopen."""
         # pylint: disable=arguments-differ
         # We use kwargs to collect additional args that we don't need to
@@ -474,20 +510,20 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         """Proxy to ``self.http``."""
         return self.http.__enter__()
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         """Proxy to ``self.http``."""
         return self.http.__exit__(exc_type, exc_val, exc_tb)
 
-    def __del__(self):
+    def __del__(self) -> None:
         if hasattr(self, "http") and self.http is not None:
             self.http.clear()
 
     @property
-    def headers(self):
+    def headers(self) -> Mapping[str, str]:
         """Proxy to ``self.http``."""
         return self.http.headers
 
     @headers.setter
-    def headers(self, value):
+    def headers(self, value: Mapping[str, str]) -> None:
         """Proxy to ``self.http``."""
         self.http.headers = value

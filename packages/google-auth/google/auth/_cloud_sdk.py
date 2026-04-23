@@ -42,7 +42,7 @@ CLOUD_SDK_CLIENT_ID = (
 )
 
 
-def get_config_path():
+def get_config_path() -> str:
     """Returns the absolute path the the Cloud SDK's configuration directory.
 
     Returns:
@@ -70,7 +70,7 @@ def get_config_path():
             return os.path.join(drive, "\\", _CONFIG_DIRECTORY)
 
 
-def get_application_default_credentials_path():
+def get_application_default_credentials_path() -> str:
     """Gets the path to the application default credentials file.
 
     The path may or may not exist.
@@ -89,7 +89,7 @@ def _run_subprocess_ignore_stderr(command):
     return output
 
 
-def get_project_id():
+def get_project_id() -> str | None:
     """Gets the project ID from the Cloud SDK.
 
     Returns:
@@ -114,7 +114,7 @@ def get_project_id():
         return None
 
 
-def get_auth_access_token(account=None):
+def get_auth_access_token(account: str | None=None) -> str:
     """Load user access token with the ``gcloud auth print-access-token`` command.
 
     Args:

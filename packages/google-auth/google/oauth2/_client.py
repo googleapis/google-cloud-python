@@ -35,6 +35,8 @@ from google.auth import exceptions
 from google.auth import jwt
 from google.auth import metrics
 from google.auth import transport
+from collections.abc import Mapping, Sequence
+from google.auth.transport import Request
 
 _URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded"
 _JSON_CONTENT_TYPE = "application/json"
@@ -275,7 +277,7 @@ def _token_endpoint_request(
     return response_data
 
 
-def jwt_grant(request, token_uri, assertion, can_retry=True):
+def jwt_grant(request: Request, token_uri: str, assertion: str, can_retry: bool=True) -> tuple[str, datetime.datetime | None, Mapping[str, str]]:
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants.
 
     For more details, see `rfc7523 section 4`_.
@@ -324,13 +326,13 @@ def jwt_grant(request, token_uri, assertion, can_retry=True):
 
 
 def call_iam_generate_id_token_endpoint(
-    request,
-    iam_id_token_endpoint,
-    signer_email,
-    audience,
-    access_token,
-    universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-):
+    request: Request,
+    iam_id_token_endpoint: str,
+    signer_email: str,
+    audience: str,
+    access_token: str,
+    universe_domain: str=credentials.DEFAULT_UNIVERSE_DOMAIN,
+) -> tuple[str, datetime.datetime]:
     """Call iam.generateIdToken endpoint to get ID token.
 
     Args:
@@ -373,7 +375,7 @@ def call_iam_generate_id_token_endpoint(
     return id_token, expiry
 
 
-def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
+def id_token_jwt_grant(request: Request, token_uri: str, assertion: str, can_retry: bool=True) -> tuple[str, datetime.datetime | None, Mapping[str, str]]:
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants, but
     requests an OpenID Connect ID Token instead of an access token.
 
@@ -457,15 +459,15 @@ def _handle_refresh_grant_response(response_data, refresh_token):
 
 
 def refresh_grant(
-    request,
-    token_uri,
-    refresh_token,
-    client_id,
-    client_secret,
-    scopes=None,
-    rapt_token=None,
-    can_retry=True,
-):
+    request: Request,
+    token_uri: str,
+    refresh_token: str,
+    client_id: str,
+    client_secret: str,
+    scopes: Sequence[str] | None=None,
+    rapt_token: str | None=None,
+    can_retry: bool=True,
+) -> tuple[str, str, datetime.datetime | None, Mapping[str, str]]:
     """Implements the OAuth 2.0 refresh token grant.
 
     For more details, see `rfc678 section 6`_.

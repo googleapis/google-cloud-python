@@ -28,6 +28,8 @@ import cryptography.x509
 
 from google.auth import _helpers
 from google.auth.crypt import base
+from google.auth.crypt.base import FromServiceAccountMixin, Signer, Verifier
+from typing import Any
 
 _CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
 _BACKEND = backends.default_backend()
@@ -44,11 +46,11 @@ class RSAVerifier(base.Verifier):
             The public key used to verify signatures.
     """
 
-    def __init__(self, public_key):
+    def __init__(self, public_key: Any) -> None:
         self._pubkey = public_key
 
     @_helpers.copy_docstring(base.Verifier)
-    def verify(self, message, signature):
+    def verify(self, message: Any, signature: Any) -> bool:
         message = _helpers.to_bytes(message)
         try:
             self._pubkey.verify(signature, message, _PADDING, _SHA256)
@@ -57,7 +59,7 @@ class RSAVerifier(base.Verifier):
             return False
 
     @classmethod
-    def from_string(cls, public_key):
+    def from_string(cls, public_key: Any) -> "RSAVerifier":
         """Construct an Verifier instance from a public key or public
         certificate string.
 
@@ -97,22 +99,22 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
             public key or certificate.
     """
 
-    def __init__(self, private_key, key_id=None):
+    def __init__(self, private_key: Any, key_id: str | None=None) -> None:
         self._key = private_key
         self._key_id = key_id
 
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
-    def key_id(self):
+    def key_id(self) -> str:
         return self._key_id
 
     @_helpers.copy_docstring(base.Signer)
-    def sign(self, message):
+    def sign(self, message: Any) -> bytes:
         message = _helpers.to_bytes(message)
         return self._key.sign(message, _PADDING, _SHA256)
 
     @classmethod
-    def from_string(cls, key, key_id=None):
+    def from_string(cls, key: Any, key_id: str | None=None) -> "RSASigner":
         """Construct a RSASigner from a private key in PEM format.
 
         Args:

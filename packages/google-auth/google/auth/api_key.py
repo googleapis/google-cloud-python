@@ -21,6 +21,9 @@ This module provides authentication using the `API key`_.
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from collections.abc import Mapping
+from google.auth.credentials import Credentials
+from google.auth.transport import Request
 
 
 class Credentials(credentials.Credentials):
@@ -28,7 +31,7 @@ class Credentials(credentials.Credentials):
     These credentials use API key to provide authorization to applications.
     """
 
-    def __init__(self, token):
+    def __init__(self, token: str) -> None:
         """
         Args:
             token (str): API key string
@@ -41,18 +44,18 @@ class Credentials(credentials.Credentials):
         self.token = token
 
     @property
-    def expired(self):
+    def expired(self) -> bool:
         return False
 
     @property
-    def valid(self):
+    def valid(self) -> bool:
         return True
 
     @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> None:
         return
 
-    def apply(self, headers, token=None):
+    def apply(self, headers: Mapping[str, str], token: str | None=None) -> None:
         """Apply the API key token to the x-goog-api-key header.
         Args:
             headers (Mapping): The HTTP request headers.
@@ -61,7 +64,7 @@ class Credentials(credentials.Credentials):
         """
         headers["x-goog-api-key"] = token or self.token
 
-    def before_request(self, request, method, url, headers):
+    def before_request(self, request: Request, method: str, url: str, headers: Mapping[str, str]) -> None:
         """Performs credential-specific before request logic.
         Refreshes the credentials if necessary, then calls :meth:`apply` to
         apply the token to the x-goog-api-key header.

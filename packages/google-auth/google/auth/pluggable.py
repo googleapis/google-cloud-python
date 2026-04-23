@@ -29,6 +29,9 @@ Example credential_source for pluggable credential:
     }
 }
 """
+import collections.abc
+from google.auth.external_account import Credentials
+from typing import Any
 
 try:
     from collections.abc import Mapping
@@ -71,13 +74,13 @@ class Credentials(external_account.Credentials):
 
     def __init__(
         self,
-        audience,
-        subject_token_type,
-        token_url,
-        credential_source,
+        audience: str,
+        subject_token_type: str,
+        token_url: str,
+        credential_source: collections.abc.Mapping[str, Any] | None,
         *args,
         **kwargs
-    ):
+    ) -> None:
         """Instantiates an external account credentials object from a executables.
 
         Args:
@@ -174,7 +177,7 @@ class Credentials(external_account.Credentials):
                 )
 
     @_helpers.copy_docstring(external_account.Credentials)
-    def retrieve_subject_token(self, request):
+    def retrieve_subject_token(self, request: Any):
         self._validate_running_mode()
 
         # Check output file.
@@ -241,7 +244,7 @@ class Credentials(external_account.Credentials):
         subject_token = self._parse_subject_token(response)
         return subject_token
 
-    def revoke(self, request):
+    def revoke(self, request: Any) -> None:
         """Revokes the subject token using the credential_source object.
 
         Args:
@@ -284,7 +287,7 @@ class Credentials(external_account.Credentials):
         self._validate_revoke_response(response)
 
     @property
-    def external_account_id(self):
+    def external_account_id(self) -> str | None:
         """Returns the external account identifier.
 
         When service account impersonation is used the identifier is the service
@@ -297,7 +300,7 @@ class Credentials(external_account.Credentials):
         return self.service_account_email or self._tokeninfo_username
 
     @classmethod
-    def from_info(cls, info, **kwargs):
+    def from_info(cls, info: collections.abc.Mapping[str, Any], **kwargs) -> "Credentials":
         """Creates a Pluggable Credentials instance from parsed external account info.
 
          **IMPORTANT**:
@@ -324,7 +327,7 @@ class Credentials(external_account.Credentials):
         return super(Credentials, cls).from_info(info, **kwargs)
 
     @classmethod
-    def from_file(cls, filename, **kwargs):
+    def from_file(cls, filename: str, **kwargs) -> "Credentials":
         """Creates an Pluggable Credentials instance from an external account json file.
 
         **IMPORTANT**:

@@ -26,6 +26,10 @@ from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
 from google.oauth2 import _client_async
 from google.oauth2 import service_account
+from google.auth.transport import Request as _Request, Request as _Request
+from datetime import datetime
+from google.auth._credentials_async import Credentials, Scoped, Signing
+from google.oauth2.service_account import Credentials, IDTokenCredentials
 
 
 class Credentials(
@@ -67,7 +71,7 @@ class Credentials(
     """
 
     @_helpers.copy_docstring(credentials_async.Credentials)
-    async def refresh(self, request):
+    async def refresh(self, request: _Request) -> None:
         assertion = self._make_authorization_grant_assertion()
         access_token, expiry, _ = await _client_async.jwt_grant(
             request, self._token_uri, assertion
@@ -123,7 +127,7 @@ class IDTokenCredentials(
     """
 
     @_helpers.copy_docstring(credentials_async.Credentials)
-    async def refresh(self, request):
+    async def refresh(self, request: _Request) -> None:
         assertion = self._make_authorization_grant_assertion()
         access_token, expiry, _ = await _client_async.id_token_jwt_grant(
             request, self._token_uri, assertion

@@ -65,8 +65,10 @@ import os
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import jwt
-from google.auth.transport import requests
+from google.auth.transport import Request as _Request, Request as _Request, Request as _Request, Request as _Request, requests
 from google.oauth2 import id_token as sync_id_token
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 
 async def _fetch_certs(request, certs_url):
@@ -97,12 +99,12 @@ async def _fetch_certs(request, certs_url):
 
 
 async def verify_token(
-    id_token,
-    request,
-    audience=None,
-    certs_url=sync_id_token._GOOGLE_OAUTH2_CERTS_URL,
-    clock_skew_in_seconds=0,
-):
+    id_token: str | bytes,
+    request: _Request,
+    audience: str | Sequence[str] | None=None,
+    certs_url: str=sync_id_token._GOOGLE_OAUTH2_CERTS_URL,
+    clock_skew_in_seconds: int=0,
+) -> Mapping[str, Any]:
     """Verifies an ID token and returns the decoded token.
 
     Args:
@@ -131,8 +133,8 @@ async def verify_token(
 
 
 async def verify_oauth2_token(
-    id_token, request, audience=None, clock_skew_in_seconds=0
-):
+    id_token: str | bytes, request: _Request, audience: str | Sequence[str] | None=None, clock_skew_in_seconds: int=0
+) -> Mapping[str, Any]:
     """Verifies an ID Token issued by Google's OAuth 2.0 authorization server.
 
     Args:
@@ -170,8 +172,8 @@ async def verify_oauth2_token(
 
 
 async def verify_firebase_token(
-    id_token, request, audience=None, clock_skew_in_seconds=0
-):
+    id_token: str | bytes, request: _Request, audience: str | Sequence[str] | None=None, clock_skew_in_seconds: int=0
+) -> Mapping[str, Any]:
     """Verifies an ID Token issued by Firebase Authentication.
 
     Args:
@@ -196,7 +198,7 @@ async def verify_firebase_token(
     )
 
 
-async def fetch_id_token(request, audience):
+async def fetch_id_token(request: _Request, audience: str) -> str:
     """Fetch the ID Token from the current environment.
 
     This function acquires ID token from the environment in the following order.
