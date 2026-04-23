@@ -713,7 +713,9 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             ]
             if not session.posargs:
                 sync_args.append(system_test_folder_path)
-                sync_args.append(f"--ignore={os.path.join(system_test_folder_path, '_async')}")
+                sync_args.append(
+                    f"--ignore={os.path.join(system_test_folder_path, '_async')}"
+                )
             else:
                 sync_args.extend(session.posargs)
 
