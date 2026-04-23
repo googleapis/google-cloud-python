@@ -784,19 +784,15 @@ libraries:
         google/cloud/bigquery/datapolicies/v1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=bigquery_datapolicies
-          - transport=grpc+rest
         google/cloud/bigquery/datapolicies/v1beta1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=bigquery_datapolicies
-          - transport=grpc
         google/cloud/bigquery/datapolicies/v2:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=bigquery_datapolicies
-          - transport=grpc+rest
         google/cloud/bigquery/datapolicies/v2beta1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=bigquery_datapolicies
-          - transport=grpc+rest
       product_documentation_override: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
       metadata_name_override: bigquerydatapolicy
       default_version: v1
@@ -932,9 +928,7 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/billing/budgets/v1:
-          - transport=grpc+rest
         google/cloud/billing/budgets/v1beta1:
-          - transport=grpc
       product_documentation_override: https://cloud.google.com/billing/docs/how-to/budget-api-overview
       metadata_name_override: billingbudgets
       default_version: v1
@@ -1077,7 +1071,6 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/compute/v1:
-          - transport=rest
       name_pretty_override: Compute Engine
       metadata_name_override: compute
       default_version: v1
@@ -1089,7 +1082,6 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/compute/v1beta:
-          - transport=rest
           - warehouse-package-name=google-cloud-compute-v1beta
       name_pretty_override: Compute Engine
       product_documentation_override: https://cloud.google.com/compute/
@@ -1152,11 +1144,9 @@ libraries:
         google/container/v1:
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-container
-          - transport=grpc+rest
         google/container/v1beta1:
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-container
-          - transport=grpc
       metadata_name_override: container
       default_version: v1
   - name: google-cloud-containeranalysis
@@ -1630,14 +1620,11 @@ libraries:
         google/firestore/admin/v1:
           - python-gapic-name=firestore_admin
           - python-gapic-namespace=google.cloud
-          - transport=grpc+rest
         google/firestore/bundle:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=firestore_bundle
-          - transport=grpc
         google/firestore/v1:
           - python-gapic-namespace=google.cloud
-          - transport=grpc+rest
       name_pretty_override: Cloud Firestore API
       product_documentation_override: https://cloud.google.com/firestore
       issue_tracker_override: https://issuetracker.google.com/savedsearches/5337669
@@ -1785,32 +1772,26 @@ libraries:
           - python-gapic-name=iam_admin
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-iam
-          - transport=grpc
         google/iam/credentials/v1:
           - warehouse-package-name=google-cloud-iam
           - python-gapic-namespace=google.cloud
           - python-gapic-name=iam_credentials
-          - transport=grpc+rest
         google/iam/v2:
           - python-gapic-name=iam
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-iam
-          - transport=grpc+rest
         google/iam/v2beta:
           - python-gapic-name=iam
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-iam
-          - transport=grpc
         google/iam/v3:
           - python-gapic-name=iam
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-iam
-          - transport=grpc+rest
         google/iam/v3beta:
           - python-gapic-name=iam
           - python-gapic-namespace=google.cloud
           - warehouse-package-name=google-cloud-iam
-          - transport=grpc+rest
       name_pretty_override: Cloud Identity and Access Management
       product_documentation_override: https://cloud.google.com/iam/docs/
       api_shortname_override: iamcredentials
@@ -2199,11 +2180,8 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/notebooks/v1:
-          - transport=grpc
         google/cloud/notebooks/v1beta1:
-          - transport=grpc+rest
         google/cloud/notebooks/v2:
-          - transport=grpc+rest
       name_pretty_override: AI Platform Notebooks
       product_documentation_override: https://cloud.google.com/ai-platform/notebooks/
       metadata_name_override: notebooks
@@ -2909,11 +2887,8 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/tpu/v1:
-          - transport=grpc
         google/cloud/tpu/v2:
-          - transport=grpc+rest
         google/cloud/tpu/v2alpha1:
-          - transport=grpc
       metadata_name_override: tpu
       default_version: v1
   - name: google-cloud-trace
@@ -3008,15 +2983,10 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/videointelligence/v1:
-          - transport=grpc+rest
         google/cloud/videointelligence/v1beta2:
-          - transport=grpc+rest
         google/cloud/videointelligence/v1p1beta1:
-          - transport=grpc+rest
         google/cloud/videointelligence/v1p2beta1:
-          - transport=grpc+rest
         google/cloud/videointelligence/v1p3beta1:
-          - transport=grpc
       name_pretty_override: Video Intelligence
       product_documentation_override: https://cloud.google.com/video-intelligence/docs/
       metadata_name_override: videointelligence
@@ -3113,13 +3083,9 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/workflows/executions/v1:
-          - transport=grpc
         google/cloud/workflows/executions/v1beta:
-          - transport=grpc
         google/cloud/workflows/v1:
-          - transport=grpc+rest
         google/cloud/workflows/v1beta:
-          - transport=grpc+rest
       name_pretty_override: Cloud Workflows
       metadata_name_override: workflows
       default_version: v1
