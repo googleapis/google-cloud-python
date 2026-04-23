@@ -64,7 +64,7 @@ libraries:
       client_documentation_override: https://cloud.google.com/python/docs/reference/bigframes/latest
       issue_tracker_override: https://github.com/googleapis/python-bigquery-dataframes/issues
   - name: bigquery-magics
-    version: 0.14.0
+    version: 0.15.0
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for Jupyter and IPython
@@ -73,7 +73,7 @@ libraries:
       client_documentation_override: https://googleapis.dev/python/bigquery-magics/latest/
       issue_tracker_override: https://github.com/googleapis/python-bigquery-magics/issues
   - name: db-dtypes
-    version: 1.5.1
+    version: 1.6.0
     description_override: Pandas extension data types for data from SQL systems such as BigQuery.
     python:
       library_type: INTEGRATION
@@ -91,7 +91,7 @@ libraries:
       api_shortname_override: django-google-spanner
       issue_tracker_override: https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open
   - name: gapic-generator
-    version: 1.30.14
+    version: 1.31.0
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
@@ -99,7 +99,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
-    version: 3.2.5
+    version: 3.3.0
     python:
       library_type: OTHER
       name_pretty_override: Sphinx DocFX YAML Generator
@@ -154,7 +154,7 @@ libraries:
       metadata_name_override: generativelanguage
       default_version: v1beta
   - name: google-analytics-admin
-    version: 0.28.0
+    version: 0.29.0
     apis:
       - path: google/analytics/admin/v1beta
       - path: google/analytics/admin/v1alpha
@@ -177,7 +177,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.30.3
+    version: 2.31.0
     python:
       library_type: CORE
       name_pretty_override: Google API client core library
@@ -196,7 +196,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-apps-chat
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/chat/v1
     python:
@@ -285,20 +285,20 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.49.2
+    version: 2.50.0
     python:
       library_type: AUTH
       name_pretty_override: Google Auth Python Library
       issue_tracker_override: https://github.com/googleapis/google-auth-library-python/issues
       skip_readme_copy: true
   - name: google-auth-httplib2
-    version: 0.3.1
+    version: 0.4.0
     python:
       library_type: AUTH
       name_pretty_override: Google Auth httplib2
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
   - name: google-auth-oauthlib
-    version: 1.3.1
+    version: 1.4.0
     python:
       library_type: AUTH
       name_pretty_override: Google Auth OAuthlib
@@ -317,7 +317,7 @@ libraries:
       metadata_name_override: accessapproval
       default_version: v1
   - name: google-cloud-access-context-manager
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
@@ -340,7 +340,7 @@ libraries:
       metadata_name_override: advisorynotifications
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -375,7 +375,7 @@ libraries:
       metadata_name_override: apigateway
       default_version: v1
   - name: google-cloud-api-keys
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/api/apikeys/v2
     python:
@@ -592,7 +592,7 @@ libraries:
       metadata_name_override: baremetalsolution
       default_version: v2
   - name: google-cloud-batch
-    version: 0.21.0
+    version: 0.22.0
     apis:
       - path: google/cloud/batch/v1
       - path: google/cloud/batch/v1alpha
@@ -681,7 +681,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-cloud-biglake-hive
-    version: 0.1.0
+    version: 0.2.0
     apis:
       - path: google/cloud/biglake/hive/v1beta
     description_override: |-
@@ -832,7 +832,7 @@ libraries:
       metadata_name_override: bigquerylogging
       default_version: v1
   - name: google-cloud-bigquery-migration
-    version: 0.14.0
+    version: 0.15.0
     apis:
       - path: google/cloud/bigquery/migration/v2
       - path: google/cloud/bigquery/migration/v2alpha
@@ -849,7 +849,7 @@ libraries:
       metadata_name_override: bigquerymigration
       default_version: v2
   - name: google-cloud-bigquery-reservation
-    version: 1.23.0
+    version: 1.24.0
     apis:
       - path: google/cloud/bigquery/reservation/v1
     description_override: Modify BigQuery flat-rate reservations.
@@ -862,7 +862,7 @@ libraries:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -892,7 +892,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.36.0
+    version: 2.37.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -992,7 +992,7 @@ libraries:
       metadata_name_override: certificatemanager
       default_version: v1
   - name: google-cloud-ces
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
@@ -1009,7 +1009,7 @@ libraries:
       metadata_name_override: cloudchannel
       default_version: v1
   - name: google-cloud-chronicle
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/chronicle/v1
     description_override: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
@@ -1070,7 +1070,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.47.0
+    version: 1.48.0
     apis:
       - path: google/cloud/compute/v1
     description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
@@ -1082,7 +1082,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/compute/v1beta
     description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
@@ -1106,7 +1106,7 @@ libraries:
       metadata_name_override: confidentialcomputing
       default_version: v1
   - name: google-cloud-config
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/config/v1
     description_override: Infrastructure Manager API
@@ -1142,7 +1142,7 @@ libraries:
       metadata_name_override: contactcenterinsights
       default_version: v1
   - name: google-cloud-container
-    version: 2.64.0
+    version: 2.65.0
     apis:
       - path: google/container/v1
       - path: google/container/v1beta1
@@ -1184,7 +1184,7 @@ libraries:
       metadata_name_override: contentwarehouse
       default_version: v1
   - name: google-cloud-core
-    version: 2.5.1
+    version: 2.6.0
     python:
       library_type: CORE
       name_pretty_override: Google API client core library
@@ -1215,7 +1215,7 @@ libraries:
       metadata_name_override: dataqna
       default_version: v1alpha
   - name: google-cloud-databasecenter
-    version: 0.7.0
+    version: 0.8.0
     apis:
       - path: google/cloud/databasecenter/v1beta
     description_override: |-
@@ -1284,7 +1284,7 @@ libraries:
       metadata_name_override: dataflow
       default_version: v1beta3
   - name: google-cloud-dataform
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
@@ -1304,7 +1304,7 @@ libraries:
       metadata_name_override: datalabeling
       default_version: v1beta1
   - name: google-cloud-dataplex
-    version: 2.18.0
+    version: 2.19.0
     apis:
       - path: google/cloud/dataplex/v1
     description_override: provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale.
@@ -1339,7 +1339,7 @@ libraries:
       metadata_name_override: metastore
       default_version: v1
   - name: google-cloud-datastore
-    version: 2.24.0
+    version: 2.25.0
     apis:
       - path: google/datastore/v1
       - path: google/datastore/admin/v1
@@ -1411,7 +1411,7 @@ libraries:
       metadata_name_override: dialogflow
       default_version: v2
   - name: google-cloud-dialogflow-cx
-    version: 2.5.0
+    version: 2.6.0
     apis:
       - path: google/cloud/dialogflow/cx/v3
       - path: google/cloud/dialogflow/cx/v3beta1
@@ -1429,7 +1429,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.18.0
+    version: 0.19.0
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1466,7 +1466,7 @@ libraries:
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
-    version: 0.36.1
+    version: 0.37.0
     description_override: provides methods that you can use to manage DNS for your applications.
     python:
       library_type: REST
@@ -1491,7 +1491,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.15.2
+    version: 0.16.0
     python:
       library_type: OTHER
       name_pretty_override: Document AI Toolbox
@@ -1533,7 +1533,7 @@ libraries:
       metadata_name_override: enterpriseknowledgegraph
       default_version: v1
   - name: google-cloud-error-reporting
-    version: 1.15.0
+    version: 1.16.0
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
     description_override: 'counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors.'
@@ -1605,7 +1605,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.27.0
+    version: 2.28.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1701,7 +1701,7 @@ libraries:
       metadata_name_override: connectgateway
       default_version: v1
   - name: google-cloud-gke-hub
-    version: 1.23.0
+    version: 1.24.0
     apis:
       - path: google/cloud/gkehub/v1
       - path: google/cloud/gkehub/v1beta1
@@ -1770,7 +1770,7 @@ libraries:
       product_documentation_override: https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
       default_version: v1
   - name: google-cloud-iam
-    version: 2.22.0
+    version: 2.23.0
     apis:
       - path: google/iam/v3
       - path: google/iam/v2
@@ -1862,7 +1862,7 @@ libraries:
       metadata_name_override: ids
       default_version: v1
   - name: google-cloud-kms
-    version: 3.12.0
+    version: 3.13.0
     apis:
       - path: google/cloud/kms/v1
     description_override: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
@@ -2048,7 +2048,7 @@ libraries:
       metadata_name_override: migrationcenter
       default_version: v1
   - name: google-cloud-modelarmor
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
@@ -2103,7 +2103,7 @@ libraries:
       name_pretty_override: Metrics Scopes
       default_version: v1
   - name: google-cloud-ndb
-    version: 2.4.2
+    version: 2.5.0
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
@@ -2113,7 +2113,7 @@ libraries:
       metadata_name_override: python-ndb
       skip_readme_copy: true
   - name: google-cloud-netapp
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/netapp/v1
     description_override: NetApp API
@@ -2123,7 +2123,7 @@ libraries:
       metadata_name_override: netapp
       default_version: v1
   - name: google-cloud-network-connectivity
-    version: 2.15.0
+    version: 2.16.0
     apis:
       - path: google/cloud/networkconnectivity/v1
       - path: google/cloud/networkconnectivity/v1beta
@@ -2141,7 +2141,7 @@ libraries:
       metadata_name_override: networkconnectivity
       default_version: v1
   - name: google-cloud-network-management
-    version: 1.34.0
+    version: 1.35.0
     apis:
       - path: google/cloud/networkmanagement/v1
     description_override: provides a collection of network performance monitoring and diagnostic capabilities.
@@ -2267,7 +2267,7 @@ libraries:
       metadata_name_override: osconfig
       default_version: v1
   - name: google-cloud-os-login
-    version: 2.20.0
+    version: 2.21.0
     apis:
       - path: google/cloud/oslogin/v1
     keep:
@@ -2342,7 +2342,7 @@ libraries:
       metadata_name_override: policysimulator
       default_version: v1
   - name: google-cloud-policytroubleshooter-iam
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
     python:
@@ -2394,7 +2394,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/pubsub/v1
     description_override: is designed to provide reliable, many-to-many, asynchronous messaging between applications. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications.
@@ -2437,7 +2437,7 @@ libraries:
       metadata_name_override: rapidmigrationassessment
       default_version: v1
   - name: google-cloud-recaptcha-enterprise
-    version: 1.31.0
+    version: 1.32.0
     apis:
       - path: google/cloud/recaptchaenterprise/v1
     description_override: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
@@ -2533,7 +2533,7 @@ libraries:
       metadata_name_override: run
       default_version: v2
   - name: google-cloud-runtimeconfig
-    version: 0.36.1
+    version: 0.37.0
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: Google Cloud Runtime Configurator
@@ -2543,7 +2543,7 @@ libraries:
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559663
       metadata_name_override: runtimeconfig
   - name: google-cloud-saasplatform-saasservicemgmt
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
     description_override: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
@@ -2620,7 +2620,7 @@ libraries:
       metadata_name_override: securitycenter
       default_version: v1
   - name: google-cloud-securitycentermanagement
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/securitycentermanagement/v1
     python:
@@ -2664,7 +2664,7 @@ libraries:
       metadata_name_override: servicedirectory
       default_version: v1
   - name: google-cloud-service-management
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/api/servicemanagement/v1
     description_override: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
@@ -2762,7 +2762,7 @@ libraries:
       metadata_name_override: spanner
       default_version: v1
   - name: google-cloud-speech
-    version: 2.38.0
+    version: 2.39.0
     apis:
       - path: google/cloud/speech/v2
       - path: google/cloud/speech/v1
@@ -2882,7 +2882,7 @@ libraries:
       name_pretty_override: Telco Automation API
       default_version: v1
   - name: google-cloud-testutils
-    version: 1.7.1
+    version: 1.8.0
     python:
       library_type: OTHER
       name_pretty_override: Python Test Utils for Google Cloud
@@ -3022,7 +3022,7 @@ libraries:
       metadata_name_override: videointelligence
       default_version: v1
   - name: google-cloud-vision
-    version: 3.13.0
+    version: 3.14.0
     apis:
       - path: google/cloud/vision/v1
       - path: google/cloud/vision/v1p4beta1
@@ -3058,7 +3058,7 @@ libraries:
       metadata_name_override: vmmigration
       default_version: v1
   - name: google-cloud-vmwareengine
-    version: 1.11.0
+    version: 1.12.0
     apis:
       - path: google/cloud/vmwareengine/v1
     python:
@@ -3135,7 +3135,7 @@ libraries:
       name_pretty_override: Workload Manager API
       default_version: v1
   - name: google-cloud-workstations
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/cloud/workstations/v1
       - path: google/cloud/workstations/v1beta
@@ -3153,7 +3153,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/python-crc32c/issues
       skip_readme_copy: true
   - name: google-geo-type
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/geo/type
     keep:
@@ -3246,7 +3246,7 @@ libraries:
       metadata_name_override: mapsplatformdatasets
       default_version: v1
   - name: google-maps-navconnect
-    version: 0.1.0
+    version: 0.2.0
     apis:
       - path: google/maps/navconnect/v1
     description_override: Navigation Connect API.
@@ -3377,7 +3377,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: v1
   - name: google-shopping-merchant-inventories
-    version: 1.3.0
+    version: 1.4.0
     apis:
       - path: google/shopping/merchant/inventories/v1
       - path: google/shopping/merchant/inventories/v1beta
@@ -3476,7 +3476,7 @@ libraries:
       api_id_override: ordertracking.googleapis.com
       default_version: v1
   - name: google-shopping-merchant-products
-    version: 1.5.0
+    version: 1.6.0
     apis:
       - path: google/shopping/merchant/products/v1
       - path: google/shopping/merchant/products/v1beta
@@ -3603,7 +3603,7 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.74.0
+    version: 1.75.0
     apis:
       - path: google/api
       - path: google/cloud
@@ -3655,7 +3655,7 @@ libraries:
       metadata_name_override: grpc-iam
       default_version: apiVersion
   - name: pandas-gbq
-    version: 0.35.0
+    version: 0.36.0
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
@@ -3665,21 +3665,21 @@ libraries:
       issue_tracker_override: https://github.com/googleapis/python-bigquery-pandas/issues
       skip_readme_copy: true
   - name: proto-plus
-    version: 1.27.2
+    version: 1.28.0
     python:
       library_type: CORE
       name_pretty_override: Proto Plus
       issue_tracker_override: https://github.com/googleapis/google-cloud-python/issues
       skip_readme_copy: true
   - name: sqlalchemy-bigquery
-    version: 1.16.0
+    version: 1.17.0
     python:
       library_type: INTEGRATION
       name_pretty_override: SQLAlchemy dialect for BigQuery
       api_id_override: bigquery.googleapis.com
       client_documentation_override: https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html
   - name: sqlalchemy-spanner
-    version: 1.17.3
+    version: 1.18.0
     python:
       library_type: INTEGRATION
       name_pretty_override: Spanner dialect for SQLAlchemy
