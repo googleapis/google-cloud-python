@@ -40,7 +40,7 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes.core import compile, guid, local_data, rewrite
+from bigframes.core import bq_data, compile, guid, local_data, rewrite
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (
@@ -176,59 +176,61 @@ class BigQueryCachingExecutor(executor.Executor):
     ) -> executor.ExecuteResult:
         dest_spec = execution_spec.destination_spec
         # Recursive handlers for different cases, maybe extract to explicit interface.
+        if (
+            isinstance(dest_spec, ex_spec.EphemeralTableSpec)
+            and not execution_spec.promise_under_10gb
+        ):
+            # Results over 10GB need to explicitly allocate a table.
+            execution_spec = dataclasses.replace(
+                execution_spec, destination_spec=ex_spec.SessionTableSpec()
+            )
+            return self._execute_bigquery(array_value, execution_spec)
         if isinstance(dest_spec, ex_spec.GcsOutputSpec):
             execution_spec = dataclasses.replace(
-                execution_spec,
-                destination_spec=ex_spec.TempTableSpec(
-                    cluster_cols=dest_spec.cluster_cols, lifetime="ephemeral"
-                ),
+                execution_spec, destination_spec=ex_spec.EphemeralTableSpec()
             )
             results = self._execute_bigquery(array_value, execution_spec)
             self._export_result_gcs(results, dest_spec)
             return results
-        if isinstance(dest_spec, ex_spec.TableOutputSpec):
+        if isinstance(dest_spec, ex_spec.TableOutputSpec) and dest_spec.permit_dml:
             # Special DML path - maybe this should be configurable, dml vs query destination has tradeoffs
             existing_table = self._maybe_find_existing_table(dest_spec)
-            if execution_spec.ordered:
-                raise ValueError("Ordering not supported with table outputs")
             if (existing_table is not None) and _is_schema_match(
                 existing_table.schema, array_value.schema
             ):
                 execution_spec = dataclasses.replace(
-                    execution_spec,
-                    destination_spec=ex_spec.TempTableSpec(
-                        cluster_cols=execution_spec.destination_spec.cluster_cols,
-                        lifetime="ephemeral",
-                    ),
+                    execution_spec, destination_spec=ex_spec.EphemeralTableSpec()
                 )
                 results = self._execute_bigquery(array_value, execution_spec)
                 self._export_gbq_with_dml(results, dest_spec)
                 return results
-        if isinstance(dest_spec, ex_spec.TempTableSpec):
+        if isinstance(dest_spec, ex_spec.SessionTableSpec):
             # "ephemeral" temp tables created in the course of exeuction, don't need to be allocated
             # materialized ordering only really makes sense for internal temp tables used by caching
             cluster_cols = dest_spec.cluster_cols
+            # Rewrite plan to materialize ordering as extra columns
             plan = array_value.node
             if dest_spec.ordering == "offsets_col":
                 order_col_id = guid.generate_guid()
                 plan = nodes.PromoteOffsetsNode(plan, order_col_id)
                 cluster_cols = [order_col_id]
             elif dest_spec.ordering == "order_key":
-                plan = nodes.defer_order(plan, output_hidden_row_keys=True)
-            if dest_spec.lifetime == "session":
-                destination_table = self.storage_manager.create_temp_table(
-                    plan.schema, cluster_cols
-                )
-                arr_value = bigframes.core.ArrayValue(plan)
-                execution_spec = dataclasses.replace(
-                    execution_spec,
-                    destination_spec=ex_spec.TableOutputSpec(
-                        table=destination_table,
-                        cluster_cols=dest_spec.cluster_cols,
-                        if_exists="replace",
-                    ),
-                )
-                return self._execute_bigquery(arr_value, execution_spec)
+                plan, _ = rewrite.pull_out_order(plan)
+            destination_table = self.storage_manager.create_temp_table(
+                plan.schema.to_bigquery(), cluster_cols
+            )
+            arr_value = bigframes.core.ArrayValue(plan)
+            execution_spec = dataclasses.replace(
+                execution_spec,
+                destination_spec=ex_spec.TableOutputSpec(
+                    table=destination_table,
+                    cluster_cols=dest_spec.cluster_cols,
+                    if_exists="replace",
+                    # Avoid loops, also dml is mostly used to avoid quotas on user-owned tables
+                    permit_dml=False,
+                ),
+            )
+            return self._execute_bigquery(arr_value, execution_spec)
 
         # At this point, dst should be unspecified, a specific bq table, or an ephemeral temp table
         # Also, ordering mode will either be none or row-sorted
@@ -405,32 +407,28 @@ class BigQueryCachingExecutor(executor.Executor):
         ]
         cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.TempTableSpec(
-                cluster_cols=tuple(cluster_cols),
-                lifetime="session",
-                ordering="order_key",
-            )
+            destination_spec=ex_spec.SessionTableSpec(cluster_cols=tuple(cluster_cols))
         )
-        result_bq_data = self.execute(
+        result = self.execute(
             array_value,
             execution_spec=execution_spec,
         )
-        assert isinstance(result_bq_data, bigframes.core.BigqueryDataSource)
-        self.cache.cache_results_table(array_value.node, result_bq_data)
+        assert isinstance(result, executor.BQTableExecuteResult)
+        self.cache.cache_results_table(array_value.node, result._data)
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.TempTableSpec(
-                cluster_cols=(), lifetime="session", ordering="offsets_col"
+            destination_spec=ex_spec.SessionTableSpec(
+                cluster_cols=(), ordering="offsets_col"
             )
         )
-        result_bq_data = self.execute(
+        result = self.execute(
             array_value,
             execution_spec=execution_spec,
         )
-        assert isinstance(result_bq_data, bigframes.core.BigqueryDataSource)
-        self.cache.cache_results_table(array_value.node, result_bq_data)
+        assert isinstance(result, executor.BQTableExecuteResult)
+        self.cache.cache_results_table(array_value.node, result._data)
 
     def _cache_with_session_awareness(
         self,

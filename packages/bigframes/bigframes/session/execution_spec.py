@@ -23,7 +23,9 @@ from google.cloud import bigquery
 @dataclasses.dataclass(frozen=True)
 class ExecutionSpec:
     # destination for the result of the operation. Executor may also incidentally create other temporary tables for its own purposes.
-    destination_spec: Union[TableOutputSpec, GcsOutputSpec, TempTableSpec, None] = None
+    destination_spec: Union[
+        TableOutputSpec, GcsOutputSpec, EphemeralTableSpec, SessionTableSpec, None
+    ] = None
     # If set, the result will be truncated to the given number of rows. Which N rows is
     # implementation dependent and not stable.
     peek: Optional[int] = None
@@ -36,7 +38,20 @@ class ExecutionSpec:
 
 # Used internally by execution
 @dataclasses.dataclass(frozen=True)
-class TempTableSpec:
+class EphemeralTableSpec:
+    """
+    Specifies that the result of an operation should be a temporary table of some sort.
+
+    No guarantees on lifetime, may be a session temp table, or a bq-created temp table with <24hr life.
+
+    Used internally when results need temporary staging, because they are large (>10GB), or needed in subsequent operations.
+    """
+
+    pass
+
+
+@dataclasses.dataclass(frozen=True)
+class SessionTableSpec:
     """
     Specifies that the result of an operation should be a session temp table.
     The table will be automatically deleted after the session ends.
@@ -44,8 +59,7 @@ class TempTableSpec:
 
     cluster_cols: tuple[
         str, ...
-    ]  # if empty, will cluster using order key if ordering_key is set
-    lifetime: Literal["session", "ephemeral"] = "session"
+    ] = ()  # if empty, will cluster using order key if ordering_key is set
     # Controls ordering and whether extra columns are materialized to preserve ordering
     # Any extra columns will be appended to the end of the schema.
     # None: ordering may be discarded entirely (ordering metadata will still be provided if ordering is derivable from materialized columns)
@@ -66,6 +80,8 @@ class TableOutputSpec:
     table: bigquery.TableReference
     cluster_cols: tuple[str, ...]
     if_exists: Literal["fail", "replace", "append"] = "fail"
+    # Allow DML to be used to populate table
+    permit_dml: bool = True
 
 
 @dataclasses.dataclass(frozen=True)

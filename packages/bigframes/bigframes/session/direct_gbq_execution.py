@@ -87,25 +87,25 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
 
         job_config = bigquery.QueryJobConfig()
         dest_spec = spec.destination_spec
-        cluster_cols = ()
+        cluster_cols = None
+        can_skip_job = True
         if isinstance(dest_spec, execution_spec.TableOutputSpec):
+            if spec.ordered:
+                raise ValueError("Ordering not supported with destination table")
             job_config.destination = dest_spec.table
             job_config.write_disposition = _WRITE_DISPOSITIONS[dest_spec.if_exists]
-            cluster_cols = dest_spec.cluster_cols
-            job_config.clustering_fields = dest_spec.cluster_cols
-        elif (
-            isinstance(dest_spec, execution_spec.TempTableSpec)
-            and dest_spec.lifetime == "ephemeral"
-        ):
-            cluster_cols = dest_spec.cluster_cols
-            job_config.clustering_fields = dest_spec.cluster_cols
+            cluster_cols = dest_spec.cluster_cols if dest_spec.cluster_cols else None
+            job_config.clustering_fields = cluster_cols
+            can_skip_job = False
+        elif isinstance(dest_spec, execution_spec.EphemeralTableSpec):
+            # Need destination table, but jobless execution might not create a destination table
+            can_skip_job = False
         elif dest_spec is not None:
             raise ValueError(
                 f"Direct GBQ Executor does not support destination: {dest_spec}"
             )
 
         job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
-        can_skip_job = dest_spec is None and spec.promise_under_10gb
         iterator, query_job = self._run_execute_query(
             sql=compiled.sql,
             job_config=job_config,
@@ -121,7 +121,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                 table=bq_data.GbqNativeTable.from_ref_and_schema(
                     dst,
                     tuple(compiled_schema),
-                    cluster_cols=cluster_cols,
+                    cluster_cols=cluster_cols or (),
                     location=iterator.location or self.bqclient.location,
                     table_type="TABLE",
                 ),
@@ -137,7 +137,10 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             hasattr(iterator, "_is_almost_completely_cached")
             and iterator._is_almost_completely_cached()
         )
-        if result_bq_data is not None and not result_mostly_cached:
+
+        if (isinstance(dest_spec, execution_spec.EphemeralTableSpec)) or (
+            result_bq_data is not None and not result_mostly_cached
+        ):
             return executor.BQTableExecuteResult(
                 data=result_bq_data,
                 project_id=self.bqclient.project,

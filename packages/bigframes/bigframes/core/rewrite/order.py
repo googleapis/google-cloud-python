@@ -47,6 +47,12 @@ def bake_order(
     return node
 
 
+def pull_out_order(
+    node: bigframes.core.nodes.BigFrameNode,
+) -> Tuple[bigframes.core.nodes.BigFrameNode, bigframes.core.ordering.RowOrdering]:
+    return _pull_up_order(node, order_root=False)
+
+
 # Makes ordering explicit in window definitions
 def _pull_up_order(
     root: bigframes.core.nodes.BigFrameNode,

@@ -44,31 +44,37 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
     with bigframes.core.global_session._GlobalSessionContext(session):
         yield session
 
+@pytest.fixture(scope="session")
+def sqlglot_engine(bigquery_client: bigquery.Client, bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient):
+    return direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client,
+        bqstoragereadclient=bigquery_storage_read_client,
+        compiler="sqlglot",
+        publisher=events.Publisher(),
+    )
+
+@pytest.fixture(scope="session")
+def bq_engine(bigquery_client: bigquery.Client, bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient):
+    return direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client,
+        bqstoragereadclient=bigquery_storage_read_client,
+        publisher=events.Publisher(),
+    )
 
 @pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
 def engine(
     request,
-    bigquery_client: bigquery.Client,
-    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+    sqlglot_engine,
+    bq_engine,
 ) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return local_scan_executor.LocalScanExecutor()
     if request.param == "polars":
         return polars_executor.PolarsExecutor()
-    publisher = events.Publisher()
     if request.param == "bq":
-        return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client,
-            bqstoragereadclient=bigquery_storage_read_client,
-            publisher=publisher,
-        )
+        return bq_engine
     if request.param == "bq-sqlglot":
-        return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client,
-            bqstoragereadclient=bigquery_storage_read_client,
-            compiler="sqlglot",
-            publisher=publisher,
-        )
+        return sqlglot_engine
     raise ValueError(f"Unrecognized param: {request.param}")
 
 
