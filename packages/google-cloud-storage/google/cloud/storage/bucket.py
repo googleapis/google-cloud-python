@@ -832,6 +832,8 @@ class Bucket(_PropertyMixin):
         :rtype: str
         :returns: The bucket uri.
         """
+        if self.name is None:
+            raise ValueError("Bucket name must be set to generate a URI.")
         return f"gs://{self.name}"
 
     @classmethod
