@@ -36,8 +36,14 @@ def test_list_instances(
 ):
     instances = list(spanner_client.list_instances())
 
+    existing_names = {single_instance.name for single_instance in existing_instances}
+    shared_instance_name = shared_instance.name
+
     for instance in instances:
-        assert instance in existing_instances or instance is shared_instance
+        # We compare by '.name' (the full resource path) rather than the object itself.
+        # Protobuf objects may fail equality (==) if one has extra metadata populated
+        # by the server (like 'edition' or 'backup_schedules') that the other lacks.
+        assert instance.name in existing_names or instance.name == shared_instance_name
 
 
 def test_reload_instance(spanner_client, shared_instance_id, shared_instance):
