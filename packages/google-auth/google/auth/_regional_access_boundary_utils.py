@@ -84,8 +84,6 @@ class _RegionalAccessBoundaryData(NamedTuple):
 class _RegionalAccessBoundaryManager(object):
     """Manages the Regional Access Boundary state and its background refresh.
 
-    This class provides a stable container for the Regional Access Boundary state,
-    allowing cloned credentials to share the same underlying state and refresh mechanism.
     The actual data is held in an immutable `_RegionalAccessBoundaryData` object
     and is swapped atomically to ensure thread-safe, lock-free reads.
     """

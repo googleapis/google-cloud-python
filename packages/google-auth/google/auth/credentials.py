@@ -303,8 +303,8 @@ class CredentialsWithUniverseDomain(Credentials):
 class CredentialsWithRegionalAccessBoundary(Credentials):
     """Abstract base for credentials supporting regional access boundary configuration."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
         self._rab_manager = (
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
@@ -712,8 +712,8 @@ class CredentialsWithTrustBoundary(CredentialsWithRegionalAccessBoundary):
         Use :class:`~google.auth.credentials.CredentialsWithRegionalAccessBoundary` instead.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
         warnings.warn(
             "CredentialsWithTrustBoundary is deprecated. Use CredentialsWithRegionalAccessBoundary.",
             DeprecationWarning,
