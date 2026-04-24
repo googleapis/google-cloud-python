@@ -54,6 +54,8 @@ import pyarrow as pa
 from google.cloud import bigquery_storage_v1
 from google.cloud.bigquery_storage_v1 import (
     types as bq_storage_types,
+)
+from google.cloud.bigquery_storage_v1 import (
     writer as bq_storage_writer,
 )
 

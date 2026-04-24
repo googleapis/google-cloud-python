@@ -71,7 +71,7 @@ def get_bigframes_functions(project, region):
     except google.api_core.exceptions.PermissionDenied:
         print(f"Warning: Permission denied for region {region}")
         return []
-    
+
     # Filter bigframes created functions
     functions = [
         function
