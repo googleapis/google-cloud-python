@@ -666,7 +666,7 @@ def default(
         credentials, project_id = google.auth.default()
 
     Args:
-        scopes (Optional[Sequence[str] | str]): The list of scopes for the credentials. If
+        scopes (Optional[Union[Sequence[str], str]]): The list of scopes for the credentials. If
             specified, the credentials will automatically be scoped if
             necessary.
         request (Optional[google.auth.transport.Request]): An object used to make
