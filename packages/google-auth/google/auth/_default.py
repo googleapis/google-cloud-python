@@ -22,7 +22,7 @@ import io
 import json
 import logging
 import os
-from typing import Optional, Sequence, TYPE_CHECKING
+from typing import Optional, Sequence, TYPE_CHECKING, Union
 import warnings
 
 from google.auth import environment_vars
