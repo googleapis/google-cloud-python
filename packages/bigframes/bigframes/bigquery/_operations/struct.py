@@ -41,10 +41,11 @@ def struct(value: dataframe.DataFrame) -> series.Series:
 
         >>> srs = series.Series([{"version": 1, "project": "pandas"}, {"version": 2, "project": "numpy"},])
         >>> df = srs.struct.explode()
+        >>> df = df[["project", "version"]]  # set the column order to ensure stable output for doctest
         >>> bbq.struct(df)
         0    {'project': 'pandas', 'version': 1}
         1     {'project': 'numpy', 'version': 2}
-        dtype: struct<project: string, version: int64>[pyarrow]
+        dtype: struct[pyarrow]
 
         Args:
             value (bigframes.dataframe.DataFrame):
