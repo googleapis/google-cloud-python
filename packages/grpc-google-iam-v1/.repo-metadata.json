@@ -11,6 +11,6 @@
     "name": "grpc-iam",
     "name_pretty": "Cloud Identity and Access Management",
     "product_documentation": "https://cloud.google.com/iam/docs/",
-    "release_level": "stable",
+    "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

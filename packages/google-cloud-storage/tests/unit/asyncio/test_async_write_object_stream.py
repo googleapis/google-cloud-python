@@ -19,6 +19,8 @@ import grpc
 import pytest
 
 from google.cloud import _storage_v2
+from google.cloud.storage import Blob
+from google.cloud.storage import Bucket
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
@@ -150,6 +152,35 @@ class TestAsyncWriteObjectStream:
         params = meta_dict["x-goog-request-params"]
         assert f"bucket={FULL_BUCKET_PATH}" in params
         assert "extra=param" in params
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_new_object_with_blob_sync_attrs(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        mock_bucket = mock.Mock(spec=Bucket)
+        mock_bucket.name = BUCKET
+
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket = mock_bucket
+        mock_blob.content_type = "text/plain"
+        mock_blob.metadata = {"test-key": "test-value"}
+        mock_blob.kms_key_name = None
+
+        stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
+        await stream.open()
+
+        # Verify initial request contains synced attributes from blob
+        initial_request = mock_rpc_cls.call_args.kwargs["initial_request"]
+        resource = initial_request.write_object_spec.resource
+
+        assert resource.content_type == "text/plain"
+        assert resource.metadata == {"test-key": "test-value"}
 
     @pytest.mark.asyncio
     async def test_open_already_open_raises(self, mock_client):

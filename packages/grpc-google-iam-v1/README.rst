@@ -1,14 +1,14 @@
 Python Client for Cloud Identity and Access Management
 ======================================================
 
-|stable| |pypi| |versions|
+|preview| |pypi| |versions|
 
 `Cloud Identity and Access Management`_: Manages access control for Google Cloud Platform resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
    :target: https://pypi.org/project/grpc-google-iam-v1/

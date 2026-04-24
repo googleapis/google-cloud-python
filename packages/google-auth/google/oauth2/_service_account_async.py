@@ -75,6 +75,13 @@ class Credentials(
         self.token = access_token
         self.expiry = expiry
 
+    @_helpers.copy_docstring(credentials_async.Credentials)
+    async def before_request(self, request, method, url, headers):
+        # Explicit override to bypass synchronous CredentialsWithRegionalAccessBoundary.
+        await credentials_async.Credentials.before_request(
+            self, request, method, url, headers
+        )
+
 
 class IDTokenCredentials(
     service_account.IDTokenCredentials,
@@ -130,3 +137,11 @@ class IDTokenCredentials(
         )
         self.token = access_token
         self.expiry = expiry
+
+    @_helpers.copy_docstring(credentials_async.Credentials)
+    async def before_request(self, request, method, url, headers):
+        # Explicit override to bypass synchronous CredentialsWithRegionalAccessBoundary
+        # and disable Regional Access Boundary refresh for async credentials.
+        await credentials_async.Credentials.before_request(
+            self, request, method, url, headers
+        )
