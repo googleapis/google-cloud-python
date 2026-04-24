@@ -19,7 +19,7 @@ import abc
 from enum import Enum
 import logging
 import os
-from typing import List
+from typing import List, Optional, Sequence, Union
 
 from google.auth import _helpers, environment_vars
 from google.auth import exceptions
@@ -579,12 +579,18 @@ class Scoped(ReadOnlyScoped):
     """
 
     @abc.abstractmethod
-    def with_scopes(self, scopes, default_scopes=None):
+    def with_scopes(
+        self,
+        scopes: Optional[Sequence[str]],
+        default_scopes: Optional[Sequence[str]] = None,
+    ):
         """Create a copy of these credentials with the specified scopes.
 
         Args:
-            scopes (Sequence[str]): The list of scopes to attach to the
+            scopes (Optional[Sequence[str]]): The list of scopes to attach to the
                 current credentials.
+        default_scopes (Optional[Sequence[str]]): Default scopes passed by a
+            Google client library. Use 'scopes' for user-defined scopes.
 
         Raises:
             NotImplementedError: If the credentials' scopes can not be changed.
@@ -594,7 +600,11 @@ class Scoped(ReadOnlyScoped):
         raise NotImplementedError("This class does not require scoping.")
 
 
-def with_scopes_if_required(credentials, scopes, default_scopes=None):
+def with_scopes_if_required(
+    credentials,
+    scopes: Optional[Union[str, Sequence[str]]],
+    default_scopes: Optional[Sequence[str]] = None,
+):
     """Creates a copy of the credentials with scopes if scoping is required.
 
     This helper function is useful when you do not know (or care to know) the
@@ -607,8 +617,8 @@ def with_scopes_if_required(credentials, scopes, default_scopes=None):
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
             scope if necessary.
-        scopes (Sequence[str]): The list of scopes to use.
-        default_scopes (Sequence[str]): Default scopes passed by a
+        scopes (Optional[Sequence[str] | str]): The list of scopes to use.
+        default_scopes (Optional[Sequence[str]]): Default scopes passed by a
             Google client library. Use 'scopes' for user-defined scopes.
 
     Returns:
@@ -616,8 +626,12 @@ def with_scopes_if_required(credentials, scopes, default_scopes=None):
             credentials, or the passed in credentials instance if no scoping
             was required.
     """
+    # wrap single-string scopes in a list
+    scopes_seq: Optional[Sequence[str]] = (
+        [scopes] if isinstance(scopes, str) else scopes
+    )
     if isinstance(credentials, Scoped) and credentials.requires_scopes:
-        return credentials.with_scopes(scopes, default_scopes=default_scopes)
+        return credentials.with_scopes(scopes_seq, default_scopes=default_scopes)
     else:
         return credentials
 

@@ -591,7 +591,7 @@ def _apply_quota_project_id(credentials, quota_project_id):
 
 
 def default(
-    scopes: Optional[Sequence[str]] = None,
+    scopes: Optional[Sequence[str] | str] = None,
     request: Optional["google.auth.transport.Request"] = None,
     quota_project_id: Optional[str] = None,
     default_scopes: Optional[Sequence[str]] = None,
@@ -666,7 +666,7 @@ def default(
         credentials, project_id = google.auth.default()
 
     Args:
-        scopes (Sequence[str]): The list of scopes for the credentials. If
+        scopes (Optional[Sequence[str] | str]): The list of scopes for the credentials. If
             specified, the credentials will automatically be scoped if
             necessary.
         request (Optional[google.auth.transport.Request]): An object used to make

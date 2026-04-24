@@ -95,11 +95,11 @@ class Credentials(
     ):
         """
         Args:
-            scopes (Sequence[str]): Scopes to request from the App Identity
+            scopes (Optional[Sequence[str]]): Scopes to request from the App Identity
                 API.
-            default_scopes (Sequence[str]): Default scopes passed by a
+            default_scopes (Optional[Sequence[str]]): Default scopes passed by a
                 Google client library. Use 'scopes' for user-defined scopes.
-            service_account_id (str): The service account ID passed into
+            service_account_id (Optional[str]): The service account ID passed into
                 :func:`google.appengine.api.app_identity.get_access_token`.
                 If not specified, the default application service account
                 ID will be used.
