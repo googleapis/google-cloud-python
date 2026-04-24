@@ -428,6 +428,7 @@ def test_to_json_string_from_struct():
     assert dtypes.is_struct_like(s.dtype)
 
     actual = bbq.to_json_string(s)
+    print("DINOSAUR")
     expected = bpd.Series(
         ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
         dtype=dtypes.STRING_DTYPE,
