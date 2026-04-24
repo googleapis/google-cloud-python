@@ -438,8 +438,8 @@ def test_to_json_string_from_struct():
 
 def test_json_keys():
     json_data = [
-        '{"name": "Alice", "age": 30}',
-        '{"city": "New York", "country": "USA", "active": true}',
+        '{"age": 30, "name": "Alice"}',
+        '{"active": true, "city": "New York", "country": "USA"}',
         "{}",
         '{"items": [1, 2, 3]}',
     ]
@@ -464,7 +464,7 @@ def test_json_keys():
 
 def test_json_keys_with_max_depth():
     json_data = [
-        '{"user": {"name": "Bob", "details": {"id": 123, "status": "approved"}}}',
+        '{"user": {"details": {"id": 123, "status": "approved"}, "name": "Bob"}}',
         '{"user": {"name": "Charlie"}}',
     ]
     s = bpd.Series(json_data, dtype=dtypes.JSON_DTYPE)
