@@ -411,6 +411,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         request = mock.Mock()
         result = creds._lookup_regional_access_boundary(request)
         assert result is None
+        request.assert_not_called()
 
     def test_credentials_with_regional_access_boundary_initialization(self):
         creds = CredentialsImpl()
