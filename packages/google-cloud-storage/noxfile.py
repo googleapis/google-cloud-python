@@ -567,8 +567,9 @@ def prerelease_deps(session, protobuf_implementation):
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
 
-    # Install all test dependencies
-    session.install("mock", "pytest", "pytest-cov", "brotli")
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
 
     # Install dependencies needed for system tests
     session.install(
@@ -583,7 +584,8 @@ def prerelease_deps(session, protobuf_implementation):
 
     prerel_deps = [
         "google-api-core",
-        "google-auth",
+        # Exclude google-auth 3.0.0.dev0 which was yanked
+        "google-auth!=3.0.0.dev0",
         "google-cloud-core",
         "google-crc32c",
         "google-resumable-media",
@@ -614,6 +616,7 @@ def prerelease_deps(session, protobuf_implementation):
     # Remaining dependencies
     other_deps = [
         "requests",
+        "pyopenssl"
     ]
     session.install(*other_deps)
 
