@@ -1,0 +1,27 @@
+common:
+  read_types:
+    - "async_json"
+    - "async_grpc_dp"
+    - "async_grpc_cp"
+  file_sizes_mib:
+    - 10240 # 10GiB
+  chunk_sizes_kib: [64]
+  num_ranges: [1]
+  rounds: 1
+  duration: 30 # seconds
+  warmup_duration: 5 # seconds
+
+workload:
+  ############# multi process multi coroutine #########
+  - name: "read_seq_multi_process"
+    pattern: "seq"
+    coros: [1]
+    processes: [96]
+
+  - name: "read_rand_multi_process"
+    pattern: "rand"
+    coros: [1, 16]
+    processes: [1]
+
+defaults:
+  DEFAULT_STANDARD_BUCKET: "chandrasiri-benchmarks-rb"
