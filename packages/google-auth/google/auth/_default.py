@@ -591,7 +591,7 @@ def _apply_quota_project_id(credentials, quota_project_id):
 
 
 def default(
-    scopes: Optional[Sequence[str] | str] = None,
+    scopes: Optional[Union[Sequence[str], str]] = None,
     request: Optional["google.auth.transport.Request"] = None,
     quota_project_id: Optional[str] = None,
     default_scopes: Optional[Sequence[str]] = None,
