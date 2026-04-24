@@ -59,7 +59,7 @@ from __future__ import annotations
 import http.client as http_client
 import json
 import os
-from typing import Any, Mapping, Union
+from typing import Union
 
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -113,7 +113,7 @@ def verify_token(
     audience: Union[str, list[str], None] = None,
     certs_url: str = _GOOGLE_OAUTH2_CERTS_URL,
     clock_skew_in_seconds: int = 0,
-) -> Mapping[str, Any]:
+) -> dict:  # Note: type annotation simplified to prevent issues in google3
     """Verifies an ID token and returns the decoded token.
 
     Args:
@@ -130,7 +130,7 @@ def verify_token(
             validation.
 
     Returns:
-        Mapping[str, Any]: The decoded token.
+        dict[str, Any]: The decoded token.
     """
     certs = _fetch_certs(request, certs_url)
 
@@ -172,7 +172,7 @@ def verify_oauth2_token(id_token, request, audience=None, clock_skew_in_seconds=
             validation.
 
     Returns:
-        Mapping[str, Any]: The decoded token.
+        dict[str, Any]: The decoded token.
 
     Raises:
         exceptions.GoogleAuthError: If the issuer is invalid.
@@ -210,7 +210,7 @@ def verify_firebase_token(id_token, request, audience=None, clock_skew_in_second
             validation.
 
     Returns:
-        Mapping[str, Any]: The decoded token.
+        dict[str, Any]: The decoded token.
     """
     return verify_token(
         id_token,
