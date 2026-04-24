@@ -207,7 +207,7 @@ class Credentials(
         self._refresh_worker = None
         self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh", False)
         self._account = d.get("_account", "")
-        self._rab_manager = (
+        self._rab_manager = d.get("_rab_manager") or (
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
         self._use_blocking_regional_access_boundary_lookup = False

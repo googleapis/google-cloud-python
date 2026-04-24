@@ -110,6 +110,16 @@ class _RegionalAccessBoundaryManager(object):
         self.__dict__.update(state)
         self._update_lock = threading.Lock()
 
+    def __eq__(self, other):
+        """Checks if two managers are equal."""
+        if not isinstance(other, _RegionalAccessBoundaryManager):
+            return NotImplemented
+        return (
+            self._data == other._data
+            and self._use_blocking_regional_access_boundary_lookup
+            == other._use_blocking_regional_access_boundary_lookup
+        )
+
     def use_blocking_regional_access_boundary_lookup(self):
         """Enables blocking regional access boundary lookup to true"""
         self._use_blocking_regional_access_boundary_lookup = True
