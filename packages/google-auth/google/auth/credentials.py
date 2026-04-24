@@ -618,7 +618,7 @@ class Scoped(ReadOnlyScoped):
 
     @abc.abstractmethod
     def with_scopes(
-        self,
+        scopes (Optional[Union[str, Sequence[str]]]): The list of scopes to use.
         scopes: Optional[Sequence[str]],
         default_scopes: Optional[Sequence[str]] = None,
     ):
