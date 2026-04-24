@@ -118,6 +118,23 @@ def test_anonymous_credentials_before_request():
     assert headers == {}
 
 
+def test_async_credentials_regional_access_boundary_isolation():
+    # Asynchronous credentials must not inherit or invoke the synchronous
+    # threading mechanism for Regional Access Boundaries.
+    creds = CredentialsImpl()
+
+    # Assess that the daemon manager is not instantiated.
+    assert not hasattr(creds, "_rab_manager")
+
+    # Assess that the trigger logic is not inherited.
+    assert not hasattr(creds, "_maybe_start_regional_access_boundary_refresh")
+
+    # Assess that it is structurally isolated from the sync base class.
+    from google.auth.credentials import CredentialsWithRegionalAccessBoundary
+
+    assert not isinstance(creds, CredentialsWithRegionalAccessBoundary)
+
+
 class ReadOnlyScopedCredentialsImpl(credentials.ReadOnlyScoped, CredentialsImpl):
     @property
     def requires_scopes(self):

@@ -36,14 +36,22 @@ Example credential:
 import datetime
 import io
 import json
+import logging
 import re
+from typing import Optional, TYPE_CHECKING
 
-from google.auth import _constants
+
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.oauth2 import sts
 from google.oauth2 import utils
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
+
+_LOGGER = logging.getLogger(__name__)
 
 _EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE = "external_account_authorized_user"
 
@@ -52,7 +60,7 @@ class Credentials(
     credentials.CredentialsWithQuotaProject,
     credentials.ReadOnlyScoped,
     credentials.CredentialsWithTokenUri,
-    credentials.CredentialsWithTrustBoundary,
+    credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials for External Account Authorized Users.
 
@@ -308,18 +316,29 @@ class Credentials(
         if "refresh_token" in response_data:
             self._refresh_token = response_data["refresh_token"]
 
-    def _build_trust_boundary_lookup_url(self):
-        """Builds and returns the URL for the trust boundary lookup API."""
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
+        """Builds and returns the URL for the Regional Access Boundary lookup API.
+
+        Returns:
+            Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
+                 if the URL cannot be built due to an invalid workforce pool audience format.
+        """
         # Audience format: //iam.googleapis.com/locations/global/workforcePools/POOL_ID/providers/PROVIDER_ID
         match = re.search(r"locations/[^/]+/workforcePools/([^/]+)", self._audience)
 
         if not match:
-            raise exceptions.InvalidValue("Invalid workforce pool audience format.")
+            _LOGGER.error(
+                "Invalid workforce pool audience format for Regional Access Boundary lookup: %s",
+                self._audience,
+            )
+            return None
 
         pool_id = match.groups()[0]
 
-        return _constants._WORKFORCE_POOL_TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
-            universe_domain=self._universe_domain, pool_id=pool_id
+        return iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+            pool_id=pool_id
         )
 
     def revoke(self, request):
@@ -359,6 +378,7 @@ class Credentials(
         kwargs = self.constructor_args()
         cred = self.__class__(**kwargs)
         cred._cred_file_path = self._cred_file_path
+        self._copy_regional_access_boundary_manager(cred)
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
@@ -377,12 +397,6 @@ class Credentials(
     def with_universe_domain(self, universe_domain):
         cred = self._make_copy()
         cred._universe_domain = universe_domain
-        return cred
-
-    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
-        cred = self._make_copy()
-        cred._trust_boundary = trust_boundary
         return cred
 
     @classmethod

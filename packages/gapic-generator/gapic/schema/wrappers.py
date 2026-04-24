@@ -2278,7 +2278,7 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
         request and response fields in the service."""
 
@@ -2301,7 +2301,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2315,6 +2315,15 @@ class Service:
                 ),
             )
         )
+
+        # Convert the set to a sorted tuple using the resource path or message name.
+        # This is needed to prevent non-deterministic code generation.
+        sorted_messages = sorted(
+            unique_messages,
+            key=lambda m: m.resource_type_full_path or m.name
+        )
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:

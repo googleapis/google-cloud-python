@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index
@@ -123,19 +124,34 @@ class Field(proto.Message):
         r"""The TTL (time-to-live) configuration for documents that have this
         ``Field`` set.
 
-        Storing a timestamp value into a TTL-enabled field will be treated
-        as the document's absolute expiration time. For Enterprise edition
-        databases, the timestamp value may also be stored in an array value
-        in the TTL-enabled field.
+        A timestamp stored in a TTL-enabled field will be used to determine
+        the expiration time of the document. The expiration time is the sum
+        of the timestamp value and the ``expiration_offset``.
 
-        Timestamp values in the past indicate that the document is eligible
-        for immediate expiration. Using any other data type or leaving the
-        field absent will disable expiration for the individual document.
+        For Enterprise edition databases, the timestamp value may
+        alternatively be stored in an array value in the TTL-enabled field.
+
+        An expiration time in the past indicates that the document is
+        eligible for immediate expiration. Using any other data type or
+        leaving the field absent will disable expiration for the individual
+        document.
 
         Attributes:
             state (google.cloud.firestore_admin_v1.types.Field.TtlConfig.State):
                 Output only. The state of the TTL
                 configuration.
+            expiration_offset (google.protobuf.duration_pb2.Duration):
+                Optional. The offset, relative to the timestamp value from
+                the TTL-enabled field, used to determine the document's
+                expiration time.
+
+                ``expiration_offset.seconds`` must be between 0 and
+                2,147,483,647 inclusive. Values more precise than seconds
+                are rejected.
+
+                If unset, defaults to 0, in which case the expiration time
+                is the same as the timestamp value from the TTL-enabled
+                field.
         """
 
         class State(proto.Enum):
@@ -171,6 +187,11 @@ class Field(proto.Message):
             proto.ENUM,
             number=1,
             enum="Field.TtlConfig.State",
+        )
+        expiration_offset: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
 
     name: str = proto.Field(

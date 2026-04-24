@@ -20831,7 +20831,7 @@ def test_update_field_rest_call_success(request_type):
             "ancestor_field": "ancestor_field_value",
             "reverting": True,
         },
-        "ttl_config": {"state": 1},
+        "ttl_config": {"state": 1, "expiration_offset": {"seconds": 751, "nanos": 543}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

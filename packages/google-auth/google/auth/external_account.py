@@ -34,16 +34,24 @@ import datetime
 import functools
 import io
 import json
+import logging
 import re
+from typing import Optional, TYPE_CHECKING
 
-from google.auth import _constants
+
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
 from google.oauth2 import utils
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
+
+_LOGGER = logging.getLogger(__name__)
 
 # External account JSON type identifier.
 _EXTERNAL_ACCOUNT_JSON_TYPE = "external_account"
@@ -82,7 +90,7 @@ class Credentials(
     credentials.Scoped,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
-    credentials.CredentialsWithTrustBoundary,
+    credentials.CredentialsWithRegionalAccessBoundary,
     metaclass=abc.ABCMeta,
 ):
     """Base class for all external account credentials.
@@ -349,6 +357,7 @@ class Credentials(
         scoped = self.__class__(**kwargs)
         scoped._cred_file_path = self._cred_file_path
         scoped._metrics_options = self._metrics_options
+        self._copy_regional_access_boundary_manager(scoped)
         return scoped
 
     @abc.abstractmethod
@@ -417,20 +426,28 @@ class Credentials(
         """Refreshes the access token.
 
         For impersonated credentials, this method will refresh the underlying
-        source credentials and the impersonated credentials. For non-impersonated
-        credentials, it will refresh the access token and the trust boundary.
+        source credentials and the impersonated credentials.
         """
         self._perform_refresh_token(request)
-        self._handle_trust_boundary(request)
 
-    def _handle_trust_boundary(self, request):
-        # If we are impersonating, the trust boundary is handled by the
-        # impersonated credentials object. We need to get it from there.
-        if self._service_account_impersonation_url:
-            self._trust_boundary = self._impersonated_credentials._trust_boundary
-        else:
-            # Otherwise, refresh the trust boundary for the external account.
-            self._refresh_trust_boundary(request)
+    def _maybe_start_regional_access_boundary_refresh(self, request, url):
+        """Starts a background thread to refresh the Regional Access Boundary if needed.
+
+        For impersonated credentials, this delegates the logic to the
+        underlying impersonated credentials.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+            url (str): The URL of the request.
+        """
+        if getattr(self, "_impersonated_credentials", None):
+            self._impersonated_credentials._maybe_start_regional_access_boundary_refresh(
+                request, url
+            )
+            return
+
+        super()._maybe_start_regional_access_boundary_refresh(request, url)
 
     def _perform_refresh_token(self, request, cert_fingerprint=None):
         scopes = self._scopes if self._scopes is not None else self._default_scopes
@@ -448,6 +465,9 @@ class Credentials(
             self._impersonated_credentials.refresh(request)
             self.token = self._impersonated_credentials.token
             self.expiry = self._impersonated_credentials.expiry
+            # Propagate the inner RAB manager to ensure downstream injections
+            # apply the target service account's RAB.
+            self._rab_manager = self._impersonated_credentials._rab_manager
         else:
             now = _helpers.utcnow()
             additional_options = {}
@@ -486,8 +506,14 @@ class Credentials(
 
             self.expiry = now + lifetime
 
-    def _build_trust_boundary_lookup_url(self):
-        """Builds and returns the URL for the trust boundary lookup API."""
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
+        """Builds and returns the URL for the Regional Access Boundary lookup API."""
+        if getattr(self, "_impersonated_credentials", None):
+            # Impersonated credentials independently fetch and manage their own RAB.
+            return None
+
         url = None
         # Try to parse as a workload identity pool.
         # Audience format: //iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID
@@ -497,8 +523,7 @@ class Credentials(
         )
         if workload_match:
             project_number, pool_id = workload_match.groups()
-            url = _constants._WORKLOAD_IDENTITY_POOL_TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
-                universe_domain=self._universe_domain,
+            url = iam._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
                 project_number=project_number,
                 pool_id=pool_id,
             )
@@ -510,21 +535,28 @@ class Credentials(
             )
             if workforce_match:
                 pool_id = workforce_match.groups()[0]
-                url = _constants._WORKFORCE_POOL_TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
-                    universe_domain=self._universe_domain, pool_id=pool_id
+                url = (
+                    iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+                        pool_id=pool_id
+                    )
                 )
 
         if url:
             return url
         else:
             # If both fail, the audience format is invalid.
-            raise exceptions.InvalidValue("Invalid audience format.")
+            _LOGGER.error(
+                "Invalid audience format for Regional Access Boundary lookup: %s",
+                self._audience,
+            )
+            return None
 
     def _make_copy(self):
         kwargs = self._constructor_args()
         new_cred = self.__class__(**kwargs)
         new_cred._cred_file_path = self._cred_file_path
         new_cred._metrics_options = self._metrics_options
+        self._copy_regional_access_boundary_manager(new_cred)
         return new_cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
@@ -544,12 +576,6 @@ class Credentials(
     def with_universe_domain(self, universe_domain):
         cred = self._make_copy()
         cred._universe_domain = universe_domain
-        return cred
-
-    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
-        cred = self._make_copy()
-        cred._trust_boundary = trust_boundary
         return cred
 
     def _should_initialize_impersonated_credentials(self):
