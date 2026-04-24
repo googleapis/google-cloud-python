@@ -16,6 +16,7 @@
 """Interfaces for credentials."""
 
 import abc
+import datetime
 from enum import Enum
 import logging
 import os
@@ -56,16 +57,16 @@ class Credentials(_BaseCredentials):
     def __init__(self):
         super(Credentials, self).__init__()
 
-        self.expiry = None
+        self.expiry: Optional[datetime.datetime] = None
         """Optional[datetime]: When the token expires and is no longer valid.
         If this is None, the token is assumed to never expire."""
-        self._quota_project_id = None
+        self._quota_project_id: Optional[str] = None
         """Optional[str]: Project to use for quota and billing purposes."""
-        self._trust_boundary = None
+        self._trust_boundary: Optional[dict] = None
         """Optional[dict]: Cache of a trust boundary response which has a list
         of allowed regions and an encoded string representation of credentials
         trust boundary."""
-        self._universe_domain = DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain: Optional[str] = DEFAULT_UNIVERSE_DOMAIN
         """Optional[str]: The universe domain value, default is googleapis.com
         """
 
