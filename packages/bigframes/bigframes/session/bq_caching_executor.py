@@ -28,7 +28,6 @@ import bigframes.constants
 import bigframes.core
 import bigframes.core.events
 import bigframes.core.guid
-import bigframes.core.identifiers
 import bigframes.core.ordering
 import bigframes.core.nodes as nodes
 import bigframes.core.schema as schemata
@@ -40,7 +39,7 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes.core import bq_data, compile, guid, local_data, rewrite
+from bigframes.core import bq_data, compile, guid, identifiers, local_data, rewrite
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (
@@ -176,15 +175,6 @@ class BigQueryCachingExecutor(executor.Executor):
     ) -> executor.ExecuteResult:
         dest_spec = execution_spec.destination_spec
         # Recursive handlers for different cases, maybe extract to explicit interface.
-        if (
-            isinstance(dest_spec, ex_spec.EphemeralTableSpec)
-            and not execution_spec.promise_under_10gb
-        ):
-            # Results over 10GB need to explicitly allocate a table.
-            execution_spec = dataclasses.replace(
-                execution_spec, destination_spec=ex_spec.SessionTableSpec()
-            )
-            return self._execute_bigquery(array_value, execution_spec)
         if isinstance(dest_spec, ex_spec.GcsOutputSpec):
             execution_spec = dataclasses.replace(
                 execution_spec, destination_spec=ex_spec.EphemeralTableSpec()
@@ -192,7 +182,7 @@ class BigQueryCachingExecutor(executor.Executor):
             results = self._execute_bigquery(array_value, execution_spec)
             self._export_result_gcs(results, dest_spec)
             return results
-        if isinstance(dest_spec, ex_spec.TableOutputSpec) and dest_spec.permit_dml:
+        elif isinstance(dest_spec, ex_spec.TableOutputSpec) and dest_spec.permit_dml:
             # Special DML path - maybe this should be configurable, dml vs query destination has tradeoffs
             existing_table = self._maybe_find_existing_table(dest_spec)
             if (existing_table is not None) and _is_schema_match(
@@ -204,7 +194,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 results = self._execute_bigquery(array_value, execution_spec)
                 self._export_gbq_with_dml(results, dest_spec)
                 return results
-        if isinstance(dest_spec, ex_spec.SessionTableSpec):
+        elif isinstance(dest_spec, ex_spec.SessionTableSpec):
             # "ephemeral" temp tables created in the course of exeuction, don't need to be allocated
             # materialized ordering only really makes sense for internal temp tables used by caching
             cluster_cols = dest_spec.cluster_cols
@@ -212,10 +202,10 @@ class BigQueryCachingExecutor(executor.Executor):
             plan = array_value.node
             if dest_spec.ordering == "offsets_col":
                 order_col_id = guid.generate_guid()
-                plan = nodes.PromoteOffsetsNode(plan, order_col_id)
+                plan = nodes.PromoteOffsetsNode(plan, identifiers.ColumnId(order_col_id))
                 cluster_cols = [order_col_id]
             elif dest_spec.ordering == "order_key":
-                plan, _ = rewrite.pull_out_order(plan)
+                plan, ordering = rewrite.pull_out_order(plan)
             destination_table = self.storage_manager.create_temp_table(
                 plan.schema.to_bigquery(), cluster_cols
             )
@@ -230,7 +220,16 @@ class BigQueryCachingExecutor(executor.Executor):
                     permit_dml=False,
                 ),
             )
-            return self._execute_bigquery(arr_value, execution_spec)
+            result = self._execute_bigquery(arr_value, execution_spec)
+            result._data = dataclasses.replace(result._data, ordering=ordering)
+            return result
+        # Force table creation if result might be large (and user explicitly allowed large results)
+        elif isinstance(dest_spec, ex_spec.EphemeralTableSpec) or dest_spec is None:
+            if not execution_spec.promise_under_10gb:
+                execution_spec = dataclasses.replace(
+                    execution_spec, destination_spec=ex_spec.SessionTableSpec()
+                )
+                return self._execute_bigquery(array_value, execution_spec)
 
         # At this point, dst should be unspecified, a specific bq table, or an ephemeral temp table
         # Also, ordering mode will either be none or row-sorted
@@ -315,6 +314,7 @@ class BigQueryCachingExecutor(executor.Executor):
             job_config=bigquery.QueryJobConfig(),
             metrics=self.metrics,
             publisher=self._publisher,
+            query_with_job=True,
         )
 
     def dry_run(
@@ -407,13 +407,14 @@ class BigQueryCachingExecutor(executor.Executor):
         ]
         cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
         execution_spec = ex_spec.ExecutionSpec(
-            destination_spec=ex_spec.SessionTableSpec(cluster_cols=tuple(cluster_cols))
+            destination_spec=ex_spec.SessionTableSpec(cluster_cols=tuple(cluster_cols), ordering="order_key")
         )
         result = self.execute(
             array_value,
             execution_spec=execution_spec,
         )
         assert isinstance(result, executor.BQTableExecuteResult)
+        assert result._data.ordering is not None
         self.cache.cache_results_table(array_value.node, result._data)
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
@@ -428,6 +429,7 @@ class BigQueryCachingExecutor(executor.Executor):
             execution_spec=execution_spec,
         )
         assert isinstance(result, executor.BQTableExecuteResult)
+        assert result._data.ordering is not None
         self.cache.cache_results_table(array_value.node, result._data)
 
     def _cache_with_session_awareness(

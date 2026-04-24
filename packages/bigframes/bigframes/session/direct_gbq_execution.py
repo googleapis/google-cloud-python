@@ -90,8 +90,6 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         cluster_cols = None
         can_skip_job = True
         if isinstance(dest_spec, execution_spec.TableOutputSpec):
-            if spec.ordered:
-                raise ValueError("Ordering not supported with destination table")
             job_config.destination = dest_spec.table
             job_config.write_disposition = _WRITE_DISPOSITIONS[dest_spec.if_exists]
             cluster_cols = dest_spec.cluster_cols if dest_spec.cluster_cols else None

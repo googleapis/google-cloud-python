@@ -50,7 +50,9 @@ def bake_order(
 def pull_out_order(
     node: bigframes.core.nodes.BigFrameNode,
 ) -> Tuple[bigframes.core.nodes.BigFrameNode, bigframes.core.ordering.RowOrdering]:
-    return _pull_up_order(node, order_root=False)
+    import bigframes.core.rewrite.slices
+    node = node.bottom_up(bigframes.core.rewrite.slices.rewrite_slice)
+    return _pull_up_order(node, order_root=True)
 
 
 # Makes ordering explicit in window definitions
@@ -273,7 +275,7 @@ def _pull_up_order(
                 offsets_id
             )
             return new_explode, child_order.join(inner_order)
-        raise ValueError(f"Unexpected node: {node}")
+        raise ValueError(f"Unexpected node type {type(node).__name__}")
 
     def pull_order_concat(
         node: bigframes.core.nodes.ConcatNode,
