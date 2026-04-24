@@ -16,7 +16,7 @@
 RSA cryptography signer and verifier.
 
 This file provides a shared wrapper, that defers to _python_rsa or _cryptography_rsa
-for implmentations using different third party libraries
+for implementations using different third party libraries
 """
 
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey

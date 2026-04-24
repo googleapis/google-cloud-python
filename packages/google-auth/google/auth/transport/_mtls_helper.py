@@ -50,7 +50,7 @@ _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
 
-# Temporary patch to accomodate incorrect cert config in Cloud Run prod environment.
+# Temporary patch to accommodate incorrect cert config in Cloud Run prod environment.
 _WELL_KNOWN_CLOUD_RUN_CERT_PATH = (
     "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
 )
