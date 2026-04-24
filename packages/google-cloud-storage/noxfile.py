@@ -614,10 +614,7 @@ def prerelease_deps(session, protobuf_implementation):
                 f"import {version_namespace}; print({version_namespace}.__version__)",
             )
     # Remaining dependencies
-    other_deps = [
-        "requests",
-        "pyopenssl"
-    ]
+    other_deps = ["requests", "pyopenssl"]
     session.install(*other_deps)
 
     session.run(

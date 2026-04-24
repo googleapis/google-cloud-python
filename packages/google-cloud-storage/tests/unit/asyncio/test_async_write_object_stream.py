@@ -19,8 +19,7 @@ import grpc
 import pytest
 
 from google.cloud import _storage_v2
-from google.cloud.storage import Blob
-from google.cloud.storage import Bucket
+from google.cloud.storage import Blob, Bucket
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )

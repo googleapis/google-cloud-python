@@ -19,10 +19,10 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from google.api_core import exceptions
 from google.rpc import status_pb2
-from google.cloud.storage import Blob
 
 from google.cloud._storage_v2.types import storage as storage_type
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     _MAX_CHUNK_SIZE_BYTES,

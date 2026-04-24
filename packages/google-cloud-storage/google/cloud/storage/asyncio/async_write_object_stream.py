@@ -18,8 +18,7 @@ import grpc
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
-from google.cloud.storage import Blob
-from google.cloud.storage import _grpc_conversions
+from google.cloud.storage import Blob, _grpc_conversions
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,

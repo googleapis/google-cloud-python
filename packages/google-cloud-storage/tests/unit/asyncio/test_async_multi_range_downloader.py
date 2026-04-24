@@ -17,9 +17,9 @@ from io import BytesIO
 from unittest import mock
 from unittest.mock import AsyncMock
 
+import google_crc32c
 import pytest
 from google.api_core import exceptions
-import google_crc32c
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream

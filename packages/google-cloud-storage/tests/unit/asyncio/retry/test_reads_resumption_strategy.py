@@ -16,8 +16,8 @@ import asyncio
 import io
 import unittest
 
-from google.api_core import exceptions
 import google_crc32c
+from google.api_core import exceptions
 
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
