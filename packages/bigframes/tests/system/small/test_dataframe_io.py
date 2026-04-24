@@ -1011,6 +1011,7 @@ def test_to_gbq_timedelta_tag_ignored_when_appending(bigquery_client, dataset_id
 
 def test_to_gbq_obj_ref(session, dataset_id: str, bigquery_client):
     import uuid
+
     import google.cloud.bigquery
 
     destination_table = f"{dataset_id}.test_to_gbq_obj_ref"

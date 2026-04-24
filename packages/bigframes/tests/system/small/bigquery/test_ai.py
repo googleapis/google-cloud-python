@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import uuid
 from unittest import mock
 
+import google.cloud.bigquery
 import pandas as pd
 import pyarrow as pa
 import pytest
@@ -22,8 +24,6 @@ import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
 from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
-import uuid
-import google.cloud.bigquery
 
 
 def _create_mock_obj_ref_df(session, uris, name="image"):

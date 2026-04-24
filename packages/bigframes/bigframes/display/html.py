@@ -306,9 +306,7 @@ def repr_mimebundle_head(
     obj._set_internal_query_job(query_job)
     column_count = len(pandas_df.columns)
 
-    html_string = create_html_representation(
-        obj, pandas_df, row_count, column_count
-    )
+    html_string = create_html_representation(obj, pandas_df, row_count, column_count)
 
     is_series, has_index = _get_obj_metadata(obj)
     text_representation = plaintext.create_text_representation(

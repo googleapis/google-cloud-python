@@ -5944,6 +5944,7 @@ def test_to_gbq_table_labels(scalars_df_index):
 def test_to_gbq_obj_ref_persists(session):
     # Test that saving and loading an Object Reference retains its dtype
     import uuid
+
     import google.cloud.bigquery
 
     sql = """

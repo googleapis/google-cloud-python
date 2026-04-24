@@ -359,6 +359,7 @@ def test_series_groupby_describe(scalars_dfs):
 def test_describe_json_and_obj_ref_returns_count(session):
     # Test describe() works on JSON and OBJ_REF types (without nunique, which fails)
     import uuid
+
     import google.cloud.bigquery
 
     sql = """
