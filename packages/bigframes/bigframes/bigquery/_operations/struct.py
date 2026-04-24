@@ -45,7 +45,7 @@ def struct(value: dataframe.DataFrame) -> series.Series:
         >>> bbq.struct(df)
         0    {'project': 'pandas', 'version': 1}
         1     {'project': 'numpy', 'version': 2}
-        dtype: struct[pyarrow]
+        dtype: struct<project: string, version: int64>[pyarrow]
 
         Args:
             value (bigframes.dataframe.DataFrame):
