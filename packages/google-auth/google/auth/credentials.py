@@ -20,7 +20,7 @@ import datetime
 from enum import Enum
 import logging
 import os
-from typing import Dict List, Optional, Sequence, Union, TYPE_CHECKING
+from typing import Dict, List, Optional, Sequence, TYPE_CHECKING, Union
 from urllib.parse import urlparse
 import warnings
 
