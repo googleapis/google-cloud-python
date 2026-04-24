@@ -3593,7 +3593,6 @@ libraries:
     apis:
       - path: google/storage/v2
     description_override: 'is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.'
-    skip_generate: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
