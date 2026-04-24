@@ -34,6 +34,11 @@ if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"conti
     echo "Running doctest for: ${package_name}"
     echo "------------------------------------------------------------"
     
+    # Ensure credentials are set for system tests in Kokoro
+    if [[ -z "${GOOGLE_APPLICATION_CREDENTIALS}" && -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
+        export GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
+    fi
+
     export GOOGLE_CLOUD_PROJECT="bigframes-testing"
     NOX_SESSION=("cleanup" "doctest")
 
