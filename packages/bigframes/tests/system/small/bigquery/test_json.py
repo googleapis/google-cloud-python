@@ -396,15 +396,15 @@ def test_to_json_from_int():
 def test_to_json_from_struct():
     s = bpd.Series(
         [
-            {"version": 1, "project": "pandas"},
-            {"version": 2, "project": "numpy"},
+            {"project": "pandas", "version": 1},
+            {"project": "numpy", "version": 2},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
 
     actual = bbq.to_json(s)
     expected = bpd.Series(
-        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
+        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
         dtype=dtypes.JSON_DTYPE,
     )
 
@@ -421,15 +421,15 @@ def test_to_json_string_from_int():
 def test_to_json_string_from_struct():
     s = bpd.Series(
         [
-            {"version": 1, "project": "pandas"},
-            {"version": 2, "project": "numpy"},
+            {"project": "pandas", "version": 1},
+            {"project": "numpy", "version": 2},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
 
     actual = bbq.to_json_string(s)
     expected = bpd.Series(
-        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
+        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
         dtype=dtypes.STRING_DTYPE,
     )
 
@@ -438,8 +438,8 @@ def test_to_json_string_from_struct():
 
 def test_json_keys():
     json_data = [
-        '{"age": 30, "name": "Alice"}',
-        '{"active": true, "city": "New York", "country": "USA"}',
+        '{"name": "Alice", "age": 30}',
+        '{"city": "New York", "country": "USA", "active": true}',
         "{}",
         '{"items": [1, 2, 3]}',
     ]
@@ -464,7 +464,7 @@ def test_json_keys():
 
 def test_json_keys_with_max_depth():
     json_data = [
-        '{"user": {"details": {"id": 123, "status": "approved"}, "name": "Bob"}}',
+        '{"user": {"name": "Bob", "details": {"id": 123, "status": "approved"}}}',
         '{"user": {"name": "Charlie"}}',
     ]
     s = bpd.Series(json_data, dtype=dtypes.JSON_DTYPE)
