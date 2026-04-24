@@ -618,7 +618,7 @@ class Scoped(ReadOnlyScoped):
 
     @abc.abstractmethod
     def with_scopes(
-        scopes (Optional[Union[str, Sequence[str]]]): The list of scopes to use.
+        self,
         scopes: Optional[Sequence[str]],
         default_scopes: Optional[Sequence[str]] = None,
     ):
@@ -655,7 +655,7 @@ def with_scopes_if_required(
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
             scope if necessary.
-        scopes (Optional[Sequence[str] | str]): The list of scopes to use.
+        scopes (Optional[Union[str, Sequence[str]]]): The list of scopes to use.
         default_scopes (Optional[Sequence[str]]): Default scopes passed by a
             Google client library. Use 'scopes' for user-defined scopes.
 
