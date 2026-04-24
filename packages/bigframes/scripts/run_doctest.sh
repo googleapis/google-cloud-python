@@ -35,10 +35,10 @@ if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"conti
     echo "------------------------------------------------------------"
     
     export GOOGLE_CLOUD_PROJECT="bigframes-testing"
-    export NOX_SESSION=("cleanup" "doctest")
+    NOX_SESSION=("cleanup" "doctest")
 
     cd "${package_path}"
-    python3 -m nox -s "${nox_sessions[@]}"
+    python3 -m nox -s "${NOX_SESSION[@]}"
 else
     echo "No changes in ${package_name} and not a continuous build, skipping."
 fi
