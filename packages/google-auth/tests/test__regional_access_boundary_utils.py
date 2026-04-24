@@ -22,6 +22,7 @@ from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import environment_vars
+from google.oauth2 import credentials as oauth2_credentials
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
@@ -227,7 +228,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         creds = CredentialsImpl()
         assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
 
-        new_creds = creds.with_blocking_regional_access_boundary_lookup()
+        new_creds = creds._with_blocking_regional_access_boundary_lookup()
         assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup
 
     def test_with_regional_access_boundary(self):
@@ -404,6 +405,12 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.encoded_locations is None
         assert rab_manager._data.expiry is None
         assert rab_manager._data.cooldown_expiry is not None
+
+    def test_lookup_regional_access_boundary_null_url(self):
+        creds = oauth2_credentials.Credentials(token="token")
+        request = mock.Mock()
+        result = creds._lookup_regional_access_boundary(request)
+        assert result is None
 
     def test_credentials_with_regional_access_boundary_initialization(self):
         creds = CredentialsImpl()

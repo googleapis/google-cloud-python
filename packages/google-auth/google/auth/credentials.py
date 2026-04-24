@@ -377,8 +377,13 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         creds._rab_manager.set_initial_regional_access_boundary(seed)
         return creds
 
-    def with_blocking_regional_access_boundary_lookup(self):
+    def _with_blocking_regional_access_boundary_lookup(self):
         """Returns a copy of these credentials with the blocking lookup mode enabled.
+        This is intended for internal use only as blocking lookup requires additional
+        care and consideration. Currently this is unsed by the gcloud CLI and
+        therefore changes to the contract MUST be backwards compatible (e.g. the
+        method signature must be unchanged and a copy of the credentials with the
+        blocking lookup flag set to true must be returned).
 
         Returns:
             google.auth.credentials.Credentials: A new credentials instance.

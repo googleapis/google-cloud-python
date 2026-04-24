@@ -100,7 +100,7 @@ class TestCredentials(object):
         creds = self.make_credentials()
         assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
 
-        new_creds = creds.with_blocking_regional_access_boundary_lookup()
+        new_creds = creds._with_blocking_regional_access_boundary_lookup()
         assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup
         assert new_creds is not creds
 

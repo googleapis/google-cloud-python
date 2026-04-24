@@ -210,7 +210,6 @@ class Credentials(
         self._rab_manager = d.get("_rab_manager") or (
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
-        self._use_blocking_regional_access_boundary_lookup = False
 
     @property
     def refresh_token(self):
@@ -363,6 +362,15 @@ class Credentials(
         return metrics.CRED_TYPE_USER
 
     def _build_regional_access_boundary_lookup_url(self, request=None):
+        """Builds the URL for Regional Access Boundary lookup.
+
+        OAuth 2.0 credentials do not support independent Regional Access Boundary
+        lookup. However, they may support a seeded Regional Access Boundary
+        provided externally (e.g., from gcloud).
+
+        Returns:
+            None: This credential type does not support RAB lookup.
+        """
         return None
 
     def _perform_refresh_token(self, request):

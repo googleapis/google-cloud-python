@@ -810,3 +810,23 @@ def test_lookup_regional_access_boundary_blocking():
     mock_request.assert_called_once_with(
         method="GET", url=url, headers=headers, timeout=3
     )
+
+def test_lookup_regional_access_boundary_blocking_error():
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.INTERNAL_SERVER_ERROR
+    mock_response.data = "this is an error message"
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    # Even if the error is retryable, blocking=True should prevent retries.
+    result = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, blocking=True
+    )
+    assert result is None
+
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
+    )
