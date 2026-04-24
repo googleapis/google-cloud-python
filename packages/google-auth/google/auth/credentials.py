@@ -380,7 +380,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _with_blocking_regional_access_boundary_lookup(self):
         """Returns a copy of these credentials with the blocking lookup mode enabled.
         This is intended for internal use only as blocking lookup requires additional
-        care and consideration. Currently this is unsed by the gcloud CLI and
+        care and consideration. Currently this is used by the gcloud CLI and
         therefore changes to the contract MUST be backwards compatible (e.g. the
         method signature must be unchanged and a copy of the credentials with the
         blocking lookup flag set to true must be returned).

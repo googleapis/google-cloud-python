@@ -390,12 +390,16 @@ def test_credentials_with_trust_boundary_bridge():
     with pytest.warns(DeprecationWarning):
         assert creds._build_regional_access_boundary_lookup_url() == "http://legacy.url"
 
+
 def test_before_request_triggers_rab_refresh():
     with mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
+        "google.auth._regional_access_boundary_utils."
+        "is_regional_access_boundary_enabled",
         return_value=True,
     ):
-        with mock.patch("google.oauth2._client._lookup_regional_access_boundary") as lookup:
+        with mock.patch(
+            "google.oauth2._client._lookup_regional_access_boundary"
+        ) as lookup:
             lookup.return_value = {"encodedLocations": "0xA30"}
 
             creds = CredentialsImpl()

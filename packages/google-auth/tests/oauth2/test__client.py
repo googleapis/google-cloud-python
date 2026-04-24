@@ -811,6 +811,7 @@ def test_lookup_regional_access_boundary_blocking():
         method="GET", url=url, headers=headers, timeout=3
     )
 
+
 def test_lookup_regional_access_boundary_blocking_error():
     mock_response = mock.create_autospec(transport.Response, instance=True)
     mock_response.status = http_client.INTERNAL_SERVER_ERROR
