@@ -143,9 +143,6 @@ def _calculate_duration(func):
     return wrapper
 
 
-
-
-
 nox.options.sessions = [
     "unit",
     "system",
