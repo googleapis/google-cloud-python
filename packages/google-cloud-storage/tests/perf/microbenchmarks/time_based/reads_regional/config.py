@@ -34,7 +34,7 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
 
     common_params = config["common"]
     read_types = common_params["read_types"]
-    file_sizes_mib = common_params["file_sizes_mib"]
+    file_sizes = common_params["file_sizes"]
     chunk_sizes_kib = common_params["chunk_sizes_kib"]
     num_ranges = common_params["num_ranges"]
     rounds = common_params["rounds"]
@@ -56,7 +56,7 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
         # Create a product of all parameter combinations
         product = itertools.product(
             read_types,
-            file_sizes_mib,
+            file_sizes,
             chunk_sizes_kib,
             num_ranges,
             processes,
@@ -65,19 +65,19 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
 
         for (
             read_type,
-            file_size_mib,
+            file_size,
             chunk_size_kib,
             num_ranges_val,
             num_processes,
             num_coros,
         ) in product:
-            file_size_bytes = file_size_mib * 1024 * 1024
+            file_size_bytes = file_size
             chunk_size_bytes = chunk_size_kib * 1024
 
             num_files = num_processes
 
             # Create a descriptive name for the parameter set
-            name = f"{pattern}_{read_type}_{num_processes}p_{num_coros}c_{file_size_mib}MiB_{chunk_size_kib}KiB_{num_ranges_val}ranges"
+            name = f"{pattern}_{read_type}_{num_processes}p_{num_coros}c_{file_size / (1024 * 1024)}MiB_{chunk_size_kib}KiB_{num_ranges_val}ranges"
 
             params[workload_name].append(
                 TimeBasedReadParameters(

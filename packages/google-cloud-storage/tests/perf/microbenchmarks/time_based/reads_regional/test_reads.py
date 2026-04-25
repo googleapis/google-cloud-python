@@ -91,6 +91,15 @@ def _worker_init(read_type):
 
 async def _download_time_based_json_async(session, filename, params):
     """Performs time-based downloads using the JSON API via aiohttp."""
+    if params.pattern == "whole":
+        url = f"https://storage.googleapis.com/storage/v1/b/{params.bucket_name}/o/{filename}?alt=media"
+        headers = {
+            "Authorization": f"Bearer {token}",
+        }
+        async with session.get(url, headers=headers) as response:
+            data = await response.read()
+            return len(data)
+
     total_bytes_downloaded = 0
     offset = 0
     is_warming_up = True
@@ -136,6 +145,12 @@ async def _download_time_based_json_async(session, filename, params):
 async def _download_time_based_async(client, filename, params):
     mrd = AsyncMultiRangeDownloader(client, params.bucket_name, filename)
     await mrd.open()
+
+    if params.pattern == "whole":
+        ranges = [(0, params.file_size_bytes, BytesIO())]
+        await mrd.download_ranges(ranges)
+        await mrd.close()
+        return ranges[0][2].getbuffer().nbytes
 
     async def _worker_coro():
         total_bytes_downloaded = 0
@@ -224,21 +239,28 @@ def test_downloads_multi_proc_multi_coro(
         download_bytes_list.append(download_files_mp_mc_wrapper(pool, *args, **kwargs))
         return
 
+    duration_pedantic = 0
     try:
         with monitor() as m:
+            start_pedantic = time.monotonic()
             benchmark.pedantic(
                 target=target_wrapper,
                 iterations=1,
                 rounds=params.rounds,
                 args=(files_names, params, params.read_type),
             )
+            end_pedantic = time.monotonic()
+            duration_pedantic = end_pedantic - start_pedantic
     finally:
         pool.close()
         pool.join()
         total_bytes_downloaded = sum(download_bytes_list)
-        throughput_mib_s = (
-            total_bytes_downloaded / params.duration / params.rounds
-        ) / (1024 * 1024)
+        if params.pattern == "whole":
+            throughput_mib_s = (total_bytes_downloaded / duration_pedantic) / (1024 * 1024)
+        else:
+            throughput_mib_s = (
+                total_bytes_downloaded / params.duration / params.rounds
+            ) / (1024 * 1024)
         benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
         print(
             f"Avg Throughput of {params.rounds} round(s): {throughput_mib_s:.2f} MiB/s"

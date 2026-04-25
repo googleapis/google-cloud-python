@@ -3,8 +3,8 @@ common:
     - "async_json"
     - "async_grpc_dp"
     - "async_grpc_cp"
-  file_sizes_mib:
-    - 10240 # 10GiB
+  file_sizes:
+    - 10737418240 # 10GiB in bytes
   chunk_sizes_kib: [64]
   num_ranges: [1]
   rounds: 1
@@ -21,6 +21,11 @@ workload:
   - name: "read_rand_multi_process"
     pattern: "rand"
     coros: [1, 16]
+    processes: [1]
+
+  - name: "read_whole_multi_process"
+    pattern: "whole"
+    coros: [1]
     processes: [1]
 
 defaults:
