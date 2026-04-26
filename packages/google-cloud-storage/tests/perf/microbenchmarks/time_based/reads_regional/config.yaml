@@ -8,6 +8,8 @@ common:
   chunk_sizes_kib: [64]
   num_ranges: [1]
   rounds: 1
+  num_downloads_after_open: 3
+  ignore_first_download: true
   duration: 30 # seconds
   warmup_duration: 5 # seconds
 

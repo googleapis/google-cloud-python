@@ -23,3 +23,5 @@ class TimeBasedReadParameters(IOBenchmarkParameters):
     warmup_duration: int
     num_ranges: int
     read_type: str
+    num_downloads_after_open: int
+    ignore_first_download: bool

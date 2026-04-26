@@ -96,9 +96,13 @@ async def _download_time_based_json_async(session, filename, params):
         headers = {
             "Authorization": f"Bearer {token}",
         }
-        async with session.get(url, headers=headers) as response:
-            data = await response.read()
-            return len(data)
+        total_bytes = 0
+        for i in range(params.num_downloads_after_open):
+            async with session.get(url, headers=headers) as response:
+                data = await response.read()
+                if not (params.ignore_first_download and i == 0):
+                    total_bytes += len(data)
+        return total_bytes
 
     total_bytes_downloaded = 0
     offset = 0
@@ -147,10 +151,14 @@ async def _download_time_based_async(client, filename, params):
     await mrd.open()
 
     if params.pattern == "whole":
-        ranges = [(0, params.file_size_bytes, BytesIO())]
-        await mrd.download_ranges(ranges)
+        total_bytes = 0
+        for i in range(params.num_downloads_after_open):
+            ranges = [(0, params.file_size_bytes, BytesIO())]
+            await mrd.download_ranges(ranges)
+            if not (params.ignore_first_download and i == 0):
+                total_bytes += ranges[0][2].getbuffer().nbytes
         await mrd.close()
-        return ranges[0][2].getbuffer().nbytes
+        return total_bytes
 
     async def _worker_coro():
         total_bytes_downloaded = 0

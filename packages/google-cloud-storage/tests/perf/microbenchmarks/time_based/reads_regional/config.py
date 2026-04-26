@@ -40,6 +40,8 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
     rounds = common_params["rounds"]
     duration = common_params["duration"]
     warmup_duration = common_params["warmup_duration"]
+    num_downloads_after_open = common_params["num_downloads_after_open"]
+    ignore_first_download = common_params["ignore_first_download"]
 
     # All read types use the same regional bucket
     bucket_name = os.environ.get(
@@ -96,6 +98,8 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
                     duration=duration,
                     warmup_duration=warmup_duration,
                     num_ranges=num_ranges_val,
+                    num_downloads_after_open=num_downloads_after_open,
+                    ignore_first_download=ignore_first_download,
                 )
             )
     return params
