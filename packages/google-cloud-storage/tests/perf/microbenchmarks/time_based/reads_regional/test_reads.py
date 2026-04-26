@@ -95,6 +95,7 @@ async def _download_time_based_json_async(session, filename, params):
         url = f"https://storage.googleapis.com/storage/v1/b/{params.bucket_name}/o/{filename}?alt=media"
         headers = {
             "Authorization": f"Bearer {token}",
+            "Range": f"bytes=0-{params.file_size_bytes - 1}",
         }
         total_bytes = 0
         for i in range(params.num_downloads_after_open):
