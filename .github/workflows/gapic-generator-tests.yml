@@ -115,6 +115,17 @@ jobs:
           for pkg in credentials eventarc logging redis; do
             nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ needs.python_config.outputs.latest_stable_python }}
           done
+      # Run pylint (errors-only) over the goldens so generator regressions
+      # like undefined names or import-time breakage that ruff/flake8 do
+      # not flag are caught at PR time.
+      # See https://github.com/googleapis/google-cloud-python/issues/16393.
+      - name: Pylint goldens (errors only)
+        run: |
+          pip install --quiet pylint
+          cd packages/gapic-generator/tests/integration/goldens
+          for pkg in credentials eventarc logging redis; do
+            pylint --rcfile=.pylintrc --errors-only --recursive=y "$pkg/google"
+          done
 
   goldens-prerelease:
     needs: python_config
