@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "cloudbuild",
     "name_pretty": "Cloud Build",
-    "product_documentation": "https://cloud.google.com/cloud-build/docs/",
+    "product_documentation": "https://cloud.google.com/cloud-build/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

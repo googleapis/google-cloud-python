@@ -109,6 +109,30 @@ class AIGenerateDouble(Value):
 
 
 @public
+class AIEmbed(Value):
+    """Create embeddings from text or image data."""
+
+    content: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    model: Optional[Value[dt.String]]
+    task_type: Optional[Value[dt.String]]
+    title: Optional[Value[dt.String]]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("content")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (
+                ("result", dt.Array(dt.float64)),
+                ("status", dt.string),
+            )
+        )
+
+
+@public
 class AIIf(Value):
     """Generate True/False based on the prompt"""
 
@@ -145,6 +169,20 @@ class AIScore(Value):
     connection_id: Optional[Value[dt.String]]
 
     shape = rlz.shape_like("prompt")
+
+
+@public
+class AISimilarity(Value):
+    """Calculate the similarity between two contents"""
+
+    content1: Value
+    content2: Value
+    endpoint: Optional[Value[dt.String]]
+    model: Optional[Value[dt.String]]
+    model_params: Optional[Value[dt.String]]
+    connection_id: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("content1")
 
     @attribute
     def dtype(self) -> dt.Struct:

@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "bigquerydatapolicy",
     "name_pretty": "BigQuery Data Policy",
-    "product_documentation": "https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest",
+    "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

@@ -8,7 +8,7 @@
     "library_type": "OTHER",
     "name": "bigquerylogging",
     "name_pretty": "BigQuery Logging Protos",
-    "product_documentation": "https://cloud.google.com/bigquery/docs/reference/auditlogs",
+    "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

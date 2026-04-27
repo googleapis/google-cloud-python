@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "accesscontextmanager",
     "name_pretty": "Access Context Manager",
-    "product_documentation": "https://cloud.google.com/access-context-manager/docs/overview",
+    "product_documentation": "https://cloud.google.com/access-context-manager/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

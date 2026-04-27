@@ -1,11 +1,38 @@
 on:
+  pull_request:
+    paths:
+      - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-django5.2_tests.yml'
   push:
     branches:
       - main
-  pull_request:
+    paths:
+      - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-django5.2_tests.yml'
+
+defaults:
+  run:
+    working-directory: packages/django-google-spanner
+
 name: django-spanner-django5.2-tests
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            django_spanner:
+              - 'packages/django-google-spanner/**'
+              - '.github/workflows/django-spanner-django5.2_tests.yml'
+
   system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_django_spanner == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -47,7 +74,6 @@ jobs:
         with:
           python-version: "3.10"
       - name: Run Django tests
-        working-directory: packages/django-google-spanner
         run: sh django_test_suite_5.2.sh
         env:
           SPANNER_EMULATOR_HOST: localhost:9010

@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-financialservices",
     "name_pretty": "Anti Money Laundering AI API",
-    "product_documentation": "https://cloud.google.com/financial-services/anti-money-laundering/docs/concepts/overview",
+    "product_documentation": "https://cloud.google.com/financial-services/anti-money-laundering/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }
