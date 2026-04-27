@@ -119,6 +119,8 @@ jobs:
   goldens-prerelease:
     needs: python_config
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_CLOUD_PYTHON_CHECKOUT_DIR: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python
