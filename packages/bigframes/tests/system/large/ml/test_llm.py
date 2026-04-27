@@ -166,8 +166,8 @@ def test_gemini_text_generator_predict_output_schema_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.5-flash-001",
-        "gemini-2.5-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ),
 )
 def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
@@ -195,8 +195,8 @@ def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.5-flash-001",
-        "gemini-2.5-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ),
 )
 def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name):
