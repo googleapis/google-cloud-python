@@ -25,9 +25,9 @@ cmake==3.31.6 \
     --hash=sha256:cefb910be81e1b4fdc3b89ef61819c3e848b3906ed56ac36d090f37cfa05666b \
     --hash=sha256:da9d4fd9abd571fd016ddb27da0428b10277010b23bb21e3678f8b9e96e1686e
     # via -r requirements.in
-wheel==0.45.1 \
-    --hash=sha256:661e1abd9198507b1409a20c02106d9670b2576e916d58f520316666abca6729 \
-    --hash=sha256:708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248
+wheel==0.46.2 \
+    --hash=sha256:33ae60725d69eaa249bc1982e739943c23b34b58d51f1cb6253453773aca6e65 \
+    --hash=sha256:3d79e48fde9847618a5a181f3cc35764c349c752e2fe911e65fa17faab9809b0
     # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
