@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "storageinsights",
     "name_pretty": "Storage Insights API",
-    "product_documentation": "https://cloud.google.com/storage/docs/insights/storage-insights",
+    "product_documentation": "https://cloud.google.com/storage/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

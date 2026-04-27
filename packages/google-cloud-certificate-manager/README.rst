@@ -14,9 +14,9 @@ Python Client for Certificate Manager
    :target: https://pypi.org/project/google-cloud-certificate-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-certificate-manager.svg
    :target: https://pypi.org/project/google-cloud-certificate-manager/
-.. _Certificate Manager: https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Certificate Manager: https://cloud.google.com/python/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Product Documentation:  https://cloud.google.com/python/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Certificate Manager.:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Enable the Certificate Manager.:  https://cloud.google.com/python/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Certificate Manager Product documentation:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Certificate Manager Product documentation:  https://cloud.google.com/python/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

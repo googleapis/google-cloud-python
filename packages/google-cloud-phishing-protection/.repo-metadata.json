@@ -9,7 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "phishingprotection",
     "name_pretty": "Phishing Protection",
-    "product_documentation": "https://cloud.google.com/phishing-protection/docs/",
+    "product_documentation": "https://cloud.google.com/phishing-protection/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

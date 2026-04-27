@@ -281,6 +281,76 @@ def test_ai_generate_double_with_model_param(
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_ai_embed(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_connection_id(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=CONNECTION_ID,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint=None,
+        model="embeddinggemma-300m",
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_task_type_and_title(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type="retrieval_document",
+        title="My Document",
+        model_params=json.dumps({"outputDimensionality": 256}),
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 @pytest.mark.parametrize("connection_id", [None, CONNECTION_ID])
 def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
     col_name = "string_col"

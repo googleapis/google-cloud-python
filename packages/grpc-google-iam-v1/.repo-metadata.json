@@ -1,6 +1,6 @@
 {
     "api_description": "Manages access control for Google Cloud Platform resources.",
-    "api_id": "iam.googleapis.com",
+    "api_id": "iam-meta-api.googleapis.com",
     "api_shortname": "iam",
     "client_documentation": "https://cloud.google.com/python/docs/reference/grpc-iam/latest",
     "default_version": "apiVersion",
@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "grpc-iam",
     "name_pretty": "Cloud Identity and Access Management",
-    "product_documentation": "https://cloud.google.com/iam/docs/",
-    "release_level": "stable",
+    "product_documentation": "https://cloud.google.com/iam/",
+    "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

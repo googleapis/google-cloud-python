@@ -1,6 +1,6 @@
 {
     "api_description": "Programmatically manage your Merchant Center accounts.",
-    "api_id": "datasources.googleapis.com",
+    "api_id": "merchantapi.googleapis.com",
     "api_shortname": "datasources",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-datasources/latest",
     "default_version": "v1",

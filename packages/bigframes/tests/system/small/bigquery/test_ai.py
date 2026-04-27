@@ -255,6 +255,69 @@ def test_ai_generate_double_multi_model(session):
     )
 
 
+def test_ai_embed_series_content(session):
+    content = bpd.Series(["dog"], session=session)
+
+    result = bbq.ai.embed(content, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.list_(pa.float64())),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def test_ai_embed_string_content(session):
+    with mock.patch(
+        "bigframes.core.global_session.get_global_session"
+    ) as mock_get_session:
+        mock_get_session.return_value = session
+
+        result = bbq.ai.embed("dog", endpoint="text-embedding-005")
+
+        assert _contains_no_nulls(result)
+        assert result.dtype == pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.list_(pa.float64())),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
+
+
+def test_ai_embed_no_endpoint_or_model_raises_error(session):
+    content = bpd.Series(["dog"], session=session)
+
+    with pytest.raises(ValueError):
+        bbq.ai.embed(content)
+
+
+def test_ai_embed_both_model_and_endpoint_are_set_raises_error(session):
+    content = bpd.Series(["dog"], session=session)
+
+    with pytest.raises(ValueError):
+        bbq.ai.embed(
+            content, endpoint="text-embedding-005", model="embeddinggemma-300m model"
+        )
+
+
+def test_ai_embed_title_and_task_type_mismatch_raises_error(session):
+    content = bpd.Series(["dog"], session=session)
+
+    with pytest.raises(ValueError):
+        bbq.ai.embed(
+            content,
+            endpoint="text-embedding-005",
+            title="my title",
+            task_type="text_similarity",
+        )
+
+
 def test_ai_if(session):
     s1 = bpd.Series(["apple", "bear"], session=session)
     s2 = bpd.Series(["fruit", "tree"], session=session)

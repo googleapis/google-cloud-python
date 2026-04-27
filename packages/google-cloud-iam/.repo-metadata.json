@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "iam",
     "name_pretty": "Cloud Identity and Access Management",
-    "product_documentation": "https://cloud.google.com/iam/docs/",
+    "product_documentation": "https://cloud.google.com/iam/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

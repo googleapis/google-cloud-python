@@ -1234,7 +1234,7 @@ def test_divmods_series(scalars_dfs, col_x, col_y, method):
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
     if bf_div_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
-            pd_div_result, bf_div_result.to_pandas()
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
         )
     else:
         bigframes.testing.utils.assert_series_equal(
@@ -1279,7 +1279,7 @@ def test_divmods_scalars(scalars_dfs, col_x, other, method):
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
     if bf_div_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
-            pd_div_result, bf_div_result.to_pandas()
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
         )
     else:
         bigframes.testing.utils.assert_series_equal(

@@ -1,6 +1,5 @@
 {
     "api_description": "Google Apps Card Protos",
-    "api_id": "card.googleapis.com",
     "api_shortname": "card",
     "client_documentation": "https://googleapis.dev/python/google-apps-card/latest",
     "default_version": "v1",

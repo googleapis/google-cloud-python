@@ -572,4 +572,3 @@ class Credentials(external_account.Credentials):
                 )
 
         self._perform_refresh_token(request, cert_fingerprint=cert_fingerprint)
-        self._handle_trust_boundary(request)

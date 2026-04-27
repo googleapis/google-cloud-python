@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "mapsplatformdatasets",
     "name_pretty": "Maps Platform Datasets API",
-    "product_documentation": "https://developers.google.com/maps",
+    "product_documentation": "https://developers.google.com/maps/documentation/datasets",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

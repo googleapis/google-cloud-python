@@ -14,9 +14,9 @@ Python Client for Web Risk
    :target: https://pypi.org/project/google-cloud-webrisk/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-webrisk.svg
    :target: https://pypi.org/project/google-cloud-webrisk/
-.. _Web Risk: https://cloud.google.com/web-risk/docs/
+.. _Web Risk: https://cloud.google.com/web-risk/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/webrisk/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/web-risk/docs/
+.. _Product Documentation:  https://cloud.google.com/web-risk/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Web Risk.:  https://cloud.google.com/web-risk/docs/
+.. _Enable the Web Risk.:  https://cloud.google.com/web-risk/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Web Risk Product documentation:  https://cloud.google.com/web-risk/docs/
+.. _Web Risk Product documentation:  https://cloud.google.com/web-risk/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

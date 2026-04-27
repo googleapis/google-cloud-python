@@ -1,6 +1,6 @@
 {
     "api_description": "Programmatically manage your Merchant Center Accounts",
-    "api_id": "reviews.googleapis.com",
+    "api_id": "merchantapi.googleapis.com",
     "api_shortname": "reviews",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-reviews/latest",
     "default_version": "v1beta",

@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-licensemanager",
     "name_pretty": "License Manager API",
-    "product_documentation": "https://cloud.google.com/compute/docs/instances/windows/ms-licensing",
+    "product_documentation": "https://cloud.google.com/compute/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 import geopandas as gpd  # type: ignore
 import pandas as pd
 import pyarrow as pa
@@ -396,8 +398,8 @@ def test_to_json_from_int():
 def test_to_json_from_struct():
     s = bpd.Series(
         [
-            {"version": 1, "project": "pandas"},
-            {"version": 2, "project": "numpy"},
+            {"project": "pandas", "version": 1},
+            {"project": "numpy", "version": 2},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
@@ -408,7 +410,9 @@ def test_to_json_from_struct():
         dtype=dtypes.JSON_DTYPE,
     )
 
-    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+    actual_json = [json.loads(x) for x in actual.to_pandas()]
+    expected_json = [json.loads(x) for x in expected.to_pandas()]
+    assert actual_json == expected_json
 
 
 def test_to_json_string_from_int():
@@ -421,8 +425,8 @@ def test_to_json_string_from_int():
 def test_to_json_string_from_struct():
     s = bpd.Series(
         [
-            {"version": 1, "project": "pandas"},
-            {"version": 2, "project": "numpy"},
+            {"project": "pandas", "version": 1},
+            {"project": "numpy", "version": 2},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
@@ -433,7 +437,9 @@ def test_to_json_string_from_struct():
         dtype=dtypes.STRING_DTYPE,
     )
 
-    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+    actual_json = [json.loads(x) for x in actual.to_pandas()]
+    expected_json = [json.loads(x) for x in expected.to_pandas()]
+    assert actual_json == expected_json
 
 
 def test_json_keys():

@@ -14,9 +14,9 @@ Python Client for Chronicle API
    :target: https://pypi.org/project/google-cloud-chronicle/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-chronicle.svg
    :target: https://pypi.org/project/google-cloud-chronicle/
-.. _Chronicle API: https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Chronicle API: https://cloud.google.com/chronicle/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-chronicle/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Product Documentation:  https://cloud.google.com/chronicle/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Chronicle API.:  https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Enable the Chronicle API.:  https://cloud.google.com/chronicle/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Chronicle API Product documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Chronicle API Product documentation:  https://cloud.google.com/chronicle/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

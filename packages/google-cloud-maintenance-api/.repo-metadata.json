@@ -1,6 +1,6 @@
 {
     "api_description": "The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.",
-    "api_id": "api.googleapis.com",
+    "api_id": "maintenance.googleapis.com",
     "api_shortname": "api",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-maintenance-api/latest",
     "default_version": "v1",
@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-maintenance-api",
     "name_pretty": "Maintenance API",
-    "product_documentation": "https://cloud.google.com/unified-maintenance/docs/overview",
+    "product_documentation": "https://cloud.google.com/unified-maintenance/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

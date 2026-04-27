@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-databasecenter",
     "name_pretty": "Database Center API",
-    "product_documentation": "https://cloud.google.com/database-center/docs/overview",
+    "product_documentation": "https://cloud.google.com/database-center/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

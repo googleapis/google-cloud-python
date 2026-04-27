@@ -364,9 +364,14 @@ def _(expr: TypedExpr) -> sge.Expression:
 def _(expr: TypedExpr, op: ops.ToDatetimeOp) -> sge.Expression:
     if op.format:
         result = expr.expr
-        if expr.dtype != dtypes.STRING_DTYPE:
+        if expr.dtype == dtypes.STRING_DTYPE:
+            return sge.TryCast(this=result, to="DATETIME")
+        else:
             result = sge.Cast(this=result, to="STRING")
-        return sge.TryCast(this=result, to="DATETIME")
+            result = sge.func(
+                "PARSE_TIMESTAMP", sge.convert(op.format), result, sge.convert("UTC")
+            )
+            return sge.Cast(this=result, to="DATETIME")
 
     if expr.dtype in (
         dtypes.STRING_DTYPE,

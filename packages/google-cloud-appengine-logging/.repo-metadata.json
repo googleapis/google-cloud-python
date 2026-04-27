@@ -7,7 +7,7 @@
     "library_type": "OTHER",
     "name": "appenginelogging",
     "name_pretty": "App Engine Logging Protos",
-    "product_documentation": "https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1",
+    "product_documentation": "https://cloud.google.com/logging/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }
