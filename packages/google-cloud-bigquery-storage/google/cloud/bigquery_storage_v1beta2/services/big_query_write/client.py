@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import itertools
 import json
 import logging as std_logging
 import os
@@ -980,7 +981,18 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(()),)
+        write_stream = ""
+        if requests is not None:
+            requests = iter(requests)
+            try:
+                first_request = next(requests)
+                write_stream = first_request.write_stream
+                requests = itertools.chain([first_request], requests)
+            except StopIteration:
+                pass
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("write_stream", write_stream),)),
+        )
 
         # Validate the universe domain.
         self._validate_universe_domain()
