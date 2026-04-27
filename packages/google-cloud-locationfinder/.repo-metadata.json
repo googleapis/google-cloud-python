@@ -1,6 +1,6 @@
 {
     "api_description": "Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.",
-    "api_id": "locationfinder.googleapis.com",
+    "api_id": "cloudlocationfinder.googleapis.com",
     "api_shortname": "locationfinder",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-locationfinder/latest",
     "default_version": "v1",

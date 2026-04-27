@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-orchestration-airflow-service",
+    "name": "google-cloud-orchestration-airflow",
     "version": "1.20.0"
   },
   "snippets": [

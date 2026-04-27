@@ -1,6 +1,6 @@
 {
     "api_description": "Programmatically manage your Merchant Center accounts.",
-    "api_id": "productstudio.googleapis.com",
+    "api_id": "merchantapi.googleapis.com",
     "api_shortname": "productstudio",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-productstudio/latest",
     "default_version": "v1alpha",

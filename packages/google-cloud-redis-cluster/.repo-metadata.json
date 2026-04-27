@@ -1,6 +1,6 @@
 {
     "api_description": "Creates and manages Redis instances on the Google Cloud Platform.",
-    "api_id": "cluster.googleapis.com",
+    "api_id": "redis.googleapis.com",
     "api_shortname": "cluster",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-redis-cluster/latest",
     "default_version": "v1",

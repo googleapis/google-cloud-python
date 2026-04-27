@@ -1,6 +1,6 @@
 {
     "api_description": "Defines common types for Google Geo APIs.",
-    "api_id": "type.googleapis.com",
+    "api_id": "type.geo.googleapis.com",
     "api_shortname": "type",
     "client_documentation": "https://googleapis.dev/python/geotype/latest",
     "default_version": "apiVersion",

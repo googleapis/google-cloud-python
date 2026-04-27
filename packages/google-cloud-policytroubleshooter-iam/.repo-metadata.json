@@ -1,4 +1,5 @@
 {
+    "api_description": "Policy Troubleshooter helps you understand whether a principal can access a resource. Given a principal, a resource, and a permission, Policy Troubleshooter examines the allow policies, deny policies, and principal access boundary (PAB) policies that impact the principal's access.",
     "api_id": "policytroubleshooter.googleapis.com",
     "api_shortname": "iam",
     "client_documentation": "https://cloud.google.com/python/docs/reference/policytroubleshooter-iam/latest",

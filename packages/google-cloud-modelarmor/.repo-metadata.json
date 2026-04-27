@@ -1,6 +1,6 @@
 {
     "api_description": "Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.",
-    "api_id": "securitycenter.googleapis.com",
+    "api_id": "modelarmor.googleapis.com",
     "api_shortname": "securitycenter",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-modelarmor/latest",
     "default_version": "v1",

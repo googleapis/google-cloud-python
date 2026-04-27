@@ -1,5 +1,4 @@
 {
-    "api_id": "runtimeconfig.googleapis.com",
     "api_shortname": "runtimeconfig",
     "client_documentation": "https://cloud.google.com/python/docs/reference/runtimeconfig/latest",
     "distribution_name": "google-cloud-runtimeconfig",

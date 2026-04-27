@@ -11,6 +11,6 @@
     "name": "google-cloud-compute-v1beta",
     "name_pretty": "Compute Engine",
     "product_documentation": "https://cloud.google.com/compute/",
-    "release_level": "stable",
+    "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

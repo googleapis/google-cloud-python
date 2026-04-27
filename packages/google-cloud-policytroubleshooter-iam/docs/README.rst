@@ -3,7 +3,7 @@ Python Client for Policy Troubleshooter API
 
 |preview| |pypi| |versions|
 
-`Policy Troubleshooter API`_: 
+`Policy Troubleshooter API`_: Policy Troubleshooter helps you understand whether a principal can access a resource. Given a principal, a resource, and a permission, Policy Troubleshooter examines the allow policies, deny policies, and principal access boundary (PAB) policies that impact the principal's access.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

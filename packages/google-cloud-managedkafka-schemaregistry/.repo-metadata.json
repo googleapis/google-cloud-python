@@ -1,6 +1,6 @@
 {
     "api_description": "Manage Apache Kafka clusters and resources. ",
-    "api_id": "schemaregistry.googleapis.com",
+    "api_id": "managedkafka.googleapis.com",
     "api_shortname": "schemaregistry",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-managedkafka-schemaregistry/latest",
     "default_version": "v1",

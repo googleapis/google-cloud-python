@@ -1,5 +1,4 @@
 {
-    "api_id": "bigquery.googleapis.com",
     "client_documentation": "https://googleapis.dev/python/pandas-gbq/latest/",
     "distribution_name": "pandas-gbq",
     "issue_tracker": "https://github.com/googleapis/python-bigquery-pandas/issues",

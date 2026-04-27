@@ -1,5 +1,4 @@
 {
-    "api_id": "bigquery.googleapis.com",
     "client_documentation": "https://googleapis.dev/python/db-dtypes/latest/index.html",
     "distribution_name": "db-dtypes",
     "language": "python",

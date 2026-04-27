@@ -1,5 +1,4 @@
 {
-    "api_id": "bigquery.googleapis.com",
     "api_shortname": "bigquery",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigframes/latest",
     "distribution_name": "bigframes",

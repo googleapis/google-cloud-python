@@ -1,6 +1,6 @@
 {
     "api_description": "Management API for Security Command Center, a built-in security and risk\nmanagement solution for Google Cloud. Use this API to programmatically\nupdate the settings and configuration of Security Command Center.",
-    "api_id": "securitycenter.googleapis.com",
+    "api_id": "securitycentermanagement.googleapis.com",
     "api_shortname": "securitycenter",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest",
     "default_version": "v1",

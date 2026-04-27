@@ -1,6 +1,6 @@
 {
     "api_description": "Programmatically manage your Merchant Center Accounts. ",
-    "api_id": "ordertracking.googleapis.com",
+    "api_id": "merchantapi.googleapis.com",
     "api_shortname": "ordertracking",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-ordertracking/latest",
     "default_version": "v1",
