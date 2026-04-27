@@ -13,12 +13,19 @@
 # limitations under the License.
 
 from google.cloud import _storage_v2
+from google.protobuf import timestamp_pb2
 
 # Map Python Blob attributes to GCS V2 Object proto field names.
 _BLOB_ATTR_TO_PROTO_FIELD = {
     "content_type": "content_type",
     "metadata": "metadata",
     "kms_key_name": "kms_key",
+    "cache_control": "cache_control",
+    "content_disposition": "content_disposition",
+    "content_encoding": "content_encoding",
+    "content_language": "content_language",
+    "temporary_hold": "temporary_hold",
+    "event_based_hold": "event_based_hold",
 }
 
 
@@ -36,5 +43,66 @@ def blob_to_proto(blob):
         value = getattr(blob, attr_name, None)
         if value is not None:
             resource_params[proto_field] = value
+
+    # custom_time (field 26): google.protobuf.Timestamp
+    custom_time = getattr(blob, "custom_time", None)
+    if custom_time is not None:
+        custom_time_proto = timestamp_pb2.Timestamp()
+        custom_time_proto.FromDatetime(custom_time)
+        resource_params["custom_time"] = custom_time_proto
+
+    # acl (field 10): repeated ObjectAccessControl
+    acl = getattr(blob, "acl", None)
+    if acl is not None and getattr(acl, "loaded", False):
+        acl_entries = []
+        for entry in acl:
+            acl_entries.append(
+                _storage_v2.ObjectAccessControl(
+                    role=entry["role"],
+                    entity=entry["entity"],
+                )
+            )
+        if acl_entries:
+            resource_params["acl"] = acl_entries
+
+    # contexts (field 38): ObjectContexts
+    contexts = getattr(blob, "contexts", None)
+    if contexts is not None:
+        custom_map = {}
+        # contexts is expected to be a dict of key-value pairs
+        if isinstance(contexts, dict):
+            for k, v in contexts.items():
+                if isinstance(v, str):
+                    payload = _storage_v2.ObjectCustomContextPayload(value=v)
+                else:
+                    payload = v
+                custom_map[k] = payload
+
+        if custom_map:
+            resource_params["contexts"] = _storage_v2.ObjectContexts(custom=custom_map)
+
+    # retention (field 30): Object.Retention
+    retention = getattr(blob, "retention", None)
+    if retention:
+        mode_str = retention.get("mode")
+        mode = _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED
+        if mode_str:
+            # GCS retention modes are 'Locked' or 'Unlocked'
+            mode = getattr(
+                _storage_v2.Object.Retention.Mode,
+                mode_str.upper(),
+                _storage_v2.Object.Retention.Mode.MODE_UNSPECIFIED,
+            )
+
+        retain_until_time_proto = None
+        retain_until_time = retention.get("retain_until_time")
+        if retain_until_time is not None:
+            retain_until_time_proto = timestamp_pb2.Timestamp()
+            retain_until_time_proto.FromDatetime(retain_until_time)
+
+        resource_params["retention"] = _storage_v2.Object.Retention(
+            mode=mode,
+            retain_until_time=retain_until_time_proto,
+        )
 
     return _storage_v2.Object(**resource_params)

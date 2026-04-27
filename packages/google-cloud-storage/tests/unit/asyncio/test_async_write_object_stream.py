@@ -171,6 +171,16 @@ class TestAsyncWriteObjectStream:
         mock_blob.content_type = "text/plain"
         mock_blob.metadata = {"test-key": "test-value"}
         mock_blob.kms_key_name = None
+        mock_blob.cache_control = None
+        mock_blob.content_disposition = None
+        mock_blob.content_encoding = None
+        mock_blob.content_language = None
+        mock_blob.temporary_hold = None
+        mock_blob.event_based_hold = None
+        mock_blob.custom_time = None
+        mock_blob.acl = None
+        mock_blob.retention = None
+        mock_blob.contexts = None
 
         stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
         await stream.open()
