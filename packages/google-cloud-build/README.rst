@@ -14,9 +14,9 @@ Python Client for Cloud Build
    :target: https://pypi.org/project/google-cloud-build/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-build.svg
    :target: https://pypi.org/project/google-cloud-build/
-.. _Cloud Build: https://cloud.google.com/cloud-build/docs/
+.. _Cloud Build: https://cloud.google.com/cloud-build/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbuild/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/cloud-build/docs/
+.. _Product Documentation:  https://cloud.google.com/cloud-build/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Build.:  https://cloud.google.com/cloud-build/docs/
+.. _Enable the Cloud Build.:  https://cloud.google.com/cloud-build/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Build Product documentation:  https://cloud.google.com/cloud-build/docs/
+.. _Cloud Build Product documentation:  https://cloud.google.com/cloud-build/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

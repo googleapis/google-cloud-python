@@ -706,6 +706,113 @@ def generate_table(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def embed(
+    content: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    task_type: (
+        Literal[
+            "retrieval_query",
+            "retrieval_document",
+            "semantic_similarity",
+            "classification",
+            "clustering",
+            "question_answering",
+            "fact_verification",
+            "code_retrieval_query",
+        ]
+        | None
+    ) = None,
+    title: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Creates embeddings from text or image data in BigQuery.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+        >>> s = bpd.Series(['dog']) # doctest: +SKIP
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+    Args:
+        content (str | Series):
+            A string literal or a Series (either BigFrames series or pandas Series) that provides the text or image to embed.
+        endpoint (str, optional):
+            A string value that specifies a supported Vertex AI embedding model endpoint to use.
+            The endpoint value that you specify must include the model version, for example,
+            `"text-embedding-005"`. If you specify this parameter, you can't specify the
+            `model` parameter.
+        model (str, optional):
+            A string value that specifies a built-in embedding model. The only supported value is
+            `"embeddinggemma-300m"`. If you specify this parameter, you can't specify the `endpoint`,
+            `title`, `model_params`, or `connection_id` parameters.
+        task_type (str, optional):
+            A string literal that specifies the intended downstream application to help the model
+            produce better quality embeddings. Accepts `"retrieval_query"`, `"retrieval_document"`,
+            `"semantic_similarity"`, `"classification"`, `"clustering"`, `"question_answering"`,
+            `"fact_verification"`, `"code_retrieval_query"`.
+        title (str, optional):
+            A string value that specifies the document title, which the model uses to improve
+            embedding quality. You can only use this parameter if you specify `"retrieval_document"`
+            for the `task_type` value.
+        model_params (Mapping[Any, Any], optional):
+            A JSON literal that provides additional parameters to the model. For example,
+            `{"outputDimensionality": 768}` lets you specify the number of dimensions to use when
+            generating embeddings.
+        connection_id (str, optional):
+            A STRING value specifying the connection to use to communicate with the model, in the
+            format `PROJECT_ID.LOCATION.CONNECTION_ID`. For example, `myproject.us.myconnection`.
+            If not provided, the query uses your end-user credential.
+
+    Returns:
+        bigframes.series.Series: A new struct Series with the result data. The struct contains these fields:
+        * "result": an ARRAY<FLOAT64> value containing the generated embeddings.
+        * "status": a STRING value that contains the API response status for the corresponding row. This value is empty if the operation was successful.
+    """
+
+    if model is not None:
+        if any(x is not None for x in [endpoint, title, model_params, connection_id]):
+            raise ValueError(
+                "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
+            )
+    elif endpoint is None:
+        raise ValueError(
+            "You must specify exactly one of 'endpoint' or 'model' argument."
+        )
+
+    if title is not None and task_type != "retrieval_document":
+        raise ValueError(
+            "You can only use 'title' parameter if you specify retrieval_document for the task_type value."
+        )
+
+    operator = ai_ops.AIEmbed(
+        endpoint=endpoint,
+        model=model,
+        task_type=task_type,
+        title=title,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    if isinstance(content, str):
+        return series.Series([content])._apply_unary_op(operator)
+    elif isinstance(content, pd.Series):
+        return series.Series(content)._apply_unary_op(operator)
+    elif isinstance(content, series.Series):
+        return content._apply_unary_op(operator)
+    else:
+        raise ValueError(f"Unsupported 'content' parameter type: {type(content)}")
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def if_(
     prompt: PROMPT_TYPE,
     *,

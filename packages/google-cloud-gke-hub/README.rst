@@ -14,9 +14,9 @@ Python Client for GKE Hub
    :target: https://pypi.org/project/google-cloud-gke-hub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-hub.svg
    :target: https://pypi.org/project/google-cloud-gke-hub/
-.. _GKE Hub: https://cloud.google.com/anthos/gke/docs/
+.. _GKE Hub: https://cloud.google.com/anthos/gke/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkehub/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/anthos/gke/docs/
+.. _Product Documentation:  https://cloud.google.com/anthos/gke/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the GKE Hub.:  https://cloud.google.com/anthos/gke/docs/
+.. _Enable the GKE Hub.:  https://cloud.google.com/anthos/gke/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _GKE Hub Product documentation:  https://cloud.google.com/anthos/gke/docs/
+.. _GKE Hub Product documentation:  https://cloud.google.com/anthos/gke/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

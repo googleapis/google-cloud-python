@@ -9,7 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "appengine",
     "name_pretty": "App Engine Admin",
-    "product_documentation": "https://cloud.google.com/appengine/docs/admin-api/",
+    "product_documentation": "https://cloud.google.com/appengine/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-iamconnectorcredentials",
     "name_pretty": "iamconnectorcredentials.googleapis.com API",
-    "product_documentation": "https://cloud.google.com/iamconnectorcredentials/docs/overview",
+    "product_documentation": "https://cloud.google.com/iamconnectorcredentials/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

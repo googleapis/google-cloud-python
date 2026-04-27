@@ -58,6 +58,7 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-
 
 from bigframes.bigquery._operations.ai import (
     classify,
+    embed,
     forecast,
     generate,
     generate_bool,
@@ -72,6 +73,7 @@ from bigframes.bigquery._operations.ai import (
 
 __all__ = [
     "classify",
+    "embed",
     "forecast",
     "generate",
     "generate_bool",

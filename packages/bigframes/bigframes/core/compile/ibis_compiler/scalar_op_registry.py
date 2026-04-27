@@ -1965,6 +1965,19 @@ def ai_generate_double(
     ).to_expr()
 
 
+@scalar_op_compiler.register_unary_op(ops.AIEmbed, pass_op=True)
+def ai_embed(value: ibis_types.Value, op: ops.AIEmbed) -> ibis_types.StructValue:
+    return ai_ops.AIEmbed(
+        value,  # type: ignore
+        connection_id=op.connection_id,  # type: ignore
+        endpoint=op.endpoint,  # type: ignore
+        model=op.model,  # type: ignore
+        task_type=op.task_type.upper() if op.task_type is not None else None,  # type: ignore
+        title=op.title,  # type: ignore
+        model_params=op.model_params,  # type: ignore
+    ).to_expr()
+
+
 @scalar_op_compiler.register_nary_op(ops.AIIf, pass_op=True)
 def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
     return ai_ops.AIIf(

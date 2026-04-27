@@ -10,7 +10,7 @@
     "library_type": "GAPIC_COMBO",
     "name": "logging",
     "name_pretty": "Cloud Logging API",
-    "product_documentation": "https://cloud.google.com/logging/docs",
+    "product_documentation": "https://cloud.google.com/logging/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

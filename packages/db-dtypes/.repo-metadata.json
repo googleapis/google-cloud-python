@@ -5,7 +5,6 @@
     "library_type": "INTEGRATION",
     "name": "db-dtypes",
     "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
-    "product_documentation": "https://pandas.pydata.org/pandas-docs/stable/ecosystem.html#ecosystem-extensions",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

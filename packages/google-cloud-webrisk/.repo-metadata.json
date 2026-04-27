@@ -9,7 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "webrisk",
     "name_pretty": "Web Risk",
-    "product_documentation": "https://cloud.google.com/web-risk/docs/",
+    "product_documentation": "https://cloud.google.com/web-risk/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

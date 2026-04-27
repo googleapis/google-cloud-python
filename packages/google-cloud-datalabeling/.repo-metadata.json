@@ -9,7 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "datalabeling",
     "name_pretty": "Google Cloud Data Labeling",
-    "product_documentation": "https://cloud.google.com/data-labeling/docs/",
+    "product_documentation": "https://cloud.google.com/data-labeling/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

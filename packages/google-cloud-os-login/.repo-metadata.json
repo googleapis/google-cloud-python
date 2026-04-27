@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "oslogin",
     "name_pretty": "Google Cloud OS Login",
-    "product_documentation": "https://cloud.google.com/compute/docs/oslogin/",
+    "product_documentation": "https://cloud.google.com/compute/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

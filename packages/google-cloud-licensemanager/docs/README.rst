@@ -14,9 +14,9 @@ Python Client for License Manager API
    :target: https://pypi.org/project/google-cloud-licensemanager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-licensemanager.svg
    :target: https://pypi.org/project/google-cloud-licensemanager/
-.. _License Manager API: https://cloud.google.com/compute/docs/instances/windows/ms-licensing
+.. _License Manager API: https://cloud.google.com/compute/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-licensemanager/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/compute/docs/instances/windows/ms-licensing
+.. _Product Documentation:  https://cloud.google.com/compute/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the License Manager API.:  https://cloud.google.com/compute/docs/instances/windows/ms-licensing
+.. _Enable the License Manager API.:  https://cloud.google.com/compute/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _License Manager API Product documentation:  https://cloud.google.com/compute/docs/instances/windows/ms-licensing
+.. _License Manager API Product documentation:  https://cloud.google.com/compute/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

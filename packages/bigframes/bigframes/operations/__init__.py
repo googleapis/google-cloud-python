@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from bigframes.operations.ai_ops import (
     AIClassify,
+    AIEmbed,
     AIGenerate,
     AIGenerateBool,
     AIGenerateDouble,
@@ -434,6 +435,7 @@ __all__ = [
     "AIGenerateBool",
     "AIGenerateDouble",
     "AIGenerateInt",
+    "AIEmbed",
     "AIIf",
     "AIScore",
     # Numpy ops mapping

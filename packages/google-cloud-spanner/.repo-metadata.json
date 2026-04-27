@@ -10,7 +10,7 @@
     "library_type": "GAPIC_COMBO",
     "name": "spanner",
     "name_pretty": "Cloud Spanner",
-    "product_documentation": "https://cloud.google.com/spanner/docs/",
+    "product_documentation": "https://cloud.google.com/spanner/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

@@ -7,7 +7,7 @@
     "library_type": "OTHER",
     "name": "iamlogging",
     "name_pretty": "IAM Logging Protos",
-    "product_documentation": "https://cloud.google.com/iam/docs/audit-logging",
+    "product_documentation": "https://cloud.google.com/iam/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

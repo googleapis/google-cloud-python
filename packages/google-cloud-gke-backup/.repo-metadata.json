@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "name": "gkebackup",
     "name_pretty": "Backup for GKE",
-    "product_documentation": "https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke",
+    "product_documentation": "https://cloud.google.com/kubernetes-engine/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }
