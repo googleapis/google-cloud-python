@@ -1232,9 +1232,14 @@ def test_divmods_series(scalars_dfs, col_x, col_y, method):
         scalars_pandas_df[col_y]
     )
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
-    bigframes.testing.utils.assert_series_equal(
-        pd_div_result, bf_div_result.astype("Float64").to_pandas()
-    )
+    if bf_div_result.dtype == pd.Int64Dtype():
+        bigframes.testing.utils.assert_series_equal(
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
+        )
+    else:
+        bigframes.testing.utils.assert_series_equal(
+            pd_div_result, bf_div_result.astype("Float64").to_pandas()
+        )
 
     if bf_mod_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
@@ -1272,9 +1277,14 @@ def test_divmods_scalars(scalars_dfs, col_x, other, method):
     bf_div_result, bf_mod_result = getattr(scalars_df[col_x], method)(other)
     pd_div_result, pd_mod_result = getattr(scalars_pandas_df[col_x], method)(other)
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
-    bigframes.testing.utils.assert_series_equal(
-        pd_div_result, bf_div_result.astype("Float64").to_pandas()
-    )
+    if bf_div_result.dtype == pd.Int64Dtype():
+        bigframes.testing.utils.assert_series_equal(
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
+        )
+    else:
+        bigframes.testing.utils.assert_series_equal(
+            pd_div_result, bf_div_result.astype("Float64").to_pandas()
+        )
 
     if bf_mod_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
