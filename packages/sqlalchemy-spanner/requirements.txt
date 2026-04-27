@@ -561,9 +561,9 @@ sqlalchemy==2.0.48 \
     # via
     #   -r requirements.in
     #   alembic
-sqlparse==0.5.3 \
-    --hash=sha256:09f67787f56a0b16ecdbde1bfc7f5d9c3371ca683cfeaa8e6ff60b4807ec9272 \
-    --hash=sha256:cf2196ed3418f3ba5de6af7e82c694a9fbdbfecccdfc72e281548517081f16ca
+sqlparse==0.5.4 \
+    --hash=sha256:4396a7d3cf1cd679c1be976cf3dc6e0a51d0111e87787e7a8d780e7d5a998f9e \
+    --hash=sha256:99a9f0314977b76d776a0fcb8554de91b9bb8a18560631d6bc48721d07023dcb
     # via google-cloud-spanner
 tomli==2.4.0 \
     --hash=sha256:0408e3de5ec77cc7f81960c362543cbbd91ef883e3138e81b729fc3eea5b9729 \
