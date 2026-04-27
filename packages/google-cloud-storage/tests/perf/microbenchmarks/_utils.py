@@ -46,13 +46,29 @@ def publish_benchmark_extra_info(
     benchmark.extra_info["bucket_name"] = params.bucket_name
     benchmark.extra_info["bucket_type"] = params.bucket_type
     benchmark.extra_info["processes"] = params.num_processes
+    benchmark.extra_info["num_downloads_after_open"] = params.num_downloads_after_open
+    benchmark.extra_info["ignore_first_download"] = params.ignore_first_download
     benchmark.group = benchmark_group
 
     if download_bytes_list is not None:
         assert duration is not None, (
             "Duration must be provided if total_bytes_transferred is provided."
         )
-        throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
+        effective_downloads = params.num_downloads_after_open
+        if params.ignore_first_download:
+            effective_downloads -= 1
+        effective_downloads = max(1, effective_downloads)
+
+        if params.pattern == "whole":
+            # duration is total time for all rounds
+            duration_per_round = duration / len(download_bytes_list)
+            throughputs_list = [
+                (x / duration_per_round / effective_downloads) / (1024 * 1024)
+                for x in download_bytes_list
+            ]
+        else:
+            # duration is time per round
+            throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
         min_throughput = min(throughputs_list)
         max_throughput = max(throughputs_list)
         mean_throughput = statistics.mean(throughputs_list)

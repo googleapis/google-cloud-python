@@ -265,7 +265,17 @@ def test_downloads_multi_proc_multi_coro(
         pool.join()
         total_bytes_downloaded = sum(download_bytes_list)
         if params.pattern == "whole":
-            throughput_mib_s = (total_bytes_downloaded / duration_pedantic) / (1024 * 1024)
+            effective_downloads = (
+                params.num_downloads_after_open - 1
+                if params.ignore_first_download
+                else params.num_downloads_after_open
+            )
+            effective_downloads = max(1, effective_downloads)
+            throughput_mib_s = (
+                total_bytes_downloaded
+                / duration_pedantic
+                / effective_downloads
+            ) / (1024 * 1024)
         else:
             throughput_mib_s = (
                 total_bytes_downloaded / params.duration / params.rounds
@@ -278,6 +288,6 @@ def test_downloads_multi_proc_multi_coro(
             benchmark,
             params,
             download_bytes_list=download_bytes_list,
-            duration=params.duration,
+            duration=duration_pedantic if params.pattern == "whole" else params.duration,
         )
         publish_resource_metrics(benchmark, m)
