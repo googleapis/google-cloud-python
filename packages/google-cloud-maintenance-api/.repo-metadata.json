@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-maintenance-api",
-    "name_pretty": "Maintenance API",
+    "name_pretty": "Maintenance",
     "product_documentation": "https://cloud.google.com/unified-maintenance/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

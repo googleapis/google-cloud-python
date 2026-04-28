@@ -283,12 +283,6 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute-v1beta>`_
-     - stable
-     - |PyPI-google-cloud-compute-v1beta|
-     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187134&template=0>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute>`_
      - stable
      - |PyPI-google-cloud-compute|
@@ -454,12 +448,6 @@ Libraries
    * - `Identity and Access Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iam>`_
      - stable
      - |PyPI-google-cloud-iam|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559761>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187161>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Identity and Access Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/grpc-google-iam-v1>`_
-     - stable
-     - |PyPI-grpc-google-iam-v1|
      - `API Issues <https://issuetracker.google.com/savedsearches/559761>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187161>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
@@ -694,6 +682,12 @@ Libraries
    * - `Retail <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-retail>`_
      - stable
      - |PyPI-google-cloud-retail|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-bigquery>`_
+     - stable
+     - |PyPI-sqlalchemy-bigquery|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
@@ -1177,6 +1171,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1396141>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1396141>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute-v1beta>`_
+     - preview
+     - |PyPI-google-cloud-compute-v1beta|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187134&template=0>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Confidential Computing API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-confidentialcomputing>`_
      - preview
      - |PyPI-google-cloud-confidentialcomputing|
@@ -1356,6 +1356,12 @@ Libraries
      - |PyPI-google-maps-geocode|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:188871>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=188871&template=788907>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Identity and Access Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/grpc-google-iam-v1>`_
+     - preview
+     - |PyPI-grpc-google-iam-v1|
+     - `API Issues <https://issuetracker.google.com/savedsearches/559761>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187161>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Infrastructure Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-config>`_
      - preview
@@ -1615,12 +1621,6 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559663>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187078>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-bigquery>`_
-     - preview
-     - |PyPI-sqlalchemy-bigquery|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `SaaS Runtime API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-saasplatform-saasservicemgmt>`_
      - preview
      - |PyPI-google-cloud-saasplatform-saasservicemgmt|
@@ -1812,8 +1812,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
-.. |PyPI-google-cloud-compute-v1beta| image:: https://img.shields.io/pypi/v/google-cloud-compute-v1beta.svg
-     :target: https://pypi.org/project/google-cloud-compute-v1beta
 .. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
      :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
@@ -1870,8 +1868,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
-.. |PyPI-grpc-google-iam-v1| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
-     :target: https://pypi.org/project/grpc-google-iam-v1
 .. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
      :target: https://pypi.org/project/google-cloud-iap
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
@@ -1950,6 +1946,8 @@ Libraries
      :target: https://pypi.org/project/google-resumable-media
 .. |PyPI-google-cloud-retail| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
      :target: https://pypi.org/project/google-cloud-retail
+.. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
+     :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-scheduler| image:: https://img.shields.io/pypi/v/google-cloud-scheduler.svg
      :target: https://pypi.org/project/google-cloud-scheduler
 .. |PyPI-google-cloud-secret-manager| image:: https://img.shields.io/pypi/v/google-cloud-secret-manager.svg
@@ -2110,6 +2108,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-hypercomputecluster
 .. |PyPI-google-cloud-commerce-consumer-procurement| image:: https://img.shields.io/pypi/v/google-cloud-commerce-consumer-procurement.svg
      :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement
+.. |PyPI-google-cloud-compute-v1beta| image:: https://img.shields.io/pypi/v/google-cloud-compute-v1beta.svg
+     :target: https://pypi.org/project/google-cloud-compute-v1beta
 .. |PyPI-google-cloud-confidentialcomputing| image:: https://img.shields.io/pypi/v/google-cloud-confidentialcomputing.svg
      :target: https://pypi.org/project/google-cloud-confidentialcomputing
 .. |PyPI-google-cloud-configdelivery| image:: https://img.shields.io/pypi/v/google-cloud-configdelivery.svg
@@ -2170,6 +2170,8 @@ Libraries
      :target: https://pypi.org/project/google-geo-type
 .. |PyPI-google-maps-geocode| image:: https://img.shields.io/pypi/v/google-maps-geocode.svg
      :target: https://pypi.org/project/google-maps-geocode
+.. |PyPI-grpc-google-iam-v1| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
+     :target: https://pypi.org/project/grpc-google-iam-v1
 .. |PyPI-google-cloud-config| image:: https://img.shields.io/pypi/v/google-cloud-config.svg
      :target: https://pypi.org/project/google-cloud-config
 .. |PyPI-google-cloud-kms-inventory| image:: https://img.shields.io/pypi/v/google-cloud-kms-inventory.svg
@@ -2256,8 +2258,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-run
 .. |PyPI-google-cloud-runtimeconfig| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
      :target: https://pypi.org/project/google-cloud-runtimeconfig
-.. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
-     :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-saasplatform-saasservicemgmt| image:: https://img.shields.io/pypi/v/google-cloud-saasplatform-saasservicemgmt.svg
      :target: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt
 .. |PyPI-google-cloud-securesourcemanager| image:: https://img.shields.io/pypi/v/google-cloud-securesourcemanager.svg

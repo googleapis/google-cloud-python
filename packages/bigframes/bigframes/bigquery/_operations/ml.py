@@ -26,6 +26,7 @@ import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base
 import bigframes.session
+import bigframes.core.col as col
 from bigframes.bigquery._operations import utils
 
 

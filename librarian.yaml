@@ -1619,7 +1619,6 @@ libraries:
       - path: google/cloud/maintenance/api/v1beta
     description_override: The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.
     python:
-      name_pretty_override: Maintenance API
       default_version: v1
   - name: google-cloud-managed-identities
     version: 1.15.0
@@ -2958,7 +2957,6 @@ libraries:
         - google/logging/type
         - google/rpc/context
       name_pretty_override: Google APIs Common Protos
-      product_documentation_override: https://github.com/googleapis/googleapis/tree/master/google
       client_documentation_override: https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos
       default_version: apiVersion
   - name: grafeas
