@@ -1,5 +1,5 @@
 {
-    "client_documentation": "https://github.com/googleapis/sphinx-docfx-yaml",
+    "client_documentation": "https://googleapis.dev/python/gcp-sphinx-docfx-yaml/latest",
     "distribution_name": "gcp-sphinx-docfx-yaml",
     "language": "python",
     "library_type": "OTHER",

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.10.2-0.20260424173850-5f413ac088a6
+version: v0.11.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -58,20 +58,17 @@ libraries:
     python:
       library_type: INTEGRATION
       name_pretty_override: A unified Python API in BigQuery
-      client_documentation_override: https://cloud.google.com/python/docs/reference/bigframes/latest
   - name: bigquery-magics
     version: 0.14.0
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for Jupyter and IPython
-      client_documentation_override: https://googleapis.dev/python/bigquery-magics/latest/
   - name: db-dtypes
     version: 1.5.1
     description_override: Pandas extension data types for data from SQL systems such as BigQuery.
     python:
       library_type: INTEGRATION
       name_pretty_override: Pandas Data Types for SQL systems (BigQuery, Spanner)
-      client_documentation_override: https://googleapis.dev/python/db-dtypes/latest/index.html
   - name: django-google-spanner
     version: 4.0.3
     python:
@@ -82,14 +79,12 @@ libraries:
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
-      client_documentation_override: https://gapic-generator-python.readthedocs.io/en/stable/
       skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
     version: 3.2.5
     python:
       library_type: OTHER
       name_pretty_override: Sphinx DocFX YAML Generator
-      client_documentation_override: https://github.com/googleapis/sphinx-docfx-yaml
       skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
@@ -1733,7 +1728,6 @@ libraries:
     python:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
-      client_documentation_override: https://googleapis.dev/python/python-ndb/latest
       metadata_name_override: python-ndb
       skip_readme_copy: true
   - name: google-cloud-netapp
@@ -2374,7 +2368,6 @@ libraries:
     python:
       library_type: OTHER
       name_pretty_override: Python Test Utils for Google Cloud
-      client_documentation_override: https://github.com/googleapis/google-cloud-python/packages/google-cloud-testutils
       metadata_name_override: google-cloud-test-utils
   - name: google-cloud-texttospeech
     version: 2.36.0
@@ -2601,7 +2594,6 @@ libraries:
     python:
       library_type: OTHER
       name_pretty_override: A python wrapper of the C library 'Google CRC32C'
-      client_documentation_override: https://github.com/googleapis/python-crc32c
       skip_readme_copy: true
   - name: google-geo-type
     version: 0.6.0
@@ -2987,7 +2979,6 @@ libraries:
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
-      client_documentation_override: https://googleapis.dev/python/pandas-gbq/latest/
       skip_readme_copy: true
   - name: proto-plus
     version: 1.27.2
@@ -3000,11 +2991,9 @@ libraries:
     python:
       library_type: INTEGRATION
       name_pretty_override: SQLAlchemy dialect for BigQuery
-      client_documentation_override: https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html
   - name: sqlalchemy-spanner
     version: 1.17.3
     python:
       library_type: INTEGRATION
       name_pretty_override: Spanner dialect for SQLAlchemy
-      client_documentation_override: https://github.com/googleapis/python-spanner-sqlalchemy
       skip_readme_copy: true

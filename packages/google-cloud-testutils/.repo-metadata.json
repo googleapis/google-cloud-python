@@ -1,5 +1,5 @@
 {
-    "client_documentation": "https://github.com/googleapis/google-cloud-python/packages/google-cloud-testutils",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-test-utils/latest",
     "distribution_name": "google-cloud-testutils",
     "language": "python",
     "library_type": "OTHER",

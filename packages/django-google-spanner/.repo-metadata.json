@@ -1,8 +1,6 @@
 {
-    "api_shortname": "django-google-spanner",
     "client_documentation": "https://googleapis.dev/python/django-google-spanner/latest",
     "distribution_name": "django-google-spanner",
-    "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open",
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "django-google-spanner",
