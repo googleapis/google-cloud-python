@@ -50,7 +50,7 @@ PREVIEW_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # Fallback to current dir if the env var isn't set
-REPO_ROOT = os.getenv("GOOGLE_CLOUD_PYTHON_CHECKOUT_DIR", f"{CURRENT_DIRECTORY}/../../..")
+REPO_ROOT = os.getenv("GOOGLE_CLOUD_PYTHON_CHECKOUT_DIR", f"{CURRENT_DIRECTORY}/../")
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-iam-credentials"
@@ -592,11 +592,11 @@ def core_deps_from_source(session, protobuf_implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        f"{REPO_ROOT}/../googleapis-common-protos",
-        f"{REPO_ROOT}/../google-api-core",
-        f"{REPO_ROOT}/../google-auth",
-        f"{REPO_ROOT}/../grpc-google-iam-v1",
-        f"{CURRENT_DIRECTORY}/../proto-plus",
+        f"{REPO_ROOT}/packages/googleapis-common-protos",
+        f"{REPO_ROOT}/packages/google-api-core",
+        f"{REPO_ROOT}/packages/google-auth",
+        f"{REPO_ROOT}/packages/grpc-google-iam-v1",
+        f"{REPO_ROOT}/packages/proto-plus",
     ]
 
     for dep in core_dependencies_from_source:
