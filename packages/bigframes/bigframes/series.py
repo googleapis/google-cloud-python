@@ -353,6 +353,16 @@ class Series:
         struct_type = typing.cast(pa.StructType, self._dtype.pyarrow_dtype)
         return [struct_type.field(i).name for i in range(struct_type.num_fields)]
 
+    @property
+    def sql(self) -> str:
+        """Compiles this Series's expression tree to SQL.
+
+        Returns:
+            A string representing the compiled SQL.
+        """
+
+        return self.to_frame().sql
+
     @validations.requires_ordering()
     def transpose(self) -> Series:
         return self
