@@ -99,12 +99,14 @@ from bigframes.pandas import api
 from bigframes.pandas.core.api import to_timedelta
 from bigframes.pandas.io.api import (
     _read_gbq_colab,
+    from_glob_path,
     read_arrow,
     read_avro,
     read_csv,
     read_gbq,
     read_gbq_function,
     read_gbq_model,
+    read_gbq_object_table,
     read_gbq_query,
     read_gbq_table,
     read_json,
@@ -453,6 +455,7 @@ _functions = [
     _read_gbq_colab,
     read_gbq_function,
     read_gbq_model,
+    read_gbq_object_table,
     read_gbq_query,
     read_gbq_table,
     read_json,
@@ -463,6 +466,7 @@ _functions = [
     remote_function,
     to_datetime,
     to_timedelta,
+    from_glob_path,
 ]
 
 # Use __all__ to let type checkers know what is part of the public API.
@@ -488,6 +492,7 @@ __all__ = [
     "_read_gbq_colab",
     "read_gbq_function",
     "read_gbq_model",
+    "read_gbq_object_table",
     "read_gbq_query",
     "read_gbq_table",
     "read_json",
@@ -498,6 +503,7 @@ __all__ = [
     "remote_function",
     "to_datetime",
     "to_timedelta",
+    "from_glob_path",
     # Other names
     "api",
     # pandas dtype attributes
