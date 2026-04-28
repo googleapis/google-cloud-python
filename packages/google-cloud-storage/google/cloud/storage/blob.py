@@ -421,7 +421,7 @@ class Blob(_PropertyMixin):
             raise ValueError("URI pattern must be gs://bucket/object")
         bucket = Bucket(client, name=match.group("bucket_name"))
         return cls(match.group("object_name"), bucket)
-    
+
     @property
     def uri(self) -> str:
         """Get the URI associated to the blob object.
@@ -434,7 +434,7 @@ class Blob(_PropertyMixin):
             uri = "gs://bucket/object"
             blob = Blob.from_uri(uri, client=client)
             assert blob.uri == uri
-        
+
         :rtype: str
         :returns: The blob uri.
         """

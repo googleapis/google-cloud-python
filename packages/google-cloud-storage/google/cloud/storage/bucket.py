@@ -815,7 +815,7 @@ class Bucket(_PropertyMixin):
             raise ValueError("URI scheme must be gs")
 
         return cls(client, name=netloc)
-    
+
     @property
     def uri(self) -> str:
         """Get the URI associated to the bucket object.
@@ -828,7 +828,7 @@ class Bucket(_PropertyMixin):
             uri = "gs://bucket"
             bucket = Bucket.from_uri(uri, client=client)
             assert bucket.uri == uri
-        
+
         :rtype: str
         :returns: The bucket uri.
         """

@@ -4577,13 +4577,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
         self.assertEqual(bucket.uri, uri)
-    
+
     def test_get_uri_from_bucket_w_unset_bucket_name(self):
         from google.cloud.storage.bucket import Bucket
 
         client = self._make_client()
         bucket = self._make_one(name=None)
-        with pytest.raises(ValueError, match="Bucket name must be set to generate a URI."):
+        with pytest.raises(
+            ValueError, match="Bucket name must be set to generate a URI."
+        ):
             bucket.uri
 
     @mock.patch("warnings.warn")
