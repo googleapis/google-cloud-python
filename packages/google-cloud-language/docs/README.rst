@@ -14,9 +14,9 @@ Python Client for Natural Language
    :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
-.. _Natural Language: https://cloud.google.com/natural-language/docs/
+.. _Natural Language: https://cloud.google.com/natural-language/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/natural-language/docs/
+.. _Product Documentation:  https://cloud.google.com/natural-language/docs
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Natural Language.:  https://cloud.google.com/natural-language/docs/
+.. _Enable the Natural Language.:  https://cloud.google.com/natural-language/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Natural Language Product documentation:  https://cloud.google.com/natural-language/docs/
+.. _Natural Language Product documentation:  https://cloud.google.com/natural-language/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

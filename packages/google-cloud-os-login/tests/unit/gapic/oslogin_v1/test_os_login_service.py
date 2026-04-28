@@ -56,9 +56,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.oslogin_v1.common.types import common
 from google.oauth2 import service_account
 
+from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.services.os_login_service import (
     OsLoginServiceAsyncClient,
     OsLoginServiceClient,

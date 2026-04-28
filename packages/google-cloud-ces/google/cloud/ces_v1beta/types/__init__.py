@@ -194,6 +194,11 @@ from .evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsResponse,
+    ExportEvaluationRunsResponse,
+    ExportEvaluationsRequest,
+    ExportEvaluationsResponse,
+    ExportOptions,
     GenerateEvaluationOperationMetadata,
     GenerateEvaluationRequest,
     GetEvaluationDatasetRequest,
@@ -264,6 +269,9 @@ from .mcp_tool import (
 from .mcp_toolset import (
     McpToolset,
 )
+from .mocks import (
+    MockedToolCall,
+)
 from .omnichannel import (
     Omnichannel,
     OmnichannelIntegrationConfig,
@@ -301,6 +309,7 @@ from .session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -484,6 +493,11 @@ __all__ = (
     "DeleteEvaluationRunOperationMetadata",
     "DeleteEvaluationRunRequest",
     "DeleteScheduledEvaluationRunRequest",
+    "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsResponse",
+    "ExportEvaluationsRequest",
+    "ExportEvaluationsResponse",
+    "ExportOptions",
     "GenerateEvaluationOperationMetadata",
     "GenerateEvaluationRequest",
     "GetEvaluationDatasetRequest",
@@ -535,6 +549,7 @@ __all__ = (
     "Guardrail",
     "McpTool",
     "McpToolset",
+    "MockedToolCall",
     "Omnichannel",
     "OmnichannelIntegrationConfig",
     "OmnichannelOperationMetadata",
@@ -554,6 +569,7 @@ __all__ = (
     "GoAway",
     "InputAudioConfig",
     "InterruptionSignal",
+    "MockConfig",
     "OutputAudioConfig",
     "RecognitionResult",
     "RunSessionRequest",

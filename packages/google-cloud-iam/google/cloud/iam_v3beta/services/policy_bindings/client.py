@@ -757,7 +757,7 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
     ) -> operation.Operation:
         r"""Creates a policy binding and returns a long-running
         operation. Callers will need the IAM permissions on both
-        the policy and target. Once the binding is created, the
+        the policy and target. After the binding is created, the
         policy is applied to the target.
 
         .. code-block:: python
@@ -1038,11 +1038,8 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
     ) -> operation.Operation:
         r"""Updates a policy binding and returns a long-running
         operation. Callers will need the IAM permissions on the
-        policy and target in the binding to update, and the IAM
-        permission to remove the existing policy from the
-        binding. Target is immutable and cannot be updated. Once
-        the binding is updated, the new policy is applied to the
-        target.
+        policy and target in the binding to update. Target and
+        policy are immutable and cannot be updated.
 
         .. code-block:: python
 
@@ -1186,7 +1183,7 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
     ) -> operation.Operation:
         r"""Deletes a policy binding and returns a long-running
         operation. Callers will need the IAM permissions on both
-        the policy and target. Once the binding is deleted, the
+        the policy and target. After the binding is deleted, the
         policy no longer applies to the target.
 
         .. code-block:: python

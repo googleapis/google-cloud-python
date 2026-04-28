@@ -22,9 +22,10 @@ For more information, see the README.rst under /spanner.
 
 import time
 
-from google.cloud import spanner
 from google.iam.v1 import policy_pb2
 from google.type import expr_pb2
+
+from google.cloud import spanner
 
 OPERATION_TIMEOUT_SECONDS = 240
 
@@ -293,8 +294,9 @@ def create_database_with_default_leader(instance_id, database_id, default_leader
             AlbumTitle   STRING(MAX)
         ) PRIMARY KEY (SingerId, AlbumId),
         INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
-            "ALTER DATABASE {}"
-            " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader),
+            "ALTER DATABASE {} SET OPTIONS (default_leader = '{}')".format(
+                database_id, default_leader
+            ),
         ],
     )
     operation = database.create()
@@ -806,8 +808,9 @@ def update_database_with_default_leader(instance_id, database_id, default_leader
 
     operation = database.update_ddl(
         [
-            "ALTER DATABASE {}"
-            " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader)
+            "ALTER DATABASE {} SET OPTIONS (default_leader = '{}')".format(
+                database_id, default_leader
+            )
         ]
     )
     operation.result(OPERATION_TIMEOUT_SECONDS)

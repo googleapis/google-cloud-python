@@ -40,9 +40,9 @@ import datetime
 
 from google.api_core import datetime_helpers
 from google.cloud.exceptions import Conflict, NotFound
+
 from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
 from google.cloud.runtimeconfig.exceptions import Error
-
 
 STATE_UNSPECIFIED = "VARIABLE_STATE_UNSPECIFIED"
 STATE_UPDATED = "UPDATED"

@@ -17,12 +17,15 @@
 
 import concurrent.futures
 import gc
+
 import pytest
+
 from google.cloud.bigtable.data import exceptions
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query.metadata import (
     _pb_metadata_to_metadata_types,
 )
+
 from ..sql_helpers import chunked_responses, column, int64_type, int_val, metadata
 
 try:

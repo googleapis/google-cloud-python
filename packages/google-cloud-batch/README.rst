@@ -3,7 +3,7 @@ Python Client for Cloud Batch
 
 |preview| |pypi| |versions|
 
-`Cloud Batch`_: 
+`Cloud Batch`_: An API to manage the running of Batch resources on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

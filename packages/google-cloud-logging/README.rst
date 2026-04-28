@@ -14,9 +14,9 @@ Python Client for Cloud Logging API
    :target: https://pypi.org/project/google-cloud-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
    :target: https://pypi.org/project/google-cloud-logging/
-.. _Cloud Logging API: https://cloud.google.com/logging/docs
+.. _Cloud Logging API: https://cloud.google.com/logging/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/logging/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/logging/docs
+.. _Product Documentation:  https://cloud.google.com/logging/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Logging API.:  https://cloud.google.com/logging/docs
+.. _Enable the Cloud Logging API.:  https://cloud.google.com/logging/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 For an interactive walkthrough on how to use this library in a python application, click the Guide Me button below:
@@ -111,7 +111,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Logging API Product documentation:  https://cloud.google.com/logging/docs
+.. _Cloud Logging API Product documentation:  https://cloud.google.com/logging/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

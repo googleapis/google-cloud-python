@@ -14,9 +14,9 @@ Python Client for Access Approval
    :target: https://pypi.org/project/google-cloud-access-approval/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-approval.svg
    :target: https://pypi.org/project/google-cloud-access-approval/
-.. _Access Approval: https://cloud.google.com/access-approval
+.. _Access Approval: https://cloud.google.com/access-approval/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/accessapproval/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/access-approval
+.. _Product Documentation:  https://cloud.google.com/access-approval/docs
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Access Approval.:  https://cloud.google.com/access-approval
+.. _Enable the Access Approval.:  https://cloud.google.com/access-approval/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Access Approval Product documentation:  https://cloud.google.com/access-approval
+.. _Access Approval Product documentation:  https://cloud.google.com/access-approval/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

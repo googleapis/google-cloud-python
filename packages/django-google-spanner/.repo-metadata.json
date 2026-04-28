@@ -1,14 +1,12 @@
 {
-    "name": "django-google-spanner",
-    "name_pretty": "Cloud Spanner Django",
-    "product_documentation": "https://cloud.google.com/spanner/docs/",
+    "api_shortname": "django-google-spanner",
     "client_documentation": "https://googleapis.dev/python/django-google-spanner/latest",
+    "distribution_name": "django-google-spanner",
     "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open",
-    "release_level": "stable",
     "language": "python",
     "library_type": "INTEGRATION",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "django-google-spanner",
-    "requires_billing": true,
-    "api_shortname": "django-google-spanner"
+    "name": "django-google-spanner",
+    "name_pretty": "Cloud Spanner Django",
+    "release_level": "stable",
+    "repo": "googleapis/google-cloud-python"
 }

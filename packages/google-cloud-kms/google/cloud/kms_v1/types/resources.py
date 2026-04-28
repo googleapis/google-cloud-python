@@ -319,18 +319,19 @@ class CryptoKey(proto.Message):
             [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in
             the future.
         key_access_justifications_policy (google.cloud.kms_v1.types.KeyAccessJustificationsPolicy):
-            Optional. The policy used for Key Access
-            Justifications Policy Enforcement. If this field
-            is present and this key is enrolled in Key
-            Access Justifications Policy Enforcement, the
-            policy will be evaluated in encrypt, decrypt,
-            and sign operations, and the operation will fail
-            if rejected by the policy. The policy is defined
-            by specifying zero or more allowed justification
-            codes.
+            Optional. The policy used for Key Access Justifications
+            Policy Enforcement. If this field is present and this key is
+            enrolled in Key Access Justifications Policy Enforcement,
+            the policy will be evaluated in encrypt, decrypt, and sign
+            operations, and the operation will fail if rejected by the
+            policy. The policy is defined by specifying zero or more
+            allowed justification codes.
             https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes
-            By default, this field is absent, and all
-            justification codes are allowed.
+            By default, this field is absent, and all justification
+            codes are allowed. If the
+            ``key_access_justifications_policy.allowed_access_reasons``
+            is empty (zero allowed justification code), all encrypt,
+            decrypt, and sign operations will fail.
     """
 
     class CryptoKeyPurpose(proto.Enum):
@@ -1573,16 +1574,20 @@ class KeyAccessJustificationsPolicy(proto.Message):
     specifies zero or more allowed
     [AccessReason][google.cloud.kms.v1.AccessReason] values for encrypt,
     decrypt, and sign operations on a
-    [CryptoKey][google.cloud.kms.v1.CryptoKey].
+    [CryptoKey][google.cloud.kms.v1.CryptoKey] or
+    [KeyAccessJustificationsPolicyConfig][google.cloud.kms.v1.KeyAccessJustificationsPolicyConfig]
+    (the default Key Access Justifications policy).
 
     Attributes:
         allowed_access_reasons (MutableSequence[google.cloud.kms_v1.types.AccessReason]):
             The list of allowed reasons for access to a
-            [CryptoKey][google.cloud.kms.v1.CryptoKey]. Zero allowed
-            access reasons means all encrypt, decrypt, and sign
-            operations for the
-            [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with
-            this policy will fail.
+            [CryptoKey][google.cloud.kms.v1.CryptoKey]. Note that empty
+            allowed_access_reasons has a different meaning depending on
+            where this message appears. If this is under
+            [KeyAccessJustificationsPolicyConfig][google.cloud.kms.v1.KeyAccessJustificationsPolicyConfig],
+            it means allow-all. If this is under
+            [CryptoKey][google.cloud.kms.v1.CryptoKey], it means
+            deny-all.
     """
 
     allowed_access_reasons: MutableSequence["AccessReason"] = proto.RepeatedField(
