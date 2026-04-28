@@ -818,9 +818,7 @@ def if_(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    optimization_mode: Literal[
-        "minimize_cost", "maximize_performance"
-    ] = "minimize_cost",
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
     max_error_ratio: float = 1.0,
 ) -> series.Series:
     """
@@ -855,10 +853,10 @@ def if_(
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
             best cost to quality tradeoff for the task.
-        optimization_mode (Literal["minimize_cost", "maximize_performance"]):
+        optimization_mode (Literal["minimize_cost", "maximize_quality"]):
             Specifies the optimization strategy to use. Supported values are:
             * "minimize_cost" (default): uses a local, distilled model to process the majority of rows, reducing latency and cost.
-            * "maximize_performance": always uses the remote LLM for inference.
+            * "maximize_quality": always uses the remote LLM for inference.
         max_error_ratio (float):
             A float value between 0.0 and 1.0 that contains the maximum acceptable ratio of row-level inference failures to
             rows processed on this function. If this value is exceeded, then the query fails. The default value is 1.0.
