@@ -819,9 +819,9 @@ def if_(
     connection_id: str | None = None,
     endpoint: str | None = None,
     optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
-    max_error_ratio: float = 1.0,
-) -> series.Series:
     max_error_ratio: float | None = None,
+) -> series.Series:
+    """
     Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
     provides optimization such that not all rows are evaluated with the LLM.
 
