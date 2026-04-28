@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 
+from typing import Sequence
+
 import bigframes.core.col
 import bigframes.core.expression
 from bigframes import dtypes
@@ -89,7 +91,7 @@ def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:
 
 
 def hparam_candidates(
-    candidates: list[float | str],
+    candidates: Sequence[float | str],
 ) -> bigframes.core.col.Expression:
     """
     Specifies the set of discrete values for the hyperparameter.
@@ -102,14 +104,14 @@ def hparam_candidates(
         >>> optimizer = bbq.hparam_candidates(['ADAGRAD', 'SGD', 'FTRL'])
 
     Args:
-        candidates (list):
+        candidates (Sequence[float | str]):
             The set of discrete values for the hyperparameter.
 
     Returns:
         bigframes.pandas.api.typing.Expression:
             An expression that can be used in model options.
     """
-    candidates_expr = bigframes.core.expression.const(candidates)
+    candidates_expr = bigframes.core.expression.const(tuple(candidates))
 
     op = ops.SqlScalarOp(
         _output_type=dtypes.STRING_DTYPE,
