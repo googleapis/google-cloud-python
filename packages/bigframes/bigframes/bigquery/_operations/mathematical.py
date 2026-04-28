@@ -53,7 +53,7 @@ def rand() -> bigframes.core.col.Expression:
     return bigframes.core.col.Expression(bigframes.core.expression.OpExpression(op, ()))
 
 
-def hparam_range(min: float | int, max: float | int) -> bigframes.core.col.Expression:
+def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:
     """
     Defines the minimum and maximum bounds of the search space of continuous
     values for a hyperparameter.
@@ -89,7 +89,7 @@ def hparam_range(min: float | int, max: float | int) -> bigframes.core.col.Expre
 
 
 def hparam_candidates(
-    candidates: list[float | int | str],
+    candidates: list[float | str],
 ) -> bigframes.core.col.Expression:
     """
     Specifies the set of discrete values for the hyperparameter.
