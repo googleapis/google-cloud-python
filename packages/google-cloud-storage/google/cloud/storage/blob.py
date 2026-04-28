@@ -435,9 +435,13 @@ class Blob(_PropertyMixin):
             blob = Blob.from_uri(uri, client=client)
             assert blob.uri == uri
 
+        :raises :exc:`ValueError` if bucket is not set.
         :rtype: str
         :returns: The blob uri.
         """
+        if self.bucket is None:
+            raise ValueError("Bucket must be set to generate a URI.")
+
         return f"{self.bucket.uri}/{self.name}"
 
     @classmethod

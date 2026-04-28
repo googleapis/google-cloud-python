@@ -829,11 +829,13 @@ class Bucket(_PropertyMixin):
             bucket = Bucket.from_uri(uri, client=client)
             assert bucket.uri == uri
 
+        :raises: :exc:`ValueError` if name is not set.
         :rtype: str
         :returns: The bucket uri.
         """
         if self.name is None:
             raise ValueError("Bucket name must be set to generate a URI.")
+
         return f"gs://{self.name}"
 
     @classmethod

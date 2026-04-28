@@ -4579,9 +4579,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.uri, uri)
 
     def test_get_uri_from_bucket_w_unset_bucket_name(self):
-        from google.cloud.storage.bucket import Bucket
-
-        client = self._make_client()
         bucket = self._make_one(name=None)
         with pytest.raises(
             ValueError, match="Bucket name must be set to generate a URI."
