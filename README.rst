@@ -45,8 +45,6 @@ release.
 * **Alpha** indicates the library is still a work-in-progress and is more 
   likely to get backwards-incompatible updates. (``Development Status :: 3 - Alpha``)
 
-See `versioning`_ for more details.
-
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
 
