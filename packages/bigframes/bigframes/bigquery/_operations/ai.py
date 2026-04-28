@@ -706,6 +706,113 @@ def generate_table(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def embed(
+    content: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    task_type: (
+        Literal[
+            "retrieval_query",
+            "retrieval_document",
+            "semantic_similarity",
+            "classification",
+            "clustering",
+            "question_answering",
+            "fact_verification",
+            "code_retrieval_query",
+        ]
+        | None
+    ) = None,
+    title: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Creates embeddings from text or image data in BigQuery.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+        >>> s = bpd.Series(['dog']) # doctest: +SKIP
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+    Args:
+        content (str | Series):
+            A string literal or a Series (either BigFrames series or pandas Series) that provides the text or image to embed.
+        endpoint (str, optional):
+            A string value that specifies a supported Vertex AI embedding model endpoint to use.
+            The endpoint value that you specify must include the model version, for example,
+            `"text-embedding-005"`. If you specify this parameter, you can't specify the
+            `model` parameter.
+        model (str, optional):
+            A string value that specifies a built-in embedding model. The only supported value is
+            `"embeddinggemma-300m"`. If you specify this parameter, you can't specify the `endpoint`,
+            `title`, `model_params`, or `connection_id` parameters.
+        task_type (str, optional):
+            A string literal that specifies the intended downstream application to help the model
+            produce better quality embeddings. Accepts `"retrieval_query"`, `"retrieval_document"`,
+            `"semantic_similarity"`, `"classification"`, `"clustering"`, `"question_answering"`,
+            `"fact_verification"`, `"code_retrieval_query"`.
+        title (str, optional):
+            A string value that specifies the document title, which the model uses to improve
+            embedding quality. You can only use this parameter if you specify `"retrieval_document"`
+            for the `task_type` value.
+        model_params (Mapping[Any, Any], optional):
+            A JSON literal that provides additional parameters to the model. For example,
+            `{"outputDimensionality": 768}` lets you specify the number of dimensions to use when
+            generating embeddings.
+        connection_id (str, optional):
+            A STRING value specifying the connection to use to communicate with the model, in the
+            format `PROJECT_ID.LOCATION.CONNECTION_ID`. For example, `myproject.us.myconnection`.
+            If not provided, the query uses your end-user credential.
+
+    Returns:
+        bigframes.series.Series: A new struct Series with the result data. The struct contains these fields:
+        * "result": an ARRAY<FLOAT64> value containing the generated embeddings.
+        * "status": a STRING value that contains the API response status for the corresponding row. This value is empty if the operation was successful.
+    """
+
+    if model is not None:
+        if any(x is not None for x in [endpoint, title, model_params, connection_id]):
+            raise ValueError(
+                "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
+            )
+    elif endpoint is None:
+        raise ValueError(
+            "You must specify exactly one of 'endpoint' or 'model' argument."
+        )
+
+    if title is not None and task_type != "retrieval_document":
+        raise ValueError(
+            "You can only use 'title' parameter if you specify retrieval_document for the task_type value."
+        )
+
+    operator = ai_ops.AIEmbed(
+        endpoint=endpoint,
+        model=model,
+        task_type=task_type,
+        title=title,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    if isinstance(content, str):
+        return series.Series([content])._apply_unary_op(operator)
+    elif isinstance(content, pd.Series):
+        return series.Series(content)._apply_unary_op(operator)
+    elif isinstance(content, series.Series):
+        return content._apply_unary_op(operator)
+    else:
+        raise ValueError(f"Unsupported 'content' parameter type: {type(content)}")
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def if_(
     prompt: PROMPT_TYPE,
     *,
@@ -867,6 +974,87 @@ def score(
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def similarity(
+    content1: str | series.Series | pd.Series,
+    content2: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Returns a FLOAT64 value that represents the cosine similarity between the two inputs.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({'word': ['happy', 'sad']})
+        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005') # doctest: +SKIP
+        0    0.916601
+        1    0.660579
+
+    Args:
+        content1 (str | Series):
+            A string or series that provides the first value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        content2 (str | Series):
+            A string or series that provides the second value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the text embedding model.
+            If you specify the model name, such as `'text-embedding-005'`, rather than a URL, then BigQuery ML automatically identifies the model and uses the model's full endpoint.
+        model (str, optional):
+            Specifies a built-in text embedding model. The only supported value is the embeddinggemma-300m model.
+            If you specify this parameter, you can't specify the `endpoint`, `model_params`, or `connection_id` parameters.
+        model_params (Mapping[Any, Any], optional):
+            Provides additional parameters to the model. You can use any of the parameters object fields.
+            One of these fields, `outputDimensionality`, lets you specify the number of dimensions to use when generating embeddings.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+
+    Returns:
+        bigframes.series.Series: A new series of FLOAT64 values representing the cosine similarity.
+    """
+    if model is not None:
+        if any(x is not None for x in [endpoint, model_params, connection_id]):
+            raise ValueError(
+                "If 'model' is specified, you cannot specify 'endpoint', 'model_params', or 'connection_id'."
+            )
+    elif endpoint is None:
+        raise ValueError("You must specify either 'model' or 'endpoint'.")
+
+    operator = ai_ops.AISimilarity(
+        endpoint=endpoint,
+        model=model,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    # Find a unifying session for the subsequent operations.
+    bf_session = None
+    if isinstance(content1, series.Series):
+        bf_session = content1._session
+    elif isinstance(content2, series.Series):
+        bf_session = content2._session
+
+    if isinstance(content1, str) and isinstance(content2, str):
+        content1 = series.Series([content1], session=bf_session)
+        return content1._apply_binary_op(content2, operator)
+    elif isinstance(content1, str):
+        # content2 must be a series
+        content2 = convert.to_bf_series(
+            content2, default_index=None, session=bf_session
+        )
+        return content2._apply_binary_op(content1, operator)
+    else:
+        # content1 must be a series.
+        content1 = convert.to_bf_series(
+            content1, default_index=None, session=bf_session
+        )
+        return content1._apply_binary_op(content2, operator)
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")

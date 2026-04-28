@@ -14,6 +14,7 @@
 
 import collections
 import itertools
+import pytest
 import typing
 
 from google.api import resource_pb2
@@ -21,7 +22,8 @@ from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
-from gapic.schema.wrappers import CommonResource
+from gapic.schema.wrappers import CommonResource, MessageType
+from gapic.schema import wrappers
 
 from test_utils.test_utils import (
     get_method,
@@ -693,3 +695,57 @@ def test_extended_operations_lro_detection():
     # because Service objects can't perform the lookup.
     # Instead we kick that can to the API object and make it do the lookup and verification.
     assert lro.operation_service == "CustomOperations"
+
+
+def test_resource_messages_throws_informative_collision_error():
+    # 1. Create options with explicit colliding resource types AND valid patterns
+    opts_1 = descriptor_pb2.MessageOptions()
+    opts_1.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
+    opts_1.Extensions[resource_pb2.resource].pattern.append("ces/{ces}/tool")
+    
+    opts_2 = descriptor_pb2.MessageOptions()
+    opts_2.Extensions[resource_pb2.resource].type = "workspace.googleapis.com/Tool"
+    opts_2.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}/tool")
+    
+    # 2. Use the test helpers to build the messages
+    msg_1 = make_message("MessageOne", options=opts_1)
+    msg_2 = make_message("MessageTwo", options=opts_2)
+
+    # 3. Build the service with BOTH methods (so the property loops) 
+    # AND visible_resources (so the internal lookups succeed).
+    service = make_service(
+        name="MyService",
+        methods=(
+            make_method("GetToolOne", input_message=msg_1),
+            make_method("GetToolTwo", input_message=msg_2),
+        ),
+        visible_resources={
+            "ces.googleapis.com/Tool": msg_1,
+            "workspace.googleapis.com/Tool": msg_2,
+        }
+    )
+
+    # 4. Assert that asking the service for its resources throws the custom error
+    expected_error_regex = r"(?s)Namespace collision detected.*--resource-name-alias"
+    
+    with pytest.raises(ValueError, match=expected_error_regex):
+        _ = service.resource_messages
+
+
+def test_resource_messages_raises_on_malformed_typeless_resource():
+    # 1. Create a malformed resource: it has a pattern, but no type!
+    opts = descriptor_pb2.MessageOptions()
+    opts.Extensions[resource_pb2.resource].pattern.append("workspaces/{workspace}")
+    
+    malformed_msg = make_message("MalformedMessage", options=opts)
+    
+    service = make_service(
+        name="MyService",
+        methods=(
+            make_method("DoThing", input_message=malformed_msg),
+        )
+    )
+    
+    # 2. Trigger the property and expect it to fail fast with the AIP-123 URL
+    with pytest.raises(ValueError, match="https://google.aip.dev/123"):
+        _ = service.resource_messages

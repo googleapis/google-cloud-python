@@ -398,8 +398,8 @@ def test_to_json_from_int():
 def test_to_json_from_struct():
     s = bpd.Series(
         [
-            {"project": "pandas", "version": 1},
-            {"project": "numpy", "version": 2},
+            {"version": 1, "project": "pandas"},
+            {"version": 2, "project": "numpy"},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
@@ -410,9 +410,7 @@ def test_to_json_from_struct():
         dtype=dtypes.JSON_DTYPE,
     )
 
-    actual_json = [json.loads(x) for x in actual.to_pandas()]
-    expected_json = [json.loads(x) for x in expected.to_pandas()]
-    assert actual_json == expected_json
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_to_json_string_from_int():
@@ -425,8 +423,8 @@ def test_to_json_string_from_int():
 def test_to_json_string_from_struct():
     s = bpd.Series(
         [
-            {"project": "pandas", "version": 1},
-            {"project": "numpy", "version": 2},
+            {"version": 1, "project": "pandas"},
+            {"version": 2, "project": "numpy"},
         ]
     )
     assert dtypes.is_struct_like(s.dtype)
@@ -437,9 +435,7 @@ def test_to_json_string_from_struct():
         dtype=dtypes.STRING_DTYPE,
     )
 
-    actual_json = [json.loads(x) for x in actual.to_pandas()]
-    expected_json = [json.loads(x) for x in expected.to_pandas()]
-    assert actual_json == expected_json
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_keys():

@@ -1,7 +1,6 @@
 {
     "client_documentation": "https://googleapis.dev/python/proto-plus/latest",
     "distribution_name": "proto-plus",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
     "library_type": "CORE",
     "name": "proto-plus",

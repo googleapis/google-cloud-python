@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from typing import Any
 
 import bigframes_vendored.sqlglot.expressions as sge
 
@@ -23,6 +24,8 @@ from bigframes.core.compile.sqlglot import expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_nary_op = expression_compiler.expression_compiler.register_nary_op
+register_binary_op = expression_compiler.expression_compiler.register_binary_op
+register_unary_op = expression_compiler.expression_compiler.register_unary_op
 
 
 @register_nary_op(ops.AIGenerate, pass_op=True)
@@ -53,6 +56,13 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
     return sge.func("AI.GENERATE_DOUBLE", *args)
 
 
+@register_unary_op(ops.AIEmbed, pass_op=True)
+def _(expr: TypedExpr, op: ops.AIEmbed) -> sge.Expression:
+    args: list[Any] = [expr.expr] + _construct_named_args(op)
+
+    return sge.func("AI.EMBED", *args)
+
+
 @register_nary_op(ops.AIIf, pass_op=True)
 def _(*exprs: TypedExpr, op: ops.AIIf) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
@@ -76,6 +86,16 @@ def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
     return sge.func("AI.SCORE", *args)
 
 
+@register_binary_op(ops.AISimilarity, pass_op=True)
+def _(content1: TypedExpr, content2: TypedExpr, op: ops.AISimilarity) -> sge.Expression:
+    args = [
+        sge.Kwarg(this="content1", expression=content1.expr),
+        sge.Kwarg(this="content2", expression=content2.expr),
+    ] + _construct_named_args(op)
+
+    return sge.func("AI.SIMILARITY", *args)
+
+
 def _construct_prompt(
     exprs: tuple[TypedExpr, ...],
     prompt_context: tuple[str | None, ...],
@@ -94,7 +114,7 @@ def _construct_prompt(
     return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
 
 
-def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
+def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
     args = []
 
     op_args = asdict(op)

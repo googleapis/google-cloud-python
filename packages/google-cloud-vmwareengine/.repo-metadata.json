@@ -5,7 +5,6 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/vmwareengine/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-vmwareengine",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "vmwareengine",

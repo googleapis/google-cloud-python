@@ -14,9 +14,9 @@ Python Client for Config Delivery API
    :target: https://pypi.org/project/google-cloud-configdelivery/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-configdelivery.svg
    :target: https://pypi.org/project/google-cloud-configdelivery/
-.. _Config Delivery API: https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/reference/rest
+.. _Config Delivery API: https://cloud.google.com/kubernetes-engine/enterprise/config-sync/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-configdelivery/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/reference/rest
+.. _Product Documentation:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Config Delivery API.:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/reference/rest
+.. _Enable the Config Delivery API.:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Config Delivery API Product documentation:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/reference/rest
+.. _Config Delivery API Product documentation:  https://cloud.google.com/kubernetes-engine/enterprise/config-sync/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

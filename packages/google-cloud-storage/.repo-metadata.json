@@ -10,7 +10,7 @@
     "library_type": "GAPIC_MANUAL",
     "name": "storage",
     "name_pretty": "Google Cloud Storage",
-    "product_documentation": "https://cloud.google.com/storage",
+    "product_documentation": "https://cloud.google.com/storage/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

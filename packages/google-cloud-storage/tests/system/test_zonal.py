@@ -11,13 +11,12 @@ import google_crc32c
 import pytest
 from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
+# current library imports
+from google.cloud import kms
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     AsyncAppendableObjectWriter,
 )
-
-# current library imports
-from google.cloud import kms
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,

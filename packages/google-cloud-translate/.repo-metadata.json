@@ -10,7 +10,7 @@
     "library_type": "GAPIC_COMBO",
     "name": "translate",
     "name_pretty": "Cloud Translation",
-    "product_documentation": "https://cloud.google.com/translate/docs/",
+    "product_documentation": "https://cloud.google.com/translate/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }
