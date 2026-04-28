@@ -1,5 +1,5 @@
 {
-    "client_documentation": "https://github.com/googleapis/python-spanner-sqlalchemy",
+    "client_documentation": "https://googleapis.dev/python/sqlalchemy-spanner/latest",
     "distribution_name": "sqlalchemy-spanner",
     "language": "python",
     "library_type": "INTEGRATION",

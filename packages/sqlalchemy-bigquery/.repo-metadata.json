@@ -1,5 +1,5 @@
 {
-    "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html",
+    "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest",
     "distribution_name": "sqlalchemy-bigquery",
     "language": "python",
     "library_type": "INTEGRATION",

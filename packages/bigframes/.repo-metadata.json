@@ -1,5 +1,5 @@
 {
-    "client_documentation": "https://cloud.google.com/python/docs/reference/bigframes/latest",
+    "client_documentation": "https://googleapis.dev/python/bigframes/latest",
     "distribution_name": "bigframes",
     "language": "python",
     "library_type": "INTEGRATION",

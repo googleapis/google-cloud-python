@@ -14,42 +14,38 @@ of a package.
 
 .. _development status classifier: https://pypi.org/classifiers/
 
-General Availability
---------------------
+Stable
+------
 
-**GA** (general availability) indicates that the client library for a
-particular service is stable, and that the code surface will not change in
+**Stable** (general availability) indicates that the client library for a
+particular service is GA, and that the code surface will not change in
 backwards-incompatible ways unless either absolutely necessary (e.g. because
 of critical security issues) or with an extensive deprecation period.
-Issues and requests against GA libraries are addressed with the highest
+Issues and requests against stable libraries are addressed with the highest
 priority.
 
-GA libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
+Stable libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
 
 .. note::
 
-    Sub-components of GA libraries explicitly marked as beta in the
+    Sub-components of stable libraries explicitly marked as beta in the
     import path (e.g. ``google.cloud.language_v1beta2``) should be considered
-    to be beta.
+    to be preview.
 
-Beta Support
-------------
+Preview
+-------
 
-**Beta** indicates that the client library for a particular service is
-mostly stable and is being prepared for release. Issues and requests
-against beta libraries are addressed with a higher priority.
+**Preview** indicates that the client library for a particular service is
+under development—either in **Beta** or **Alpha**—and is being prepared for 
+release. 
 
-Beta libraries have development status classifier ``Development Status :: 4 - Beta``.
+* **Beta** indicates the library is mostly stable. Issues and requests 
+  against beta libraries are addressed with a higher priority. 
+  (``Development Status :: 4 - Beta``)
+* **Alpha** indicates the library is still a work-in-progress and is more 
+  likely to get backwards-incompatible updates. (``Development Status :: 3 - Alpha``)
 
-Alpha Support
--------------
-
-**Alpha** indicates that the client library for a particular service is
-still a work-in-progress and is more likely to get backwards-incompatible
-updates. See `versioning`_ for more details.
-
-
-Alpha libraries have development status classifier ``Development Status :: 3 - Alpha``.
+See `versioning`_ for more details.
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
