@@ -14,9 +14,9 @@ Python Client for API Hub API
    :target: https://pypi.org/project/google-cloud-apihub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apihub.svg
    :target: https://pypi.org/project/google-cloud-apihub/
-.. _API Hub API: https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
+.. _API Hub API: https://cloud.google.com/apigee/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
+.. _Product Documentation:  https://cloud.google.com/apigee/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the API Hub API.:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
+.. _Enable the API Hub API.:  https://cloud.google.com/apigee/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _API Hub API Product documentation:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
+.. _API Hub API Product documentation:  https://cloud.google.com/apigee/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

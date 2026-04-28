@@ -4890,8 +4890,8 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get reporting identity
         settings method over gRPC.
 
-        Returns the singleton data retention settings for
-        this property.
+        Returns the reporting identity settings for this
+        property.
 
         Returns:
             Callable[[~.GetReportingIdentitySettingsRequest],
@@ -4912,6 +4912,39 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
                 )
             )
         return self._stubs["get_reporting_identity_settings"]
+
+    @property
+    def get_user_provided_data_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetUserProvidedDataSettingsRequest],
+        resources.UserProvidedDataSettings,
+    ]:
+        r"""Return a callable for the get user provided data
+        settings method over gRPC.
+
+        Looks up settings related to user-provided data for a
+        property.
+
+        Returns:
+            Callable[[~.GetUserProvidedDataSettingsRequest],
+                    ~.UserProvidedDataSettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_user_provided_data_settings" not in self._stubs:
+            self._stubs["get_user_provided_data_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserProvidedDataSettings",
+                    request_serializer=analytics_admin.GetUserProvidedDataSettingsRequest.serialize,
+                    response_deserializer=resources.UserProvidedDataSettings.deserialize,
+                )
+            )
+        return self._stubs["get_user_provided_data_settings"]
 
     def close(self):
         self._logged_channel.close()

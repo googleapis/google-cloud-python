@@ -287,6 +287,52 @@ class ConfigClient(metaclass=ConfigClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def deployment_group_path(
+        project: str,
+        location: str,
+        deployment_group: str,
+    ) -> str:
+        """Returns a fully-qualified deployment_group string."""
+        return "projects/{project}/locations/{location}/deploymentGroups/{deployment_group}".format(
+            project=project,
+            location=location,
+            deployment_group=deployment_group,
+        )
+
+    @staticmethod
+    def parse_deployment_group_path(path: str) -> Dict[str, str]:
+        """Parses a deployment_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/deploymentGroups/(?P<deployment_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def deployment_group_revision_path(
+        project: str,
+        location: str,
+        deployment_group: str,
+        revision: str,
+    ) -> str:
+        """Returns a fully-qualified deployment_group_revision string."""
+        return "projects/{project}/locations/{location}/deploymentGroups/{deployment_group}/revisions/{revision}".format(
+            project=project,
+            location=location,
+            deployment_group=deployment_group,
+            revision=revision,
+        )
+
+    @staticmethod
+    def parse_deployment_group_revision_path(path: str) -> Dict[str, str]:
+        """Parses a deployment_group_revision path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/deploymentGroups/(?P<deployment_group>.+?)/revisions/(?P<revision>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def preview_path(
         project: str,
         location: str,
@@ -4351,6 +4397,1166 @@ class ConfigClient(metaclass=ConfigClientMeta):
             self._transport.operations_client,
             config.AutoMigrationConfig,
             metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_deployment_group(
+        self,
+        request: Optional[Union[config.GetDeploymentGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> config.DeploymentGroup:
+        r"""Get a DeploymentGroup for a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_get_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.GetDeploymentGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_deployment_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.GetDeploymentGroupRequest, dict]):
+                The request object. The request message for the
+                GetDeploymentGroup method.
+            name (str):
+                Required. The name of the deployment group to retrieve.
+                Format:
+                'projects/{project_id}/locations/{location}/deploymentGroups/{deployment_group}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.config_v1.types.DeploymentGroup:
+                A DeploymentGroup is a collection of
+                DeploymentUnits that in a DAG-like
+                structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.GetDeploymentGroupRequest):
+            request = config.GetDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_deployment_group]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_deployment_group(
+        self,
+        request: Optional[Union[config.CreateDeploymentGroupRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        deployment_group: Optional[config.DeploymentGroup] = None,
+        deployment_group_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup] The
+        newly created DeploymentGroup will be in the ``CREATING`` state
+        and can be retrieved via Get and List calls.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_create_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.CreateDeploymentGroupRequest(
+                    parent="parent_value",
+                    deployment_group_id="deployment_group_id_value",
+                )
+
+                # Make the request
+                operation = client.create_deployment_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.CreateDeploymentGroupRequest, dict]):
+                The request object. A request to create a deployment
+                group
+            parent (str):
+                Required. The parent in whose context the Deployment
+                Group is created. The parent value is in the format:
+                'projects/{project_id}/locations/{location}'
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            deployment_group (google.cloud.config_v1.types.DeploymentGroup):
+                Required. [Deployment Group][] resource to create
+                This corresponds to the ``deployment_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            deployment_group_id (str):
+                Required. The deployment group ID.
+                This corresponds to the ``deployment_group_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.DeploymentGroup` A DeploymentGroup is a collection of DeploymentUnits that in a DAG-like
+                   structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, deployment_group, deployment_group_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.CreateDeploymentGroupRequest):
+            request = config.CreateDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if deployment_group is not None:
+                request.deployment_group = deployment_group
+            if deployment_group_id is not None:
+                request.deployment_group_id = deployment_group_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_deployment_group]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            config.DeploymentGroup,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_deployment_group(
+        self,
+        request: Optional[Union[config.UpdateDeploymentGroupRequest, dict]] = None,
+        *,
+        deployment_group: Optional[config.DeploymentGroup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates a
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_update_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.UpdateDeploymentGroupRequest(
+                )
+
+                # Make the request
+                operation = client.update_deployment_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.UpdateDeploymentGroupRequest, dict]):
+                The request object. A request message for updating a
+                deployment group
+            deployment_group (google.cloud.config_v1.types.DeploymentGroup):
+                Required.
+                [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+                to update.
+
+                The deployment group's ``name`` field is used to
+                identify the resource to be updated. Format:
+                ``projects/{project}/locations/{location}/deploymentGroups/{deployment_group_id}``
+
+                This corresponds to the ``deployment_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask used to specify the fields to be
+                overwritten in the Deployment Group resource by the
+                update.
+
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.DeploymentGroup` A DeploymentGroup is a collection of DeploymentUnits that in a DAG-like
+                   structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [deployment_group, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.UpdateDeploymentGroupRequest):
+            request = config.UpdateDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if deployment_group is not None:
+                request.deployment_group = deployment_group
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_deployment_group]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("deployment_group.name", request.deployment_group.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            config.DeploymentGroup,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_deployment_group(
+        self,
+        request: Optional[Union[config.DeleteDeploymentGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_delete_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.DeleteDeploymentGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_deployment_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.DeleteDeploymentGroupRequest, dict]):
+                The request object. Request message for Delete
+                DeploymentGroup
+            name (str):
+                Required. The name of DeploymentGroup in the format
+                projects/{project_id}/locations/{location_id}/deploymentGroups/{deploymentGroup}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.DeploymentGroup` A DeploymentGroup is a collection of DeploymentUnits that in a DAG-like
+                   structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.DeleteDeploymentGroupRequest):
+            request = config.DeleteDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_deployment_group]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            config.DeploymentGroup,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_deployment_groups(
+        self,
+        request: Optional[Union[config.ListDeploymentGroupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDeploymentGroupsPager:
+        r"""List DeploymentGroups for a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_list_deployment_groups():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ListDeploymentGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_deployment_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.ListDeploymentGroupsRequest, dict]):
+                The request object. The request message for the
+                ListDeploymentGroups method.
+            parent (str):
+                Required. The parent, which owns this collection of
+                deployment groups. Format:
+                'projects/{project_id}/locations/{location}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.config_v1.services.config.pagers.ListDeploymentGroupsPager:
+                The response message for the
+                ListDeploymentGroups method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.ListDeploymentGroupsRequest):
+            request = config.ListDeploymentGroupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_deployment_groups]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDeploymentGroupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def provision_deployment_group(
+        self,
+        request: Optional[Union[config.ProvisionDeploymentGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Provisions a deployment group.
+
+        NOTE: As a first step of this operation, Infra Manager will
+        automatically delete any Deployments that were part of the *last
+        successful*
+        [DeploymentGroupRevision][google.cloud.config.v1.DeploymentGroupRevision]
+        but are *no longer* included in the *current*
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+        definition (e.g., following an ``UpdateDeploymentGroup`` call),
+        along with their actuated resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_provision_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ProvisionDeploymentGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.provision_deployment_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.ProvisionDeploymentGroupRequest, dict]):
+                The request object. The request message for the
+                ProvisionDeploymentGroup method.
+            name (str):
+                Required. The name of the deployment group to provision.
+                Format:
+                'projects/{project_id}/locations/{location}/deploymentGroups/{deployment_group}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.DeploymentGroup` A DeploymentGroup is a collection of DeploymentUnits that in a DAG-like
+                   structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.ProvisionDeploymentGroupRequest):
+            request = config.ProvisionDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.provision_deployment_group
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            config.DeploymentGroup,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def deprovision_deployment_group(
+        self,
+        request: Optional[Union[config.DeprovisionDeploymentGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deprovisions a deployment group.
+
+        NOTE: As a first step of this operation, Infra Manager will
+        automatically delete any Deployments that were part of the *last
+        successful*
+        [DeploymentGroupRevision][google.cloud.config.v1.DeploymentGroupRevision]
+        but are *no longer* included in the *current*
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+        definition (e.g., following an ``UpdateDeploymentGroup`` call),
+        along with their actuated resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_deprovision_deployment_group():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.DeprovisionDeploymentGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.deprovision_deployment_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.DeprovisionDeploymentGroupRequest, dict]):
+                The request object. The request message for the
+                DeprovisionDeploymentGroup method.
+            name (str):
+                Required. The name of the deployment group to
+                deprovision. Format:
+                'projects/{project_id}/locations/{location}/deploymentGroups/{deployment_group}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.DeploymentGroup` A DeploymentGroup is a collection of DeploymentUnits that in a DAG-like
+                   structure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.DeprovisionDeploymentGroupRequest):
+            request = config.DeprovisionDeploymentGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.deprovision_deployment_group
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            config.DeploymentGroup,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_deployment_group_revision(
+        self,
+        request: Optional[Union[config.GetDeploymentGroupRevisionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> config.DeploymentGroupRevision:
+        r"""Gets details about a
+        [DeploymentGroupRevision][google.cloud.config.v1.DeploymentGroupRevision].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_get_deployment_group_revision():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.GetDeploymentGroupRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_deployment_group_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.GetDeploymentGroupRevisionRequest, dict]):
+                The request object. The request message for the
+                GetDeploymentGroupRevision method.
+            name (str):
+                Required. The name of the deployment group revision to
+                retrieve. Format:
+                'projects/{project_id}/locations/{location}/deploymentGroups/{deployment_group}/revisions/{revision}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.config_v1.types.DeploymentGroupRevision:
+                A DeploymentGroupRevision represents a snapshot of a
+                   [DeploymentGroup][google.cloud.config.v1.DeploymentGroup]
+                   at a given point in time, created when a
+                   DeploymentGroup is provisioned or deprovisioned.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.GetDeploymentGroupRevisionRequest):
+            request = config.GetDeploymentGroupRevisionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_deployment_group_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_deployment_group_revisions(
+        self,
+        request: Optional[
+            Union[config.ListDeploymentGroupRevisionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDeploymentGroupRevisionsPager:
+        r"""Lists
+        [DeploymentGroupRevision][google.cloud.config.v1.DeploymentGroupRevision]s
+        in a given
+        [DeploymentGroup][google.cloud.config.v1.DeploymentGroup].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_list_deployment_group_revisions():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ListDeploymentGroupRevisionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_deployment_group_revisions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.ListDeploymentGroupRevisionsRequest, dict]):
+                The request object. The request message for the
+                ListDeploymentGroupRevisions method.
+            parent (str):
+                Required. The parent, which owns this collection of
+                deployment group revisions. Format:
+                'projects/{project_id}/locations/{location}/deploymentGroups/{deployment_group}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.config_v1.services.config.pagers.ListDeploymentGroupRevisionsPager:
+                The response message for the
+                ListDeploymentGroupRevisions method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, config.ListDeploymentGroupRevisionsRequest):
+            request = config.ListDeploymentGroupRevisionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_deployment_group_revisions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDeploymentGroupRevisionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

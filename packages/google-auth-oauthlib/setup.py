@@ -14,9 +14,7 @@
 
 import io
 
-from setuptools import find_namespace_packages
-from setuptools import setup
-
+from setuptools import find_namespace_packages, setup
 
 TOOL_DEPENDENCIES = "click>=6.0.0"
 

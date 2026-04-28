@@ -1360,6 +1360,7 @@ def test_get_product(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = products.Product(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -1378,6 +1379,7 @@ def test_get_product(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -1510,6 +1512,7 @@ async def test_get_product_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             products.Product(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -1529,6 +1532,7 @@ async def test_get_product_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
@@ -2803,6 +2807,7 @@ async def test_get_product_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             products.Product(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 legacy_local=True,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
@@ -2900,6 +2905,7 @@ def test_get_product_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = products.Product(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             legacy_local=True,
             offer_id="offer_id_value",
             content_language="content_language_value",
@@ -2923,6 +2929,7 @@ def test_get_product_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.legacy_local is True
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"

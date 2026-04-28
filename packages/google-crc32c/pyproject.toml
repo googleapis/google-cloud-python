@@ -22,3 +22,4 @@ version = "1.8.0"
 description = "A python wrapper of the C library 'Google CRC32C'"
 readme = "README.md"
 requires-python = ">=3.8"
+license = {text = "Apache-2.0"}

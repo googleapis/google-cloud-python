@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .inventories_common import (
+    InventoryLoyaltyProgram,
     LocalInventoryAttributes,
     RegionalInventoryAttributes,
 )
@@ -33,6 +34,7 @@ from .regionalinventory import (
 )
 
 __all__ = (
+    "InventoryLoyaltyProgram",
     "LocalInventoryAttributes",
     "RegionalInventoryAttributes",
     "DeleteLocalInventoryRequest",

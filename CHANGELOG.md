@@ -76,7 +76,7 @@ Changelogs
 - [google-cloud-datalabeling==1.16.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datalabeling/CHANGELOG.md)
 - [google-cloud-dataplex==2.18.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataplex/CHANGELOG.md)
 - [google-cloud-dataproc-metastore==1.22.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc-metastore/CHANGELOG.md)
-- [google-cloud-dataproc==5.26.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc/CHANGELOG.md)
+- [google-cloud-dataproc==5.27.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc/CHANGELOG.md)
 - [google-cloud-datastream==1.18.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastream/CHANGELOG.md)
 - [google-cloud-deploy==2.10.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-deploy/CHANGELOG.md)
 - [google-cloud-developerconnect==0.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-developerconnect/CHANGELOG.md)

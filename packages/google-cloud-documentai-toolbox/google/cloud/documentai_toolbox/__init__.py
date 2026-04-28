@@ -25,7 +25,14 @@ from .converters import converter
 from .utilities import docai_utilities, gcs_utilities
 from .wrappers import document, entity, page
 
-__all__ = (document, page, entity, converter, docai_utilities, gcs_utilities)
+__all__ = (
+    "document",
+    "page",
+    "entity",
+    "converter",
+    "docai_utilities",
+    "gcs_utilities",
+)
 
 
 class Python37DeprecationWarning(DeprecationWarning):  # pragma: NO COVER

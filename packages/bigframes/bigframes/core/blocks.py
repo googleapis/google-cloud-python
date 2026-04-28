@@ -2796,6 +2796,7 @@ class Block:
                 )
                 block = block.drop_columns([equal_monotonic_id, strict_monotonic_id])
 
+        assert last_result_id is not None
         block, monotonic_result_id = block.apply_binary_op(
             last_result_id,
             last_notna_id,

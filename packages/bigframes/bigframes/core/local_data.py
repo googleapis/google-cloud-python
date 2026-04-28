@@ -33,7 +33,7 @@ import pyarrow.parquet  # type: ignore
 
 import bigframes.core.schema as schemata
 import bigframes.dtypes
-from bigframes.core import pyarrow_utils
+from bigframes.core import identifiers, pyarrow_utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -155,7 +155,7 @@ class ManagedArrowTable:
             return schema, batches
 
     def is_nullable(self, column_id: identifiers.ColumnId) -> bool:
-        return self.data.column(column_id).null_count > 0
+        return self.data.column(column_id.name).null_count > 0
 
     def to_pyarrow_table(
         self,
