@@ -2251,6 +2251,40 @@ class TestClient(unittest.TestCase):
             retry=retry,
         )
 
+    def test_list_blobs_w_filter(self):
+        from google.cloud.storage.bucket import _blobs_page_start, _item_to_blob
+
+        project = "PROJECT"
+        bucket_name = "name"
+        filter_expr = 'custom.foo = "bar"'
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._list_resource = mock.Mock(spec=[])
+        client._bucket_arg_to_bucket = mock.Mock(spec=[])
+        bucket = client._bucket_arg_to_bucket.return_value = mock.Mock(
+            spec=["path", "user_project"],
+        )
+        bucket.path = f"/b/{bucket_name}"
+        bucket.user_project = None
+
+        client.list_blobs(bucket_name, filter=filter_expr)
+
+        expected_extra_params = {
+            "projection": "noAcl",
+            "filter": filter_expr,
+        }
+        client._list_resource.assert_called_once_with(
+            f"/b/{bucket_name}/o",
+            _item_to_blob,
+            page_token=None,
+            max_results=None,
+            extra_params=expected_extra_params,
+            page_start=_blobs_page_start,
+            page_size=None,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
     def test_list_buckets_wo_project(self):
         from google.cloud.exceptions import BadRequest
 

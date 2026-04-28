@@ -1423,6 +1423,7 @@ class Bucket(_PropertyMixin):
         include_folders_as_prefixes=None,
         soft_deleted=None,
         page_size=None,
+        filter=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1521,6 +1522,11 @@ class Bucket(_PropertyMixin):
             (Optional) Maximum number of blobs to return in each page.
             Defaults to a value set by the API.
 
+        :type filter: str
+        :param filter:
+            (Optional) A filter expression used to filter results.
+            See: https://cloud.google.com/storage/docs/json_api/v1/objects/list#filter
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
@@ -1545,6 +1551,7 @@ class Bucket(_PropertyMixin):
                 match_glob=match_glob,
                 include_folders_as_prefixes=include_folders_as_prefixes,
                 soft_deleted=soft_deleted,
+                filter=filter,
             )
 
     def list_notifications(

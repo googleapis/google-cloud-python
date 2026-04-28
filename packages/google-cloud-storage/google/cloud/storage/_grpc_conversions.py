@@ -19,6 +19,7 @@ _BLOB_ATTR_TO_PROTO_FIELD = {
     "content_type": "content_type",
     "metadata": "metadata",
     "kms_key_name": "kms_key",
+    "contexts": "contexts",
 }
 
 

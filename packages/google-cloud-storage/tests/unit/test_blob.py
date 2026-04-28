@@ -6205,6 +6205,51 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.retention.retain_until_time)
         self.assertIn("retention", blob._changes)
 
+    def test_contexts_defaults(self):
+        from google.cloud.storage.blob import ObjectContexts
+
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+
+        contexts = blob.contexts
+
+        self.assertIsInstance(contexts, ObjectContexts)
+        self.assertIs(contexts.blob, blob)
+        self.assertEqual(contexts, {"custom": {}})
+
+    def test_contexts_w_entry(self):
+        from google.cloud.storage.blob import ObjectContexts
+
+        properties = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET, properties=properties)
+
+        contexts = blob.contexts
+
+        self.assertIsInstance(contexts, ObjectContexts)
+        self.assertIs(contexts.blob, blob)
+        self.assertEqual(contexts, properties["contexts"])
+
+    def test_contexts_set_custom_context(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob.contexts.set_custom_context("foo", "bar")
+        self.assertEqual(blob.contexts["custom"]["foo"], {"value": "bar"})
+        self.assertIn("contexts", blob._changes)
+
+    def test_contexts_delete_custom_context(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob.contexts.delete_custom_context("foo")
+        self.assertEqual(blob.contexts["custom"]["foo"], {"delete": True})
+        self.assertIn("contexts", blob._changes)
+
 
 class Test__quote(unittest.TestCase):
     @staticmethod
