@@ -18,11 +18,7 @@ def get_package_subset(packages_dir: str, count: int) -> List[str]:
     Returns:
         A list of package directory names.
     """
-    try:
-        all_packages = [d for d in os.listdir(packages_dir) if os.path.isdir(os.path.join(packages_dir, d))]
-    except FileNotFoundError:
-        print(f"Error: Packages directory not found: {packages_dir}")
-        return []
+    all_packages = [d for d in os.listdir(packages_dir) if os.path.isdir(os.path.join(packages_dir, d))]
         
     if count >= len(all_packages):
         return all_packages
