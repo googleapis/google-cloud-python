@@ -176,8 +176,10 @@ def test_bq_rep_endpoints(bigquery_location):
 
 
 def test_clients_provider_no_location():
+    credentials = mock.create_autospec(google.auth.credentials.Credentials)
+
     with pytest.raises(ValueError, match="Must set location to use regional endpoints"):
-        bigframes.session.clients.ClientsProvider(project="", use_regional_endpoints=True)
+        bigframes.session.clients.ClientsProvider(project="", credentials=credentials, use_regional_endpoints=True)
 
 
 @pytest.mark.parametrize(
@@ -186,12 +188,14 @@ def test_clients_provider_no_location():
     sorted(bigframes.constants.REP_NOT_ENABLED_BIGQUERY_LOCATIONS),
 )
 def test_clients_provider_use_regional_endpoints_non_rep_locations(bigquery_location):
+    credentials = mock.create_autospec(google.auth.credentials.Credentials)
     with pytest.raises(
         ValueError,
         match=f"not .*available in the location {bigquery_location}",
     ):
         bigframes.session.clients.ClientsProvider(
             project="",
+            credentials=credentials,
             location=bigquery_location, 
             use_regional_endpoints=True
         )

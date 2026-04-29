@@ -32,7 +32,6 @@ import google.cloud.resourcemanager_v3
 import google.cloud.storage  # type: ignore
 import requests
 
-import bigframes._config.auth
 import bigframes.constants
 import bigframes.version
 
@@ -47,10 +46,6 @@ _BIGQUERY_REGIONAL_ENDPOINT = "https://bigquery.{location}.rep.googleapis.com"
 # BigQuery Connection and Storage are gRPC APIs, which don't support the
 # https:// protocol in the API endpoint URL.
 _BIGQUERYSTORAGE_REGIONAL_ENDPOINT = "bigquerystorage.{location}.rep.googleapis.com"
-
-
-def _get_default_credentials_with_project():
-    return bigframes._config.auth.get_default_credentials_with_project()
 
 
 def _get_application_names():
@@ -74,9 +69,9 @@ class ClientsProvider:
     def __init__(
         self,
         project: str,
+        credentials: google.auth.credentials.Credentials,
         location: Optional[str] = None,
         use_regional_endpoints: Optional[bool] = None,
-        credentials: Optional[google.auth.credentials.Credentials] = None,
         application_name: Optional[str] = None,
         bq_kms_key_name: Optional[str] = None,
         client_endpoints_override: dict = {},
@@ -85,10 +80,6 @@ class ClientsProvider:
             Tuple[str, requests.adapters.BaseAdapter]
         ] = (),
     ):
-        credentials_project = None
-        if credentials is None:
-            credentials, credentials_project = _get_default_credentials_with_project()
-
         self._application_name = (
             f"{_get_application_names()} {application_name}"
             if application_name

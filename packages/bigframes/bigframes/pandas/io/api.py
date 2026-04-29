@@ -657,12 +657,13 @@ def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
     from bigframes.session import clients
     import bigframes._config.env as env
 
-    project_id = env.get_default_project_id()
+    credentials, project = bigframes._config.env.resolve_credentials_and_project(config.options.bigquery)
+
     clients_provider = clients.ClientsProvider(
-        project=project_id,
+        project=project,
         location=config.options.bigquery.location,
         use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
-        credentials=config.options.bigquery.credentials,
+        credentials=credentials,
         application_name=config.options.bigquery.application_name,
         bq_kms_key_name=config.options.bigquery.kms_key_name,
         client_endpoints_override=config.options.bigquery.client_endpoints_override,
