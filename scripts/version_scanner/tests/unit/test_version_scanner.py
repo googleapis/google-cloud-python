@@ -124,54 +124,7 @@ rules:
     assert rules[0]["name"] == "test_rule"
     assert rules[0]["pattern"] == "python3.7"
 
-def test_regex_patterns():
-    """Test that core regex patterns match expected strings based on groups in regex_config.yaml."""
-    
-    # Group: sys_version_info
-    # Pattern: sys.version_info < (3, 8)
-    pattern = re.compile(r"sys\.version_info\s*<\s*\(3,\s*8\)")
-    assert pattern.search("sys.version_info < (3, 8)") is not None
-    assert pattern.search("sys.version_info<(3,8)") is not None
-    
-    # Pattern: sys.version_info.minor <= 7
-    pattern = re.compile(r"sys\.version_info\.minor\s*[<=]=?\s*7")
-    assert pattern.search("sys.version_info.minor <= 7") is not None
-    assert pattern.search("sys.version_info.minor==7") is not None
-    
-    # Pattern: sys.version_info.minor < 8
-    pattern = re.compile(r"sys\.version_info\.minor\s*<\s*8")
-    assert pattern.search("sys.version_info.minor < 8") is not None
-    
-    # Group: python_env_short
-    # Pattern: py37
-    pattern = re.compile(r"py37")
-    assert pattern.search("py37") is not None
-    
-    # Group: explicit_python_command
-    # Pattern: python3.7
-    pattern = re.compile(r"python3\.7")
-    assert pattern.search("python3.7") is not None
-    
-    # Group: python_requires
-    # Pattern: python_requires == '3.7'
-    pattern = re.compile(r"python_requires\s*=\s*['\"]==3\.7['\"]")
-    assert pattern.search("python_requires = '==3.7'") is not None
-    
-    # Pattern: python_requires >= '3.7'
-    pattern = re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")
-    assert pattern.search("python_requires = '>=3.7'") is not None
-    
-    # Pattern: python_requires <= '3.7'
-    pattern = re.compile(r"python_requires\s*=\s*['\"]<=3\.7['\"]")
-    assert pattern.search("python_requires = '<=3.7'") is not None
-    
-    # Pattern: python_requires > '3.6'
-    pattern = re.compile(r"python_requires\s*=\s*['\"]>3\.6['\"]")
-    assert pattern.search("python_requires = '>3.6'") is not None
-    
-    # Pattern: python_requires < '3.8'
-    pattern = re.compile(r"python_requires\s*=\s*['\"]<3\.8['\"]")
-    assert pattern.search("python_requires = '<3.8'") is not None
+
 
 
 def test_regex_examples_from_config():
