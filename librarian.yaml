@@ -79,13 +79,11 @@ libraries:
     python:
       library_type: CORE
       name_pretty_override: Google API Client Generator for Python
-      skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
     version: 3.2.5
     python:
       library_type: OTHER
       name_pretty_override: Sphinx DocFX YAML Generator
-      skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
     apis:
@@ -157,7 +155,6 @@ libraries:
     python:
       library_type: CORE
       name_pretty_override: Google API client core library
-      skip_readme_copy: true
   - name: google-apps-card
     version: 0.6.0
     apis:
@@ -262,7 +259,6 @@ libraries:
     python:
       library_type: AUTH
       name_pretty_override: Google Auth Python Library
-      skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
     python:
@@ -273,7 +269,6 @@ libraries:
     python:
       library_type: AUTH
       name_pretty_override: Google Auth OAuthlib
-      skip_readme_copy: true
   - name: google-cloud-access-approval
     version: 1.19.0
     apis:
@@ -1729,7 +1724,6 @@ libraries:
       library_type: GAPIC_MANUAL
       name_pretty_override: NDB Client Library for Google Cloud Datastore
       metadata_name_override: python-ndb
-      skip_readme_copy: true
   - name: google-cloud-netapp
     version: 0.9.0
     apis:
@@ -2594,7 +2588,6 @@ libraries:
     python:
       library_type: OTHER
       name_pretty_override: A python wrapper of the C library 'Google CRC32C'
-      skip_readme_copy: true
   - name: google-geo-type
     version: 0.6.0
     apis:
@@ -2979,13 +2972,11 @@ libraries:
     python:
       library_type: INTEGRATION
       name_pretty_override: Google BigQuery connector for pandas
-      skip_readme_copy: true
   - name: proto-plus
     version: 1.27.2
     python:
       library_type: CORE
       name_pretty_override: Proto Plus
-      skip_readme_copy: true
   - name: sqlalchemy-bigquery
     version: 1.16.0
     python:
@@ -2996,4 +2987,3 @@ libraries:
     python:
       library_type: INTEGRATION
       name_pretty_override: Spanner dialect for SQLAlchemy
-      skip_readme_copy: true
