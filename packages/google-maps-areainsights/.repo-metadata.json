@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-maps-areainsights",
-    "name_pretty": "Places Insights API",
+    "name_pretty": "Places Aggregate",
     "product_documentation": "https://developers.google.com/maps/documentation/places-insights",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

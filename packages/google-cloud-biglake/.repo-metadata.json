@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-biglake",
-    "name_pretty": "BigLake API",
+    "name_pretty": "BigLake",
     "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

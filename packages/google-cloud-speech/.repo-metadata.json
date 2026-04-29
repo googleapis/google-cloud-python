@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "name": "speech",
-    "name_pretty": "Cloud Speech",
+    "name_pretty": "Cloud Speech-to-Text",
     "product_documentation": "https://cloud.google.com/speech-to-text/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

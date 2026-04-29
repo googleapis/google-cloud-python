@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-maps-navconnect",
-    "name_pretty": "Navigation Connect API",
+    "name_pretty": "Navigation Connect",
     "product_documentation": "https://developers.google.com/maps/documentation/mobility/navigationconnect",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

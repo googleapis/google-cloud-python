@@ -1,9 +1,9 @@
-Python Client for Private Certificate Authority
-===============================================
+Python Client for Certificate Authority
+=======================================
 
 |stable| |pypi| |versions|
 
-`Private Certificate Authority`_: simplifies the deployment and management of private CAs without managing infrastructure.
+`Certificate Authority`_: simplifies the deployment and management of private CAs without managing infrastructure.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Private Certificate Authority
    :target: https://pypi.org/project/google-cloud-private-ca/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-ca.svg
    :target: https://pypi.org/project/google-cloud-private-ca/
-.. _Private Certificate Authority: https://cloud.google.com/certificate-authority-service
+.. _Certificate Authority: https://cloud.google.com/certificate-authority-service
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/privateca/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/certificate-authority-service
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Private Certificate Authority.`_
+3. `Enable the Certificate Authority.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Private Certificate Authority.:  https://cloud.google.com/certificate-authority-service
+.. _Enable the Certificate Authority.:  https://cloud.google.com/certificate-authority-service
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Private Certificate Authority
+-  Read the `Client Library Documentation`_ for Certificate Authority
    to see other available methods on the client.
--  Read the `Private Certificate Authority Product documentation`_ to learn
+-  Read the `Certificate Authority Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Private Certificate Authority Product documentation:  https://cloud.google.com/certificate-authority-service
+.. _Certificate Authority Product documentation:  https://cloud.google.com/certificate-authority-service
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

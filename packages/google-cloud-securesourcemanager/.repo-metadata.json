@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "securesourcemanager",
-    "name_pretty": "Secure Source Manager API",
+    "name_pretty": "Secure Source Manager",
     "product_documentation": "https://cloud.google.com/secure-source-manager/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

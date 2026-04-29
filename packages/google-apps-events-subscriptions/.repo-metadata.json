@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-apps-events-subscriptions",
-    "name_pretty": "Google Workspace Events API",
+    "name_pretty": "Google Workspace Events",
     "product_documentation": "https://developers.google.com/workspace/events",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

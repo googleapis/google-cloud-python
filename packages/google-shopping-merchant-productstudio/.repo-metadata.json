@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-shopping-merchant-productstudio",
-    "name_pretty": "Merchant ProductStudio API",
+    "name_pretty": "Merchant",
     "product_documentation": "https://developers.google.com/merchant/api",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

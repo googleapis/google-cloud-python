@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "procurement",
-    "name_pretty": "Cloud Commerce Consumer Procurement API",
+    "name_pretty": "Cloud Commerce Consumer Procurement",
     "product_documentation": "https://cloud.google.com/marketplace/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

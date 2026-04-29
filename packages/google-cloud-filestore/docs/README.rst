@@ -1,9 +1,9 @@
-Python Client for Filestore
-===========================
+Python Client for Cloud Filestore
+=================================
 
 |stable| |pypi| |versions|
 
-`Filestore`_: Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters.
+`Cloud Filestore`_: Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Filestore
    :target: https://pypi.org/project/google-cloud-filestore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-filestore.svg
    :target: https://pypi.org/project/google-cloud-filestore/
-.. _Filestore: https://cloud.google.com/filestore/
+.. _Cloud Filestore: https://cloud.google.com/filestore/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/file/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/filestore/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Filestore.`_
+3. `Enable the Cloud Filestore.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Filestore.:  https://cloud.google.com/filestore/
+.. _Enable the Cloud Filestore.:  https://cloud.google.com/filestore/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Filestore
+-  Read the `Client Library Documentation`_ for Cloud Filestore
    to see other available methods on the client.
--  Read the `Filestore Product documentation`_ to learn
+-  Read the `Cloud Filestore Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Filestore Product documentation:  https://cloud.google.com/filestore/
+.. _Cloud Filestore Product documentation:  https://cloud.google.com/filestore/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "run",
-    "name_pretty": "Cloud Run",
+    "name_pretty": "Cloud Run Admin",
     "product_documentation": "https://cloud.google.com/run/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "generativelanguage",
-    "name_pretty": "Generative Language API",
+    "name_pretty": "Generative Language",
     "product_documentation": "https://ai.google.dev/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

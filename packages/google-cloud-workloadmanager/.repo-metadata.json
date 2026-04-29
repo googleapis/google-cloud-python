@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-workloadmanager",
-    "name_pretty": "Workload Manager API",
+    "name_pretty": "Workload Manager",
     "product_documentation": "https://docs.cloud.google.com/workload-manager/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "analyticshub",
-    "name_pretty": "BigQuery Analytics Hub",
+    "name_pretty": "Analytics Hub",
     "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

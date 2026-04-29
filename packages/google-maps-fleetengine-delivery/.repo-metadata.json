@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "fleetengine-delivery",
-    "name_pretty": "Last Mile Fleet Solution Delivery API",
+    "name_pretty": "Last Mile Fleet Solution Delivery",
     "product_documentation": "https://developers.google.com/maps/documentation/transportation-logistics/mobility",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

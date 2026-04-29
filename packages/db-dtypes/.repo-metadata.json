@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "db-dtypes",
-    "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

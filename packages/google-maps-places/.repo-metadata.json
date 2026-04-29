@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "places",
-    "name_pretty": "Places API",
+    "name_pretty": "Places API (New)",
     "product_documentation": "https://developers.google.com/maps/documentation/places/web-service/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

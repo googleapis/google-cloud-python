@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "bigquerymigration",
-    "name_pretty": "Google BigQuery Migration",
+    "name_pretty": "BigQuery Migration",
     "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

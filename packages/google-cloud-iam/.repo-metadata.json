@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "iam",
-    "name_pretty": "Cloud Identity and Access Management",
+    "name_pretty": "Identity and Access Management (IAM)",
     "product_documentation": "https://cloud.google.com/iam/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

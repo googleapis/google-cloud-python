@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Firestore API API
+# Cloud Firestore API
 
-Overview of the APIs available for Cloud Firestore API API.
+Overview of the APIs available for Cloud Firestore API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Firestore API API.
+Cloud Firestore API.
 
 [classes](https://cloud.google.com/python/docs/reference/firestore/latest/summary_class.html)
 

@@ -1,9 +1,9 @@
-Python Client for Merchant API
-==============================
+Python Client for Merchant
+==========================
 
 |stable| |pypi| |versions|
 
-`Merchant API`_: Programmatically manage your Merchant Center accounts.
+`Merchant`_: Programmatically manage your Merchant Center accounts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Merchant API
    :target: https://pypi.org/project/google-shopping-merchant-lfp/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-merchant-lfp.svg
    :target: https://pypi.org/project/google-shopping-merchant-lfp/
-.. _Merchant API: https://developers.google.com/merchant/api
+.. _Merchant: https://developers.google.com/merchant/api
 .. _Client Library Documentation: https://googleapis.dev/python/google-shopping-merchant-lfp/latest
 .. _Product Documentation:  https://developers.google.com/merchant/api
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Merchant API.`_
+3. `Enable the Merchant.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Merchant API.:  https://developers.google.com/merchant/api
+.. _Enable the Merchant.:  https://developers.google.com/merchant/api
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Merchant API
+-  Read the `Client Library Documentation`_ for Merchant
    to see other available methods on the client.
--  Read the `Merchant API Product documentation`_ to learn
+-  Read the `Merchant Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Merchant API Product documentation:  https://developers.google.com/merchant/api
+.. _Merchant Product documentation:  https://developers.google.com/merchant/api
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -5,7 +5,6 @@
     "language": "python",
     "library_type": "GAPIC_MANUAL",
     "name": "runtimeconfig",
-    "name_pretty": "Google Cloud Runtime Configurator",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

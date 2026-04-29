@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-ads-marketingplatform-admin",
-    "name_pretty": "Google Marketing Platform Admin API",
+    "name_pretty": "Google Marketing Platform Admin",
     "product_documentation": "https://developers.google.com/analytics/devguides/config/gmp/v1",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

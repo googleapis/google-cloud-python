@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Analytics Admin.
+This package includes clients for multiple versions of Google Analytics Admin.
 By default, you will get version ``admin_v1alpha``.
 
 

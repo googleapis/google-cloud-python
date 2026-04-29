@@ -1,9 +1,9 @@
-Python Client for Cloud Firestore API
-=====================================
+Python Client for Cloud Firestore
+=================================
 
 |stable| |pypi| |versions|
 
-`Cloud Firestore API`_: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
+`Cloud Firestore`_: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Firestore API
    :target: https://pypi.org/project/google-cloud-firestore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
    :target: https://pypi.org/project/google-cloud-firestore/
-.. _Cloud Firestore API: https://cloud.google.com/firestore
+.. _Cloud Firestore: https://cloud.google.com/firestore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/firestore/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/firestore
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Firestore API.`_
+3. `Enable the Cloud Firestore.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Firestore API.:  https://cloud.google.com/firestore
+.. _Enable the Cloud Firestore.:  https://cloud.google.com/firestore
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Firestore API
+-  Read the `Client Library Documentation`_ for Cloud Firestore
    to see other available methods on the client.
--  Read the `Cloud Firestore API Product documentation`_ to learn
+-  Read the `Cloud Firestore Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Firestore API Product documentation:  https://cloud.google.com/firestore
+.. _Cloud Firestore Product documentation:  https://cloud.google.com/firestore
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

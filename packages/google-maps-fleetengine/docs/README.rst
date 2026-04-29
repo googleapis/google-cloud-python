@@ -1,9 +1,9 @@
-Python Client for Local Rides and Deliveries API
-================================================
+Python Client for Local Rides and Deliveries
+============================================
 
 |preview| |pypi| |versions|
 
-`Local Rides and Deliveries API`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
+`Local Rides and Deliveries`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Local Rides and Deliveries API
    :target: https://pypi.org/project/google-maps-fleetengine/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-fleetengine.svg
    :target: https://pypi.org/project/google-maps-fleetengine/
-.. _Local Rides and Deliveries API: https://developers.google.com/maps/documentation/transportation-logistics/mobility
+.. _Local Rides and Deliveries: https://developers.google.com/maps/documentation/transportation-logistics/mobility
 .. _Client Library Documentation: https://googleapis.dev/python/fleetengine/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/transportation-logistics/mobility
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Local Rides and Deliveries API.`_
+3. `Enable the Local Rides and Deliveries.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Local Rides and Deliveries API.:  https://developers.google.com/maps/documentation/transportation-logistics/mobility
+.. _Enable the Local Rides and Deliveries.:  https://developers.google.com/maps/documentation/transportation-logistics/mobility
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Local Rides and Deliveries API
+-  Read the `Client Library Documentation`_ for Local Rides and Deliveries
    to see other available methods on the client.
--  Read the `Local Rides and Deliveries API Product documentation`_ to learn
+-  Read the `Local Rides and Deliveries Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Local Rides and Deliveries API Product documentation:  https://developers.google.com/maps/documentation/transportation-logistics/mobility
+.. _Local Rides and Deliveries Product documentation:  https://developers.google.com/maps/documentation/transportation-logistics/mobility
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

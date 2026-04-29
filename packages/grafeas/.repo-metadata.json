@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "name": "grafeas",
-    "name_pretty": "Grafeas",
+    "name_pretty": "Container Analysis",
     "product_documentation": "https://grafeas.io",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
