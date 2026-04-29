@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import typing
+import unittest.mock as mock
 
+import google.auth.credentials
 import pandas
 import pandas.testing
 import pytest
