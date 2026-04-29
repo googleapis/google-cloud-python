@@ -3,6 +3,7 @@ import os
 import random
 import subprocess
 import sys
+import tempfile
 import time
 from typing import List, Dict
 
@@ -73,17 +74,18 @@ def run_benchmarks(
         print(f"  Testing {len(subset)} packages (e.g., {subset[:3]}...)")
         
         # Create temp package file
-        pkg_file = "temp_packages.txt"
-        with open(pkg_file, 'w') as f:
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
             for pkg in subset:
                 f.write(f"packages/{pkg}\n")
+            pkg_file = f.name
                 
-        duration = run_benchmark(scanner_path, root_path, pkg_file, dependency, version)
-        results[count] = duration
-        
-        # Clean up
-        if os.path.exists(pkg_file):
-            os.remove(pkg_file)
+        try:
+            duration = run_benchmark(scanner_path, root_path, pkg_file, dependency, version)
+            results[count] = duration
+        finally:
+            # Clean up
+            if os.path.exists(pkg_file):
+                os.remove(pkg_file)
             
     return results
 
