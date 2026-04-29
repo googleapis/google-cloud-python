@@ -1,7 +1,7 @@
 {
     "api_description": "Convert addresses into geographic coordinates (geocoding), which you can\nuse     to place markers or position the map. This API also allows you to\nconvert     geographic coordinates into an address (reverse geocoding).",
     "api_id": "geocoding-backend.googleapis.com",
-    "api_shortname": "geocoding-backend",
+    "api_shortname": "geocode",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-maps-geocode/latest",
     "default_version": "v4",
     "distribution_name": "google-maps-geocode",

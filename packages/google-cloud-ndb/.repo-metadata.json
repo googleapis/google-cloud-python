@@ -1,8 +1,6 @@
 {
-    "api_shortname": "datastore",
-    "client_documentation": "https://googleapis.dev/python/python-ndb/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/python-ndb/latest",
     "distribution_name": "google-cloud-ndb",
-    "issue_tracker": "https://github.com/googleapis/python-ndb/issues",
     "language": "python",
     "library_type": "GAPIC_MANUAL",
     "name": "python-ndb",

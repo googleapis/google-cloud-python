@@ -1,7 +1,7 @@
 {
     "api_description": "Places Insights API. ",
     "api_id": "areainsights.googleapis.com",
-    "api_shortname": "areainsights",
+    "api_shortname": "area-insights",
     "client_documentation": "https://googleapis.dev/python/google-maps-areainsights/latest",
     "default_version": "v1",
     "distribution_name": "google-maps-areainsights",

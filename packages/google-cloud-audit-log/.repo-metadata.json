@@ -1,6 +1,6 @@
 {
     "api_id": "cloudaudit.googleapis.com",
-    "api_shortname": "auditlog",
+    "api_shortname": "cloudaudit",
     "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log",
     "default_version": "apiVersion",
     "distribution_name": "google-cloud-audit-log",
@@ -8,7 +8,7 @@
     "library_type": "OTHER",
     "name": "auditlog",
     "name_pretty": "Audit Log API",
-    "product_documentation": "https://cloud.google.com/logging/docs/audit",
+    "product_documentation": "https://cloud.google.com/logging/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

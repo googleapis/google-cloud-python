@@ -444,10 +444,46 @@ def system_default(session):
 
 
 @nox.session(python=DEFAULT_INTERPRETER)
-def core_deps_from_source(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable this test once this bug is fixed.
-    session.skip("Temporarily skip core_deps_from_source. See issue 16014")
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source"""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_INTERPRETER)

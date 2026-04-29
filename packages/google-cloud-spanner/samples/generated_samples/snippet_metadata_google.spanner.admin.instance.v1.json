@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-spanner-admin-instance",
+    "name": "google-cloud-spanner",
     "version": "3.65.0"
   },
   "snippets": [

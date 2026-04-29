@@ -61,6 +61,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     PYTEST_VERSION,
     "pytest-cov",
     "pytest-timeout",
+    "pluggy",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
@@ -186,6 +187,15 @@ def format(session):
         "--select",
         "I",
         "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -392,9 +402,6 @@ def system_noextras(session: nox.sessions.Session):
 @nox.session(python="3.12")
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
-    session.skip(
-        "Temporary skip to enable a PR merge. Remove skip as part of closing https://github.com/googleapis/google-cloud-python/issues/16489"
-    )
 
     run_system(
         session=session,
@@ -461,7 +468,6 @@ def cover(session):
     omitted_paths = [
         # non-prod, unit tested
         "bigframes/core/compile/polars/*",
-        "bigframes/core/compile/sqlglot/*",
         # untested
         "bigframes/streaming/*",
         # utils

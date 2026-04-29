@@ -1,7 +1,6 @@
 {
-    "client_documentation": "https://gapic-generator-python.readthedocs.io/en/stable/",
+    "client_documentation": "https://googleapis.dev/python/gapic-generator/latest",
     "distribution_name": "gapic-generator",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
     "library_type": "CORE",
     "name": "gapic-generator",
