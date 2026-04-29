@@ -76,7 +76,6 @@ libraries:
       library_type: INTEGRATION
   - name: gapic-generator
     version: 1.30.14
-    skip_generate: true
     python:
       library_type: CORE
       skip_readme_copy: true
