@@ -71,14 +71,14 @@ libraries:
       name_pretty_override: Pandas Data Types for SQL systems (BigQuery, Spanner)
   - name: django-google-spanner
     version: 4.0.3
+	skip_generate: true
     python:
       library_type: INTEGRATION
-      name_pretty_override: Cloud Spanner Django
   - name: gapic-generator
     version: 1.30.14
+	skip_generate: true
     python:
       library_type: CORE
-      name_pretty_override: Google API Client Generator for Python
       skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
     version: 3.2.5
@@ -2492,7 +2492,6 @@ libraries:
     skip_generate: true
     python:
       library_type: OTHER
-      name_pretty_override: A python wrapper of the C library 'Google CRC32C'
       skip_readme_copy: true
   - name: google-geo-type
     version: 0.6.0
