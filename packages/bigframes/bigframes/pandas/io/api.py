@@ -668,7 +668,7 @@ def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
         client_endpoints_override=config.options.bigquery.client_endpoints_override,
         requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
     )
-    return clients_provider.bqclient, project
+    return clients_provider.bqclient, project_id
 
 
 def _dry_run(query, bqclient) -> bigquery.QueryJob:

@@ -89,7 +89,6 @@ class ClientsProvider:
         if credentials is None:
             credentials, credentials_project = _get_default_credentials_with_project()
 
-
         self._application_name = (
             f"{_get_application_names()} {application_name}"
             if application_name

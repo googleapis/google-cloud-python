@@ -177,7 +177,7 @@ def test_bq_rep_endpoints(bigquery_location):
 
 def test_clients_provider_no_location():
     with pytest.raises(ValueError, match="Must set location to use regional endpoints"):
-        bigframes.session.clients.ClientsProvider(use_regional_endpoints=True)
+        bigframes.session.clients.ClientsProvider(project="", use_regional_endpoints=True)
 
 
 @pytest.mark.parametrize(
@@ -191,7 +191,9 @@ def test_clients_provider_use_regional_endpoints_non_rep_locations(bigquery_loca
         match=f"not .*available in the location {bigquery_location}",
     ):
         bigframes.session.clients.ClientsProvider(
-            location=bigquery_location, use_regional_endpoints=True
+            project="",
+            location=bigquery_location, 
+            use_regional_endpoints=True
         )
 
 

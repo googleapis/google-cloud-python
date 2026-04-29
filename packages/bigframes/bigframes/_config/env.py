@@ -14,8 +14,6 @@
 
 import os
 
-from google.auth import default as auth_default
-
 from bigframes._config import options
 
 _BIGFRAMES_SPECIFIC_ENV_DEFAULT_PROJECT = "BIGFRAMES_DEFAULT_PROJECT"
@@ -28,7 +26,7 @@ def get_default_project_id() -> str:
     # 2. Project set in the environment
     # 3. Project associated with the default credentials
     maybe_from_env = (
-        config.options.bigquery.project
+        options.bigquery.project
         or os.getenv(_BIGFRAMES_SPECIFIC_ENV_DEFAULT_PROJECT)
         or os.getenv(_GOOGLE_CLOUD_PROJECT)
     )
@@ -36,6 +34,7 @@ def get_default_project_id() -> str:
         return maybe_from_env
 
     import bigframes._config.auth as auth
+
     _, creds_project = auth.get_default_credentials_with_project()
 
     if not creds_project:
