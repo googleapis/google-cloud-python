@@ -1,0 +1,344 @@
+#!/usr/bin/env python3
+"""
+Automated Dependency Version Scanner
+Scans a repository for references to specific dependency versions.
+"""
+
+import argparse
+import csv
+import os
+import re
+import sys
+from typing import Dict, List, Tuple
+import yaml
+
+class ConfigManager:
+    """Handles loading and interpolation of regex configurations."""
+    
+    def __init__(self, config_path: str, dependency: str, version: str):
+        self.config_path = config_path
+        self.dependency = dependency
+        self.version = version
+        self.variables = self._compute_variables()
+        
+    def _compute_variables(self) -> Dict[str, str]:
+        """Compute variables for interpolation from version string."""
+        vars = {
+            "name": self.dependency,
+            "version": self.version,
+        }
+        
+        parts = self.version.split('.')
+        if len(parts) >= 1:
+            vars["major"] = parts[0]
+        if len(parts) >= 2:
+            vars["minor"] = parts[1]
+            try:
+                vars["minor_plus_one"] = str(int(parts[1]) + 1)
+            except ValueError:
+                vars["minor_plus_one"] = parts[1]
+            try:
+                vars["minor_minus_one"] = str(int(parts[1]) - 1)
+            except ValueError:
+                vars["minor_minus_one"] = parts[1]
+        if len(parts) >= 3:
+            vars["patch"] = parts[2]
+            
+        return vars
+        
+    def load_config(self) -> List[Dict[str, str]]:
+        """Load and resolve rules from config."""
+        try:
+            with open(self.config_path, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f)
+        except FileNotFoundError:
+            print(f"Error: Config file not found: {self.config_path}", file=sys.stderr)
+            sys.exit(1)
+        except yaml.YAMLError as e:
+            print(f"Error parsing config file: {e}", file=sys.stderr)
+            sys.exit(1)
+            
+        rules_list = config.get("rules", [])
+        resolved_rules = []
+        
+        for rule_group in rules_list:
+            name = rule_group.get("name")
+            applies_to = rule_group.get("applies_to", [])
+            
+            # Filter by dependency
+            if applies_to and self.dependency not in applies_to:
+                continue
+                
+            templates = rule_group.get("rules", [])
+            
+            for template in templates:
+                try:
+                    resolved_pattern = template.strip().format(**self.variables)
+                    resolved_rules.append({
+                        "name": name,
+                        "pattern": resolved_pattern
+                    })
+                except KeyError as e:
+                    print(f"Warning: Missing variable for interpolation in rule {name}: {e}", file=sys.stderr)
+                
+        return resolved_rules
+
+def scan_file(file_path: str, rules: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """
+    Scan a single file for matching patterns.
+    
+    Args:
+        file_path: Path to the file to scan.
+        rules: A list of dictionaries containing 'name' and 'pattern' (string).
+        
+    Returns:
+        A list of dictionaries containing match details.
+    """
+    results = []
+    
+    # Compile patterns
+    compiled_rules = []
+    for rule in rules:
+        try:
+            compiled_rules.append({
+                "name": rule["name"],
+                "pattern": re.compile(rule["pattern"])
+            })
+        except re.error as e:
+            print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
+            continue
+            
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            for line_num, line in enumerate(f, 1):
+                for rule in compiled_rules:
+                    match = rule["pattern"].search(line)
+                    if match:
+                        results.append({
+                            "rule_name": rule["name"],
+                            "line_number": line_num,
+                            "matched_string": match.group(0),
+                            "context_line": line.strip()
+                        })
+    except IOError as e:
+        print(f"Warning: Could not read file {file_path}: {e}", file=sys.stderr)
+        
+    return results
+
+def write_csv_report(output_path: str, matches: List[Dict[str, str]]) -> None:
+    """
+    Write the collected matches to a CSV file.
+    
+    Args:
+        output_path: Path to the output CSV file.
+        matches: A list of dictionaries containing match details.
+    """
+    fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
+    
+    try:
+        with open(output_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            
+            for match in matches:
+                # Ensure only specified fields are written
+                row = {field: match.get(field, "") for field in fieldnames}
+                writer.writerow(row)
+                
+        print(f"\nReport written to: {output_path}")
+    except IOError as e:
+        print(f"Error writing CSV report: {e}", file=sys.stderr)
+
+def scan_repository(
+    root_path: str,
+    rules: List[Dict[str, str]],
+    target_packages: List[str] = None
+) -> List[Dict[str, str]]:
+    """
+    Scan repository for matching patterns.
+    
+    Args:
+        root_path: Path to the repository root.
+        rules: A list of dictionaries containing 'name' and 'pattern'.
+        target_packages: A list of package paths to include (e.g., ['packages/pkg_a']).
+                         If None or empty, all packages are scanned.
+        
+    Returns:
+        A list of match details.
+    """
+    ignore_dirs = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor'}
+    results = []
+    
+    print(f"\nScanning repository: {root_path}")
+    if target_packages:
+        print(f"Filtering for packages: {target_packages}")
+        
+    for root, dirs, files in os.walk(root_path):
+        # Prune ignore directories
+        dirs[:] = [d for d in dirs if d not in ignore_dirs]
+        
+        rel_root = os.path.relpath(root, root_path)
+        parts = rel_root.split(os.sep)
+        
+        # Monorepo filtering
+        if target_packages and parts[0] == "packages":
+            if len(parts) >= 2:
+                current_package_path = os.path.join(parts[0], parts[1])
+                if current_package_path not in target_packages:
+                    # Skip this directory and all subdirectories
+                    dirs[:] = []
+                    continue
+            else:
+                # We are in the "packages" directory itself. Continue to walk.
+                pass
+                
+        for file in files:
+            file_path = os.path.join(root, file)
+            matches = scan_file(file_path, rules)
+            
+            # Compute display path and package name
+            rel_file_path = os.path.relpath(file_path, root_path)
+            
+            package_name = ""
+            path_parts = rel_file_path.split(os.sep)
+            if len(path_parts) >= 2 and path_parts[0] == "packages":
+                package_name = path_parts[1]
+                
+            root_parts = os.path.abspath(root_path).split(os.sep)
+            if len(root_parts) >= 2:
+                prefix = os.path.join(root_parts[-2], root_parts[-1])
+                display_path = os.path.join(prefix, rel_file_path)
+            else:
+                display_path = rel_file_path
+                
+            for m in matches:
+                m["file_path"] = display_path
+                m["package_name"] = package_name
+                results.append(m)
+                
+    return results
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Scan repository for references to specific dependency versions."
+    )
+    
+    parser.add_argument(
+        "-d", "--dependency",
+        required=True,
+        help="Name of the dependency (e.g., python, protobuf)"
+    )
+    
+    parser.add_argument(
+        "-v", "--version",
+        required=True,
+        help="Specific version to search for (e.g., 3.7, 4.25.8)"
+    )
+    
+    parser.add_argument(
+        "-p", "--path",
+        default=".",
+        help="Root directory to scan (defaults to current directory)"
+    )
+    
+
+    
+    package_group = parser.add_mutually_exclusive_group()
+    
+    package_group.add_argument(
+        "--package",
+        help="Specific subdirectory filter (useful for monorepos)"
+    )
+    
+    package_group.add_argument(
+        "--package-file",
+        help="Path to a file containing a list of package directories to scan"
+    )
+    
+    parser.add_argument(
+        "--config",
+        default="regex_config.yaml",
+        help="Path to the regex configuration file"
+    )
+    
+    parser.add_argument(
+        "-o", "--output",
+        help="Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)"
+    )
+    
+    args = parser.parse_args()
+    
+    # Resolve target paths
+    targets = []
+    
+    if args.package:
+        targets.append(os.path.join(args.path, args.package))
+    
+    if args.package_file:
+        if os.path.exists(args.package_file):
+            with open(args.package_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        targets.append(os.path.join(args.path, line))
+        else:
+            print(f"Error: Package file not found: {args.package_file}", file=sys.stderr)
+            sys.exit(1)
+            
+    # Fallback: if neither package nor package-file is given, use the path directly
+    if not targets:
+        targets.append(args.path)
+        
+    print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
+    print(f"Root path: {args.path}")
+    print(f"Targets to scan:")
+    for target in targets:
+        print(f"  - {target}")
+    print(f"Using config: {args.config}")
+    
+    # Load and resolve rules
+    config_manager = ConfigManager(args.config, args.dependency, args.version)
+    rules = config_manager.load_config()
+    
+    print(f"\nLoaded {len(rules)} rules:")
+    for rule in rules:
+        print(f"  - {rule['name']}: {rule['pattern']}")
+        
+    # Resolve target packages if filtering is requested
+    target_packages = []
+    if args.package:
+        target_packages.append(os.path.join("packages", args.package))
+    elif args.package_file:
+        if os.path.exists(args.package_file):
+            with open(args.package_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        target_packages.append(line)
+        else:
+            print(f"Error: Package file not found: {args.package_file}", file=sys.stderr)
+            sys.exit(1)
+            
+    # Scan repository
+    all_matches = scan_repository(args.path, rules, target_packages)
+    
+    print(f"\nFound {len(all_matches)} matches.")
+    for m in all_matches[:10]: # Show first 10
+        print(f"  {m['file_path']}:{m['line_number']} [{m['rule_name']}] {m['matched_string']}")
+        
+    if len(all_matches) > 10:
+        print(f"  ... and {len(all_matches) - 10} more matches.")
+        
+    # Write report
+    import datetime
+    if args.output:
+        output_path = args.output
+    else:
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_path = f"{args.dependency}-{args.version}-{timestamp}.csv"
+        
+    write_csv_report(output_path, all_matches)
+
+if __name__ == "__main__":
+    main()
