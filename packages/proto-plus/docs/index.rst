@@ -1,3 +1,5 @@
+.. include:: README.rst
+
 Proto Plus for Python
 =====================
 
