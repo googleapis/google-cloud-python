@@ -133,11 +133,7 @@ def main():
         
     counts = [int(c) for c in args.counts.split(',')]
     
-    try:
-        all_packages = [d for d in os.listdir(packages_dir) if os.path.isdir(os.path.join(packages_dir, d))]
-    except FileNotFoundError:
-        print(f"Error: Packages directory not found: {packages_dir}", file=sys.stderr)
-        sys.exit(1)
+    all_packages = [d for d in os.listdir(packages_dir) if os.path.isdir(os.path.join(packages_dir, d))]
         
     total_packages = len(all_packages)
     
