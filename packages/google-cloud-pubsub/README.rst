@@ -1,9 +1,9 @@
-Python Client for Google Cloud Pub/Sub
-======================================
+Python Client for Cloud Pub/Sub
+===============================
 
 |stable| |pypi| |versions|
 
-'Google Cloud Pub/Sub:' is a fully-managed real-time messaging service that
+'Cloud Pub/Sub:' is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
 can leverage Cloud Pub/Sub’s flexibility to decouple systems and components
 hosted on Google Cloud Platform or elsewhere on the Internet. By building on
@@ -25,7 +25,7 @@ independently written applications.
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
-.. _Google Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
+.. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/pubsub/docs
 
@@ -36,12 +36,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Pub/Sub.`_
+3. `Enable the Cloud Pub/Sub.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Pub/Sub.:  https://cloud.google.com/pubsub/docs
+.. _Enable the Cloud Pub/Sub.:  https://cloud.google.com/pubsub/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -246,14 +246,14 @@ Apache 2.0 - See `the LICENSE`_ for more information.
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Pub/Sub
+-  Read the `Client Library Documentation`_ for Cloud Pub/Sub
    to see other available methods on the client.
--  Read the `Google Cloud Pub/Sub Product documentation`_ to learn
+-  Read the `Cloud Pub/Sub Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Pub/Sub Product documentation:  https://cloud.google.com/pubsub/docs
+.. _Cloud Pub/Sub Product documentation:  https://cloud.google.com/pubsub/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

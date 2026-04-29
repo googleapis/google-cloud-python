@@ -1,5 +1,5 @@
-Python Client for Google APIs Common Protos
-===========================================
+Python Client for Service Config
+================================
 
 |stable| |pypi| |versions|
 
@@ -90,7 +90,7 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google APIs Common Protos
+-  Read the `Client Library Documentation`_ for Service Config
    to see other available methods on the client.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "name": "pubsub",
-    "name_pretty": "Google Cloud Pub/Sub",
+    "name_pretty": "Cloud Pub/Sub",
     "product_documentation": "https://cloud.google.com/pubsub/docs",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
