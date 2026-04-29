@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "backupdr",
-    "name_pretty": "Backup and DR Service API",
+    "name_pretty": "Backup and DR Service",
     "product_documentation": "https://cloud.google.com/backup-disaster-recovery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

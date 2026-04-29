@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "assuredworkloads",
-    "name_pretty": "Assured Workloads for Government",
+    "name_pretty": "Assured Workloads",
     "product_documentation": "https://cloud.google.com/assured-workloads/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

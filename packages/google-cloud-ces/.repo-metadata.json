@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-ces",
-    "name_pretty": "Gemini Enterprise for Customer Experience API",
+    "name_pretty": "Gemini Enterprise for Customer Experience",
     "product_documentation": "https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

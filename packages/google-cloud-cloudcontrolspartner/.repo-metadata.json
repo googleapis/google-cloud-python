@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-cloudcontrolspartner",
-    "name_pretty": "Cloud Controls Partner API",
+    "name_pretty": "Cloud Controls Partner",
     "product_documentation": "https://cloud.google.com/sovereign-controls-by-partners/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

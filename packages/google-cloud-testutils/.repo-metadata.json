@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "OTHER",
     "name": "google-cloud-test-utils",
-    "name_pretty": "Python Test Utils for Google Cloud",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

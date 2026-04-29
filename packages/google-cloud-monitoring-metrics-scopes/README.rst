@@ -1,9 +1,9 @@
-Python Client for Metrics Scopes
-================================
+Python Client for Cloud Monitoring
+==================================
 
 |stable| |pypi| |versions|
 
-`Metrics Scopes`_: Manages your Cloud Monitoring data and configurations.
+`Cloud Monitoring`_: Manages your Cloud Monitoring data and configurations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Metrics Scopes
    :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring-metrics-scopes.svg
    :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes/
-.. _Metrics Scopes: https://cloud.google.com/monitoring/docs
+.. _Cloud Monitoring: https://cloud.google.com/monitoring/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-monitoring-metrics-scopes/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Metrics Scopes.`_
+3. `Enable the Cloud Monitoring.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Metrics Scopes.:  https://cloud.google.com/monitoring/docs
+.. _Enable the Cloud Monitoring.:  https://cloud.google.com/monitoring/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Metrics Scopes
+-  Read the `Client Library Documentation`_ for Cloud Monitoring
    to see other available methods on the client.
--  Read the `Metrics Scopes Product documentation`_ to learn
+-  Read the `Cloud Monitoring Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Metrics Scopes Product documentation:  https://cloud.google.com/monitoring/docs
+.. _Cloud Monitoring Product documentation:  https://cloud.google.com/monitoring/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

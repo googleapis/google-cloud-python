@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "recommender",
-    "name_pretty": "Cloud Recommender",
+    "name_pretty": "Recommender",
     "product_documentation": "https://cloud.google.com/recommender",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

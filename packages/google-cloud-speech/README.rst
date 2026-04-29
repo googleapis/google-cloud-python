@@ -1,9 +1,9 @@
-Python Client for Cloud Speech
-==============================
+Python Client for Cloud Speech-to-Text
+======================================
 
 |stable| |pypi| |versions|
 
-`Cloud Speech`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
+`Cloud Speech-to-Text`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Speech
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
-.. _Cloud Speech: https://cloud.google.com/speech-to-text/
+.. _Cloud Speech-to-Text: https://cloud.google.com/speech-to-text/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/speech/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/speech-to-text/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Speech.`_
+3. `Enable the Cloud Speech-to-Text.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Speech.:  https://cloud.google.com/speech-to-text/
+.. _Enable the Cloud Speech-to-Text.:  https://cloud.google.com/speech-to-text/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Speech
+-  Read the `Client Library Documentation`_ for Cloud Speech-to-Text
    to see other available methods on the client.
--  Read the `Cloud Speech Product documentation`_ to learn
+-  Read the `Cloud Speech-to-Text Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Speech Product documentation:  https://cloud.google.com/speech-to-text/
+.. _Cloud Speech-to-Text Product documentation:  https://cloud.google.com/speech-to-text/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

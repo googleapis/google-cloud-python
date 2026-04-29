@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-apphub",
-    "name_pretty": "App Hub API",
+    "name_pretty": "App Hub",
     "product_documentation": "https://cloud.google.com/app-hub/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

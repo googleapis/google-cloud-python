@@ -56,7 +56,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # Spanner does not support SELECTing an arbitrary expression that also
     # appears in the GROUP BY clause.
     supports_subqueries_in_group_by = False
-    uses_savepoints = True
+    uses_savepoints = False  # Spanner does not support savepoints.
     can_rollback_tests = False  # Spanner savepoints are no-ops; rely on flush.
     supports_aggregate_filter_clause = False
     # Spanner does not support expression indexes
@@ -274,6 +274,18 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     if os.environ.get("SPANNER_EMULATOR_HOST", None):
         # Some code isn't yet supported by the Spanner emulator.
         skip_tests += (
+            "fixtures_model_package.tests.FixtureTestCase.test_loaddata",
+            "transaction_hooks.tests.TestConnectionOnCommit.test_inner_savepoint_does_not_affect_outer",
+            "model_fields.test_floatfield.TestFloatField.test_float_validates_object",
+            "model_fields.tests.GetChoicesOrderingTests.test_get_choices_reverse_related_field",
+            "sessions_tests.tests.CacheDBSessionTests.test_session_asave_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.CacheDBSessionTests.test_session_save_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.CacheDBSessionWithTimeZoneTests.test_session_asave_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.CacheDBSessionWithTimeZoneTests.test_session_save_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.CustomDatabaseSessionTests.test_session_asave_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.CustomDatabaseSessionTests.test_session_save_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.DatabaseSessionTests.test_session_asave_does_not_resurrect_session_logged_out_in_other_context",
+            "sessions_tests.tests.DatabaseSessionTests.test_session_save_does_not_resurrect_session_logged_out_in_other_context",
             # Data Leakage / Test Isolation Issues (Spanner Emulator Limitation)
             "model_inheritance.tests.ModelInheritanceDataTests.test_update_query_counts",
             "model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update",

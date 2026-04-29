@@ -1,9 +1,9 @@
-Python Client for Assured Workloads for Government
-==================================================
+Python Client for Assured Workloads
+===================================
 
 |stable| |pypi| |versions|
 
-`Assured Workloads for Government`_: allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.
+`Assured Workloads`_: allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Assured Workloads for Government
    :target: https://pypi.org/project/google-cloud-assured-workloads/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-assured-workloads.svg
    :target: https://pypi.org/project/google-cloud-assured-workloads/
-.. _Assured Workloads for Government: https://cloud.google.com/assured-workloads/
+.. _Assured Workloads: https://cloud.google.com/assured-workloads/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/assuredworkloads/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/assured-workloads/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Assured Workloads for Government.`_
+3. `Enable the Assured Workloads.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Assured Workloads for Government.:  https://cloud.google.com/assured-workloads/
+.. _Enable the Assured Workloads.:  https://cloud.google.com/assured-workloads/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Assured Workloads for Government
+-  Read the `Client Library Documentation`_ for Assured Workloads
    to see other available methods on the client.
--  Read the `Assured Workloads for Government Product documentation`_ to learn
+-  Read the `Assured Workloads Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Assured Workloads for Government Product documentation:  https://cloud.google.com/assured-workloads/
+.. _Assured Workloads Product documentation:  https://cloud.google.com/assured-workloads/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

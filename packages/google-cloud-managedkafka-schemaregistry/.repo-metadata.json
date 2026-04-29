@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-managedkafka-schemaregistry",
-    "name_pretty": "Managed Service for Apache Kafka API",
+    "name_pretty": "Managed Service for Apache Kafka",
     "product_documentation": "https://cloud.google.com/managed-service-for-apache-kafka/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

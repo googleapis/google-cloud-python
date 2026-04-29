@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-saasplatform-saasservicemgmt",
-    "name_pretty": "SaaS Runtime API",
+    "name_pretty": "App Lifecycle Manager",
     "product_documentation": "https://cloud.google.com/saas-runtime/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

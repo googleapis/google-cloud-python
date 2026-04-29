@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "inventory",
-    "name_pretty": "KMS Inventory API",
+    "name_pretty": "KMS Inventory",
     "product_documentation": "https://cloud.google.com/kms/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

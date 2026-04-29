@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "cloudkms",
-    "name_pretty": "Google Cloud Key Management Service",
+    "name_pretty": "Cloud Key Management Service (KMS)",
     "product_documentation": "https://cloud.google.com/kms",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

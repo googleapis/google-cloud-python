@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-securitycentermanagement",
-    "name_pretty": "Security Center Management API",
+    "name_pretty": "Security Command Center Management",
     "product_documentation": "https://cloud.google.com/security-command-center/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

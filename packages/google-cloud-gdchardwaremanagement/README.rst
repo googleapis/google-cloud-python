@@ -1,9 +1,9 @@
-Python Client for GDC Hardware Management API
-=============================================
+Python Client for GDC Hardware Management
+=========================================
 
 |preview| |pypi| |versions|
 
-`GDC Hardware Management API`_: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
+`GDC Hardware Management`_: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for GDC Hardware Management API
    :target: https://pypi.org/project/google-cloud-gdchardwaremanagement/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gdchardwaremanagement.svg
    :target: https://pypi.org/project/google-cloud-gdchardwaremanagement/
-.. _GDC Hardware Management API: https://cloud.google.com/distributed-cloud/edge/latest/docs
+.. _GDC Hardware Management: https://cloud.google.com/distributed-cloud/edge/latest/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-gdchardwaremanagement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/distributed-cloud/edge/latest/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the GDC Hardware Management API.`_
+3. `Enable the GDC Hardware Management.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the GDC Hardware Management API.:  https://cloud.google.com/distributed-cloud/edge/latest/docs
+.. _Enable the GDC Hardware Management.:  https://cloud.google.com/distributed-cloud/edge/latest/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for GDC Hardware Management API
+-  Read the `Client Library Documentation`_ for GDC Hardware Management
    to see other available methods on the client.
--  Read the `GDC Hardware Management API Product documentation`_ to learn
+-  Read the `GDC Hardware Management Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _GDC Hardware Management API Product documentation:  https://cloud.google.com/distributed-cloud/edge/latest/docs
+.. _GDC Hardware Management Product documentation:  https://cloud.google.com/distributed-cloud/edge/latest/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

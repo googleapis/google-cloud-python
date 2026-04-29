@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "cloudprivatecatalog",
-    "name_pretty": "Private Catalog",
+    "name_pretty": "Cloud Private Catalog",
     "product_documentation": "https://cloud.google.com/private-catalog/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

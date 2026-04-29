@@ -7,7 +7,7 @@
     "language": "python",
     "library_type": "OTHER",
     "name": "auditlog",
-    "name_pretty": "Audit Log API",
+    "name_pretty": "Audit Log",
     "product_documentation": "https://cloud.google.com/logging/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

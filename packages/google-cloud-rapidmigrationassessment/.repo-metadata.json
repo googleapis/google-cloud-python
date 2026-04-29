@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "rapidmigrationassessment",
-    "name_pretty": "Rapid Migration Assessment API",
+    "name_pretty": "Rapid Migration Assessment",
     "product_documentation": "https://cloud.google.com/migration-center/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

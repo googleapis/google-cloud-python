@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "dialogflow-cx",
-    "name_pretty": "Dialogflow CX",
+    "name_pretty": "Dialogflow",
     "product_documentation": "https://cloud.google.com/dialogflow/cx/docs",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

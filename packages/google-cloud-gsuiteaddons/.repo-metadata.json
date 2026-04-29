@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "gsuiteaddons",
-    "name_pretty": "Google Workspace Add-ons API",
+    "name_pretty": "Google Workspace add-ons",
     "product_documentation": "https://developers.google.com/workspace/add-ons/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

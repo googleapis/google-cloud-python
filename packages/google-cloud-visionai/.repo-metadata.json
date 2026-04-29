@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-visionai",
-    "name_pretty": "Vision AI API",
+    "name_pretty": "Vision AI",
     "product_documentation": "https://cloud.google.com/vision-ai/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

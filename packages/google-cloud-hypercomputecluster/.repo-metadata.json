@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-hypercomputecluster",
-    "name_pretty": "Cluster Director API",
+    "name_pretty": "Cluster Director",
     "product_documentation": "https://cloud.google.com/cluster-director/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

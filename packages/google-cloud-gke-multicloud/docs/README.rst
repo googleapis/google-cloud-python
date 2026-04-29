@@ -1,9 +1,9 @@
-Python Client for Anthos Multicloud
-===================================
+Python Client for GKE Multi-Cloud
+=================================
 
 |preview| |pypi| |versions|
 
-`Anthos Multicloud`_: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
+`GKE Multi-Cloud`_: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Anthos Multicloud
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-multicloud.svg
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
-.. _Anthos Multicloud: https://cloud.google.com/kubernetes-engine/multi-cloud/docs
+.. _GKE Multi-Cloud: https://cloud.google.com/kubernetes-engine/multi-cloud/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkemulticloud/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine/multi-cloud/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Anthos Multicloud.`_
+3. `Enable the GKE Multi-Cloud.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Anthos Multicloud.:  https://cloud.google.com/kubernetes-engine/multi-cloud/docs
+.. _Enable the GKE Multi-Cloud.:  https://cloud.google.com/kubernetes-engine/multi-cloud/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Anthos Multicloud
+-  Read the `Client Library Documentation`_ for GKE Multi-Cloud
    to see other available methods on the client.
--  Read the `Anthos Multicloud Product documentation`_ to learn
+-  Read the `GKE Multi-Cloud Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Anthos Multicloud Product documentation:  https://cloud.google.com/kubernetes-engine/multi-cloud/docs
+.. _GKE Multi-Cloud Product documentation:  https://cloud.google.com/kubernetes-engine/multi-cloud/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

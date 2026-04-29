@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-edgenetwork",
-    "name_pretty": "Distributed Cloud Edge Network API",
+    "name_pretty": "Distributed Cloud Edge Network",
     "product_documentation": "https://cloud.google.com/distributed-cloud/edge/latest/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

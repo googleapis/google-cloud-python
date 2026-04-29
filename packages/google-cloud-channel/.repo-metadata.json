@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "cloudchannel",
-    "name_pretty": "Channel Services",
+    "name_pretty": "Cloud Channel",
     "product_documentation": "https://cloud.google.com/channel/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

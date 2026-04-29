@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "dlp",
-    "name_pretty": "Cloud Data Loss Prevention",
+    "name_pretty": "Sensitive Data Protection (DLP)",
     "product_documentation": "https://cloud.google.com/dlp/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

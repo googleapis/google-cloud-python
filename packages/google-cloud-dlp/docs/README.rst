@@ -1,9 +1,9 @@
-Python Client for Cloud Data Loss Prevention
-============================================
+Python Client for Sensitive Data Protection (DLP)
+=================================================
 
 |stable| |pypi| |versions|
 
-`Cloud Data Loss Prevention`_: provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.
+`Sensitive Data Protection (DLP)`_: provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Data Loss Prevention
    :target: https://pypi.org/project/google-cloud-dlp/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
-.. _Cloud Data Loss Prevention: https://cloud.google.com/dlp/
+.. _Sensitive Data Protection (DLP): https://cloud.google.com/dlp/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dlp/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dlp/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Data Loss Prevention.`_
+3. `Enable the Sensitive Data Protection (DLP).`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Data Loss Prevention.:  https://cloud.google.com/dlp/
+.. _Enable the Sensitive Data Protection (DLP).:  https://cloud.google.com/dlp/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention
+-  Read the `Client Library Documentation`_ for Sensitive Data Protection (DLP)
    to see other available methods on the client.
--  Read the `Cloud Data Loss Prevention Product documentation`_ to learn
+-  Read the `Sensitive Data Protection (DLP) Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Data Loss Prevention Product documentation:  https://cloud.google.com/dlp/
+.. _Sensitive Data Protection (DLP) Product documentation:  https://cloud.google.com/dlp/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

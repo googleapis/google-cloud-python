@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "CORE",
     "name": "googleapis-common-protos",
-    "name_pretty": "Google APIs Common Protos",
+    "name_pretty": "Service Config",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

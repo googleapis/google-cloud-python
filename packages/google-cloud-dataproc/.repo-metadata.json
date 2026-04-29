@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "dataproc",
-    "name_pretty": "Google Cloud Dataproc",
+    "name_pretty": "Cloud Dataproc",
     "product_documentation": "https://cloud.google.com/dataproc",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

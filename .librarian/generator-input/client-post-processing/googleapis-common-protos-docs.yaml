@@ -17,7 +17,7 @@ replacements:
   - paths: [
       packages/googleapis-common-protos/README.rst
     ]
-    before: "`Google APIs Common Protos`_: Lets you define and config your API service.\n\n"
+    before: "`Service Config`_: Lets you define and config your API service.\n\n"
     after: ""
     count: 1
   - paths: [
@@ -29,7 +29,7 @@ replacements:
   - paths: [
       packages/googleapis-common-protos/README.rst
     ]
-    before: ".. _Google APIs Common Protos: \n"
+    before: ".. _Service Config: \n"
     after: ""
     count: 1
   - paths: [
@@ -42,7 +42,7 @@ replacements:
       packages/googleapis-common-protos/README.rst
     ]
     before: |
-      3. `Enable the Google APIs Common Protos.`_
+      3. `Enable the Service Config.`_
       4. `Set up Authentication.`_
     after: |
       3. `Set up Authentication.`_
@@ -50,20 +50,20 @@ replacements:
   - paths: [
       packages/googleapis-common-protos/README.rst
     ]
-    before: ".. _Enable the Google APIs Common Protos.:  \n"
+    before: ".. _Enable the Service Config.:  \n"
     after: ""
     count: 1
   - paths: [
       packages/googleapis-common-protos/README.rst
     ]
     before: |
-      -  Read the `Google APIs Common Protos Product documentation`_ to learn
+      -  Read the `Service Config Product documentation`_ to learn
          more about the product and see How-to Guides.
     after: ""
     count: 1
   - paths: [
       packages/googleapis-common-protos/README.rst
     ]
-    before: ".. _Google APIs Common Protos Product documentation:  \n"
+    before: ".. _Service Config Product documentation:  \n"
     after: ""
     count: 1

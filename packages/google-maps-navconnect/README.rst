@@ -15,7 +15,7 @@ Python Client for Navigation Connect API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-navconnect.svg
    :target: https://pypi.org/project/google-maps-navconnect/
 .. _Navigation Connect API: https://developers.google.com/maps/documentation/mobility/navigationconnect
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-maps-navconnect/latest
+.. _Client Library Documentation: https://googleapis.dev/python/google-maps-navconnect/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/mobility/navigationconnect
 
 Quick Start

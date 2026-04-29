@@ -17,7 +17,7 @@ convert     geographic coordinates into an address (reverse geocoding).
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-geocode.svg
    :target: https://pypi.org/project/google-maps-geocode/
 .. _Geocoding API: https://developers.google.com/maps/documentation/geocoding/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-maps-geocode/latest
+.. _Client Library Documentation: https://googleapis.dev/python/google-maps-geocode/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/geocoding/overview
 
 Quick Start
