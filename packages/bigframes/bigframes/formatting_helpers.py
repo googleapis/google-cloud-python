@@ -154,9 +154,9 @@ def progress_callback(
 
     # Prioritize progress_bar set on the event, falling back to thread-local option.
     progress_bar = getattr(
-        event, "progress_bar", bigframes.core.events._FALLBACK_TO_GLOBAL
+        event, "progress_bar", bigframes.core.events._DEFAULT
     )
-    if progress_bar == bigframes.core.events._FALLBACK_TO_GLOBAL:
+    if progress_bar == bigframes.core.events._DEFAULT:
         progress_bar = bigframes._config.options.display.progress_bar
 
     if progress_bar == "auto":
