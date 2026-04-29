@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-apihub",
-    "name_pretty": "API Hub API",
+    "name_pretty": "API hub",
     "product_documentation": "https://cloud.google.com/apigee/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

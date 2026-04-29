@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-appoptimize",
-    "name_pretty": "App Optimize API",
+    "name_pretty": "App Optimize",
     "product_documentation": "https://docs.cloud.google.com/app-optimize/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-apiregistry",
-    "name_pretty": "Cloud API Registry API",
+    "name_pretty": "Cloud API Registry",
     "product_documentation": "https://docs.cloud.google.com/api-registry/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

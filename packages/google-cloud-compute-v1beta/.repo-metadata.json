@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-compute-v1beta",
-    "name_pretty": "Compute Engine",
+    "name_pretty": "Google Compute Engine",
     "product_documentation": "https://cloud.google.com/compute/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

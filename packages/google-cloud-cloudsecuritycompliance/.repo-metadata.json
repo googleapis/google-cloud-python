@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-cloudsecuritycompliance",
-    "name_pretty": "Cloud Security Compliance API",
+    "name_pretty": "Cloud Security Compliance",
     "product_documentation": "https://cloud.google.com/security-command-center/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
