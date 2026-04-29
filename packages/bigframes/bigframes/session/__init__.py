@@ -218,7 +218,9 @@ class Session(
         if clients_provider:
             self._clients_provider = clients_provider
         else:
-            credentials, project = bigframes._config.auth.resolve_credentials_and_project(context)
+            credentials, project = (
+                bigframes._config.auth.resolve_credentials_and_project(context)
+            )
 
             self._clients_provider = clients.ClientsProvider(
                 project=project,
