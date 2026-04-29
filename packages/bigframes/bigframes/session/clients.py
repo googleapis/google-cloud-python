@@ -38,7 +38,6 @@ import bigframes.version
 
 from . import environment
 
-_ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
 _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/9.2.0"
 
 
@@ -74,7 +73,7 @@ class ClientsProvider:
 
     def __init__(
         self,
-        project: Optional[str] = None,
+        project: str,
         location: Optional[str] = None,
         use_regional_endpoints: Optional[bool] = None,
         credentials: Optional[google.auth.credentials.Credentials] = None,
@@ -90,21 +89,6 @@ class ClientsProvider:
         if credentials is None:
             credentials, credentials_project = _get_default_credentials_with_project()
 
-        # Prefer the project in this order:
-        # 1. Project explicitly specified by the user
-        # 2. Project set in the environment
-        # 3. Project associated with the default credentials
-        project = (
-            project
-            or os.getenv(_ENV_DEFAULT_PROJECT)
-            or typing.cast(Optional[str], credentials_project)
-        )
-
-        if not project:
-            raise ValueError(
-                "Project must be set to initialize BigQuery client. "
-                "Try setting `bigframes.options.bigquery.project` first."
-            )
 
         self._application_name = (
             f"{_get_application_names()} {application_name}"

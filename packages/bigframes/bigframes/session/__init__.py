@@ -61,6 +61,7 @@ from pandas._typing import (
 )
 
 import bigframes._config
+import bigframes._config.env
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
@@ -217,8 +218,10 @@ class Session(
         if clients_provider:
             self._clients_provider = clients_provider
         else:
+            # will throw if cannot be determined
+            project = bigframes._config.env.get_default_project_id()
             self._clients_provider = clients.ClientsProvider(
-                project=context.project,
+                project=project,
                 location=self._location,
                 use_regional_endpoints=context.use_regional_endpoints,
                 credentials=context.credentials,
