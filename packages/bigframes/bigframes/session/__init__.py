@@ -2314,9 +2314,12 @@ class Session(
     ) -> dataframe.DataFrame:
         """Create a BigFrames DataFrame that contains a BigFrames ObjectRef column from a global wildcard path."""
         import bigframes.bigquery as bq
+
         connection = self._create_bq_connection(connection=connection)
         table = self._create_object_table(path, connection)
-        s = bq.obj.make_ref(self._loader.read_gbq_table(table)["uri"], authorizer=connection)
+        s = bq.obj.make_ref(
+            self._loader.read_gbq_table(table)["uri"], authorizer=connection
+        )
         return s.rename(name).to_frame()
 
     def _create_object_table(self, path: str, connection: str) -> str:
@@ -2348,8 +2351,6 @@ class Session(
         )
 
         return table
-
-
 
     def _create_temp_view(self, sql: str) -> bigquery.TableReference:
         """Create a random id view from the sql string."""

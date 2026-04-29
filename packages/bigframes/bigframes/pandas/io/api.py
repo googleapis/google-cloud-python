@@ -394,9 +394,6 @@ def read_gbq_model(model_name: str):
 read_gbq_model.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_model)
 
 
-
-
-
 @overload
 def read_gbq_query(  # type: ignore[overload-overlap]
     query: str,
@@ -621,8 +618,6 @@ def read_gbq_function(
 
 
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
-
-
 
 
 _default_location_lock = threading.Lock()

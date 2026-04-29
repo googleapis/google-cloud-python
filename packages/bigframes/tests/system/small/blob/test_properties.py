@@ -15,9 +15,9 @@
 import pandas as pd
 import pytest
 
+import bigframes.bigquery as bbq
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
-import bigframes.bigquery as bbq
 
 pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
 
@@ -43,7 +43,9 @@ def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
 
 
 def test_blob_version(images_mm_df: bpd.DataFrame):
-    actual = bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.version").to_pandas()
+    actual = bbq.json_value(
+        images_mm_df["blob_col"].struct.field("details"), "$.version"
+    ).to_pandas()
     expected = pd.Series(["1753907851152593", "1753907851111538"], name="version")
 
     pd.testing.assert_series_equal(
@@ -76,7 +78,9 @@ def test_blob_metadata(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_content_type(images_mm_df: bpd.DataFrame):
-    actual = bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.content_type").to_pandas()
+    actual = bbq.json_value(
+        images_mm_df["blob_col"].struct.field("details"), "$.content_type"
+    ).to_pandas()
     expected = pd.Series(["image/jpeg", "image/jpeg"], name="content_type")
 
     pd.testing.assert_series_equal(
@@ -85,7 +89,9 @@ def test_blob_content_type(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
-    actual = bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.md5_hash").to_pandas()
+    actual = bbq.json_value(
+        images_mm_df["blob_col"].struct.field("details"), "$.md5_hash"
+    ).to_pandas()
     expected = pd.Series(
         ["e130ad042261a1883cd2cc06831cf748", "e2ae3191ff2b809fd0935f01a537c650"],
         name="md5_hash",
@@ -97,7 +103,11 @@ def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_size(images_mm_df: bpd.DataFrame):
-    actual = bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.size").astype("Int64").to_pandas()
+    actual = (
+        bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.size")
+        .astype("Int64")
+        .to_pandas()
+    )
     expected = pd.Series([338390, 43333], name="size")
 
     pd.testing.assert_series_equal(
@@ -106,7 +116,9 @@ def test_blob_size(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_updated(images_mm_df: bpd.DataFrame):
-    actual = bbq.json_value(images_mm_df["blob_col"].struct.field("details"), "$.updated").to_pandas()
+    actual = bbq.json_value(
+        images_mm_df["blob_col"].struct.field("details"), "$.updated"
+    ).to_pandas()
     expected = pd.Series(
         [
             pd.Timestamp("2025-07-30 20:37:31", tz="UTC"),
