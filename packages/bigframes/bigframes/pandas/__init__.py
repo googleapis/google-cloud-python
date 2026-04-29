@@ -98,6 +98,7 @@ from bigframes.core.reshape.api import concat, crosstab, cut, get_dummies, merge
 from bigframes.pandas import api
 from bigframes.pandas.core.api import to_timedelta
 from bigframes.pandas.io.api import (
+    _from_glob_path,
     _read_gbq_colab,
     read_arrow,
     read_avro,
@@ -436,6 +437,7 @@ if resource is not None:
             pass
 
 _functions = [
+    _from_glob_path,
     clean_up_by_session_id,
     concat,
     crosstab,

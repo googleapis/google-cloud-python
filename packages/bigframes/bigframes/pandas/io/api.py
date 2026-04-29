@@ -620,6 +620,19 @@ def read_gbq_function(
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
 
+def _from_glob_path(
+    path: str, *, connection: Optional[str] = None, name: Optional[str] = None
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session._from_glob_path,
+        path=path,
+        connection=connection,
+        name=name,
+    )
+
+
+_from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session._from_glob_path)
+
 _default_location_lock = threading.Lock()
 
 
