@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "support",
-    "name_pretty": "Google Cloud Support API",
+    "name_pretty": "Google Cloud Support",
     "product_documentation": "https://cloud.google.com/support/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

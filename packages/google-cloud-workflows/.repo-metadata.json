@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "workflows",
-    "name_pretty": "Cloud Workflows",
+    "name_pretty": "Workflows",
     "product_documentation": "https://cloud.google.com/workflows/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

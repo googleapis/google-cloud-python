@@ -1,9 +1,9 @@
-Python Client for Security Center Management API
-================================================
+Python Client for Security Command Center Management
+====================================================
 
 |preview| |pypi| |versions|
 
-`Security Center Management API`_: Management API for Security Command Center, a built-in security and risk
+`Security Command Center Management`_: Management API for Security Command Center, a built-in security and risk
 management solution for Google Cloud. Use this API to programmatically
 update the settings and configuration of Security Command Center.
 
@@ -16,7 +16,7 @@ update the settings and configuration of Security Command Center.
    :target: https://pypi.org/project/google-cloud-securitycentermanagement/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycentermanagement.svg
    :target: https://pypi.org/project/google-cloud-securitycentermanagement/
-.. _Security Center Management API: https://cloud.google.com/security-command-center/
+.. _Security Command Center Management: https://cloud.google.com/security-command-center/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/security-command-center/
 
@@ -27,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Security Center Management API.`_
+3. `Enable the Security Command Center Management.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Security Center Management API.:  https://cloud.google.com/security-command-center/
+.. _Enable the Security Command Center Management.:  https://cloud.google.com/security-command-center/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -99,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Security Center Management API
+-  Read the `Client Library Documentation`_ for Security Command Center Management
    to see other available methods on the client.
--  Read the `Security Center Management API Product documentation`_ to learn
+-  Read the `Security Command Center Management Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Security Center Management API Product documentation:  https://cloud.google.com/security-command-center/
+.. _Security Command Center Management Product documentation:  https://cloud.google.com/security-command-center/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

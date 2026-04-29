@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-servicehealth",
-    "name_pretty": "Service Health API",
+    "name_pretty": "Service Health",
     "product_documentation": "https://cloud.google.com/service-health/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

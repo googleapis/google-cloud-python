@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-telcoautomation",
-    "name_pretty": "Telco Automation API",
+    "name_pretty": "Telco Automation",
     "product_documentation": "https://cloud.google.com/telecom-network-automation",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
