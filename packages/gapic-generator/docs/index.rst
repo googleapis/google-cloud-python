@@ -1,3 +1,5 @@
+.. include:: README.rst
+
 API Client Generator for Python
 ===============================
 
