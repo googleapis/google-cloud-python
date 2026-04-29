@@ -2,6 +2,7 @@ import csv
 import os
 import re
 import pytest
+import yaml
 from version_scanner import ConfigManager, scan_file, write_csv_report
 
 # Test ConfigManager
