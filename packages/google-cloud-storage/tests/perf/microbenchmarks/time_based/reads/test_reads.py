@@ -79,14 +79,6 @@ def _calculate_average_throughput_mib_s(
     return (total_bytes_downloaded / total_elapsed_time) / (1024 * 1024)
 
 
-def _record_measured_start(
-    measured_start_time: Optional[float], current_time: float
-) -> float:
-    if measured_start_time is None:
-        return current_time
-    return measured_start_time
-
-
 def _build_download_result(
     total_bytes_downloaded: int,
     measured_start_time: Optional[float],
@@ -147,9 +139,7 @@ def _download_time_based_json(client, filename, params):
         if is_warming_up and current_time >= warmup_end_time:
             is_warming_up = False
             total_bytes_downloaded = 0  # Reset counter after warmup
-            measured_start_time = _record_measured_start(
-                measured_start_time, current_time
-            )
+            measured_start_time = current_time
 
         bytes_in_iteration = 0
         # For JSON, we can't batch ranges like gRPC, so we download one by one
@@ -199,9 +189,7 @@ async def _download_time_based_async(client, filename, params):
             if is_warming_up and current_time >= warmup_end_time:
                 is_warming_up = False
                 total_bytes_downloaded = 0  # Reset counter after warmup
-                measured_start_time = _record_measured_start(
-                    measured_start_time, current_time
-                )
+                measured_start_time = current_time
 
             ranges = []
             if params.pattern == "rand":
