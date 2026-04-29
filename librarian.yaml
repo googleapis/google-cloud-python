@@ -2073,7 +2073,6 @@ libraries:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
     description_override: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
     python:
-      name_pretty_override: SaaS Runtime API
       default_version: v1beta1
   - name: google-cloud-scheduler
     version: 2.19.0
@@ -2103,7 +2102,6 @@ libraries:
       - path: google/cloud/securesourcemanager/v1
     description_override: Regionally deployed, single-tenant managed source code repository hosted on Google Cloud.
     python:
-      name_pretty_override: Secure Source Manager API
       metadata_name_override: securesourcemanager
       default_version: v1
   - name: google-cloud-security-publicca
@@ -2132,7 +2130,6 @@ libraries:
       - path: google/cloud/securitycenter/v1beta1
     description_override: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
     python:
-      name_pretty_override: Google Cloud Security Command Center
       metadata_name_override: securitycenter
       default_version: v1
   - name: google-cloud-securitycentermanagement
@@ -2140,7 +2137,6 @@ libraries:
     apis:
       - path: google/cloud/securitycentermanagement/v1
     python:
-      name_pretty_override: Security Center Management API
       default_version: v1
   - name: google-cloud-service-control
     version: 1.19.0
@@ -2194,7 +2190,6 @@ libraries:
       - path: google/cloud/servicehealth/v1
     description_override: Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.
     python:
-      name_pretty_override: Service Health API
       default_version: v1
   - name: google-cloud-shell
     version: 1.15.0
@@ -2216,7 +2211,6 @@ libraries:
         google/devtools/source/v1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=source_context
-      name_pretty_override: Source Context
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
@@ -2261,7 +2255,6 @@ libraries:
     description_override: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
     python:
       library_type: GAPIC_COMBO
-      name_pretty_override: Cloud Speech
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
@@ -2288,7 +2281,6 @@ libraries:
         google/storage/control/v2:
           - python-gapic-name=storage_control
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Storage Control API
       default_version: v2
   - name: google-cloud-storage-transfer
     version: 1.20.0
@@ -2300,7 +2292,6 @@ libraries:
         google/storagetransfer/v1:
           - python-gapic-name=storage_transfer
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Storage Transfer Service
       metadata_name_override: storagetransfer
       default_version: v1
   - name: google-cloud-storagebatchoperations
@@ -2309,7 +2300,6 @@ libraries:
       - path: google/cloud/storagebatchoperations/v1
     description_override: 'null '
     python:
-      name_pretty_override: Storage Batch Operations API
       default_version: v1
   - name: google-cloud-storageinsights
     version: 0.4.0
@@ -2317,7 +2307,6 @@ libraries:
       - path: google/cloud/storageinsights/v1
     description_override: The Storage Insights inventory report feature helps you manage your object storage at scale.
     python:
-      name_pretty_override: Storage Insights API
       metadata_name_override: storageinsights
       default_version: v1
   - name: google-cloud-support
@@ -2327,7 +2316,6 @@ libraries:
       - path: google/cloud/support/v2beta
     description_override: Manages Google Cloud technical support cases for Customer Care support offerings.
     python:
-      name_pretty_override: Google Cloud Support API
       metadata_name_override: support
       default_version: v2
   - name: google-cloud-talent
@@ -2337,7 +2325,6 @@ libraries:
       - path: google/cloud/talent/v4beta1
     description_override: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
     python:
-      name_pretty_override: Talent Solution
       metadata_name_override: talent
       default_version: v4
   - name: google-cloud-tasks
@@ -2357,13 +2344,11 @@ libraries:
       - path: google/cloud/telcoautomation/v1alpha1
     description_override: APIs to automate 5G deployment and management of cloud infrastructure and network functions.
     python:
-      name_pretty_override: Telco Automation API
       default_version: v1
   - name: google-cloud-testutils
     version: 1.7.1
     python:
       library_type: OTHER
-      name_pretty_override: Python Test Utils for Google Cloud
       metadata_name_override: google-cloud-test-utils
   - name: google-cloud-texttospeech
     version: 2.36.0
@@ -2372,7 +2357,6 @@ libraries:
       - path: google/cloud/texttospeech/v1beta1
     description_override: enables easy integration of Google text recognition technologies into developer applications. Send text and receive synthesized audio output from the Cloud Text-to-Speech API service.
     python:
-      name_pretty_override: Google Cloud Text-to-Speech
       metadata_name_override: texttospeech
       default_version: v1
   - name: google-cloud-tpu
@@ -2427,7 +2411,6 @@ libraries:
       approximate nearest neighbor (ANN) searches to find semantically similar
       items at scale.
     python:
-      name_pretty_override: Vector Search API
       default_version: v1
   - name: google-cloud-video-live-stream
     version: 1.16.0
@@ -2475,7 +2458,6 @@ libraries:
       - path: google/cloud/videointelligence/v1beta2
     description_override: makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame.
     python:
-      name_pretty_override: Video Intelligence
       metadata_name_override: videointelligence
       default_version: v1
   - name: google-cloud-vision
@@ -2498,7 +2480,6 @@ libraries:
       - path: google/cloud/visionai/v1alpha1
     description_override: Easily build and deploy Vertex AI Vision applications using a single platform.
     python:
-      name_pretty_override: Vision AI API
       default_version: v1
   - name: google-cloud-vm-migration
     version: 1.16.0
@@ -2506,7 +2487,6 @@ libraries:
       - path: google/cloud/vmmigration/v1
     description_override: ' for Compute Engine migrates VMs from your on-premises data center into Compute Engine.'
     python:
-      name_pretty_override: Cloud VM Migration
       metadata_name_override: vmmigration
       default_version: v1
   - name: google-cloud-vmwareengine
@@ -2514,7 +2494,6 @@ libraries:
     apis:
       - path: google/cloud/vmwareengine/v1
     python:
-      name_pretty_override: Google Cloud VMware Engine
       metadata_name_override: vmwareengine
       default_version: v1
   - name: google-cloud-vpc-access
@@ -2523,7 +2502,6 @@ libraries:
       - path: google/cloud/vpcaccess/v1
     description_override: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
     python:
-      name_pretty_override: Virtual Private Cloud
       metadata_name_override: vpcaccess
       default_version: v1
   - name: google-cloud-webrisk
@@ -2543,7 +2521,6 @@ libraries:
       - path: google/cloud/websecurityscanner/v1alpha
     description_override: identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.
     python:
-      name_pretty_override: Cloud Security Scanner
       metadata_name_override: websecurityscanner
       default_version: v1
   - name: google-cloud-workflows
@@ -2562,7 +2539,6 @@ libraries:
         google/cloud/workflows/executions/v1beta:
           - python-gapic-namespace=google.cloud.workflows
           - python-gapic-name=executions
-      name_pretty_override: Cloud Workflows
       metadata_name_override: workflows
       default_version: v1
   - name: google-cloud-workloadmanager
@@ -2574,7 +2550,6 @@ libraries:
       workloads to automate the deployment and validation of your workloads
       against best practices and recommendations.
     python:
-      name_pretty_override: Workload Manager API
       default_version: v1
   - name: google-cloud-workstations
     version: 0.8.0
