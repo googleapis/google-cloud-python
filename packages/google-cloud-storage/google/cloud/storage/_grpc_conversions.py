@@ -51,7 +51,7 @@ def blob_to_proto(blob):
         resource_params["custom_time"] = custom_time_proto
 
     acl = getattr(blob, "acl", None)
-    if acl:
+    if acl is not None and getattr(acl, "loaded", False):
         acl_entries = []
         for entry in acl:
             acl_entries.append(
