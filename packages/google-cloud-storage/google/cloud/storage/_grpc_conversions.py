@@ -44,16 +44,14 @@ def blob_to_proto(blob):
         if value is not None:
             resource_params[proto_field] = value
 
-    # custom_time (field 26): google.protobuf.Timestamp
     custom_time = getattr(blob, "custom_time", None)
     if custom_time is not None:
         custom_time_proto = timestamp_pb2.Timestamp()
         custom_time_proto.FromDatetime(custom_time)
         resource_params["custom_time"] = custom_time_proto
 
-    # acl (field 10): repeated ObjectAccessControl
     acl = getattr(blob, "acl", None)
-    if acl is not None and getattr(acl, "loaded", False):
+    if acl:
         acl_entries = []
         for entry in acl:
             acl_entries.append(
@@ -65,23 +63,6 @@ def blob_to_proto(blob):
         if acl_entries:
             resource_params["acl"] = acl_entries
 
-    # contexts (field 38): ObjectContexts
-    contexts = getattr(blob, "contexts", None)
-    if contexts is not None:
-        custom_map = {}
-        # contexts is expected to be a dict of key-value pairs
-        if isinstance(contexts, dict):
-            for k, v in contexts.items():
-                if isinstance(v, str):
-                    payload = _storage_v2.ObjectCustomContextPayload(value=v)
-                else:
-                    payload = v
-                custom_map[k] = payload
-
-        if custom_map:
-            resource_params["contexts"] = _storage_v2.ObjectContexts(custom=custom_map)
-
-    # retention (field 30): Object.Retention
     retention = getattr(blob, "retention", None)
     if retention:
         mode_str = retention.get("mode")
