@@ -655,9 +655,9 @@ def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
     # Address circular imports in doctest due to bigframes/session/__init__.py
     # containing a lot of logic and samples.
     from bigframes.session import clients
-    import bigframes._config.env as env
+    import bigframes._config.auth
 
-    credentials, project = bigframes._config.env.resolve_credentials_and_project(config.options.bigquery)
+    credentials, project = bigframes._config.auth.resolve_credentials_and_project(config.options.bigquery)
 
     clients_provider = clients.ClientsProvider(
         project=project,
@@ -669,7 +669,7 @@ def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
         client_endpoints_override=config.options.bigquery.client_endpoints_override,
         requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
     )
-    return clients_provider.bqclient, project_id
+    return clients_provider.bqclient, project
 
 
 def _dry_run(query, bqclient) -> bigquery.QueryJob:

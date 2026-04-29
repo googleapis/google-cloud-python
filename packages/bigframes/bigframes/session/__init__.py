@@ -62,7 +62,6 @@ from pandas._typing import (
 
 import bigframes._config
 import bigframes._config.auth
-import bigframes._config.env
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
@@ -219,7 +218,7 @@ class Session(
         if clients_provider:
             self._clients_provider = clients_provider
         else:
-            credentials, project = bigframes._config.env.resolve_credentials_and_project(context)
+            credentials, project = bigframes._config.auth.resolve_credentials_and_project(context)
 
             self._clients_provider = clients.ClientsProvider(
                 project=project,
