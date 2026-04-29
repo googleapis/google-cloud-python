@@ -17,7 +17,6 @@ from unittest import mock
 
 from google.cloud.storage import _grpc_conversions
 from google.cloud import _storage_v2
-from google.protobuf import timestamp_pb2
 
 
 def test_blob_to_proto_simple_fields():
