@@ -6,6 +6,7 @@ Scans a repository for references to specific dependency versions.
 
 import argparse
 import csv
+import datetime
 import os
 import re
 import sys
@@ -83,30 +84,18 @@ class ConfigManager:
                 
         return resolved_rules
 
-def scan_file(file_path: str, rules: List[Dict[str, str]]) -> List[Dict[str, str]]:
+def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> List[Dict[str, str]]:
     """
     Scan a single file for matching patterns.
     
     Args:
         file_path: Path to the file to scan.
-        rules: A list of dictionaries containing 'name' and 'pattern' (string).
+        compiled_rules: A list of dictionaries containing 'name' and 'pattern' (compiled regex).
         
     Returns:
         A list of dictionaries containing match details.
     """
     results = []
-    
-    # Compile patterns
-    compiled_rules = []
-    for rule in rules:
-        try:
-            compiled_rules.append({
-                "name": rule["name"],
-                "pattern": re.compile(rule["pattern"])
-            })
-        except re.error as e:
-            print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
-            continue
             
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -169,6 +158,18 @@ def scan_repository(
     ignore_dirs = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor'}
     results = []
     
+    # Compile patterns once here
+    compiled_rules = []
+    for rule in rules:
+        try:
+            compiled_rules.append({
+                "name": rule["name"],
+                "pattern": re.compile(rule["pattern"])
+            })
+        except re.error as e:
+            print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
+            continue
+            
     print(f"\nScanning repository: {root_path}")
     if target_packages:
         print(f"Filtering for packages: {target_packages}")
@@ -194,7 +195,7 @@ def scan_repository(
                 
         for file in files:
             file_path = os.path.join(root, file)
-            matches = scan_file(file_path, rules)
+            matches = scan_file(file_path, compiled_rules)
             
             # Compute display path and package name
             rel_file_path = os.path.relpath(file_path, root_path)
@@ -331,7 +332,6 @@ def main():
         print(f"  ... and {len(all_matches) - 10} more matches.")
         
     # Write report
-    import datetime
     if args.output:
         output_path = args.output
     else:

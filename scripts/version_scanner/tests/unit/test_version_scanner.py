@@ -33,7 +33,7 @@ def test_scan_file_positive(tmp_path):
     test_file.write_text("python_requires = '>=3.7'\n")
     
     rules = [
-        {"name": "python_requires_check", "pattern": r"python_requires\s*=\s*['\"]>=3\.7['\"]"}
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
     ]
     
     results = scan_file(str(test_file), rules)
@@ -47,7 +47,7 @@ def test_scan_file_negative(tmp_path):
     test_file.write_text("python_requires = '>=3.8'\n")
     
     rules = [
-        {"name": "python_requires_check", "pattern": r"python_requires\s*=\s*['\"]>=3\.7['\"]"}
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
     ]
     
     results = scan_file(str(test_file), rules)
@@ -67,7 +67,7 @@ def test_directory_scan(tmp_path):
     f2.write_text("print('Hello')\n")
     
     rules = [
-        {"name": "python_requires_check", "pattern": r"python_requires\s*=\s*['\"]>=3\.7['\"]"}
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
     ]
     
     results = []
