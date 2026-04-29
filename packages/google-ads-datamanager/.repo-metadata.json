@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-ads-datamanager",
-    "name_pretty": "Data Manager API",
+    "name_pretty": "Data Manager",
     "product_documentation": "https://developers.google.com/data-manager",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

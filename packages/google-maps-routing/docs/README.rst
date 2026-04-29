@@ -1,9 +1,9 @@
-Python Client for Google Maps Routing
-=====================================
+Python Client for Routes
+========================
 
 |preview| |pypi| |versions|
 
-`Google Maps Routing`_: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
+`Routes`_: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google Maps Routing
    :target: https://pypi.org/project/google-maps-routing/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-routing.svg
    :target: https://pypi.org/project/google-maps-routing/
-.. _Google Maps Routing: https://mapsplatform.google.com/maps-products/#routes-section
+.. _Routes: https://mapsplatform.google.com/maps-products/#routes-section
 .. _Client Library Documentation: https://googleapis.dev/python/routing/latest
 .. _Product Documentation:  https://mapsplatform.google.com/maps-products/#routes-section
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Maps Routing.`_
+3. `Enable the Routes.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Maps Routing.:  https://mapsplatform.google.com/maps-products/#routes-section
+.. _Enable the Routes.:  https://mapsplatform.google.com/maps-products/#routes-section
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Maps Routing
+-  Read the `Client Library Documentation`_ for Routes
    to see other available methods on the client.
--  Read the `Google Maps Routing Product documentation`_ to learn
+-  Read the `Routes Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Maps Routing Product documentation:  https://mapsplatform.google.com/maps-products/#routes-section
+.. _Routes Product documentation:  https://mapsplatform.google.com/maps-products/#routes-section
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

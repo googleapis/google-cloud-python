@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-shopping-css",
-    "name_pretty": "CSS API",
+    "name_pretty": "CSS",
     "product_documentation": "https://developers.google.com/comparison-shopping-services/api",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

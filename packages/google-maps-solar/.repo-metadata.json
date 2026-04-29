@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-maps-solar",
-    "name_pretty": "Solar API",
+    "name_pretty": "Solar",
     "product_documentation": "https://developers.google.com/maps/documentation/solar/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

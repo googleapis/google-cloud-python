@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "area120tables",
-    "name_pretty": "Area 120 Tables",
+    "name_pretty": "Area120 Tables",
     "product_documentation": "https://area120.google.com",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

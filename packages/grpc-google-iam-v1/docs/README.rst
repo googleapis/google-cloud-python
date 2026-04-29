@@ -1,9 +1,9 @@
-Python Client for Cloud Identity and Access Management
-======================================================
+Python Client for IAM Meta
+==========================
 
 |preview| |pypi| |versions|
 
-`Cloud Identity and Access Management`_: Manages access control for Google Cloud Platform resources.
+`IAM Meta`_: Manages access control for Google Cloud Platform resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Identity and Access Management
    :target: https://pypi.org/project/grpc-google-iam-v1/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/grpc-google-iam-v1.svg
    :target: https://pypi.org/project/grpc-google-iam-v1/
-.. _Cloud Identity and Access Management: https://cloud.google.com/iam/
+.. _IAM Meta: https://cloud.google.com/iam/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/grpc-iam/latest
 .. _Product Documentation:  https://cloud.google.com/iam/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Identity and Access Management.`_
+3. `Enable the IAM Meta.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Identity and Access Management.:  https://cloud.google.com/iam/
+.. _Enable the IAM Meta.:  https://cloud.google.com/iam/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Identity and Access Management
+-  Read the `Client Library Documentation`_ for IAM Meta
    to see other available methods on the client.
--  Read the `Cloud Identity and Access Management Product documentation`_ to learn
+-  Read the `IAM Meta Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Identity and Access Management Product documentation:  https://cloud.google.com/iam/
+.. _IAM Meta Product documentation:  https://cloud.google.com/iam/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

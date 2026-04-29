@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "analyticsdata",
-    "name_pretty": "Analytics Data",
+    "name_pretty": "Google Analytics Data",
     "product_documentation": "https://developers.google.com/analytics/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
