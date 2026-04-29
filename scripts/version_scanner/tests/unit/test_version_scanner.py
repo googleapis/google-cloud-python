@@ -130,7 +130,6 @@ rules:
 
 def test_regex_examples_from_config():
     """Test that examples in config match at least one rule in the group."""
-    import yaml
     config_path = "regex_config.yaml"
     
     try:
