@@ -8,7 +8,7 @@ def test_integration_scan(tmp_path):
     scanner_path = os.path.abspath("version_scanner.py")
     config_path = os.path.abspath("regex_config.yaml")
     
-    # Static data directory (which we haven't created yet!)
+    # Static data directory
     data_dir = os.path.abspath("tests/data")
     
     # Run the scanner in the tmp_path so the output file is created there
@@ -21,8 +21,7 @@ def test_integration_scan(tmp_path):
         "-o", "scanner_report.csv"
     ]
     
-    # This will fail because tests/data doesn't exist or is empty!
-    result = subprocess.run(cmd, cwd=tmp_path, capture_output=True, text=True)
+    result = subprocess.run(cmd, cwd=tmp_path, capture_output=True, text=True, check=True)
     
     report_file = tmp_path / "scanner_report.csv"
     assert report_file.exists(), f"Report file not found. Stderr: {result.stderr}"
