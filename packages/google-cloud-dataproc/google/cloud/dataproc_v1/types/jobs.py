@@ -1140,6 +1140,10 @@ class YarnApplication(proto.Message):
             application-specific information. The URL uses
             the internal hostname, and requires a proxy
             server for resolution and, possibly, access.
+        vcore_seconds (int):
+            Optional. The cumulative CPU time consumed by the application for a job, measured in vcore-seconds.
+        memory_mb_seconds (int):
+            Optional. The cumulative memory usage of the application for a job, measured in mb-seconds.
     """
 
     class State(proto.Enum):
@@ -1193,6 +1197,16 @@ class YarnApplication(proto.Message):
     tracking_url: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    vcore_seconds: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    memory_mb_seconds: int = proto.Field(
+        proto.INT64,
+        number=6,
+        optional=True,
     )
 
 
