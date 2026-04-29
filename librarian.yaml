@@ -709,7 +709,6 @@ libraries:
       - docs/bigquery_storage_v1beta2/library.rst
     python:
       library_type: GAPIC_COMBO
-      name_pretty_override: Google BigQuery Storage
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
@@ -1962,7 +1961,6 @@ libraries:
         google/pubsub/v1:
           - python-gapic-namespace=google
           - python-gapic-name=pubsub
-      name_pretty_override: Google Cloud Pub/Sub
       metadata_name_override: pubsub
       default_version: v1
   - name: google-cloud-quotas
@@ -2278,7 +2276,6 @@ libraries:
         google/storage/v2:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=_storage
-      name_pretty_override: Google Cloud Storage
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559782
       metadata_name_override: storage
       default_version: v2
@@ -2948,7 +2945,6 @@ libraries:
         - google/cloud/location
         - google/logging/type
         - google/rpc/context
-      name_pretty_override: Google APIs Common Protos
       client_documentation_override: https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos
       default_version: apiVersion
   - name: grafeas
