@@ -102,7 +102,6 @@ libraries:
       connect first-party data across Google advertising products.
     python:
       name_pretty_override: Data Manager API
-      client_documentation_override: https://cloud.google.com/python/docs/reference/google-ads-datamanager/latest
       default_version: v1
   - name: google-ads-marketingplatform-admin
     version: 0.5.0
@@ -2663,7 +2662,6 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       name_pretty_override: Geocoding API
-      client_documentation_override: https://cloud.google.com/python/docs/reference/google-maps-geocode/latest
       default_version: v4
   - name: google-maps-mapsplatformdatasets
     version: 0.7.0
@@ -2681,7 +2679,6 @@ libraries:
     description_override: Navigation Connect API.
     python:
       name_pretty_override: Navigation Connect API
-      client_documentation_override: https://cloud.google.com/python/docs/reference/google-maps-navconnect/latest
       default_version: v1
   - name: google-maps-places
     version: 0.8.0
