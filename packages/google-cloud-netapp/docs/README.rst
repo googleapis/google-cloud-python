@@ -1,9 +1,9 @@
-Python Client for NetApp API
-============================
+Python Client for NetApp
+========================
 
 |preview| |pypi| |versions|
 
-`NetApp API`_: NetApp API
+`NetApp`_: NetApp API
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for NetApp API
    :target: https://pypi.org/project/google-cloud-netapp/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-netapp.svg
    :target: https://pypi.org/project/google-cloud-netapp/
-.. _NetApp API: https://cloud.google.com/netapp/volumes/
+.. _NetApp: https://cloud.google.com/netapp/volumes/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/netapp/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/netapp/volumes/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the NetApp API.`_
+3. `Enable the NetApp.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the NetApp API.:  https://cloud.google.com/netapp/volumes/
+.. _Enable the NetApp.:  https://cloud.google.com/netapp/volumes/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for NetApp API
+-  Read the `Client Library Documentation`_ for NetApp
    to see other available methods on the client.
--  Read the `NetApp API Product documentation`_ to learn
+-  Read the `NetApp Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _NetApp API Product documentation:  https://cloud.google.com/netapp/volumes/
+.. _NetApp Product documentation:  https://cloud.google.com/netapp/volumes/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

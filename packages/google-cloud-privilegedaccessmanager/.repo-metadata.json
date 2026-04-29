@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-privilegedaccessmanager",
-    "name_pretty": "Privileged Access Manager API",
+    "name_pretty": "Privileged Access Manager",
     "product_documentation": "https://cloud.google.com/iam/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

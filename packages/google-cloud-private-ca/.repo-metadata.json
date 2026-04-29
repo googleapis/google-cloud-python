@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "privateca",
-    "name_pretty": "Private Certificate Authority",
+    "name_pretty": "Certificate Authority",
     "product_documentation": "https://cloud.google.com/certificate-authority-service",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "migrationcenter",
-    "name_pretty": "Migration Center API",
+    "name_pretty": "Migration Center",
     "product_documentation": "https://cloud.google.com/migration-center/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

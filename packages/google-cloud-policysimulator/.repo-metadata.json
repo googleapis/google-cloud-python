@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "policysimulator",
-    "name_pretty": "Policy Simulator API",
+    "name_pretty": "Policy Simulator",
     "product_documentation": "https://cloud.google.com/policy-intelligence/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-licensemanager",
-    "name_pretty": "License Manager API",
+    "name_pretty": "License Manager",
     "product_documentation": "https://cloud.google.com/compute/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

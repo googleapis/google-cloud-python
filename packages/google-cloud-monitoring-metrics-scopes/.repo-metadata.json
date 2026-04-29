@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-monitoring-metrics-scopes",
-    "name_pretty": "Metrics Scopes",
+    "name_pretty": "Cloud Monitoring",
     "product_documentation": "https://cloud.google.com/monitoring/docs",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

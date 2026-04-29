@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "policytroubleshooter-iam",
-    "name_pretty": "Policy Troubleshooter API",
+    "name_pretty": "Policy Troubleshooter",
     "product_documentation": "https://cloud.google.com/policy-intelligence/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "netapp",
-    "name_pretty": "NetApp API",
+    "name_pretty": "NetApp",
     "product_documentation": "https://cloud.google.com/netapp/volumes/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
