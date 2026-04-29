@@ -57,18 +57,15 @@ libraries:
     version: 2.39.0
     python:
       library_type: INTEGRATION
-      name_pretty_override: A unified Python API in BigQuery
   - name: bigquery-magics
     version: 0.14.0
     python:
       library_type: INTEGRATION
-      name_pretty_override: Google BigQuery connector for Jupyter and IPython
   - name: db-dtypes
     version: 1.5.1
     description_override: Pandas extension data types for data from SQL systems such as BigQuery.
     python:
       library_type: INTEGRATION
-      name_pretty_override: Pandas Data Types for SQL systems (BigQuery, Spanner)
   - name: django-google-spanner
     version: 4.0.3
     python:
@@ -84,7 +81,6 @@ libraries:
     version: 3.2.5
     python:
       library_type: OTHER
-      name_pretty_override: Sphinx DocFX YAML Generator
       skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
@@ -101,7 +97,6 @@ libraries:
       A unified ingestion API for data partners, agencies and advertisers to
       connect first-party data across Google advertising products.
     python:
-      name_pretty_override: Data Manager API
       default_version: v1
   - name: google-ads-marketingplatform-admin
     version: 0.5.0
@@ -113,7 +108,6 @@ libraries:
         google/marketingplatform/admin/v1alpha:
           - python-gapic-namespace=google.ads
           - python-gapic-name=marketingplatform_admin
-      name_pretty_override: Google Marketing Platform Admin API
       default_version: v1alpha
   - name: google-ai-generativelanguage
     version: 0.11.0
@@ -125,7 +119,6 @@ libraries:
       - path: google/ai/generativelanguage/v1alpha
     description_override: The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
     python:
-      name_pretty_override: Generative Language API
       metadata_name_override: generativelanguage
       default_version: v1beta
   - name: google-analytics-admin
@@ -138,7 +131,6 @@ libraries:
       opt_args_by_api:
         google/analytics/admin/v1alpha:
           - autogen-snippets=False
-      name_pretty_override: Analytics Admin
       metadata_name_override: analyticsadmin
       default_version: v1alpha
   - name: google-analytics-data
@@ -148,14 +140,12 @@ libraries:
       - path: google/analytics/data/v1alpha
     description_override: provides programmatic methods to access report data in Google Analytics App+Web properties.
     python:
-      name_pretty_override: Analytics Data
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
     version: 2.30.3
     python:
       library_type: CORE
-      name_pretty_override: Google API client core library
       skip_readme_copy: true
   - name: google-apps-card
     version: 0.6.0
@@ -165,7 +155,6 @@ libraries:
     keep:
       - tests/unit/gapic/card_v1/test_card.py
     python:
-      name_pretty_override: Google Apps Card Protos
       default_version: v1
   - name: google-apps-chat
     version: 0.8.0
@@ -177,7 +166,6 @@ libraries:
           - proto-plus-deps=google.apps.card.v1
           - python-gapic-namespace=google.apps
           - python-gapic-name=chat
-      name_pretty_override: Chat API
       default_version: v1
   - name: google-apps-events-subscriptions
     version: 0.5.0
@@ -186,7 +174,6 @@ libraries:
       - path: google/apps/events/subscriptions/v1beta
     description_override: The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.
     python:
-      name_pretty_override: Google Workspace Events API
       default_version: v1
   - name: google-apps-meet
     version: 0.4.0
@@ -195,7 +182,6 @@ libraries:
       - path: google/apps/meet/v2beta
     description_override: Create and manage meetings in Google Meet.
     python:
-      name_pretty_override: Google Meet API
       default_version: v2
   - name: google-apps-script-type
     version: 0.6.0
@@ -244,7 +230,6 @@ libraries:
           - proto-plus-deps=google.apps.script.type
           - python-gapic-namespace=google.apps.script.type
           - python-gapic-name=slides
-      name_pretty_override: Google Apps Script Type Protos
       metadata_name_override: type
       default_version: apiVersion
   - name: google-area120-tables
@@ -253,25 +238,21 @@ libraries:
       - path: google/area120/tables/v1alpha1
     description_override: provides programmatic methods to the Area 120 Tables API.
     python:
-      name_pretty_override: Area 120 Tables
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
     version: 2.49.2
     python:
       library_type: AUTH
-      name_pretty_override: Google Auth Python Library
       skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
     python:
       library_type: AUTH
-      name_pretty_override: Google Auth httplib2
   - name: google-auth-oauthlib
     version: 1.3.1
     python:
       library_type: AUTH
-      name_pretty_override: Google Auth OAuthlib
       skip_readme_copy: true
   - name: google-cloud-access-approval
     version: 1.19.0
@@ -2502,7 +2483,6 @@ libraries:
       - tests/unit/gapic/type/test_type.py
     python:
       library_type: OTHER
-      name_pretty_override: Geo Type Protos
       metadata_name_override: geotype
       default_version: apiVersion
   - name: google-maps-addressvalidation
@@ -2514,7 +2494,6 @@ libraries:
       opt_args_by_api:
         google/maps/addressvalidation/v1:
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Address Validation API
       metadata_name_override: addressvalidation
       default_version: v1
   - name: google-maps-areainsights
@@ -2523,7 +2502,6 @@ libraries:
       - path: google/maps/areainsights/v1
     description_override: 'Places Insights API. '
     python:
-      name_pretty_override: Places Insights API
       default_version: v1
   - name: google-maps-fleetengine
     version: 0.5.0
@@ -2534,7 +2512,6 @@ libraries:
       opt_args_by_api:
         google/maps/fleetengine/v1:
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Local Rides and Deliveries API
       metadata_name_override: fleetengine
       default_version: v1
   - name: google-maps-fleetengine-delivery
@@ -2546,7 +2523,6 @@ libraries:
       opt_args_by_api:
         google/maps/fleetengine/delivery/v1:
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Last Mile Fleet Solution Delivery API
       metadata_name_override: fleetengine-delivery
       default_version: v1
   - name: google-maps-geocode
@@ -2561,7 +2537,6 @@ libraries:
       opt_args_by_api:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Geocoding API
       default_version: v4
   - name: google-maps-mapsplatformdatasets
     version: 0.7.0
@@ -2569,7 +2544,6 @@ libraries:
       - path: google/maps/mapsplatformdatasets/v1
     description_override: Maps Platform Datasets API
     python:
-      name_pretty_override: Maps Platform Datasets API
       metadata_name_override: mapsplatformdatasets
       default_version: v1
   - name: google-maps-navconnect
@@ -2578,7 +2552,6 @@ libraries:
       - path: google/maps/navconnect/v1
     description_override: Navigation Connect API.
     python:
-      name_pretty_override: Navigation Connect API
       default_version: v1
   - name: google-maps-places
     version: 0.8.0
@@ -2590,7 +2563,6 @@ libraries:
         google/maps/places/v1:
           - autogen-snippets=False
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Places API
       metadata_name_override: places
       default_version: v1
   - name: google-maps-routeoptimization
@@ -2599,7 +2571,6 @@ libraries:
       - path: google/maps/routeoptimization/v1
     description_override: The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
     python:
-      name_pretty_override: Route Optimization API
       default_version: v1
   - name: google-maps-routing
     version: 0.10.0
@@ -2610,7 +2581,6 @@ libraries:
       opt_args_by_api:
         google/maps/routing/v2:
           - proto-plus-deps=google.geo.type
-      name_pretty_override: Google Maps Routing
       metadata_name_override: routing
       default_version: v2
   - name: google-maps-solar
@@ -2619,13 +2589,11 @@ libraries:
       - path: google/maps/solar/v1
     description_override: The Google Maps Platform Solar API is a service focused on helping accelerate solar and energy system installations.
     python:
-      name_pretty_override: Solar API
       default_version: v1
   - name: google-resumable-media
     version: 2.8.2
     python:
       library_type: CORE
-      name_pretty_override: Google Resumable Media
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-resumable-media/latest
   - name: google-shopping-css
     version: 0.5.0
@@ -2636,7 +2604,6 @@ libraries:
       opt_args_by_api:
         google/shopping/css/v1:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: CSS API
       default_version: v1
   - name: google-shopping-merchant-accounts
     version: 1.5.0
@@ -2650,7 +2617,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/accounts/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-conversions
     version: 1.3.0
@@ -2659,7 +2625,6 @@ libraries:
       - path: google/shopping/merchant/conversions/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
     python:
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-datasources
     version: 1.4.0
@@ -2673,7 +2638,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/datasources/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-inventories
     version: 1.3.0
@@ -2687,7 +2651,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/inventories/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant Inventories API
       default_version: v1
   - name: google-shopping-merchant-issueresolution
     version: 1.3.0
@@ -2701,7 +2664,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/issueresolution/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-lfp
     version: 1.3.0
@@ -2715,7 +2677,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/lfp/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-notifications
     version: 1.3.0
@@ -2727,7 +2688,6 @@ libraries:
       opt_args_by_api:
         google/shopping/merchant/notifications/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-ordertracking
     version: 1.3.0
@@ -2741,7 +2701,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/ordertracking/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-products
     version: 1.5.0
@@ -2755,7 +2714,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/products/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-productstudio
     version: 0.4.0
@@ -2763,7 +2721,6 @@ libraries:
       - path: google/shopping/merchant/productstudio/v1alpha
     description_override: Programmatically manage your Merchant Center accounts.
     python:
-      name_pretty_override: Merchant ProductStudio API
       default_version: v1alpha
   - name: google-shopping-merchant-promotions
     version: 1.3.0
@@ -2777,7 +2734,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/promotions/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant API
       default_version: v1
   - name: google-shopping-merchant-quota
     version: 1.4.0
@@ -2786,7 +2742,6 @@ libraries:
       - path: google/shopping/merchant/quota/v1beta
     description_override: Programmatically manage your Merchant Center accounts.
     python:
-      name_pretty_override: Shopping Merchant Quota
       default_version: v1
   - name: google-shopping-merchant-reports
     version: 1.3.0
@@ -2803,7 +2758,6 @@ libraries:
           - proto-plus-deps=google.shopping.type
         google/shopping/merchant/reports/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant Reports API
       default_version: v1
   - name: google-shopping-merchant-reviews
     version: 0.5.0
@@ -2814,7 +2768,6 @@ libraries:
       opt_args_by_api:
         google/shopping/merchant/reviews/v1beta:
           - proto-plus-deps=google.shopping.type
-      name_pretty_override: Merchant Reviews API
       default_version: v1beta
   - name: google-shopping-type
     version: 1.4.0
@@ -2823,7 +2776,6 @@ libraries:
     keep:
       - tests/unit/gapic/type/test_type.py
     python:
-      name_pretty_override: Shopping Type Protos
       default_version: apiVersion
   - name: googleapis-common-protos
     version: 1.74.0
@@ -2857,7 +2809,6 @@ libraries:
       opt_args_by_api:
         grafeas/v1:
           - python-gapic-name=grafeas
-      name_pretty_override: Grafeas
       default_version: v1
   - name: grpc-google-iam-v1
     version: 0.14.4
@@ -2866,7 +2817,6 @@ libraries:
     python:
       proto_only_apis:
         - google/iam/v1
-      name_pretty_override: Cloud Identity and Access Management
       client_documentation_override: https://cloud.google.com/python/docs/reference/grpc-iam/latest
       metadata_name_override: grpc-iam
       default_version: apiVersion
@@ -2874,22 +2824,18 @@ libraries:
     version: 0.35.0
     python:
       library_type: INTEGRATION
-      name_pretty_override: Google BigQuery connector for pandas
       skip_readme_copy: true
   - name: proto-plus
     version: 1.27.2
     python:
       library_type: CORE
-      name_pretty_override: Proto Plus
       skip_readme_copy: true
   - name: sqlalchemy-bigquery
     version: 1.16.0
     python:
       library_type: INTEGRATION
-      name_pretty_override: SQLAlchemy dialect for BigQuery
   - name: sqlalchemy-spanner
     version: 1.17.3
     python:
       library_type: INTEGRATION
-      name_pretty_override: Spanner dialect for SQLAlchemy
       skip_readme_copy: true
