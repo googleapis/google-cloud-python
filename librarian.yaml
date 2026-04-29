@@ -889,7 +889,6 @@ libraries:
       - path: google/cloud/confidentialcomputing/v1
     description_override: Protect data in-use with Confidential VMs, Confidential GKE, Confidential Dataproc, and Confidential Space.
     python:
-      name_pretty_override: Confidential Computing API
       metadata_name_override: confidentialcomputing
       default_version: v1
   - name: google-cloud-config
@@ -898,7 +897,6 @@ libraries:
       - path: google/cloud/config/v1
     description_override: Infrastructure Manager API
     python:
-      name_pretty_override: Infrastructure Manager API
       metadata_name_override: config
       default_version: v1
   - name: google-cloud-configdelivery
@@ -909,7 +907,6 @@ libraries:
       - path: google/cloud/configdelivery/v1alpha
     description_override: ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.
     python:
-      name_pretty_override: Config Delivery API
       default_version: v1alpha
   - name: google-cloud-contact-center-insights
     version: 1.26.0
@@ -963,7 +960,6 @@ libraries:
     version: 2.5.1
     python:
       library_type: CORE
-      name_pretty_override: Google API client core library
   - name: google-cloud-data-fusion
     version: 1.16.0
     apis:
@@ -996,7 +992,6 @@ libraries:
       focused on reliability, compliance, security, cost, and administration to
       quickly identify and address relevant issues within their database fleets.
     python:
-      name_pretty_override: Database Center API
       default_version: v1beta
   - name: google-cloud-datacatalog
     version: 3.30.0
@@ -1013,7 +1008,6 @@ libraries:
       - path: google/cloud/datacatalog/lineage/v1
     description_override: 'Data lineage is a Dataplex feature that lets you track how data moves through your systems: where it comes from, where it is passed to, and what transformations are applied to it.'
     python:
-      name_pretty_override: Data Lineage API
       metadata_name_override: lineage
       default_version: v1
   - name: google-cloud-datacatalog-lineage-configmanagement
@@ -1021,7 +1015,6 @@ libraries:
     apis:
       - path: google/cloud/datacatalog/lineage/configmanagement/v1
     python:
-      name_pretty_override: Data Lineage API
       default_version: v1
   - name: google-cloud-dataflow-client
     version: 0.13.0
@@ -1041,7 +1034,6 @@ libraries:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
     python:
-      name_pretty_override: Cloud Dataform
       metadata_name_override: dataform
       default_version: v1beta1
   - name: google-cloud-datalabeling
@@ -1050,7 +1042,6 @@ libraries:
       - path: google/cloud/datalabeling/v1beta1
     description_override: is a service that lets you work with human labelers to generate highly accurate labels for a collection of data that you can use to train your machine learning models.
     python:
-      name_pretty_override: Google Cloud Data Labeling
       metadata_name_override: datalabeling
       default_version: v1beta1
   - name: google-cloud-dataplex
@@ -1067,7 +1058,6 @@ libraries:
       - path: google/cloud/dataproc/v1
     description_override: is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.
     python:
-      name_pretty_override: Google Cloud Dataproc
       metadata_name_override: dataproc
       default_version: v1
   - name: google-cloud-dataproc-metastore
@@ -1100,7 +1090,6 @@ libraries:
         google/datastore/v1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=datastore
-      name_pretty_override: Google Cloud Datastore API
       metadata_name_override: datastore
       default_version: v1
   - name: google-cloud-datastream
@@ -1118,7 +1107,6 @@ libraries:
       - path: google/cloud/deploy/v1
     description_override: is a service that automates delivery of your applications to a series of target environments in a defined sequence
     python:
-      name_pretty_override: Google Cloud Deploy
       metadata_name_override: clouddeploy
       default_version: v1
   - name: google-cloud-developerconnect
@@ -1127,7 +1115,6 @@ libraries:
       - path: google/cloud/developerconnect/v1
     description_override: Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.
     python:
-      name_pretty_override: Developer Connect API
       default_version: v1
   - name: google-cloud-devicestreaming
     version: 0.4.0
@@ -1135,7 +1122,6 @@ libraries:
       - path: google/cloud/devicestreaming/v1
     description_override: The Cloud API for device streaming usage.
     python:
-      name_pretty_override: Device Streaming API
       default_version: v1
   - name: google-cloud-dialogflow
     version: 2.47.0
@@ -1158,7 +1144,6 @@ libraries:
           - python-gapic-name=dialogflowcx
         google/cloud/dialogflow/cx/v3beta1:
           - python-gapic-name=dialogflowcx
-      name_pretty_override: Dialogflow CX
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
@@ -1168,7 +1153,6 @@ libraries:
       - path: google/cloud/discoveryengine/v1beta
       - path: google/cloud/discoveryengine/v1alpha
     python:
-      name_pretty_override: Discovery Engine API
       metadata_name_override: discoveryengine
       default_version: v1beta
   - name: google-cloud-dlp
@@ -1180,7 +1164,6 @@ libraries:
       opt_args_by_api:
         google/privacy/dlp/v2:
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Cloud Data Loss Prevention
       metadata_name_override: dlp
       default_version: v2
   - name: google-cloud-dms
@@ -1189,7 +1172,6 @@ libraries:
       - path: google/cloud/clouddms/v1
     description_override: makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL.
     python:
-      name_pretty_override: Cloud Database Migration Service
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
@@ -1197,7 +1179,6 @@ libraries:
     description_override: provides methods that you can use to manage DNS for your applications.
     python:
       library_type: REST
-      name_pretty_override: Cloud DNS
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559772
       metadata_name_override: dns
   - name: google-cloud-documentai
@@ -1207,14 +1188,12 @@ libraries:
       - path: google/cloud/documentai/v1beta3
     description_override: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
     python:
-      name_pretty_override: Document AI
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
     version: 0.15.2
     python:
       library_type: OTHER
-      name_pretty_override: Document AI Toolbox
       metadata_name_override: documentai-toolbox
       default_version: v1
   - name: google-cloud-domains
@@ -1240,7 +1219,6 @@ libraries:
       - path: google/cloud/edgenetwork/v1
     description_override: Network management API for Distributed Cloud Edge
     python:
-      name_pretty_override: Distributed Cloud Edge Network API
       default_version: v1
   - name: google-cloud-enterpriseknowledgegraph
     version: 0.6.0
@@ -1260,7 +1238,6 @@ libraries:
         google/devtools/clouderrorreporting/v1beta1:
           - python-gapic-name=errorreporting
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Error Reporting API
       metadata_name_override: clouderrorreporting
       default_version: v1beta1
   - name: google-cloud-essential-contacts
@@ -1299,7 +1276,6 @@ libraries:
       opt_args_by_api:
         google/cloud/filestore/v1:
           - proto-plus-deps=google.cloud.common
-      name_pretty_override: Filestore
       metadata_name_override: file
       default_version: v1
   - name: google-cloud-financialservices
@@ -1308,7 +1284,6 @@ libraries:
       - path: google/cloud/financialservices/v1
     description_override: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
     python:
-      name_pretty_override: Anti Money Laundering AI API
       default_version: v1
   - name: google-cloud-firestore
     version: 2.27.0
@@ -1342,7 +1317,6 @@ libraries:
         google/firestore/v1:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=firestore
-      name_pretty_override: Cloud Firestore API
       metadata_name_override: firestore
       default_version: v1
   - name: google-cloud-functions
@@ -1360,7 +1334,6 @@ libraries:
       - path: google/cloud/gdchardwaremanagement/v1alpha
     description_override: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
     python:
-      name_pretty_override: GDC Hardware Management API
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
     version: 0.12.0
@@ -1395,7 +1368,6 @@ libraries:
         google/cloud/gkeconnect/gateway/v1beta1:
           - python-gapic-namespace=google.cloud.gkeconnect
           - python-gapic-name=gateway
-      name_pretty_override: GKE Connect Gateway
       metadata_name_override: connectgateway
       default_version: v1
   - name: google-cloud-gke-hub
@@ -1424,7 +1396,6 @@ libraries:
       opt_args_by_api:
         google/cloud/gkemulticloud/v1:
           - python-gapic-name=gke_multicloud
-      name_pretty_override: Anthos Multicloud
       metadata_name_override: gkemulticloud
       default_version: v1
   - name: google-cloud-gkerecommender
@@ -1433,7 +1404,6 @@ libraries:
       - path: google/cloud/gkerecommender/v1
     description_override: GKE Recommender API
     python:
-      name_pretty_override: GKE Recommender API
       default_version: v1
   - name: google-cloud-gsuiteaddons
     version: 0.5.0
@@ -1444,7 +1414,6 @@ libraries:
       opt_args_by_api:
         google/cloud/gsuiteaddons/v1:
           - proto-plus-deps=google.apps.script.type.calendar+google.apps.script.type.docs+google.apps.script.type.drive+google.apps.script.type.gmail+google.apps.script.type.sheets+google.apps.script.type.slides+google.apps.script.type
-      name_pretty_override: Google Workspace Add-ons API
       metadata_name_override: gsuiteaddons
       default_version: v1
   - name: google-cloud-hypercomputecluster
@@ -1454,7 +1423,6 @@ libraries:
       - path: google/cloud/hypercomputecluster/v1beta
     description_override: The Cluster Director API allows you to deploy, manage, and monitor clusters that run AI, ML, or HPC workloads.
     python:
-      name_pretty_override: Cluster Director API
       default_version: v1
   - name: google-cloud-iam
     version: 2.22.0
@@ -1486,7 +1454,6 @@ libraries:
         google/iam/v3beta:
           - python-gapic-name=iam
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Cloud Identity and Access Management
       metadata_name_override: iam
       default_version: v2
   - name: google-cloud-iam-logging
@@ -1501,7 +1468,6 @@ libraries:
         google/iam/v1/logging:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=iam_logging
-      name_pretty_override: IAM Logging Protos
       metadata_name_override: iamlogging
       default_version: v1
   - name: google-cloud-iamconnectorcredentials
@@ -1510,7 +1476,6 @@ libraries:
       - path: google/cloud/iamconnectorcredentials/v1alpha
     description_override: iamconnectorcredentials.googleapis.com API.
     python:
-      name_pretty_override: iamconnectorcredentials.googleapis.com API
       default_version: v1alpha
   - name: google-cloud-iap
     version: 1.21.0
@@ -1518,7 +1483,6 @@ libraries:
       - path: google/cloud/iap/v1
     description_override: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
     python:
-      name_pretty_override: Identity-Aware Proxy
       metadata_name_override: iap
       default_version: v1
   - name: google-cloud-ids
