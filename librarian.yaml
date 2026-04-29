@@ -1535,7 +1535,6 @@ libraries:
       - path: google/cloud/kms/v1
     description_override: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
     python:
-      name_pretty_override: Google Cloud Key Management Service
       metadata_name_override: cloudkms
       default_version: v1
   - name: google-cloud-kms-inventory
@@ -1547,7 +1546,6 @@ libraries:
       opt_args_by_api:
         google/cloud/kms/inventory/v1:
           - proto-plus-deps=google.cloud.kms.v1
-      name_pretty_override: KMS Inventory API
       metadata_name_override: inventory
       default_version: v1
   - name: google-cloud-language
@@ -1558,7 +1556,6 @@ libraries:
       - path: google/cloud/language/v1beta2
     description_override: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
     python:
-      name_pretty_override: Natural Language
       metadata_name_override: language
       default_version: v1
   - name: google-cloud-licensemanager
@@ -1567,7 +1564,6 @@ libraries:
       - path: google/cloud/licensemanager/v1
     description_override: 'License Manager is a tool to manage and track third-party licenses on Google Cloud. '
     python:
-      name_pretty_override: License Manager API
       default_version: v1
   - name: google-cloud-life-sciences
     version: 0.12.0
@@ -1583,7 +1579,6 @@ libraries:
       - path: google/cloud/locationfinder/v1
     description_override: Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.
     python:
-      name_pretty_override: Cloud Location Finder API
       default_version: v1
   - name: google-cloud-logging
     version: 3.15.0
@@ -1596,7 +1591,6 @@ libraries:
         google/logging/v2:
           - python-gapic-name=logging
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Cloud Logging API
       metadata_name_override: logging
       default_version: v2
   - name: google-cloud-lustre
@@ -1605,7 +1599,6 @@ libraries:
       - path: google/cloud/lustre/v1
     description_override: 'null '
     python:
-      name_pretty_override: Google Cloud Managed Lustre API
       default_version: v1
   - name: google-cloud-maintenance-api
     version: 0.4.0
@@ -1636,7 +1629,6 @@ libraries:
       - path: google/cloud/managedkafka/schemaregistry/v1
     description_override: 'Manage Apache Kafka clusters and resources. '
     python:
-      name_pretty_override: Managed Service for Apache Kafka API
       default_version: v1
   - name: google-cloud-media-translation
     version: 0.14.0
@@ -1669,7 +1661,6 @@ libraries:
       - path: google/cloud/migrationcenter/v1
     description_override: A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.
     python:
-      name_pretty_override: Migration Center API
       metadata_name_override: migrationcenter
       default_version: v1
   - name: google-cloud-modelarmor
@@ -1679,7 +1670,6 @@ libraries:
       - path: google/cloud/modelarmor/v1beta
     description_override: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
     python:
-      name_pretty_override: Model Armor API
       default_version: v1
   - name: google-cloud-monitoring
     version: 2.30.0
@@ -1692,7 +1682,6 @@ libraries:
         google/monitoring/v3:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=monitoring
-      name_pretty_override: Stackdriver Monitoring
       metadata_name_override: monitoring
       default_version: v3
   - name: google-cloud-monitoring-dashboards
@@ -1708,7 +1697,6 @@ libraries:
         google/monitoring/dashboard/v1:
           - python-gapic-name=monitoring_dashboard
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Monitoring Dashboards
       metadata_name_override: monitoring-dashboards
       default_version: v1
   - name: google-cloud-monitoring-metrics-scopes
@@ -1721,13 +1709,11 @@ libraries:
         google/monitoring/metricsscope/v1:
           - python-gapic-name=monitoring_metrics_scope
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Metrics Scopes
       default_version: v1
   - name: google-cloud-ndb
     version: 2.4.2
     python:
       library_type: GAPIC_MANUAL
-      name_pretty_override: NDB Client Library for Google Cloud Datastore
       metadata_name_override: python-ndb
       skip_readme_copy: true
   - name: google-cloud-netapp
@@ -1736,7 +1722,6 @@ libraries:
       - path: google/cloud/netapp/v1
     description_override: NetApp API
     python:
-      name_pretty_override: NetApp API
       metadata_name_override: netapp
       default_version: v1
   - name: google-cloud-network-connectivity
@@ -1747,7 +1732,6 @@ libraries:
       - path: google/cloud/networkconnectivity/v1alpha1
     description_override: The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.
     python:
-      name_pretty_override: Network Connectivity Center
       metadata_name_override: networkconnectivity
       default_version: v1
   - name: google-cloud-network-management
@@ -1795,7 +1779,6 @@ libraries:
       - path: google/cloud/notebooks/v1beta1
     description_override: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
     python:
-      name_pretty_override: AI Platform Notebooks
       metadata_name_override: notebooks
       default_version: v1
   - name: google-cloud-optimization
@@ -1812,7 +1795,6 @@ libraries:
       - path: google/cloud/oracledatabase/v1
     description_override: The Oracle Database@Google Cloud API provides a set of APIs to manage Oracle database services, such as Exadata and Autonomous Databases.
     python:
-      name_pretty_override: Oracle Database@Google Cloud API
       default_version: v1
   - name: google-cloud-orchestration-airflow
     version: 1.20.0
@@ -1860,7 +1842,6 @@ libraries:
       opt_args_by_api:
         google/cloud/oslogin/v1:
           - proto-plus-deps=google.cloud.oslogin.common
-      name_pretty_override: Google Cloud OS Login
       metadata_name_override: oslogin
       default_version: v1
   - name: google-cloud-parallelstore
@@ -1870,7 +1851,6 @@ libraries:
       - path: google/cloud/parallelstore/v1beta
     description_override: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
     python:
-      name_pretty_override: Parallelstore API
       default_version: v1beta
   - name: google-cloud-parametermanager
     version: 0.4.0
@@ -1878,7 +1858,6 @@ libraries:
       - path: google/cloud/parametermanager/v1
     description_override: '(Public Preview) Parameter Manager is a single source of truth to store, access and manage the lifecycle of your workload parameters. Parameter Manager aims to make management of sensitive application parameters effortless for customers without diminishing focus on security. '
     python:
-      name_pretty_override: Parameter Manager API
       default_version: v1
   - name: google-cloud-phishing-protection
     version: 1.17.0
@@ -1894,7 +1873,6 @@ libraries:
       - path: google/cloud/policytroubleshooter/v1
     description_override: makes it easier to understand why a user has access to a resource or doesn't have permission to call an API. Given an email, resource, and permission, Policy Troubleshooter examines all Identity and Access Management (IAM) policies that apply to the resource. It then reveals whether the member's roles include the permission on that resource and, if so, which policies bind the member to those roles.
     python:
-      name_pretty_override: IAM Policy Troubleshooter API
       metadata_name_override: policytroubleshooter
       default_version: v1
   - name: google-cloud-policysimulator
@@ -1906,7 +1884,6 @@ libraries:
       opt_args_by_api:
         google/cloud/policysimulator/v1:
           - proto-plus-deps=google.cloud.orgpolicy.v2
-      name_pretty_override: Policy Simulator API
       metadata_name_override: policysimulator
       default_version: v1
   - name: google-cloud-policytroubleshooter-iam
@@ -1914,7 +1891,6 @@ libraries:
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
     python:
-      name_pretty_override: Policy Troubleshooter API
       metadata_name_override: policytroubleshooter-iam
       default_version: v3
   - name: google-cloud-private-ca
@@ -1931,7 +1907,6 @@ libraries:
         google/cloud/security/privateca/v1beta1:
           - python-gapic-namespace=google.cloud.security
           - python-gapic-name=privateca
-      name_pretty_override: Private Certificate Authority
       metadata_name_override: privateca
       default_version: v1
   - name: google-cloud-private-catalog
@@ -1940,7 +1915,6 @@ libraries:
       - path: google/cloud/privatecatalog/v1beta1
     description_override: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
     python:
-      name_pretty_override: Private Catalog
       metadata_name_override: cloudprivatecatalog
       default_version: v1beta1
   - name: google-cloud-privilegedaccessmanager
@@ -1949,7 +1923,6 @@ libraries:
       - path: google/cloud/privilegedaccessmanager/v1
     description_override: Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.
     python:
-      name_pretty_override: Privileged Access Manager API
       default_version: v1
   - name: google-cloud-pubsub
     version: 2.37.0
@@ -1977,7 +1950,6 @@ libraries:
           - python-gapic-namespace=google.cloud
         google/api/cloudquotas/v1beta:
           - python-gapic-namespace=google.cloud
-      name_pretty_override: Cloud Quotas API
       metadata_name_override: google-cloud-cloudquotas
       default_version: v1
   - name: google-cloud-rapidmigrationassessment
@@ -1986,7 +1958,6 @@ libraries:
       - path: google/cloud/rapidmigrationassessment/v1
     description_override: The Rapid Migration Assessment service is our first-party migration assessment and planning tool.
     python:
-      name_pretty_override: Rapid Migration Assessment API
       metadata_name_override: rapidmigrationassessment
       default_version: v1
   - name: google-cloud-recaptcha-enterprise
@@ -2012,7 +1983,6 @@ libraries:
       - path: google/cloud/recommender/v1beta1
     description_override: delivers highly personalized product recommendations at scale.
     python:
-      name_pretty_override: Cloud Recommender
       metadata_name_override: recommender
       default_version: v1
   - name: google-cloud-redis
@@ -2022,7 +1992,6 @@ libraries:
       - path: google/cloud/redis/v1beta1
     description_override: is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.
     python:
-      name_pretty_override: Cloud Redis
       metadata_name_override: redis
       default_version: v1
   - name: google-cloud-redis-cluster
@@ -2032,7 +2001,6 @@ libraries:
       - path: google/cloud/redis/cluster/v1beta1
     description_override: Creates and manages Redis instances on the Google Cloud Platform.
     python:
-      name_pretty_override: Google Cloud Memorystore for Redis API
       default_version: v1
   - name: google-cloud-resource-manager
     version: 1.17.0
@@ -2040,7 +2008,6 @@ libraries:
       - path: google/cloud/resourcemanager/v3
     description_override: provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.
     python:
-      name_pretty_override: Resource Manager
       metadata_name_override: cloudresourcemanager
       default_version: v3
   - name: google-cloud-retail
@@ -2051,7 +2018,6 @@ libraries:
       - path: google/cloud/retail/v2alpha
     description_override: Cloud Retail service enables customers to build end-to-end personalized recommendation systems without requiring a high level of expertise in machine learning, recommendation system, or Google Cloud.
     python:
-      name_pretty_override: Retail
       metadata_name_override: retail
       default_version: v2
   - name: google-cloud-run
@@ -2060,14 +2026,12 @@ libraries:
       - path: google/cloud/run/v2
     description_override: is a managed compute platform that enables you to run containers that are invocable via requests or events.
     python:
-      name_pretty_override: Cloud Run
       metadata_name_override: run
       default_version: v2
   - name: google-cloud-runtimeconfig
     version: 0.36.1
     python:
       library_type: GAPIC_MANUAL
-      name_pretty_override: Google Cloud Runtime Configurator
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559663
       metadata_name_override: runtimeconfig
   - name: google-cloud-saasplatform-saasservicemgmt
