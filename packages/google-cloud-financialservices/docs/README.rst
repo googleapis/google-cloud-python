@@ -1,9 +1,9 @@
-Python Client for Anti Money Laundering AI API
-==============================================
+Python Client for Financial Services
+====================================
 
 |preview| |pypi| |versions|
 
-`Anti Money Laundering AI API`_: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
+`Financial Services`_: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Anti Money Laundering AI API
    :target: https://pypi.org/project/google-cloud-financialservices/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-financialservices.svg
    :target: https://pypi.org/project/google-cloud-financialservices/
-.. _Anti Money Laundering AI API: https://cloud.google.com/financial-services/anti-money-laundering/
+.. _Financial Services: https://cloud.google.com/financial-services/anti-money-laundering/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-financialservices/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/financial-services/anti-money-laundering/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Anti Money Laundering AI API.`_
+3. `Enable the Financial Services.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Anti Money Laundering AI API.:  https://cloud.google.com/financial-services/anti-money-laundering/
+.. _Enable the Financial Services.:  https://cloud.google.com/financial-services/anti-money-laundering/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Anti Money Laundering AI API
+-  Read the `Client Library Documentation`_ for Financial Services
    to see other available methods on the client.
--  Read the `Anti Money Laundering AI API Product documentation`_ to learn
+-  Read the `Financial Services Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Anti Money Laundering AI API Product documentation:  https://cloud.google.com/financial-services/anti-money-laundering/
+.. _Financial Services Product documentation:  https://cloud.google.com/financial-services/anti-money-laundering/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-gdchardwaremanagement",
-    "name_pretty": "GDC Hardware Management API",
+    "name_pretty": "GDC Hardware Management",
     "product_documentation": "https://cloud.google.com/distributed-cloud/edge/latest/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

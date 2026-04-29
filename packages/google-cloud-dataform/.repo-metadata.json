@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "dataform",
-    "name_pretty": "Cloud Dataform",
+    "name_pretty": "Dataform",
     "product_documentation": "https://cloud.google.com/dataform/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

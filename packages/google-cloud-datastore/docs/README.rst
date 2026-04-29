@@ -1,9 +1,9 @@
-Python Client for Google Cloud Datastore API
-============================================
+Python Client for Cloud Datastore
+=================================
 
 |stable| |pypi| |versions|
 
-`Google Cloud Datastore API`_: is a fully managed, schemaless database for
+`Cloud Datastore`_: is a fully managed, schemaless database for
 storing non-relational data. Cloud Datastore automatically scales with
 your users and supports ACID transactions, high availability of reads and
 writes, strong consistency for reads and ancestor queries, and eventual
@@ -18,7 +18,7 @@ consistency for all other queries.
    :target: https://pypi.org/project/google-cloud-datastore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/
-.. _Google Cloud Datastore API: https://cloud.google.com/datastore
+.. _Cloud Datastore: https://cloud.google.com/datastore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastore/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/datastore
 
@@ -29,12 +29,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Datastore API.`_
+3. `Enable the Cloud Datastore.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/datastore
+.. _Enable the Cloud Datastore.:  https://cloud.google.com/datastore
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -101,14 +101,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Datastore API
+-  Read the `Client Library Documentation`_ for Cloud Datastore
    to see other available methods on the client.
--  Read the `Google Cloud Datastore API Product documentation`_ to learn
+-  Read the `Cloud Datastore Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Datastore API Product documentation:  https://cloud.google.com/datastore
+.. _Cloud Datastore Product documentation:  https://cloud.google.com/datastore
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "config",
-    "name_pretty": "Infrastructure Manager API",
+    "name_pretty": "Infrastructure Manager",
     "product_documentation": "https://cloud.google.com/infrastructure-manager/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

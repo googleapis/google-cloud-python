@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "confidentialcomputing",
-    "name_pretty": "Confidential Computing API",
+    "name_pretty": "Confidential Computing",
     "product_documentation": "https://cloud.google.com/confidential-computing",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

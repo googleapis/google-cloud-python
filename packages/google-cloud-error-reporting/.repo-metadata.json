@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "name": "clouderrorreporting",
-    "name_pretty": "Error Reporting API",
+    "name_pretty": "Error Reporting",
     "product_documentation": "https://cloud.google.com/error-reporting",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

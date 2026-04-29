@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "connectgateway",
-    "name_pretty": "GKE Connect Gateway",
+    "name_pretty": "Connect Gateway",
     "product_documentation": "https://cloud.google.com/kubernetes-engine/enterprise/multicluster-management/gateway",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
