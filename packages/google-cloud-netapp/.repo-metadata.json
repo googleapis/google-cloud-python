@@ -1,5 +1,5 @@
 {
-    "api_description": "NetApp API",
+    "api_description": "Google Cloud NetApp Volumes is a fully-managed, cloud-based data storage\nservice that provides advanced data management capabilities and highly\nscalable performance with global availability.",
     "api_id": "netapp.googleapis.com",
     "api_shortname": "netapp",
     "client_documentation": "https://cloud.google.com/python/docs/reference/netapp/latest",
