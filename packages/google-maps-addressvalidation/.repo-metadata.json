@@ -1,5 +1,5 @@
 {
-    "api_description": "Address Validation lets you validate and correct address inputs with Places data powered by Google Maps Platform.",
+    "api_description": "The Address Validation API allows developers to verify the accuracy of\naddresses. Given an address, it returns information about the correctness\nof the components of the parsed address, a geocode, and a verdict on the\ndeliverability of the parsed address.",
     "api_id": "addressvalidation.googleapis.com",
     "api_shortname": "addressvalidation",
     "client_documentation": "https://googleapis.dev/python/addressvalidation/latest",

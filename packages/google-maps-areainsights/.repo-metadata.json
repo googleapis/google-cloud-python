@@ -1,5 +1,5 @@
 {
-    "api_description": "Places Insights API. ",
+    "api_description": "Places Aggregate API.",
     "api_id": "areainsights.googleapis.com",
     "api_shortname": "area-insights",
     "client_documentation": "https://googleapis.dev/python/google-maps-areainsights/latest",

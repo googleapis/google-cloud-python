@@ -3,7 +3,7 @@ Python Client for Serverless VPC Access
 
 |stable| |pypi| |versions|
 
-`Serverless VPC Access`_: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
+`Serverless VPC Access`_: API for managing VPC access connectors.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

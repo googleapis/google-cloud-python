@@ -3,7 +3,7 @@ Python Client for Places Aggregate
 
 |preview| |pypi| |versions|
 
-`Places Aggregate`_: Places Insights API. 
+`Places Aggregate`_: Places Aggregate API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

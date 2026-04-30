@@ -3,7 +3,7 @@ Python Client for Vision AI
 
 |preview| |pypi| |versions|
 
-`Vision AI`_: Easily build and deploy Vertex AI Vision applications using a single platform.
+`Vision AI`_: Vertex AI Vision is an AI-powered platform to ingest, analyze and store video data.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

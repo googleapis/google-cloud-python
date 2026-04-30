@@ -3,7 +3,8 @@ Python Client for VM Migration
 
 |stable| |pypi| |versions|
 
-`VM Migration`_:  for Compute Engine migrates VMs from your on-premises data center into Compute Engine.
+`VM Migration`_: Use the Migrate to Virtual Machines API to programmatically migrate
+workloads.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
