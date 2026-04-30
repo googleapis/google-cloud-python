@@ -22,9 +22,9 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.bigtable_v2.types import data, types
+from google.cloud.bigtable_v2.types import data
 from google.cloud.bigtable_v2.types import request_stats as gb_request_stats
+from google.cloud.bigtable_v2.types import types
 
 __protobuf__ = proto.module(
     package="google.bigtable.v2",

@@ -63,26 +63,19 @@ from .data import (
     StreamPartition,
     TimestampRange,
     Value,
+    ValueBitmask,
     ValueRange,
 )
-from .feature_flags import (
-    FeatureFlags,
-)
-from .peer_info import (
-    PeerInfo,
-)
+from .feature_flags import FeatureFlags
+from .peer_info import PeerInfo
 from .request_stats import (
     FullReadStatsView,
     ReadIterationStats,
     RequestLatencyStats,
     RequestStats,
 )
-from .response_params import (
-    ResponseParams,
-)
-from .types import (
-    Type,
-)
+from .response_params import ResponseParams
+from .types import Type
 
 __all__ = (
     "CheckAndMutateRowRequest",
@@ -133,6 +126,7 @@ __all__ = (
     "TimestampRange",
     "Value",
     "ValueRange",
+    "ValueBitmask",
     "FeatureFlags",
     "PeerInfo",
     "FullReadStatsView",

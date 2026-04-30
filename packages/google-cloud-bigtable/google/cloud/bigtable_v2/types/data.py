@@ -20,7 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.bigtable_v2.types import types
 
 __protobuf__ = proto.module(
@@ -37,6 +36,7 @@ __protobuf__ = proto.module(
         "ColumnRange",
         "TimestampRange",
         "ValueRange",
+        "ValueBitmask",
         "RowFilter",
         "Mutation",
         "ReadModifyWriteRule",
@@ -558,6 +558,24 @@ class ValueRange(proto.Message):
     )
 
 
+class ValueBitmask(proto.Message):
+    r"""Restricts the output to cells whose values match the given
+    bitmask.
+
+    Attributes:
+        mask (bytes):
+            Required. Mask applied to the value. Evaluated as:
+            ``(value & mask) == mask`` The mask length must exactly
+            match the value length, otherwise the cell is not considered
+            a match.
+    """
+
+    mask: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+
+
 class RowFilter(proto.Message):
     r"""Takes a row as input and produces an alternate view of the row based
     on specified rules. For example, a RowFilter might trim down a row
@@ -1011,6 +1029,12 @@ class RowFilter(proto.Message):
         proto.STRING,
         number=19,
         oneof="filter",
+    )
+    value_bitmask_filter: "ValueBitmask" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="filter",
+        message="ValueBitmask",
     )
 
 

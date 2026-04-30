@@ -37,9 +37,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.bigtable_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -47,7 +46,6 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 from google.cloud.bigtable_v2.types import bigtable, data, request_stats
 
 from .client import BigtableClient
@@ -118,9 +116,7 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        sa_info_func = (
-            BigtableClient.from_service_account_info.__func__  # type: ignore
-        )
+        sa_info_func = BigtableClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(BigtableAsyncClient, info, *args, **kwargs)
 
     @classmethod
@@ -137,9 +133,7 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        sa_file_func = (
-            BigtableClient.from_service_account_file.__func__  # type: ignore
-        )
+        sa_file_func = BigtableClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(BigtableAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -281,21 +275,23 @@ class BigtableAsyncClient:
         ):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.bigtable_v2.BigtableAsyncClient`.",
-                extra={
-                    "serviceName": "google.bigtable.v2.Bigtable",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
-                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
-                    "serviceName": "google.bigtable.v2.Bigtable",
-                    "credentialsType": None,
-                },
+                extra=(
+                    {
+                        "serviceName": "google.bigtable.v2.Bigtable",
+                        "universeDomain": getattr(
+                            self._client._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._client._transport, "_credentials")
+                    else {
+                        "serviceName": "google.bigtable.v2.Bigtable",
+                        "credentialsType": None,
+                    }
+                ),
             )
 
     def read_rows(

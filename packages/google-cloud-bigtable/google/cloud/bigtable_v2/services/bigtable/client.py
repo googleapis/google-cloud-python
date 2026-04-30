@@ -44,9 +44,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.bigtable_v2 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,7 +62,6 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 from google.cloud.bigtable_v2.types import bigtable, data, request_stats
 
 from .transports.base import DEFAULT_CLIENT_INFO, BigtableTransport
@@ -774,21 +772,25 @@ class BigtableClient(metaclass=BigtableClientMeta):
             ):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.bigtable_v2.BigtableClient`.",
-                    extra={
-                        "serviceName": "google.bigtable.v2.Bigtable",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
-                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
-                        "serviceName": "google.bigtable.v2.Bigtable",
-                        "credentialsType": None,
-                    },
+                    extra=(
+                        {
+                            "serviceName": "google.bigtable.v2.Bigtable",
+                            "universeDomain": getattr(
+                                self._transport._credentials, "universe_domain", ""
+                            ),
+                            "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                            "credentialsInfo": getattr(
+                                self.transport._credentials,
+                                "get_cred_info",
+                                lambda: None,
+                            )(),
+                        }
+                        if hasattr(self._transport, "_credentials")
+                        else {
+                            "serviceName": "google.bigtable.v2.Bigtable",
+                            "credentialsType": None,
+                        }
+                    ),
                 )
 
     def read_rows(

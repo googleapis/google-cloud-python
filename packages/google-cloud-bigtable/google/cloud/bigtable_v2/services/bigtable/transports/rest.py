@@ -25,10 +25,9 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.bigtable_v2.types import bigtable
 from google.protobuf import json_format
 from requests import __version__ as requests_version
-
-from google.cloud.bigtable_v2.types import bigtable
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseBigtableRestTransport
@@ -1164,7 +1163,9 @@ class BigtableRestTransport(_BaseBigtableRestTransport):
 
             """
 
-            http_options = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_http_options()
+            http_options = (
+                _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_http_options()
+            )
 
             request, metadata = (
                 self._interceptor.pre_generate_initial_change_stream_partitions(

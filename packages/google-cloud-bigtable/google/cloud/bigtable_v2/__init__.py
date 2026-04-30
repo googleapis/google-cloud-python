@@ -16,7 +16,6 @@
 import sys
 
 import google.api_core as api_core
-
 from google.cloud.bigtable_v2 import gapic_version as package_version
 
 __version__ = package_version.__version__
@@ -27,7 +26,6 @@ else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
-
 
 from .services.bigtable import BigtableAsyncClient, BigtableClient
 from .types.bigtable import (
@@ -80,6 +78,7 @@ from .types.data import (
     StreamPartition,
     TimestampRange,
     Value,
+    ValueBitmask,
     ValueRange,
 )
 from .types.feature_flags import FeatureFlags
@@ -161,7 +160,7 @@ else:  # pragma: NO COVER
         _next_supported_version = "4.25.8"
         _next_supported_version_tuple = (4, 25, 8)
         _recommendation = " (we recommend 6.x)"
-        (_version_used, _version_used_string) = _get_version(_dependency_package)
+        _version_used, _version_used_string = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
                 f"Package {_package_label} depends on "
@@ -246,4 +245,5 @@ __all__ = (
     "Type",
     "Value",
     "ValueRange",
+    "ValueBitmask",
 )
