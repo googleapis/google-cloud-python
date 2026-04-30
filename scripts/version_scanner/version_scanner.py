@@ -405,7 +405,8 @@ def main():
     
     parser.add_argument(
         "--github-repo",
-        help="GitHub repository URL base (e.g., https://github.com/googleapis/google-cloud-python)"
+        default="https://github.com/googleapis/google-cloud-python",
+        help="GitHub repository URL base (defaults to https://github.com/googleapis/google-cloud-python)"
     )
     
     parser.add_argument(

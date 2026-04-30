@@ -19,7 +19,7 @@ python3 scripts/version_scanner/version_scanner.py -d <dependency> -v <version> 
 *   `--package-file`: Path to a file containing a list of package directories to scan
 *   `--config`: Path to the regex configuration file (defaults to regex_config.yaml)
 *   `-o`, `--output`: Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)
-*   `--github-repo`: GitHub repository URL base (e.g., https://github.com/googleapis/google-cloud-python)
+*   `--github-repo`: GitHub repository URL base (defaults to https://github.com/googleapis/google-cloud-python)
 *   `--branch`: GitHub branch for links (defaults to main)
 
 ## Configuration
