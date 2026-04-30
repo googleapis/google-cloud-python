@@ -1,5 +1,5 @@
 {
-    "api_description": "is a fully managed, schemaless database for\nstoring non-relational data. Cloud Datastore automatically scales with\nyour users and supports ACID transactions, high availability of reads and\nwrites, strong consistency for reads and ancestor queries, and eventual\nconsistency for all other queries.",
+    "api_description": "Accesses the schemaless NoSQL database to provide fully managed, robust,\nscalable storage for your application.",
     "api_id": "datastore.googleapis.com",
     "api_shortname": "datastore",
     "client_documentation": "https://cloud.google.com/python/docs/reference/datastore/latest",

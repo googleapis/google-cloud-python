@@ -1,5 +1,5 @@
 {
-    "api_description": "is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.",
+    "api_description": "Manages Hadoop-based clusters and jobs on Google Cloud Platform.",
     "api_id": "dataproc.googleapis.com",
     "api_shortname": "dataproc",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dataproc/latest",

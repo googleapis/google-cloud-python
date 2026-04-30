@@ -3,7 +3,7 @@ Python Client for Cloud Deploy
 
 |stable| |pypi| |versions|
 
-`Cloud Deploy`_: is a service that automates delivery of your applications to a series of target environments in a defined sequence
+`Cloud Deploy`_: Cloud Deploy is a service that automates delivery of your applications to a series of target environments in a defined sequence.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

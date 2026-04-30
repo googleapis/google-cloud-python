@@ -3,7 +3,8 @@ Python Client for Kubernetes Engine
 
 |stable| |pypi| |versions|
 
-`Kubernetes Engine`_: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
+`Kubernetes Engine`_: Builds and manages container-based applications, powered by the open source
+Kubernetes technology.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 {
-    "api_description": "provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.",
+    "api_description": "Discover and protect your sensitive data. A fully managed service designed\nto help you discover, classify, and protect your valuable data assets with\nease.",
     "api_id": "dlp.googleapis.com",
     "api_shortname": "dlp",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dlp/latest",

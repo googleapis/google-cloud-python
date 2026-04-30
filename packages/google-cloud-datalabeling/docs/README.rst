@@ -3,7 +3,7 @@ Python Client for Data Labeling
 
 |preview| |pypi| |versions|
 
-`Data Labeling`_: is a service that lets you work with human labelers to generate highly accurate labels for a collection of data that you can use to train your machine learning models.
+`Data Labeling`_: Public API for Google Cloud AI Data Labeling Service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

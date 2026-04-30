@@ -1,5 +1,5 @@
 {
-    "api_description": "provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale.",
+    "api_description": "A unified, intelligent governance solution for data and AI assets.",
     "api_id": "dataplex.googleapis.com",
     "api_shortname": "dataplex",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dataplex/latest",
