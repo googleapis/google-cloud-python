@@ -230,7 +230,7 @@ def scan_repository(
         try:
             compiled_rules.append({
                 "name": rule["name"],
-                "pattern": re.compile(rule["pattern"])
+                "pattern": re.compile(rule["pattern"], re.IGNORECASE)
             })
         except re.error as e:
             print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)

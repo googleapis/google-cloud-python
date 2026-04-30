@@ -286,7 +286,7 @@ def test_regex_examples_from_config():
         for template in templates:
             try:
                 resolved = template.strip().format(**vars)
-                compiled_patterns.append(re.compile(resolved))
+                compiled_patterns.append(re.compile(resolved, re.IGNORECASE))
             except KeyError:
                 continue
                 

@@ -6,9 +6,10 @@ rules:
       - "'3.7'"
       - '"3.7.1"'
       - "'3.7.12'"
+      - "Python 3.7"
     rules:
       - |
-        ['"]{major}\.{minor}(\.\d+)?['"]
+        (?:['"]|\s|^){major}\.{minor}(\.\d+)?(?:['"]|\s|$)
 
   - name: python_requires
     description: Finds various forms of python_requires declarations.
@@ -83,6 +84,7 @@ rules:
     examples:
       - "python3.7"
       - "python3.7 -m pip"
+      - "Python3.7"
     rules:
       - |
         python3\.{minor}
