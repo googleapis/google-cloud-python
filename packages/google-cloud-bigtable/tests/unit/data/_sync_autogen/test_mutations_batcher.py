@@ -923,6 +923,7 @@ class TestMutationsBatcher:
                 assert len(w) == 1
                 assert "unflushed mutations" in str(w[0].message).lower()
                 assert str(num_left) in str(w[0].message)
+            recwarn.clear()
             instance._closed.set()
             instance._on_exit()
             assert len(recwarn) == 0

@@ -1058,6 +1058,7 @@ class TestMutationsBatcherAsync:
                 assert len(w) == 1
                 assert "unflushed mutations" in str(w[0].message).lower()
                 assert str(num_left) in str(w[0].message)
+            recwarn.clear()
             # calling while closed is noop
             instance._closed.set()
             instance._on_exit()
