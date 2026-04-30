@@ -303,26 +303,21 @@ def main():
     
     args = parser.parse_args()
     
-    # Resolve target paths
-    targets = []
-    
+    # Resolve target packages if filtering is requested
+    target_packages = []
     if args.package:
-        targets.append(os.path.join(args.path, args.package))
-    
-    if args.package_file:
-        packages = read_package_file(args.package_file)
-        for p in packages:
-            targets.append(os.path.join(args.path, p))
-            
-    # Fallback: if neither package nor package-file is given, use the path directly
-    if not targets:
-        targets.append(args.path)
+        target_packages.append(os.path.join("packages", args.package))
+    elif args.package_file:
+        target_packages = read_package_file(args.package_file)
         
     print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
     print(f"Root path: {args.path}")
     print(f"Targets to scan:")
-    for target in targets:
-        print(f"  - {target}")
+    if target_packages:
+        for pkg in target_packages:
+            print(f"  - {os.path.join(args.path, pkg)}")
+    else:
+        print(f"  - {args.path} (all packages)")
     print(f"Using config: {args.config}")
     
     # Load and resolve rules
@@ -333,12 +328,7 @@ def main():
     for rule in rules:
         print(f"  - {rule['name']}: {rule['pattern']}")
         
-    # Resolve target packages if filtering is requested
-    target_packages = []
-    if args.package:
-        target_packages.append(os.path.join("packages", args.package))
-    elif args.package_file:
-        target_packages = read_package_file(args.package_file)
+
             
     # Scan repository
     all_matches = scan_repository(args.path, rules, target_packages)
