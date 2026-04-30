@@ -1,9 +1,9 @@
-Python Client for Monitoring Dashboards
-=======================================
+Python Client for Cloud Monitoring
+==================================
 
 |stable| |pypi| |versions|
 
-`Monitoring Dashboards`_: are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration.
+`Cloud Monitoring`_: are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Monitoring Dashboards
    :target: https://pypi.org/project/google-cloud-monitoring-dashboards/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring-dashboards.svg
    :target: https://pypi.org/project/google-cloud-monitoring-dashboards/
-.. _Monitoring Dashboards: https://cloud.google.com/monitoring/dashboards/
+.. _Cloud Monitoring: https://cloud.google.com/monitoring/dashboards/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring-dashboards/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/dashboards/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Monitoring Dashboards.`_
+3. `Enable the Cloud Monitoring.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Monitoring Dashboards.:  https://cloud.google.com/monitoring/dashboards/
+.. _Enable the Cloud Monitoring.:  https://cloud.google.com/monitoring/dashboards/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Monitoring Dashboards
+-  Read the `Client Library Documentation`_ for Cloud Monitoring
    to see other available methods on the client.
--  Read the `Monitoring Dashboards Product documentation`_ to learn
+-  Read the `Cloud Monitoring Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Monitoring Dashboards Product documentation:  https://cloud.google.com/monitoring/dashboards/
+.. _Cloud Monitoring Product documentation:  https://cloud.google.com/monitoring/dashboards/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

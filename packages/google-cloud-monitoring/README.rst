@@ -1,9 +1,9 @@
-Python Client for Stackdriver Monitoring
-========================================
+Python Client for Cloud Monitoring
+==================================
 
 |stable| |pypi| |versions|
 
-`Stackdriver Monitoring`_: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
+`Cloud Monitoring`_: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Stackdriver Monitoring
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
-.. _Stackdriver Monitoring: https://cloud.google.com/monitoring/docs
+.. _Cloud Monitoring: https://cloud.google.com/monitoring/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Stackdriver Monitoring.`_
+3. `Enable the Cloud Monitoring.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Stackdriver Monitoring.:  https://cloud.google.com/monitoring/docs
+.. _Enable the Cloud Monitoring.:  https://cloud.google.com/monitoring/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Stackdriver Monitoring
+-  Read the `Client Library Documentation`_ for Cloud Monitoring
    to see other available methods on the client.
--  Read the `Stackdriver Monitoring Product documentation`_ to learn
+-  Read the `Cloud Monitoring Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Stackdriver Monitoring Product documentation:  https://cloud.google.com/monitoring/docs
+.. _Cloud Monitoring Product documentation:  https://cloud.google.com/monitoring/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

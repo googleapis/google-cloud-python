@@ -34090,11 +34090,21 @@ def test_create_app_rest_call_success(request_type):
                 "dataset": "dataset_value",
             },
             "cloud_logging_settings": {"enable_cloud_logging": True},
-            "conversation_logging_settings": {"disable_conversation_logging": True},
+            "conversation_logging_settings": {
+                "disable_conversation_logging": True,
+                "retention_window": {},
+            },
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
-        "error_handling_settings": {"error_handling_strategy": 1},
+        "error_handling_settings": {
+            "error_handling_strategy": 1,
+            "fallback_response_config": {
+                "custom_fallback_messages": {},
+                "max_fallback_attempts": 2214,
+            },
+            "end_session_config": {"escalate_session": True},
+        },
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -34435,11 +34445,21 @@ def test_update_app_rest_call_success(request_type):
                 "dataset": "dataset_value",
             },
             "cloud_logging_settings": {"enable_cloud_logging": True},
-            "conversation_logging_settings": {"disable_conversation_logging": True},
+            "conversation_logging_settings": {
+                "disable_conversation_logging": True,
+                "retention_window": {},
+            },
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
-        "error_handling_settings": {"error_handling_strategy": 1},
+        "error_handling_settings": {
+            "error_handling_strategy": 1,
+            "fallback_response_config": {
+                "custom_fallback_messages": {},
+                "max_fallback_attempts": 2214,
+            },
+            "end_session_config": {"escalate_session": True},
+        },
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -42157,12 +42177,20 @@ def test_create_app_version_rest_call_success(request_type):
                     },
                     "cloud_logging_settings": {"enable_cloud_logging": True},
                     "conversation_logging_settings": {
-                        "disable_conversation_logging": True
+                        "disable_conversation_logging": True,
+                        "retention_window": {},
                     },
                     "evaluation_audio_recording_config": {},
                     "metric_analysis_settings": {"llm_metrics_opted_out": True},
                 },
-                "error_handling_settings": {"error_handling_strategy": 1},
+                "error_handling_settings": {
+                    "error_handling_strategy": 1,
+                    "fallback_response_config": {
+                        "custom_fallback_messages": {},
+                        "max_fallback_attempts": 2214,
+                    },
+                    "end_session_config": {"escalate_session": True},
+                },
                 "model_settings": {"model": "model_value", "temperature": 0.1198},
                 "tool_execution_mode": 1,
                 "evaluation_metrics_thresholds": {

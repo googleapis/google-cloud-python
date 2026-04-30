@@ -1,12 +1,9 @@
 {
-    "api_id": "bigquery.googleapis.com",
-    "client_documentation": "https://googleapis.dev/python/db-dtypes/latest/index.html",
+    "client_documentation": "https://googleapis.dev/python/db-dtypes/latest",
     "distribution_name": "db-dtypes",
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "db-dtypes",
-    "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
-    "product_documentation": "https://pandas.pydata.org/pandas-docs/stable/ecosystem.html#ecosystem-extensions",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

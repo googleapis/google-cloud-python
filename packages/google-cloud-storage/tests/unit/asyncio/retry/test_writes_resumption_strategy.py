@@ -125,8 +125,7 @@ class TestWriteResumptionStrategy:
 
         requests = strategy.generate_requests(state)
 
-        expected_crc = google_crc32c.Checksum(chunk_data).digest()
-        expected_int = int.from_bytes(expected_crc, "big")
+        expected_int = google_crc32c.value(chunk_data)
         assert requests[0].checksummed_data.crc32c == expected_int
 
     def test_generate_requests_flush_logic_exact_interval(self, strategy):

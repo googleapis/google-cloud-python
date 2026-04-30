@@ -38,6 +38,7 @@ from .services.regional_inventory_service import (
     RegionalInventoryServiceClient,
 )
 from .types.inventories_common import (
+    InventoryLoyaltyProgram,
     LocalInventoryAttributes,
     RegionalInventoryAttributes,
 )
@@ -157,6 +158,7 @@ __all__ = (
     "DeleteRegionalInventoryRequest",
     "InsertLocalInventoryRequest",
     "InsertRegionalInventoryRequest",
+    "InventoryLoyaltyProgram",
     "ListLocalInventoriesRequest",
     "ListLocalInventoriesResponse",
     "ListRegionalInventoriesRequest",

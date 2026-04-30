@@ -149,7 +149,7 @@ class RegionInstancesTransport(abc.ABC):
         self._wrapped_methods = {
             self.bulk_insert: gapic_v1.method.wrap_method(
                 self.bulk_insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

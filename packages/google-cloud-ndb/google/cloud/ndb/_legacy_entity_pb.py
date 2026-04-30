@@ -389,10 +389,9 @@ class Property(ProtocolBuffer.ProtocolMessage):
         24: "EMPTY_LIST",
     }
 
+    @classmethod
     def Meaning_Name(cls, x):
         return cls._Meaning_NAMES.get(x, "")
-
-    Meaning_Name = classmethod(Meaning_Name)
 
     has_meaning_ = 0
     meaning_ = 0
@@ -526,7 +525,7 @@ class Path_Element(ProtocolBuffer.ProtocolMessage):
     def type(self):
         # Force legacy byte-str to be a str.
         if type(self.type_) is bytes:
-            return self.type_.decode()
+            return self.type_.decode()  # type: ignore[attr-defined]
         return self.type_
 
     def set_type(self, x):

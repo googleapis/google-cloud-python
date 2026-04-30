@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Resource Manager API
+# Cloud Resource Manager API
 
-Overview of the APIs available for Resource Manager API.
+Overview of the APIs available for Cloud Resource Manager API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Resource Manager API.
+Cloud Resource Manager API.
 
 [classes](https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/summary_class.html)
 

@@ -1,9 +1,9 @@
-Python Client for Vision AI API
-===============================
+Python Client for Vision AI
+===========================
 
 |preview| |pypi| |versions|
 
-`Vision AI API`_: Easily build and deploy Vertex AI Vision applications using a single platform.
+`Vision AI`_: Easily build and deploy Vertex AI Vision applications using a single platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Vision AI API
    :target: https://pypi.org/project/google-cloud-visionai/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-visionai.svg
    :target: https://pypi.org/project/google-cloud-visionai/
-.. _Vision AI API: https://cloud.google.com/vision-ai/docs
+.. _Vision AI: https://cloud.google.com/vision-ai/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vision-ai/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Vision AI API.`_
+3. `Enable the Vision AI.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Vision AI API.:  https://cloud.google.com/vision-ai/docs
+.. _Enable the Vision AI.:  https://cloud.google.com/vision-ai/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Vision AI API
+-  Read the `Client Library Documentation`_ for Vision AI
    to see other available methods on the client.
--  Read the `Vision AI API Product documentation`_ to learn
+-  Read the `Vision AI Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Vision AI API Product documentation:  https://cloud.google.com/vision-ai/docs
+.. _Vision AI Product documentation:  https://cloud.google.com/vision-ai/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

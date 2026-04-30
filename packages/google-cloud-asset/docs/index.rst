@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Asset Inventory.
+This package includes clients for multiple versions of Cloud Asset.
 By default, you will get version ``asset_v1``.
 
 

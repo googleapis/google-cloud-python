@@ -13,12 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import json
 import functools
-import grpc
+import json
 import logging as std_logging
-import re
-import warnings
 import os
 import re
 import warnings
@@ -41,6 +38,7 @@ from typing import (
 )
 
 import google.protobuf
+import grpc
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1

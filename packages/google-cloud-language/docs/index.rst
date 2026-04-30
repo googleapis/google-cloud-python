@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Natural Language.
+This package includes clients for multiple versions of Cloud Natural Language.
 By default, you will get version ``language_v1``.
 
 

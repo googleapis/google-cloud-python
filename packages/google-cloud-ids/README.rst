@@ -3,7 +3,11 @@ Python Client for Cloud IDS
 
 |stable| |pypi| |versions|
 
-`Cloud IDS`_: Cloud IDS is an intrusion detection service that provides threat detection for intrusions, malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating a Google-managed peered network with mirrored VMs. Traffic in the peered network is mirrored, and then inspected by Palo Alto Networks threat protection technologies to provide advanced threat detection.
+`Cloud IDS`_: Cloud IDS (Cloud Intrusion Detection System) detects malware, spyware,
+command-and-control attacks, and other network-based threats. Its security
+efficacy is industry leading, built with Palo Alto Networks technologies.
+When you use this product, your organization name and consumption levels
+will be shared with Palo Alto Networks.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

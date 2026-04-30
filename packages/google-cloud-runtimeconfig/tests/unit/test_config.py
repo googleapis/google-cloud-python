@@ -231,6 +231,7 @@ class TestConfig(unittest.TestCase):
 
     def test_list_variables_defaults(self):
         from google.cloud._helpers import _rfc3339_to_datetime
+
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = "variable-one"
@@ -277,6 +278,7 @@ class TestConfig(unittest.TestCase):
 
     def test_list_variables_explicit(self):
         from google.cloud._helpers import _rfc3339_to_datetime
+
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = "variable-one"

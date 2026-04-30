@@ -257,8 +257,8 @@ def _transaction_async(context, callback, read_only=False):
     transaction_id = yield _datastore_api.begin_transaction(read_only, retries=0)
     utils.logging_debug(log, "Transaction Id: {}", transaction_id)
 
-    on_commit_callbacks = []
-    transaction_complete_callbacks = []
+    on_commit_callbacks: list = []
+    transaction_complete_callbacks: list = []
     tx_context = context.new(
         transaction=transaction_id,
         on_commit_callbacks=on_commit_callbacks,

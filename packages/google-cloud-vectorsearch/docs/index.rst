@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Vector Search API.
+This package includes clients for multiple versions of Vector Search.
 By default, you will get version ``vectorsearch_v1``.
 
 

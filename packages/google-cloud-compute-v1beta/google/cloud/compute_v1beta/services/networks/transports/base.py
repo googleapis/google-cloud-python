@@ -149,72 +149,112 @@ class NetworksTransport(abc.ABC):
         self._wrapped_methods = {
             self.add_peering: gapic_v1.method.wrap_method(
                 self.add_peering,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.cancel_request_remove_peering: gapic_v1.method.wrap_method(
                 self.cancel_request_remove_peering,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_effective_firewalls: gapic_v1.method.wrap_method(
                 self.get_effective_firewalls,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list_peering_routes: gapic_v1.method.wrap_method(
                 self.list_peering_routes,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_peering: gapic_v1.method.wrap_method(
                 self.remove_peering,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.request_remove_peering: gapic_v1.method.wrap_method(
                 self.request_remove_peering,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.switch_to_custom_mode: gapic_v1.method.wrap_method(
                 self.switch_to_custom_mode,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.update_peering: gapic_v1.method.wrap_method(
                 self.update_peering,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

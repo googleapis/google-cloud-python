@@ -1691,6 +1691,43 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
+    class _StreamSanitizeModelResponse(
+        _BaseModelArmorRestTransport._BaseStreamSanitizeModelResponse,
+        ModelArmorRestStub,
+    ):
+        def __hash__(self):
+            return hash("ModelArmorRestTransport.StreamSanitizeModelResponse")
+
+        def __call__(
+            self,
+            request: service.SanitizeModelResponseRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method StreamSanitizeModelResponse is not available over REST transport"
+            )
+
+    class _StreamSanitizeUserPrompt(
+        _BaseModelArmorRestTransport._BaseStreamSanitizeUserPrompt, ModelArmorRestStub
+    ):
+        def __hash__(self):
+            return hash("ModelArmorRestTransport.StreamSanitizeUserPrompt")
+
+        def __call__(
+            self,
+            request: service.SanitizeUserPromptRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method StreamSanitizeUserPrompt is not available over REST transport"
+            )
+
     class _UpdateFloorSetting(
         _BaseModelArmorRestTransport._BaseUpdateFloorSetting, ModelArmorRestStub
     ):
@@ -2056,6 +2093,30 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SanitizeUserPrompt(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stream_sanitize_model_response(
+        self,
+    ) -> Callable[
+        [service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamSanitizeModelResponse(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def stream_sanitize_user_prompt(
+        self,
+    ) -> Callable[
+        [service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamSanitizeUserPrompt(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_floor_setting(

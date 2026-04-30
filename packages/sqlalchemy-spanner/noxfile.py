@@ -411,9 +411,42 @@ def mypy(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source"""
-    session.skip("Core deps from source tests are not yet supported")
+    session.install("setuptools")
+    session.install("pytest")
+    session.install("mock")
+    session.install(".")
+    session.install("opentelemetry-api")
+    session.install("opentelemetry-sdk")
+    session.install("opentelemetry-instrumentation")
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

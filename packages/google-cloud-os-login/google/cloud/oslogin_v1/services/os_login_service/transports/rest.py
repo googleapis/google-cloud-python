@@ -26,10 +26,10 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.oslogin_v1.common.types import common
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.types import oslogin
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO

@@ -94,11 +94,11 @@ class ProductInput(proto.Message):
                as ``/``, ``%``, or ``~``.
 
                - Example: To represent the product ID ``en~US~sku/123``,
-                 the ``{productinput}`` segment must be the base64url
-                 encoding of this string, which is
-                 ``ZW5-VVMtc2t1LzEyMw``. The full resource name for the
+                 the ``{productinput}`` segment must be the unpadded
+                 base64url encoding of this string, which is
+                 ``ZW5-VVN-c2t1LzEyMw``. The full resource name for the
                  product would be
-                 ``accounts/123/productinputs/ZW5-VVMtc2t1LzEyMw``.
+                 ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw``.
 
             2. **Plain Format**: The ``{productinput}`` segment is the
                tilde-separated string
@@ -112,13 +112,35 @@ class ProductInput(proto.Message):
             special characters. The presence of tilde (``~``) characters
             in the ``{productinput}`` segment is used to differentiate
             between the two formats.
-
-            Note: For calls to the v1beta version, the plain format is
-            ``channel~content_language~feed_label~offer_id``, for
-            example: ``accounts/123/productinputs/online~en~US~sku123``.
+        base64_encoded_name (str):
+            Output only. The **unpadded base64url encoded name** of the
+            product input. Format:
+            ``accounts/{account}/productInputs/{productinput}`` where
+            the last section ``productinput`` is the unpadded base64url
+            encoding of the ``content_language~feed_label~offer_id``
+            name. Example:
+            ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw`` for the
+            decoded product input name
+            ``accounts/123/productInputs/en~US~sku/123``. This field can
+            be used directly as input to the API methods that require
+            the product input name to be encoded if it contains special
+            characters, for example
+            ```GetProductInput`` <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.productInputs/get>`__.
         product (str):
             Output only. The name of the processed product. Format:
             ``accounts/{account}/products/{product}``
+        base64_encoded_product (str):
+            Output only. The **unpadded base64url encoded name** of the
+            processed product. Format:
+            ``accounts/{account}/products/{product}`` where the last
+            section ``product`` is the unpadded base64url encoding of
+            the ``content_language~feed_label~offer_id`` name. Example:
+            ``accounts/123/products/ZW5-VVN-c2t1LzEyMw`` for the decoded
+            product name ``accounts/123/products/en~US~sku/123``. This
+            field can be used directly as input to the API methods that
+            require the product name to be encoded if it contains
+            special characters, for example
+            ```GetProduct`` <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.products/get>`__.
         legacy_local (bool):
             Immutable. Determines whether the product is **only**
             targeting local destinations and whether the product name
@@ -186,9 +208,17 @@ class ProductInput(proto.Message):
         proto.STRING,
         number=1,
     )
+    base64_encoded_name: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     product: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    base64_encoded_product: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
     legacy_local: bool = proto.Field(
         proto.BOOL,
@@ -347,11 +377,11 @@ class DeleteProductInputRequest(proto.Message):
                as ``/``, ``%``, or ``~``.
 
                - Example: To represent the product ID ``en~US~sku/123``,
-                 the ``{productInput}`` segment must be the base64url
-                 encoding of this string, which is
-                 ``ZW5-VVMtc2t1LzEyMw``. The full resource name for the
+                 the ``{productInput}`` segment must be the unpadded
+                 base64url encoding of this string, which is
+                 ``ZW5-VVN-c2t1LzEyMw``. The full resource name for the
                  product would be
-                 ``accounts/123/productInputs/ZW5-VVMtc2t1LzEyMw``.
+                 ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw``.
 
             2. **Plain Format**: The ``{productInput}`` segment is the
                tilde-separated string
@@ -365,10 +395,6 @@ class DeleteProductInputRequest(proto.Message):
             special characters. The presence of tilde (``~``) characters
             in the ``{productInput}`` segment is used to differentiate
             between the two formats.
-
-            Note: For calls to the v1beta version, the plain format is
-            ``channel~content_language~feed_label~offer_id``, for
-            example: ``accounts/123/productinputs/online~en~US~sku123``.
         data_source (str):
             Required. The primary or supplemental data source from which
             the product input should be deleted. Format:

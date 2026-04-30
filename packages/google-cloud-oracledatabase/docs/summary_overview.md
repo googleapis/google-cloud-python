@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Oracle Database@Google Cloud API API
+# Oracle Database@Google Cloud API
 
-Overview of the APIs available for Oracle Database@Google Cloud API API.
+Overview of the APIs available for Oracle Database@Google Cloud API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Oracle Database@Google Cloud API API.
+Oracle Database@Google Cloud API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-oracledatabase/latest/summary_class.html)
 
