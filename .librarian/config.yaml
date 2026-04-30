@@ -34,3 +34,6 @@ libraries:
     release_blocked: true
   - id: "google-cloud-compute-v1beta"
     release_blocked: true
+  # TODO(b/501132869): Disabling automatic releases until resolved.
+  - id: "google-cloud-bigtable"
+    release_blocked: true
