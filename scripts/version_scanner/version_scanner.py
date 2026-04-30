@@ -289,10 +289,7 @@ def scan_repository(
     Returns:
         A list of match details.
     """
-    defaults = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor', 'version_scanner'}
-    if ignore_dirs:
-        defaults.update(ignore_dirs)
-    ignore_dirs = defaults
+    ignore_dirs = set(ignore_dirs) if ignore_dirs else set()
     results = []
     
     # Compile patterns once here

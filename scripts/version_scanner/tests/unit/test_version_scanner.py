@@ -300,7 +300,7 @@ def test_scan_repository_ignores_version_scanner(tmp_path):
     ]
     
     from version_scanner import scan_repository
-    results = scan_repository(str(tmp_path), rules)
+    results = scan_repository(str(tmp_path), rules, ignore_dirs=['version_scanner'])
     
     assert len(results) == 0
 
