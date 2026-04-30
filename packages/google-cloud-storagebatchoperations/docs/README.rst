@@ -3,7 +3,7 @@ Python Client for Storage Batch Operations
 
 |preview| |pypi| |versions|
 
-`Storage Batch Operations`_: null 
+`Storage Batch Operations`_: Cloud Storage Batch Operations is a Cloud Storage capability that lets you perform operations on billions of objects in a serverless manner.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

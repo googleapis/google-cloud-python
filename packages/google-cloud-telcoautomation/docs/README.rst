@@ -3,7 +3,7 @@ Python Client for Telco Automation
 
 |preview| |pypi| |versions|
 
-`Telco Automation`_: APIs to automate 5G deployment and management of cloud infrastructure and network functions.
+`Telco Automation`_: APIs to automate management of cloud infrastructure for network functions.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

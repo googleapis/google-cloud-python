@@ -3,7 +3,7 @@ Python Client for Cloud Tasks
 
 |stable| |pypi| |versions|
 
-`Cloud Tasks`_: a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.
+`Cloud Tasks`_: Manages the execution of large numbers of distributed requests.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

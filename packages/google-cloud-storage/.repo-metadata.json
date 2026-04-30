@@ -1,5 +1,5 @@
 {
-    "api_description": "is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.",
+    "api_description": "Lets you store and retrieve potentially-large, immutable data objects.",
     "api_id": "storage.googleapis.com",
     "api_shortname": "storage",
     "client_documentation": "https://cloud.google.com/python/docs/reference/storage/latest",
