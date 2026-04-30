@@ -617,6 +617,8 @@ libraries:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
     skip_generate: true
+    # TODO(b/501132869): Disabling automatic releases until resolved.
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
