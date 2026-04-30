@@ -1343,14 +1343,12 @@ libraries:
     version: 0.3.0
     apis:
       - path: google/cloud/gkerecommender/v1
-    description_override: GKE Recommender API
     python:
       default_version: v1
   - name: google-cloud-gsuiteaddons
     version: 0.5.0
     apis:
       - path: google/cloud/gsuiteaddons/v1
-    description_override: Add-ons are customized applications that integrate with Google Workspace applications.
     python:
       opt_args_by_api:
         google/cloud/gsuiteaddons/v1:
@@ -1362,7 +1360,6 @@ libraries:
     apis:
       - path: google/cloud/hypercomputecluster/v1
       - path: google/cloud/hypercomputecluster/v1beta
-    description_override: The Cluster Director API allows you to deploy, manage, and monitor clusters that run AI, ML, or HPC workloads.
     python:
       default_version: v1
   - name: google-cloud-iam
@@ -1374,7 +1371,6 @@ libraries:
       - path: google/iam/credentials/v1
       - path: google/iam/v3beta
       - path: google/iam/v2beta
-    description_override: Manages identity and access control for Google Cloud Platform resources, including the creation of service accounts, which you can use to authenticate to Google and make API calls.
     python:
       opt_args_by_api:
         google/iam/admin/v1:
@@ -1415,14 +1411,12 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/iamconnectorcredentials/v1alpha
-    description_override: iamconnectorcredentials.googleapis.com API.
     python:
       default_version: v1alpha
   - name: google-cloud-iap
     version: 1.21.0
     apis:
       - path: google/cloud/iap/v1
-    description_override: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
     python:
       metadata_name_override: iap
       default_version: v1
@@ -1430,7 +1424,6 @@ libraries:
     version: 1.13.0
     apis:
       - path: google/cloud/ids/v1
-    description_override: Cloud IDS is an intrusion detection service that provides threat detection for intrusions, malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating a Google-managed peered network with mirrored VMs. Traffic in the peered network is mirrored, and then inspected by Palo Alto Networks threat protection technologies to provide advanced threat detection.
     python:
       metadata_name_override: ids
       default_version: v1
@@ -1438,7 +1431,6 @@ libraries:
     version: 3.12.0
     apis:
       - path: google/cloud/kms/v1
-    description_override: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
     python:
       metadata_name_override: cloudkms
       default_version: v1
@@ -1446,7 +1438,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/kms/inventory/v1
-    description_override: KMS Inventory API
     python:
       opt_args_by_api:
         google/cloud/kms/inventory/v1:
@@ -1459,7 +1450,6 @@ libraries:
       - path: google/cloud/language/v2
       - path: google/cloud/language/v1
       - path: google/cloud/language/v1beta2
-    description_override: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
     python:
       metadata_name_override: language
       default_version: v1
@@ -1467,14 +1457,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/licensemanager/v1
-    description_override: 'License Manager is a tool to manage and track third-party licenses on Google Cloud. '
     python:
       default_version: v1
   - name: google-cloud-life-sciences
     version: 0.12.0
     apis:
       - path: google/cloud/lifesciences/v2beta
-    description_override: is a suite of services and tools for managing, processing, and transforming life sciences data.
     python:
       metadata_name_override: lifesciences
       default_version: v2beta
@@ -1482,14 +1470,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/locationfinder/v1
-    description_override: Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.
     python:
       default_version: v1
   - name: google-cloud-logging
     version: 3.15.0
     apis:
       - path: google/logging/v2
-    description_override: Writes log entries and manages your Cloud Logging configuration.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1502,7 +1488,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/lustre/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-maintenance-api
@@ -1510,14 +1495,12 @@ libraries:
     apis:
       - path: google/cloud/maintenance/api/v1
       - path: google/cloud/maintenance/api/v1beta
-    description_override: The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.
     python:
       default_version: v1
   - name: google-cloud-managed-identities
     version: 1.15.0
     apis:
       - path: google/cloud/managedidentities/v1
-    description_override: is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud.
     python:
       metadata_name_override: managedidentities
       default_version: v1
@@ -1525,21 +1508,18 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/managedkafka/v1
-    description_override: Managed Service for Apache Kafka API is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.
     python:
       default_version: v1
   - name: google-cloud-managedkafka-schemaregistry
     version: 0.4.0
     apis:
       - path: google/cloud/managedkafka/schemaregistry/v1
-    description_override: 'Manage Apache Kafka clusters and resources. '
     python:
       default_version: v1
   - name: google-cloud-media-translation
     version: 0.14.0
     apis:
       - path: google/cloud/mediatranslation/v1beta1
-    description_override: provides enterprise quality translation from/to various media types.
     python:
       metadata_name_override: mediatranslation
       default_version: v1beta1

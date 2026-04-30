@@ -3,7 +3,7 @@ Python Client for Google Cloud Managed Lustre
 
 |preview| |pypi| |versions|
 
-`Google Cloud Managed Lustre`_: null 
+`Google Cloud Managed Lustre`_: Google Cloud Managed Lustre delivers a high-performance, fully managed parallel file system optimized for AI and HPC applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

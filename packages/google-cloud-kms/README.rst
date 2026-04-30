@@ -3,7 +3,8 @@ Python Client for Cloud Key Management Service (KMS)
 
 |stable| |pypi| |versions|
 
-`Cloud Key Management Service (KMS)`_: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
+`Cloud Key Management Service (KMS)`_: Manages keys and performs cryptographic operations in a central cloud
+service, for direct use by other cloud resources and applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
