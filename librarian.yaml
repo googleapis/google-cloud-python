@@ -598,7 +598,6 @@ libraries:
     version: 3.22.0
     apis:
       - path: google/cloud/bigquery/datatransfer/v1
-    description_override: allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.
     python:
       metadata_name_override: bigquerydatatransfer
       default_version: v1
@@ -624,7 +623,6 @@ libraries:
     version: 1.23.0
     apis:
       - path: google/cloud/bigquery/reservation/v1
-    description_override: Modify BigQuery flat-rate reservations.
     python:
       metadata_name_override: bigqueryreservation
       default_version: v1
@@ -647,10 +645,6 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
-    description_override: |-
-      is Google's NoSQL Big Data database service. It's the
-      same database that powers many core Google services, including Search,
-      Analytics, Maps, and Gmail.
     skip_generate: true
     python:
       library_type: GAPIC_COMBO
@@ -668,7 +662,6 @@ libraries:
     version: 1.19.0
     apis:
       - path: google/cloud/billing/v1
-    description_override: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
     python:
       metadata_name_override: cloudbilling
       default_version: v1
@@ -677,7 +670,6 @@ libraries:
     apis:
       - path: google/cloud/billing/budgets/v1
       - path: google/cloud/billing/budgets/v1beta1
-    description_override: The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan.
     python:
       opt_args_by_api:
         google/cloud/billing/budgets/v1:
@@ -693,7 +685,6 @@ libraries:
     apis:
       - path: google/cloud/binaryauthorization/v1
       - path: google/cloud/binaryauthorization/v1beta1
-    description_override: ' is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware'
     python:
       metadata_name_override: binaryauthorization
       default_version: v1
@@ -702,7 +693,6 @@ libraries:
     apis:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
-    description_override: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
     python:
       opt_args_by_api:
         google/devtools/cloudbuild/v1:
@@ -715,14 +705,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/capacityplanner/v1beta
-    description_override: Provides programmatic access to Capacity Planner features.
     python:
       default_version: v1beta
   - name: google-cloud-certificate-manager
     version: 1.13.0
     apis:
       - path: google/cloud/certificatemanager/v1
-    description_override: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
     python:
       opt_args_by_api:
         google/cloud/certificatemanager/v1:
@@ -740,7 +728,6 @@ libraries:
     version: 1.27.0
     apis:
       - path: google/cloud/channel/v1
-    description_override: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
     python:
       metadata_name_override: cloudchannel
       default_version: v1
@@ -748,7 +735,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/chronicle/v1
-    description_override: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
     python:
       default_version: v1
   - name: google-cloud-cloudcontrolspartner
@@ -756,14 +742,12 @@ libraries:
     apis:
       - path: google/cloud/cloudcontrolspartner/v1
       - path: google/cloud/cloudcontrolspartner/v1beta
-    description_override: Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.
     python:
       default_version: v1
   - name: google-cloud-cloudsecuritycompliance
     version: 0.6.0
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-commerce-consumer-procurement
@@ -771,7 +755,6 @@ libraries:
     apis:
       - path: google/cloud/commerce/consumer/procurement/v1
       - path: google/cloud/commerce/consumer/procurement/v1alpha1
-    description_override: Cloud Commerce Consumer Procurement API
     python:
       metadata_name_override: procurement
       default_version: v1
@@ -779,7 +762,6 @@ libraries:
     version: 1.9.0
     apis:
       - path: google/cloud/common
-    description_override: This package contains generated Python types for google.cloud.common
     keep:
       - tests/unit/gapic/common/test_common.py
     python:
@@ -790,7 +772,6 @@ libraries:
     version: 1.47.0
     apis:
       - path: google/cloud/compute/v1
-    description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
     python:
       metadata_name_override: compute
       default_version: v1
@@ -798,7 +779,6 @@ libraries:
     version: 0.10.0
     apis:
       - path: google/cloud/compute/v1beta
-    description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
     python:
       issue_tracker_override: https://issuetracker.google.com/issues/new?component=187134&template=0
       default_version: v1beta
@@ -806,7 +786,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/confidentialcomputing/v1
-    description_override: Protect data in-use with Confidential VMs, Confidential GKE, Confidential Dataproc, and Confidential Space.
     python:
       metadata_name_override: confidentialcomputing
       default_version: v1
@@ -814,7 +793,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/config/v1
-    description_override: Infrastructure Manager API
     python:
       metadata_name_override: config
       default_version: v1
@@ -824,7 +802,6 @@ libraries:
       - path: google/cloud/configdelivery/v1
       - path: google/cloud/configdelivery/v1beta
       - path: google/cloud/configdelivery/v1alpha
-    description_override: ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.
     python:
       default_version: v1alpha
   - name: google-cloud-contact-center-insights
