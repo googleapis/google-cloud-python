@@ -3,7 +3,7 @@ Python Client for Parallelstore
 
 |preview| |pypi| |versions|
 
-`Parallelstore`_: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
+`Parallelstore`_: Parallelstore is a high performance, managed parallel file service based on DAOS. It delivers up to 6x greater read throughput performance compared to competitive Lustre scratch offerings.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
