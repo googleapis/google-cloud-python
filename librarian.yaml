@@ -853,7 +853,6 @@ libraries:
     version: 1.26.0
     apis:
       - path: google/cloud/contactcenterinsights/v1
-    description_override: ' helps users detect and visualize patterns in their contact center data.'
     python:
       opt_args_by_api:
         google/cloud/contactcenterinsights/v1:
@@ -865,7 +864,6 @@ libraries:
     apis:
       - path: google/container/v1
       - path: google/container/v1beta1
-    description_override: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
     python:
       opt_args_by_api:
         google/container/v1:
@@ -880,7 +878,6 @@ libraries:
     version: 2.21.0
     apis:
       - path: google/devtools/containeranalysis/v1
-    description_override: is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.
     python:
       opt_args_by_api:
         google/devtools/containeranalysis/v1:
@@ -905,7 +902,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/datafusion/v1
-    description_override: is a fully managed, cloud-native, enterprise data integration service for quickly building and managing data pipelines.
     python:
       opt_args_by_api:
         google/cloud/datafusion/v1:
@@ -916,7 +912,6 @@ libraries:
     version: 0.13.0
     apis:
       - path: google/cloud/dataqna/v1alpha
-    description_override: Data QnA is a natural language question and answer service for BigQuery data.
     python:
       metadata_name_override: dataqna
       default_version: v1alpha
@@ -924,14 +919,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/databasecenter/v1beta
-    description_override: |-
-      Database Center offers a comprehensive, organization-wide platform for
-      monitoring database fleet health across various products. It simplifies
-      management and reduces risk by automatically aggregating and summarizing
-      key health signals, removing the need for custom dashboards. The platform
-      provides a unified view through its dashboard and API, enabling teams
-      focused on reliability, compliance, security, cost, and administration to
-      quickly identify and address relevant issues within their database fleets.
     python:
       default_version: v1beta
   - name: google-cloud-datacatalog
@@ -939,7 +926,6 @@ libraries:
     apis:
       - path: google/cloud/datacatalog/v1
       - path: google/cloud/datacatalog/v1beta1
-    description_override: is a fully managed and highly scalable data discovery and metadata management service.
     python:
       metadata_name_override: datacatalog
       default_version: v1
@@ -947,7 +933,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/datacatalog/lineage/v1
-    description_override: 'Data lineage is a Dataplex feature that lets you track how data moves through your systems: where it comes from, where it is passed to, and what transformations are applied to it.'
     python:
       metadata_name_override: lineage
       default_version: v1
@@ -961,7 +946,6 @@ libraries:
     version: 0.13.0
     apis:
       - path: google/dataflow/v1beta3
-    description_override: Unified stream and batch data processing that's serverless, fast, and cost-effective.
     python:
       opt_args_by_api:
         google/dataflow/v1beta3:
@@ -981,7 +965,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/datalabeling/v1beta1
-    description_override: is a service that lets you work with human labelers to generate highly accurate labels for a collection of data that you can use to train your machine learning models.
     python:
       metadata_name_override: datalabeling
       default_version: v1beta1
@@ -989,7 +972,6 @@ libraries:
     version: 2.18.0
     apis:
       - path: google/cloud/dataplex/v1
-    description_override: provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale.
     python:
       metadata_name_override: dataplex
       default_version: v1
@@ -997,7 +979,6 @@ libraries:
     version: 5.27.0
     apis:
       - path: google/cloud/dataproc/v1
-    description_override: is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.
     python:
       metadata_name_override: dataproc
       default_version: v1
@@ -1007,7 +988,6 @@ libraries:
       - path: google/cloud/metastore/v1
       - path: google/cloud/metastore/v1beta
       - path: google/cloud/metastore/v1alpha
-    description_override: is a fully managed, highly available, autoscaled, autohealing, OSS-native metastore service that greatly simplifies technical metadata management. Dataproc Metastore service is based on Apache Hive metastore and serves as a critical component towards enterprise data lakes.
     python:
       metadata_name_override: metastore
       default_version: v1
@@ -1016,12 +996,6 @@ libraries:
     apis:
       - path: google/datastore/v1
       - path: google/datastore/admin/v1
-    description_override: |-
-      is a fully managed, schemaless database for
-      storing non-relational data. Cloud Datastore automatically scales with
-      your users and supports ACID transactions, high availability of reads and
-      writes, strong consistency for reads and ancestor queries, and eventual
-      consistency for all other queries.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1038,7 +1012,6 @@ libraries:
     apis:
       - path: google/cloud/datastream/v1
       - path: google/cloud/datastream/v1alpha1
-    description_override: is a serverless and easy-to-use change data capture (CDC) and replication service. It allows you to synchronize data across heterogeneous databases and applications reliably, and with minimal latency and downtime.
     python:
       metadata_name_override: datastream
       default_version: v1
@@ -1046,7 +1019,6 @@ libraries:
     version: 2.10.0
     apis:
       - path: google/cloud/deploy/v1
-    description_override: is a service that automates delivery of your applications to a series of target environments in a defined sequence
     python:
       metadata_name_override: clouddeploy
       default_version: v1
@@ -1054,14 +1026,12 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/developerconnect/v1
-    description_override: Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.
     python:
       default_version: v1
   - name: google-cloud-devicestreaming
     version: 0.4.0
     apis:
       - path: google/cloud/devicestreaming/v1
-    description_override: The Cloud API for device streaming usage.
     python:
       default_version: v1
   - name: google-cloud-dialogflow
@@ -1069,7 +1039,6 @@ libraries:
     apis:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
-    description_override: is an end-to-end, build-once deploy-everywhere development suite for creating conversational interfaces for websites, mobile applications, popular messaging platforms, and IoT devices. You can use it to build interfaces (such as chatbots and conversational IVR) that enable natural and rich interactions between your users and your business. Dialogflow Enterprise Edition users have access to Google Cloud Support and a service level agreement (SLA) for production deployments.
     skip_generate: true
     python:
       metadata_name_override: dialogflow
@@ -1100,7 +1069,6 @@ libraries:
     version: 3.36.0
     apis:
       - path: google/privacy/dlp/v2
-    description_override: provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.
     python:
       opt_args_by_api:
         google/privacy/dlp/v2:
