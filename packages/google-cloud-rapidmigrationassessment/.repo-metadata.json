@@ -1,5 +1,5 @@
 {
-    "api_description": "The Rapid Migration Assessment service is our first-party migration assessment and planning tool.",
+    "api_description": "The Rapid Migration Assessment service is our first-party migration\nassessment and planning tool.",
     "api_id": "rapidmigrationassessment.googleapis.com",
     "api_shortname": "rapidmigrationassessment",
     "client_documentation": "https://cloud.google.com/python/docs/reference/rapidmigrationassessment/latest",

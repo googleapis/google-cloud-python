@@ -3,7 +3,7 @@ Python Client for Recommender
 
 |stable| |pypi| |versions|
 
-`Recommender`_: delivers highly personalized product recommendations at scale.
+`Recommender`_: Recommenders generate recommendations that fall into six value categories that can help you optimize your cloud in a variety of ways.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

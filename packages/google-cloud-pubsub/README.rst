@@ -3,18 +3,8 @@ Python Client for Cloud Pub/Sub
 
 |stable| |pypi| |versions|
 
-'Cloud Pub/Sub:' is a fully-managed real-time messaging service that
-allows you to send and receive messages between independent applications. You
-can leverage Cloud Pub/Sub’s flexibility to decouple systems and components
-hosted on Google Cloud Platform or elsewhere on the Internet. By building on
-the same technology Google uses, Cloud Pub / Sub is designed to provide “at
-least once” delivery at low latency with on-demand scalability to 1 million
-messages per second (and beyond).
-
-Publisher applications can send messages to a ``topic`` and other applications
-can subscribe to that topic to receive the messages. By decoupling senders and
-receivers, Google Cloud Pub/Sub allows developers to communicate between
-independently written applications.
+`Cloud Pub/Sub`_: Provides reliable, many-to-many, asynchronous messaging between
+applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 {
-    "api_description": "Regionally deployed, single-tenant managed source code repository hosted on Google Cloud.",
+    "api_description": "Regionally deployed, single-tenant managed source code repository hosted on\nGoogle Cloud.",
     "api_id": "securesourcemanager.googleapis.com",
     "api_shortname": "securesourcemanager",
     "client_documentation": "https://cloud.google.com/python/docs/reference/securesourcemanager/latest",
