@@ -390,7 +390,10 @@ def main():
         output_path = args.output
     else:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_path = f"{args.dependency}-{args.version}-{timestamp}.csv"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        results_dir = os.path.join(script_dir, "results")
+        os.makedirs(results_dir, exist_ok=True)
+        output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
         
     write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
 
