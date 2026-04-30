@@ -195,6 +195,22 @@ def print_summary_table(rule_counts: Dict[str, int], package_counts: Dict[str, i
         print(f'... and {len(sorted_packages) - 10} more packages.')
 
 
+def load_ignore_file(file_path: str) -> List[str]:
+    """
+    Read ignore paths from a file.
+    """
+    ignore_dirs = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    ignore_dirs.append(line)
+    except FileNotFoundError:
+        pass
+    return ignore_dirs
+
+
 def write_csv_report(
     output_path: str, 
     matches: List[Dict[str, str]], 
@@ -258,7 +274,8 @@ def read_package_file(file_path: str) -> List[str]:
 def scan_repository(
     root_path: str,
     rules: List[Dict[str, str]],
-    target_packages: List[str] = None
+    target_packages: List[str] = None,
+    ignore_dirs: List[str] = None
 ) -> List[Dict[str, str]]:
     """
     Scan repository for matching patterns.
@@ -272,7 +289,10 @@ def scan_repository(
     Returns:
         A list of match details.
     """
-    ignore_dirs = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor', 'version_scanner'}
+    defaults = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor', 'version_scanner'}
+    if ignore_dirs:
+        defaults.update(ignore_dirs)
+    ignore_dirs = defaults
     results = []
     
     # Compile patterns once here
@@ -426,8 +446,14 @@ def main():
         
 
             
+    # Load ignore file
+    ignore_file_path = os.path.join(args.path, ".scannerignore")
+    ignore_dirs = load_ignore_file(ignore_file_path)
+    if ignore_dirs:
+        print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
+        
     # Scan repository
-    all_matches = scan_repository(args.path, rules, target_packages)
+    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs)
     
     print(f"\nFound {len(all_matches)} matches.")
     for m in all_matches[:10]: # Show first 10

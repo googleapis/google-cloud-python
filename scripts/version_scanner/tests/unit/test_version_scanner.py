@@ -305,6 +305,17 @@ def test_scan_repository_ignores_version_scanner(tmp_path):
     assert len(results) == 0
 
 
+def test_load_ignore_file(tmp_path):
+    from version_scanner import load_ignore_file
+    
+    ignore_file = tmp_path / ".scannerignore"
+    ignore_file.write_text("dir1\n# comment\n  \ndir2\n")
+    
+    ignore_dirs = load_ignore_file(str(ignore_file))
+    
+    assert ignore_dirs == ["dir1", "dir2"]
+
+
 def test_regex_examples_from_config():
     """Test that examples in config match at least one rule in the group."""
     config_path = "regex_config.yaml"
