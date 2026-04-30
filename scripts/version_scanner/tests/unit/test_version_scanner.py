@@ -237,6 +237,20 @@ def test_write_csv_report_with_links(tmp_path):
         
     assert len(rows) == 1
     assert "HYPERLINK" in rows[0]["line_number"]
+def test_scan_repository_ignores_version_scanner(tmp_path):
+    vs_dir = tmp_path / "version_scanner"
+    vs_dir.mkdir()
+    f = vs_dir / "test.py"
+    f.write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    results = scan_repository(str(tmp_path), rules)
+    
+    assert len(results) == 0
 
 
 def test_regex_examples_from_config():

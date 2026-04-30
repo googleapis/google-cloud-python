@@ -221,7 +221,7 @@ def scan_repository(
     Returns:
         A list of match details.
     """
-    ignore_dirs = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor'}
+    ignore_dirs = {'.git', '__pycache__', '.tox', '.nox', 'venv', '.venv', '.conductor', 'version_scanner'}
     results = []
     
     # Compile patterns once here
