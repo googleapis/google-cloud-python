@@ -235,6 +235,21 @@ def test_format_match_for_csv_truncates_long_line():
     assert "..." in context
 
 
+def test_get_match_counts():
+    from version_scanner import get_match_counts
+    
+    matches = [
+        {"rule_name": "rule1", "package_name": "pkg1"},
+        {"rule_name": "rule1", "package_name": "pkg2"},
+        {"rule_name": "rule2", "package_name": "pkg1"},
+    ]
+    
+    rule_counts, package_counts = get_match_counts(matches)
+    
+    assert rule_counts == {"rule1": 2, "rule2": 1}
+    assert package_counts == {"pkg1": 2, "pkg2": 1}
+
+
 def test_scan_file_removes_newline_from_match(tmp_path):
     test_file = tmp_path / "test.py"
     test_file.write_text("Python 3.7\n")

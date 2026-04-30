@@ -160,6 +160,41 @@ def format_match_for_csv(
     return formatted
 
 
+def get_match_counts(matches: List[Dict[str, str]]) -> Tuple[Dict[str, int], Dict[str, int]]:
+    """
+    Aggregate matches by rule and by package.
+    """
+    rule_counts = {}
+    package_counts = {}
+    for m in matches:
+        r = m.get("rule_name")
+        p = m.get("package_name")
+        rule_counts[r] = rule_counts.get(r, 0) + 1
+        package_counts[p] = package_counts.get(p, 0) + 1
+    return rule_counts, package_counts
+
+
+def print_summary_table(rule_counts: Dict[str, int], package_counts: Dict[str, int]) -> None:
+    """
+    Print a summary table to the console.
+    """
+    print("\n=== Scan Summary ===")
+    print(f"{'Rule Name':<30} {'Matches':<10}")
+    print("-" * 42)
+    for rule, count in sorted(rule_counts.items(), key=lambda x: x[1], reverse=True):
+        print(f"{rule:<30} {count:<10}")
+        
+    print(f"\n{'Package Name':<40} {'Matches':<10}")
+    print("-" * 52)
+    sorted_packages = sorted(package_counts.items(), key=lambda x: x[1], reverse=True)
+    for pkg, count in sorted_packages[:10]:
+        display_name = pkg if pkg else '[Root/None]'
+        print(f"{display_name:<40} {count:<10}")
+        
+    if len(sorted_packages) > 10:
+        print(f'... and {len(sorted_packages) - 10} more packages.')
+
+
 def write_csv_report(
     output_path: str, 
     matches: List[Dict[str, str]], 
@@ -400,6 +435,10 @@ def main():
         
     if len(all_matches) > 10:
         print(f"  ... and {len(all_matches) - 10} more matches.")
+        
+    # Get and print summary counts
+    rule_counts, package_counts = get_match_counts(all_matches)
+    print_summary_table(rule_counts, package_counts)
         
     # Write report
     if args.output:
