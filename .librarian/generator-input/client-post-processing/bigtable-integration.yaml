@@ -207,10 +207,10 @@ replacements:
       packages/google-cloud-bigtable/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==2.21.0
+      google-api-core==2.17.1
       google-auth==2.35.0
     after: |
-      google-api-core==2.21.0
+      google-api-core==2.17.1
       google-cloud-core==2.0.0
       grpc-google-iam-v1==0.12.4
       google-auth==2.35.0
