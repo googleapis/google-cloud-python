@@ -120,22 +120,29 @@ class _RegionalAccessBoundaryManager(object):
             == other._use_blocking_regional_access_boundary_lookup
         )
 
-    def use_blocking_regional_access_boundary_lookup(self):
-        """Enables blocking regional access boundary lookup to true"""
+    def enable_blocking_lookup(self):
+        """Enables blocking Regional Access Boundary lookup.
+
+        When enabled, the Regional Access Boundary lookup will be performed
+        synchronously in the calling thread instead of asynchronously in a
+        background thread.
+        """
         self._use_blocking_regional_access_boundary_lookup = True
 
-    def set_initial_regional_access_boundary(self, seed):
-        """Manually sets the regional access boundary to the client provided seed
+    def set_initial_regional_access_boundary(self, encoded_locations=None, expiry=None):
+        """Manually sets the regional access boundary to the client provided seed.
 
         Args:
-            seed (Mapping[str, str]): The regional access boundary to use for the
-                credential. This should be a map with, at a minimum, an "encodedLocations"
-                key that maps to a hex string and an "expiry" key which maps to a
-                datetime.datetime.
+            encoded_locations (Optional[str]): The encoded locations string.
+            expiry (Optional[datetime.datetime]): The expiry time for the boundary.
+                If encoded_locations is not provided, expiry is ignored.
         """
+        if not encoded_locations:
+            expiry = None
+
         self._data = _RegionalAccessBoundaryData(
-            encoded_locations=seed.get("encodedLocations", None),
-            expiry=seed.get("expiry", None),
+            encoded_locations=encoded_locations,
+            expiry=expiry,
             cooldown_expiry=None,
             cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
@@ -190,17 +197,20 @@ class _RegionalAccessBoundaryManager(object):
     def start_blocking_refresh(self, credentials, request):
         """Initiates a blocking lookup of the Regional Access Boundary.
 
+        If the lookup raises an exception, it is caught and logged as a warning,
+        and the lookup is treated as a failure (entering cooldown). Exceptions
+        are not propagated to the caller.
+
         Args:
             credentials (google.auth.credentials.Credentials): The credentials to refresh.
             request (google.auth.transport.Request): The object used to make HTTP requests.
         """
         try:
-            # A blocking parameter is passed here to indicate this is a blocking lookup,
-            # which in turn will do two things: 1) set a timeout to 3s instead of the
-            # default 120s and 2) ensure we do not retry at all
-            blocking = True
+            # The fail_fast parameter is set to True to ensure we don't block the calling
+            # thread for too long. This will do two things: 1) set a timeout to 3s
+            # instead of the default 120s and 2) ensure we do not retry at all
             regional_access_boundary_info = (
-                credentials._lookup_regional_access_boundary(request, blocking)
+                credentials._lookup_regional_access_boundary(request, fail_fast=True)
             )
         except Exception as e:
             if _helpers.is_logging_enabled(_LOGGER):
@@ -275,7 +285,12 @@ class _RegionalAccessBoundaryManager(object):
 class _RegionalAccessBoundaryRefreshThread(threading.Thread):
     """Thread for background refreshing of the Regional Access Boundary."""
 
-    def __init__(self, credentials, request, rab_manager):
+    def __init__(
+        self,
+        credentials: "google.auth.credentials.CredentialsWithRegionalAccessBoundary",  # noqa: F821
+        request: "google.auth.transport.Request",  # noqa: F821
+        rab_manager: "_RegionalAccessBoundaryManager",
+    ):
         super().__init__()
         self.daemon = True
         self._credentials = credentials

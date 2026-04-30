@@ -373,6 +373,10 @@ class Credentials(
         """
         return None
 
+    def _is_regional_access_boundary_lookup_required(self):
+        """OAuth 2.0 credentials do not support independent lookup."""
+        return False
+
     def _perform_refresh_token(self, request):
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(

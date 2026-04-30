@@ -374,7 +374,10 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             google.auth.credentials.Credentials: A new credentials instance.
         """
         creds = self._make_copy()
-        creds._rab_manager.set_initial_regional_access_boundary(seed)
+        creds._rab_manager.set_initial_regional_access_boundary(
+            encoded_locations=seed.get("encodedLocations", None),
+            expiry=seed.get("expiry", None),
+        )
         return creds
 
     def _with_blocking_regional_access_boundary_lookup(self):
@@ -389,7 +392,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             google.auth.credentials.Credentials: A new credentials instance.
         """
         creds = self._make_copy()
-        creds._rab_manager.use_blocking_regional_access_boundary_lookup()
+        creds._rab_manager.enable_blocking_lookup()
         return creds
 
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
@@ -473,14 +476,14 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _lookup_regional_access_boundary(
         self,
         request: "google.auth.transport.Request",  # noqa: F821
-        blocking: bool = False,
+        fail_fast: bool = False,
     ) -> "Optional[Dict[str, str]]":
         """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
 
         Args:
             request (google.auth.transport.Request): The object used to make
                 HTTP requests.
-            blocking (bool): Whether the lookup should be blocking.
+            fail_fast (bool): Whether the lookup should fail fast (short timeout, no retries).
 
         Returns:
             Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
@@ -496,7 +499,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         self._apply(headers)
         self._rab_manager.apply_headers(headers)
         return _client._lookup_regional_access_boundary(
-            request, url, headers=headers, blocking=blocking
+            request, url, headers=headers, fail_fast=fail_fast
         )
 
     @abc.abstractmethod
