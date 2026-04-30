@@ -1,5 +1,5 @@
 {
-    "api_description": "The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.",
+    "api_description": "Builds and manages container-based applications, powered by the open source\nKubernetes technology.",
     "api_id": "container.googleapis.com",
     "api_shortname": "container",
     "client_documentation": "https://cloud.google.com/python/docs/reference/container/latest",

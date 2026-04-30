@@ -1,5 +1,5 @@
 {
-    "api_description": "is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.",
+    "api_description": "This API is a prerequisite for leveraging Artifact Analysis\nscanning capabilities in both Artifact Registry and with Advanced\nVulnerability Insights (runtime scanning) in GKE.\n\nIn addition, the Container Analysis API is an implementation of the\nGrafeas API, which enables storing, querying, and retrieval of critical\nmetadata\nabout all of your software artifacts.",
     "api_id": "containeranalysis.googleapis.com",
     "api_shortname": "containeranalysis",
     "client_documentation": "https://cloud.google.com/python/docs/reference/containeranalysis/latest",
