@@ -20,10 +20,14 @@ import functools
 import logging
 import os
 import threading
-from typing import NamedTuple, Optional
+from typing import NamedTuple, Optional, TYPE_CHECKING
 
 from google.auth import _helpers
 from google.auth import environment_vars
+
+if TYPE_CHECKING:
+    import google.auth.credentials
+    import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -339,7 +339,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         ) as mock_lookup:
             creds._rab_manager.start_blocking_refresh(creds, request)
 
-            mock_lookup.assert_called_once_with(request, True)
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
             assert creds._rab_manager._data.encoded_locations == "0xABC"
 
     def test_start_blocking_refresh_failure(self):
@@ -351,7 +351,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         ) as mock_lookup:
             creds._rab_manager.start_blocking_refresh(creds, request)
 
-            mock_lookup.assert_called_once_with(request, True)
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
             assert creds._rab_manager._data.encoded_locations is None
             assert creds._rab_manager._data.cooldown_expiry is not None
 

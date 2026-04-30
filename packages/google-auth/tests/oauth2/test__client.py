@@ -803,7 +803,7 @@ def test_lookup_regional_access_boundary_blocking():
     url = "http://example.com"
     headers = {"Authorization": "Bearer access_token"}
     response = _client._lookup_regional_access_boundary(
-        mock_request, url, headers=headers, blocking=True
+        mock_request, url, headers=headers, fail_fast=True
     )
 
     assert response["encodedLocations"] == "0xABC"
@@ -822,9 +822,9 @@ def test_lookup_regional_access_boundary_blocking_error():
 
     url = "http://example.com"
     headers = {"Authorization": "Bearer access_token"}
-    # Even if the error is retryable, blocking=True should prevent retries.
+    # Even if the error is retryable, fail_fast=True should prevent retries.
     result = _client._lookup_regional_access_boundary(
-        mock_request, url, headers=headers, blocking=True
+        mock_request, url, headers=headers, fail_fast=True
     )
     assert result is None
 
