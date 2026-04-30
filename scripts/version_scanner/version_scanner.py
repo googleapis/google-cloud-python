@@ -395,7 +395,7 @@ def main():
     parser.add_argument(
         "--config",
         default="regex_config.yaml",
-        help="Path to the regex configuration file"
+        help="Path to the regex configuration file (defaults to regex_config.yaml)"
     )
     
     parser.add_argument(

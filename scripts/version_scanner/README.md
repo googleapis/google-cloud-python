@@ -12,15 +12,15 @@ python3 scripts/version_scanner/version_scanner.py -d <dependency> -v <version> 
 
 ### Options
 
-*   `-d`, `--dependency`: The dependency name (e.g., `python`).
-*   `-v`, `--version`: The specific version to search for (e.g., `3.7`).
-*   `-p`, `--path`: Root directory to scan (defaults to current directory).
-*   `--package`: Specific package directory to scan (useful for testing).
-*   `--package-file`: Path to a file containing a list of package directories to scan.
-*   `--config`: Path to the regex configuration file (defaults to `regex_config.yaml`).
-*   `-o`, `--output`: Path to the output CSV file.
-*   `--github-repo`: GitHub repository URL base for generating links.
-*   `--branch`: GitHub branch for links (defaults to `main`).
+*   `-d`, `--dependency`: Name of the dependency (e.g., python, protobuf)
+*   `-v`, `--version`: Specific version to search for (e.g., 3.7, 4.25.8)
+*   `-p`, `--path`: Root directory to scan (defaults to current directory)
+*   `--package`: Specific subdirectory filter (useful for monorepos)
+*   `--package-file`: Path to a file containing a list of package directories to scan
+*   `--config`: Path to the regex configuration file (defaults to regex_config.yaml)
+*   `-o`, `--output`: Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)
+*   `--github-repo`: GitHub repository URL base (e.g., https://github.com/googleapis/google-cloud-python)
+*   `--branch`: GitHub branch for links (defaults to main)
 
 ## Configuration
 
