@@ -1,5 +1,5 @@
 {
-    "api_description": "Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.",
+    "api_description": "routes.googleapis.com API.",
     "api_id": "routes.googleapis.com",
     "api_shortname": "routes",
     "client_documentation": "https://googleapis.dev/python/routing/latest",

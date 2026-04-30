@@ -2389,7 +2389,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/maps/mapsplatformdatasets/v1
-    description_override: Maps Platform Datasets API
     python:
       metadata_name_override: mapsplatformdatasets
       default_version: v1
@@ -2397,14 +2396,12 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/maps/navconnect/v1
-    description_override: Navigation Connect API.
     python:
       default_version: v1
   - name: google-maps-places
     version: 0.8.0
     apis:
       - path: google/maps/places/v1
-    description_override: The Places API allows developers to access a variety of search and retrieval endpoints for a Place.
     python:
       opt_args_by_api:
         google/maps/places/v1:
@@ -2416,14 +2413,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/maps/routeoptimization/v1
-    description_override: The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
     python:
       default_version: v1
   - name: google-maps-routing
     version: 0.10.0
     apis:
       - path: google/maps/routing/v2
-    description_override: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
     python:
       opt_args_by_api:
         google/maps/routing/v2:
@@ -2434,7 +2429,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/maps/solar/v1
-    description_override: The Google Maps Platform Solar API is a service focused on helping accelerate solar and energy system installations.
     python:
       default_version: v1
   - name: google-resumable-media
@@ -2446,7 +2440,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/shopping/css/v1
-    description_override: Programmatically manage your Comparison Shopping Service (CSS) account data at scale.
     python:
       opt_args_by_api:
         google/shopping/css/v1:
@@ -2457,7 +2450,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/accounts/v1
       - path: google/shopping/merchant/accounts/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/accounts/v1:
@@ -2470,7 +2462,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/conversions/v1
       - path: google/shopping/merchant/conversions/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1
   - name: google-shopping-merchant-datasources
@@ -2478,7 +2469,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/datasources/v1
       - path: google/shopping/merchant/datasources/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/datasources/v1:
@@ -2491,7 +2481,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/inventories/v1
       - path: google/shopping/merchant/inventories/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/inventories/v1:
@@ -2504,7 +2493,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/issueresolution/v1
       - path: google/shopping/merchant/issueresolution/v1beta
-    description_override: 'Programmatically manage your Merchant Center Accounts. '
     python:
       opt_args_by_api:
         google/shopping/merchant/issueresolution/v1:
@@ -2517,7 +2505,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/lfp/v1
       - path: google/shopping/merchant/lfp/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/lfp/v1:
@@ -2530,7 +2517,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/notifications/v1
       - path: google/shopping/merchant/notifications/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/notifications/v1beta:
@@ -2541,7 +2527,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/ordertracking/v1
       - path: google/shopping/merchant/ordertracking/v1beta
-    description_override: 'Programmatically manage your Merchant Center Accounts. '
     python:
       opt_args_by_api:
         google/shopping/merchant/ordertracking/v1:
@@ -2554,7 +2539,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/products/v1
       - path: google/shopping/merchant/products/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/products/v1:
@@ -2566,7 +2550,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/shopping/merchant/productstudio/v1alpha
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1alpha
   - name: google-shopping-merchant-promotions
@@ -2574,7 +2557,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/promotions/v1
       - path: google/shopping/merchant/promotions/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/promotions/v1:
@@ -2587,7 +2569,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/quota/v1
       - path: google/shopping/merchant/quota/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1
   - name: google-shopping-merchant-reports
@@ -2596,7 +2577,6 @@ libraries:
       - path: google/shopping/merchant/reports/v1
       - path: google/shopping/merchant/reports/v1beta
       - path: google/shopping/merchant/reports/v1alpha
-    description_override: Programmatically manage your Merchant Center accounts
     python:
       opt_args_by_api:
         google/shopping/merchant/reports/v1:
@@ -2610,7 +2590,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/shopping/merchant/reviews/v1beta
-    description_override: Programmatically manage your Merchant Center Accounts
     python:
       opt_args_by_api:
         google/shopping/merchant/reviews/v1beta:
@@ -2650,7 +2629,6 @@ libraries:
     version: 1.22.0
     apis:
       - path: grafeas/v1
-    description_override: An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
