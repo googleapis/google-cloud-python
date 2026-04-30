@@ -3,7 +3,7 @@ Python Client for Analytics Hub
 
 |preview| |pypi| |versions|
 
-`Analytics Hub`_: Analytics Hub is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost. Curate a library of internal and external assets, including unique datasets like Google Trends, backed by the power of BigQuery.
+`Analytics Hub`_: Exchange data and analytics assets securely and efficiently.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

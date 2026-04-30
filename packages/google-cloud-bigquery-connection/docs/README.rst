@@ -3,7 +3,7 @@ Python Client for BigQuery Connection
 
 |stable| |pypi| |versions|
 
-`BigQuery Connection`_: Manage BigQuery connections to external data sources.
+`BigQuery Connection`_: Allows users to manage BigQuery connections to external data sources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
