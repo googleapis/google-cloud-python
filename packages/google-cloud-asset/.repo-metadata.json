@@ -1,5 +1,5 @@
 {
-    "api_description": "provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.",
+    "api_description": "The Cloud Asset API manages the history and inventory of Google Cloud\nresources.",
     "api_id": "cloudasset.googleapis.com",
     "api_shortname": "cloudasset",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudasset/latest",

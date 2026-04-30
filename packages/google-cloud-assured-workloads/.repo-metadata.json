@@ -1,5 +1,5 @@
 {
-    "api_description": "allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.",
+    "api_description": "Assured Workloads lets you secure your workloads and accelerate your path to running compliant workloads on Google Cloud.",
     "api_id": "assuredworkloads.googleapis.com",
     "api_shortname": "assuredworkloads",
     "client_documentation": "https://cloud.google.com/python/docs/reference/assuredworkloads/latest",
