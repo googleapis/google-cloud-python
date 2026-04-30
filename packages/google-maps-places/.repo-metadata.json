@@ -1,5 +1,5 @@
 {
-    "api_description": "The Places API allows developers to access a variety of search and retrieval endpoints for a Place.",
+    "api_description": "The Places API allows developers to access a variety of search and\nretrieval endpoints for a Place.",
     "api_id": "places.googleapis.com",
     "api_shortname": "places",
     "client_documentation": "https://googleapis.dev/python/places/latest",
