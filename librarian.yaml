@@ -377,10 +377,6 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/appoptimize/v1beta
-    description_override: |-
-      The App Optimize API provides developers and platform teams with tools to
-      monitor, analyze, and improve the performance and cost-efficiency of their
-      cloud applications.
     python:
       default_version: v1beta
   - name: google-cloud-artifact-registry
@@ -388,7 +384,6 @@ libraries:
     apis:
       - path: google/devtools/artifactregistry/v1
       - path: google/devtools/artifactregistry/v1beta2
-    description_override: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
     python:
       opt_args_by_api:
         google/devtools/artifactregistry/v1:
@@ -404,7 +399,6 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
-    description_override: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -416,7 +410,6 @@ libraries:
     apis:
       - path: google/cloud/assuredworkloads/v1
       - path: google/cloud/assuredworkloads/v1beta1
-    description_override: allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.
     python:
       metadata_name_override: assuredworkloads
       default_version: v1
@@ -442,7 +435,6 @@ libraries:
     apis:
       - path: google/cloud/automl/v1
       - path: google/cloud/automl/v1beta1
-    description_override: '**AutoML API Python Client is now available in Vertex AI. Please visit** `Vertex SDK for Python <https://github.com/googleapis/python-aiplatform>`_ **for the new Python Vertex AI client.** Vertex AI is our next generation AI Platform, with many new features that are unavailable in the current platform. `Migrate your resources to Vertex AI <https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai>`_ to get the latest machine learning features, simplify end-to-end journeys, and productionize models with MLOps. The `Cloud AutoML API <https://cloud.google.com/automl>`_ is a suite of machine learning products that enables developers with limited machine learning expertise to train high-quality models specific to their business needs, by leveraging Google''s state-of-the-art transfer learning, and Neural Architecture Search technology.'
     keep:
       - docs/automl_v1beta1/tables.rst
       - google/cloud/automl_v1beta1/services/tables/__init__.py
@@ -456,7 +448,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/backupdr/v1
-    description_override: Backup and DR Service ensures that your data is managed, protected, and accessible using both hybrid and cloud-based backup/recovery appliances that are managed using the Backup and DR management console.
     python:
       metadata_name_override: backupdr
       default_version: v1
@@ -464,7 +455,6 @@ libraries:
     version: 1.13.0
     apis:
       - path: google/cloud/baremetalsolution/v2
-    description_override: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
     python:
       opt_args_by_api:
         google/cloud/baremetalsolution/v2:
@@ -483,7 +473,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appconnections/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappconnections
       default_version: v1
@@ -491,7 +480,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appconnectors/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappconnectors
       default_version: v1
@@ -499,7 +487,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appgateways/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappgateways
       default_version: v1
@@ -507,7 +494,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/clientconnectorservices/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpclientconnectorservices
       default_version: v1
@@ -515,7 +501,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/clientgateways/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpclientgateways
       default_version: v1
@@ -523,25 +508,16 @@ libraries:
     version: 0.3.0
     apis:
       - path: google/cloud/biglake/v1
-    description_override: The BigLake API provides access to BigLake Metastore, a serverless, fully managed, and highly available metastore for open-source data that can be used for querying Apache Iceberg tables in BigQuery.
     python:
       default_version: v1
   - name: google-cloud-biglake-hive
     version: 0.1.0
     apis:
       - path: google/cloud/biglake/hive/v1beta
-    description_override: |-
-      The BigLake API provides access to BigLake Metastore, a serverless, fully
-      managed, and highly available metastore for open-source data that can be
-      used for querying Apache Iceberg tables in BigQuery.
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.41.0
-    description_override: |-
-      is a fully managed, NoOps, low cost data analytics service.
-      Data can be streamed into BigQuery at millions of rows per second to enable real-time analysis.
-      With BigQuery you can easily deploy Petabyte-scale Databases.
     skip_generate: true
     python:
       library_type: GAPIC_COMBO
@@ -551,7 +527,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/cloud/bigquery/analyticshub/v1
-    description_override: Analytics Hub is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost. Curate a library of internal and external assets, including unique datasets like Google Trends, backed by the power of BigQuery.
     python:
       metadata_name_override: analyticshub
       default_version: v1
@@ -560,7 +535,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/biglake/v1
       - path: google/cloud/bigquery/biglake/v1alpha1
-    description_override: BigLake API
     python:
       metadata_name_override: biglake
       default_version: v1
@@ -568,7 +542,6 @@ libraries:
     version: 1.21.0
     apis:
       - path: google/cloud/bigquery/connection/v1
-    description_override: Manage BigQuery connections to external data sources.
     python:
       metadata_name_override: bigqueryconnection
       default_version: v1
@@ -576,7 +549,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/cloud/bigquery/dataexchange/v1beta1
-    description_override: is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.
     python:
       opt_args_by_api:
         google/cloud/bigquery/dataexchange/v1beta1:
@@ -590,7 +562,6 @@ libraries:
       - path: google/cloud/bigquery/datapolicies/v1
       - path: google/cloud/bigquery/datapolicies/v2beta1
       - path: google/cloud/bigquery/datapolicies/v1beta1
-    description_override: Allows users to manage BigQuery data policies.
     python:
       metadata_name_override: bigquerydatapolicy
       default_version: v1
