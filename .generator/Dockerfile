@@ -92,6 +92,9 @@ ENV PYTHON_VERSION_DEFAULT=3.14
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    # Temporarily include git and ca-certificates to download gapic-generator from Github
+    ca-certificates \
+    git \
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14992): Remove gdb
     # Once this bug is fixed.
     # Temporarily add gdb to assist with remote debugging for issue 14992.
