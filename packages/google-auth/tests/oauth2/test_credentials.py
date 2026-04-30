@@ -96,6 +96,14 @@ class TestCredentials(object):
         assert credentials.rapt_token == self.RAPT_TOKEN
         assert credentials.refresh_handler is None
 
+    def test_with_blocking_regional_access_boundary_lookup(self):
+        creds = self.make_credentials()
+        assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
+
+        new_creds = creds._with_blocking_regional_access_boundary_lookup()
+        assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup
+        assert new_creds is not creds
+
     def test_get_cred_info(self):
         credentials = self.make_credentials()
         credentials._account = "fake-account"
