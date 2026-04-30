@@ -3,7 +3,8 @@ Python Client for Service Health
 
 |preview| |pypi| |versions|
 
-`Service Health`_: Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.
+`Service Health`_: Personalized Service Health helps you gain visibility into disruptive
+events impacting Google Cloud products.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
