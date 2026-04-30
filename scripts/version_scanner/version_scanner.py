@@ -142,6 +142,34 @@ def write_csv_report(output_path: str, matches: List[Dict[str, str]]) -> None:
         print(f"\nReport written to: {output_path}")
     except IOError as e:
         print(f"Error writing CSV report: {e}", file=sys.stderr)
+def read_package_file(file_path: str) -> List[str]:
+    """
+    Read package paths from a file.
+    
+    Args:
+        file_path: Path to the package file.
+        
+    Returns:
+        A list of package paths.
+    """
+    packages = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    packages.append(line)
+    except FileNotFoundError:
+        print(f"Error: Package file not found: {file_path}", file=sys.stderr)
+        sys.exit(1)
+    except PermissionError:
+        print(f"Error: Permission denied reading package file: {file_path}", file=sys.stderr)
+        sys.exit(1)
+    except IOError as e:
+        print(f"Error reading package file: {e}", file=sys.stderr)
+        sys.exit(1)
+    return packages
+
 
 def scan_repository(
     root_path: str,
@@ -282,15 +310,9 @@ def main():
         targets.append(os.path.join(args.path, args.package))
     
     if args.package_file:
-        if os.path.exists(args.package_file):
-            with open(args.package_file, 'r', encoding='utf-8') as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith('#'):
-                        targets.append(os.path.join(args.path, line))
-        else:
-            print(f"Error: Package file not found: {args.package_file}", file=sys.stderr)
-            sys.exit(1)
+        packages = read_package_file(args.package_file)
+        for p in packages:
+            targets.append(os.path.join(args.path, p))
             
     # Fallback: if neither package nor package-file is given, use the path directly
     if not targets:
@@ -316,15 +338,7 @@ def main():
     if args.package:
         target_packages.append(os.path.join("packages", args.package))
     elif args.package_file:
-        if os.path.exists(args.package_file):
-            with open(args.package_file, 'r', encoding='utf-8') as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith('#'):
-                        target_packages.append(line)
-        else:
-            print(f"Error: Package file not found: {args.package_file}", file=sys.stderr)
-            sys.exit(1)
+        target_packages = read_package_file(args.package_file)
             
     # Scan repository
     all_matches = scan_repository(args.path, rules, target_packages)

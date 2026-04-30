@@ -162,8 +162,40 @@ def test_load_config_permission_error(tmp_path, capsys):
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
     assert "Error: Permission denied reading config file" in captured.err
-
-
+def test_main_package_file_permission_error(tmp_path, capsys):
+    package_file = tmp_path / "packages.txt"
+    package_file.write_text("packages/pkg_a")
+    
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", str(package_file)]
+    
+    real_open = open
+    def side_effect(file, *args, **kwargs):
+        if str(file) == str(package_file):
+            raise PermissionError("Permission denied")
+        return real_open(file, *args, **kwargs)
+        
+    with patch("sys.argv", test_args):
+        with patch("builtins.open", side_effect=side_effect):
+            with pytest.raises(SystemExit) as excinfo:
+                from version_scanner import main
+                main()
+                
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Permission denied reading package file" in captured.err
+def test_main_package_file_not_found(capsys):
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", "non_existent_file.txt"]
+    
+    with patch("sys.argv", test_args):
+        with pytest.raises(SystemExit) as excinfo:
+            from version_scanner import main
+            main()
+            
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Package file not found" in captured.err
 
 
 def test_regex_examples_from_config():
