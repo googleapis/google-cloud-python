@@ -9,7 +9,7 @@ rules:
       - "Python 3.7"
     rules:
       - |
-        (?:['"]|\s|^){major}\.{minor}(\.\d+)?(?:['"]|\s|$)
+        \b{major}\.{minor}(\.\d+)?\b
 
   - name: python_requires
     description: Finds various forms of python_requires declarations.
@@ -88,5 +88,15 @@ rules:
     rules:
       - |
         python3\.{minor}
+
+  - name: combined_version_string
+    description: Finds combined version strings often used in class or variable names.
+    applies_to: [python]
+    examples:
+      - "Python37"
+      - "Python37DeprecationWarning"
+    rules:
+      - |
+        Python{major}{minor}
 
 
