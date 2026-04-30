@@ -16,6 +16,7 @@
 import sys
 
 import google.api_core as api_core
+
 from google.cloud.bigtable_v2 import gapic_version as package_version
 
 __version__ = package_version.__version__

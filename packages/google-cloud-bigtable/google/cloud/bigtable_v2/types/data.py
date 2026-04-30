@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
+
 from google.cloud.bigtable_v2.types import types
 
 __protobuf__ = proto.module(

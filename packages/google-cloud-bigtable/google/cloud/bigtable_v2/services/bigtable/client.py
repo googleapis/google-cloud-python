@@ -44,8 +44,9 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.bigtable_v2 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,6 +63,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+
 from google.cloud.bigtable_v2.types import bigtable, data, request_stats
 
 from .transports.base import DEFAULT_CLIENT_INFO, BigtableTransport
