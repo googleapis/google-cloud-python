@@ -1885,7 +1885,6 @@ libraries:
       - path: google/cloud/securitycenter/v1
       - path: google/cloud/securitycenter/v1p1beta1
       - path: google/cloud/securitycenter/v1beta1
-    description_override: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
     python:
       metadata_name_override: securitycenter
       default_version: v1
@@ -1900,7 +1899,6 @@ libraries:
     apis:
       - path: google/api/servicecontrol/v2
       - path: google/api/servicecontrol/v1
-    description_override: ' is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.'
     python:
       opt_args_by_api:
         google/api/servicecontrol/v1:
@@ -1914,7 +1912,6 @@ libraries:
     apis:
       - path: google/cloud/servicedirectory/v1
       - path: google/cloud/servicedirectory/v1beta1
-    description_override: Allows the registration and lookup of services.
     python:
       metadata_name_override: servicedirectory
       default_version: v1
@@ -1922,7 +1919,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/api/servicemanagement/v1
-    description_override: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
     python:
       opt_args_by_api:
         google/api/servicemanagement/v1:
@@ -1933,7 +1929,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/api/serviceusage/v1
-    description_override: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
     python:
       opt_args_by_api:
         google/api/serviceusage/v1:
@@ -1945,14 +1940,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/servicehealth/v1
-    description_override: Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.
     python:
       default_version: v1
   - name: google-cloud-shell
     version: 1.15.0
     apis:
       - path: google/cloud/shell/v1
-    description_override: is an interactive shell environment for Google Cloud that makes it easy for you to learn and experiment with Google Cloud and manage your projects and resources from your web browser.
     python:
       metadata_name_override: cloudshell
       default_version: v1
@@ -1976,7 +1969,6 @@ libraries:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
       - path: google/spanner/admin/database/v1
-    description_override: "is the world's first fully managed relational database service \nto offer both strong consistency and horizontal scalability for \nmission-critical online transaction processing (OLTP) applications. With Cloud \nSpanner you enjoy all the traditional benefits of a relational database; but \nunlike any other relational database service, Cloud Spanner scales horizontally \nto hundreds or thousands of servers to handle the biggest transactional \nworkloads."
     keep:
       - docs/spanner_v1/batch.rst
       - docs/spanner_v1/client.rst
@@ -2009,7 +2001,6 @@ libraries:
       - path: google/cloud/speech/v2
       - path: google/cloud/speech/v1
       - path: google/cloud/speech/v1p1beta1
-    description_override: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: speech
@@ -2018,7 +2009,6 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
-    description_override: 'is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.'
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
@@ -2032,7 +2022,6 @@ libraries:
     version: 1.11.0
     apis:
       - path: google/storage/control/v2
-    description_override: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
     python:
       opt_args_by_api:
         google/storage/control/v2:
@@ -2043,7 +2032,6 @@ libraries:
     version: 1.20.0
     apis:
       - path: google/storagetransfer/v1
-    description_override: Secure, low-cost services for transferring data from cloud or on-premises sources.
     python:
       opt_args_by_api:
         google/storagetransfer/v1:
@@ -2055,14 +2043,12 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/storagebatchoperations/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-storageinsights
     version: 0.4.0
     apis:
       - path: google/cloud/storageinsights/v1
-    description_override: The Storage Insights inventory report feature helps you manage your object storage at scale.
     python:
       metadata_name_override: storageinsights
       default_version: v1
@@ -2071,7 +2057,6 @@ libraries:
     apis:
       - path: google/cloud/support/v2
       - path: google/cloud/support/v2beta
-    description_override: Manages Google Cloud technical support cases for Customer Care support offerings.
     python:
       metadata_name_override: support
       default_version: v2
@@ -2080,7 +2065,6 @@ libraries:
     apis:
       - path: google/cloud/talent/v4
       - path: google/cloud/talent/v4beta1
-    description_override: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
     python:
       metadata_name_override: talent
       default_version: v4
@@ -2090,7 +2074,6 @@ libraries:
       - path: google/cloud/tasks/v2
       - path: google/cloud/tasks/v2beta3
       - path: google/cloud/tasks/v2beta2
-    description_override: a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.
     python:
       metadata_name_override: cloudtasks
       default_version: v2
@@ -2099,7 +2082,6 @@ libraries:
     apis:
       - path: google/cloud/telcoautomation/v1
       - path: google/cloud/telcoautomation/v1alpha1
-    description_override: APIs to automate 5G deployment and management of cloud infrastructure and network functions.
     python:
       default_version: v1
   - name: google-cloud-testutils
@@ -2112,7 +2094,6 @@ libraries:
     apis:
       - path: google/cloud/texttospeech/v1
       - path: google/cloud/texttospeech/v1beta1
-    description_override: enables easy integration of Google text recognition technologies into developer applications. Send text and receive synthesized audio output from the Cloud Text-to-Speech API service.
     python:
       metadata_name_override: texttospeech
       default_version: v1
@@ -2122,7 +2103,6 @@ libraries:
       - path: google/cloud/tpu/v2
       - path: google/cloud/tpu/v1
       - path: google/cloud/tpu/v2alpha1
-    description_override: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.
     python:
       metadata_name_override: tpu
       default_version: v1
