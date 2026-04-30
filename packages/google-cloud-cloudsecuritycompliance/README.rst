@@ -3,7 +3,7 @@ Python Client for Cloud Security Compliance
 
 |preview| |pypi| |versions|
 
-`Cloud Security Compliance`_: null 
+`Cloud Security Compliance`_: Compliance Manager uses software-defined controls that let you assess support for multiple compliance programs and security requirements within a Google Cloud organization.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

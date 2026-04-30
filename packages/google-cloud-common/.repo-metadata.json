@@ -1,5 +1,5 @@
 {
-    "api_description": "This package contains generated Python types for google.cloud.common",
+    "api_description": "Provides common protobuf definitions for APIs.",
     "api_id": "common.googleapis.com",
     "api_shortname": "common",
     "client_documentation": "https://cloud.google.com/python/docs/reference/common/latest",
