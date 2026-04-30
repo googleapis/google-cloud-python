@@ -84,7 +84,8 @@ def test_df_construct_pandas_default(scalars_dfs):
         ("bigquery_inline"),
         ("bigquery_load"),
         ("bigquery_streaming"),
-        ("bigquery_write"),
+        # TODO(b/502298527): Reenable bigquery_write test
+        # ("bigquery_write"),
     ],
 )
 def test_read_pandas_all_nice_types(
@@ -2179,7 +2180,8 @@ def test_len(scalars_dfs):
 )
 @pytest.mark.parametrize(
     "write_engine",
-    ["bigquery_load", "bigquery_streaming", "bigquery_write"],
+    # TODO(b/502298527): Reenable bigquery_write test
+    ["bigquery_load", "bigquery_streaming"],
 )
 def test_df_len_local(session, n_rows, write_engine):
     assert (

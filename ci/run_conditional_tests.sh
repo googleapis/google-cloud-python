@@ -36,6 +36,14 @@ set -eo pipefail
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
 
+# Redirect git clones for core dependencies to the local repository.
+# This serves two purposes:
+# 1. Performance: Avoids repeated 100MB+ downloads of the monorepo for each dependency.
+# 2. Correctness: Ensures that changes in core packages (like google-api-core) are
+#    tested against downstream packages in the same Pull Request.
+git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
+git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
+
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
