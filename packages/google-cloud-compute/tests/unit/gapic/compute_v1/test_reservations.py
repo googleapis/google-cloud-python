@@ -5117,6 +5117,7 @@ def test_get_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Reservation(
             commitment="commitment_value",
+            confidential_compute_type="confidential_compute_type_value",
             creation_timestamp="creation_timestamp_value",
             delete_at_time="delete_at_time_value",
             deployment_type="deployment_type_value",
@@ -5151,6 +5152,7 @@ def test_get_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Reservation)
     assert response.commitment == "commitment_value"
+    assert response.confidential_compute_type == "confidential_compute_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.delete_at_time == "delete_at_time_value"
     assert response.deployment_type == "deployment_type_value"
@@ -5418,6 +5420,7 @@ def test_insert_rest_call_success(request_type):
             "workload_type": "workload_type_value",
         },
         "commitment": "commitment_value",
+        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "delete_after_duration": {"nanos": 543, "seconds": 751},
         "delete_at_time": "delete_at_time_value",
@@ -6848,6 +6851,7 @@ def test_update_rest_call_success(request_type):
             "workload_type": "workload_type_value",
         },
         "commitment": "commitment_value",
+        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "delete_after_duration": {"nanos": 543, "seconds": 751},
         "delete_at_time": "delete_at_time_value",

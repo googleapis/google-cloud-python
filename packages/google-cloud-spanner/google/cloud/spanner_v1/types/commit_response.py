@@ -62,6 +62,12 @@ class CommitResponse(proto.Message):
             to requests that included a ``RoutingHint`` field, but may
             also be obtained by explicit location-fetching RPCs which
             may be added in the future.
+        isolation_level (google.cloud.spanner_v1.types.TransactionOptions.IsolationLevel):
+            The isolation level used for the read-write
+            transaction.
+        read_lock_mode (google.cloud.spanner_v1.types.TransactionOptions.ReadWrite.ReadLockMode):
+            The read lock mode used for the read-write
+            transaction.
     """
 
     class CommitStats(proto.Message):
@@ -110,6 +116,16 @@ class CommitResponse(proto.Message):
         proto.MESSAGE,
         number=6,
         message=location.CacheUpdate,
+    )
+    isolation_level: transaction.TransactionOptions.IsolationLevel = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=transaction.TransactionOptions.IsolationLevel,
+    )
+    read_lock_mode: transaction.TransactionOptions.ReadWrite.ReadLockMode = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=transaction.TransactionOptions.ReadWrite.ReadLockMode,
     )
 
 
