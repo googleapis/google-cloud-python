@@ -1,5 +1,5 @@
 {
-    "api_description": "provides programmatic methods to access report data in Google Analytics App+Web properties.",
+    "api_description": "Accesses report data in Google Analytics. Warning: Creating multiple\nCustomer Applications, Accounts, or Projects to simulate or act as a\nsingle Customer Application, Account, or Project (respectively) or to\ncircumvent Service-specific usage limits or quotas is a direct violation\nof Google Cloud Platform Terms of Service as well as Google APIs Terms of\nService. These actions can result in immediate termination of your GCP\nproject(s) without any warning.",
     "api_id": "analyticsdata.googleapis.com",
     "api_shortname": "analyticsdata",
     "client_documentation": "https://googleapis.dev/python/analyticsdata/latest",

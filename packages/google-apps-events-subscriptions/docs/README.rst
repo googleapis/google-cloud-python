@@ -3,7 +3,8 @@ Python Client for Google Workspace Events
 
 |preview| |pypi| |versions|
 
-`Google Workspace Events`_: The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.
+`Google Workspace Events`_: The Google Workspace Events API lets you subscribe to events and manage
+change notifications across Google Workspace applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -3,7 +3,7 @@ Python Client for Apigee Connect
 
 |stable| |pypi| |versions|
 
-`Apigee Connect`_: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
+`Apigee Connect`_: Apigee Connect allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
