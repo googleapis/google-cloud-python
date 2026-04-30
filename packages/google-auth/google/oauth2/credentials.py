@@ -341,7 +341,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             google.oauth2.credentials.Credentials: A new credentials instance.
         """
         cred = self._make_copy()
-        cred._account = account
+        cred._account = account or ""
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
@@ -578,7 +578,7 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
             "client libraries pick up the application default credentials."
         )
         super(UserAccessTokenCredentials, self).__init__()
-        self._account = account
+        self._account = account or ""
         self._quota_project_id = quota_project_id
 
     def with_account(self, account):
