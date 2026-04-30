@@ -1,5 +1,5 @@
 {
-    "api_description": "Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.",
+    "api_description": "A unified AI platform for financial services, leveraging Google's global framework for security and compliance.",
     "api_id": "financialservices.googleapis.com",
     "api_shortname": "financialservices",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-financialservices/latest",

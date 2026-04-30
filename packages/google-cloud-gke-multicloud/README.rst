@@ -3,7 +3,15 @@ Python Client for GKE Multi-Cloud
 
 |preview| |pypi| |versions|
 
-`GKE Multi-Cloud`_: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
+`GKE Multi-Cloud`_: GKE Multi-Cloud provides a way to manage Kubernetes clusters that run on
+AWS and Azure infrastructure using the GKE Multi-Cloud API.  Combined with
+Connect, you can manage Kubernetes clusters on Google Cloud, AWS, and
+Azure from the Google Cloud Console.
+
+When you create a cluster with GKE Multi-Cloud, Google creates the
+resources needed and brings up a cluster on your behalf.  You can deploy
+workloads with the GKE Multi-Cloud API or the gcloud and kubectl
+command-line tools.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

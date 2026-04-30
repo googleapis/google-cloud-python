@@ -1111,13 +1111,11 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/cloud/clouddms/v1
-    description_override: makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL.
     python:
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
     version: 0.36.1
-    description_override: provides methods that you can use to manage DNS for your applications.
     python:
       library_type: REST
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559772
@@ -1127,7 +1125,6 @@ libraries:
     apis:
       - path: google/cloud/documentai/v1
       - path: google/cloud/documentai/v1beta3
-    description_override: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
     python:
       metadata_name_override: documentai
       default_version: v1
@@ -1142,7 +1139,6 @@ libraries:
     apis:
       - path: google/cloud/domains/v1
       - path: google/cloud/domains/v1beta1
-    description_override: allows you to register and manage domains by using Cloud Domains.
     python:
       metadata_name_override: domains
       default_version: v1
@@ -1150,7 +1146,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/cloud/edgecontainer/v1
-    description_override: Google Distributed Cloud Edge allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
     python:
       metadata_name_override: edgecontainer
       default_version: v1
@@ -1158,7 +1153,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/edgenetwork/v1
-    description_override: Network management API for Distributed Cloud Edge
     python:
       default_version: v1
   - name: google-cloud-enterpriseknowledgegraph
@@ -1172,7 +1166,6 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
-    description_override: 'counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors.'
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1185,7 +1178,6 @@ libraries:
     version: 1.13.0
     apis:
       - path: google/cloud/essentialcontacts/v1
-    description_override: helps you customize who receives notifications by providing your own list of contacts in many Google Cloud services.
     python:
       opt_args_by_api:
         google/cloud/essentialcontacts/v1:
@@ -1196,7 +1188,6 @@ libraries:
     version: 1.20.0
     apis:
       - path: google/cloud/eventarc/v1
-    description_override: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution.
     python:
       metadata_name_override: eventarc
       default_version: v1
@@ -1204,7 +1195,6 @@ libraries:
     version: 0.10.0
     apis:
       - path: google/cloud/eventarc/publishing/v1
-    description_override: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes.
     python:
       metadata_name_override: eventarcpublishing
       default_version: v1
@@ -1212,7 +1202,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/filestore/v1
-    description_override: Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters.
     python:
       opt_args_by_api:
         google/cloud/filestore/v1:
@@ -1223,7 +1212,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/financialservices/v1
-    description_override: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
     python:
       default_version: v1
   - name: google-cloud-firestore
@@ -1232,7 +1220,6 @@ libraries:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
       - path: google/firestore/bundle
-    description_override: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
     keep:
       - docs/firestore_admin_v1/admin_client.rst
       - docs/firestore_v1/aggregation.rst
@@ -1265,7 +1252,6 @@ libraries:
     apis:
       - path: google/cloud/functions/v2
       - path: google/cloud/functions/v1
-    description_override: is a scalable pay as you go Functions-as-a-Service (FaaS) to run your code with zero server management.
     python:
       metadata_name_override: cloudfunctions
       default_version: v1
@@ -1273,7 +1259,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/gdchardwaremanagement/v1alpha
-    description_override: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
@@ -1281,14 +1266,12 @@ libraries:
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
       - path: google/cloud/geminidataanalytics/v1alpha
-    description_override: Developers can use the Conversational Analytics API, accessed through geminidataanalytics.googleapis.com, to build an artificial intelligence (AI)-powered chat interface, or data agent, that answers questions about structured data in BigQuery, Looker, and Looker Studio using natural language.
     python:
       default_version: v1alpha
   - name: google-cloud-gke-backup
     version: 0.8.0
     apis:
       - path: google/cloud/gkebackup/v1
-    description_override: An API for backing up and restoring workloads in GKE.
     python:
       opt_args_by_api:
         google/cloud/gkebackup/v1:
@@ -1300,7 +1283,6 @@ libraries:
     apis:
       - path: google/cloud/gkeconnect/gateway/v1
       - path: google/cloud/gkeconnect/gateway/v1beta1
-    description_override: builds on the power of fleets to let Anthos users connect to and run commands against registered Anthos clusters in a simple, consistent, and secured way, whether the clusters are on Google Cloud, other public clouds, or on premises, and makes it easier to automate DevOps processes across all your clusters.
     python:
       opt_args_by_api:
         google/cloud/gkeconnect/gateway/v1:
@@ -1316,7 +1298,6 @@ libraries:
     apis:
       - path: google/cloud/gkehub/v1
       - path: google/cloud/gkehub/v1beta1
-    description_override: provides a unified way to work with Kubernetes clusters as part of Anthos, extending GKE to work in multiple environments. You have consistent, unified, and secure infrastructure, cluster, and container management, whether you're using Anthos on Google Cloud (with traditional GKE), hybrid cloud, or multiple public clouds.
     keep:
       - docs/gkehub_v1/configmanagement_v1/services_.rst
       - docs/gkehub_v1/configmanagement_v1/types_.rst
@@ -1332,7 +1313,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/gkemulticloud/v1
-    description_override: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
     python:
       opt_args_by_api:
         google/cloud/gkemulticloud/v1:
