@@ -111,7 +111,7 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                         results.append({
                             "rule_name": rule["name"],
                             "line_number": line_num,
-                            "matched_string": match.group(0),
+                            "matched_string": match.group(0).strip(),
                             "context_line": line.strip()
                         })
     except IOError as e:

@@ -213,6 +213,23 @@ def test_format_match_for_csv():
     formatted = format_match_for_csv(match, github_repo="https://github.com/user/repo", branch="main")
     expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
     assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
+
+
+def test_scan_file_removes_newline_from_match(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("Python 3.7\n")
+    
+    rules = [
+        {"name": "explicit_version_string", "pattern": re.compile(r"(?:['\"]|\s|^)3\.7(\.\d+)?(?:['\"]|\s|$)")}
+    ]
+    
+    from version_scanner import scan_file
+    results = scan_file(str(test_file), rules)
+    
+    assert len(results) == 1
+    assert "\n" not in results[0]["matched_string"]
+
+
 def test_write_csv_report_with_links(tmp_path):
     output_file = tmp_path / "report.csv"
     matches = [
