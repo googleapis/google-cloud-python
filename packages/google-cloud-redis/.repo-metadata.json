@@ -1,5 +1,5 @@
 {
-    "api_description": "is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.",
+    "api_description": "Creates and manages Redis instances on the Google Cloud Platform.",
     "api_id": "redis.googleapis.com",
     "api_shortname": "redis",
     "client_documentation": "https://cloud.google.com/python/docs/reference/redis/latest",

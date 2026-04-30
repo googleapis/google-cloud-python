@@ -1,5 +1,5 @@
 {
-    "api_description": "provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.",
+    "api_description": "Creates, reads, and updates metadata for Google Cloud Platform resource\ncontainers.",
     "api_id": "cloudresourcemanager.googleapis.com",
     "api_shortname": "cloudresourcemanager",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest",

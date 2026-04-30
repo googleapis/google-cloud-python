@@ -3,7 +3,7 @@ Python Client for App Lifecycle Manager
 
 |preview| |pypi| |versions|
 
-`App Lifecycle Manager`_: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
+`App Lifecycle Manager`_: Model, deploy, and operate your SaaS at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
