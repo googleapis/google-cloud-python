@@ -1,4 +1,4 @@
-# Directories to ignore by the version scanner
+# Directories and files to ignore by the version scanner
 .git
 __pycache__
 .tox
@@ -9,3 +9,4 @@ venv
 version_scanner
 docs
 samples
+changelog.md

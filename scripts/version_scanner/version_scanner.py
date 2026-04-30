@@ -12,6 +12,8 @@ import re
 import sys
 from typing import Dict, List, Tuple
 import yaml
+import google.auth
+from googleapiclient.discovery import build
 
 class ConfigManager:
     """Handles loading and interpolation of regex configurations."""
@@ -242,6 +244,66 @@ def write_csv_report(
         print(f"\nReport written to: {output_path}")
     except IOError as e:
         print(f"Error writing CSV report: {e}", file=sys.stderr)
+
+
+def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: str = None, branch: str = "main") -> str:
+    """
+    Upload matches to a Google Sheet in Drive.
+    """
+    print("\nUploading to Google Drive...")
+    try:
+        credentials, project = google.auth.default(
+            scopes=['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
+        )
+        
+        service = build('sheets', 'v4', credentials=credentials)
+        
+        # Create a new spreadsheet
+        title = os.path.basename(csv_path).replace('.csv', '')
+        spreadsheet = {
+            'properties': {
+                'title': title
+            }
+        }
+        spreadsheet = service.spreadsheets().create(body=spreadsheet, fields='spreadsheetUrl,spreadsheetId').execute()
+        url = spreadsheet.get('spreadsheetUrl')
+        spreadsheet_id = spreadsheet.get('spreadsheetId')
+        
+        # Prepare data
+        values = [["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]]
+        for m in matches:
+            formatted_m = format_match_for_csv(m, github_repo=github_repo, branch=branch)
+            values.append([
+                formatted_m.get("file_path", ""),
+                formatted_m.get("package_name", ""),
+                formatted_m.get("rule_name", ""),
+                str(formatted_m.get("line_number", "")),
+                formatted_m.get("matched_string", ""),
+                formatted_m.get("context_line", "")
+            ])
+            
+        body = {
+            'values': values
+        }
+        
+        # Update values
+        service.spreadsheets().values().update(
+            spreadsheetId=spreadsheet_id,
+            range='Sheet1!A1',
+            valueInputOption='USER_ENTERED',
+            body=body
+        ).execute()
+        
+        print(f"Successfully uploaded to Google Sheet: {url}")
+        return url
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"Error uploading to Google Drive: {e}", file=sys.stderr)
+        return ""
+
+
 def read_package_file(file_path: str) -> List[str]:
     """
     Read package paths from a file.
@@ -289,7 +351,7 @@ def scan_repository(
     Returns:
         A list of match details.
     """
-    ignore_dirs = set(ignore_dirs) if ignore_dirs else set()
+    ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
     
     # Compile patterns once here
@@ -309,8 +371,11 @@ def scan_repository(
         print(f"Filtering for packages: {target_packages}")
         
     for root, dirs, files in os.walk(root_path):
-        # Prune ignore directories
-        dirs[:] = [d for d in dirs if d not in ignore_dirs]
+        # Prune ignore directories (case-insensitive)
+        dirs[:] = [d for d in dirs if d.lower() not in ignore_lower]
+        
+        # Filter ignore files (case-insensitive)
+        files = [f for f in files if f.lower() not in ignore_lower]
         
         rel_root = os.path.relpath(root, root_path)
         parts = rel_root.split(os.sep)
@@ -418,6 +483,12 @@ def main():
         help="GitHub branch for links (defaults to main)"
     )
     
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="Upload results to a Google Sheet in Drive"
+    )
+    
     args = parser.parse_args()
     
     # Resolve target packages if filtering is requested
@@ -478,6 +549,9 @@ def main():
         output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
         
     write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+    
+    if args.upload:
+        upload_to_drive(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
 
 if __name__ == "__main__":
     main()
