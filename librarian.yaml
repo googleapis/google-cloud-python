@@ -1784,7 +1784,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/policysimulator/v1
-    description_override: Policy Simulator is a collection of endpoints for creating, running, and viewing a `Replay`. A `Replay` is a type of simulation that lets you see how your members' access to resources might change if you changed your IAM policy.
     python:
       opt_args_by_api:
         google/cloud/policysimulator/v1:
@@ -1803,7 +1802,6 @@ libraries:
     apis:
       - path: google/cloud/security/privateca/v1
       - path: google/cloud/security/privateca/v1beta1
-    description_override: simplifies the deployment and management of private CAs without managing infrastructure.
     python:
       opt_args_by_api:
         google/cloud/security/privateca/v1:
@@ -1818,7 +1816,6 @@ libraries:
     version: 0.12.0
     apis:
       - path: google/cloud/privatecatalog/v1beta1
-    description_override: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
     python:
       metadata_name_override: cloudprivatecatalog
       default_version: v1beta1
@@ -1826,14 +1823,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
-    description_override: Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.
     python:
       default_version: v1
   - name: google-cloud-pubsub
     version: 2.37.0
     apis:
       - path: google/pubsub/v1
-    description_override: is designed to provide reliable, many-to-many, asynchronous messaging between applications. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1847,7 +1842,6 @@ libraries:
     apis:
       - path: google/api/cloudquotas/v1
       - path: google/api/cloudquotas/v1beta
-    description_override: Cloud Quotas API provides Google Cloud service consumers with management and observability for resource usage, quotas, and restrictions of the services they consume.
     python:
       opt_args_by_api:
         google/api/cloudquotas/v1:
@@ -1860,7 +1854,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/rapidmigrationassessment/v1
-    description_override: The Rapid Migration Assessment service is our first-party migration assessment and planning tool.
     python:
       metadata_name_override: rapidmigrationassessment
       default_version: v1
@@ -1868,7 +1861,6 @@ libraries:
     version: 1.31.0
     apis:
       - path: google/cloud/recaptchaenterprise/v1
-    description_override: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
     python:
       metadata_name_override: recaptchaenterprise
       default_version: v1
@@ -1876,7 +1868,6 @@ libraries:
     version: 0.13.0
     apis:
       - path: google/cloud/recommendationengine/v1beta1
-    description_override: delivers highly personalized product recommendations at scale.
     python:
       metadata_name_override: recommendationengine
       default_version: v1beta1
@@ -1885,7 +1876,6 @@ libraries:
     apis:
       - path: google/cloud/recommender/v1
       - path: google/cloud/recommender/v1beta1
-    description_override: delivers highly personalized product recommendations at scale.
     python:
       metadata_name_override: recommender
       default_version: v1
@@ -1894,7 +1884,6 @@ libraries:
     apis:
       - path: google/cloud/redis/v1
       - path: google/cloud/redis/v1beta1
-    description_override: is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.
     python:
       metadata_name_override: redis
       default_version: v1
@@ -1903,14 +1892,12 @@ libraries:
     apis:
       - path: google/cloud/redis/cluster/v1
       - path: google/cloud/redis/cluster/v1beta1
-    description_override: Creates and manages Redis instances on the Google Cloud Platform.
     python:
       default_version: v1
   - name: google-cloud-resource-manager
     version: 1.17.0
     apis:
       - path: google/cloud/resourcemanager/v3
-    description_override: provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.
     python:
       metadata_name_override: cloudresourcemanager
       default_version: v3
@@ -1920,7 +1907,6 @@ libraries:
       - path: google/cloud/retail/v2
       - path: google/cloud/retail/v2beta
       - path: google/cloud/retail/v2alpha
-    description_override: Cloud Retail service enables customers to build end-to-end personalized recommendation systems without requiring a high level of expertise in machine learning, recommendation system, or Google Cloud.
     python:
       metadata_name_override: retail
       default_version: v2
@@ -1928,7 +1914,6 @@ libraries:
     version: 0.16.0
     apis:
       - path: google/cloud/run/v2
-    description_override: is a managed compute platform that enables you to run containers that are invocable via requests or events.
     python:
       metadata_name_override: run
       default_version: v2
@@ -1942,7 +1927,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
-    description_override: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
     python:
       default_version: v1beta1
   - name: google-cloud-scheduler
@@ -1950,7 +1934,6 @@ libraries:
     apis:
       - path: google/cloud/scheduler/v1
       - path: google/cloud/scheduler/v1beta1
-    description_override: lets you set up scheduled units of work to be executed at defined times or regular intervals. These work units are commonly known as cron jobs. Typical use cases might include sending out a report email on a daily basis, updating some cached data every 10 minutes, or updating some summary information once an hour.
     python:
       metadata_name_override: cloudscheduler
       default_version: v1
@@ -1960,7 +1943,6 @@ libraries:
       - path: google/cloud/secretmanager/v1
       - path: google/cloud/secretmanager/v1beta2
       - path: google/cloud/secrets/v1beta1
-    description_override: Stores, manages, and secures access to application secrets.
     python:
       opt_args_by_api:
         google/cloud/secrets/v1beta1:
@@ -1971,7 +1953,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/securesourcemanager/v1
-    description_override: Regionally deployed, single-tenant managed source code repository hosted on Google Cloud.
     python:
       metadata_name_override: securesourcemanager
       default_version: v1
@@ -1980,7 +1961,6 @@ libraries:
     apis:
       - path: google/cloud/security/publicca/v1
       - path: google/cloud/security/publicca/v1beta1
-    description_override: simplifies the deployment and management of public CAs without managing infrastructure.
     python:
       opt_args_by_api:
         google/cloud/security/publicca/v1:
