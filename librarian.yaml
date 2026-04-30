@@ -63,7 +63,6 @@ libraries:
       library_type: INTEGRATION
   - name: db-dtypes
     version: 1.5.1
-    description_override: Pandas extension data types for data from SQL systems such as BigQuery.
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
@@ -84,23 +83,18 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/ads/admanager/v1
-    description_override: Manage your Ad Manager inventory, run reports and more.
     python:
       default_version: v1
   - name: google-ads-datamanager
     version: 0.8.0
     apis:
       - path: google/ads/datamanager/v1
-    description_override: |-
-      A unified ingestion API for data partners, agencies and advertisers to
-      connect first-party data across Google advertising products.
     python:
       default_version: v1
   - name: google-ads-marketingplatform-admin
     version: 0.5.0
     apis:
       - path: google/marketingplatform/admin/v1alpha
-    description_override: The Google Marketing Platform Admin API allows for programmatic access to the Google Marketing Platform configuration data. You can use the Google Marketing Platform Admin API to manage links between your Google Marketing Platform organization and Google Analytics accounts, and to set the service level of your GA4 properties.
     python:
       opt_args_by_api:
         google/marketingplatform/admin/v1alpha:
@@ -115,7 +109,6 @@ libraries:
       - path: google/ai/generativelanguage/v1beta2
       - path: google/ai/generativelanguage/v1beta
       - path: google/ai/generativelanguage/v1alpha
-    description_override: The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
     python:
       metadata_name_override: generativelanguage
       default_version: v1beta
@@ -124,7 +117,6 @@ libraries:
     apis:
       - path: google/analytics/admin/v1beta
       - path: google/analytics/admin/v1alpha
-    description_override: allows you to manage Google Analytics accounts and properties.
     python:
       opt_args_by_api:
         google/analytics/admin/v1alpha:
@@ -136,7 +128,6 @@ libraries:
     apis:
       - path: google/analytics/data/v1beta
       - path: google/analytics/data/v1alpha
-    description_override: provides programmatic methods to access report data in Google Analytics App+Web properties.
     python:
       metadata_name_override: analyticsdata
       default_version: v1beta
@@ -149,7 +140,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/apps/card/v1
-    description_override: Google Apps Card Protos
     keep:
       - tests/unit/gapic/card_v1/test_card.py
     python:
@@ -170,7 +160,6 @@ libraries:
     apis:
       - path: google/apps/events/subscriptions/v1
       - path: google/apps/events/subscriptions/v1beta
-    description_override: The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.
     python:
       default_version: v1
   - name: google-apps-meet
@@ -178,7 +167,6 @@ libraries:
     apis:
       - path: google/apps/meet/v2
       - path: google/apps/meet/v2beta
-    description_override: Create and manage meetings in Google Meet.
     python:
       default_version: v2
   - name: google-apps-script-type
@@ -234,7 +222,6 @@ libraries:
     version: 0.14.0
     apis:
       - path: google/area120/tables/v1alpha1
-    description_override: provides programmatic methods to the Area 120 Tables API.
     python:
       metadata_name_override: area120tables
       default_version: v1alpha1
@@ -256,7 +243,6 @@ libraries:
     version: 1.19.0
     apis:
       - path: google/cloud/accessapproval/v1
-    description_override: enables controlling access to your organization's data by Google personnel.
     python:
       metadata_name_override: accessapproval
       default_version: v1
@@ -276,7 +262,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/advisorynotifications/v1
-    description_override: Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.
     python:
       metadata_name_override: advisorynotifications
       default_version: v1
@@ -295,7 +280,6 @@ libraries:
       - path: google/cloud/alloydb/connectors/v1
       - path: google/cloud/alloydb/connectors/v1beta
       - path: google/cloud/alloydb/connectors/v1alpha
-    description_override: provides enterprise-grade performance and availability while maintaining 100% compatibility with open-source PostgreSQL.
     keep:
       - tests/unit/gapic/connectors_v1/test_connectors.py
     python:
@@ -315,7 +299,6 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/cloud/apigateway/v1
-    description_override: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
     python:
       metadata_name_override: apigateway
       default_version: v1
@@ -334,7 +317,6 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/cloud/apigeeconnect/v1
-    description_override: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
     python:
       metadata_name_override: apigeeconnect
       default_version: v1
@@ -342,7 +324,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/apigeeregistry/v1
-    description_override: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
     python:
       opt_args_by_api:
         google/cloud/apigeeregistry/v1:
@@ -353,7 +334,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/apihub/v1
-    description_override: API hub lets you consolidate and organize information about all of the APIs of interest to your organization. API hub lets you capture critical information about APIs that allows developers to discover and evaluate them easily and leverage the work of other teams wherever possible. API platform teams can use API hub to have visibility into and manage their portfolio of APIs.
     python:
       default_version: v1
   - name: google-cloud-apiregistry
@@ -366,7 +346,6 @@ libraries:
     version: 1.17.0
     apis:
       - path: google/appengine/v1
-    description_override: allows you to manage your App Engine applications.
     python:
       opt_args_by_api:
         google/appengine/v1:
@@ -392,7 +371,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/apphub/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-appoptimize
