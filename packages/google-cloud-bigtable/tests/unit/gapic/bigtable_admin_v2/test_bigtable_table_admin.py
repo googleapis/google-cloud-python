@@ -23523,7 +23523,11 @@ def test_update_table_rest_call_success(request_type):
         },
         "change_stream_config": {"retention_period": {"seconds": 751, "nanos": 543}},
         "deletion_protection": True,
-        "automated_backup_policy": {"retention_period": {}, "frequency": {}},
+        "automated_backup_policy": {
+            "retention_period": {},
+            "frequency": {},
+            "locations": ["locations_value1", "locations_value2"],
+        },
         "tiered_storage_config": {"infrequent_access": {"include_if_older_than": {}}},
         "row_key_schema": {
             "fields": [

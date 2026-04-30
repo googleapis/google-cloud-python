@@ -42,11 +42,11 @@ async def sample_partial_update_cluster():
     request = bigtable_admin_v2.PartialUpdateClusterRequest()
 
     # Make the request
-    operation = client.partial_update_cluster(request=request)
+    operation = await client.partial_update_cluster(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

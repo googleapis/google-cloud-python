@@ -49,11 +49,11 @@ async def sample_create_schema_bundle():
     )
 
     # Make the request
-    operation = client.create_schema_bundle(request=request)
+    operation = await client.create_schema_bundle(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

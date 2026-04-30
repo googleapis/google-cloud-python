@@ -46,11 +46,11 @@ async def sample_create_table_from_snapshot():
     )
 
     # Make the request
-    operation = client.create_table_from_snapshot(request=request)
+    operation = await client.create_table_from_snapshot(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

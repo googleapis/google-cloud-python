@@ -78,6 +78,12 @@ class FeatureFlags(proto.Message):
         peer_info (bool):
             If the client can support using
             BigtablePeerInfo.
+        sessions_compatible (bool):
+            Indicates whether the client supports the
+            Bigtable Sessions API.
+        sessions_required (bool):
+            Internal flag to force sessions for internal
+            projects.
     """
 
     reverse_scans: bool = proto.Field(
@@ -119,6 +125,14 @@ class FeatureFlags(proto.Message):
     peer_info: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    sessions_compatible: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    sessions_required: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 

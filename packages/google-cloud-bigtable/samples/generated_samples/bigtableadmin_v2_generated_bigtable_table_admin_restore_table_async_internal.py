@@ -46,11 +46,11 @@ async def sample_restore_table():
     )
 
     # Make the request
-    operation = client._restore_table(request=request)
+    operation = await client._restore_table(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

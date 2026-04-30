@@ -47,11 +47,11 @@ async def sample_partial_update_instance():
     )
 
     # Make the request
-    operation = client.partial_update_instance(request=request)
+    operation = await client.partial_update_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

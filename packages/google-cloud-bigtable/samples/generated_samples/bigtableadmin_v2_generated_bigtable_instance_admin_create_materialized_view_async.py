@@ -49,11 +49,11 @@ async def sample_create_materialized_view():
     )
 
     # Make the request
-    operation = client.create_materialized_view(request=request)
+    operation = await client.create_materialized_view(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

@@ -1784,6 +1784,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -1801,6 +1802,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -1933,6 +1935,7 @@ async def test_get_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -1951,6 +1954,7 @@ async def test_get_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -2455,6 +2459,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -2472,6 +2477,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -2605,6 +2611,7 @@ async def test_update_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -2623,6 +2630,7 @@ async def test_update_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -19482,6 +19490,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -19542,6 +19551,7 @@ async def test_update_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -20481,6 +20491,7 @@ def test_get_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20503,6 +20514,7 @@ def test_get_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20760,6 +20772,7 @@ def test_update_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20782,6 +20795,7 @@ def test_update_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20894,6 +20908,7 @@ def test_partial_update_instance_rest_call_success(request_type):
         "display_name": "display_name_value",
         "state": 1,
         "type_": 1,
+        "edition": 1,
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "satisfies_pzs": True,

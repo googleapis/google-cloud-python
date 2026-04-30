@@ -391,11 +391,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -887,11 +887,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.partial_update_instance(request=request)
+                operation = await client.partial_update_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1142,11 +1142,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cluster(request=request)
+                operation = await client.create_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1524,11 +1524,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_cluster(request=request)
+                operation = await client.update_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1644,11 +1644,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.partial_update_cluster(request=request)
+                operation = await client.partial_update_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2279,11 +2279,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_app_profile(request=request)
+                operation = await client.update_app_profile(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3069,11 +3069,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_logical_view(request=request)
+                operation = await client.create_logical_view(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3464,11 +3464,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_logical_view(request=request)
+                operation = await client.update_logical_view(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3716,11 +3716,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_materialized_view(request=request)
+                operation = await client.create_materialized_view(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4118,11 +4118,11 @@ class BigtableInstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_materialized_view(request=request)
+                operation = await client.update_materialized_view(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

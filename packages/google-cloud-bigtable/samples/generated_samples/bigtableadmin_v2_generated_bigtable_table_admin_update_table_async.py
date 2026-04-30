@@ -42,11 +42,11 @@ async def sample_update_table():
     request = bigtable_admin_v2.UpdateTableRequest()
 
     # Make the request
-    operation = client.update_table(request=request)
+    operation = await client.update_table(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

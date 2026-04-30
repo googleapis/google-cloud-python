@@ -47,11 +47,11 @@ async def sample_update_logical_view():
     )
 
     # Make the request
-    operation = client.update_logical_view(request=request)
+    operation = await client.update_logical_view(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
