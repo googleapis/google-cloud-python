@@ -3,7 +3,8 @@ Python Client for Cloud Controls Partner
 
 |preview| |pypi| |versions|
 
-`Cloud Controls Partner`_: Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.
+`Cloud Controls Partner`_: Provides insights about your customers and their Assured Workloads based on
+your Sovereign Controls by Partners offering.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

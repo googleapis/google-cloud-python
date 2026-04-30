@@ -3,7 +3,8 @@ Python Client for Config Delivery
 
 |preview| |pypi| |versions|
 
-`Config Delivery`_: ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.
+`Config Delivery`_: ConfigDelivery service manages the deployment of kubernetes configuration
+to a fleet of kubernetes clusters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

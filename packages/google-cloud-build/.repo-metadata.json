@@ -1,5 +1,5 @@
 {
-    "api_description": "lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.",
+    "api_description": "Creates and manages builds on Google Cloud Platform.",
     "api_id": "cloudbuild.googleapis.com",
     "api_shortname": "cloudbuild",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudbuild/latest",

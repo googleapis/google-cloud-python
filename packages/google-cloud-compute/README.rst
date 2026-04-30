@@ -3,7 +3,7 @@ Python Client for Google Compute Engine
 
 |stable| |pypi| |versions|
 
-`Google Compute Engine`_: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
+`Google Compute Engine`_: Compute Engine is an infrastructure as a service (IaaS) product that offers self-managed virtual machine (VM) instances and bare metal instances.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
