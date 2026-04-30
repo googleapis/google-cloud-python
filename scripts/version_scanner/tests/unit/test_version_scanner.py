@@ -196,6 +196,23 @@ def test_main_package_file_not_found(capsys):
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
     assert "Error: Package file not found" in captured.err
+def test_format_match_for_csv():
+    from version_scanner import format_match_for_csv
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "line_number": 123,
+        "rule_name": "test_rule"
+    }
+    
+    # Test without github_repo
+    formatted = format_match_for_csv(match)
+    assert formatted["line_number"] == 123
+    
+    # Test with github_repo
+    formatted = format_match_for_csv(match, github_repo="https://github.com/user/repo", branch="main")
+    expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
+    assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
 
 
 def test_regex_examples_from_config():

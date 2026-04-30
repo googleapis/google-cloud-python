@@ -119,6 +119,31 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
         
     return results
 
+
+def format_match_for_csv(
+    match: Dict[str, str], 
+    github_repo: str = None, 
+    branch: str = "main"
+) -> Dict[str, str]:
+    """
+    Format a match result for CSV output, adding GitHub links if requested.
+    """
+    formatted = match.copy()
+    
+    if github_repo:
+        # Use repo_path if available, fallback to file_path
+        file_path = match.get("repo_path", match.get("file_path", ""))
+        line_number = match.get("line_number", "")
+        
+        # Construct URL
+        url = f"{github_repo}/blob/{branch}/{file_path}#L{line_number}"
+        
+        # Format as Google Sheets formula
+        formatted["line_number"] = f'=HYPERLINK("{url}", "{line_number}")'
+        
+    return formatted
+
+
 def write_csv_report(output_path: str, matches: List[Dict[str, str]]) -> None:
     """
     Write the collected matches to a CSV file.
@@ -247,6 +272,7 @@ def scan_repository(
                 
             for m in matches:
                 m["file_path"] = display_path
+                m["repo_path"] = rel_file_path
                 m["package_name"] = package_name
                 results.append(m)
                 
