@@ -1,5 +1,5 @@
 {
-    "api_description": "KMS Inventory API",
+    "api_description": "Cloud Key Management Service (Cloud KMS) lets you create and manage cryptographic keys for use in compatible Google Cloud services and in your own applications.",
     "api_id": "kmsinventory.googleapis.com",
     "api_shortname": "kmsinventory",
     "client_documentation": "https://cloud.google.com/python/docs/reference/inventory/latest",

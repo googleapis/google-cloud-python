@@ -3,7 +3,7 @@ Python Client for KMS Inventory
 
 |preview| |pypi| |versions|
 
-`KMS Inventory`_: KMS Inventory API
+`KMS Inventory`_: Cloud Key Management Service (Cloud KMS) lets you create and manage cryptographic keys for use in compatible Google Cloud services and in your own applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

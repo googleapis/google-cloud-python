@@ -3,7 +3,7 @@ Python Client for Google Workspace add-ons
 
 |preview| |pypi| |versions|
 
-`Google Workspace add-ons`_: Add-ons are customized applications that integrate with Google Workspace applications.
+`Google Workspace add-ons`_: Add-ons are customized applications that extend Google Workspace applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

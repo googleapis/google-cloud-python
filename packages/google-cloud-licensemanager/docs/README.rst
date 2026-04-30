@@ -3,7 +3,8 @@ Python Client for License Manager
 
 |preview| |pypi| |versions|
 
-`License Manager`_: License Manager is a tool to manage and track third-party licenses on Google Cloud. 
+`License Manager`_: License Manager is a tool to manage and track third-party licenses on
+Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
