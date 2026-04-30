@@ -1454,7 +1454,6 @@ libraries:
     apis:
       - path: google/cloud/memcache/v1
       - path: google/cloud/memcache/v1beta2
-    description_override: is a fully-managed in-memory data store service for Memcache.
     python:
       metadata_name_override: memcache
       default_version: v1
@@ -1463,14 +1462,12 @@ libraries:
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
-    description_override: Memorystore for Valkey is a fully managed Valkey Cluster service for Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Valkey service without the burden of managing complex Valkey deployments.
     python:
       default_version: v1
   - name: google-cloud-migrationcenter
     version: 0.4.0
     apis:
       - path: google/cloud/migrationcenter/v1
-    description_override: A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.
     python:
       metadata_name_override: migrationcenter
       default_version: v1
@@ -1479,14 +1476,12 @@ libraries:
     apis:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
-    description_override: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
     python:
       default_version: v1
   - name: google-cloud-monitoring
     version: 2.30.0
     apis:
       - path: google/monitoring/v3
-    description_override: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1499,7 +1494,6 @@ libraries:
     version: 2.21.0
     apis:
       - path: google/monitoring/dashboard/v1
-    description_override: are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration.
     keep:
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
@@ -1514,7 +1508,6 @@ libraries:
     version: 1.12.0
     apis:
       - path: google/monitoring/metricsscope/v1
-    description_override: Manages your Cloud Monitoring data and configurations.
     python:
       opt_args_by_api:
         google/monitoring/metricsscope/v1:
@@ -1531,7 +1524,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/netapp/v1
-    description_override: NetApp API
     python:
       metadata_name_override: netapp
       default_version: v1
@@ -1541,7 +1533,6 @@ libraries:
       - path: google/cloud/networkconnectivity/v1
       - path: google/cloud/networkconnectivity/v1beta
       - path: google/cloud/networkconnectivity/v1alpha1
-    description_override: The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.
     python:
       metadata_name_override: networkconnectivity
       default_version: v1
@@ -1549,7 +1540,6 @@ libraries:
     version: 1.34.0
     apis:
       - path: google/cloud/networkmanagement/v1
-    description_override: provides a collection of network performance monitoring and diagnostic capabilities.
     python:
       opt_args_by_api:
         google/cloud/networkmanagement/v1:
@@ -1588,7 +1578,6 @@ libraries:
       - path: google/cloud/notebooks/v2
       - path: google/cloud/notebooks/v1
       - path: google/cloud/notebooks/v1beta1
-    description_override: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
     python:
       metadata_name_override: notebooks
       default_version: v1
@@ -1596,7 +1585,6 @@ libraries:
     version: 1.14.0
     apis:
       - path: google/cloud/optimization/v1
-    description_override: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
     python:
       metadata_name_override: optimization
       default_version: v1
@@ -1604,7 +1592,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/oracledatabase/v1
-    description_override: The Oracle Database@Google Cloud API provides a set of APIs to manage Oracle database services, such as Exadata and Autonomous Databases.
     python:
       default_version: v1
   - name: google-cloud-orchestration-airflow
@@ -1612,7 +1599,6 @@ libraries:
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
       - path: google/cloud/orchestration/airflow/service/v1beta1
-    description_override: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
     python:
       opt_args_by_api:
         google/cloud/orchestration/airflow/service/v1:
@@ -1628,7 +1614,6 @@ libraries:
     apis:
       - path: google/cloud/orgpolicy/v2
       - path: google/cloud/orgpolicy/v1
-    description_override: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
     python:
       proto_only_apis:
         - google/cloud/orgpolicy/v1
@@ -1639,7 +1624,6 @@ libraries:
     apis:
       - path: google/cloud/osconfig/v1
       - path: google/cloud/osconfig/v1alpha
-    description_override: provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances.
     python:
       metadata_name_override: osconfig
       default_version: v1
@@ -1660,21 +1644,18 @@ libraries:
     apis:
       - path: google/cloud/parallelstore/v1
       - path: google/cloud/parallelstore/v1beta
-    description_override: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
     python:
       default_version: v1beta
   - name: google-cloud-parametermanager
     version: 0.4.0
     apis:
       - path: google/cloud/parametermanager/v1
-    description_override: '(Public Preview) Parameter Manager is a single source of truth to store, access and manage the lifecycle of your workload parameters. Parameter Manager aims to make management of sensitive application parameters effortless for customers without diminishing focus on security. '
     python:
       default_version: v1
   - name: google-cloud-phishing-protection
     version: 1.17.0
     apis:
       - path: google/cloud/phishingprotection/v1beta1
-    description_override: helps prevent users from accessing phishing sites by identifying various signals associated with malicious content, including the use of your brand assets, classifying malicious content that uses your brand and reporting the unsafe URLs to Google Safe Browsing. Once a site is propagated to Safe Browsing, users will see warnings across more than 4 billion devices.
     python:
       metadata_name_override: phishingprotection
       default_version: v1beta1
@@ -1682,7 +1663,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/policytroubleshooter/v1
-    description_override: makes it easier to understand why a user has access to a resource or doesn't have permission to call an API. Given an email, resource, and permission, Policy Troubleshooter examines all Identity and Access Management (IAM) policies that apply to the resource. It then reveals whether the member's roles include the permission on that resource and, if so, which policies bind the member to those roles.
     python:
       metadata_name_override: policytroubleshooter
       default_version: v1
