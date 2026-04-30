@@ -3,7 +3,7 @@ Python Client for Financial Services
 
 |preview| |pypi| |versions|
 
-`Financial Services`_: Google Cloud's Anti Money Laundering AI (AML AI) product is an API that scores AML risk. Use it to identify more risk, more defensibly, with fewer false positives and reduced time per review.
+`Financial Services`_: A unified AI platform for financial services, leveraging Google's global framework for security and compliance.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 {
-    "api_description": "makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL.",
+    "api_description": "Manage Cloud Database Migration Service resources on Google Cloud Platform.",
     "api_id": "datamigration.googleapis.com",
     "api_shortname": "datamigration",
     "client_documentation": "https://cloud.google.com/python/docs/reference/datamigration/latest",

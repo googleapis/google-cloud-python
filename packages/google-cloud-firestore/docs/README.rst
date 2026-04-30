@@ -3,7 +3,8 @@ Python Client for Cloud Firestore
 
 |stable| |pypi| |versions|
 
-`Cloud Firestore`_: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
+`Cloud Firestore`_: Accesses the NoSQL document database built for automatic scaling, high
+performance, and ease of application development.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

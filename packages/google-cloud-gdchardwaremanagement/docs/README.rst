@@ -3,7 +3,7 @@ Python Client for GDC Hardware Management
 
 |preview| |pypi| |versions|
 
-`GDC Hardware Management`_: Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
+`GDC Hardware Management`_: GDC is a fully managed software and hardware solution for data centers and edge locations to address regulatory, local data processing, survivability, and low-latency needs.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

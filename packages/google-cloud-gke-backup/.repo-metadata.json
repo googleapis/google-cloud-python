@@ -1,5 +1,5 @@
 {
-    "api_description": "An API for backing up and restoring workloads in GKE.",
+    "api_description": "Backup for GKE is a managed Kubernetes workload backup and restore\nservice for GKE clusters.",
     "api_id": "gkebackup.googleapis.com",
     "api_shortname": "gkebackup",
     "client_documentation": "https://cloud.google.com/python/docs/reference/gkebackup/latest",

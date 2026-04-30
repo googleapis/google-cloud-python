@@ -3,7 +3,7 @@ Python Client for Eventarc
 
 |stable| |pypi| |versions|
 
-`Eventarc`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution.
+`Eventarc`_: Build event-driven applications on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

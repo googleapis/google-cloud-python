@@ -1,5 +1,5 @@
 {
-    "api_description": "An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.",
+    "api_description": "GKE Multi-Cloud provides a way to manage Kubernetes clusters that run on\nAWS and Azure infrastructure using the GKE Multi-Cloud API.  Combined with\nConnect, you can manage Kubernetes clusters on Google Cloud, AWS, and\nAzure from the Google Cloud Console.\n\nWhen you create a cluster with GKE Multi-Cloud, Google creates the\nresources needed and brings up a cluster on your behalf.  You can deploy\nworkloads with the GKE Multi-Cloud API or the gcloud and kubectl\ncommand-line tools.",
     "api_id": "gkemulticloud.googleapis.com",
     "api_shortname": "gkemulticloud",
     "client_documentation": "https://cloud.google.com/python/docs/reference/gkemulticloud/latest",
