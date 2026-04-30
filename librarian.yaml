@@ -2131,7 +2131,6 @@ libraries:
     apis:
       - path: google/devtools/cloudtrace/v2
       - path: google/devtools/cloudtrace/v1
-    description_override: is a distributed tracing system that collects latency data from your applications and displays it in the Google Cloud Platform Console. You can track how requests propagate through your application and receive detailed near real-time performance insights.
     python:
       opt_args_by_api:
         google/devtools/cloudtrace/v1:
@@ -2147,7 +2146,6 @@ libraries:
     apis:
       - path: google/cloud/translate/v3
       - path: google/cloud/translate/v3beta1
-    description_override: can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: translate
@@ -2157,23 +2155,12 @@ libraries:
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta
-    description_override: |-
-      The Vector Search API provides a fully-managed, highly performant, and
-      scalable vector database designed to power next-generation search,
-      recommendation, and generative AI applications. It allows you to store,
-      index, and query your data and its corresponding vector embeddings through
-      a simple, intuitive interface. With Vector Search, you can define custom
-      schemas for your data, insert objects with associated metadata,
-      automatically generate embeddings from your data, and perform fast
-      approximate nearest neighbor (ANN) searches to find semantically similar
-      items at scale.
     python:
       default_version: v1
   - name: google-cloud-video-live-stream
     version: 1.16.0
     apis:
       - path: google/cloud/video/livestream/v1
-    description_override: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
     python:
       opt_args_by_api:
         google/cloud/video/livestream/v1:
@@ -2185,7 +2172,6 @@ libraries:
     version: 0.11.0
     apis:
       - path: google/cloud/video/stitcher/v1
-    description_override: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
     python:
       opt_args_by_api:
         google/cloud/video/stitcher/v1:
@@ -2197,7 +2183,6 @@ libraries:
     version: 1.20.0
     apis:
       - path: google/cloud/video/transcoder/v1
-    description_override: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
     python:
       opt_args_by_api:
         google/cloud/video/transcoder/v1:
@@ -2213,7 +2198,6 @@ libraries:
       - path: google/cloud/videointelligence/v1p2beta1
       - path: google/cloud/videointelligence/v1p1beta1
       - path: google/cloud/videointelligence/v1beta2
-    description_override: makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame.
     python:
       metadata_name_override: videointelligence
       default_version: v1
@@ -2225,7 +2209,6 @@ libraries:
       - path: google/cloud/vision/v1p3beta1
       - path: google/cloud/vision/v1p2beta1
       - path: google/cloud/vision/v1p1beta1
-    description_override: allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: vision
@@ -2235,14 +2218,12 @@ libraries:
     apis:
       - path: google/cloud/visionai/v1
       - path: google/cloud/visionai/v1alpha1
-    description_override: Easily build and deploy Vertex AI Vision applications using a single platform.
     python:
       default_version: v1
   - name: google-cloud-vm-migration
     version: 1.16.0
     apis:
       - path: google/cloud/vmmigration/v1
-    description_override: ' for Compute Engine migrates VMs from your on-premises data center into Compute Engine.'
     python:
       metadata_name_override: vmmigration
       default_version: v1
@@ -2257,7 +2238,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/vpcaccess/v1
-    description_override: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
     python:
       metadata_name_override: vpcaccess
       default_version: v1
@@ -2266,7 +2246,6 @@ libraries:
     apis:
       - path: google/cloud/webrisk/v1
       - path: google/cloud/webrisk/v1beta1
-    description_override: is a Google Cloud service that lets client applications check URLs against Google's constantly updated lists of unsafe web resources. Unsafe web resources include social engineering sites—such as phishing and deceptive sites—and sites that host malware or unwanted software. With the Web Risk API, you can quickly identify known bad sites, warn users before they click infected links, and prevent users from posting links to known infected pages from your site. The Web Risk API includes data on more than a million unsafe URLs and stays up to date by examining billions of URLs each day.
     python:
       metadata_name_override: webrisk
       default_version: v1
@@ -2276,7 +2255,6 @@ libraries:
       - path: google/cloud/websecurityscanner/v1
       - path: google/cloud/websecurityscanner/v1beta
       - path: google/cloud/websecurityscanner/v1alpha
-    description_override: identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.
     python:
       metadata_name_override: websecurityscanner
       default_version: v1
@@ -2287,7 +2265,6 @@ libraries:
       - path: google/cloud/workflows/executions/v1
       - path: google/cloud/workflows/executions/v1beta
       - path: google/cloud/workflows/v1beta
-    description_override: Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
     python:
       opt_args_by_api:
         google/cloud/workflows/executions/v1:
@@ -2302,10 +2279,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/cloud/workloadmanager/v1
-    description_override: |-
-      Workload Manager is a service that provides tooling for enterprise
-      workloads to automate the deployment and validation of your workloads
-      against best practices and recommendations.
     python:
       default_version: v1
   - name: google-cloud-workstations
@@ -2336,7 +2309,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/maps/addressvalidation/v1
-    description_override: Address Validation lets you validate and correct address inputs with Places data powered by Google Maps Platform.
     python:
       opt_args_by_api:
         google/maps/addressvalidation/v1:
@@ -2347,14 +2319,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/maps/areainsights/v1
-    description_override: 'Places Insights API. '
     python:
       default_version: v1
   - name: google-maps-fleetengine
     version: 0.5.0
     apis:
       - path: google/maps/fleetengine/v1
-    description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
     python:
       opt_args_by_api:
         google/maps/fleetengine/v1:
@@ -2365,7 +2335,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/maps/fleetengine/delivery/v1
-    description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
     python:
       opt_args_by_api:
         google/maps/fleetengine/delivery/v1:
@@ -2376,10 +2345,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/maps/geocode/v4
-    description_override: |-
-      Convert addresses into geographic coordinates (geocoding), which you can
-      use     to place markers or position the map. This API also allows you to
-      convert     geographic coordinates into an address (reverse geocoding).
     python:
       opt_args_by_api:
         google/maps/geocode/v4:
