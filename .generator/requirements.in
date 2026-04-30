@@ -1,5 +1,5 @@
 click
-gapic-generator @ git+https://github.com/googleapis/google-cloud-python.git@selective-gapic-update#egg=gapic-generator&subdirectory=packages/gapic-generator
+gapic-generator @ git+https://github.com/googleapis/google-cloud-python.git@selective-gapic-update#egg=gapic-generator&subdirectory=packages/gapic-generator # test2
 nox
 starlark-pyo3>=2025.1
 build
