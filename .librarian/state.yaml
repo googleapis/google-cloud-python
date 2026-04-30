@@ -50,7 +50,7 @@ libraries:
       - packages/db-dtypes/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: django-google-spanner
-    version: 4.0.3
+    version: 5.0.0
     last_generated_commit: ""
     apis: []
     source_roots:
