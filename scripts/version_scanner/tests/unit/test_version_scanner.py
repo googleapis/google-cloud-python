@@ -213,6 +213,30 @@ def test_format_match_for_csv():
     formatted = format_match_for_csv(match, github_repo="https://github.com/user/repo", branch="main")
     expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
     assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
+def test_write_csv_report_with_links(tmp_path):
+    output_file = tmp_path / "report.csv"
+    matches = [
+        {
+            "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+            "repo_path": "packages/pkg_a/setup.py",
+            "line_number": 1,
+            "rule_name": "python_requires_check",
+            "matched_string": "python_requires = '>=3.7'",
+            "context_line": "python_requires = '>=3.7'"
+        }
+    ]
+    
+    from version_scanner import write_csv_report
+    write_csv_report(str(output_file), matches, github_repo="https://github.com/user/repo", branch="main")
+    
+    assert output_file.exists()
+    
+    with open(output_file, 'r', encoding='utf-8', newline='') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        
+    assert len(rows) == 1
+    assert "HYPERLINK" in rows[0]["line_number"]
 
 
 def test_regex_examples_from_config():

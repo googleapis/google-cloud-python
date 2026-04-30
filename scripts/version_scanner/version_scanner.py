@@ -144,13 +144,20 @@ def format_match_for_csv(
     return formatted
 
 
-def write_csv_report(output_path: str, matches: List[Dict[str, str]]) -> None:
+def write_csv_report(
+    output_path: str, 
+    matches: List[Dict[str, str]], 
+    github_repo: str = None, 
+    branch: str = "main"
+) -> None:
     """
     Write the collected matches to a CSV file.
     
     Args:
         output_path: Path to the output CSV file.
         matches: A list of dictionaries containing match details.
+        github_repo: Optional GitHub repository URL base.
+        branch: GitHub branch for links (defaults to main).
     """
     fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
     
@@ -160,8 +167,9 @@ def write_csv_report(output_path: str, matches: List[Dict[str, str]]) -> None:
             writer.writeheader()
             
             for match in matches:
+                formatted_match = format_match_for_csv(match, github_repo, branch)
                 # Ensure only specified fields are written
-                row = {field: match.get(field, "") for field in fieldnames}
+                row = {field: formatted_match.get(field, "") for field in fieldnames}
                 writer.writerow(row)
                 
         print(f"\nReport written to: {output_path}")
@@ -327,6 +335,17 @@ def main():
         help="Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)"
     )
     
+    parser.add_argument(
+        "--github-repo",
+        help="GitHub repository URL base (e.g., https://github.com/googleapis/google-cloud-python)"
+    )
+    
+    parser.add_argument(
+        "--branch",
+        default="main",
+        help="GitHub branch for links (defaults to main)"
+    )
+    
     args = parser.parse_args()
     
     # Resolve target packages if filtering is requested
@@ -373,7 +392,7 @@ def main():
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         output_path = f"{args.dependency}-{args.version}-{timestamp}.csv"
         
-    write_csv_report(output_path, all_matches)
+    write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
 
 if __name__ == "__main__":
     main()
