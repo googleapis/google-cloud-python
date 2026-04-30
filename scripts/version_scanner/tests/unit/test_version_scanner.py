@@ -1,6 +1,7 @@
 import csv
 import os
 import re
+from unittest.mock import patch
 import pytest
 import yaml
 from version_scanner import ConfigManager, scan_file, write_csv_report
@@ -146,6 +147,21 @@ rules:
     
     captured = capsys.readouterr()
     assert expected_warning in captured.err
+
+
+def test_load_config_permission_error(tmp_path, capsys):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("rules: []")
+    
+    cm = ConfigManager(str(config_file), "python", "3.7")
+    
+    with patch("builtins.open", side_effect=PermissionError("Permission denied")):
+        with pytest.raises(SystemExit) as excinfo:
+            cm.load_config()
+            
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Permission denied reading config file" in captured.err
 
 
 

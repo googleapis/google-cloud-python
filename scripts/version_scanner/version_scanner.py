@@ -55,6 +55,9 @@ class ConfigManager:
         except FileNotFoundError:
             print(f"Error: Config file not found: {self.config_path}", file=sys.stderr)
             sys.exit(1)
+        except PermissionError:
+            print(f"Error: Permission denied reading config file: {self.config_path}", file=sys.stderr)
+            sys.exit(1)
         except yaml.YAMLError as e:
             print(f"Error parsing config file: {e}", file=sys.stderr)
             sys.exit(1)
