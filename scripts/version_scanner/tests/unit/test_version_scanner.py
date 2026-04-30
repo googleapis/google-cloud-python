@@ -215,6 +215,26 @@ def test_format_match_for_csv():
     assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
 
 
+def test_format_match_for_csv_truncates_long_line():
+    from version_scanner import format_match_for_csv
+    
+    long_line = "a" * 1000 + "PY37" + "b" * 1000
+    match = {
+        "file_path": "test.py",
+        "line_number": 1,
+        "rule_name": "test_rule",
+        "matched_string": "PY37",
+        "context_line": long_line
+    }
+    
+    formatted = format_match_for_csv(match)
+    context = formatted["context_line"]
+    
+    assert len(context) <= 600
+    assert "PY37" in context
+    assert "..." in context
+
+
 def test_scan_file_removes_newline_from_match(tmp_path):
     test_file = tmp_path / "test.py"
     test_file.write_text("Python 3.7\n")

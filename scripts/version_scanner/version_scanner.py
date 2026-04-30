@@ -141,6 +141,22 @@ def format_match_for_csv(
         # Format as Google Sheets formula
         formatted["line_number"] = f'=HYPERLINK("{url}", "{line_number}")'
         
+    context = formatted.get("context_line", "")
+    matched = formatted.get("matched_string", "")
+    
+    if len(context) > 500:
+        match_start = context.find(matched)
+        if match_start != -1:
+            start = max(0, match_start - 200)
+            end = min(len(context), match_start + len(matched) + 200)
+            
+            prefix = "..." if start > 0 else ""
+            suffix = "..." if end < len(context) else ""
+            
+            formatted["context_line"] = prefix + context[start:end] + suffix
+        else:
+            formatted["context_line"] = context[:500] + "..."
+            
     return formatted
 
 

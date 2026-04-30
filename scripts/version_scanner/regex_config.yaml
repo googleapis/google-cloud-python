@@ -76,7 +76,7 @@ rules:
       - "py37-cover"
     rules:
       - |
-        py3{minor}
+        \bpy3{minor}\b
 
   - name: explicit_python_command
     description: Finds explicit python commands with version.
