@@ -126,6 +126,28 @@ rules:
     assert rules[0]["pattern"] == "python3.7"
 
 
+@pytest.mark.parametrize("template, expected_warning", [
+    ("python{missing_var}", "Warning: Missing variable for interpolation"),
+    ("python{version", "Warning: Invalid format string"),
+])
+def test_load_config_error_handling(tmp_path, capsys, template, expected_warning):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(f"""
+rules:
+  - name: test_rule
+    rules:
+      - {template}
+""")
+    
+    cm = ConfigManager(str(config_file), "python", "3.7")
+    rules = cm.load_config()
+    
+    assert len(rules) == 0
+    
+    captured = capsys.readouterr()
+    assert expected_warning in captured.err
+
+
 
 
 def test_regex_examples_from_config():

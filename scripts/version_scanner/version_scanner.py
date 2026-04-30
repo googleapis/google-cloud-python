@@ -81,6 +81,8 @@ class ConfigManager:
                     })
                 except KeyError as e:
                     print(f"Warning: Missing variable for interpolation in rule {name}: {e}", file=sys.stderr)
+                except ValueError as e:
+                    print(f"Warning: Invalid format string in rule {name}: {e}", file=sys.stderr)
                 
         return resolved_rules
 
