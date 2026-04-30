@@ -1,5 +1,5 @@
 {
-    "api_description": " for Compute Engine migrates VMs from your on-premises data center into Compute Engine.",
+    "api_description": "Use the Migrate to Virtual Machines API to programmatically migrate\nworkloads.",
     "api_id": "vmmigration.googleapis.com",
     "api_shortname": "vmmigration",
     "client_documentation": "https://cloud.google.com/python/docs/reference/vmmigration/latest",

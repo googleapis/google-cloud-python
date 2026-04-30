@@ -3,7 +3,8 @@ Python Client for Workflows
 
 |stable| |pypi| |versions|
 
-`Workflows`_: Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
+`Workflows`_: Manage workflow definitions. To execute workflows and manage executions,
+see the Workflows Executions API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

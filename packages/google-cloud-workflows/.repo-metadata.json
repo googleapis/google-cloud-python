@@ -1,5 +1,5 @@
 {
-    "api_description": "Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.",
+    "api_description": "Manage workflow definitions. To execute workflows and manage executions,\nsee the Workflows Executions API.",
     "api_id": "workflows.googleapis.com",
     "api_shortname": "workflows",
     "client_documentation": "https://cloud.google.com/python/docs/reference/workflows/latest",

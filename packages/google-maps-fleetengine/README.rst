@@ -3,7 +3,10 @@ Python Client for Local Rides and Deliveries
 
 |preview| |pypi| |versions|
 
-`Local Rides and Deliveries`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
+`Local Rides and Deliveries`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and
+Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in
+the Cloud Logging Services is subject to the Google Maps Platform Terms of
+Service located at https://cloud.google.com/maps-platform/terms.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

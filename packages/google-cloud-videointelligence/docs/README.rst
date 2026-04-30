@@ -3,7 +3,9 @@ Python Client for Cloud Video Intelligence
 
 |stable| |pypi| |versions|
 
-`Cloud Video Intelligence`_: makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame.
+`Cloud Video Intelligence`_: Detects objects, explicit content, and scene changes in videos. It also
+specifies the region for annotation and transcribes speech to text.
+Supports both asynchronous API and streaming API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
