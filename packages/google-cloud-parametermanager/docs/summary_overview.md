@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Parameter Manager API API
+# Parameter Manager API
 
-Overview of the APIs available for Parameter Manager API API.
+Overview of the APIs available for Parameter Manager API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Parameter Manager API API.
+Parameter Manager API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-parametermanager/latest/summary_class.html)
 

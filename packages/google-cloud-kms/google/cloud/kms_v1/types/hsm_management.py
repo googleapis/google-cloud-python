@@ -83,7 +83,7 @@ class SingleTenantHsmInstance(proto.Message):
             Output only. The system-defined duration that
             an instance can remain unrefreshed until it is
             automatically disabled. This will have a value
-            of 120 days.
+            of 730 days.
         disable_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the instance will be
             automatically disabled if not refreshed. This field is
@@ -94,6 +94,13 @@ class SingleTenantHsmInstance(proto.Message):
             before this time otherwise the
             [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance]
             will become disabled.
+        key_portability_enabled (bool):
+            Optional. Immutable. Indicates whether key portability is
+            enabled for the
+            [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance].
+            This can only be set at creation time. Key portability
+            features are disabled by default and not yet available in
+            GA.
     """
 
     class State(proto.Enum):
@@ -227,6 +234,10 @@ class SingleTenantHsmInstance(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    key_portability_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

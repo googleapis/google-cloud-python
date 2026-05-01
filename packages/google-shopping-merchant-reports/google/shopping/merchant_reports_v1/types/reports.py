@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "CompetitiveVisibilityTopMerchantView",
         "CompetitiveVisibilityBenchmarkView",
         "MarketingMethod",
+        "StoreType",
         "ReportGranularity",
         "RelativeDemand",
         "RelativeDemandChangeType",
@@ -62,12 +63,12 @@ class SearchRequest(proto.Message):
             Language
             guide </merchant/api/guides/reports/query-language>`__. For
             the full list of available tables and fields, see the
-            `Available
-            fields </merchant/api/reference/rest/reports_v1/accounts.reports>`__.
+            [Available
+            fields][google.shopping.merchant.reports.v1.ReportRow].
         page_size (int):
             Optional. Number of ``ReportRows`` to retrieve in a single
-            page. Defaults to 1000. Values above 5000 are coerced to
-            5000.
+            page. Defaults to 1000. Values above 100,000 are coerced to
+            100,000.
         page_token (str):
             Optional. Token of the page to retrieve. If not specified,
             the first page of results is returned. In order to request
@@ -257,6 +258,14 @@ class ProductPerformanceView(proto.Message):
             special 'ZZ' code is returned.
 
             This field is a member of `oneof`_ ``_customer_country_code``.
+        store_type (google.shopping.merchant_reports_v1.types.StoreType.StoreTypeEnum):
+            Store type to which metrics apply. Can be ``ONLINE_STORE``
+            or ``LOCAL_STORES``. Segment.
+
+            For ``LOCAL_STORES`` store type, further segmentation by a
+            specific store is not available.
+
+            This field is a member of `oneof`_ ``_store_type``.
         offer_id (str):
             Merchant-provided id of the product. Segment.
 
@@ -415,6 +424,12 @@ class ProductPerformanceView(proto.Message):
         number=4,
         optional=True,
     )
+    store_type: "StoreType.StoreTypeEnum" = proto.Field(
+        proto.ENUM,
+        number=32,
+        optional=True,
+        enum="StoreType.StoreTypeEnum",
+    )
     offer_id: str = proto.Field(
         proto.STRING,
         number=5,
@@ -541,11 +556,13 @@ class ProductView(proto.Message):
     r"""Fields available for query in ``product_view`` table.
 
     Products in the current inventory. Products in this table are the
-    same as in Products sub-API but not all product attributes from
-    Products sub-API are available for query in this table. In contrast
-    to Products sub-API, this table allows to filter the returned list
-    of products by product attributes. To retrieve a single product by
-    ``id`` or list all products, Products sub-API should be used.
+    same as a `Product resource in Products
+    sub-API <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.products>`__
+    but not all product attributes from Products sub-API are available
+    for query in this table. In contrast to Products sub-API, this table
+    allows to filter the returned list of products by product
+    attributes. To retrieve a single product by ``id`` or list all
+    products, Products sub-API should be used.
 
     Values are only set for fields requested explicitly in the request's
     search query.
@@ -677,9 +694,36 @@ class ProductView(proto.Message):
             Expiration date for the product, specified on
             insertion.
         aggregated_reporting_context_status (google.shopping.merchant_reports_v1.types.ProductView.AggregatedReportingContextStatus):
-            Aggregated status.
+            Aggregated status across all reporting contexts.
+
+            Reporting contexts included in the computation of the
+            aggregated status can be restricted using a filter on the
+            ``reporting_context`` field.
 
             This field is a member of `oneof`_ ``_aggregated_reporting_context_status``.
+        status_per_reporting_context (MutableSequence[google.shopping.merchant_reports_v1.types.ProductView.StatusPerReportingContext]):
+            Detailed product status per reporting context.
+
+            Reporting contexts included in this list can be restricted
+            using a filter on the ``reporting_context`` field.
+
+            Equivalent to
+            [``ProductStatus.destination_statuses``][google.shopping.merchant.products.v1.ProductStatus]
+            in Products API.
+
+            **This field cannot be used for sorting or filtering the
+            results.**
+        reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            Reporting context to restrict the query to.
+
+            Restricts the reporting contexts returned in
+            ``status_per_reporting_context`` and ``item_issues``, and
+            used to compute ``aggregated_reporting_context_status``.
+
+            **This field can only be used in the ``WHERE`` clause and
+            cannot be selected in the ``SELECT`` clause.**
+
+            This field is a member of `oneof`_ ``_reporting_context``.
         item_issues (MutableSequence[google.shopping.merchant_reports_v1.types.ProductView.ItemIssue]):
             List of item issues for the product.
 
@@ -692,16 +736,20 @@ class ProductView(proto.Message):
             Estimated performance potential compared to
             highest performing products of the merchant.
         click_potential_rank (int):
-            Rank of the product based on its click potential. A product
-            with ``click_potential_rank`` 1 has the highest click
-            potential among the merchant's products that fulfill the
-            search query conditions.
+            Normalized click potential of the product.
+            Values range from 1 to 1000, where 1 is the
+            highest click potential and 1000 is the
+            theoretical lowest.
 
             This field is a member of `oneof`_ ``_click_potential_rank``.
     """
 
     class AggregatedReportingContextStatus(proto.Enum):
         r"""Status of the product aggregated for all reporting contexts.
+
+        Reporting contexts included in the computation of the aggregated
+        status can be restricted using a filter on the ``reporting_context``
+        field.
 
         Here's an example of how the aggregated status is computed:
 
@@ -718,16 +766,16 @@ class ProductView(proto.Message):
                 Not specified.
             NOT_ELIGIBLE_OR_DISAPPROVED (1):
                 Product is not eligible or is disapproved for
-                all reporting contexts.
+                all reporting contexts and countries.
             PENDING (2):
                 Product's status is pending in all reporting
-                contexts.
+                contexts and countries.
             ELIGIBLE_LIMITED (3):
                 Product is eligible for some (but not all)
-                reporting contexts.
+                reporting contexts and countries.
             ELIGIBLE (4):
                 Product is eligible for all reporting
-                contexts.
+                contexts and countries.
         """
 
         AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED = 0
@@ -840,9 +888,16 @@ class ProductView(proto.Message):
             Attributes:
                 severity_per_reporting_context (MutableSequence[google.shopping.merchant_reports_v1.types.ProductView.ItemIssue.ItemIssueSeverity.IssueSeverityPerReportingContext]):
                     Issue severity per reporting context.
+
+                    Reporting contexts included in this list can be restricted
+                    using a filter on the ``reporting_context`` field.
                 aggregated_severity (google.shopping.merchant_reports_v1.types.ProductView.ItemIssue.ItemIssueSeverity.AggregatedIssueSeverity):
                     Aggregated severity of the issue for all reporting contexts
                     it affects.
+
+                    Reporting contexts included in the computation of the
+                    aggregated severity can be restricted using a filter on the
+                    ``reporting_context`` field.
 
                     **This field can be used for filtering the results.**
 
@@ -935,6 +990,57 @@ class ProductView(proto.Message):
             number=3,
             optional=True,
             enum="ProductView.ItemIssue.ItemIssueResolution",
+        )
+
+    class StatusPerReportingContext(proto.Message):
+        r"""Status of the product for a specific reporting context.
+
+        Equivalent to
+        [``DestinationStatus``][google.shopping.merchant.products.v1.ProductStatus.DestinationStatus]
+        in Products API.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+                Reporting context the status applies to.
+
+                This field is a member of `oneof`_ ``_reporting_context``.
+            approved_countries (MutableSequence[str]):
+                List of approved countries in the reporting context,
+                represented in `ISO
+                3166 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__
+                format, for example, ``US``.
+            disapproved_countries (MutableSequence[str]):
+                List of disapproved countries in the reporting context,
+                represented in `ISO
+                3166 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__
+                format, for example, ``US``.
+            pending_countries (MutableSequence[str]):
+                List of pending countries in the reporting context,
+                represented in `ISO
+                3166 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__
+                format, for example, ``US``.
+        """
+
+        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum=types.ReportingContext.ReportingContextEnum,
+        )
+        approved_countries: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        disapproved_countries: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        pending_countries: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
         )
 
     id: str = proto.Field(
@@ -1072,6 +1178,19 @@ class ProductView(proto.Message):
         number=26,
         optional=True,
         enum=AggregatedReportingContextStatus,
+    )
+    status_per_reporting_context: MutableSequence[StatusPerReportingContext] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=32,
+            message=StatusPerReportingContext,
+        )
+    )
+    reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
+        proto.ENUM,
+        number=33,
+        optional=True,
+        enum=types.ReportingContext.ReportingContextEnum,
     )
     item_issues: MutableSequence[ItemIssue] = proto.RepeatedField(
         proto.MESSAGE,
@@ -2438,6 +2557,26 @@ class MarketingMethod(proto.Message):
         MARKETING_METHOD_ENUM_UNSPECIFIED = 0
         ORGANIC = 1
         ADS = 2
+
+
+class StoreType(proto.Message):
+    r"""Store where the product is sold (online versus local stores)."""
+
+    class StoreTypeEnum(proto.Enum):
+        r"""Store types.
+
+        Values:
+            STORE_TYPE_ENUM_UNSPECIFIED (0):
+                Not specified.
+            ONLINE_STORE (1):
+                Online store.
+            LOCAL_STORES (2):
+                Local (physical) stores.
+        """
+
+        STORE_TYPE_ENUM_UNSPECIFIED = 0
+        ONLINE_STORE = 1
+        LOCAL_STORES = 2
 
 
 class ReportGranularity(proto.Message):

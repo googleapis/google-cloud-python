@@ -50,7 +50,7 @@ libraries:
       - packages/db-dtypes/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: django-google-spanner
-    version: 4.0.3
+    version: 5.0.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -330,7 +330,7 @@ libraries:
       - packages/google-area120-tables/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.49.2
+    version: 2.50.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1165,7 +1165,7 @@ libraries:
       - packages/google-cloud-bigquery-storage/docs/README.rst
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
-    version: 2.36.0
+    version: 2.37.0
     last_generated_commit: a6cbf809c4c165e618ee23a059442af90a80a0f5
     apis:
       - path: google/bigtable/admin/v2
@@ -2312,7 +2312,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.27.0
-    last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
+    last_generated_commit: a78b5838b801428bfe5b85758727a46d830b7f39
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml

@@ -1,14 +1,14 @@
+import contextlib
+import datetime
 import os
 import re
 import time
-import datetime
-import contextlib
 
+from google.api_core.exceptions import AlreadyExists
 from test_utils.system import EmulatorCreds, unique_resource_id
 
-from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 from google.cloud.firestore import SERVER_TIMESTAMP
-from google.api_core.exceptions import AlreadyExists
+from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
 FIRESTORE_CREDS = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS")
 FIRESTORE_PROJECT = os.environ.get("GCLOUD_PROJECT")

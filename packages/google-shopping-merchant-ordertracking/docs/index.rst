@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Merchant API.
+This package includes clients for multiple versions of Merchant.
 By default, you will get version ``merchant_ordertracking_v1``.
 
 

@@ -105,6 +105,14 @@ class AlphaAnalyticsDataRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_metadata(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_metadata(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_property_quotas_snapshot(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -177,11 +185,11 @@ class AlphaAnalyticsDataRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_sheet_export_audience_list(self, request, metadata):
+            def pre_run_report(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_sheet_export_audience_list(self, response):
+            def post_run_report(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -389,6 +397,54 @@ class AlphaAnalyticsDataRestInterceptor:
         `post_get_audience_list` interceptor. The (possibly modified) response returned by
         `post_get_audience_list` will be passed to
         `post_get_audience_list_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_metadata(
+        self,
+        request: analytics_data_api.GetMetadataRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_data_api.GetMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_metadata
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlphaAnalyticsData server.
+        """
+        return request, metadata
+
+    def post_get_metadata(
+        self, response: analytics_data_api.Metadata
+    ) -> analytics_data_api.Metadata:
+        """Post-rpc interceptor for get_metadata
+
+        DEPRECATED. Please use the `post_get_metadata_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AlphaAnalyticsData server but before
+        it is returned to user code. This `post_get_metadata` interceptor runs
+        before the `post_get_metadata_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_metadata_with_metadata(
+        self,
+        response: analytics_data_api.Metadata,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[analytics_data_api.Metadata, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_metadata
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AlphaAnalyticsData server but before it is returned to user code.
+
+        We recommend only using this `post_get_metadata_with_metadata`
+        interceptor in new development instead of the `post_get_metadata` interceptor.
+        When both interceptors are used, this `post_get_metadata_with_metadata` interceptor runs after the
+        `post_get_metadata` interceptor. The (possibly modified) response returned by
+        `post_get_metadata` will be passed to
+        `post_get_metadata_with_metadata`.
         """
         return response, metadata
 
@@ -856,55 +912,53 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return response, metadata
 
-    def pre_sheet_export_audience_list(
+    def pre_run_report(
         self,
-        request: analytics_data_api.SheetExportAudienceListRequest,
+        request: analytics_data_api.RunReportRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_data_api.SheetExportAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        analytics_data_api.RunReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Pre-rpc interceptor for sheet_export_audience_list
+        """Pre-rpc interceptor for run_report
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AlphaAnalyticsData server.
         """
         return request, metadata
 
-    def post_sheet_export_audience_list(
-        self, response: analytics_data_api.SheetExportAudienceListResponse
-    ) -> analytics_data_api.SheetExportAudienceListResponse:
-        """Post-rpc interceptor for sheet_export_audience_list
+    def post_run_report(
+        self, response: analytics_data_api.RunReportResponse
+    ) -> analytics_data_api.RunReportResponse:
+        """Post-rpc interceptor for run_report
 
-        DEPRECATED. Please use the `post_sheet_export_audience_list_with_metadata`
+        DEPRECATED. Please use the `post_run_report_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
         after it is returned by the AlphaAnalyticsData server but before
-        it is returned to user code. This `post_sheet_export_audience_list` interceptor runs
-        before the `post_sheet_export_audience_list_with_metadata` interceptor.
+        it is returned to user code. This `post_run_report` interceptor runs
+        before the `post_run_report_with_metadata` interceptor.
         """
         return response
 
-    def post_sheet_export_audience_list_with_metadata(
+    def post_run_report_with_metadata(
         self,
-        response: analytics_data_api.SheetExportAudienceListResponse,
+        response: analytics_data_api.RunReportResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_data_api.SheetExportAudienceListResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        analytics_data_api.RunReportResponse, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Post-rpc interceptor for sheet_export_audience_list
+        """Post-rpc interceptor for run_report
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AlphaAnalyticsData server but before it is returned to user code.
 
-        We recommend only using this `post_sheet_export_audience_list_with_metadata`
-        interceptor in new development instead of the `post_sheet_export_audience_list` interceptor.
-        When both interceptors are used, this `post_sheet_export_audience_list_with_metadata` interceptor runs after the
-        `post_sheet_export_audience_list` interceptor. The (possibly modified) response returned by
-        `post_sheet_export_audience_list` will be passed to
-        `post_sheet_export_audience_list_with_metadata`.
+        We recommend only using this `post_run_report_with_metadata`
+        interceptor in new development instead of the `post_run_report` interceptor.
+        When both interceptors are used, this `post_run_report_with_metadata` interceptor runs after the
+        `post_run_report` interceptor. The (possibly modified) response returned by
+        `post_run_report` will be passed to
+        `post_run_report_with_metadata`.
         """
         return response, metadata
 
@@ -1646,6 +1700,153 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                     extra={
                         "serviceName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "rpcName": "GetAudienceList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetMetadata(
+        _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata,
+        AlphaAnalyticsDataRestStub,
+    ):
+        def __hash__(self):
+            return hash("AlphaAnalyticsDataRestTransport.GetMetadata")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_data_api.GetMetadataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> analytics_data_api.Metadata:
+            r"""Call the get metadata method over HTTP.
+
+            Args:
+                request (~.analytics_data_api.GetMetadataRequest):
+                    The request object. Request for a property's dimension
+                and metric metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.analytics_data_api.Metadata:
+                    The dimensions, metrics and
+                comparisons currently accepted in
+                reporting methods.
+
+            """
+
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_metadata(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.GetMetadata",
+                    extra={
+                        "serviceName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "rpcName": "GetMetadata",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AlphaAnalyticsDataRestTransport._GetMetadata._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_data_api.Metadata()
+            pb_resp = analytics_data_api.Metadata.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_metadata(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_metadata_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_data_api.Metadata.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.get_metadata",
+                    extra={
+                        "serviceName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "rpcName": "GetMetadata",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3029,12 +3230,11 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _SheetExportAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList,
-        AlphaAnalyticsDataRestStub,
+    class _RunReport(
+        _BaseAlphaAnalyticsDataRestTransport._BaseRunReport, AlphaAnalyticsDataRestStub
     ):
         def __hash__(self):
-            return hash("AlphaAnalyticsDataRestTransport.SheetExportAudienceList")
+            return hash("AlphaAnalyticsDataRestTransport.RunReport")
 
         @staticmethod
         def _get_response(
@@ -3061,49 +3261,47 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
         def __call__(
             self,
-            request: analytics_data_api.SheetExportAudienceListRequest,
+            request: analytics_data_api.RunReportRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_data_api.SheetExportAudienceListResponse:
-            r"""Call the sheet export audience
-            list method over HTTP.
+        ) -> analytics_data_api.RunReportResponse:
+            r"""Call the run report method over HTTP.
 
-                Args:
-                    request (~.analytics_data_api.SheetExportAudienceListRequest):
-                        The request object. A request to export users in an
-                    audience list to a Google Sheet.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.analytics_data_api.RunReportRequest):
+                    The request object. The request to generate a report.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.analytics_data_api.SheetExportAudienceListResponse:
-                        The created Google Sheet with the
-                    list of users in an audience list.
+            Returns:
+                ~.analytics_data_api.RunReportResponse:
+                    The response report table
+                corresponding to a request.
 
             """
 
-            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_http_options()
-
-            request, metadata = self._interceptor.pre_sheet_export_audience_list(
-                request, metadata
+            http_options = (
+                _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_transcoded_request(
+
+            request, metadata = self._interceptor.pre_run_report(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_request_body_json(
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_query_params_json(
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(
                 transcoded_request
             )
 
@@ -3125,26 +3323,24 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.SheetExportAudienceList",
+                    f"Sending request for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.RunReport",
                     extra={
                         "serviceName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
-                        "rpcName": "SheetExportAudienceList",
+                        "rpcName": "RunReport",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = (
-                AlphaAnalyticsDataRestTransport._SheetExportAudienceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AlphaAnalyticsDataRestTransport._RunReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3153,24 +3349,22 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = analytics_data_api.SheetExportAudienceListResponse()
-            pb_resp = analytics_data_api.SheetExportAudienceListResponse.pb(resp)
+            resp = analytics_data_api.RunReportResponse()
+            pb_resp = analytics_data_api.RunReportResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_sheet_export_audience_list(resp)
+            resp = self._interceptor.post_run_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sheet_export_audience_list_with_metadata(
+            resp, _ = self._interceptor.post_run_report_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.SheetExportAudienceListResponse.to_json(
-                            response
-                        )
+                    response_payload = analytics_data_api.RunReportResponse.to_json(
+                        response
                     )
                 except:
                     response_payload = None
@@ -3180,10 +3374,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.sheet_export_audience_list",
+                    "Received response for google.analytics.data_v1alpha.AlphaAnalyticsDataClient.run_report",
                     extra={
                         "serviceName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
-                        "rpcName": "SheetExportAudienceList",
+                        "rpcName": "RunReport",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3232,6 +3426,14 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceList(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_metadata(
+        self,
+    ) -> Callable[[analytics_data_api.GetMetadataRequest], analytics_data_api.Metadata]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_property_quotas_snapshot(
@@ -3338,17 +3540,14 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
         return self._RunFunnelReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sheet_export_audience_list(
+    def run_report(
         self,
     ) -> Callable[
-        [analytics_data_api.SheetExportAudienceListRequest],
-        analytics_data_api.SheetExportAudienceListResponse,
+        [analytics_data_api.RunReportRequest], analytics_data_api.RunReportResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SheetExportAudienceList(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
+        return self._RunReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

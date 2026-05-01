@@ -192,6 +192,11 @@ from .types.evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsResponse,
+    ExportEvaluationRunsResponse,
+    ExportEvaluationsRequest,
+    ExportEvaluationsResponse,
+    ExportOptions,
     GenerateEvaluationOperationMetadata,
     GenerateEvaluationRequest,
     GetEvaluationDatasetRequest,
@@ -244,6 +249,7 @@ from .types.google_search_tool import GoogleSearchTool
 from .types.guardrail import Guardrail
 from .types.mcp_tool import McpTool
 from .types.mcp_toolset import McpToolset
+from .types.mocks import MockedToolCall
 from .types.omnichannel import Omnichannel, OmnichannelIntegrationConfig
 from .types.omnichannel_service import OmnichannelOperationMetadata
 from .types.open_api_tool import OpenApiTool
@@ -262,6 +268,7 @@ from .types.session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -478,6 +485,11 @@ __all__ = (
     "ExecutionType",
     "ExportAppRequest",
     "ExportAppResponse",
+    "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsResponse",
+    "ExportEvaluationsRequest",
+    "ExportEvaluationsResponse",
+    "ExportOptions",
     "ExpressionCondition",
     "FileContext",
     "FileSearchTool",
@@ -557,6 +569,8 @@ __all__ = (
     "McpToolset",
     "Message",
     "MetricAnalysisSettings",
+    "MockConfig",
+    "MockedToolCall",
     "ModelSettings",
     "OAuthConfig",
     "Omnichannel",

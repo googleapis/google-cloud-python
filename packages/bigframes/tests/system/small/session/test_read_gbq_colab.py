@@ -89,11 +89,20 @@ def test_read_gbq_colab_fresh_session_is_hybrid():
 
     assert len(result) == 100
     assert session._executor._enable_polars_execution is True  # type: ignore
-    assert executions_after == executions_before_python == 1
+    assert executions_before_python == 1
+    assert executions_after == 2
+    history = session.execution_history().to_dataframe()
+    assert history.iloc[-1]["job_type"] == "polars"
 
 
 def test_read_gbq_colab_peek_avoids_requery(maybe_ordered_session):
-    executions_before_sql = maybe_ordered_session._metrics.execution_count
+    history_before = maybe_ordered_session.execution_history().to_dataframe()
+    queries_before = (
+        len(history_before[history_before["job_type"] == "query"])
+        if "job_type" in history_before.columns
+        else 0
+    )
+
     df = maybe_ordered_session._read_gbq_colab(
         """
         SELECT
@@ -107,20 +116,36 @@ def test_read_gbq_colab_peek_avoids_requery(maybe_ordered_session):
         LIMIT 300
         """
     )
-    executions_before_python = maybe_ordered_session._metrics.execution_count
+
+    history_after_read = maybe_ordered_session.execution_history().to_dataframe()
+    queries_after_read = len(
+        history_after_read[history_after_read["job_type"] == "query"]
+    )
+
     result = df.peek(100)
-    executions_after = maybe_ordered_session._metrics.execution_count
+
+    history_after_peek = maybe_ordered_session.execution_history().to_dataframe()
+    queries_after_peek = len(
+        history_after_peek[history_after_peek["job_type"] == "query"]
+    )
 
     # Ok, this isn't guaranteed by peek, but should happen with read api based impl
     # if starts failing, maybe stopped using read api?
     assert result["total"].is_monotonic_decreasing
 
     assert len(result) == 100
-    assert executions_after == executions_before_python == executions_before_sql + 1
+    assert queries_after_read == queries_before + 1
+    assert queries_after_peek == queries_after_read
 
 
 def test_read_gbq_colab_repr_avoids_requery(maybe_ordered_session):
-    executions_before_sql = maybe_ordered_session._metrics.execution_count
+    history_before = maybe_ordered_session.execution_history().to_dataframe()
+    queries_before = (
+        len(history_before[history_before["job_type"] == "query"])
+        if "job_type" in history_before.columns
+        else 0
+    )
+
     df = maybe_ordered_session._read_gbq_colab(
         """
         SELECT
@@ -134,10 +159,21 @@ def test_read_gbq_colab_repr_avoids_requery(maybe_ordered_session):
         LIMIT 300
         """
     )
-    executions_before_python = maybe_ordered_session._metrics.execution_count
+
+    history_after_read = maybe_ordered_session.execution_history().to_dataframe()
+    queries_after_read = len(
+        history_after_read[history_after_read["job_type"] == "query"]
+    )
+
     _ = repr(df)
-    executions_after = maybe_ordered_session._metrics.execution_count
-    assert executions_after == executions_before_python == executions_before_sql + 1
+
+    history_after_repr = maybe_ordered_session.execution_history().to_dataframe()
+    queries_after_repr = len(
+        history_after_repr[history_after_repr["job_type"] == "query"]
+    )
+
+    assert queries_after_read == queries_before + 1
+    assert queries_after_repr == queries_after_read
 
 
 def test_read_gbq_colab_includes_formatted_scalars(session):

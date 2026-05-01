@@ -253,6 +253,18 @@ class Instance(proto.Message):
                 High memory extra large.
             STANDARD_SMALL (4):
                 Standard small.
+            CUSTOM_MICRO (5):
+                Custom micro.
+            CUSTOM_MINI (6):
+                Custom mini.
+            HIGHCPU_MEDIUM (7):
+                High cpu medium.
+            STANDARD_LARGE (8):
+                Standard large.
+            HIGHMEM_2XLARGE (9):
+                High memory 2xlarge.
+            CUSTOM_PICO (10):
+                Custom pico.
         """
 
         NODE_TYPE_UNSPECIFIED = 0
@@ -260,6 +272,12 @@ class Instance(proto.Message):
         HIGHMEM_MEDIUM = 2
         HIGHMEM_XLARGE = 3
         STANDARD_SMALL = 4
+        CUSTOM_MICRO = 5
+        CUSTOM_MINI = 6
+        HIGHCPU_MEDIUM = 7
+        STANDARD_LARGE = 8
+        HIGHMEM_2XLARGE = 9
+        CUSTOM_PICO = 10
 
     class Mode(proto.Enum):
         r"""The mode config, which is used to enable/disable cluster

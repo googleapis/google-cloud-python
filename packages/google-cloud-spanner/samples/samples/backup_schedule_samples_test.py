@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import backup_schedule_samples as samples
-import pytest
 import uuid
 
+import pytest
+
+import backup_schedule_samples as samples
 
 __FULL_BACKUP_SCHEDULE_ID = "full-backup-schedule"
 __INCREMENTAL_BACKUP_SCHEDULE_ID = "incremental-backup-schedule"

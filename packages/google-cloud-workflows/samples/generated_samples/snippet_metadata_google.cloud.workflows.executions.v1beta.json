@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-workflows-executions",
+    "name": "google-cloud-workflows",
     "version": "1.21.0"
   },
   "snippets": [

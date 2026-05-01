@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from typing import Any, Dict
 
 import mock
@@ -115,6 +116,7 @@ def _make_client(
     )
 
 
+@mock.patch.dict(os.environ, clear=True)
 def test_client_ctor_w_project_no_environ():
     # Some environments (e.g. AppVeyor CI) run in GCE, so
     # this test would fail artificially.
@@ -127,6 +129,7 @@ def test_client_ctor_w_project_no_environ():
 
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
+@mock.patch.dict(os.environ, clear=True)
 def test_client_ctor_w_implicit_inputs(database_id):
     from google.cloud.datastore.client import _CLIENT_INFO, _DATASTORE_BASE_URL, Client
 

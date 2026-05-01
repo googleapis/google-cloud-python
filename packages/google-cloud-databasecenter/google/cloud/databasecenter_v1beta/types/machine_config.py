@@ -47,6 +47,17 @@ class MachineConfig(proto.Message):
             applicable).
 
             This field is a member of `oneof`_ ``_vcpu_count``.
+        baseline_slot_count (int):
+            Optional. Baseline slots for BigQuery
+            Reservations. Baseline slots are in increments
+            of 50.
+
+            This field is a member of `oneof`_ ``_baseline_slot_count``.
+        max_reservation_slot_count (int):
+            Optional. Max slots for BigQuery
+            Reservations. Max slots are in increments of 50.
+
+            This field is a member of `oneof`_ ``_max_reservation_slot_count``.
     """
 
     memory_size_bytes: int = proto.Field(
@@ -61,6 +72,16 @@ class MachineConfig(proto.Message):
     vcpu_count: float = proto.Field(
         proto.DOUBLE,
         number=4,
+        optional=True,
+    )
+    baseline_slot_count: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    max_reservation_slot_count: int = proto.Field(
+        proto.INT64,
+        number=6,
         optional=True,
     )
 
