@@ -106,7 +106,14 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
             
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            skip_next = False
             for line_num, line in enumerate(f, 1):
+                if skip_next:
+                    skip_next = False
+                    continue
+                if "version-scanner: ignore-next-line" in line:
+                    skip_next = True
+                    continue
                 if "version-scanner: ignore" in line:
                     continue
                 for rule in compiled_rules:
@@ -339,7 +346,8 @@ def scan_repository(
     root_path: str,
     rules: List[Dict[str, str]],
     target_packages: List[str] = None,
-    ignore_dirs: List[str] = None
+    ignore_dirs: List[str] = None,
+    version_string: str = None
 ) -> List[Dict[str, str]]:
     """
     Scan repository for matching patterns.
@@ -397,6 +405,15 @@ def scan_repository(
         for file in files:
             file_path = os.path.join(root, file)
             matches = scan_file(file_path, compiled_rules)
+            
+            # Add filename match if applicable
+            if version_string and version_string in file:
+                matches.append({
+                    "rule_name": "filename_match",
+                    "line_number": 0,
+                    "matched_string": version_string,
+                    "context_line": f"Filename contains {version_string}"
+                })
             
             # Compute display path and package name
             rel_file_path = os.path.relpath(file_path, root_path)
@@ -528,7 +545,7 @@ def main():
         print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
         
     # Scan repository
-    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs)
+    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
     
     print(f"\nFound {len(all_matches)} matches.")
     for m in all_matches[:10]: # Show first 10

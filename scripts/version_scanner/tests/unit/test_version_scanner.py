@@ -67,6 +67,30 @@ def test_scan_file_ignores_pragma(tmp_path):
     results = scan_file(str(test_file), rules)
     assert len(results) == 0
 
+def test_scan_file_ignores_next_line(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("# version-scanner: ignore-next-line\npython_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+def test_scan_repository_flags_filename(tmp_path):
+    test_file = tmp_path / "test-3.9.txt"
+    test_file.write_text("clean content\n")
+    
+    rules = []
+    
+    from version_scanner import scan_repository
+    results = scan_repository(str(tmp_path), rules, version_string="3.9")
+    
+    assert len(results) == 1
+    assert results[0]["rule_name"] == "filename_match"
+    assert results[0]["matched_string"] == "3.9"
+
 # Test directory scan simulation
 def test_directory_scan(tmp_path):
     # Create dummy files
