@@ -970,7 +970,7 @@ def score(
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
-            uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model
+            uses the full endpoint of the model. If you don't specify an endpoint value, BigQuery ML dynamically chooses a model
             based on your query to have the best cost to quality tradeoff for the task.
         max_error_ratio (float, optional):
             A value between `0.0` and `1.0` that contains the maximum acceptable ratio of row-level inference failures to
