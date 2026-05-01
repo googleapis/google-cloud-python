@@ -327,6 +327,25 @@ def test_load_ignore_file(tmp_path):
     
     assert ignore_dirs == ["dir1", "dir2"]
 
+@mock.patch('version_scanner.load_ignore_file')
+@mock.patch('version_scanner.scan_repository')
+def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
+    mock_load_ignore.return_value = []
+    mock_scan.return_value = []
+    
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7"]
+    
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        main()
+        
+    mock_load_ignore.assert_called_once()
+    args, kwargs = mock_load_ignore.call_args
+    path = args[0]
+    assert ".scannerignore" in path
+    assert "scripts/version_scanner" in path
+
 
 @mock.patch('version_scanner.build')
 @mock.patch('google.auth.default')

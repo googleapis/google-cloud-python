@@ -520,8 +520,9 @@ def main():
         
 
             
-    # Load ignore file
-    ignore_file_path = os.path.join(args.path, ".scannerignore")
+    # Load ignore file from script directory (Option A)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    ignore_file_path = os.path.join(script_dir, ".scannerignore")
     ignore_dirs = load_ignore_file(ignore_file_path)
     if ignore_dirs:
         print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
