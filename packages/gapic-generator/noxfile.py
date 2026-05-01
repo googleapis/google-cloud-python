@@ -44,7 +44,6 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -181,7 +180,7 @@ def fragment(session, use_ads_templates=False):
     session.install("-e", ".")
 
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.9", "3.10"):
+    if session.python == "3.10":
         session.install("google-api-core<2.28")
 
     frag_files = (
@@ -251,7 +250,7 @@ def showcase_library(
     # Warnings emitted from google-api-core starting in 2.28
     # appear to cause issues when running protoc.
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.9", "3.10"):
+    if session.python == "3.10":
         session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.
