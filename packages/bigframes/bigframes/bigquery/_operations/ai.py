@@ -1184,8 +1184,6 @@ def forecast(
     return ml_core.BaseBqml(df._session).ai_forecast(input_data=df, options=options)
 
 
-
-
 def _separate_context_and_series(
     prompt: PROMPT_TYPE,
 ) -> Tuple[List[str | None], List[series.Series]]:
