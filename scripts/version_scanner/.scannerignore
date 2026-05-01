@@ -10,3 +10,7 @@ version_scanner
 docs
 samples
 changelog.md
+.librarian
+goldens
+# Ignore pandoc references in repositories.bzl
+repositories.bzl
