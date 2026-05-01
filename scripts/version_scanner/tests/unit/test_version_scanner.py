@@ -1,6 +1,7 @@
 import csv
 import os
 import re
+from unittest import mock
 from unittest.mock import patch
 import pytest
 import yaml
@@ -47,6 +48,17 @@ def test_scan_file_positive(tmp_path):
 def test_scan_file_negative(tmp_path):
     test_file = tmp_path / "test.py"
     test_file.write_text("python_requires = '>=3.8'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+def test_scan_file_ignores_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore\n")
     
     rules = [
         {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
@@ -314,6 +326,55 @@ def test_load_ignore_file(tmp_path):
     ignore_dirs = load_ignore_file(str(ignore_file))
     
     assert ignore_dirs == ["dir1", "dir2"]
+
+
+@mock.patch('version_scanner.build')
+@mock.patch('google.auth.default')
+def test_upload_to_drive(mock_auth, mock_build):
+    from unittest import mock
+    
+    mock_creds = mock.Mock()
+    mock_creds.universe_domain = "googleapis.com"
+    mock_creds.create_scoped.return_value = mock_creds
+    
+    mock_auth_http = mock.Mock()
+    mock_auth_http.credentials = mock_creds
+    mock_creds.authorize.return_value = mock_auth_http
+    
+    mock_auth.return_value = (mock_creds, "project-id")
+    
+    mock_sheets = mock.Mock()
+    mock_build.return_value = mock_sheets
+    
+    mock_spreadsheets = mock.Mock()
+    mock_sheets.spreadsheets.return_value = mock_spreadsheets
+    
+    mock_create = mock.Mock()
+    mock_spreadsheets.create.return_value = mock_create
+    mock_create.execute.return_value = {"spreadsheetUrl": "http://example.com"}
+    
+    mock_values = mock.Mock()
+    mock_spreadsheets.values.return_value = mock_values
+    mock_update = mock.Mock()
+    mock_values.update.return_value = mock_update
+    mock_update.execute.return_value = {}
+    
+    from version_scanner import upload_to_drive
+    
+    matches = [{"rule_name": "r1", "package_name": "p1", "file_path": "f1", "line_number": 1, "matched_string": "s1", "context_line": "c1"}]
+    
+    url = upload_to_drive("test.csv", matches, github_repo="https://github.com/user/repo")
+    
+    assert url == "http://example.com"
+    mock_spreadsheets.create.assert_called_once()
+    
+    # Verify that update was called with hyperlink formula
+    mock_values.update.assert_called_once()
+    args, kwargs = mock_values.update.call_args
+    body = kwargs.get('body', {})
+    values = body.get('values', [])
+    assert len(values) > 1
+    assert "HYPERLINK" in values[1][3] # line_number is at index 3
 
 
 def test_regex_examples_from_config():

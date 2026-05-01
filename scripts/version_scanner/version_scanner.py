@@ -107,6 +107,8 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             for line_num, line in enumerate(f, 1):
+                if "version-scanner: ignore" in line:
+                    continue
                 for rule in compiled_rules:
                     match = rule["pattern"].search(line)
                     if match:
