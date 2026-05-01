@@ -153,9 +153,7 @@ def progress_callback(
         return
 
     # Prioritize progress_bar set on the event, falling back to thread-local option.
-    progress_bar = getattr(
-        event, "progress_bar", bigframes.core.events._DEFAULT
-    )
+    progress_bar = getattr(event, "progress_bar", bigframes.core.events._DEFAULT)
     if progress_bar == bigframes.core.events._DEFAULT:
         progress_bar = bigframes._config.options.display.progress_bar
 
