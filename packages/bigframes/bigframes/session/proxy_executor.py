@@ -14,11 +14,11 @@
 
 from __future__ import annotations
 
+from typing import Mapping, Optional
 import typing
 import uuid
 import warnings
 
-import bigframes_vendored.ibis.expr.types as ibis_types
 import google.cloud.exceptions
 
 import bigframes.core
@@ -89,7 +89,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         """
         Convert an ArrayValue to a sql query that will yield its value.
         """
-        return self._main.to_sql(
+        return self._ibis_executor.to_sql(
             array_value,
             offset_column=offset_column,
             ordered=ordered,
@@ -106,7 +106,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             return self._ibis_executor.execute(array_value, execution_spec)
         elif compiler_option == "experimental":
             return self._sqlglot_executor.execute(
-                array_value, execution_spec.add_labels((_COMPILER_LABEL_KEY, "sqlglot"))
+                array_value, execution_spec.add_labels({_COMPILER_LABEL_KEY: "sqlglot"})
             )
         else:  # stable
             correlation_id = f"{uuid.uuid1().hex[:12]}"
@@ -114,7 +114,7 @@ class DualCompilerProxyExecutor(executor.Executor):
                 return self._sqlglot_executor.execute(
                     array_value,
                     execution_spec.add_labels(
-                        (_COMPILER_LABEL_KEY, f"sqlglot-{correlation_id}")
+                        {_COMPILER_LABEL_KEY: f"sqlglot-{correlation_id}"}
                     ),
                 )
             except google.cloud.exceptions.BadRequest as e:
@@ -126,7 +126,7 @@ class DualCompilerProxyExecutor(executor.Executor):
                 return self._ibis_executor.execute(
                     array_value,
                     execution_spec.add_labels(
-                        (_COMPILER_LABEL_KEY, f"ibis-{correlation_id}")
+                        {_COMPILER_LABEL_KEY: f"ibis-{correlation_id}"}
                     ),
                 )
 
@@ -144,7 +144,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         self,
         array_value: bigframes.core.ArrayValue,
         *,
-        config: CacheConfig,
+        config: executor.CacheConfig,
     ) -> None:
         compiler_option = bigframes.options.experiments.sql_compiler
         if compiler_option == "legacy":

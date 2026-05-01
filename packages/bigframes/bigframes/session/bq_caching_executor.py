@@ -296,7 +296,7 @@ class BigQueryCachingExecutor(executor.Executor):
             sql=sql,
             job_config=job_config,
             session=array_value.session,
-            extra_labels=self._labels,
+            extra_labels=extra_labels,
         )
 
         has_special_dtype_col = any(
