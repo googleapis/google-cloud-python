@@ -65,7 +65,7 @@ def test_execute_experimental_routes_to_sqlglot(mock_executor, monkeypatch):
     monkeypatch.setattr(bigframes.options.experiments, "sql_compiler", "experimental")
     mock_executor.execute(array_value, execution_spec)
 
-    execution_spec.add_labels.assert_called_once_with(("bigframes-compiler", "sqlglot"))
+    execution_spec.add_labels.assert_called_once_with({"bigframes-compiler": "sqlglot"})
     mock_executor._sqlglot_executor.execute.assert_called_once_with(
         array_value, execution_spec
     )
@@ -86,7 +86,7 @@ def test_execute_stable_routes_to_sqlglot_success(mock_executor, monkeypatch):
         mock_executor.execute(array_value, execution_spec)
 
     execution_spec.add_labels.assert_called_once_with(
-        ("bigframes-compiler", "sqlglot-123456789012")
+        {"bigframes-compiler": "sqlglot-123456789012"}
     )
     mock_executor._sqlglot_executor.execute.assert_called_once_with(
         array_value, execution_spec
@@ -117,8 +117,8 @@ def test_execute_stable_routes_to_sqlglot_fallback_to_ibis(mock_executor, monkey
 
     execution_spec.add_labels.assert_has_calls(
         [
-            mock.call(("bigframes-compiler", "sqlglot-123456789012")),
-            mock.call(("bigframes-compiler", "ibis-123456789012")),
+            mock.call({"bigframes-compiler": "sqlglot-123456789012"}),
+            mock.call({"bigframes-compiler": "ibis-123456789012"}),
         ]
     )
 

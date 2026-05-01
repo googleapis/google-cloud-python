@@ -129,7 +129,7 @@ class BigQueryCachingExecutor(executor.Executor):
             else array_value.node
         )
         node = self._substitute_large_local_sources(node)
-        compiled = compile.compiler().compile_sql(
+        compiled = compile.compile_sql(
             compile.CompileRequest(node, sort_rows=ordered),
             compiler_name=self._compiler_name,
         )
@@ -256,7 +256,7 @@ class BigQueryCachingExecutor(executor.Executor):
         # validate destination table
         existing_table = self._maybe_find_existing_table(spec)
 
-        compiled = compile.compiler().compile_sql(
+        compiled = compile.compile_sql(
             compile.CompileRequest(plan, sort_rows=False),
             compiler_name=self._compiler_name,
         )
