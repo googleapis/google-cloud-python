@@ -81,7 +81,7 @@ class BigQueryCachingExecutor(executor.Executor):
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
         labels: Mapping[str, str] = {},
-        compiler_name: str = "ibis",
+        compiler_name: Literal["ibis", "sqlglot"] = "ibis",
         cache: Optional[execution_cache.ExecutionCache] = None,
     ):
         self.bqclient = bqclient

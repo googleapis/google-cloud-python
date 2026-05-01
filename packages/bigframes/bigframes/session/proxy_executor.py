@@ -14,11 +14,12 @@
 
 from __future__ import annotations
 
-from typing import Mapping, Optional
 import typing
 import uuid
 import warnings
+from typing import Mapping, Optional
 
+import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
 
 import bigframes.core
