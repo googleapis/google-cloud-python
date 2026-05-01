@@ -61,6 +61,7 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
+ASYNC_REST_EXCEPTION = None
 try:
     from .transports.rest_asyncio import AsyncCloudRedisRestTransport
     HAS_ASYNC_REST_DEPENDENCIES = True

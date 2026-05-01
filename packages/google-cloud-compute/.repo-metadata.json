@@ -1,5 +1,5 @@
 {
-    "api_description": "delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.",
+    "api_description": "Compute Engine is an infrastructure as a service (IaaS) product that offers self-managed virtual machine (VM) instances and bare metal instances.",
     "api_id": "compute.googleapis.com",
     "api_shortname": "compute",
     "client_documentation": "https://cloud.google.com/python/docs/reference/compute/latest",
@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "compute",
-    "name_pretty": "Compute Engine",
+    "name_pretty": "Google Compute Engine",
     "product_documentation": "https://cloud.google.com/compute/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"

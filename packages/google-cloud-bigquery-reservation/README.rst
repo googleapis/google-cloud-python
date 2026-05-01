@@ -3,7 +3,7 @@ Python Client for BigQuery Reservation
 
 |stable| |pypi| |versions|
 
-`BigQuery Reservation`_: Modify BigQuery flat-rate reservations.
+`BigQuery Reservation`_: A service to modify your BigQuery reservations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

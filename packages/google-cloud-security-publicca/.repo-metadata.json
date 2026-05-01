@@ -1,5 +1,5 @@
 {
-    "api_description": "simplifies the deployment and management of public CAs without managing infrastructure.",
+    "api_description": "The Public Certificate Authority API may be used to create and manage ACME\nexternal account binding keys associated with Google Trust Services'\npublicly trusted certificate authority.",
     "api_id": "publicca.googleapis.com",
     "api_shortname": "publicca",
     "client_documentation": "https://cloud.google.com/python/docs/reference/publicca/latest",

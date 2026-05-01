@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "bigquery-magics",
-    "name_pretty": "Google BigQuery connector for Jupyter and IPython",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

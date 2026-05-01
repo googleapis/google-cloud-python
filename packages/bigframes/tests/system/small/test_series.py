@@ -4999,3 +4999,9 @@ def test_series_item_with_empty(session):
 
     with pytest.raises(ValueError, match=re.escape(expected_message)):
         bf_s_empty.item()
+
+
+def test_series_sql(session):
+    s = bigframes.pandas.Series([], session=session)
+
+    assert len(s.sql) > 0

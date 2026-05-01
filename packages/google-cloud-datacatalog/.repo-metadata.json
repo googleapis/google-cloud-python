@@ -1,5 +1,5 @@
 {
-    "api_description": "is a fully managed and highly scalable data discovery and metadata management service.",
+    "api_description": "A fully managed and highly scalable data discovery and metadata management\nservice.",
     "api_id": "datacatalog.googleapis.com",
     "api_shortname": "datacatalog",
     "client_documentation": "https://cloud.google.com/python/docs/reference/datacatalog/latest",

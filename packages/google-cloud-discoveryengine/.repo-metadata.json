@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "discoveryengine",
-    "name_pretty": "Discovery Engine API",
+    "name_pretty": "Discovery Engine",
     "product_documentation": "https://cloud.google.com/generative-ai-app-builder/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

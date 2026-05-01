@@ -1,5 +1,5 @@
 {
-    "api_description": "is a fully-managed in-memory data store service for Memcache.",
+    "api_description": "Google Cloud Memorystore for Memcached API is used for creating and\nmanaging Memcached instances in GCP.",
     "api_id": "memcache.googleapis.com",
     "api_shortname": "memcache",
     "client_documentation": "https://cloud.google.com/python/docs/reference/memcache/latest",

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Audit Manager API API
+# Audit Manager API
 
-Overview of the APIs available for Audit Manager API API.
+Overview of the APIs available for Audit Manager API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Audit Manager API API.
+Audit Manager API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-auditmanager/latest/summary_class.html)
 

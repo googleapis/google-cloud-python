@@ -1,9 +1,9 @@
-Python Client for Database Center API
-=====================================
+Python Client for Database Center
+=================================
 
 |preview| |pypi| |versions|
 
-`Database Center API`_: Database Center offers a comprehensive, organization-wide platform for
+`Database Center`_: Database Center offers a comprehensive, organization-wide platform for
 monitoring database fleet health across various products. It simplifies
 management and reduces risk by automatically aggregating and summarizing
 key health signals, removing the need for custom dashboards. The platform
@@ -20,7 +20,7 @@ quickly identify and address relevant issues within their database fleets.
    :target: https://pypi.org/project/google-cloud-databasecenter/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-databasecenter.svg
    :target: https://pypi.org/project/google-cloud-databasecenter/
-.. _Database Center API: https://cloud.google.com/database-center/
+.. _Database Center: https://cloud.google.com/database-center/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-databasecenter/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/database-center/
 
@@ -31,12 +31,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Database Center API.`_
+3. `Enable the Database Center.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Database Center API.:  https://cloud.google.com/database-center/
+.. _Enable the Database Center.:  https://cloud.google.com/database-center/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -103,14 +103,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Database Center API
+-  Read the `Client Library Documentation`_ for Database Center
    to see other available methods on the client.
--  Read the `Database Center API Product documentation`_ to learn
+-  Read the `Database Center Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Database Center API Product documentation:  https://cloud.google.com/database-center/
+.. _Database Center Product documentation:  https://cloud.google.com/database-center/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

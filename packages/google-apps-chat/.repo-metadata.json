@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-apps-chat",
-    "name_pretty": "Chat API",
+    "name_pretty": "Google Chat",
     "product_documentation": "https://developers.google.com/chat/concepts",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

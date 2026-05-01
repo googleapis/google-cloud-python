@@ -1,9 +1,9 @@
-Python Client for Discovery Engine API
-======================================
+Python Client for Discovery Engine
+==================================
 
 |preview| |pypi| |versions|
 
-`Discovery Engine API`_: Discovery Engine API.
+`Discovery Engine`_: Discovery Engine API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Discovery Engine API
    :target: https://pypi.org/project/google-cloud-discoveryengine/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-discoveryengine.svg
    :target: https://pypi.org/project/google-cloud-discoveryengine/
-.. _Discovery Engine API: https://cloud.google.com/generative-ai-app-builder/docs
+.. _Discovery Engine: https://cloud.google.com/generative-ai-app-builder/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/discoveryengine/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/generative-ai-app-builder/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Discovery Engine API.`_
+3. `Enable the Discovery Engine.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Discovery Engine API.:  https://cloud.google.com/generative-ai-app-builder/docs
+.. _Enable the Discovery Engine.:  https://cloud.google.com/generative-ai-app-builder/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Discovery Engine API
+-  Read the `Client Library Documentation`_ for Discovery Engine
    to see other available methods on the client.
--  Read the `Discovery Engine API Product documentation`_ to learn
+-  Read the `Discovery Engine Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Discovery Engine API Product documentation:  https://cloud.google.com/generative-ai-app-builder/docs
+.. _Discovery Engine Product documentation:  https://cloud.google.com/generative-ai-app-builder/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

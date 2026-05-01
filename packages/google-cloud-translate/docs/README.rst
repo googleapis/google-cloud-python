@@ -3,7 +3,7 @@ Python Client for Cloud Translation
 
 |stable| |pypi| |versions|
 
-`Cloud Translation`_: can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.
+`Cloud Translation`_: Integrates text translation into your website or application.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

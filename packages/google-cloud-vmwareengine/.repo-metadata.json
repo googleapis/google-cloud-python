@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "vmwareengine",
-    "name_pretty": "Google Cloud VMware Engine",
+    "name_pretty": "VMware Engine",
     "product_documentation": "https://cloud.google.com/vmware-engine/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

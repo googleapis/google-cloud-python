@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-redis-cluster",
-    "name_pretty": "Google Cloud Memorystore for Redis API",
+    "name_pretty": "Google Cloud Memorystore for Redis",
     "product_documentation": "https://cloud.google.com/memorystore/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

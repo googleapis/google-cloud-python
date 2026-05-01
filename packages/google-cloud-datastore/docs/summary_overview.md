@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Datastore API API
+# Cloud Datastore API
 
-Overview of the APIs available for Google Cloud Datastore API API.
+Overview of the APIs available for Cloud Datastore API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Datastore API API.
+Cloud Datastore API.
 
 [classes](https://cloud.google.com/python/docs/reference/datastore/latest/summary_class.html)
 

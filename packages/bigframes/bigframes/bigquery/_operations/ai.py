@@ -817,6 +817,9 @@ def if_(
     prompt: PROMPT_TYPE,
     *,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
@@ -838,13 +841,6 @@ def if_(
         1         Illinois
         dtype: string
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -852,6 +848,19 @@ def if_(
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
+            best cost to quality tradeoff for the task.
+        optimization_mode (Literal["minimize_cost", "maximize_quality"]):
+            Specifies the optimization strategy to use. Supported values are:
+            * "minimize_cost" (default): uses a local, distilled model to process the majority of rows, reducing latency and cost.
+            * "maximize_quality": always uses the remote LLM for inference.
+        max_error_ratio (float):
+            A float value between 0.0 and 1.0 that contains the maximum acceptable ratio of row-level inference failures to
+            rows processed on this function. If this value is exceeded, then the query fails. The default value is 1.0.
+            This argument isn't supported when `optimization_mode` is set to "minimize_cost".
 
     Returns:
         bigframes.series.Series: A new series of bools.
@@ -863,6 +872,9 @@ def if_(
     operator = ai_ops.AIIf(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
+        endpoint=endpoint,
+        optimization_mode=optimization_mode,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])

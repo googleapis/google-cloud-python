@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "GAPIC_MANUAL",
     "name": "python-ndb",
-    "name_pretty": "NDB Client Library for Google Cloud Datastore",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }
