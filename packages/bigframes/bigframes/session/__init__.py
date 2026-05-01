@@ -79,7 +79,7 @@ from bigframes import exceptions as bfe
 from bigframes import version
 from bigframes.core import blocks, utils
 from bigframes.core.logging import log_adapter
-from bigframes.session import bigquery_session, bq_caching_executor, executor
+from bigframes.session import bigquery_session, executor, proxy_executor
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
@@ -311,7 +311,7 @@ class Session(
         if not self._strictly_ordered:
             labels["bigframes-mode"] = "unordered"
 
-        self._executor: executor.Executor = bq_caching_executor.BigQueryCachingExecutor(
+        self._executor: executor.Executor = proxy_executor.DualCompilerProxyExecutor(
             bqclient=self._clients_provider.bqclient,
             bqstoragereadclient=self._clients_provider.bqstoragereadclient,
             loader=self._loader,
