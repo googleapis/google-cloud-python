@@ -176,7 +176,7 @@ class AIScore(Value):
     shape = rlz.shape_like("prompt")
 
     @attribute
-    def dtype(self) -> dt.Struct:
+    def dtype(self) -> dt.DataType:
         return dt.float64
 
 
