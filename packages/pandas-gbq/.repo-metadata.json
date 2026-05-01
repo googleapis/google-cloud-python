@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "pandas-gbq",
-    "name_pretty": "Google BigQuery connector for pandas",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

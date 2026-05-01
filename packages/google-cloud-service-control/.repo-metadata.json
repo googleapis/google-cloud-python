@@ -1,5 +1,5 @@
 {
-    "api_description": " is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.",
+    "api_description": "Provides admission control and telemetry reporting for services integrated\nwith Service Infrastructure.",
     "api_id": "servicecontrol.googleapis.com",
     "api_shortname": "servicecontrol",
     "client_documentation": "https://cloud.google.com/python/docs/reference/servicecontrol/latest",

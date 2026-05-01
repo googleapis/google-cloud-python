@@ -3,7 +3,7 @@ Python Client for Database Migration
 
 |stable| |pypi| |versions|
 
-`Database Migration`_: makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL.
+`Database Migration`_: Manage Cloud Database Migration Service resources on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

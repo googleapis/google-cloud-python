@@ -3,7 +3,7 @@ Python Client for Backup and DR Service
 
 |preview| |pypi| |versions|
 
-`Backup and DR Service`_: Backup and DR Service ensures that your data is managed, protected, and accessible using both hybrid and cloud-based backup/recovery appliances that are managed using the Backup and DR management console.
+`Backup and DR Service`_: Backup and DR Service is a managed service that provides backup and recovery of workloads running in Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

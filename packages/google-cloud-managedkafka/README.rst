@@ -3,7 +3,7 @@ Python Client for Managed Service for Apache Kafka
 
 |preview| |pypi| |versions|
 
-`Managed Service for Apache Kafka`_: Managed Service for Apache Kafka API is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.
+`Managed Service for Apache Kafka`_: Manage Apache Kafka clusters and resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

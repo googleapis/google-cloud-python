@@ -499,56 +499,6 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["query_audience_list"]
 
     @property
-    def sheet_export_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.SheetExportAudienceListRequest],
-        Awaitable[analytics_data_api.SheetExportAudienceListResponse],
-    ]:
-        r"""Return a callable for the sheet export audience list method over gRPC.
-
-        Exports an audience list of users to a Google Sheet. After
-        creating an audience, the users are not immediately available
-        for listing. First, a request to ``CreateAudienceList`` is
-        necessary to create an audience list of users, and then second,
-        this method is used to export those users in the audience list
-        to a Google Sheet.
-
-        See `Creating an Audience
-        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
-        for an introduction to Audience Lists with examples.
-
-        Audiences in Google Analytics 4 allow you to segment your users
-        in the ways that are important to your business. To learn more,
-        see https://support.google.com/analytics/answer/9267572.
-
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
-        Analytics Audience Export API
-        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
-
-        Returns:
-            Callable[[~.SheetExportAudienceListRequest],
-                    Awaitable[~.SheetExportAudienceListResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "sheet_export_audience_list" not in self._stubs:
-            self._stubs["sheet_export_audience_list"] = (
-                self._logged_channel.unary_unary(
-                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
-                    request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
-                    response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
-                )
-            )
-        return self._stubs["sheet_export_audience_list"]
-
-    @property
     def get_audience_list(
         self,
     ) -> Callable[
@@ -931,6 +881,81 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             )
         return self._stubs["list_report_tasks"]
 
+    @property
+    def run_report(
+        self,
+    ) -> Callable[
+        [analytics_data_api.RunReportRequest],
+        Awaitable[analytics_data_api.RunReportResponse],
+    ]:
+        r"""Return a callable for the run report method over gRPC.
+
+        Returns a customized report of your Google Analytics
+        event data. Reports contain statistics derived from data
+        collected by the Google Analytics tracking code. The
+        data returned from the API is as a table with columns
+        for the requested dimensions and metrics. Metrics are
+        individual measurements of user activity on your
+        property, such as active users or event count.
+        Dimensions break down metrics across some common
+        criteria, such as country or event name.
+
+        Returns:
+            Callable[[~.RunReportRequest],
+                    Awaitable[~.RunReportResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_report" not in self._stubs:
+            self._stubs["run_report"] = self._logged_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunReport",
+                request_serializer=analytics_data_api.RunReportRequest.serialize,
+                response_deserializer=analytics_data_api.RunReportResponse.deserialize,
+            )
+        return self._stubs["run_report"]
+
+    @property
+    def get_metadata(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetMetadataRequest], Awaitable[analytics_data_api.Metadata]
+    ]:
+        r"""Return a callable for the get metadata method over gRPC.
+
+        Returns metadata for dimensions and metrics available in
+        reporting methods. Used to explore the dimensions and metrics.
+        In this method, a Google Analytics property identifier is
+        specified in the request, and the metadata response includes
+        Custom dimensions and metrics as well as Universal metadata.
+
+        For example if a custom metric with parameter name
+        ``levels_unlocked`` is registered to a property, the Metadata
+        response will contain ``customEvent:levels_unlocked``. Universal
+        metadata are dimensions and metrics applicable to any property
+        such as ``country`` and ``totalUsers``.
+
+        Returns:
+            Callable[[~.GetMetadataRequest],
+                    Awaitable[~.Metadata]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_metadata" not in self._stubs:
+            self._stubs["get_metadata"] = self._logged_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
+                request_serializer=analytics_data_api.GetMetadataRequest.serialize,
+                response_deserializer=analytics_data_api.Metadata.deserialize,
+            )
+        return self._stubs["get_metadata"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -946,11 +971,6 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             ),
             self.query_audience_list: self._wrap_method(
                 self.query_audience_list,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.sheet_export_audience_list: self._wrap_method(
-                self.sheet_export_audience_list,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1001,6 +1021,16 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             ),
             self.list_report_tasks: self._wrap_method(
                 self.list_report_tasks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_report: self._wrap_method(
+                self.run_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata: self._wrap_method(
+                self.get_metadata,
                 default_timeout=None,
                 client_info=client_info,
             ),

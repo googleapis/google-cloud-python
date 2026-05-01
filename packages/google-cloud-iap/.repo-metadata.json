@@ -1,5 +1,5 @@
 {
-    "api_description": "Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.",
+    "api_description": "Controls access to cloud applications running on Google Cloud Platform.",
     "api_id": "iap.googleapis.com",
     "api_shortname": "iap",
     "client_documentation": "https://cloud.google.com/python/docs/reference/iap/latest",

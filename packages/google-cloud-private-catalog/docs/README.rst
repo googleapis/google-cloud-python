@@ -3,7 +3,8 @@ Python Client for Cloud Private Catalog
 
 |preview| |pypi| |versions|
 
-`Cloud Private Catalog`_: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
+`Cloud Private Catalog`_: Enable cloud users to discover private catalogs and products in their
+organizations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

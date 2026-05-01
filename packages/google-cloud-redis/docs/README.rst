@@ -3,7 +3,7 @@ Python Client for Google Cloud Memorystore for Redis
 
 |stable| |pypi| |versions|
 
-`Google Cloud Memorystore for Redis`_: is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.
+`Google Cloud Memorystore for Redis`_: Creates and manages Redis instances on the Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

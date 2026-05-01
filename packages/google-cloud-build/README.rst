@@ -3,7 +3,7 @@ Python Client for Cloud Build
 
 |stable| |pypi| |versions|
 
-`Cloud Build`_: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
+`Cloud Build`_: Creates and manages builds on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

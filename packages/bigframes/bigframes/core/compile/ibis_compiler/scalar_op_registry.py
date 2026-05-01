@@ -1983,6 +1983,9 @@ def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
     return ai_ops.AIIf(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 

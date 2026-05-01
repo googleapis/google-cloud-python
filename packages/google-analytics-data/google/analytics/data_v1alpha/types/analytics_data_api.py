@@ -41,8 +41,6 @@ __protobuf__ = proto.module(
         "AudienceListMetadata",
         "QueryAudienceListRequest",
         "QueryAudienceListResponse",
-        "SheetExportAudienceListRequest",
-        "SheetExportAudienceListResponse",
         "AudienceRow",
         "AudienceDimension",
         "AudienceDimensionValue",
@@ -56,6 +54,10 @@ __protobuf__ = proto.module(
         "GetReportTaskRequest",
         "ListReportTasksRequest",
         "ListReportTasksResponse",
+        "RunReportRequest",
+        "RunReportResponse",
+        "GetMetadataRequest",
+        "Metadata",
     },
 )
 
@@ -819,123 +821,6 @@ class QueryAudienceListResponse(proto.Message):
         proto.INT32,
         number=3,
         optional=True,
-    )
-
-
-class SheetExportAudienceListRequest(proto.Message):
-    r"""A request to export users in an audience list to a Google
-    Sheet.
-
-    Attributes:
-        name (str):
-            Required. The name of the audience list to retrieve users
-            from. Format:
-            ``properties/{property}/audienceLists/{audience_list}``
-        offset (int):
-            Optional. The row count of the start row. The first row is
-            counted as row 0.
-
-            When paging, the first request does not specify offset; or
-            equivalently, sets offset to 0; the first request returns
-            the first ``limit`` of rows. The second request sets offset
-            to the ``limit`` of the first request; the second request
-            returns the second ``limit`` of rows.
-
-            To learn more about this pagination parameter, see
-            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-        limit (int):
-            Optional. The number of rows to return. If unspecified,
-            10,000 rows are returned. The API returns a maximum of
-            250,000 rows per request, no matter how many you ask for.
-            ``limit`` must be positive.
-
-            The API can also return fewer rows than the requested
-            ``limit``, if there aren't as many dimension values as the
-            ``limit``.
-
-            To learn more about this pagination parameter, see
-            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    offset: int = proto.Field(
-        proto.INT64,
-        number=2,
-    )
-    limit: int = proto.Field(
-        proto.INT64,
-        number=3,
-    )
-
-
-class SheetExportAudienceListResponse(proto.Message):
-    r"""The created Google Sheet with the list of users in an
-    audience list.
-
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        spreadsheet_uri (str):
-            A uri for you to visit in your browser to
-            view the Google Sheet.
-
-            This field is a member of `oneof`_ ``_spreadsheet_uri``.
-        spreadsheet_id (str):
-            An ID that identifies the created Google
-            Sheet resource.
-
-            This field is a member of `oneof`_ ``_spreadsheet_id``.
-        row_count (int):
-            The total number of rows in the AudienceList result.
-            ``rowCount`` is independent of the number of rows returned
-            in the response, the ``limit`` request parameter, and the
-            ``offset`` request parameter. For example if a query returns
-            175 rows and includes ``limit`` of 50 in the API request,
-            the response will contain ``rowCount`` of 175 but only 50
-            rows.
-
-            To learn more about this pagination parameter, see
-            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-
-            This field is a member of `oneof`_ ``_row_count``.
-        audience_list (google.analytics.data_v1alpha.types.AudienceList):
-            Configuration data about AudienceList being exported.
-            Returned to help interpret the AudienceList in the Google
-            Sheet of this response.
-
-            For example, the AudienceList may have more rows than are
-            present in the Google Sheet, and in that case, you may want
-            to send an additional sheet export request with a different
-            ``offset`` value to retrieve the next page of rows in an
-            additional Google Sheet.
-
-            This field is a member of `oneof`_ ``_audience_list``.
-    """
-
-    spreadsheet_uri: str = proto.Field(
-        proto.STRING,
-        number=1,
-        optional=True,
-    )
-    spreadsheet_id: str = proto.Field(
-        proto.STRING,
-        number=2,
-        optional=True,
-    )
-    row_count: int = proto.Field(
-        proto.INT32,
-        number=3,
-        optional=True,
-    )
-    audience_list: "AudienceList" = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        optional=True,
-        message="AudienceList",
     )
 
 
@@ -1727,6 +1612,372 @@ class ListReportTasksResponse(proto.Message):
         proto.STRING,
         number=2,
         optional=True,
+    )
+
+
+class RunReportRequest(proto.Message):
+    r"""The request to generate a report.
+
+    Attributes:
+        property (str):
+            Required. A Google Analytics property identifier whose
+            events are tracked. Specified in the URL path and not the
+            body. To learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            Within a batch request, this property should either be
+            unspecified or consistent with the batch-level property.
+
+            Example: properties/1234
+        dimensions (MutableSequence[google.analytics.data_v1alpha.types.Dimension]):
+            Optional. The dimensions requested and
+            displayed.
+        metrics (MutableSequence[google.analytics.data_v1alpha.types.Metric]):
+            Optional. The metrics requested and
+            displayed.
+        date_ranges (MutableSequence[google.analytics.data_v1alpha.types.DateRange]):
+            Optional. Date ranges of data to read. If multiple date
+            ranges are requested, each response row will contain a zero
+            based date range index. If two date ranges overlap, the
+            event data for the overlapping days is included in the
+            response rows for both date ranges. In a cohort request,
+            this ``dateRanges`` must be unspecified.
+        dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
+            Optional. Dimension filters let you ask for only specific
+            dimension values in the report. To learn more, see
+            `Fundamentals of Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
+        metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
+            Optional. The filter clause of metrics.
+            Applied after aggregating the report's rows,
+            similar to SQL having-clause. Dimensions cannot
+            be used in this filter.
+        offset (int):
+            Optional. The row count of the start row. The first row is
+            counted as row 0.
+
+            When paging, the first request does not specify offset; or
+            equivalently, sets offset to 0; the first request returns
+            the first ``limit`` of rows. The second request sets offset
+            to the ``limit`` of the first request; the second request
+            returns the second ``limit`` of rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            Optional. The maximum number of rows to return. If
+            unspecified, 10,000 rows are returned. The API returns a
+            maximum of 250,000 rows per request, no matter how many you
+            ask for. ``limit`` must be positive.
+
+            The API can also return fewer rows than the requested
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``. For instance, there are fewer than 300 possible
+            values for the dimension ``country``, so when reporting on
+            only ``country``, you can't get more than 300 rows, even if
+            you set ``limit`` to a higher value.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        metric_aggregations (MutableSequence[google.analytics.data_v1alpha.types.MetricAggregation]):
+            Optional. Aggregation of metrics. Aggregated metric values
+            will be shown in rows where the dimension_values are set to
+            "RESERVED\_(MetricAggregation)". Aggregates including both
+            comparisons and multiple date ranges will be aggregated
+            based on the date ranges.
+        order_bys (MutableSequence[google.analytics.data_v1alpha.types.OrderBy]):
+            Optional. Specifies how rows are ordered in
+            the response. Requests including both
+            comparisons and multiple date ranges will have
+            order bys applied on the comparisons.
+        currency_code (str):
+            Optional. A currency code in ISO4217 format,
+            such as "AED", "USD", "JPY". If the field is
+            empty, the report uses the property's default
+            currency.
+        cohort_spec (google.analytics.data_v1alpha.types.CohortSpec):
+            Optional. Cohort group associated with this
+            request. If there is a cohort group in the
+            request the 'cohort' dimension must be present.
+        keep_empty_rows (bool):
+            Optional. If false or unspecified, each row with all metrics
+            equal to 0 will not be returned. If true, these rows will be
+            returned if they are not separately removed by a filter.
+
+            Regardless of this ``keep_empty_rows`` setting, only data
+            recorded by the Google Analytics property can be displayed
+            in a report.
+
+            For example if a property never logs a ``purchase`` event,
+            then a query for the ``eventName`` dimension and
+            ``eventCount`` metric will not have a row eventName:
+            "purchase" and eventCount: 0.
+        return_property_quota (bool):
+            Optional. Toggles whether to return the current state of
+            this Google Analytics property's quota. Quota is returned in
+            `PropertyQuota <#PropertyQuota>`__.
+        comparisons (MutableSequence[google.analytics.data_v1alpha.types.Comparison]):
+            Optional. The configuration of comparisons
+            requested and displayed. The request only
+            requires a comparisons field in order to receive
+            a comparison column in the response.
+        conversion_spec (google.analytics.data_v1alpha.types.ConversionSpec):
+            Optional. Controls conversion reporting. This
+            field is optional. If this field is set or any
+            conversion metrics are requested, the report
+            will be a conversion report.
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimensions: MutableSequence[data.Dimension] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.Dimension,
+    )
+    metrics: MutableSequence[data.Metric] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Metric,
+    )
+    date_ranges: MutableSequence[data.DateRange] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.DateRange,
+    )
+    dimension_filter: data.FilterExpression = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=data.FilterExpression,
+    )
+    metric_filter: data.FilterExpression = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=data.FilterExpression,
+    )
+    offset: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    limit: int = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    metric_aggregations: MutableSequence[data.MetricAggregation] = proto.RepeatedField(
+        proto.ENUM,
+        number=9,
+        enum=data.MetricAggregation,
+    )
+    order_bys: MutableSequence[data.OrderBy] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=data.OrderBy,
+    )
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    cohort_spec: data.CohortSpec = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=data.CohortSpec,
+    )
+    keep_empty_rows: bool = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    return_property_quota: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    comparisons: MutableSequence[data.Comparison] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message=data.Comparison,
+    )
+    conversion_spec: data.ConversionSpec = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=data.ConversionSpec,
+    )
+
+
+class RunReportResponse(proto.Message):
+    r"""The response report table corresponding to a request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        dimension_headers (MutableSequence[google.analytics.data_v1alpha.types.DimensionHeader]):
+            Describes dimension columns. The number of
+            DimensionHeaders and ordering of
+            DimensionHeaders matches the dimensions present
+            in rows.
+        metric_headers (MutableSequence[google.analytics.data_v1alpha.types.MetricHeader]):
+            Describes metric columns. The number of
+            MetricHeaders and ordering of MetricHeaders
+            matches the metrics present in rows.
+        rows (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        totals (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the totaled values of metrics.
+        maximums (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the maximum values of metrics.
+        minimums (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the minimum values of metrics.
+        row_count (int):
+            The total number of rows in the query result, regardless of
+            the number of rows returned in the response. For example if
+            a query returns 175 rows and includes limit = 50 in the API
+            request, the response will contain row_count = 175 but only
+            50 rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        metadata (google.analytics.data_v1alpha.types.ResponseMetaData):
+            Metadata for the report.
+        property_quota (google.analytics.data_v1alpha.types.PropertyQuota):
+            This Analytics Property's quota state
+            including this request.
+        kind (str):
+            Identifies what kind of resource this message is. This
+            ``kind`` is always the fixed string
+            "analyticsData#runReport". Useful to distinguish between
+            response types in JSON.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    dimension_headers: MutableSequence[data.DimensionHeader] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data.DimensionHeader,
+    )
+    metric_headers: MutableSequence[data.MetricHeader] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricHeader,
+    )
+    rows: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Row,
+    )
+    totals: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.Row,
+    )
+    maximums: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=data.Row,
+    )
+    minimums: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=data.Row,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    metadata: data.ResponseMetaData = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=data.ResponseMetaData,
+    )
+    property_quota: data.PropertyQuota = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=data.PropertyQuota,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=11,
+        optional=True,
+    )
+
+
+class GetMetadataRequest(proto.Message):
+    r"""Request for a property's dimension and metric metadata.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the metadata to retrieve.
+            This name field is specified in the URL path and not URL
+            parameters. Property is a numeric Google Analytics property
+            identifier. To learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+
+            Example: properties/1234/metadata
+
+            Set the Property ID to 0 for dimensions and metrics common
+            to all properties. In this special mode, this method will
+            not return custom dimensions and metrics.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Metadata(proto.Message):
+    r"""The dimensions, metrics and comparisons currently accepted in
+    reporting methods.
+
+    Attributes:
+        name (str):
+            Resource name of this metadata.
+        dimensions (MutableSequence[google.analytics.data_v1alpha.types.DimensionMetadata]):
+            The dimension descriptions.
+        metrics (MutableSequence[google.analytics.data_v1alpha.types.MetricMetadata]):
+            The metric descriptions.
+        comparisons (MutableSequence[google.analytics.data_v1alpha.types.ComparisonMetadata]):
+            The comparison descriptions.
+        conversions (MutableSequence[google.analytics.data_v1alpha.types.ConversionMetadata]):
+            The conversion descriptions.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    dimensions: MutableSequence[data.DimensionMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data.DimensionMetadata,
+    )
+    metrics: MutableSequence[data.MetricMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricMetadata,
+    )
+    comparisons: MutableSequence[data.ComparisonMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.ComparisonMetadata,
+    )
+    conversions: MutableSequence[data.ConversionMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=data.ConversionMetadata,
     )
 
 

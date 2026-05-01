@@ -3,7 +3,7 @@ Python Client for Cloud Monitoring
 
 |stable| |pypi| |versions|
 
-`Cloud Monitoring`_: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
+`Cloud Monitoring`_: Manages your Cloud Monitoring data and configurations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,9 +1,9 @@
-Python Client for Geocoding API
-===============================
+Python Client for Geocoding
+===========================
 
 |preview| |pypi| |versions|
 
-`Geocoding API`_: Convert addresses into geographic coordinates (geocoding), which you can
+`Geocoding`_: Convert addresses into geographic coordinates (geocoding), which you can
 use     to place markers or position the map. This API also allows you to
 convert     geographic coordinates into an address (reverse geocoding).
 
@@ -16,7 +16,7 @@ convert     geographic coordinates into an address (reverse geocoding).
    :target: https://pypi.org/project/google-maps-geocode/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-geocode.svg
    :target: https://pypi.org/project/google-maps-geocode/
-.. _Geocoding API: https://developers.google.com/maps/documentation/geocoding/overview
+.. _Geocoding: https://developers.google.com/maps/documentation/geocoding/overview
 .. _Client Library Documentation: https://googleapis.dev/python/google-maps-geocode/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/geocoding/overview
 
@@ -27,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Geocoding API.`_
+3. `Enable the Geocoding.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Geocoding API.:  https://developers.google.com/maps/documentation/geocoding/overview
+.. _Enable the Geocoding.:  https://developers.google.com/maps/documentation/geocoding/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -99,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Geocoding API
+-  Read the `Client Library Documentation`_ for Geocoding
    to see other available methods on the client.
--  Read the `Geocoding API Product documentation`_ to learn
+-  Read the `Geocoding Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Geocoding API Product documentation:  https://developers.google.com/maps/documentation/geocoding/overview
+.. _Geocoding Product documentation:  https://developers.google.com/maps/documentation/geocoding/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

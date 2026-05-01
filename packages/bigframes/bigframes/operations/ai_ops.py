@@ -146,6 +146,9 @@ class AIIf(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
+    endpoint: str | None = None
+    optimization_mode: str | None = None
+    max_error_ratio: float | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.BOOL_DTYPE

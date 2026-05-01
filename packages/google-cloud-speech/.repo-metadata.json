@@ -1,5 +1,5 @@
 {
-    "api_description": "enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.",
+    "api_description": "Converts audio to text by applying powerful neural network models.",
     "api_id": "speech.googleapis.com",
     "api_shortname": "speech",
     "client_documentation": "https://cloud.google.com/python/docs/reference/speech/latest",

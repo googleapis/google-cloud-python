@@ -3,7 +3,8 @@ Python Client for Connect Gateway
 
 |preview| |pypi| |versions|
 
-`Connect Gateway`_: builds on the power of fleets to let Anthos users connect to and run commands against registered Anthos clusters in a simple, consistent, and secured way, whether the clusters are on Google Cloud, other public clouds, or on premises, and makes it easier to automate DevOps processes across all your clusters.
+`Connect Gateway`_: The Connect Gateway service allows connectivity from external parties to
+connected Kubernetes clusters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

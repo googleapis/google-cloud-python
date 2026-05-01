@@ -13808,7 +13808,7 @@ def test_configure_accelerator_topologies_rest_call_success(request_type):
     }
     request_init[
         "instance_group_managers_configure_accelerator_topologies_request_resource"
-    ] = {"accelerator_topology_actions": {}}
+    ] = {"accelerator_topology_actions": {}, "accelerator_topology_configurations": {}}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748

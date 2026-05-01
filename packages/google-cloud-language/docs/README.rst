@@ -3,7 +3,9 @@ Python Client for Cloud Natural Language
 
 |stable| |pypi| |versions|
 
-`Cloud Natural Language`_: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
+`Cloud Natural Language`_: Provides natural language understanding technologies, such as sentiment
+analysis, entity recognition, entity sentiment analysis, and other text
+annotations, to developers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -42,6 +42,7 @@ from google.shopping.merchant_reports_v1.types.reports import (
     ReportRow,
     SearchRequest,
     SearchResponse,
+    StoreType,
     TrafficSource,
 )
 
@@ -65,5 +66,6 @@ __all__ = (
     "ReportRow",
     "SearchRequest",
     "SearchResponse",
+    "StoreType",
     "TrafficSource",
 )

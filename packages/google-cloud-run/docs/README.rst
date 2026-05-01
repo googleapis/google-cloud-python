@@ -3,7 +3,10 @@ Python Client for Cloud Run Admin
 
 |preview| |pypi| |versions|
 
-`Cloud Run Admin`_: is a managed compute platform that enables you to run containers that are invocable via requests or events.
+`Cloud Run Admin`_: Deploy and manage user provided container images that scale automatically
+based on incoming requests. The Cloud Run Admin API v1 follows the Knative
+Serving API specification, while v2 is aligned with Google Cloud AIP-based
+API standards, as described in https://google.aip.dev/.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

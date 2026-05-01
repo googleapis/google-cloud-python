@@ -1,5 +1,5 @@
 {
-    "api_description": "simplifies the deployment and management of private CAs without managing infrastructure.",
+    "api_description": "The Certificate Authority Service API is a highly-available, scalable\nservice that enables you to simplify and automate the management of\nprivate certificate authorities (CAs) while staying in control of your\nprivate keys.",
     "api_id": "privateca.googleapis.com",
     "api_shortname": "privateca",
     "client_documentation": "https://cloud.google.com/python/docs/reference/privateca/latest",

@@ -3,7 +3,9 @@ Python Client for Cloud Document AI
 
 |stable| |pypi| |versions|
 
-`Cloud Document AI`_: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
+`Cloud Document AI`_: Service to parse structured information from unstructured or
+semi-structured documents using state-of-the-art Google AI such as natural
+language, computer vision, translation, and AutoML.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

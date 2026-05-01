@@ -3,7 +3,8 @@ Python Client for Cloud Filestore
 
 |stable| |pypi| |versions|
 
-`Cloud Filestore`_: Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters.
+`Cloud Filestore`_: The Cloud Filestore API is used for creating and managing cloud file
+servers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

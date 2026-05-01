@@ -3,7 +3,7 @@ Python Client for Notebooks
 
 |stable| |pypi| |versions|
 
-`Notebooks`_: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
+`Notebooks`_: Notebooks API is used to manage notebook resources in Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

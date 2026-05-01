@@ -138,6 +138,9 @@ class AIIf(Value):
 
     prompt: Value
     connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]] = None
+    optimization_mode: Optional[Value[dt.String]] = None
+    max_error_ratio: Optional[Value[dt.Float64]] = None
 
     shape = rlz.shape_like("prompt")
 

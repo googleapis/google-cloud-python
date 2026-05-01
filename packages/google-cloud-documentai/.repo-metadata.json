@@ -1,5 +1,5 @@
 {
-    "api_description": "Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.",
+    "api_description": "Service to parse structured information from unstructured or\nsemi-structured documents using state-of-the-art Google AI such as natural\nlanguage, computer vision, translation, and AutoML.",
     "api_id": "documentai.googleapis.com",
     "api_shortname": "documentai",
     "client_documentation": "https://cloud.google.com/python/docs/reference/documentai/latest",

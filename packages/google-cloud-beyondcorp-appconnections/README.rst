@@ -3,7 +3,10 @@ Python Client for BeyondCorp
 
 |preview| |pypi| |versions|
 
-`BeyondCorp`_: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
+`BeyondCorp`_: Beyondcorp Enterprise provides identity and context aware access controls
+for enterprise resources and enables zero-trust access. Using the
+Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem
+connectivity using the App Connector hybrid connectivity solution.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

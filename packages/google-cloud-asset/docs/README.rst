@@ -3,7 +3,8 @@ Python Client for Cloud Asset
 
 |stable| |pypi| |versions|
 
-`Cloud Asset`_: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
+`Cloud Asset`_: The Cloud Asset API manages the history and inventory of Google Cloud
+resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

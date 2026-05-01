@@ -1,9 +1,9 @@
-Python Client for Chat API
-==========================
+Python Client for Google Chat
+=============================
 
 |preview| |pypi| |versions|
 
-`Chat API`_: The Google Chat API lets you build Chat apps to integrate your services
+`Google Chat`_: The Google Chat API lets you build Chat apps to integrate your services
 with Google Chat and manage Chat resources such as spaces, members, and
 messages.
 
@@ -16,7 +16,7 @@ messages.
    :target: https://pypi.org/project/google-apps-chat/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-apps-chat.svg
    :target: https://pypi.org/project/google-apps-chat/
-.. _Chat API: https://developers.google.com/chat/concepts
+.. _Google Chat: https://developers.google.com/chat/concepts
 .. _Client Library Documentation: https://googleapis.dev/python/google-apps-chat/latest
 .. _Product Documentation:  https://developers.google.com/chat/concepts
 
@@ -27,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Chat API.`_
+3. `Enable the Google Chat.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Chat API.:  https://developers.google.com/chat/concepts
+.. _Enable the Google Chat.:  https://developers.google.com/chat/concepts
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -99,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Chat API
+-  Read the `Client Library Documentation`_ for Google Chat
    to see other available methods on the client.
--  Read the `Chat API Product documentation`_ to learn
+-  Read the `Google Chat Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Chat API Product documentation:  https://developers.google.com/chat/concepts
+.. _Google Chat Product documentation:  https://developers.google.com/chat/concepts
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

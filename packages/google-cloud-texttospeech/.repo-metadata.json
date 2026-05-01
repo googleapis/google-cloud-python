@@ -1,5 +1,5 @@
 {
-    "api_description": "enables easy integration of Google text recognition technologies into developer applications. Send text and receive synthesized audio output from the Cloud Text-to-Speech API service.",
+    "api_description": "Synthesizes natural-sounding speech by applying powerful neural network\nmodels.",
     "api_id": "texttospeech.googleapis.com",
     "api_shortname": "texttospeech",
     "client_documentation": "https://cloud.google.com/python/docs/reference/texttospeech/latest",

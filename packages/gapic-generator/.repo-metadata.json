@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "CORE",
     "name": "gapic-generator",
-    "name_pretty": "Google API Client Generator for Python",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

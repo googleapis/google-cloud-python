@@ -3,7 +3,7 @@ Python Client for Memorystore
 
 |preview| |pypi| |versions|
 
-`Memorystore`_: Memorystore for Valkey is a fully managed Valkey Cluster service for Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Valkey service without the burden of managing complex Valkey deployments.
+`Memorystore`_: Memorystore for Valkey is a fully managed Valkey service for Google Cloud which supports both Cluster Mode Enabled and Cluster Mode Disabled instances.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

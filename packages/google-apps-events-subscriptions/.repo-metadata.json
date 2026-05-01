@@ -1,5 +1,5 @@
 {
-    "api_description": "The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.",
+    "api_description": "The Google Workspace Events API lets you subscribe to events and manage\nchange notifications across Google Workspace applications.",
     "api_id": "workspaceevents.googleapis.com",
     "api_shortname": "workspaceevents",
     "client_documentation": "https://googleapis.dev/python/google-apps-events-subscriptions/latest",
@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-apps-events-subscriptions",
-    "name_pretty": "Google Workspace Events API",
+    "name_pretty": "Google Workspace Events",
     "product_documentation": "https://developers.google.com/workspace/events",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

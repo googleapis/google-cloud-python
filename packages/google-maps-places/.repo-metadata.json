@@ -1,5 +1,5 @@
 {
-    "api_description": "The Places API allows developers to access a variety of search and retrieval endpoints for a Place.",
+    "api_description": "The Places API allows developers to access a variety of search and\nretrieval endpoints for a Place.",
     "api_id": "places.googleapis.com",
     "api_shortname": "places",
     "client_documentation": "https://googleapis.dev/python/places/latest",
@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "places",
-    "name_pretty": "Places API",
+    "name_pretty": "Places API (New)",
     "product_documentation": "https://developers.google.com/maps/documentation/places/web-service/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

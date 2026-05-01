@@ -3,7 +3,11 @@ Python Client for Maintenance
 
 |preview| |pypi| |versions|
 
-`Cloud Maintenance`_: The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.
+`Cloud Maintenance`_: The Maintenance API provides a centralized view of planned disruptive
+maintenance events across supported Google Cloud products. It offers users
+visibility into upcoming, ongoing, and completed maintenance, along with
+controls to manage certain maintenance activities, such as maintenance
+windows, rescheduling, and on-demand updates.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

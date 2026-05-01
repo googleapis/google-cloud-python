@@ -1,5 +1,5 @@
 {
-    "api_description": "A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.",
+    "api_description": "A unified platform that helps you accelerate your end-to-end cloud journey\nfrom your current on-premises or cloud environments to Google Cloud.",
     "api_id": "migrationcenter.googleapis.com",
     "api_shortname": "migrationcenter",
     "client_documentation": "https://cloud.google.com/python/docs/reference/migrationcenter/latest",

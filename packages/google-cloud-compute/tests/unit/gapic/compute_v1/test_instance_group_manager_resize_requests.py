@@ -3579,6 +3579,7 @@ def test_get_rest_call_success(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            region="region_value",
             resize_by=972,
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
@@ -3605,6 +3606,7 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.region == "region_value"
     assert response.resize_by == 972
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
@@ -3736,6 +3738,7 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
+        "region": "region_value",
         "requested_run_duration": {"nanos": 543, "seconds": 751},
         "resize_by": 972,
         "self_link": "self_link_value",
