@@ -188,7 +188,8 @@ def test_ai_generate_bool_multi_model(session):
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
-    result = bbq.ai.generate_bool((df["image"], " contains an animal"))
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.generate_bool((image_runtime, " contains an animal"))
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -225,8 +226,9 @@ def test_ai_generate_int_multi_model(session):
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
     result = bbq.ai.generate_int(
-        ("How many animals are there in the picture ", df["image"])
+        ("How many animals are there in the picture ", image_runtime)
     )
 
     assert _contains_no_nulls(result)
@@ -264,8 +266,9 @@ def test_ai_generate_double_multi_model(session):
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
     result = bbq.ai.generate_double(
-        ("How many animals are there in the picture ", df["image"])
+        ("How many animals are there in the picture ", image_runtime)
     )
 
     assert _contains_no_nulls(result)
@@ -359,7 +362,8 @@ def test_ai_if_multi_model(session, bq_connection):
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
-    result = bbq.ai.if_((df["image"], " contains an animal"))
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.if_((image_runtime, " contains an animal"))
 
     assert _contains_no_nulls(result)
     assert result.dtype == dtypes.BOOL_DTYPE
@@ -379,7 +383,8 @@ def test_ai_classify_multi_model(session, bq_connection):
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
 
-    result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.classify(image_runtime, ["photo", "cartoon"])
 
     assert _contains_no_nulls(result)
     assert result.dtype == dtypes.STRING_DTYPE
@@ -399,7 +404,8 @@ def test_ai_score_multi_model(session):
     df = _create_mock_obj_ref_df(
         session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
     )
-    prompt = ("Rank the liveliness of ", df["image"], "on the scale from 1 to 3")
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    prompt = ("Rank the liveliness of ", image_runtime, "on the scale from 1 to 3")
 
     result = bbq.ai.score(prompt)
 

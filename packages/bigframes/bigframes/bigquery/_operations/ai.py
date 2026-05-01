@@ -1172,6 +1172,8 @@ def forecast(
     return ml_core.BaseBqml(df._session).ai_forecast(input_data=df, options=options)
 
 
+
+
 def _separate_context_and_series(
     prompt: PROMPT_TYPE,
 ) -> Tuple[List[str | None], List[series.Series]]:
@@ -1189,9 +1191,6 @@ def _separate_context_and_series(
         return [None], [series.Series([prompt])]
 
     if isinstance(prompt, series.Series):
-        if prompt.dtype == dtypes.OBJ_REF_DTYPE:
-            # Multi-model support
-            return [None], [prompt._blob._read_url()]
         return [None], [prompt]
 
     prompt_context: List[str | None] = []
@@ -1226,9 +1225,6 @@ def _convert_series(
 ) -> series.Series:
     result = convert.to_bf_series(s, default_index=None, session=session)
 
-    if result.dtype == dtypes.OBJ_REF_DTYPE:
-        # Support multimodel
-        return result._blob._read_url()
     return result
 
 
