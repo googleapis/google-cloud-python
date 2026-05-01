@@ -28,8 +28,6 @@ MOCKSERVER_TEST_PYTHON_VERSION = "3.12"
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -37,7 +35,6 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.14",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 
 SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
 
@@ -125,8 +122,6 @@ def default(session, django_version="3.2"):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
     # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
     if session.python == "3.14":
         session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
@@ -217,8 +212,6 @@ def system(session):
     # See: https://github.com/googleapis/python-spanner-django/pull/929.
     session.skip("System tests are temporarily disabled.")
 
-    if session.python == "3.7":
-        session.skip("Python 3.7 is no longer supported")
     print("System tests with django 3.2")
     system_test(session)
     print("System tests with django 4.2")
