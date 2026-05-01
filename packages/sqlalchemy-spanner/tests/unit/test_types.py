@@ -70,7 +70,10 @@ class TestTokenlistType(fixtures.TestBase):
 
     def test_in_inverse_type_map(self):
         assert sqlalchemy_spanner.TOKENLIST in sqlalchemy_spanner._type_map_inv
-        assert sqlalchemy_spanner._type_map_inv[sqlalchemy_spanner.TOKENLIST] == "TOKENLIST"
+        assert (
+            sqlalchemy_spanner._type_map_inv[sqlalchemy_spanner.TOKENLIST]
+            == "TOKENLIST"
+        )
 
     def test_type_compiler_roundtrip(self):
         compiler = sqlalchemy_spanner.SpannerTypeCompiler(

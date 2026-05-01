@@ -1248,11 +1248,13 @@ class SpannerDialect(DefaultDialect):
             return _type_map["ARRAY"](inner_type)
         else:
             try:
-                return _type_map[str_repr]
+                col_type = _type_map[str_repr]
+                return col_type() if isinstance(col_type, type) else col_type
             except KeyError:
                 warnings.warn(
                     "Did not recognize Spanner type '%s', "
-                    "mapping it to NullType" % str_repr
+                    "mapping it to NullType" % str_repr,
+                    stacklevel=2,
                 )
                 return types.NullType()
 
