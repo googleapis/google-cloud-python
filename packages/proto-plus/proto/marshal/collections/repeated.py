@@ -166,10 +166,10 @@ class RepeatedComposite(Repeated):
             else:  # Is an extended slice.
                 indices = range(start, stop, step)
 
-                if len(value) != len(indices):  # XXX: Use PEP 572 on 3.8+
+                if (v_len := len(value)) != len(indices):
                     raise ValueError(
                         f"attempt to assign sequence of size "
-                        f"{len(value)} to extended slice of size "
+                        f"{v_len} to extended slice of size "
                         f"{len(indices)}"
                     )
 
