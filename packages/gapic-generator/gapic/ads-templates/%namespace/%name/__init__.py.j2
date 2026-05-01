@@ -6,8 +6,8 @@ import importlib
 import sys
 
 
-if sys.version_info < (3, 8):
-    raise ImportError('This module requires Python 3.8 or later.')
+if sys.version_info < (3, 10):
+    raise ImportError('This module requires Python 3.10 or later.')
 
 
 _lazy_type_to_package_map = {
