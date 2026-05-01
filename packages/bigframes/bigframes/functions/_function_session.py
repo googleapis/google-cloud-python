@@ -835,7 +835,7 @@ class FunctionSession:
                 session=session,  # type: ignore
             )
             config = udf_def.ManagedFunctionConfig(
-                code=udf_def.CodeDef.from_func(func),
+                code=udf_def.CodeDef.from_func(func, package_requirements=packages),
                 signature=udf_sig,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
