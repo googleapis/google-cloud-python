@@ -108,7 +108,7 @@ def get_updated_package_requirements(
             requirements.append(f"numpy=={numpy.__version__}")
 
     if not requirements:
-        return package_requirements
+        return list(package_requirements)
 
     result = list(package_requirements)
     for package in requirements:
