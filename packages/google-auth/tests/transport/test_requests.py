@@ -501,6 +501,32 @@ class TestAuthorizedSession(object):
                 ):
                     auth_session.configure_mtls_channel()
 
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_inferred_missing_openssl(
+        self, mock_get_client_cert_and_key, mock_file
+    ):
+        mock_file.side_effect = mock.mock_open(
+            read_data='{"cert_configs": {"workload": "exists"}}'
+        )
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+
+        with mock.patch.dict("sys.modules"):
+            sys.modules["OpenSSL"] = None
+            with mock.patch.dict(
+                os.environ,
+                {environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "/path/to/config"},
+                clear=True,
+            ):
+                auth_session.configure_mtls_channel()
+
+        assert not auth_session.is_mtls
+        mock_get_client_cert_and_key.assert_not_called()
+
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )

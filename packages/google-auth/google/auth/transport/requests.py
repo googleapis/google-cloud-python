@@ -313,10 +313,10 @@ class AuthorizedSession(requests.Session):
     credentials' headers to the request and refreshing credentials as needed.
 
     This class also supports mutual TLS via :meth:`configure_mtls_channel`
-    method. In order to use this method, the `GOOGLE_API_USE_CLIENT_CERTIFICATE`
-    environment variable must be explicitly set to ``true``, otherwise it does
-    nothing. Assume the environment is set to ``true``, the method behaves in the
-    following manner:
+    method. Client certificate use is enabled when
+    `GOOGLE_API_USE_CLIENT_CERTIFICATE` is set to ``true`` or when it is inferred
+    from a certificate configuration. When client certificate use is enabled, the
+    method behaves in the following manner:
 
     If client_cert_callback is provided, client certificate and private
     key are loaded using the callback; if client_cert_callback is None,
@@ -428,11 +428,12 @@ class AuthorizedSession(requests.Session):
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
-        explicitly set to `true`. In this case if client certificate and key are
-        successfully obtained (from the given client_cert_callback or from application
-        default SSL credentials), a :class:`_MutualTlsAdapter` instance will be mounted
-        to "https://" prefix.
+        The function does nothing unless client certificate use is enabled by
+        `GOOGLE_API_USE_CLIENT_CERTIFICATE` or inferred from certificate
+        configuration. In this case if client certificate and key are
+        successfully obtained (from the given client_cert_callback or from
+        application default SSL credentials), a :class:`_MutualTlsAdapter`
+        instance will be mounted to "https://" prefix.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -452,6 +453,10 @@ class AuthorizedSession(requests.Session):
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            if not _mtls_helper._is_client_cert_explicitly_enabled():
+                _LOGGER.debug("pyOpenSSL is unavailable; disabling inferred mTLS.")
+                self._is_mtls = False
+                return
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

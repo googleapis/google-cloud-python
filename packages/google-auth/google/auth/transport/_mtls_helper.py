@@ -448,6 +448,22 @@ def decrypt_private_key(key, passphrase):
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
 
 
+def _get_use_client_cert_env():
+    """Returns the configured client certificate opt-in environment value."""
+    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
+    if use_client_cert is None or use_client_cert == "":
+        use_client_cert = getenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
+        )
+    return use_client_cert
+
+
+def _is_client_cert_explicitly_enabled():
+    """Returns True if an environment variable explicitly enables client certs."""
+    use_client_cert = _get_use_client_cert_env()
+    return bool(use_client_cert and use_client_cert.lower() == "true")
+
+
 def check_use_client_cert():
     """Returns boolean for whether the client certificate should be used for mTLS.
 
@@ -462,11 +478,7 @@ def check_use_client_cert():
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
-    if use_client_cert is None or use_client_cert == "":
-        use_client_cert = getenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
-        )
+    use_client_cert = _get_use_client_cert_env()
 
     # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
     if use_client_cert:

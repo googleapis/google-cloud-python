@@ -215,10 +215,10 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
     credentials' headers to the request and refreshing credentials as needed.
 
     This class also supports mutual TLS via :meth:`configure_mtls_channel`
-    method. In order to use this method, the `GOOGLE_API_USE_CLIENT_CERTIFICATE`
-    environment variable must be explicitly set to `true`, otherwise it does
-    nothing. Assume the environment is set to `true`, the method behaves in the
-    following manner:
+    method. Client certificate use is enabled when
+    `GOOGLE_API_USE_CLIENT_CERTIFICATE` is set to `true` or when it is inferred
+    from a certificate configuration. When client certificate use is enabled, the
+    method behaves in the following manner:
     If client_cert_callback is provided, client certificate and private
     key are loaded using the callback; if client_cert_callback is None,
     application default SSL credentials will be used. Exceptions are raised if
@@ -313,13 +313,14 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
-        application default SSL credentials. The behavior is controlled by
-        `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable.
-        (1) If the environment variable value is `true`, the function returns True
-        if the channel is mutual TLS and False otherwise. The `http` provided
-        in the constructor will be overwritten.
-        (2) If the environment variable is not set or `false`, the function does
-        nothing and it always return False.
+        application default SSL credentials. Client certificate use is enabled
+        when `GOOGLE_API_USE_CLIENT_CERTIFICATE` is set to `true` or when it is
+        inferred from a certificate configuration.
+        (1) If client certificate use is enabled, the function returns True if
+        the channel is mutual TLS and False otherwise. The `http` provided in
+        the constructor will be overwritten.
+        (2) If client certificate use is disabled, the function does nothing and
+        it always returns False.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -335,7 +336,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
-        use_client_cert = transport._mtls_helper.check_use_client_cert()
+        use_client_cert = _mtls_helper.check_use_client_cert()
         if not use_client_cert:
             self._is_mtls = False
             return False
@@ -344,11 +345,15 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            if not _mtls_helper._is_client_cert_explicitly_enabled():
+                _LOGGER.debug("pyOpenSSL is unavailable; disabling inferred mTLS.")
+                self._is_mtls = False
+                return False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
         try:
-            found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
+            found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
 
