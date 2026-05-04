@@ -41,7 +41,7 @@ async def sample_sign_blob():
     # Initialize request argument(s)
     request = credentials_v1.SignBlobRequest(
         name="name_value",
-        payload=b'payload_blob',
+        payload=b"payload_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_sign_blob():
 
     # Handle the response
     print(response)
+
 
 # [END iamcredentials_v1_generated_IAMCredentials_SignBlob_async]

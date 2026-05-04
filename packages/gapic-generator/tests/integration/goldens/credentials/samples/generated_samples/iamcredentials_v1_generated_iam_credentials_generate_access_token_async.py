@@ -41,7 +41,7 @@ async def sample_generate_access_token():
     # Initialize request argument(s)
     request = credentials_v1.GenerateAccessTokenRequest(
         name="name_value",
-        scope=['scope_value1', 'scope_value2'],
+        scope=["scope_value1", "scope_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_generate_access_token():
 
     # Handle the response
     print(response)
+
 
 # [END iamcredentials_v1_generated_IAMCredentials_GenerateAccessToken_async]
