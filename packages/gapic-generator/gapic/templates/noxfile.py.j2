@@ -493,7 +493,8 @@ def prerelease_deps(session, protobuf_implementation):
     ]
 
     # Install dependencies specified in `testing/constraints-X.txt`.
-    session.install(*constraints_deps)
+    if constraints_deps:
+        session.install(*constraints_deps)
 
     # Note: If a dependency is added to the `prerel_deps` list,
     # the `core_dependencies_from_source` list in the `core_deps_from_source`
@@ -586,7 +587,8 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     # Install dependencies specified in `testing/constraints-X.txt`.
-    session.install(*constraints_deps)
+    if constraints_deps:
+        session.install(*constraints_deps)
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
     # `grpcio-status` should be added to the list below so that they are installed from source,
