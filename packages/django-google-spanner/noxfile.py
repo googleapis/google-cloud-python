@@ -122,7 +122,7 @@ def default(session, django_version="5.2"):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
+    # TODO: Remove this check once support for Python 3.14 is added to Protobuf
     if session.python == "3.14":
         session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
     print("Unit tests with django 5.2")
