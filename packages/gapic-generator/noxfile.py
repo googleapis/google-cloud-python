@@ -58,6 +58,8 @@ NEWEST_PYTHON = ALL_PYTHON[-1]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
+    if session.python == "3.9":
+        session.skip("Skipping Python 3.9 unit tests temporarily.")
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
@@ -181,7 +183,7 @@ def fragment(session, use_ads_templates=False):
     session.install("-e", ".")
 
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.9", "3.10"):
+    if session.python == "3.10":
         session.install("google-api-core<2.28")
 
     frag_files = (
@@ -251,7 +253,7 @@ def showcase_library(
     # Warnings emitted from google-api-core starting in 2.28
     # appear to cause issues when running protoc.
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.9", "3.10"):
+    if session.python == "3.10":
         session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.

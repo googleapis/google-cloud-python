@@ -73,6 +73,8 @@ from google.cloud.memorystore_v1.services.memorystore import pagers
 from google.cloud.memorystore_v1.types import memorystore
 
 from .transports.base import DEFAULT_CLIENT_INFO, MemorystoreTransport
+from .transports.grpc import MemorystoreGrpcTransport
+from .transports.grpc_asyncio import MemorystoreGrpcAsyncIOTransport
 from .transports.rest import MemorystoreRestTransport
 
 
@@ -85,6 +87,8 @@ class MemorystoreClientMeta(type):
     """
 
     _transport_registry = OrderedDict()  # type: Dict[str, Type[MemorystoreTransport]]
+    _transport_registry["grpc"] = MemorystoreGrpcTransport
+    _transport_registry["grpc_asyncio"] = MemorystoreGrpcAsyncIOTransport
     _transport_registry["rest"] = MemorystoreRestTransport
 
     def get_transport_class(
