@@ -70,10 +70,7 @@ case ${TEST_TYPE} in
         ;;
     unit)
         case ${PY_VERSION} in
-        "3.9")
-            nox -s unit-3.9
-            retval=$?
-            ;;
+
         "3.10")
             nox -s unit-3.10
             retval=$?
