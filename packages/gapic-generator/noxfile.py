@@ -44,6 +44,7 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
+    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -57,6 +58,8 @@ NEWEST_PYTHON = ALL_PYTHON[-1]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
+    if session.python == "3.9":
+        session.skip("Skipping Python 3.9 unit tests temporarily.")
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
