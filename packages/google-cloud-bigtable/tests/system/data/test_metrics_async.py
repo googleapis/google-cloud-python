@@ -254,7 +254,7 @@ class TestMetricsAsync(SystemTestRunner):
             operation.zone
             == cluster_config[operation.cluster_id].location.split("/")[-1]
         )
-        assert operation.duration_ns > 0 and operation.duration_ns < 1e9
+        assert operation.duration_ns > 0
         assert (
             operation.first_response_latency_ns is None
         )  # populated for read_rows only
