@@ -32,7 +32,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
