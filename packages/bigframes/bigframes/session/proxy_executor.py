@@ -54,6 +54,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         publisher: bigframes.core.events.Publisher,
         labels: Mapping[str, str] = {},
     ):
+        self._enable_polars_execution = enable_polars_execution
         shared_cache = execution_cache.ExecutionCache()
         self._ibis_executor = bq_caching_executor.BigQueryCachingExecutor(
             bqclient,
@@ -61,7 +62,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             bqstoragereadclient,
             loader,
             metrics=metrics,
-            enable_polars_execution=enable_polars_execution,
+            enable_polars_execution=self._enable_polars_execution,
             publisher=publisher,
             labels=labels,
             cache=shared_cache,
@@ -73,7 +74,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             bqstoragereadclient,
             loader,
             metrics=metrics,
-            enable_polars_execution=enable_polars_execution,
+            enable_polars_execution=self._enable_polars_execution,
             publisher=publisher,
             labels=labels,
             cache=shared_cache,
