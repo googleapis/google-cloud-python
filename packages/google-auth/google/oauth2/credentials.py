@@ -578,7 +578,7 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
             "client libraries pick up the application default credentials."
         )
         super(UserAccessTokenCredentials, self).__init__()
-        self._account = account or ""
+        self._account = account
         self._quota_project_id = quota_project_id
 
     def with_account(self, account):
