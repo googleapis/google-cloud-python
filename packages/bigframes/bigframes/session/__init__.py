@@ -201,33 +201,35 @@ class Session(
                 bigframes._config.auth.resolve_credentials_and_project(context)
             )
             if context.location is None:
-                temp_client = bigquery.Client(
+                with bigquery.Client(
                     project=project,
                     credentials=credentials,
-                )
-                row_iter = temp_client.query_and_wait(
-                    "SELECT 1",
-                    job_config=bigquery.QueryJobConfig(dry_run=True),
-                )
-                self._location = row_iter.location or "US"
-                msg = bfe.format_message(
-                    f"No explicit location is set, so using location {self._location} for the session."
-                )
-                # User's code
-                # -> get_global_session()
-                # -> connect()
-                # -> Session()
-                #
-                # Note: We could also have:
-                # User's code
-                # -> read_gbq()
-                # -> with_default_session()
-                # -> get_global_session()
-                # -> connect()
-                # -> Session()
-                # but we currently have no way to disambiguate these
-                # situations.
-                warnings.warn(msg, stacklevel=4, category=bfe.DefaultLocationWarning)
+                ) as temp_client:
+                    row_iter = temp_client.query_and_wait(
+                        "SELECT 1",
+                        job_config=bigquery.QueryJobConfig(dry_run=True),
+                    )
+                    self._location = row_iter.location or "US"
+                    msg = bfe.format_message(
+                        f"No explicit location is set, so using location {self._location} for the session."
+                    )
+                    # User's code
+                    # -> get_global_session()
+                    # -> connect()
+                    # -> Session()
+                    #
+                    # Note: We could also have:
+                    # User's code
+                    # -> read_gbq()
+                    # -> with_default_session()
+                    # -> get_global_session()
+                    # -> connect()
+                    # -> Session()
+                    # but we currently have no way to disambiguate these
+                    # situations.
+                    warnings.warn(
+                        msg, stacklevel=4, category=bfe.DefaultLocationWarning
+                    )
             else:
                 self._location = context.location
 
