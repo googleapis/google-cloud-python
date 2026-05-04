@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
+from google.api_core import exceptions
 from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
@@ -79,7 +80,10 @@ def instances_to_delete(instance_admin_client):
         yield instances
     finally:
         for instance in instances:
-            instance_admin_client.delete_instance(name=instance.name)
+            try:
+                instance_admin_client.delete_instance(name=instance.name)
+            except exceptions.NotFound:
+                pass
 
 
 @pytest.fixture(scope="session")
@@ -89,7 +93,10 @@ def backups_to_delete(table_admin_client):
         yield backups
     finally:
         for backup in backups:
-            table_admin_client.delete_backup(name=backup.name)
+            try:
+                table_admin_client.delete_backup(name=backup.name)
+            except exceptions.NotFound:
+                pass
 
 
 def create_instance(
@@ -127,8 +134,10 @@ def create_instance(
             clusters=clusters,
         )
         operation = instance_admin_client.create_instance(create_instance_request)
+        instance_name = instance_admin_client.instance_path(project_id, instance_id)
+        instances_to_delete.append(admin_v2.Instance(name=instance_name))
         instance = operation.result()
-        instances_to_delete.append(instance)
+        instances_to_delete[-1] = instance
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -189,8 +198,11 @@ def create_backup(
             ),
         )
     )
+    backups_to_delete.append(
+        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
+    )
     backup = operation.result()
-    backups_to_delete.append(backup)
+    backups_to_delete[-1] = backup
     return backup
 
 
