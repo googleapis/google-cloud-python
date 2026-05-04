@@ -31,7 +31,6 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 DEFAULT_PYTHON_VERSION = "3.14"
 
 PYTHON_VERSIONS = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
