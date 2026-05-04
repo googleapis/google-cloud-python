@@ -2252,6 +2252,13 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       default_version: v4
+  - name: google-maps-mapmanagement
+    version: 0.0.0
+    apis:
+      - path: google/maps/mapmanagement/v2beta
+    copyright_year: "2026"
+    python:
+      default_version: v2beta
   - name: google-maps-mapsplatformdatasets
     version: 0.7.0
     apis:
