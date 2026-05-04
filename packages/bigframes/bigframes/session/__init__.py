@@ -188,39 +188,48 @@ class Session(
         if context is None:
             context = bigquery_options.BigQueryOptions()
 
-        if context.location is None:
-            self._location = "US"
-            msg = bfe.format_message(
-                f"No explicit location is set, so using location {self._location} for the session."
-            )
-            # User's code
-            # -> get_global_session()
-            # -> connect()
-            # -> Session()
-            #
-            # Note: We could also have:
-            # User's code
-            # -> read_gbq()
-            # -> with_default_session()
-            # -> get_global_session()
-            # -> connect()
-            # -> Session()
-            # but we currently have no way to disambiguate these
-            # situations.
-            warnings.warn(msg, stacklevel=4, category=bfe.DefaultLocationWarning)
-        else:
-            self._location = context.location
-
         self._bq_kms_key_name = context.kms_key_name
 
         # Instantiate a clients provider to help with cloud clients that will be
         # used in the future operations in the session
         if clients_provider:
+            # this path is only for unit testing. Not meant to be used by end users.
             self._clients_provider = clients_provider
+            self._location = context.location or "US"
         else:
             credentials, project = (
                 bigframes._config.auth.resolve_credentials_and_project(context)
             )
+            if context.location is None:
+                temp_client = bigquery.Client(
+                    project=project,
+                    credentials=credentials,
+                )
+                row_iter = temp_client.query_and_wait(
+                    "SELECT 1",
+                    job_config=bigquery.QueryJobConfig(dry_run=True),
+                )
+                self._location = row_iter.location or "US"
+                msg = bfe.format_message(
+                    f"No explicit location is set, so using location {self._location} for the session."
+                )
+                # User's code
+                # -> get_global_session()
+                # -> connect()
+                # -> Session()
+                #
+                # Note: We could also have:
+                # User's code
+                # -> read_gbq()
+                # -> with_default_session()
+                # -> get_global_session()
+                # -> connect()
+                # -> Session()
+                # but we currently have no way to disambiguate these
+                # situations.
+                warnings.warn(msg, stacklevel=4, category=bfe.DefaultLocationWarning)
+            else:
+                self._location = context.location
 
             self._clients_provider = clients.ClientsProvider(
                 project=project,
