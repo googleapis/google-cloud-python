@@ -13,13 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import json
 import logging as std_logging
-import os
 import re
-import warnings
 from collections import OrderedDict
-from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -31,35 +27,22 @@ from typing import (
     Tuple,
     Type,
     Union,
-    cast,
 )
 
 import google.protobuf
-from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.memorystore_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
@@ -72,120 +55,90 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.memorystore_v1.services.memorystore import pagers
 from google.cloud.memorystore_v1.types import memorystore
 
+from .client import MemorystoreClient
 from .transports.base import DEFAULT_CLIENT_INFO, MemorystoreTransport
-from .transports.grpc import MemorystoreGrpcTransport
 from .transports.grpc_asyncio import MemorystoreGrpcAsyncIOTransport
-from .transports.rest import MemorystoreRestTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
-class MemorystoreClientMeta(type):
-    """Metaclass for the Memorystore client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[MemorystoreTransport]]
-    _transport_registry["grpc"] = MemorystoreGrpcTransport
-    _transport_registry["grpc_asyncio"] = MemorystoreGrpcAsyncIOTransport
-    _transport_registry["rest"] = MemorystoreRestTransport
-
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[MemorystoreTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class MemorystoreClient(metaclass=MemorystoreClientMeta):
+class MemorystoreAsyncClient:
     """Service describing handlers for resources"""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
-        """Converts api endpoint to mTLS endpoint.
+    _client: MemorystoreClient
 
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            Optional[str]: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = "memorystore.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
+    DEFAULT_ENDPOINT = MemorystoreClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = MemorystoreClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = MemorystoreClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = MemorystoreClient._DEFAULT_UNIVERSE
+
+    backup_path = staticmethod(MemorystoreClient.backup_path)
+    parse_backup_path = staticmethod(MemorystoreClient.parse_backup_path)
+    backup_collection_path = staticmethod(MemorystoreClient.backup_collection_path)
+    parse_backup_collection_path = staticmethod(
+        MemorystoreClient.parse_backup_collection_path
     )
-
-    _DEFAULT_ENDPOINT_TEMPLATE = "memorystore.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
-
-    @staticmethod
-    def _use_client_cert_effective():
-        """Returns whether client certificate should be used for mTLS if the
-        google-auth version supports should_use_client_cert automatic mTLS enablement.
-
-        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
-
-        Returns:
-            bool: whether client certificate should be used for mTLS
-        Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
-        """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else:  # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv(
-                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-            ).lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
+    ca_pool_path = staticmethod(MemorystoreClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(MemorystoreClient.parse_ca_pool_path)
+    certificate_authority_path = staticmethod(
+        MemorystoreClient.certificate_authority_path
+    )
+    parse_certificate_authority_path = staticmethod(
+        MemorystoreClient.parse_certificate_authority_path
+    )
+    crypto_key_path = staticmethod(MemorystoreClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(MemorystoreClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(MemorystoreClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        MemorystoreClient.parse_crypto_key_version_path
+    )
+    forwarding_rule_path = staticmethod(MemorystoreClient.forwarding_rule_path)
+    parse_forwarding_rule_path = staticmethod(
+        MemorystoreClient.parse_forwarding_rule_path
+    )
+    instance_path = staticmethod(MemorystoreClient.instance_path)
+    parse_instance_path = staticmethod(MemorystoreClient.parse_instance_path)
+    network_path = staticmethod(MemorystoreClient.network_path)
+    parse_network_path = staticmethod(MemorystoreClient.parse_network_path)
+    service_attachment_path = staticmethod(MemorystoreClient.service_attachment_path)
+    parse_service_attachment_path = staticmethod(
+        MemorystoreClient.parse_service_attachment_path
+    )
+    shared_regional_certificate_authority_path = staticmethod(
+        MemorystoreClient.shared_regional_certificate_authority_path
+    )
+    parse_shared_regional_certificate_authority_path = staticmethod(
+        MemorystoreClient.parse_shared_regional_certificate_authority_path
+    )
+    common_billing_account_path = staticmethod(
+        MemorystoreClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        MemorystoreClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(MemorystoreClient.common_folder_path)
+    parse_common_folder_path = staticmethod(MemorystoreClient.parse_common_folder_path)
+    common_organization_path = staticmethod(MemorystoreClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        MemorystoreClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(MemorystoreClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        MemorystoreClient.parse_common_project_path
+    )
+    common_location_path = staticmethod(MemorystoreClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        MemorystoreClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -198,11 +151,12 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MemorystoreClient: The constructed client.
+            MemorystoreAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        sa_info_func = (
+            MemorystoreClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(MemorystoreAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -216,351 +170,20 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MemorystoreClient: The constructed client.
+            MemorystoreAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        sa_file_func = (
+            MemorystoreClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(MemorystoreAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> MemorystoreTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            MemorystoreTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def backup_path(
-        project: str,
-        location: str,
-        backup_collection: str,
-        backup: str,
-    ) -> str:
-        """Returns a fully-qualified backup string."""
-        return "projects/{project}/locations/{location}/backupCollections/{backup_collection}/backups/{backup}".format(
-            project=project,
-            location=location,
-            backup_collection=backup_collection,
-            backup=backup,
-        )
-
-    @staticmethod
-    def parse_backup_path(path: str) -> Dict[str, str]:
-        """Parses a backup path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupCollections/(?P<backup_collection>.+?)/backups/(?P<backup>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def backup_collection_path(
-        project: str,
-        location: str,
-        backup_collection: str,
-    ) -> str:
-        """Returns a fully-qualified backup_collection string."""
-        return "projects/{project}/locations/{location}/backupCollections/{backup_collection}".format(
-            project=project,
-            location=location,
-            backup_collection=backup_collection,
-        )
-
-    @staticmethod
-    def parse_backup_collection_path(path: str) -> Dict[str, str]:
-        """Parses a backup_collection path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupCollections/(?P<backup_collection>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def ca_pool_path(
-        project: str,
-        location: str,
-        ca_pool: str,
-    ) -> str:
-        """Returns a fully-qualified ca_pool string."""
-        return "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
-            project=project,
-            location=location,
-            ca_pool=ca_pool,
-        )
-
-    @staticmethod
-    def parse_ca_pool_path(path: str) -> Dict[str, str]:
-        """Parses a ca_pool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/caPools/(?P<ca_pool>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def certificate_authority_path(
-        project: str,
-        location: str,
-        instance: str,
-    ) -> str:
-        """Returns a fully-qualified certificate_authority string."""
-        return "projects/{project}/locations/{location}/instances/{instance}/certificateAuthority".format(
-            project=project,
-            location=location,
-            instance=instance,
-        )
-
-    @staticmethod
-    def parse_certificate_authority_path(path: str) -> Dict[str, str]:
-        """Parses a certificate_authority path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/certificateAuthority$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def crypto_key_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-    ) -> str:
-        """Returns a fully-qualified crypto_key string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
-
-    @staticmethod
-    def parse_crypto_key_path(path: str) -> Dict[str, str]:
-        """Parses a crypto_key path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def crypto_key_version_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-        crypto_key_version: str,
-    ) -> str:
-        """Returns a fully-qualified crypto_key_version string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-            crypto_key_version=crypto_key_version,
-        )
-
-    @staticmethod
-    def parse_crypto_key_version_path(path: str) -> Dict[str, str]:
-        """Parses a crypto_key_version path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def forwarding_rule_path(
-        project: str,
-        region: str,
-        forwarding_rule: str,
-    ) -> str:
-        """Returns a fully-qualified forwarding_rule string."""
-        return "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
-            project=project,
-            region=region,
-            forwarding_rule=forwarding_rule,
-        )
-
-    @staticmethod
-    def parse_forwarding_rule_path(path: str) -> Dict[str, str]:
-        """Parses a forwarding_rule path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/forwardingRules/(?P<forwarding_rule>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def instance_path(
-        project: str,
-        location: str,
-        instance: str,
-    ) -> str:
-        """Returns a fully-qualified instance string."""
-        return "projects/{project}/locations/{location}/instances/{instance}".format(
-            project=project,
-            location=location,
-            instance=instance,
-        )
-
-    @staticmethod
-    def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parses a instance path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def network_path(
-        project: str,
-        network: str,
-    ) -> str:
-        """Returns a fully-qualified network string."""
-        return "projects/{project}/global/networks/{network}".format(
-            project=project,
-            network=network,
-        )
-
-    @staticmethod
-    def parse_network_path(path: str) -> Dict[str, str]:
-        """Parses a network path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def service_attachment_path(
-        project: str,
-        region: str,
-        service_attachment: str,
-    ) -> str:
-        """Returns a fully-qualified service_attachment string."""
-        return "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
-            project=project,
-            region=region,
-            service_attachment=service_attachment,
-        )
-
-    @staticmethod
-    def parse_service_attachment_path(path: str) -> Dict[str, str]:
-        """Parses a service_attachment path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/serviceAttachments/(?P<service_attachment>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def shared_regional_certificate_authority_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified shared_regional_certificate_authority string."""
-        return "projects/{project}/locations/{location}/sharedRegionalCertificateAuthority".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_shared_regional_certificate_authority_path(path: str) -> Dict[str, str]:
-        """Parses a shared_regional_certificate_authority path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sharedRegionalCertificateAuthority$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
-        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
+        """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -590,180 +213,16 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+        return MemorystoreClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = MemorystoreClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert:
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
-
-        return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
+    @property
+    def transport(self) -> MemorystoreTransport:
+        """Returns the transport used by the client instance.
 
         Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
+            MemorystoreTransport: The transport used by the client instance.
         """
-        use_client_cert = MemorystoreClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ) -> str:
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            _default_universe = MemorystoreClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
-            api_endpoint = MemorystoreClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = MemorystoreClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = MemorystoreClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
-
-    def _validate_universe_domain(self):
-        """Validates client's and credentials' universe domains are consistent.
-
-        Returns:
-            bool: True iff the configured universe domain is valid.
-
-        Raises:
-            ValueError: If the configured universe domain is not valid.
-        """
-
-        # NOTE (b/349488459): universe validation is disabled until further notice.
-        return True
-
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
-        """Adds credential info string to error details for 401/403/404 errors.
-
-        Args:
-            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
-        """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
-            return
-
-        cred = self._transport._credentials
-
-        # get_cred_info is only available in google-auth>=2.35.0
-        if not hasattr(cred, "get_cred_info"):
-            return
-
-        # ignore the type check since pypy test fails when get_cred_info
-        # is not available
-        cred_info = cred.get_cred_info()  # type: ignore
-        if cred_info and hasattr(error._details, "append"):
-            error._details.append(json.dumps(cred_info))
+        return self._client.transport
 
     @property
     def api_endpoint(self) -> str:
@@ -772,16 +231,19 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._api_endpoint
+        return self._client._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used by the client instance.
+            str: The universe domain used
+                by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
+
+    get_transport_class = MemorystoreClient.get_transport_class
 
     def __init__(
         self,
@@ -789,11 +251,11 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[str, MemorystoreTransport, Callable[..., MemorystoreTransport]]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the memorystore client.
+        """Instantiates the memorystore async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -802,7 +264,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,MemorystoreTransport,Callable[..., MemorystoreTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport.
+                The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
                 arguments as used in the MemorystoreTransport constructor.
                 If set to None, a transport is chosen automatically.
@@ -828,7 +290,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that the ``api_endpoint``
+                default "googleapis.com" universe. Note that ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -839,123 +301,39 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
+        self._client = MemorystoreClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
-
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            MemorystoreClient._read_environment_variables()
-        )
-        self._client_cert_source = MemorystoreClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = MemorystoreClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
-        self._api_endpoint: str = ""  # updated below, depending on `transport`
-
-        # Initialize the universe domain validation.
-        self._is_universe_domain_valid = False
-
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
-            # Setup logging.
-            client_logging.initialize_logging()
-
-        api_key_value = getattr(self._client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.memorystore_v1.MemorystoreAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                    "credentialsType": None,
+                },
             )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, MemorystoreTransport)
-        if transport_provided:
-            # transport is a MemorystoreTransport instance.
-            if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes directly."
-                )
-            self._transport = cast(MemorystoreTransport, transport)
-            self._api_endpoint = self._transport.host
-
-        self._api_endpoint = self._api_endpoint or MemorystoreClient._get_api_endpoint(
-            self._client_options.api_endpoint,
-            self._client_cert_source,
-            self._universe_domain,
-            self._use_mtls_endpoint,
-        )
-
-        if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            transport_init: Union[
-                Type[MemorystoreTransport], Callable[..., MemorystoreTransport]
-            ] = (
-                MemorystoreClient.get_transport_class(transport)
-                if isinstance(transport, str) or transport is None
-                else cast(Callable[..., MemorystoreTransport], transport)
-            )
-            # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
-
-        if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
-                _LOGGER.debug(
-                    "Created client `google.cloud.memorystore_v1.MemorystoreClient`.",
-                    extra={
-                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
-                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
-                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
-                        "credentialsType": None,
-                    },
-                )
-
-    def list_instances(
+    async def list_instances(
         self,
         request: Optional[Union[memorystore.ListInstancesRequest, dict]] = None,
         *,
@@ -963,7 +341,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListInstancesPager:
+    ) -> pagers.ListInstancesAsyncPager:
         r"""Lists Instances in a given project and location.
 
         .. code-block:: python
@@ -977,9 +355,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.ListInstancesRequest(
@@ -990,13 +368,13 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.ListInstancesRequest, dict]]):
                 The request object. Request message for [ListInstances][].
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent to list
                 instances from. Format:
                 projects/{project}/locations/{location}
@@ -1004,7 +382,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1013,7 +391,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.memorystore_v1.services.memorystore.pagers.ListInstancesPager:
+            google.cloud.memorystore_v1.services.memorystore.pagers.ListInstancesAsyncPager:
                 Response message for [ListInstances][].
 
                 Iterating over this object will yield results and
@@ -1037,14 +415,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.ListInstancesRequest):
             request = memorystore.ListInstancesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_instances]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1053,10 +434,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1064,8 +445,8 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListInstancesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListInstancesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1077,7 +458,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_instance(
+    async def get_instance(
         self,
         request: Optional[Union[memorystore.GetInstanceRequest, dict]] = None,
         *,
@@ -1099,9 +480,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.GetInstanceRequest(
@@ -1109,15 +490,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.GetInstanceRequest, dict]]):
                 The request object. Request message for [GetInstance][].
-            name (str):
+            name (:class:`str`):
                 Required. The name of the instance to
                 retrieve. Format:
                 projects/{project}/locations/{location}/instances/{instance}
@@ -1125,7 +506,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1154,14 +535,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.GetInstanceRequest):
             request = memorystore.GetInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1170,10 +554,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1183,7 +567,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def create_instance(
+    async def create_instance(
         self,
         request: Optional[Union[memorystore.CreateInstanceRequest, dict]] = None,
         *,
@@ -1193,7 +577,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Creates a new Instance in a given project and
         location.
 
@@ -1208,9 +592,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.CreateInstanceRequest(
@@ -1223,15 +607,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.CreateInstanceRequest, dict]]):
                 The request object. Request message for [CreateInstance][].
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource where
                 this instance will be created. Format:
                 projects/{project}/locations/{location}
@@ -1239,12 +623,12 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance (google.cloud.memorystore_v1.types.Instance):
+            instance (:class:`google.cloud.memorystore_v1.types.Instance`):
                 Required. The instance to create.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance_id (str):
+            instance_id (:class:`str`):
                 Required. The ID to use for the instance, which will
                 become the final component of the instance's resource
                 name.
@@ -1261,7 +645,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1270,7 +654,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
@@ -1295,18 +679,21 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.CreateInstanceRequest):
             request = memorystore.CreateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if instance is not None:
-                request.instance = instance
-            if instance_id is not None:
-                request.instance_id = instance_id
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if instance is not None:
+            request.instance = instance
+        if instance_id is not None:
+            request.instance_id = instance_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1315,10 +702,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1326,9 +713,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             memorystore.Instance,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -1336,7 +723,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def update_instance(
+    async def update_instance(
         self,
         request: Optional[Union[memorystore.UpdateInstanceRequest, dict]] = None,
         *,
@@ -1345,7 +732,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Instance.
 
         .. code-block:: python
@@ -1359,9 +746,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.UpdateInstanceRequest(
@@ -1372,20 +759,20 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.UpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. Request message for [UpdateInstance][].
-            instance (google.cloud.memorystore_v1.types.Instance):
+            instance (:class:`google.cloud.memorystore_v1.types.Instance`):
                 Required. The instance to update.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The list of fields to be
                 updated on the instance. At least one
                 field must be specified.
@@ -1393,7 +780,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1402,7 +789,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
@@ -1427,16 +814,19 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.UpdateInstanceRequest):
             request = memorystore.UpdateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if instance is not None:
-                request.instance = instance
-            if update_mask is not None:
-                request.update_mask = update_mask
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if instance is not None:
+            request.instance = instance
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1447,10 +837,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1458,9 +848,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             memorystore.Instance,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -1468,7 +858,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def delete_instance(
+    async def delete_instance(
         self,
         request: Optional[Union[memorystore.DeleteInstanceRequest, dict]] = None,
         *,
@@ -1476,7 +866,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
 
         .. code-block:: python
@@ -1490,9 +880,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.DeleteInstanceRequest(
@@ -1504,15 +894,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. Request message for [DeleteInstance][].
-            name (str):
+            name (:class:`str`):
                 Required. The name of the instance to
                 delete. Format:
                 projects/{project}/locations/{location}/instances/{instance}
@@ -1520,7 +910,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1529,7 +919,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -1561,14 +951,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.DeleteInstanceRequest):
             request = memorystore.DeleteInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1577,10 +970,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1588,9 +981,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -1598,7 +991,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_certificate_authority(
+    async def get_certificate_authority(
         self,
         request: Optional[
             Union[memorystore.GetCertificateAuthorityRequest, dict]
@@ -1623,9 +1016,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_get_certificate_authority():
+            async def sample_get_certificate_authority():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.GetCertificateAuthorityRequest(
@@ -1633,15 +1026,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 )
 
                 # Make the request
-                response = client.get_certificate_authority(request=request)
+                response = await client.get_certificate_authority(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.GetCertificateAuthorityRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.GetCertificateAuthorityRequest, dict]]):
                 The request object. Request message for [GetCertificateAuthority][].
-            name (str):
+            name (:class:`str`):
                 Required. The name of the certificate
                 authority. Format:
 
@@ -1650,7 +1043,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1681,15 +1074,16 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.GetCertificateAuthorityRequest):
             request = memorystore.GetCertificateAuthorityRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_certificate_authority
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_certificate_authority
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -1699,10 +1093,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1712,7 +1106,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_shared_regional_certificate_authority(
+    async def get_shared_regional_certificate_authority(
         self,
         request: Optional[
             Union[memorystore.GetSharedRegionalCertificateAuthorityRequest, dict]
@@ -1737,9 +1131,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_get_shared_regional_certificate_authority():
+            async def sample_get_shared_regional_certificate_authority():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.GetSharedRegionalCertificateAuthorityRequest(
@@ -1747,16 +1141,16 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 )
 
                 # Make the request
-                response = client.get_shared_regional_certificate_authority(request=request)
+                response = await client.get_shared_regional_certificate_authority(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.GetSharedRegionalCertificateAuthorityRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.GetSharedRegionalCertificateAuthorityRequest, dict]]):
                 The request object. Request for
                 [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority].
-            name (str):
+            name (:class:`str`):
                 Required. Regional certificate authority resource name
                 using the form:
                 ``projects/{project}/locations/{location}/sharedRegionalCertificateAuthority``
@@ -1765,7 +1159,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1798,15 +1192,16 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request, memorystore.GetSharedRegionalCertificateAuthorityRequest
         ):
             request = memorystore.GetSharedRegionalCertificateAuthorityRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_shared_regional_certificate_authority
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_shared_regional_certificate_authority
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -1816,10 +1211,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1829,7 +1224,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def reschedule_maintenance(
+    async def reschedule_maintenance(
         self,
         request: Optional[Union[memorystore.RescheduleMaintenanceRequest, dict]] = None,
         *,
@@ -1841,7 +1236,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Reschedules upcoming maintenance event.
 
         .. code-block:: python
@@ -1855,9 +1250,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_reschedule_maintenance():
+            async def sample_reschedule_maintenance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.RescheduleMaintenanceRequest(
@@ -1870,16 +1265,16 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest, dict]]):
                 The request object. Request for rescheduling instance
                 maintenance.
-            name (str):
+            name (:class:`str`):
                 Required. Name of the instance to reschedule maintenance
                 for:
                 ``projects/{project}/locations/{location_id}/instances/{instance}``
@@ -1887,14 +1282,14 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            reschedule_type (google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest.RescheduleType):
+            reschedule_type (:class:`google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest.RescheduleType`):
                 Required. If reschedule type is SPECIFIC_TIME,
                 schedule_time must be set.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+            schedule_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
                 Optional. Timestamp when the maintenance shall be
                 rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC
                 3339 format. Example: ``2012-11-15T16:19:00.094Z``.
@@ -1902,7 +1297,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``schedule_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1911,7 +1306,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
@@ -1936,18 +1331,21 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.RescheduleMaintenanceRequest):
             request = memorystore.RescheduleMaintenanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-            if reschedule_type is not None:
-                request.reschedule_type = reschedule_type
-            if schedule_time is not None:
-                request.schedule_time = schedule_time
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if reschedule_type is not None:
+            request.reschedule_type = reschedule_type
+        if schedule_time is not None:
+            request.schedule_time = schedule_time
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reschedule_maintenance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1956,10 +1354,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1967,9 +1365,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             memorystore.Instance,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -1977,7 +1375,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def list_backup_collections(
+    async def list_backup_collections(
         self,
         request: Optional[Union[memorystore.ListBackupCollectionsRequest, dict]] = None,
         *,
@@ -1985,7 +1383,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListBackupCollectionsPager:
+    ) -> pagers.ListBackupCollectionsAsyncPager:
         r"""Lists all backup collections owned by a consumer project in
         either the specified location (region) or all locations.
 
@@ -2004,9 +1402,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_list_backup_collections():
+            async def sample_list_backup_collections():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.ListBackupCollectionsRequest(
@@ -2017,13 +1415,13 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 page_result = client.list_backup_collections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.ListBackupCollectionsRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.ListBackupCollectionsRequest, dict]]):
                 The request object. Request for [ListBackupCollections]
-            parent (str):
+            parent (:class:`str`):
                 Required. The resource name of the backupCollection
                 location using the form:
                 ``projects/{project_id}/locations/{location_id}`` where
@@ -2032,7 +1430,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2041,7 +1439,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupCollectionsPager:
+            google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupCollectionsAsyncPager:
                 Response for [ListBackupCollections].
 
                 Iterating over this object will yield results and
@@ -2065,14 +1463,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.ListBackupCollectionsRequest):
             request = memorystore.ListBackupCollectionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_backup_collections]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_collections
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2081,10 +1482,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2092,8 +1493,8 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListBackupCollectionsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListBackupCollectionsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -2105,7 +1506,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_backup_collection(
+    async def get_backup_collection(
         self,
         request: Optional[Union[memorystore.GetBackupCollectionRequest, dict]] = None,
         *,
@@ -2127,9 +1528,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_get_backup_collection():
+            async def sample_get_backup_collection():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.GetBackupCollectionRequest(
@@ -2137,15 +1538,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 )
 
                 # Make the request
-                response = client.get_backup_collection(request=request)
+                response = await client.get_backup_collection(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.GetBackupCollectionRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.GetBackupCollectionRequest, dict]]):
                 The request object. Request for [GetBackupCollection].
-            name (str):
+            name (:class:`str`):
                 Required. Instance backupCollection resource name using
                 the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
@@ -2154,7 +1555,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2183,14 +1584,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.GetBackupCollectionRequest):
             request = memorystore.GetBackupCollectionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_backup_collection]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_collection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2199,10 +1603,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2212,7 +1616,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def list_backups(
+    async def list_backups(
         self,
         request: Optional[Union[memorystore.ListBackupsRequest, dict]] = None,
         *,
@@ -2220,7 +1624,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListBackupsPager:
+    ) -> pagers.ListBackupsAsyncPager:
         r"""Lists all backups owned by a backup collection.
 
         .. code-block:: python
@@ -2234,9 +1638,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_list_backups():
+            async def sample_list_backups():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.ListBackupsRequest(
@@ -2247,13 +1651,13 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 page_result = client.list_backups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.ListBackupsRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.ListBackupsRequest, dict]]):
                 The request object. Request for [ListBackups].
-            parent (str):
+            parent (:class:`str`):
                 Required. The resource name of the backupCollection
                 using the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
@@ -2261,7 +1665,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2270,7 +1674,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupsPager:
+            google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupsAsyncPager:
                 Response for [ListBackups].
 
                 Iterating over this object will yield results and
@@ -2294,14 +1698,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.ListBackupsRequest):
             request = memorystore.ListBackupsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_backups]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2310,10 +1717,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2321,8 +1728,8 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListBackupsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListBackupsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -2334,7 +1741,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_backup(
+    async def get_backup(
         self,
         request: Optional[Union[memorystore.GetBackupRequest, dict]] = None,
         *,
@@ -2356,9 +1763,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_get_backup():
+            async def sample_get_backup():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.GetBackupRequest(
@@ -2366,22 +1773,22 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 )
 
                 # Make the request
-                response = client.get_backup(request=request)
+                response = await client.get_backup(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.GetBackupRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.GetBackupRequest, dict]]):
                 The request object. Request for [GetBackup].
-            name (str):
+            name (:class:`str`):
                 Required. Instance backup resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2410,14 +1817,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.GetBackupRequest):
             request = memorystore.GetBackupRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_backup]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2426,10 +1836,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2439,7 +1849,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def delete_backup(
+    async def delete_backup(
         self,
         request: Optional[Union[memorystore.DeleteBackupRequest, dict]] = None,
         *,
@@ -2447,7 +1857,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Deletes a specific backup.
 
         .. code-block:: python
@@ -2461,9 +1871,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_delete_backup():
+            async def sample_delete_backup():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.DeleteBackupRequest(
@@ -2475,22 +1885,22 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.DeleteBackupRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.DeleteBackupRequest, dict]]):
                 The request object. Request for [DeleteBackup].
-            name (str):
+            name (:class:`str`):
                 Required. Instance backup resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2499,7 +1909,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -2531,14 +1941,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.DeleteBackupRequest):
             request = memorystore.DeleteBackupRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_backup]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2547,10 +1960,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2558,9 +1971,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -2568,14 +1981,14 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def export_backup(
+    async def export_backup(
         self,
         request: Optional[Union[memorystore.ExportBackupRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Exports a specific backup to a customer target Cloud
         Storage URI.
 
@@ -2590,9 +2003,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_export_backup():
+            async def sample_export_backup():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.ExportBackupRequest(
@@ -2605,15 +2018,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.ExportBackupRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.ExportBackupRequest, dict]]):
                 The request object. Request for [ExportBackup].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2622,7 +2035,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
@@ -2638,7 +2051,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.export_backup]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2647,10 +2062,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2658,9 +2073,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             memorystore.Backup,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -2668,7 +2083,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def backup_instance(
+    async def backup_instance(
         self,
         request: Optional[Union[memorystore.BackupInstanceRequest, dict]] = None,
         *,
@@ -2676,7 +2091,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Backup Instance.
         If this is the first time a backup is being created, a
         backup collection will be created at the backend, and
@@ -2705,9 +2120,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import memorystore_v1
 
-            def sample_backup_instance():
+            async def sample_backup_instance():
                 # Create a client
-                client = memorystore_v1.MemorystoreClient()
+                client = memorystore_v1.MemorystoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = memorystore_v1.BackupInstanceRequest(
@@ -2719,15 +2134,15 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.memorystore_v1.types.BackupInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.memorystore_v1.types.BackupInstanceRequest, dict]]):
                 The request object. Request for [BackupInstance].
-            name (str):
+            name (:class:`str`):
                 Required. Instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
                 where ``location_id`` refers to a Google Cloud region.
@@ -2735,7 +2150,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2744,7 +2159,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
@@ -2769,14 +2184,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, memorystore.BackupInstanceRequest):
             request = memorystore.BackupInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.backup_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.backup_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2785,10 +2203,10 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2796,9 +2214,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             memorystore.Instance,
             metadata_type=memorystore.OperationMetadata,
         )
@@ -2806,20 +2224,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "MemorystoreClient":
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
-
-    def list_operations(
+    async def list_operations(
         self,
         request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
@@ -2833,7 +2238,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.operations_pb2.ListOperationsRequest`):
                 The request object. Request message for
                 `ListOperations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2856,7 +2261,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_operations]
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2865,24 +2270,20 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
 
-    def get_operation(
+    async def get_operation(
         self,
         request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
@@ -2896,7 +2297,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.operations_pb2.GetOperationRequest`):
                 The request object. Request message for
                 `GetOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2919,7 +2320,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2928,24 +2329,20 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
 
-    def delete_operation(
+    async def delete_operation(
         self,
         request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
@@ -2964,7 +2361,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.operations_pb2.DeleteOperationRequest`):
                 The request object. Request message for
                 `DeleteOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2986,7 +2383,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2995,17 +2392,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def cancel_operation(
+    async def cancel_operation(
         self,
         request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
@@ -3023,7 +2420,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.operations_pb2.CancelOperationRequest`):
                 The request object. Request message for
                 `CancelOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3045,7 +2442,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3054,17 +2451,17 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def get_location(
+    async def get_location(
         self,
         request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
@@ -3078,7 +2475,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.location_pb2.GetLocationRequest`):
                 The request object. Request message for
                 `GetLocation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3101,7 +2498,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_location]
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3110,24 +2507,20 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
 
-    def list_locations(
+    async def list_locations(
         self,
         request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
@@ -3141,7 +2534,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             request (:class:`~.location_pb2.ListLocationsRequest`):
                 The request object. Request message for
                 `ListLocations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3164,7 +2557,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_locations]
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3173,22 +2566,24 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
+
+    async def __aenter__(self) -> "MemorystoreAsyncClient":
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -3198,4 +2593,5 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("MemorystoreClient",)
+
+__all__ = ("MemorystoreAsyncClient",)
