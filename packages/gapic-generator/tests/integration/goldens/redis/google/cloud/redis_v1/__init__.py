@@ -62,7 +62,6 @@ else:   # pragma: NO COVER
     # functions above. We do equivalent checks manually.
     try:
         import warnings
-        import sys
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.redis_v1"
