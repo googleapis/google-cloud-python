@@ -747,6 +747,8 @@ libraries:
     python:
       metadata_name_override: compute
       default_version: v1
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16780): Disabling automatic releases until resolved.
+    skip_release: true
   - name: google-cloud-compute-v1beta
     version: 0.10.0
     apis:
