@@ -15,9 +15,11 @@
 #
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.iam.credentials.v1",
-    manifest={},
+    package='google.iam.credentials.v1',
+    manifest={
+    },
 )
 
 
