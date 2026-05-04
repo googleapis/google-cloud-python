@@ -847,8 +847,8 @@ class Block:
                 )
         else:
             raw_df = result_batches.to_pandas()
-
-        df = self._copy_index_to_pandas(raw_df).set_axis(self.column_labels, axis=1)
+        df = self._copy_index_to_pandas(raw_df)
+        df.columns = self.column_labels
         return df, execute_result.query_job
 
     def split(
