@@ -19,9 +19,7 @@ import multiprocessing
 import os
 import random
 import time
-from io import BytesIO
 from typing import List, NamedTuple, Optional
-
 import pytest
 
 import tests.perf.microbenchmarks.time_based.reads.config as config
@@ -182,7 +180,9 @@ class _DummyListBuffer:
 
     def write(self, data):
         self.chunks.append(data)
-        self.size += len(data)
+        nbytes = len(data)
+        self.size += nbytes
+        return nbytes
 
     def getvalue(self):
         return b"".join(self.chunks)
