@@ -5,6 +5,7 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [{ provide: 'ANYWIDGET_MODEL', useValue: null }]
     }).compileComponents();
   });
 
@@ -16,8 +17,8 @@ describe('App', () => {
 
   it('should render title', async () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, table-widget-angular');
+    expect(compiled.querySelector('h3')?.textContent).toContain('Angular Hybrid Widget');
   });
 });
