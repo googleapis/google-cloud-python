@@ -67,7 +67,7 @@ def build_libcrc32c(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def check(session):
     session.install("pytest")
-    session.install("--no-index", f"--find-links={HERE}/wheels", "google-crc32c")
+    session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run("py.test", "tests")
