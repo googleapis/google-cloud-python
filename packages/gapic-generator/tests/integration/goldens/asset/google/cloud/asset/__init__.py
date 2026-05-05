@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
 from google.cloud.asset_v1.services.asset_service.async_client import AssetServiceAsyncClient
 
+from google.cloud.asset_v1.types.asset_enrichment_resourceowners import ResourceOwners
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningMetadata
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningResponse
@@ -83,8 +84,10 @@ from google.cloud.asset_v1.types.asset_service import UpdateFeedRequest
 from google.cloud.asset_v1.types.asset_service import UpdateSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import ContentType
 from google.cloud.asset_v1.types.assets import Asset
+from google.cloud.asset_v1.types.assets import AssetEnrichment
 from google.cloud.asset_v1.types.assets import AttachedResource
 from google.cloud.asset_v1.types.assets import ConditionEvaluation
+from google.cloud.asset_v1.types.assets import EffectiveTagDetails
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisResult
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisState
 from google.cloud.asset_v1.types.assets import IamPolicySearchResult
@@ -95,12 +98,14 @@ from google.cloud.asset_v1.types.assets import RelatedResources
 from google.cloud.asset_v1.types.assets import RelationshipAttributes
 from google.cloud.asset_v1.types.assets import Resource
 from google.cloud.asset_v1.types.assets import ResourceSearchResult
+from google.cloud.asset_v1.types.assets import Tag
 from google.cloud.asset_v1.types.assets import TemporalAsset
 from google.cloud.asset_v1.types.assets import TimeWindow
 from google.cloud.asset_v1.types.assets import VersionedResource
 
 __all__ = ('AssetServiceClient',
     'AssetServiceAsyncClient',
+    'ResourceOwners',
     'AnalyzeIamPolicyLongrunningMetadata',
     'AnalyzeIamPolicyLongrunningRequest',
     'AnalyzeIamPolicyLongrunningResponse',
@@ -163,8 +168,10 @@ __all__ = ('AssetServiceClient',
     'UpdateSavedQueryRequest',
     'ContentType',
     'Asset',
+    'AssetEnrichment',
     'AttachedResource',
     'ConditionEvaluation',
+    'EffectiveTagDetails',
     'IamPolicyAnalysisResult',
     'IamPolicyAnalysisState',
     'IamPolicySearchResult',
@@ -175,6 +182,7 @@ __all__ = ('AssetServiceClient',
     'RelationshipAttributes',
     'Resource',
     'ResourceSearchResult',
+    'Tag',
     'TemporalAsset',
     'TimeWindow',
     'VersionedResource',
