@@ -38,6 +38,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     }
   `]
 })
+// Dummy comment to test pre-commit hook
 export class App {
   protected readonly message = signal('Waiting for model...');
   protected readonly sanitizedHtml = signal<SafeHtml>('');
@@ -48,7 +49,7 @@ export class App {
   ) {
     if (model) {
       this.message.set(model.get('message') || 'Model loaded, no message.');
-      
+
       const rawHtml = model.get('table_html') || '<p>No table HTML yet.</p>';
       this.sanitizedHtml.set(this.sanitizer.bypassSecurityTrustHtml(rawHtml));
 
