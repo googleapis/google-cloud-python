@@ -138,9 +138,9 @@ class AIIf(Value):
 
     prompt: Value
     connection_id: Optional[Value[dt.String]]
-    endpoint: Optional[Value[dt.String]] = None
-    optimization_mode: Optional[Value[dt.String]] = None
-    max_error_ratio: Optional[Value[dt.Float64]] = None
+    endpoint: Optional[Value[dt.String]]
+    optimization_mode: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
 
     shape = rlz.shape_like("prompt")
 
@@ -151,7 +151,7 @@ class AIIf(Value):
 
 @public
 class AIClassify(Value):
-    """Generate True/False based on the prompt"""
+    """Generate categories based on the prompt"""
 
     input: Value
     categories: Value[dt.Array[dt.String]]
@@ -166,12 +166,18 @@ class AIClassify(Value):
 
 @public
 class AIScore(Value):
-    """Generate doubles based on the prompt"""
+    """Generate scores based on the prompt"""
 
     prompt: Value
     connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
 
     shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.DataType:
+        return dt.float64
 
 
 @public

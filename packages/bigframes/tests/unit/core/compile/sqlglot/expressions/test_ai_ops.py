@@ -407,6 +407,27 @@ def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot, connection_id)
     op = ops.AIScore(
         prompt_context=(None, " is the same as ", None),
         connection_id=connection_id,
+        endpoint=None,
+        max_error_ratio=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_score_with_endpoint_and_max_error_ratio(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    col_name = "string_col"
+
+    op = ops.AIScore(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        max_error_ratio=0.5,
     )
 
     sql = utils._apply_ops_to_sql(
