@@ -40,7 +40,6 @@ async def sample_update_trigger():
 
     # Initialize request argument(s)
     request = eventarc_v1.UpdateTriggerRequest(
-        validate_only=True,
     )
 
     # Make the request

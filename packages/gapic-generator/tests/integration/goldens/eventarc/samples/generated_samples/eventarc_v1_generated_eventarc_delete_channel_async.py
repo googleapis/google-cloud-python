@@ -41,7 +41,6 @@ async def sample_delete_channel():
     # Initialize request argument(s)
     request = eventarc_v1.DeleteChannelRequest(
         name="name_value",
-        validate_only=True,
     )
 
     # Make the request
