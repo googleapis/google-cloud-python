@@ -593,7 +593,7 @@ class BigQueryCachingExecutor(executor.Executor):
         peek: Optional[int] = None,
         cache_spec: Optional[ex_spec.CacheSpec] = None,
         must_create_table: bool = True,
-        extra_labels: Mapping[str, str] = {},
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
         # TODO(swast): plumb through the api_name of the user-facing api that

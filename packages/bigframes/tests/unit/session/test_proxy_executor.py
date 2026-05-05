@@ -112,7 +112,9 @@ def test_execute_stable_routes_to_sqlglot_fallback_to_ibis(mock_executor, monkey
     monkeypatch.setattr(bigframes.options.experiments, "sql_compiler", "stable")
     with mock.patch("uuid.uuid1") as mock_uuid:
         mock_uuid.return_value.hex = "1234567890123456"
-        with pytest.warns(UserWarning, match="BadRequest on sqlglot"):
+        with pytest.warns(
+            UserWarning, match="Compiler ID 123456789012: Exception on sqlglot"
+        ):
             mock_executor.execute(array_value, execution_spec)
 
     execution_spec.add_labels.assert_has_calls(

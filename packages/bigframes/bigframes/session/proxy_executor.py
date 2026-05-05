@@ -157,10 +157,10 @@ class DualCompilerProxyExecutor(executor.Executor):
             correlation_id = f"{uuid.uuid1().hex[:12]}"
             try:
                 return self._sqlglot_executor.cached(array_value, config=config)
-            except google.cloud.exceptions.BadRequest as e:
+            except Exception as e:
                 msg = bfe.format_message(
-                    f"Compiler ID {correlation_id}: BadRequest on sqlglot. "
-                    f"Falling back to ibis. Details: {e.message}"
+                    f"Compiler ID {correlation_id}: Exception on sqlglot. "
+                    f"Falling back to ibis. Details: {e}"
                 )
                 warnings.warn(msg, category=UserWarning)
                 return self._ibis_executor.cached(
