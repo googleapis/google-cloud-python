@@ -29,3 +29,6 @@ The scanner uses a YAML configuration file (`regex_config.yaml`) to define rules
 ## Ignoring Directories
 
 You can create a `.scannerignore` file in the directory you are scanning (usually the repo root) to list directories to skip, one per line.
+
+## Known Issues & Future Investigations
+- **Binary Ignores in `.scannerignore`**: Recursive wildcard ignores (e.g., `*.jpg`) currently do not effectively ignore deeply nested binary files. The scanner logic should be investigated to support robust globbing or full-path suffix matching.

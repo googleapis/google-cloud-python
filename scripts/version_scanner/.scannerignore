@@ -14,3 +14,9 @@ changelog.md
 goldens
 # Ignore pandoc references in repositories.bzl
 repositories.bzl
+
+# Ignore binary media files
+*.jpg
+*.png
+*.gif
+*.ico
