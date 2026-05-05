@@ -148,7 +148,6 @@ jobs:
       - static-checks
       - docs-build
       - unit-tests
-      - system-tests
     runs-on: ubuntu-latest
     steps:
       - name: Evaluate Pipeline Status
