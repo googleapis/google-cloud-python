@@ -56,6 +56,16 @@ authentication:
         https://www.googleapis.com/auth/cloud-platform
 
 publishing:
+  method_settings:
+  - selector: google.cloud.storagebatchoperations.v1.StorageBatchOperations.CreateJob
+    auto_populated_fields:
+    - request_id
+  - selector: google.cloud.storagebatchoperations.v1.StorageBatchOperations.CancelJob
+    auto_populated_fields:
+    - request_id
+  - selector: google.cloud.storagebatchoperations.v1.StorageBatchOperations.DeleteJob
+    auto_populated_fields:
+    - request_id
   new_issue_uri: https://issuetracker.google.com/issues/new?component=815827&template=1395449
   documentation_uri: https://cloud.google.com/storage/docs/batch-operations/overview
   api_short_name: storagebatchoperations

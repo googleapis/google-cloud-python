@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import re
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -1813,6 +1814,10 @@ def test_create_job(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1826,6 +1831,7 @@ def test_create_job(request_type, transport: str = 'grpc'):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.CreateJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1856,6 +1862,10 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         client.create_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_batch_operations.CreateJobRequest(
             parent='parent_value',
             job_id='job_id_value',
@@ -1947,6 +1957,10 @@ async def test_create_job_async(transport: str = 'grpc_asyncio', request_type=st
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1962,6 +1976,7 @@ async def test_create_job_async(transport: str = 'grpc_asyncio', request_type=st
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.CreateJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2152,6 +2167,10 @@ def test_delete_job(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2165,6 +2184,7 @@ def test_delete_job(request_type, transport: str = 'grpc'):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.DeleteJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2194,6 +2214,10 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         client.delete_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_batch_operations.DeleteJobRequest(
             name='name_value',
         )
@@ -2274,6 +2298,10 @@ async def test_delete_job_async(transport: str = 'grpc_asyncio', request_type=st
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2287,6 +2315,7 @@ async def test_delete_job_async(transport: str = 'grpc_asyncio', request_type=st
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.DeleteJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2455,6 +2484,10 @@ def test_cancel_job(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2469,6 +2502,7 @@ def test_cancel_job(request_type, transport: str = 'grpc'):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.CancelJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2498,6 +2532,10 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         client.cancel_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_batch_operations.CancelJobRequest(
             name='name_value',
         )
@@ -2578,6 +2616,10 @@ async def test_cancel_job_async(transport: str = 'grpc_asyncio', request_type=st
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request['request_id'] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2592,6 +2634,7 @@ async def test_cancel_job_async(transport: str = 'grpc_asyncio', request_type=st
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         request = storage_batch_operations.CancelJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -5048,6 +5091,10 @@ def test_create_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
 
         assert args[0] == request_msg
@@ -5071,6 +5118,10 @@ def test_delete_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
 
         assert args[0] == request_msg
@@ -5094,6 +5145,10 @@ def test_cancel_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
 
         assert args[0] == request_msg
@@ -5241,6 +5296,10 @@ async def test_create_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
 
         assert args[0] == request_msg
@@ -5266,6 +5325,10 @@ async def test_delete_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
 
         assert args[0] == request_msg
@@ -5292,6 +5355,10 @@ async def test_cancel_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
 
         assert args[0] == request_msg
@@ -6546,6 +6613,10 @@ def test_create_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
 
         assert args[0] == request_msg
@@ -6568,6 +6639,10 @@ def test_delete_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
 
         assert args[0] == request_msg
@@ -6590,6 +6665,10 @@ def test_cancel_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
 
         assert args[0] == request_msg
