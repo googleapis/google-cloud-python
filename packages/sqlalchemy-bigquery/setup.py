@@ -64,7 +64,7 @@ extras = {
         "grpcio >= 1.47.0, < 2.0.0",
         "grpcio >= 1.49.1, < 2.0.0; python_version =='3.11'",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "pyarrow >= 5.0.0",
+        "pyarrow >= 6.0.0",
     ],
 }
 
