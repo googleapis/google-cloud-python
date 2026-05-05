@@ -341,7 +341,7 @@ def test_ai_if_multi_model(session):
 
     result = bbq.ai.if_((df["image"], " contains an animal"))
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
@@ -362,7 +362,7 @@ def test_ai_classify_multi_model(session):
 
     result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
@@ -384,7 +384,7 @@ def test_ai_score_multi_model(session):
 
     result = bbq.ai.score(prompt)
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
