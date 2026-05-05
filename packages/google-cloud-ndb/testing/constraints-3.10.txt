@@ -10,6 +10,6 @@ google-api-core==2.11.0
 protobuf==4.25.8
 pymemcache==2.1.0
 redis==3.0.0
-pytz==2018.3
+pytz==2022.1
 # TODO(https://github.com/googleapis/python-ndb/issues/913) remove this dependency once six is no longer used in the codebase
 six==1.12.0
