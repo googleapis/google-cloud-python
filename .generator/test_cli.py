@@ -741,7 +741,7 @@ def test_run_individual_session_success(mocker, caplog, is_mono_repo):
         "cli.subprocess.run", return_value=MagicMock(returncode=0)
     )
 
-    test_session = "unit-3.9"
+    test_session = "unit-3.10"
     test_library_id = "test-library"
     repo = "repo"
     _run_individual_session(test_session, test_library_id, repo, is_mono_repo)

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.11.0
+version: v0.12.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -73,12 +73,10 @@ libraries:
     version: 1.30.14
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
     version: 3.2.5
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
     apis:
@@ -135,7 +133,6 @@ libraries:
     version: 2.30.3
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: google-apps-card
     version: 0.6.0
     apis:
@@ -229,7 +226,6 @@ libraries:
     version: 2.50.0
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.3.1
     python:
@@ -238,7 +234,6 @@ libraries:
     version: 1.3.1
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-cloud-access-approval
     version: 1.19.0
     apis:
@@ -744,6 +739,7 @@ libraries:
     version: 1.47.0
     apis:
       - path: google/cloud/compute/v1
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
@@ -1468,7 +1464,6 @@ libraries:
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
-      skip_readme_copy: true
   - name: google-cloud-netapp
     version: 0.9.0
     apis:
@@ -2202,7 +2197,6 @@ libraries:
     version: 1.8.0
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-geo-type
     version: 0.6.0
     apis:
@@ -2522,12 +2516,10 @@ libraries:
     version: 0.35.0
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true
   - name: proto-plus
     version: 1.27.2
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: sqlalchemy-bigquery
     version: 1.16.0
     python:
@@ -2536,4 +2528,3 @@ libraries:
     version: 1.17.3
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true
