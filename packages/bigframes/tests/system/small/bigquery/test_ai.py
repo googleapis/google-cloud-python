@@ -359,6 +359,7 @@ def test_ai_classify_multi_model(session, bq_connection):
     df = session.from_glob_path(
         "gs://bigframes-dev-testing/a_multimodel/images/*",
         name="image",
+        connection=bq_connection,
     )
 
     result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
