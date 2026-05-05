@@ -126,6 +126,7 @@ jobs:
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
+          export UV_COMPILE_BYTECODE=1
           
           # 3-Attempt retry loop to mask legacy flaky tests
           for i in 1 2 3; do
