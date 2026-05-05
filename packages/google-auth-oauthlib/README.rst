@@ -29,13 +29,13 @@ The latest documentation is available at `google-auth-oauthlib.googleapis.dev`_.
 
 Supported Python Versions
 -------------------------
-Python >= 3.9
+Python >= 3.10
 
 
 Unsupported Python Versions
 ---------------------------
 
-Python == 2.7, Python <= 3.8.
+Python == 2.7, Python <= 3.9.
 
 
 License
