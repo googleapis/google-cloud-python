@@ -2345,7 +2345,6 @@ class Service:
                     f"To protect backward compatibility, explicitly alias one of these using "
                     f"the `--resource-name-alias` CLI parameter.\n"
                     f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
-                    f"{seen_types}"
                 )
             seen_types[res_type] = msg
 
