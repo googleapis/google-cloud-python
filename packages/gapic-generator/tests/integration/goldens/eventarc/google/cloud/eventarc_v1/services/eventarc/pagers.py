@@ -27,7 +27,11 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import discovery
+from google.cloud.eventarc_v1.types import enrollment
 from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import google_api_source
+from google.cloud.eventarc_v1.types import message_bus
+from google.cloud.eventarc_v1.types import pipeline
 from google.cloud.eventarc_v1.types import trigger
 
 
@@ -579,6 +583,701 @@ class ListChannelConnectionsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.channel_connections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListMessageBusesPager:
+    """A pager for iterating through ``list_message_buses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListMessageBusesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``message_buses`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListMessageBuses`` requests and continue to iterate
+    through the ``message_buses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListMessageBusesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., eventarc.ListMessageBusesResponse],
+            request: eventarc.ListMessageBusesRequest,
+            response: eventarc.ListMessageBusesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListMessageBusesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListMessageBusesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListMessageBusesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListMessageBusesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[message_bus.MessageBus]:
+        for page in self.pages:
+            yield from page.message_buses
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListMessageBusesAsyncPager:
+    """A pager for iterating through ``list_message_buses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListMessageBusesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``message_buses`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListMessageBuses`` requests and continue to iterate
+    through the ``message_buses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListMessageBusesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., Awaitable[eventarc.ListMessageBusesResponse]],
+            request: eventarc.ListMessageBusesRequest,
+            response: eventarc.ListMessageBusesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListMessageBusesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListMessageBusesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListMessageBusesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListMessageBusesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+    def __aiter__(self) -> AsyncIterator[message_bus.MessageBus]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.message_buses:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListMessageBusEnrollmentsPager:
+    """A pager for iterating through ``list_message_bus_enrollments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``enrollments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListMessageBusEnrollments`` requests and continue to iterate
+    through the ``enrollments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., eventarc.ListMessageBusEnrollmentsResponse],
+            request: eventarc.ListMessageBusEnrollmentsRequest,
+            response: eventarc.ListMessageBusEnrollmentsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListMessageBusEnrollmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListMessageBusEnrollmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[str]:
+        for page in self.pages:
+            yield from page.enrollments
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListMessageBusEnrollmentsAsyncPager:
+    """A pager for iterating through ``list_message_bus_enrollments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``enrollments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListMessageBusEnrollments`` requests and continue to iterate
+    through the ``enrollments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., Awaitable[eventarc.ListMessageBusEnrollmentsResponse]],
+            request: eventarc.ListMessageBusEnrollmentsRequest,
+            response: eventarc.ListMessageBusEnrollmentsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListMessageBusEnrollmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListMessageBusEnrollmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListMessageBusEnrollmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+    def __aiter__(self) -> AsyncIterator[str]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.enrollments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListEnrollmentsPager:
+    """A pager for iterating through ``list_enrollments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListEnrollmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``enrollments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEnrollments`` requests and continue to iterate
+    through the ``enrollments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListEnrollmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., eventarc.ListEnrollmentsResponse],
+            request: eventarc.ListEnrollmentsRequest,
+            response: eventarc.ListEnrollmentsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListEnrollmentsRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListEnrollmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListEnrollmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListEnrollmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[enrollment.Enrollment]:
+        for page in self.pages:
+            yield from page.enrollments
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListEnrollmentsAsyncPager:
+    """A pager for iterating through ``list_enrollments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListEnrollmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``enrollments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEnrollments`` requests and continue to iterate
+    through the ``enrollments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListEnrollmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., Awaitable[eventarc.ListEnrollmentsResponse]],
+            request: eventarc.ListEnrollmentsRequest,
+            response: eventarc.ListEnrollmentsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListEnrollmentsRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListEnrollmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListEnrollmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListEnrollmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+    def __aiter__(self) -> AsyncIterator[enrollment.Enrollment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.enrollments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListPipelinesPager:
+    """A pager for iterating through ``list_pipelines`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListPipelinesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``pipelines`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListPipelines`` requests and continue to iterate
+    through the ``pipelines`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListPipelinesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., eventarc.ListPipelinesResponse],
+            request: eventarc.ListPipelinesRequest,
+            response: eventarc.ListPipelinesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListPipelinesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListPipelinesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListPipelinesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListPipelinesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[pipeline.Pipeline]:
+        for page in self.pages:
+            yield from page.pipelines
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListPipelinesAsyncPager:
+    """A pager for iterating through ``list_pipelines`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListPipelinesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``pipelines`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListPipelines`` requests and continue to iterate
+    through the ``pipelines`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListPipelinesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., Awaitable[eventarc.ListPipelinesResponse]],
+            request: eventarc.ListPipelinesRequest,
+            response: eventarc.ListPipelinesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListPipelinesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListPipelinesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListPipelinesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListPipelinesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+    def __aiter__(self) -> AsyncIterator[pipeline.Pipeline]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.pipelines:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListGoogleApiSourcesPager:
+    """A pager for iterating through ``list_google_api_sources`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``google_api_sources`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoogleApiSources`` requests and continue to iterate
+    through the ``google_api_sources`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., eventarc.ListGoogleApiSourcesResponse],
+            request: eventarc.ListGoogleApiSourcesRequest,
+            response: eventarc.ListGoogleApiSourcesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListGoogleApiSourcesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListGoogleApiSourcesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListGoogleApiSourcesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[google_api_source.GoogleApiSource]:
+        for page in self.pages:
+            yield from page.google_api_sources
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+
+class ListGoogleApiSourcesAsyncPager:
+    """A pager for iterating through ``list_google_api_sources`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``google_api_sources`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoogleApiSources`` requests and continue to iterate
+    through the ``google_api_sources`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[..., Awaitable[eventarc.ListGoogleApiSourcesResponse]],
+            request: eventarc.ListGoogleApiSourcesRequest,
+            response: eventarc.ListGoogleApiSourcesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListGoogleApiSourcesRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListGoogleApiSourcesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = eventarc.ListGoogleApiSourcesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListGoogleApiSourcesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            yield self._response
+    def __aiter__(self) -> AsyncIterator[google_api_source.GoogleApiSource]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.google_api_sources:
                     yield response
 
         return async_generator()

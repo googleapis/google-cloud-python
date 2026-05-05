@@ -40,7 +40,6 @@ async def sample_update_channel():
 
     # Initialize request argument(s)
     request = eventarc_v1.UpdateChannelRequest(
-        validate_only=True,
     )
 
     # Make the request
