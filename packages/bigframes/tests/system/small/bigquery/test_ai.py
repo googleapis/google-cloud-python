@@ -337,7 +337,7 @@ def test_ai_if_multi_model(session, bq_connection):
     df = session.from_glob_path(
         "gs://bigframes-dev-testing/a_multimodel/images/*",
         name="image",
-        connection = bq_connection
+        connection=bq_connection,
     )
 
     result = bbq.ai.if_((df["image"], " contains an animal"))
