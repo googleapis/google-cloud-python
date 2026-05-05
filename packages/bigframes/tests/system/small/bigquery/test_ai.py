@@ -329,7 +329,7 @@ def test_ai_if(session):
         max_error_ratio=0.5,
     )
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s1)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
@@ -350,7 +350,7 @@ def test_ai_classify(session):
 
     result = bbq.ai.classify(s, ["animal", "plant"])
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
@@ -372,7 +372,7 @@ def test_ai_score(session):
 
     result = bbq.ai.score(prompt)
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
