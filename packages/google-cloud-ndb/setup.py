@@ -68,7 +68,6 @@ def main():
             "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
@@ -81,7 +80,7 @@ def main():
         packages=packages,
         install_requires=dependencies,
         extras_require={},
-        python_requires=">=3.9",
+        python_requires=">=3.10",
         include_package_data=False,
         zip_safe=False,
     )
