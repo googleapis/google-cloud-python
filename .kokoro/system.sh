@@ -1,32 +1,45 @@
 #!/bin/bash
 # Copyright 2020 Google LLC
-# Licensed under the Apache License, Version 2.0 (the "License"); ...
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# `-e` enables the script to automatically fail when a command fails
+# `-o pipefail` sets the exit code to non-zero if any command fails,
+# or zero if all commands in the pipeline exit successfully.
 set -eo pipefail
 
+# Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
+
+# Setup firestore account credentials
 export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
+
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
 cd "$PROJECT_ROOT"
+
+# This is needed in order for `git diff` to succeed
 git config --global --add safe.directory $(realpath .)
 
-# HOISTED: Install uv exactly once globally before we fan out
-echo "Installing uv globally..."
-python3 -m pip install uv
-# Pre-install nox and the uv plugin so background jobs don't fight over locks
-python3 -m pip install nox nox-uv
-
-# --- NEW: Set maximum concurrent jobs ---
-MAX_CONCURRENT=4
-# --------------------------------------
-
 RETVAL=0
+
 pwd
 
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
   
+  # Declare local overrides to prevent bleeding into the next loop iteration
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
   local NOX_FILE
@@ -39,6 +52,7 @@ run_package_test() {
 
   case "${package_name}" in
     "google-auth")
+      # Copy files needed for google-auth system tests
       mkdir -p "${package_path}/system_tests/data"
       cp "${KOKORO_GFILE_DIR}/google-auth-service-account.json" "${package_path}/system_tests/data/service_account.json"
       cp "${KOKORO_GFILE_DIR}/google-auth-authorized-user.json" "${package_path}/system_tests/data/authorized_user.json"
@@ -58,13 +72,14 @@ run_package_test() {
       ;;
   esac
 
+  # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
-  
-  # NEW: Subshell-isolated GCP auth. Never modify the global gcloud config!
-  export CLOUDSDK_CORE_PROJECT="${PROJECT_ID}"
-  export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="${GOOGLE_APPLICATION_CREDENTIALS}"
 
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+  gcloud config set project "$PROJECT_ID"
+
+  # Run the actual test
   pushd "${package_path}" > /dev/null
   set +e
   "${system_test_script}"
@@ -97,68 +112,52 @@ packages_with_system_tests=(
   "sqlalchemy-spanner"
 )
 
+# A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+
+# Join array elements with | for the pattern match
 packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
-packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}"
+packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
-declare -A pids
-
+# Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
   \( -type d -wholename 'packages/*/tests/system' \) -o \
   \( -type d -wholename 'packages/*/system_tests' \) -o \
   \( -type f -wholename 'packages/*/tests/system.py' \)`; do
 
+  # Extract the package name and define the relative package path
+  # 1. Remove the 'packages/' prefix
+  # 2. Remove everything after the first '/'
   package_name=${path#packages/}
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
 
-  files_to_check="${package_path}/CHANGELOG.md"
+  # Determine if we should skip based on git diff
+  # We always check for changes in these specific versioning/config files
+  files_to_check=(
+    "${package_path}/CHANGELOG.md"
+    "${package_path}/setup.py"
+    "${package_path}/pyproject.toml"
+    "${package_path}/**/gapic_version.py"
+    "${package_path}/**/version.py"
+  )
+
+  # If the package is in our "always run full system tests" list, check the whole directory
   if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
     files_to_check=("${package_path}")
   fi
 
-  echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check}'"
+  echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check[*]}'"
   set +e
   # Passing the array expanded as arguments to git diff
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      
-      # --- NEW: Bounded Concurrency Throttle ---
-      # Check how many background jobs are currently running.
-      # If we hit our limit, pause for 5 seconds and check again.
-      while (( $(jobs -pr | wc -l) >= MAX_CONCURRENT )); do
-          sleep 5
-      done
-      # -----------------------------------------
-
-      echo ">>> Dispatching ${package_name} in the background <<<"
-      
-      # Execute inside an isolated subshell ( ) to prevent GCP credential collisions
-      (
-        run_package_test "$package_name"
-      ) &
-      
-      # Capture the PID of the subshell
-      pids["$package_name"]=$!
+      # Call the function - its internal exports won't affect the next loop
+      run_package_test "$package_name" || RETVAL=$?
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
-
-echo "============================================================"
-echo "All affected packages dispatched. Waiting for completion..."
-echo "============================================================"
-
-for package in "${!pids[@]}"; do
-  wait ${pids[$package]} || {
-    echo "============================================================"
-    echo "ERROR: System tests failed for $package"
-    echo "============================================================"
-    RETVAL=1
-  }
-done
-
-echo "All concurrent tests completed."
 exit ${RETVAL}
