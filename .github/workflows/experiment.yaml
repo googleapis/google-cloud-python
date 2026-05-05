@@ -71,6 +71,7 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_VENV_SEED=1
           uvx --with 'nox[uv]' nox -s lint mypy lint_setup_py
 
   # ==========================================
@@ -96,6 +97,7 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_VENV_SEED=1
           uvx --with 'nox[uv]' nox -s docs docfx
 
   # ==========================================
@@ -123,6 +125,7 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_VENV_SEED=1
           
           # 3-Attempt retry loop to mask legacy flaky tests
           for i in 1 2 3; do
