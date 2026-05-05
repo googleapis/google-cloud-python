@@ -13,12 +13,12 @@ from . import _versions_helpers
 from .gbq import read_gbq, to_gbq  # noqa
 
 sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
-if sys_major == 3 and sys_minor < 9:
+if sys_major == 3 and sys_minor < 10:
     warnings.warn(
-        "pandas-gbq no longer supports Python versions older than 3.9. "
+        "pandas-gbq no longer supports Python versions older than 3.10. "
         "Your Python version is "
         f"{sys_major}.{sys_minor}.{sys_micro}. Please update "
-        "to Python 3.9 or newer to ensure ongoing support. For more details, "
+        "to Python 3.10 or newer to ensure ongoing support. For more details, "
         "see: https://cloud.google.com/python/docs/supported-python-versions",
         FutureWarning,
     )
