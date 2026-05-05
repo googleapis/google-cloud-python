@@ -40,10 +40,6 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
-    # Not supported, but included so that we can explicitly skip the session
-    # from here. Keep unsupported versions last so that they don't conflict with
-    # the prerelease_deps session.
-    "3.9",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -235,8 +231,6 @@ def default(session):
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
-    if session.python == "3.9":
-        session.skip("Python 3.9 is not supported.")
     default(session)
 
 
