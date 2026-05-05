@@ -13,5 +13,3 @@
 # limitations under the License.
 
 """Google OAuth 2.0 Library for Python."""
-
-
