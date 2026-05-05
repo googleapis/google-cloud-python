@@ -52,7 +52,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
-        labels: Mapping[str, str] = {},
+        labels: tuple[tuple[str, str], ...] = (),
     ):
         self._enable_polars_execution = enable_polars_execution
         shared_cache = execution_cache.ExecutionCache()
@@ -119,10 +119,10 @@ class DualCompilerProxyExecutor(executor.Executor):
                         {_COMPILER_LABEL_KEY: f"sqlglot-{correlation_id}"}
                     ),
                 )
-            except google.cloud.exceptions.BadRequest as e:
+            except Exception as e:
                 msg = bfe.format_message(
-                    f"Compiler ID {correlation_id}: BadRequest on sqlglot. "
-                    f"Falling back to ibis. Details: {e.message}"
+                    f"Compiler ID {correlation_id}: Exception on sqlglot. "
+                    f"Falling back to ibis. Details: {e}"
                 )
                 warnings.warn(msg, category=UserWarning)
                 return self._ibis_executor.execute(

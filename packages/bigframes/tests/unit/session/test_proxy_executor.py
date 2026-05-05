@@ -175,7 +175,7 @@ def test_cached_stable_routes_to_sqlglot_fallback_to_ibis(mock_executor, monkeyp
     with mock.patch("uuid.uuid1") as mock_uuid:
         mock_uuid.return_value.hex = "1234567890123456"
         with pytest.warns(
-            UserWarning, match="Compiler ID 123456789012: BadRequest on sqlglot"
+            UserWarning, match="Compiler ID 123456789012: Exception on sqlglot"
         ):
             mock_executor.cached(array_value, config=config)
 

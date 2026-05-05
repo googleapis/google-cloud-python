@@ -80,7 +80,7 @@ class BigQueryCachingExecutor(executor.Executor):
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
-        labels: Mapping[str, str] = {},
+        labels: tuple[tuple[str, str], ...] = (),
         compiler_name: Literal["ibis", "sqlglot"] = "ibis",
         cache: Optional[execution_cache.ExecutionCache] = None,
     ):
@@ -166,7 +166,7 @@ class BigQueryCachingExecutor(executor.Executor):
             result = self._export_gbq(
                 array_value,
                 execution_spec.destination_spec,
-                extra_labels=dict(execution_spec.labels),
+                extra_labels=execution_spec.labels,
             )
             self._publisher.publish(
                 bigframes.core.events.ExecutionFinished(
@@ -183,7 +183,7 @@ class BigQueryCachingExecutor(executor.Executor):
             if isinstance(execution_spec.destination_spec, ex_spec.CacheSpec)
             else None,
             must_create_table=not execution_spec.promise_under_10gb,
-            extra_labels=dict(execution_spec.labels),
+            extra_labels=execution_spec.labels,
         )
         # post steps: export
         if isinstance(execution_spec.destination_spec, ex_spec.GcsOutputSpec):
@@ -246,7 +246,7 @@ class BigQueryCachingExecutor(executor.Executor):
         self,
         array_value: bigframes.core.ArrayValue,
         spec: ex_spec.TableOutputSpec,
-        extra_labels: Mapping[str, str] = {},
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> executor.ExecuteResult:
         """
         Export the ArrayValue to an existing BigQuery table.
@@ -365,7 +365,7 @@ class BigQueryCachingExecutor(executor.Executor):
         job_config: Optional[bq_job.QueryJobConfig] = None,
         query_with_job: bool = True,
         session=None,
-        extra_labels: Mapping[str, str] = {},
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
