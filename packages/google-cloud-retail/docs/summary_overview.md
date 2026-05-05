@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Retail API
+# Vertex AI Search for commerce API
 
-Overview of the APIs available for Retail API.
+Overview of the APIs available for Vertex AI Search for commerce API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Retail API.
+Vertex AI Search for commerce API.
 
 [classes](https://cloud.google.com/python/docs/reference/retail/latest/summary_class.html)
 

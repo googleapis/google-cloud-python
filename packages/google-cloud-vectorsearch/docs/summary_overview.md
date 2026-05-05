@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Vector Search API API
+# Vector Search API
 
-Overview of the APIs available for Vector Search API API.
+Overview of the APIs available for Vector Search API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Vector Search API API.
+Vector Search API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-vectorsearch/latest/summary_class.html)
 

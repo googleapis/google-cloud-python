@@ -80,6 +80,8 @@ packages_with_system_tests=(
   "google-auth"
   "google-cloud-bigquery-storage"
   "google-cloud-bigtable"
+  "google-cloud-compute"
+  "google-cloud-compute-v1beta"
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
@@ -112,12 +114,13 @@ for path in `find 'packages' \
 
   files_to_check="${package_path}/CHANGELOG.md"
   if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check="${package_path}"
+    files_to_check=("${package_path}")
   fi
 
   echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check}'"
   set +e
-  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
+  # Passing the array expanded as arguments to git diff
+  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then

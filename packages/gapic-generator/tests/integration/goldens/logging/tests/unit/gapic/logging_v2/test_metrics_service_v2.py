@@ -14,12 +14,8 @@
 # limitations under the License.
 #
 import os
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 from grpc.experimental import aio
@@ -1445,9 +1441,7 @@ async def test_list_log_metrics_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.list_log_metrics(request={})
         ).pages:
             pages.append(page_)

@@ -473,3 +473,44 @@ def test_extended_operation_request_response_fields():
 
     actual = poll_request.extended_operation_response_fields
     assert actual == expected
+
+
+def test_message_type_resource_type_with_alias():
+    # 1. Cleanly mock the options
+    opts = descriptor_pb2.MessageOptions()
+    opts.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
+    
+    msg_pb = descriptor_pb2.DescriptorProto(name="MyMessage", options=opts)
+    
+    # 2. Explicitly instantiate MessageType here instead
+    # of using `make_message` to inject 'resource_name_aliases' field.
+    message = wrappers.MessageType(
+        message_pb=msg_pb,
+        fields={},
+        nested_enums={},
+        nested_messages={},
+        resource_name_aliases={"ces.googleapis.com/Tool": "CesTool"},
+    )
+    
+    # 3. Verify it intercepted the default Protobuf logic
+    # and returned the alias
+    assert message.resource_type == "CesTool"
+
+
+def test_message_type_resource_type_without_alias():
+    # 1. Cleanly mock the options
+    opts = descriptor_pb2.MessageOptions()
+    opts.Extensions[resource_pb2.resource].type = "ces.googleapis.com/Tool"
+    msg_pb = descriptor_pb2.DescriptorProto(name="MyMessage", options=opts)
+    
+    # 2. Instantiate WITHOUT any aliases matching this resource
+    message = wrappers.MessageType(
+        message_pb=msg_pb,
+        fields={},
+        nested_enums={},
+        nested_messages={},
+        resource_name_aliases={"some.other/Resource": "OtherAlias"},
+    )
+    
+    # 3. Verify it falls back to the default type ("Tool")
+    assert message.resource_type == "Tool"

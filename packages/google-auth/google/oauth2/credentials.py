@@ -39,6 +39,7 @@ import warnings
 
 from google.auth import _cloud_sdk
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import metrics
@@ -54,7 +55,11 @@ _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 _GOOGLE_OAUTH2_TOKEN_INFO_ENDPOINT = "https://oauth2.googleapis.com/tokeninfo"
 
 
-class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
+class Credentials(
+    credentials.CredentialsWithRegionalAccessBoundary,
+    credentials.ReadOnlyScoped,
+    credentials.CredentialsWithQuotaProject,
+):
     """Credentials using OAuth 2.0 access and refresh tokens.
 
     The credentials are considered immutable except the tokens and the token
@@ -202,6 +207,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._refresh_worker = None
         self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh", False)
         self._account = d.get("_account", "")
+        self._rab_manager = d.get("_rab_manager") or (
+            _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+        )
 
     @property
     def refresh_token(self):
@@ -353,8 +361,23 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_USER
 
-    @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        """Builds the URL for Regional Access Boundary lookup.
+
+        OAuth 2.0 credentials do not support independent Regional Access Boundary
+        lookup. However, they may support a seeded Regional Access Boundary
+        provided externally (e.g., from gcloud).
+
+        Returns:
+            None: This credential type does not support RAB lookup.
+        """
+        return None
+
+    def _is_regional_access_boundary_lookup_required(self):
+        """OAuth 2.0 credentials do not support independent lookup."""
+        return False
+
+    def _perform_refresh_token(self, request):
         if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(
                 "User credential refresh is only supported in the default "

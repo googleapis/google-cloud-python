@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-firestore-admin",
+    "name": "google-cloud-firestore",
     "version": "2.27.0"
   },
   "snippets": [

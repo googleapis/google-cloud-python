@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Dataproc API
+# Cloud Dataproc API
 
-Overview of the APIs available for Google Cloud Dataproc API.
+Overview of the APIs available for Cloud Dataproc API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Dataproc API.
+Cloud Dataproc API.
 
 [classes](https://cloud.google.com/python/docs/reference/dataproc/latest/summary_class.html)
 

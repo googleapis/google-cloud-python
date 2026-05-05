@@ -3,7 +3,11 @@ Python Client for Cloud Trace
 
 |stable| |pypi| |versions|
 
-`Cloud Trace`_: is a distributed tracing system that collects latency data from your applications and displays it in the Google Cloud Platform Console. You can track how requests propagate through your application and receive detailed near real-time performance insights.
+`Cloud Trace`_: Sends application trace data to Stackdriver Trace for viewing. Trace data
+is collected for all App Engine applications by default. Trace data from
+other applications can be provided using this API. This library is used to
+interact with the Trace API directly. If you are looking to instrument
+your application for Stackdriver Trace, we recommend using OpenTelemetry.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

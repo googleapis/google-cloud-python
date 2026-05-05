@@ -22,6 +22,7 @@ from google.rpc import status_pb2
 
 from google.cloud._storage_v2.types import storage as storage_type
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     _MAX_CHUNK_SIZE_BYTES,
@@ -165,6 +166,24 @@ class TestAsyncAppendableObjectWriter:
             mock_crc.implementation = "python"
             with pytest.raises(exceptions.FailedPrecondition):
                 self._make_one(mock_appendable_writer["mock_client"])
+
+    def test_from_blob(self, mock_appendable_writer):
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket.name = BUCKET
+        mock_blob.generation = GENERATION
+
+        writer = AsyncAppendableObjectWriter.from_blob(
+            mock_appendable_writer["mock_client"],
+            mock_blob,
+            writer_options={"FLUSH_INTERVAL_BYTES": EIGHT_MIB},
+        )
+
+        assert writer.bucket_name == BUCKET
+        assert writer.object_name == OBJECT
+        assert writer.generation == GENERATION
+        assert writer.flush_interval == EIGHT_MIB
+        assert writer.blob == mock_blob
 
     # -------------------------------------------------------------------------
     # Stream Lifecycle Tests

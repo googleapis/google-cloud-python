@@ -182,12 +182,18 @@ def test_user_agent_not_in_vscode(monkeypatch):
 @mock.patch.dict(os.environ, {"VSCODE_PID": "12345"}, clear=True)
 def test_user_agent_in_vscode(monkeypatch):
     monkeypatch_client_constructors(monkeypatch)
-    provider = create_clients_provider()
-    assert_clients_w_user_agent(provider, "vscode")
-    assert_clients_wo_user_agent(provider, "googlecloudtools.cloudcode")
 
-    # We still need to include attribution to bigframes
-    assert_clients_w_user_agent(provider, f"bigframes/{bigframes.version.__version__}")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        user_home = pathlib.Path(tmpdir)
+        with mock.patch("pathlib.Path.home", return_value=user_home):
+            provider = create_clients_provider()
+            assert_clients_w_user_agent(provider, "vscode")
+            assert_clients_wo_user_agent(provider, "googlecloudtools.cloudcode")
+
+            # We still need to include attribution to bigframes
+            assert_clients_w_user_agent(
+                provider, f"bigframes/{bigframes.version.__version__}"
+            )
 
 
 @mock.patch.dict(os.environ, {"VSCODE_PID": "12345"}, clear=True)

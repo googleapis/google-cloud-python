@@ -17,7 +17,7 @@
 # `BUILD_TYPE` should be one of ["presubmit", "continuous"]
 # `TEST_TYPE` should be one of ["docs", "docfx", "prerelease", "unit"]
 # or match the name of the nox session that you want to run.
-# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+# `PY_VERSION` should be one of ["3.10", "3.11", "3.12"]
 
 # `TEST_TYPE` and `PY_VERSION` are required by the script `ci/run_single_test.sh`
 
@@ -35,6 +35,14 @@ set -eo pipefail
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
+
+# Redirect git clones for core dependencies to the local repository.
+# This serves two purposes:
+# 1. Performance: Avoids repeated 100MB+ downloads of the monorepo for each dependency.
+# 2. Correctness: Ensures that changes in core packages (like google-api-core) are
+#    tested against downstream packages in the same Pull Request.
+git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
+git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
 
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
