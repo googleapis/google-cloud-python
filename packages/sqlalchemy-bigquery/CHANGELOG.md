@@ -8,6 +8,13 @@ Older versions of this project were distributed as [pybigquery][0].
 
 [1]: https://pypi.org/project/sqlalchemy-bigquery/#history
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.16.0...sqlalchemy-bigquery-v1.17.0) (2026-05-05)
+
+
+### Bug Fixes
+
+* Support Creation of JSON columns (#16733) ([153b82a47b3db8267e5e546b82a04e7d25e941a0](https://github.com/googleapis/google-cloud-python/commit/153b82a47b3db8267e5e546b82a04e7d25e941a0))
+
 
 [pybigquery PyPI History][2]
 

@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.36.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.0...pandas-gbq-v0.36.0) (2026-05-05)
+
 ## [0.35.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.1...pandas-gbq-v0.35.0) (2026-04-09)
 
 
