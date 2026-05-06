@@ -47,12 +47,12 @@ from .version import __version__
 
 sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
 
-# Now that support for Python 3.7 and 3.8 has been removed, we don't expect the
+# Now that support for Python 3.7, 3.8 and 3.9 has been removed, we don't expect the
 # following check to succeed. The warning is only included for robustness.
-if sys_major == 3 and sys_minor in (7, 8):  # pragma: NO COVER
+if sys_major == 3 and sys_minor in (7, 8, 9):  # pragma: NO COVER
     warnings.warn(
-        "The python-bigquery-sqlalchemy library no longer supports Python 3.7 "
-        "and Python 3.8. "
+        "The python-bigquery-sqlalchemy library no longer supports Python 3.7, "
+        "3.8 and 3.9. "
         f"Your Python version is {sys_major}.{sys_minor}.{sys_micro}. We "
         "recommend that you update soon to ensure ongoing support. For "
         "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",
