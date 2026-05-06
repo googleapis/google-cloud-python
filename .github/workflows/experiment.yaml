@@ -195,8 +195,8 @@ jobs:
           done
           exit $FAILED
 
-  # ==========================================
-  # 5. CORE DEPS FROM SOURCE (Legacy Pip Fallback)
+ # ==========================================
+  # 5. CORE DEPS FROM SOURCE (Pure UV)
   # ==========================================
   unit-core-deps-from-source:
     needs: discover
@@ -208,26 +208,28 @@ jobs:
         chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.14"
-      
-      - name: Install Nox (Standard)
-        run: python -m pip install nox virtualenv
-
+          enable-cache: true
       - name: Execute Core Deps
         run: |
-          # We intentionally DO NOT export NOX_DEFAULT_VENV_BACKEND=uv here.
-          # We must use legacy pip to support the hardcoded '--ignore-installed' flag.
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_VENV_SEED=1
+          export UV_COMPILE_BYTECODE=1
+          
+          # NATIVELY instruct uv to allow prerelease Git resolution
+          export UV_PRERELEASE=allow
           
           FAILED=0
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Testing $pkg"
             cd $pkg
             
-            if nox -l | grep -q "core_deps_from_source"; then
-              echo "Session found in $pkg. Executing with standard pip..."
-              if ! nox -s "core_deps_from_source" -p "3.14"; then
+            # The Look-Before-You-Leap check
+            if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source"; then
+              # Natively executes with pure UV speed using your newly patched Noxfiles
+              if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "3.14"; then
                 echo "::error::Failed in $pkg"
                 FAILED=1
               fi
