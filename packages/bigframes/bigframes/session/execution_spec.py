@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Literal, Optional, Union
+from typing import Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
@@ -29,6 +29,11 @@ class ExecutionSpec:
     )
     # This is an optimization flag for gbq execution, it doesn't change semantics, but if promise is falsely made, errors may occur
     promise_under_10gb: bool = False
+
+    labels: tuple[tuple[str, str], ...] = ()
+
+    def add_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
+        return dataclasses.replace(self, labels=self.labels + tuple(labels.items()))
 
 
 # This one is temporary, in future, caching will not be done through immediate execution, but will label nodes
