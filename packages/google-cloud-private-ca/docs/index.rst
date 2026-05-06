@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Private Certificate Authority.
+This package includes clients for multiple versions of Certificate Authority.
 By default, you will get version ``privateca_v1``.
 
 

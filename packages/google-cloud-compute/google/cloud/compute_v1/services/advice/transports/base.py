@@ -147,7 +147,7 @@ class AdviceTransport(abc.ABC):
         self._wrapped_methods = {
             self.calendar_mode: gapic_v1.method.wrap_method(
                 self.calendar_mode,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

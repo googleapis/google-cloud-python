@@ -337,8 +337,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.ListFrameworksRequest, dict]]):
                 The request object. Request message for [ListFrameworks][].
             parent (:class:`str`):
-                Required. The parent resource name, in the format
-                ``organizations/{organization}/locations/{location}``.
+                Required. The parent resource name, in one of the
+                following formats:
+
+                - ``organizations/{organization}/locations/{location}``
+                - ``projects/{project}/locations/{location}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
@@ -466,9 +470,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.GetFrameworkRequest, dict]]):
                 The request object. The request message for [GetFramework][].
             name (:class:`str`):
-                Required. The name of the framework to retrieve, in the
-                format
-                ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``
+                Required. The name of the framework to retrieve, in one
+                of the following formats:
+                ``organizations/{organization}/locations/{location}/frameworks/{framework}``
+                or
+                ``projects/{project}/locations/{location}/frameworks/{framework}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -590,8 +597,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.CreateFrameworkRequest, dict]]):
                 The request object. The request message for [CreateFramework][].
             parent (:class:`str`):
-                Required. The parent resource name, in the format
-                ``organizations/{organization}/locations/{location}``.
+                Required. The parent resource name, in one of the
+                following formats:
+
+                - ``organizations/{organization}/locations/{location}``
+                - ``projects/{project}/locations/{location}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
@@ -870,8 +881,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.DeleteFrameworkRequest, dict]]):
                 The request object. Request message for [DeleteFramework][].
             name (:class:`str`):
-                Required. The name of the resource, in the format
-                ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
+                Required. The name of the resource, in one of the
+                following formats:
+                ``organizations/{organization}/locations/{location}/frameworks/{framework}``
+                or
+                ``projects/{project}/locations/{location}/frameworks/{framework}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -976,8 +991,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.ListCloudControlsRequest, dict]]):
                 The request object. Request message for [ListCloudControls][].
             parent (:class:`str`):
-                Required. The parent resource name, in the format
-                ``organizations/{organization}/locations/{location}``.
+                Required. The parent resource name, in one of the
+                following formats:
+
+                - ``organizations/{organization}/locations/{location}``
+                - ``projects/{project}/locations/{location}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
@@ -1107,8 +1126,11 @@ class ConfigAsyncClient:
                 The request object. The request message for [GetCloudControl][].
             name (:class:`str`):
                 Required. The name of the cloud control to retrieve, in
-                the format
-                ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``.
+                one of the following formats:
+                ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``
+                or
+                ``projects/{project}/locations/{location}/cloudControls/{cloud_control}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -1230,8 +1252,12 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.CreateCloudControlRequest, dict]]):
                 The request object. The request message for [CreateCloudControl][].
             parent (:class:`str`):
-                Required. The parent resource name, in the format
-                ``organizations/{organization}/locations/{location}``.
+                Required. The parent resource name, in one of the
+                following formats:
+
+                - ``organizations/{organization}/locations/{location}``.
+                - ``projects/{project}/locations/{location}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
@@ -1518,8 +1544,11 @@ class ConfigAsyncClient:
                 The request object. The request message for [DeleteCloudControl][].
             name (:class:`str`):
                 Required. The name of the cloud control to delete, in
-                the format
-                ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``.
+                one of the following formats:
+                ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``
+                or
+                ``projects/{project}/locations/{location}/CloudControls/{CloudControl}``.
+
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field

@@ -4716,7 +4716,10 @@ def test_commit(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = commit_response.CommitResponse()
+        call.return_value = commit_response.CommitResponse(
+            isolation_level=transaction.TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+        )
         response = client.commit(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4727,6 +4730,14 @@ def test_commit(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, commit_response.CommitResponse)
+    assert (
+        response.isolation_level
+        == transaction.TransactionOptions.IsolationLevel.SERIALIZABLE
+    )
+    assert (
+        response.read_lock_mode
+        == transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+    )
 
 
 def test_commit_non_empty_request_with_auto_populated_field():
@@ -4849,7 +4860,10 @@ async def test_commit_async(
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            commit_response.CommitResponse()
+            commit_response.CommitResponse(
+                isolation_level=transaction.TransactionOptions.IsolationLevel.SERIALIZABLE,
+                read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            )
         )
         response = await client.commit(request)
 
@@ -4861,6 +4875,14 @@ async def test_commit_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, commit_response.CommitResponse)
+    assert (
+        response.isolation_level
+        == transaction.TransactionOptions.IsolationLevel.SERIALIZABLE
+    )
+    assert (
+        response.read_lock_mode
+        == transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+    )
 
 
 @pytest.mark.asyncio
@@ -9749,7 +9771,10 @@ async def test_commit_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            commit_response.CommitResponse()
+            commit_response.CommitResponse(
+                isolation_level=transaction.TransactionOptions.IsolationLevel.SERIALIZABLE,
+                read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            )
         )
         await client.commit(request=None)
 
@@ -11319,7 +11344,10 @@ def test_commit_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = commit_response.CommitResponse()
+        return_value = commit_response.CommitResponse(
+            isolation_level=transaction.TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11335,6 +11363,14 @@ def test_commit_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, commit_response.CommitResponse)
+    assert (
+        response.isolation_level
+        == transaction.TransactionOptions.IsolationLevel.SERIALIZABLE
+    )
+    assert (
+        response.read_lock_mode
+        == transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -14,9 +14,7 @@
 
 import io
 
-from setuptools import find_namespace_packages
-from setuptools import setup
-
+from setuptools import find_namespace_packages, setup
 
 TOOL_DEPENDENCIES = "click>=6.0.0"
 
@@ -56,12 +54,11 @@ setup(
             "google-oauthlib-tool" "=google_auth_oauthlib.tool.__main__:main [tool]"
         ]
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     license="Apache 2.0",
     keywords="google auth oauth client oauthlib",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",

@@ -3,7 +3,7 @@ Python Client for Cloud Composer
 
 |stable| |pypi| |versions|
 
-`Cloud Composer`_: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
+`Cloud Composer`_: Manages Apache Airflow environments on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ async def sample_create_channel():
         parent="parent_value",
         channel=channel,
         channel_id="channel_id_value",
-        validate_only=True,
     )
 
     # Make the request

@@ -28,6 +28,11 @@ from typing import Dict, List
 import nox
 import nox.sessions
 
+PROJECT_ID_OVERRIDE = os.getenv("BIGFRAMES_TEST_PROJECT")
+ENV_OVERRIDES = (
+    {"GOOGLE_CLOUD_PROJECT": PROJECT_ID_OVERRIDE} if PROJECT_ID_OVERRIDE else {}
+)
+
 RUFF_VERSION = "ruff==0.14.14"
 MYPY_VERSION = "mypy==1.15.0"
 
@@ -61,6 +66,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     PYTEST_VERSION,
     "pytest-cov",
     "pytest-timeout",
+    "pluggy",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
@@ -186,6 +192,15 @@ def format(session):
         "--select",
         "I",
         "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -357,11 +372,7 @@ def run_system(
         )
 
     pytest_cmd.extend(extra_pytest_options)
-    session.run(
-        *pytest_cmd,
-        *session.posargs,
-        test_folder,
-    )
+    session.run(*pytest_cmd, *session.posargs, test_folder, env=ENV_OVERRIDES)
 
 
 @nox.session(python="3.12")
@@ -392,9 +403,6 @@ def system_noextras(session: nox.sessions.Session):
 @nox.session(python="3.12")
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
-    session.skip(
-        "Temporary skip to enable a PR merge. Remove skip as part of closing https://github.com/googleapis/google-cloud-python/issues/16489"
-    )
 
     run_system(
         session=session,
@@ -461,7 +469,6 @@ def cover(session):
     omitted_paths = [
         # non-prod, unit tested
         "bigframes/core/compile/polars/*",
-        "bigframes/core/compile/sqlglot/*",
         # untested
         "bigframes/streaming/*",
         # utils
@@ -630,6 +637,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         tests_path,
         *extra_pytest_options,
         *session.posargs,
+        env=ENV_OVERRIDES,
     )
 
 
@@ -664,7 +672,7 @@ def system_prerelease(session: nox.sessions.Session):
 
 @nox.session(python=COLAB_AND_BQ_STUDIO_PYTHON_VERSIONS)
 def notebook(session: nox.Session):
-    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    google_cloud_project = PROJECT_ID_OVERRIDE or os.getenv("GOOGLE_CLOUD_PROJECT")
     if not google_cloud_project:
         session.error(
             "Set GOOGLE_CLOUD_PROJECT environment variable to run notebook session."
@@ -760,6 +768,7 @@ def notebook(session: nox.Session):
             "python",
             CURRENT_DIRECTORY / "scripts" / "notebooks_fill_params.py",
             *notebooks,
+            env=ENV_OVERRIDES,
         )
 
         processes = []
@@ -772,8 +781,7 @@ def notebook(session: nox.Session):
             )
             if multi_process_mode:
                 process = multiprocessing.Process(
-                    target=session.run,
-                    args=args,
+                    target=session.run, args=args, kwargs={"env": ENV_OVERRIDES}
                 )
                 process.start()
                 processes.append(process)
@@ -781,7 +789,7 @@ def notebook(session: nox.Session):
                 # process to avoid potential race conditions。
                 time.sleep(1)
             else:
-                session.run(*args)
+                session.run(*args, env=ENV_OVERRIDES)
 
         for notebook, regions in notebooks_reg.items():
             for region in regions:
@@ -796,6 +804,7 @@ def notebook(session: nox.Session):
                     process = multiprocessing.Process(
                         target=session.run,
                         args=region_args,
+                        kwargs={"env": ENV_OVERRIDES},
                     )
                     process.start()
                     processes.append(process)
@@ -803,7 +812,7 @@ def notebook(session: nox.Session):
                     # process to avoid potential race conditions。
                     time.sleep(1)
                 else:
-                    session.run(*region_args)
+                    session.run(*region_args, env=ENV_OVERRIDES)
 
         for process in processes:
             process.join()
@@ -820,6 +829,7 @@ def notebook(session: nox.Session):
             "scripts/run_and_publish_benchmark.py",
             "--notebook",
             "--publish-benchmarks=notebooks/",
+            env=ENV_OVERRIDES,
         )
 
 
@@ -883,6 +893,7 @@ def benchmark(session: nox.Session):
                 "scripts/run_and_publish_benchmark.py",
                 f"--benchmark-path={benchmark}",
                 f"--iterations={args.iterations}",
+                env=ENV_OVERRIDES,
             )
     finally:
         session.run(
@@ -891,6 +902,7 @@ def benchmark(session: nox.Session):
             f"--publish-benchmarks={base_path}",
             f"--iterations={args.iterations}",
             f"--output-csv={args.output_csv}",
+            env=ENV_OVERRIDES,
         )
 
 
@@ -911,7 +923,7 @@ def release_dry_run(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cleanup(session):
     """Clean up stale and/or temporary resources in the test project."""
-    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    google_cloud_project = PROJECT_ID_OVERRIDE or os.getenv("GOOGLE_CLOUD_PROJECT")
     cleanup_options = []
     if google_cloud_project:
         cleanup_options.append(f"--project-id={google_cloud_project}")

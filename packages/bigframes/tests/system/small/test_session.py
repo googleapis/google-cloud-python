@@ -1936,6 +1936,131 @@ def test_read_parquet_gcs(
 
 
 @pytest.mark.parametrize(
+    ("engine", "filename"),
+    (
+        pytest.param(
+            "bigquery",
+            "000000000000.orc",
+            id="bigquery",
+        ),
+        pytest.param(
+            "auto",
+            "000000000000.orc",
+            id="auto",
+        ),
+        pytest.param(
+            "pyarrow",
+            "000000000000.orc",
+            id="pyarrow",
+        ),
+        pytest.param(
+            "bigquery",
+            "*.orc",
+            id="bigquery_wildcard",
+        ),
+        pytest.param(
+            "auto",
+            "*.orc",
+            id="auto_wildcard",
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+        ),
+    ),
+)
+def test_read_orc_gcs(
+    session: bigframes.Session, scalars_dfs, gcs_folder, engine, filename
+):
+    pytest.importorskip(
+        "pandas",
+        minversion="2.0.0",
+        reason="pandas<2 does not handle nullable int columns well",
+    )
+    scalars_df, _ = scalars_dfs
+    write_path = gcs_folder + test_read_orc_gcs.__name__ + "000000000000.orc"
+    read_path = gcs_folder + test_read_orc_gcs.__name__ + filename
+
+    df_in: bigframes.dataframe.DataFrame = scalars_df.copy()
+    df_in = df_in.drop(
+        columns=[
+            "geography_col",
+            "time_col",
+            "datetime_col",
+            "duration_col",
+            "timestamp_col",
+        ]
+    )
+    df_write = df_in.reset_index(drop=False)
+    df_write.index.name = f"ordering_id_{random.randrange(1_000_000)}"
+    df_write.to_orc(write_path)
+
+    df_out = (
+        session.read_orc(read_path, engine=engine)
+        .set_index(df_write.index.name)
+        .sort_index()
+        .set_index(typing.cast(str, df_in.index.name))
+    )
+
+    assert df_out.size != 0
+    pd_df_in = df_in.to_pandas()
+    pd_df_out = df_out.to_pandas()
+    bigframes.testing.utils.assert_frame_equal(pd_df_in, pd_df_out)
+
+
+@pytest.mark.parametrize(
+    ("engine", "filename"),
+    (
+        pytest.param(
+            "bigquery",
+            "000000000000.avro",
+            id="bigquery",
+        ),
+        pytest.param(
+            "bigquery",
+            "*.avro",
+            id="bigquery_wildcard",
+        ),
+    ),
+)
+def test_read_avro_gcs(
+    session: bigframes.Session, scalars_dfs, gcs_folder, engine, filename
+):
+    scalars_df, _ = scalars_dfs
+    write_uri = gcs_folder + test_read_avro_gcs.__name__ + "*.avro"
+    read_uri = gcs_folder + test_read_avro_gcs.__name__ + filename
+
+    df_in: bigframes.dataframe.DataFrame = scalars_df.copy()
+    # datetime round-trips back as str in avro
+    df_in = df_in.drop(columns=["geography_col", "duration_col", "datetime_col"])
+    df_write = df_in.reset_index(drop=False)
+    index_name = f"ordering_id_{random.randrange(1_000_000)}"
+    df_write.index.name = index_name
+
+    # Create a BigQuery table
+    table_id = df_write.to_gbq()
+
+    # Extract to GCS as Avro
+    client = session.bqclient
+    extract_job_config = bigquery.ExtractJobConfig()
+    extract_job_config.destination_format = "AVRO"
+    extract_job_config.use_avro_logical_types = True
+
+    client.extract_table(table_id, write_uri, job_config=extract_job_config).result()
+
+    df_out = (
+        session.read_avro(read_uri, engine=engine)
+        .set_index(index_name)
+        .sort_index()
+        .set_index(typing.cast(str, df_in.index.name))
+    )
+
+    assert df_out.size != 0
+    pd_df_in = df_in.to_pandas()
+    pd_df_out = df_out.to_pandas()
+    bigframes.testing.utils.assert_frame_equal(pd_df_in, pd_df_out)
+
+
+@pytest.mark.parametrize(
     "compression",
     [
         None,

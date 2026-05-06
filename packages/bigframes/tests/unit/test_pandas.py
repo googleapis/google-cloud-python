@@ -37,6 +37,8 @@ def all_session_methods():
     session_attributes.remove("close")
     # streaming isn't in pandas
     session_attributes.remove("read_gbq_table_streaming")
+    # execution_history is in base namespace, not pandas
+    session_attributes.remove("execution_history")
 
     for attribute in sorted(session_attributes):
         session_method = getattr(bigframes.session.Session, attribute)

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Distributed Cloud Edge Network API API
+# Distributed Cloud Edge Network API
 
-Overview of the APIs available for Distributed Cloud Edge Network API API.
+Overview of the APIs available for Distributed Cloud Edge Network API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Distributed Cloud Edge Network API API.
+Distributed Cloud Edge Network API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-edgenetwork/latest/summary_class.html)
 

@@ -36,5 +36,5 @@ setuptools.setup(
     ],
     install_requires=requirements,
     packages=setuptools.find_packages(),
-    python_requires=">=3.9",
+    python_requires=">=3.9",  # version-scanner: ignore
 )

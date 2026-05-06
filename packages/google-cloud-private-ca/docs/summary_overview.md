@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Private Certificate Authority API
+# Certificate Authority API
 
-Overview of the APIs available for Private Certificate Authority API.
+Overview of the APIs available for Certificate Authority API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Private Certificate Authority API.
+Certificate Authority API.
 
 [classes](https://cloud.google.com/python/docs/reference/privateca/latest/summary_class.html)
 
