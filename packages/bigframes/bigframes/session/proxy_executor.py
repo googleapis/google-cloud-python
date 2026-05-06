@@ -91,6 +91,17 @@ class DualCompilerProxyExecutor(executor.Executor):
         """
         Convert an ArrayValue to a sql query that will yield its value.
         """
+        compiler_option = bigframes.options.experiments.sql_compiler
+        # Use ibis unless sqlglot explicitly selected, since we can't handle errors resulting
+        # from use of the sql produced by this method.
+        if compiler_option == "experimental":
+            return self._sqlglot_executor.to_sql(
+                array_value,
+                offset_column=offset_column,
+                ordered=ordered,
+                enable_cache=enable_cache,
+            )
+        # stable or legacy use ibis
         return self._ibis_executor.to_sql(
             array_value,
             offset_column=offset_column,

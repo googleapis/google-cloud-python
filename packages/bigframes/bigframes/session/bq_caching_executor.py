@@ -81,7 +81,7 @@ class BigQueryCachingExecutor(executor.Executor):
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
         labels: tuple[tuple[str, str], ...] = (),
-        compiler_name: Literal["ibis", "sqlglot"] = "ibis",
+        compiler_name: Literal["ibis", "sqlglot"] = "sqlglot",
         cache: Optional[execution_cache.ExecutionCache] = None,
     ):
         self.bqclient = bqclient
@@ -376,8 +376,9 @@ class BigQueryCachingExecutor(executor.Executor):
                 bigframes.options.compute.maximum_bytes_billed
             )
 
-        if self._labels or extra_labels:
+        if self._labels:
             job_config.labels.update(self._labels)
+        if extra_labels:
             job_config.labels.update(extra_labels)
 
         try:
