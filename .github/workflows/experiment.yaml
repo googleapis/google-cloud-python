@@ -143,6 +143,37 @@ jobs:
           exit 1
 
   # ==========================================
+  # 5. CORE DEPS FROM SOURCE
+  # ==========================================
+  unit-core-deps-from-source:
+    needs: discover
+    if: ${{ needs.discover.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        # Locked strictly to 3.14 as per legacy script
+        python: ["3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.package }}/setup.py"
+
+      - name: Execute Core Deps from Source Tests
+        run: |
+          cd ${{ matrix.package }}
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_VENV_SEED=1
+          export UV_COMPILE_BYTECODE=1
+          
+          # Directly target the specific Nox session
+          uvx --with 'nox[uv]' nox -s "core_deps_from_source-${{ matrix.python }}"
+
+  # ==========================================
   # 6. THE GATEKEEPER (Status Check Rollup)
   # ==========================================
   presubmit-passed:
@@ -152,6 +183,7 @@ jobs:
       - static-checks
       - docs-build
       - unit-tests
+      - unit-core-deps-from-source
     runs-on: ubuntu-latest
     steps:
       - name: Evaluate Pipeline Status
