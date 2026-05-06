@@ -67,6 +67,7 @@ Python >= 3.10
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. version-scanner: ignore-next-line
 Python <= 3.9
 
 If you are using an `end-of-life`_
