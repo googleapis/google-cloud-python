@@ -1,14 +1,16 @@
 # bigframes.bigquery inputs and outputs policies
 
-The goal of the [bigframes.bigquery APIs](https://dataframes.bigquery.dev/reference/api/bigframes.bigquery.html#module-bigframes.bigquery)
+The goal of the [bigframes.bigquery
+APIs](https://dataframes.bigquery.dev/reference/api/bigframes.bigquery.html#module-bigframes.bigquery)
 is to provide the simplest possible mapping from BigQuery (GoogleSQL)
-[functions](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all) and
-[operations](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax) to Python. "Simplest" is somewhat ambiguous
-though, when it comes to the types involved and behaviors, so this document aims to expand on that vision with specific examples.
-
+[functions](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all)
+and
+[operations](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax)
+to Python. "Simplest" is somewhat ambiguous though, when it comes to the types
+involved and behaviors, so this document aims to expand on that vision with
+specific examples.
 
 ## SQL and BigFrames expression types
-
 
 <table>
   <tr>
@@ -30,13 +32,19 @@ though, when it comes to the types involved and behaviors, so this document aims
 <li><a href="https://github.com/googleapis/google-cloud-python/blob/bdd1cc5e336ec329d994aef28ed1070f1d771b74/packages/bigframes/bigframes/core/col.py#L35">bigframes deferred expression</a></li></ul>
 
    </td>
-   <td>Both Python Series and column expression should be supported as inputs, with the output reflecting the users input. Use a <a href="https://docs.python.org/3/library/typing.html#typing.TypeVar">TypeVar</a> rather than directly using union types to make type checking easier.
+   <td>Both Python Series and column expression should be supported as inputs,
+   with the output reflecting the users input. Use a <a
+   href="https://docs.python.org/3/library/typing.html#typing.TypeVar">TypeVar</a>
+   rather than directly using union types to make type checking easier.
 <p>
 <strong>Special considerations for Series inputs:</strong>
 <p>
-If an input and output are both a Series with the same number of rows, make sure the output Series is implicitly (row identity) alignable with the original input. In other words, don't generate a table expression.
+If an input and output are both a Series with the same number of rows, make sure
+the output Series is implicitly (row identity) alignable with the original
+input. In other words, don't generate a table expression.
 <p>
-If there are multiple Series inputs, they should be implicitly aligned if possible so as not to generate unnecessary table expressions. 
+If there are multiple Series inputs, they should be implicitly aligned if
+possible so as not to generate unnecessary table expressions.
    </td>
    <td>Most scalar <a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all">functions </a>accept one or more column expressions as input.
    </td>
@@ -49,7 +57,10 @@ If there are multiple Series inputs, they should be implicitly aligned if possib
 <li><a href="https://github.com/googleapis/google-cloud-python/blob/bdd1cc5e336ec329d994aef28ed1070f1d771b74/packages/bigframes/bigframes/core/col.py#L35">bigframes deferred expression</a></li></ul>
 
    </td>
-   <td>Theoretically, we could try to get the type system to help the user disambiguate between this case and the "Column expression" case, but I think that's more trouble than it it's worth with regards to the expectations of Python users.
+   <td>Theoretically, we could try to get the type system to help the user
+   disambiguate between this case and the "Column expression" case, but I think
+   that's more trouble than it it's worth with regards to the expectations of
+   Python users.
    </td>
    <td><ul>
 
@@ -62,28 +73,38 @@ If there are multiple Series inputs, they should be implicitly aligned if possib
    </td>
    <td><a href="https://dataframes.bigquery.dev/reference/api/bigframes.pandas.DataFrame.html#bigframes.pandas.DataFrame">bpd.DataFrame</a>
 <p>
-All columns are included as normal columns in the input table expression, including named index columns. If column names aren't unique or contain characters not compatible with BigQuery flexible column names, raise an error.
+All columns are included as normal columns in the input table expression,
+including named index columns. If column names aren't unique or contain
+characters not compatible with BigQuery flexible column names, raise an error.
 <p>
 Outputs are unordered and unindexed to allow for cleaner mapping with SQL.
    </td>
-   <td>Most APIs that take a table expression as input, also output a table expression with the same number of rows and passing through all unused columns. \
- \
-This should be used to pass through any index or ordering columns (as well as all other columns, if that's the SQL behavior), to allow for easy joining with the original input DataFrame.
+   <td>Most APIs that take a table expression as input, also output a table
+   expression with the same number of rows and passing through all unused
+   columns.
+ 
+   <p>This should be used to pass through any index or ordering columns (as well
+   as all other columns, if that's the SQL behavior), to allow for easy joining
+   with the original input DataFrame.
    </td>
    <td>Same number of rows as the input, so we should preserve index and ordering:<ul>
 
 <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-predict?hl=en">ML.PREDICT</a>
 
 <p>
-Different number of rows in output, so no need to preserve index or ordering. Default index / ordering should be specified with the Session's configuration:<ul>
+Different number of rows in output, so no need to preserve index or ordering.
+Default index / ordering should be specified with the Session's
+configuration:
 
+<ul>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create?hl=en">CREATE MODEL</a>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#search">SEARCH</a>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#vector_search">VECTOR_SEARCH</a>
 
 <p>
-Possible to have the same number of rows as the input, but joining with the original goes against the purpose of the feature:<ul>
+Possible to have the same number of rows as the input, but joining with the original goes against the purpose of the feature:
 
+<ul>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/differential-privacy#dp_define_privacy_unit_id">WITH DIFFERENTIAL_PRIVACY</a></li></ul>
 </li></ul>
 </li></ul>
@@ -118,7 +139,7 @@ Some APIs only take a table ID and not an arbitrary table expression:<ul>
    </td>
    <td><ul>
 
-<li><a href="https://docs.cloud.google.com/bigquery/docs/analysis-rules">WITH AGGREGATION_THRESHOLD</a> 
+<li><a href="https://docs.cloud.google.com/bigquery/docs/analysis-rules">WITH AGGREGATION_THRESHOLD</a>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/differential-privacy#dp_define_privacy_unit_id">WITH DIFFERENTIAL_PRIVACY</a>
 <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#having_clause">HAVING</a> clause</li></ul>
 
@@ -174,7 +195,7 @@ If the associated table expression is input as a DataFrame, validate that these 
   <tr>
    <td>Literal values
    </td>
-   <td>corresponding literal Python value (e.g. int, float, string) 
+   <td>corresponding literal Python value (e.g. int, float, string)
    </td>
    <td>For cases where scalar values are also supported, it should be safe to start with this and then expand to support expressions without a breaking change, as is done in <a href="https://github.com/googleapis/google-cloud-python/pull/16606">https://github.com/googleapis/google-cloud-python/pull/16606</a>.
    </td>
@@ -197,49 +218,42 @@ Would need some sort of bigframes deferred expression that can be tied to a tabl
   </tr>
 </table>
 
-
-
 ## Python policies
-
 
 ### Naming
 
 Take the SQL function name, keyword name (used as a function name in Python), or argument name and transform them to lower_snake_case to reflect Python conventions.
 
-
 ### Internal expressions
 
-Prefer creating deferred BigFrames expression objects where feasible. For example, all scalar outputting functions should return a `bigframes.pandas.Series` or `bigframes.core.col.Expression` that wraps a `bigframes.core.expression.Expression`.
+Prefer creating deferred BigFrames expression objects where feasible. For
+example, all scalar outputting functions should return a
+`bigframes.pandas.Series` or `bigframes.core.col.Expression` that wraps a
+`bigframes.core.expression.Expression`.
 
-Prefer returning a `bigframes.pandas.DataFrame` that wraps a `bigframes.bigframes.core`
+Prefer returning a `bigframes.pandas.DataFrame` that wraps a
+`bigframes.bigframes.core.bigframe_node.BigFrameNode`. See `from_bq_data_source` in
+`bigframes.core.array_value.ArrayValue`, as an example.
 
-
-```
-.bigframe_node.BigFrameNode. See from_bq_data_source in bigframes.core
-```
-
-
-`.array_value.ArrayValue`, as an example.
-
-Exceptions to this are cases where the output schema is likely to evolve or differ in ways that are difficult to model, such as the `ML.PREDICT` SQL function, where output columns differ based on the model type and support for model types are frequently added to BigQuery. In these exceptional cases, the generated query should run immediately and the returned value should wrap the results.
-
+Exceptions to this are cases where the output schema is likely to evolve or
+differ in ways that are difficult to model, such as the `ML.PREDICT` SQL
+function, where output columns differ based on the model type and support for
+model types are frequently added to BigQuery. In these exceptional cases, the
+generated query should run immediately and the returned value should wrap the
+results.
 
 ### Argument syntax details
 
 Arguments in Python can be one of:
 
+* Positional
+  * Supported by `*args` in Python, but not recommended. Positional arguments in SQL should map to named positional or keyword arguments in Python.
+* Positional or keyword
+  * Required positional arguments should be positional, just like they are in SQL.
+* Keyword-only
+  * All other arguments should be keyword-only. Use `, * ,` Python syntax to achieve this.
 
-
-*   Positional
-    *   Supported by `*args` in Python, but not recommended. Positional arguments in SQL should map to named positional or keyword arguments in Python.
-*   Positional or keyword
-    *   Required positional arguments should be positional, just like they are in SQL. 
-*   Keyword-only
-    *   All other arguments should be keyword-only. Use `, * ,` Python syntax to achieve this.
-
-For optional parameters, use an optional sentinel (see: https://stackoverflow.com/a/76606310/101923) and omit the value from the generated SQL if the user doesn't explicitly provide one. This ensures that an explicit NULL / None value can be passed in.
-
-
+For optional parameters, use an optional sentinel (see: <https://stackoverflow.com/a/76606310/101923>) and omit the value from the generated SQL if the user doesn't explicitly provide one. This ensures that an explicit NULL / None value can be passed in.
 
 ```
 
@@ -260,14 +274,11 @@ def spam(*, ham: list[str] | None | Default = DEFAULT):
 
 ```
 
-
-
 ### Scalar operations types policies
 
 Many operations output a table expression. For these, the output type is always a DataFrame, regardless of the input types.
 
 For scalar operations, there are three cases to consider when determining the output types:
-
 
 <table>
   <tr>
@@ -300,15 +311,11 @@ Preserve ordering and index(es). Join inputs as needed before applying the opera
   </tr>
 </table>
 
-
-
 ## Examples
-
 
 ### PIVOT SQL operator
 
 SQL syntax ([docs](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#pivot_operator)):
-
 
 ```
 FROM from_item[, ...] pivot_operator
@@ -325,9 +332,7 @@ as_alias:
 
 ```
 
-
 SQL example:
-
 
 ```
 WITH Produce AS (
@@ -372,9 +377,7 @@ SELECT * FROM
 
 ```
 
-
 Python definition:
-
 
 ```
 def pivot(
@@ -387,12 +390,10 @@ def pivot(
     ...
 ```
 
-
 Since pivot creates a table expression, we run immediately.
 
  \
 Python usage:
-
 
 ```
 pivotted = bbq.pivot(
@@ -403,12 +404,9 @@ pivotted = bbq.pivot(
 )
 ```
 
-
-
 ### UNPIVOT SQL operator
 
 SQL syntax ([docs](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unpivot_operator)):
-
 
 ```
 FROM from_item[, ...] unpivot_operator
@@ -441,9 +439,7 @@ unpivot_alias and row_value_alias:
   [AS] alias
 ```
 
-
 SQL example:
-
 
 ```
 WITH Produce AS (
@@ -475,9 +471,7 @@ UNPIVOT(sales FOR quarter IN (Q1, Q2, Q3, Q4))  -- single_column_unpivot
  +---------+-------+---------*/
 ```
 
-
 Python definition:
-
 
 ```
 def unpivot(
@@ -491,12 +485,10 @@ def unpivot(
     ...
 ```
 
-
 Since unpivot creates a table expression, we run immediately.
 
  \
 Python usage:
-
 
 ```
 unpivotted = bbq.unpivot(
