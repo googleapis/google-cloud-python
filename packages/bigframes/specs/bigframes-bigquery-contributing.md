@@ -4,7 +4,7 @@ The goal of the [bigframes.bigquery APIs](https://dataframes.bigquery.dev/refere
 is to provide the simplest possible mapping from BigQuery (GoogleSQL)
 [functions](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all) and
 [operations](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax) to Python. "Simplest" is somewhat ambiguous
-though, when it comes to the types involved an behaviors, so this document aims to expand on that vision with specific examples.
+though, when it comes to the types involved and behaviors, so this document aims to expand on that vision with specific examples.
 
 
 ## SQL and BigFrames expression types
@@ -237,7 +237,7 @@ Arguments in Python can be one of:
 *   Keyword-only
     *   All other arguments should be keyword-only. Use `, * ,` Python syntax to achieve this.
 
-For optional parameters, use an optional sentinel (see: https://stackoverflow.com/a/76606310/101923) and omit the value from the generated SQL if the user doesn't explicitly provide one. This ensures that an explicit NULL / None value can be passed in. \
+For optional parameters, use an optional sentinel (see: https://stackoverflow.com/a/76606310/101923) and omit the value from the generated SQL if the user doesn't explicitly provide one. This ensures that an explicit NULL / None value can be passed in.
 
 
 
@@ -264,7 +264,7 @@ def spam(*, ham: list[str] | None | Default = DEFAULT):
 
 ### Scalar operations types policies
 
-Many operations output a table expression. For these, the output type is always a DataFrame, regardless of the the input types.
+Many operations output a table expression. For these, the output type is always a DataFrame, regardless of the input types.
 
 For scalar operations, there are three cases to consider when determining the output types:
 
@@ -501,8 +501,8 @@ Python usage:
 ```
 unpivotted = bbq.unpivot(
     my_produce_dataframe,
-    aggregation=bpd.col("sales").sum(),
-    input_column="quarter",
-    pivot_columns=["Q1", "Q2", "Q3", "Q4"],
+    values_column="sales",
+    name_column="quarter",
+    columns_to_unpivot=["Q1", "Q2", "Q3", "Q4"],
 )
 ```
