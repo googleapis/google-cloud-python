@@ -222,10 +222,20 @@ jobs:
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Testing $pkg"
             cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14"; then
-              echo "::error::Failed in $pkg"
-              FAILED=1
+            
+            # THE FIX: Look before you leap.
+            # Grep the nox list to see if the session actually exists here.
+            if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source"; then
+              echo "Session found in $pkg. Executing..."
+              # Run the test using the explicit name and python flag
+              if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14"; then
+                echo "::error::Failed in $pkg"
+                FAILED=1
+              fi
+            else
+              echo "Skipping: 'core_deps_from_source' is not defined for $pkg."
             fi
+            
             cd $GITHUB_WORKSPACE
             echo "::endgroup::"
           done
