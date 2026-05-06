@@ -1123,6 +1123,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2512,9 +2513,9 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
+    skip_release: true
     python:
       library_type: INTEGRATION
-    skip_release: true
   - name: proto-plus
     version: 1.27.2
     python:

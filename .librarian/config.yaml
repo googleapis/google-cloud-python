@@ -37,4 +37,8 @@ libraries:
   # Disable automatic releases until tests stabilize.
   - id: "pandas-gbq"
     release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16970):
+  # Disable automatic releases until system tests are sped up or reorganized.
+  - id: "google-cloud-firestore"
+    release_blocked: true
 
