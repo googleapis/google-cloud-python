@@ -48,7 +48,6 @@ jobs:
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -all -v
 
       - name: Create issue on diff
-        if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -70,4 +69,19 @@ jobs:
               echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
               gh issue comment "$EXISTING_ISSUE" --body "Another failure with diff occurred: $RUN_URL"
             fi
+          fi
+      - name: Create issue on generation failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Regeneration failed"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          BODY="The post-submit [regeneration check]($RUN_URL) failed."
+          EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+          if [ -z "$EXISTING_ISSUE" ]; then
+            gh issue create --title "$TITLE" --body "$BODY"
+          else
+            echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
+            gh issue comment "$EXISTING_ISSUE" --body "Another regeneration failure occurred: $RUN_URL"
           fi
