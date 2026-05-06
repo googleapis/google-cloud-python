@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import namedtuple
 from unittest import mock
 
 import pytest
 
 # Module paths used for mocking
 MODULE_PATH = "db_dtypes"
-HELPER_MODULE_PATH = f"{MODULE_PATH}._versions_helpers"
-MOCK_EXTRACT_VERSION = f"{HELPER_MODULE_PATH}.extract_runtime_version"
 MOCK_WARN = "warnings.warn"  # Target the standard warnings module
+
+VersionInfo = namedtuple("VersionInfo", ["major", "minor", "micro"])
 
 
 @pytest.mark.parametrize(
@@ -30,17 +31,20 @@ MOCK_WARN = "warnings.warn"  # Target the standard warnings module
         ((3, 7, 0), "3.7.0"),
         ((3, 8, 5), "3.8.5"),
         ((3, 8, 12), "3.8.12"),
+        ((3, 9, 5), "3.9.5"),
     ],
 )
 def test_check_python_version_warns_on_unsupported(mock_version_tuple, version_str):
     """
-    Test that _check_python_version issues a FutureWarning for Python 3.7/3.8.
+    Test that _check_python_version issues a FutureWarning for Python 3.7/3.8/3.9.
     """
 
     from db_dtypes import _check_python_version
 
-    # Mock the helper function it calls and the warnings.warn function
-    with mock.patch(MOCK_EXTRACT_VERSION, return_value=mock_version_tuple), mock.patch(
+    mock_version = VersionInfo(*mock_version_tuple)
+
+    # Mock sys.version_info and warnings.warn
+    with mock.patch("sys.version_info", new=mock_version), mock.patch(
         MOCK_WARN
     ) as mock_warn_call:
         _check_python_version()  # Call the function
@@ -55,17 +59,18 @@ def test_check_python_version_warns_on_unsupported(mock_version_tuple, version_s
         warning_category = args[1] if len(args) > 1 else kwargs.get("category")
 
         # Verify message content and category
-        assert "longer supports Python 3.7 and Python 3.8" in warning_message
+        assert "longer supports Python 3.7, 3.8, and 3.9" in warning_message
         assert warning_category == FutureWarning
 
 
 @pytest.mark.parametrize(
     "mock_version_tuple",
     [
-        (3, 9, 1),
         (3, 10, 0),
         (3, 11, 2),
         (3, 12, 0),
+        (3, 13, 0),
+        (3, 14, 0),
     ],
 )
 def test_check_python_version_does_not_warn_on_supported(mock_version_tuple):
@@ -75,8 +80,10 @@ def test_check_python_version_does_not_warn_on_supported(mock_version_tuple):
 
     from db_dtypes import _check_python_version
 
-    # Mock the helper function it calls and the warnings.warn function
-    with mock.patch(MOCK_EXTRACT_VERSION, return_value=mock_version_tuple), mock.patch(
+    mock_version = VersionInfo(*mock_version_tuple)
+
+    # Mock sys.version_info and warnings.warn
+    with mock.patch("sys.version_info", new=mock_version), mock.patch(
         MOCK_WARN
     ) as mock_warn_call:
         _check_python_version()
