@@ -62,7 +62,7 @@ setuptools.setup(
         "grpc-google-iam-v1>=0.12.6, <1.0.0",
         "google-cloud-bigquery>=3.14.0, <4.0.0",
         "google-cloud-documentai>=2.29.2, <4.0.0",
-        "google-cloud-storage>=1.31.0, <4.0.0",
+        "google-cloud-storage>=2.0.0, <4.0.0",
         "google-cloud-vision>=2.7.0, <4.0.0",
         "numpy>=1.23.5, <3.0.0",
         "intervaltree>=3.0.0",
