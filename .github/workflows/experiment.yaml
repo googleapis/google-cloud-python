@@ -13,14 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ==========================================
+# ==========================================
   # 1. DISCOVERY ENGINE (The Router)
   # ==========================================
   discover:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.changes.outputs.all_changed_files }}
-      # Expose the dynamic Python matrix to downstream jobs
+      packages: ${{ steps.build-matrix.outputs.packages }}
       python_versions: ${{ steps.set-python.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -33,21 +32,32 @@ jobs:
         with:
           files: packages/**
           dir_names: true               
-          dir_names_max_depth: 2        
-          json: true                    
-          escape_json: false
+          dir_names_max_depth: 2
+
+      - name: Build Bulletproof JSON Matrix
+        id: build-matrix
+        run: |
+          RAW_LIST="${{ steps.changes.outputs.all_changed_files }}"
+          echo "Raw changed files: '$RAW_LIST'"
+          
+          if [[ -z "$RAW_LIST" ]]; then
+            echo "No packages changed. Returning empty JSON array."
+            echo 'packages=[]' >> $GITHUB_OUTPUT
+          else
+            # Convert space-separated string to a strict JSON array natively
+            JSON_ARRAY=$(echo -n "$RAW_LIST" | jq -R -c 'split(" ")')
+            echo "Constructed JSON Array: $JSON_ARRAY"
+            echo "packages=$JSON_ARRAY" >> $GITHUB_OUTPUT
+          fi
 
       - name: Determine Python Matrix (Risk-Tiering)
         id: set-python
         run: |
           if [[ "${{ github.event_name }}" == "merge_group" ]]; then
-            echo "Merge Queue detected. Deploying exhaustive matrix."
             echo 'matrix=["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]' >> $GITHUB_OUTPUT
           else
-            echo "Pull Request detected. Deploying Min/Max Boundary matrix."
             echo 'matrix=["3.9", "3.14"]' >> $GITHUB_OUTPUT
           fi
-
   # ==========================================
   # 2. STATIC ANALYSIS (Grouped for Speed)
   # ==========================================
