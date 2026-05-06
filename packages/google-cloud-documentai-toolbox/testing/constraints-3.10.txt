@@ -6,10 +6,12 @@ proto-plus==1.22.3
 grpc-google-iam-v1==0.12.6
 google-cloud-bigquery==3.14.0
 google-cloud-documentai==2.29.2
+google-cloud-storage==2.0.0
+google-cloud-vision==2.7.0
 numpy==1.23.5
 intervaltree==3.0.0
 pikepdf==8.0.0
 immutabledict==2.0.0
 Pillow==10.0.0
 Jinja2==3.1.0
-google-cloud-core==2.5.0
+setuptools==79.0.0
