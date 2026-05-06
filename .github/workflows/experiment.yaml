@@ -196,7 +196,7 @@ jobs:
           exit $FAILED
 
   # ==========================================
-  # 5. CORE DEPS FROM SOURCE
+  # 5. CORE DEPS FROM SOURCE (Legacy Pip Fallback)
   # ==========================================
   unit-core-deps-from-source:
     needs: discover
@@ -208,27 +208,26 @@ jobs:
         chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-          enable-cache: true
+      
+      - name: Install Nox (Standard)
+        run: python -m pip install nox virtualenv
+
       - name: Execute Core Deps
         run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          export UV_COMPILE_BYTECODE=1
+          # We intentionally DO NOT export NOX_DEFAULT_VENV_BACKEND=uv here.
+          # We must use legacy pip to support the hardcoded '--ignore-installed' flag.
           
           FAILED=0
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Testing $pkg"
             cd $pkg
             
-            # THE FIX: Look before you leap.
-            # Grep the nox list to see if the session actually exists here.
-            if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source"; then
-              echo "Session found in $pkg. Executing..."
-              # Run the test using the explicit name and python flag
-              if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14"; then
+            if nox -l | grep -q "core_deps_from_source"; then
+              echo "Session found in $pkg. Executing with standard pip..."
+              if ! nox -s "core_deps_from_source" -p "3.14"; then
                 echo "::error::Failed in $pkg"
                 FAILED=1
               fi
