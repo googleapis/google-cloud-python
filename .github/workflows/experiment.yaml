@@ -38,13 +38,17 @@ jobs:
           
           if [[ -z "$RAW_LIST" ]]; then
             echo "No packages changed. Returning empty JSON array."
-            echo 'packages=[]' >> $GITHUB_OUTPUT
+            JSON_ARRAY="[]"
           else
+            # Convert string to strict JSON array
             JSON_ARRAY=$(echo -n "$RAW_LIST" | jq -R -c 'split(" ")')
             echo "Constructed JSON Array: $JSON_ARRAY"
-            echo "packages=$JSON_ARRAY" >> $GITHUB_OUTPUT
           fi
-
+          
+          # SAFELY PASS MASSIVE JSON ARRAYS USING EOF
+          echo "packages<<EOF" >> $GITHUB_OUTPUT
+          echo "$JSON_ARRAY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
   # ==========================================
   # 2. STATIC ANALYSIS
   # ==========================================
