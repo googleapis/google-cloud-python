@@ -55,9 +55,8 @@ jobs:
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_PRERELEASE=allow
           
-          # We use xargs -P 4 to run tests in parallel on the standard runner.
-          # We redirect output to a file first so the GitHub UI logs don't interleave and become unreadable.
-          echo "${{ needs.discover.outputs.packages }}" | tr ' ' '\n' | xargs -n 1 -P 4 -I {} sh -c '
+          # Dropped -n 1 to fix the xargs warning.
+          echo "${{ needs.discover.outputs.packages }}" | tr ' ' '\n' | xargs -P 4 -I {} sh -c '
             if [ -f "{}/noxfile.py" ]; then
               cd {}
               
@@ -65,14 +64,22 @@ jobs:
               uvx --with "nox[uv]" nox -s "unit-${{ matrix.python }}" > nox_output.log 2>&1
               STATUS=$?
               
-              # Print cleanly to GitHub UI
-              echo "::group::Testing {}"
+              # Print output cleanly inside a GitHub group
+              echo "::group::Testing {} (Python ${{ matrix.python }})"
               cat nox_output.log
-              echo "::endgroup::"
               
-              # If the test failed, exit with failure so GitHub catches it
               if [ $STATUS -ne 0 ]; then
-                exit 255
+                # Check if it failed just because the Python version isn"t supported by this package
+                if grep -q "Sessions not found:" nox_output.log; then
+                  echo "⏭️ Session unit-${{ matrix.python }} is not defined for this package. Safely skipping."
+                else
+                  echo "❌ Tests failed in {}!"
+                  echo "::endgroup::"
+                  # Exit 1 allows other packages to finish testing, but ensures the workflow fails
+                  exit 1
+                fi
               fi
+              
+              echo "::endgroup::"
             fi
           '
