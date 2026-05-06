@@ -1,4 +1,4 @@
-name: CI (A-M)
+name: CI Unit
 on: [pull_request]
 
 concurrency:
@@ -7,7 +7,7 @@ concurrency:
 
 jobs:
   # =========================================================
-  # 1. DISCOVERY (Natively grabs packages starting with A-M)
+  # 1. DISCOVERY (Outputs up to 256 packages globally)
   # =========================================================
   discover:
     runs-on: ubuntu-latest
@@ -18,13 +18,13 @@ jobs:
       - id: changes
         uses: tj-actions/changed-files@v44
         with:
-          files: packages/[a-m]*/**      
+          files: packages/**      
           dir_names: true         
           dir_names_max_depth: 2  
           matrix: true            
 
   # =========================================================
-  # 2. UNIT TESTS (Fast Sequential Matrix)
+  # 2. EXECUTION (1 Job = 1 Package)
   # =========================================================
   unit:
     needs: discover
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 25
+      max-parallel: 40  # Org limit protection
       matrix:
         package: ${{ fromJSON(needs.discover.outputs.packages) }}
         
@@ -42,113 +42,26 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - name: Run Unit Tests (All Python Versions)
+      - name: Run Python Versions Sequentially
         run: |
           cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_PRERELEASE=allow
-          
           uvx --with 'nox[uv]' nox -s "unit-3.9" "unit-3.10" "unit-3.11" "unit-3.12" "unit-3.14"
 
   # =========================================================
-  # 3. LINT
+  # 3. AGGREGATOR (Branch Protection Target)
   # =========================================================
-  lint:
-    needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' && needs.discover.outputs.packages != '' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 15
-      matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
-        
-    name: Lint (${{ matrix.package }})
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14"
-          enable-cache: true
-      - name: Run Lint
-        run: |
-          cd ${{ matrix.package }}
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          uvx --with 'nox[uv]' nox -s "lint"
-
-  # =========================================================
-  # 4. DOCS
-  # =========================================================
-  docs:
-    needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' && needs.discover.outputs.packages != '' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 15
-      matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
-        
-    name: Docs (${{ matrix.package }})
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14"
-          enable-cache: true
-      - name: Run Docs
-        run: |
-          cd ${{ matrix.package }}
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          uvx --with 'nox[uv]' nox -s "docs"
-
-  # =========================================================
-  # 5. CORE DEPENDENCIES
-  # =========================================================
-  core-deps:
-    needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' && needs.discover.outputs.packages != '' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 25
-      matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
-        
-    name: Core Deps (${{ matrix.package }})
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-      - name: Run Core Deps (All Python Versions)
-        run: |
-          cd ${{ matrix.package }}
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          
-          FAILED=0
-          for py in 3.9 3.10 3.11 3.12 3.14; do
-            echo "::group::Core Deps ($py)"
-            uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "$py" || FAILED=1
-            echo "::endgroup::"
-          done
-          exit $FAILED
-
-  # =========================================================
-  # 6. AGGREGATOR (Required for Branch Protection)
-  # =========================================================
-  ci-success:
-    name: CI Success (A-M)
-    needs: [unit, lint, docs, core-deps]
-    # Always run so GitHub doesn't hang if jobs were successfully skipped
+  ci-unit-success:
+    name: Unit Tests Success
+    needs: [unit]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Verify all matrices passed
+      - name: Verify matrix passed
         run: |
           if [ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" = "true" ]; then
-            echo "::error::One or more test matrices failed in A-M."
+            echo "::error::One or more unit tests failed."
             exit 1
-          else
-            echo "All required tests passed or were safely skipped!"
           fi
+          echo "All unit tests passed!"
