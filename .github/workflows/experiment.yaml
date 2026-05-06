@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   # =========================================================
-  # 1. DISCOVERY (Pure Python, Zero External Files)
+  # 1. DISCOVERY 
   # =========================================================
   discover:
     runs-on: ubuntu-latest
@@ -12,10 +12,8 @@ jobs:
       python_versions: '["3.9", "3.10", "3.11", "3.12", "3.14"]'
     steps:
       - uses: actions/checkout@v4
-      
       - id: changes
         uses: tj-actions/changed-files@v44
-        # Note: Ensure you configure this to only grab package directories
 
       - id: chunking
         env:
@@ -24,11 +22,9 @@ jobs:
           python -c '
           import os, json
           
-          raw_files = os.environ.get("CHANGED_FILES", "")
-          packages = raw_files.split() if raw_files else []
-          
-          # Hardcap at 20 buckets to mathematically guarantee limit safety
+          packages = os.environ.get("CHANGED_FILES", "").split()
           NUM_BUCKETS = 20
+          
           chunks = [[] for _ in range(NUM_BUCKETS)]
           for i, pkg in enumerate(packages):
               chunks[i % NUM_BUCKETS].append(pkg)
@@ -40,7 +36,7 @@ jobs:
           '
 
   # =========================================================
-  # 2. UNIT TESTS (Max 100 Jobs, 50 Concurrent)
+  # 2. UNIT TESTS 
   # =========================================================
   unit-tests:
     needs: discover
@@ -68,19 +64,16 @@ jobs:
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Testing $pkg"
             cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python-version }}"; then
-              echo "::error::Failed in $pkg"
-              FAILED=1
-            fi
+            uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python-version }}" || FAILED=1
             cd $GITHUB_WORKSPACE
             echo "::endgroup::"
           done
           exit $FAILED
 
   # =========================================================
-  # 3. LINT & DOCS (Max 20 Jobs, 20 Concurrent)
+  # 3. LINT
   # =========================================================
-  lint-and-docs:
+  lint:
     needs: discover
     if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
@@ -90,39 +83,63 @@ jobs:
       matrix:
         chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
         
-    name: Lint & Docs (Chunk)
+    name: Lint (Chunk)
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.14" # Linting/Docs usually only require latest Python
+          python-version: "3.14" 
           enable-cache: true
           
-      - name: Run Lint and Docs
+      - name: Run Lint
         run: |
           export NOX_DEFAULT_VENV_BACKEND=uv
           FAILED=0
           for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Linting & Docs for $pkg"
+            echo "::group::Linting $pkg"
             cd $pkg
-            
-            # Look Before You Leap: Run lint if it exists in the package
-            if uvx --with 'nox[uv]' nox -l | grep -q "lint"; then
-              uvx --with 'nox[uv]' nox -s "lint" || FAILED=1
-            fi
-            
-            # Look Before You Leap: Run docs if it exists
-            if uvx --with 'nox[uv]' nox -l | grep -q "docs"; then
-              uvx --with 'nox[uv]' nox -s "docs" || FAILED=1
-            fi
-            
+            uvx --with 'nox[uv]' nox -s "lint" || FAILED=1
             cd $GITHUB_WORKSPACE
             echo "::endgroup::"
           done
           exit $FAILED
 
   # =========================================================
-  # 4. CORE DEPENDENCIES (Max 100 Jobs, 50 Concurrent)
+  # 4. DOCS
+  # =========================================================
+  docs:
+    needs: discover
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
+        
+    name: Docs (Chunk)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.14" 
+          enable-cache: true
+          
+      - name: Run Docs
+        run: |
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Docs for $pkg"
+            cd $pkg
+            uvx --with 'nox[uv]' nox -s "docs" || FAILED=1
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
+          done
+          exit $FAILED
+
+  # =========================================================
+  # 5. CORE DEPENDENCIES 
   # =========================================================
   core-deps:
     needs: discover
@@ -150,14 +167,7 @@ jobs:
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Core Deps Testing $pkg"
             cd $pkg
-            
-            if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source"; then
-              # Pass the explicit Python version down to Nox
-              uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "${{ matrix.python-version }}" || FAILED=1
-            else
-              echo "Skipping: 'core_deps_from_source' not defined in $pkg."
-            fi
-            
+            uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "${{ matrix.python-version }}" || FAILED=1
             cd $GITHUB_WORKSPACE
             echo "::endgroup::"
           done
