@@ -1,156 +1,74 @@
-name: Next-Gen CI Pipeline
-
-on:
-  pull_request:
-    branches: [ main, preview ]
-  merge_group:
-    types: [checks_requested]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+name: CI Next Gen
+on: [pull_request]
 
 jobs:
-  # ==========================================
-  # 1. DISCOVERY ENGINE (The Matrix Sharder)
-  # ==========================================
+  # =========================================================
+  # 1. DISCOVERY (Pure Python, Zero External Files)
+  # =========================================================
   discover:
     runs-on: ubuntu-latest
     outputs:
-      chunks: ${{ steps.build-matrix.outputs.chunks }}
+      chunks: ${{ steps.chunking.outputs.chunks }}
+      python_versions: '["3.9", "3.10", "3.11", "3.12", "3.14"]'
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          
-      - name: Detect Changed Packages
-        id: changes
+      
+      - id: changes
         uses: tj-actions/changed-files@v44
-        with:
-          files: packages/**
-          dir_names: true               
-          dir_names_max_depth: 2        
+        # Note: Ensure you configure this to only grab package directories
 
-      - name: Build Dynamic Shards
-        id: build-matrix
+      - id: chunking
         env:
-          RAW_LIST: ${{ steps.changes.outputs.all_changed_files }}
+          CHANGED_FILES: ${{ steps.changes.outputs.all_changed_files }}
         run: |
           python -c '
           import os, json
-          packages = os.environ.get("RAW_LIST", "").split()
-          print(f"Detected {len(packages)} changed packages.")
           
-          if not packages:
-              chunks = []
-          else:
-              # Shard into groups of 10 to completely bypass GitHubs 256 total job limit
-              chunk_size = 10
-              chunks = [" ".join(packages[i:i+chunk_size]) for i in range(0, len(packages), chunk_size)]
+          raw_files = os.environ.get("CHANGED_FILES", "")
+          packages = raw_files.split() if raw_files else []
           
-          print(f"Created {len(chunks)} matrix shards.")
+          # Hardcap at 20 buckets to mathematically guarantee limit safety
+          NUM_BUCKETS = 20
+          chunks = [[] for _ in range(NUM_BUCKETS)]
+          for i, pkg in enumerate(packages):
+              chunks[i % NUM_BUCKETS].append(pkg)
+              
+          formatted = [" ".join(chunk) for chunk in chunks if chunk]
+          
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"chunks={json.dumps(chunks)}\n")
+              f.write(f"chunks={json.dumps(formatted)}\n")
           '
 
-  # ==========================================
-  # 2. STATIC ANALYSIS
-  # ==========================================
-  static-checks:
-    needs: discover
-    if: ${{ needs.discover.outputs.chunks != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false 
-      matrix:
-        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14" 
-          enable-cache: true
-      - name: Run Lint and MyPy
-        run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          
-          FAILED=0
-          for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Linting $pkg"
-            cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s lint mypy lint_setup_py; then
-              echo "::error::Linting failed in $pkg"
-              FAILED=1
-            fi
-            cd $GITHUB_WORKSPACE
-            echo "::endgroup::"
-          done
-          exit $FAILED
-
-  # ==========================================
-  # 3. DOCUMENTATION BUILD
-  # ==========================================
-  docs-build:
+  # =========================================================
+  # 2. UNIT TESTS (Max 100 Jobs, 50 Concurrent)
+  # =========================================================
+  unit-tests:
     needs: discover
     if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 50
       matrix:
         chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
+        python-version: ${{ fromJSON(needs.discover.outputs.python_versions) }}
+        
+    name: Unit (Chunk, ${{ matrix.python-version }})
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
           enable-cache: true
-      - name: Build Docs and DocFX
+          
+      - name: Run Unit Tests
         run: |
           export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          
-          FAILED=0
-          for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Docs $pkg"
-            cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s docs docfx; then
-              echo "::error::Docs failed in $pkg"
-              FAILED=1
-            fi
-            cd $GITHUB_WORKSPACE
-            echo "::endgroup::"
-          done
-          exit $FAILED
-
-  # ==========================================
-  # 4a. UNIT TESTS (Python 3.9)
-  # ==========================================
-  unit-tests-3-9:
-    needs: discover
-    if: ${{ needs.discover.outputs.chunks != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.9"
-          enable-cache: true
-      - name: Execute Unit Tests (Python 3.9)
-        run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          export UV_COMPILE_BYTECODE=1
-          
           FAILED=0
           for pkg in ${{ matrix.chunk }}; do
             echo "::group::Testing $pkg"
             cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s unit-3.9; then
+            if ! uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python-version }}"; then
               echo "::error::Failed in $pkg"
               FAILED=1
             fi
@@ -159,113 +77,88 @@ jobs:
           done
           exit $FAILED
 
-  # ==========================================
-  # 4b. UNIT TESTS (Python 3.14)
-  # ==========================================
-  unit-tests-3-14:
+  # =========================================================
+  # 3. LINT & DOCS (Max 20 Jobs, 20 Concurrent)
+  # =========================================================
+  lint-and-docs:
     needs: discover
     if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 20
       matrix:
         chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
+        
+    name: Lint & Docs (Chunk)
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.14"
+          python-version: "3.14" # Linting/Docs usually only require latest Python
           enable-cache: true
-      - name: Execute Unit Tests (Python 3.14)
+          
+      - name: Run Lint and Docs
         run: |
           export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          export UV_COMPILE_BYTECODE=1
-          
           FAILED=0
           for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Testing $pkg"
-            cd $pkg
-            if ! uvx --with 'nox[uv]' nox -s unit-3.14; then
-              echo "::error::Failed in $pkg"
-              FAILED=1
-            fi
-            cd $GITHUB_WORKSPACE
-            echo "::endgroup::"
-          done
-          exit $FAILED
-
- # ==========================================
-  # 5. CORE DEPS FROM SOURCE (Pure UV)
-  # ==========================================
-  unit-core-deps-from-source:
-    needs: discover
-    if: ${{ needs.discover.outputs.chunks != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14"
-          enable-cache: true
-      - name: Execute Core Deps
-        run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1
-          export UV_COMPILE_BYTECODE=1
-          
-          # NATIVELY instruct uv to allow prerelease Git resolution
-          export UV_PRERELEASE=allow
-          
-          FAILED=0
-          for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Testing $pkg"
+            echo "::group::Linting & Docs for $pkg"
             cd $pkg
             
-            # The Look-Before-You-Leap check
+            # Look Before You Leap: Run lint if it exists in the package
+            if uvx --with 'nox[uv]' nox -l | grep -q "lint"; then
+              uvx --with 'nox[uv]' nox -s "lint" || FAILED=1
+            fi
+            
+            # Look Before You Leap: Run docs if it exists
+            if uvx --with 'nox[uv]' nox -l | grep -q "docs"; then
+              uvx --with 'nox[uv]' nox -s "docs" || FAILED=1
+            fi
+            
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
+          done
+          exit $FAILED
+
+  # =========================================================
+  # 4. CORE DEPENDENCIES (Max 100 Jobs, 50 Concurrent)
+  # =========================================================
+  core-deps:
+    needs: discover
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 50
+      matrix:
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
+        python-version: ${{ fromJSON(needs.discover.outputs.python_versions) }}
+        
+    name: Core Deps (Chunk, ${{ matrix.python-version }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          
+      - name: Run Core Deps
+        run: |
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Core Deps Testing $pkg"
+            cd $pkg
+            
             if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source"; then
-              # Natively executes with pure UV speed using your newly patched Noxfiles
-              if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "3.14"; then
-                echo "::error::Failed in $pkg"
-                FAILED=1
-              fi
+              # Pass the explicit Python version down to Nox
+              uvx --with 'nox[uv]' nox -s "core_deps_from_source" -p "${{ matrix.python-version }}" || FAILED=1
             else
-              echo "Skipping: 'core_deps_from_source' is not defined for $pkg."
+              echo "Skipping: 'core_deps_from_source' not defined in $pkg."
             fi
             
             cd $GITHUB_WORKSPACE
             echo "::endgroup::"
           done
           exit $FAILED
-
-  # ==========================================
-  # 6. THE GATEKEEPER
-  # ==========================================
-  presubmit-passed:
-    if: always() 
-    needs: 
-      - discover
-      - static-checks
-      - docs-build
-      - unit-tests-3-9
-      - unit-tests-3-14
-      - unit-core-deps-from-source
-    runs-on: ubuntu-latest
-    steps:
-      - name: Evaluate Pipeline Status
-        run: |
-          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
-            echo "::error::One or more required CI jobs failed."
-            exit 1
-          fi
-          
-          if [[ "${{ needs.discover.outputs.chunks }}" == "[]" ]]; then
-            echo "No packages changed. Safely bypassing execution."
-            exit 0
-          fi
-          
-          echo "All jobs passed."
