@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud import _storage_v2
 from google.protobuf import timestamp_pb2
+
+from google.cloud import _storage_v2
 
 # Map Python Blob attributes to GCS V2 Object proto field names.
 _BLOB_ATTR_TO_PROTO_FIELD = {

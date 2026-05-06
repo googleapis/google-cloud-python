@@ -15,8 +15,8 @@
 import datetime
 from unittest import mock
 
-from google.cloud.storage import _grpc_conversions
 from google.cloud import _storage_v2
+from google.cloud.storage import _grpc_conversions
 
 
 def test_blob_to_proto_simple_fields():
