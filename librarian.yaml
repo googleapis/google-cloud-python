@@ -748,7 +748,6 @@ libraries:
     apis:
       - path: google/cloud/compute/v1beta
     python:
-      issue_tracker_override: https://issuetracker.google.com/issues/new?component=187134&template=0
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
     version: 0.9.0
@@ -1124,6 +1123,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1939,7 +1939,6 @@ libraries:
         google/storage/v2:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=_storage
-      issue_tracker_override: https://issuetracker.google.com/savedsearches/559782
       metadata_name_override: storage
       default_version: v2
   - name: google-cloud-storage-control
@@ -2514,6 +2513,7 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
+    skip_release: true
     python:
       library_type: INTEGRATION
   - name: proto-plus

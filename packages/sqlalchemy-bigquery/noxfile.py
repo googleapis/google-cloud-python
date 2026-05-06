@@ -45,8 +45,6 @@ LINT_PATHS = [
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -54,7 +52,6 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.14",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -276,8 +273,6 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
         "3.12",

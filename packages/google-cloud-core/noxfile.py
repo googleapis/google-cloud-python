@@ -26,7 +26,6 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
