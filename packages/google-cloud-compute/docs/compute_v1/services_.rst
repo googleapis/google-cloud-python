@@ -32,6 +32,7 @@ Services for Google Cloud Compute v1 API
     instances
     instance_settings_service
     instance_templates
+    instant_snapshot_groups
     instant_snapshots
     interconnect_attachment_groups
     interconnect_attachments
@@ -59,6 +60,7 @@ Services for Google Cloud Compute v1 API
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers
+    region_backend_buckets
     region_backend_services
     region_commitments
     region_composite_health_checks
@@ -68,10 +70,12 @@ Services for Google Cloud Compute v1 API
     region_health_checks
     region_health_check_services
     region_health_sources
+    region_instance_group_manager_resize_requests
     region_instance_group_managers
     region_instance_groups
     region_instances
     region_instance_templates
+    region_instant_snapshot_groups
     region_instant_snapshots
     region_network_endpoint_groups
     region_network_firewall_policies
@@ -79,6 +83,8 @@ Services for Google Cloud Compute v1 API
     region_operations
     regions
     region_security_policies
+    region_snapshots
+    region_snapshot_settings
     region_ssl_certificates
     region_ssl_policies
     region_target_http_proxies
@@ -116,3 +122,4 @@ Services for Google Cloud Compute v1 API
     wire_groups
     zone_operations
     zones
+    zone_vm_extension_policies

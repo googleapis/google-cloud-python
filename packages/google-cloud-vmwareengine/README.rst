@@ -1,9 +1,9 @@
-Python Client for Google Cloud VMware Engine
-============================================
+Python Client for VMware Engine
+===============================
 
 |preview| |pypi| |versions|
 
-`Google Cloud VMware Engine`_: The Google VMware Engine API lets you programmatically manage VMware
+`VMware Engine`_: The Google VMware Engine API lets you programmatically manage VMware
 environments.
 
 - `Client Library Documentation`_
@@ -15,7 +15,7 @@ environments.
    :target: https://pypi.org/project/google-cloud-vmwareengine/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vmwareengine.svg
    :target: https://pypi.org/project/google-cloud-vmwareengine/
-.. _Google Cloud VMware Engine: https://cloud.google.com/vmware-engine/
+.. _VMware Engine: https://cloud.google.com/vmware-engine/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vmwareengine/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vmware-engine/
 
@@ -26,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud VMware Engine.`_
+3. `Enable the VMware Engine.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud VMware Engine.:  https://cloud.google.com/vmware-engine/
+.. _Enable the VMware Engine.:  https://cloud.google.com/vmware-engine/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -98,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud VMware Engine
+-  Read the `Client Library Documentation`_ for VMware Engine
    to see other available methods on the client.
--  Read the `Google Cloud VMware Engine Product documentation`_ to learn
+-  Read the `VMware Engine Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud VMware Engine Product documentation:  https://cloud.google.com/vmware-engine/
+.. _VMware Engine Product documentation:  https://cloud.google.com/vmware-engine/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

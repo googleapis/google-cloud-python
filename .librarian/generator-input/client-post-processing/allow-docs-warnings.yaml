@@ -18,6 +18,12 @@ url: https://github.com/googleapis/gapic-generator-python/issues/2490
 # at this stage.
 replacements:
   - paths: [
+      packages/google-analytics-data/noxfile.py,
+    ]
+    before: '        "-W",  # warnings as errors\n'
+    after: ''
+    count: 1
+  - paths: [
       packages/google-cloud-compute/noxfile.py,
     ]
     before: '        "-W",  # warnings as errors\n'

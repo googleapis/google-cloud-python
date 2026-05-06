@@ -3,7 +3,14 @@ Python Client for Container Analysis
 
 |stable| |pypi| |versions|
 
-`Container Analysis`_: is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.
+`Container Analysis`_: This API is a prerequisite for leveraging Artifact Analysis
+scanning capabilities in both Artifact Registry and with Advanced
+Vulnerability Insights (runtime scanning) in GKE.
+
+In addition, the Container Analysis API is an implementation of the
+Grafeas API, which enables storing, querying, and retrieval of critical
+metadata
+about all of your software artifacts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

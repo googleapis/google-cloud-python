@@ -1,11 +1,11 @@
 {
-    "api_description": "Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.",
+    "api_description": "An API for accessing Advisory Notifications in Google Cloud",
     "api_id": "advisorynotifications.googleapis.com",
     "api_shortname": "advisorynotifications",
     "client_documentation": "https://cloud.google.com/python/docs/reference/advisorynotifications/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-advisorynotifications",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1009495",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "advisorynotifications",

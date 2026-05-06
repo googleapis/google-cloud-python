@@ -3,7 +3,8 @@ Python Client for Secret Manager
 
 |stable| |pypi| |versions|
 
-`Secret Manager`_: Stores, manages, and secures access to application secrets.
+`Secret Manager`_: Stores sensitive data such as API keys, passwords, and certificates.
+Provides convenience while improving security.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

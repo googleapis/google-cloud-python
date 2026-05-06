@@ -5,7 +5,6 @@
     "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager",
     "default_version": "apiVersion",
     "distribution_name": "google-cloud-access-context-manager",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "accesscontextmanager",

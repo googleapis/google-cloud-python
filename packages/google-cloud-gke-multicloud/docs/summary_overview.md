@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Anthos Multicloud API
+# GKE Multi-Cloud API
 
-Overview of the APIs available for Anthos Multicloud API.
+Overview of the APIs available for GKE Multi-Cloud API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Anthos Multicloud API.
+GKE Multi-Cloud API.
 
 [classes](https://cloud.google.com/python/docs/reference/gkemulticloud/latest/summary_class.html)
 

@@ -5023,6 +5023,7 @@ def test_insert_rest_call_success(request_type):
         ],
         "region": "region_value",
         "self_link": "self_link_value",
+        "status": {"quota_usage": {"forwarding_rules": 1725, "units": 563}},
         "tests": [
             {
                 "description": "description_value",
@@ -5858,6 +5859,7 @@ def test_patch_rest_call_success(request_type):
         ],
         "region": "region_value",
         "self_link": "self_link_value",
+        "status": {"quota_usage": {"forwarding_rules": 1725, "units": 563}},
         "tests": [
             {
                 "description": "description_value",
@@ -6525,6 +6527,7 @@ def test_update_rest_call_success(request_type):
         ],
         "region": "region_value",
         "self_link": "self_link_value",
+        "status": {"quota_usage": {"forwarding_rules": 1725, "units": 563}},
         "tests": [
             {
                 "description": "description_value",
@@ -6992,6 +6995,7 @@ def test_validate_rest_call_success(request_type):
             ],
             "region": "region_value",
             "self_link": "self_link_value",
+            "status": {"quota_usage": {"forwarding_rules": 1725, "units": 563}},
             "tests": [
                 {
                     "description": "description_value",

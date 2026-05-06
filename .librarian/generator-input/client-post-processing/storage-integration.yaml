@@ -287,11 +287,11 @@ replacements:
       packages/google-cloud-storage/README.rst,
     ]
     before: |
-      Python Client for Google Cloud Storage
+      Python Client for Cloud Storage
       [\s\S]*?\(This is the reason for 2.i. above.\)
     after: |
-      Python Client for Google Cloud Storage
-      ======================================
+      Python Client for Cloud Storage
+      ===============================
 
       |stable| |pypi| |versions|
 

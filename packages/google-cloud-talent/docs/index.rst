@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Talent Solution.
+This package includes clients for multiple versions of Cloud Talent Solution.
 By default, you will get version ``talent_v4``.
 
 

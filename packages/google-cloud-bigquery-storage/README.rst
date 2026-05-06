@@ -1,9 +1,9 @@
-Python Client for Google BigQuery Storage
-=========================================
+Python Client for BigQuery Storage
+==================================
 
 |stable| |pypi| |versions|
 
-`Google BigQuery Storage`_: 
+`BigQuery Storage`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google BigQuery Storage
    :target: https://pypi.org/project/google-cloud-bigquery-storage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-storage.svg
    :target: https://pypi.org/project/google-cloud-bigquery-storage/
-.. _Google BigQuery Storage: https://cloud.google.com/bigquery/
+.. _BigQuery Storage: https://cloud.google.com/bigquery/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerystorage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google BigQuery Storage.`_
+3. `Enable the BigQuery Storage.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google BigQuery Storage.:  https://cloud.google.com/bigquery/
+.. _Enable the BigQuery Storage.:  https://cloud.google.com/bigquery/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google BigQuery Storage
+-  Read the `Client Library Documentation`_ for BigQuery Storage
    to see other available methods on the client.
--  Read the `Google BigQuery Storage Product documentation`_ to learn
+-  Read the `BigQuery Storage Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google BigQuery Storage Product documentation:  https://cloud.google.com/bigquery/
+.. _BigQuery Storage Product documentation:  https://cloud.google.com/bigquery/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

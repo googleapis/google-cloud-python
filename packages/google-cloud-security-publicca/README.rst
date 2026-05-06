@@ -3,7 +3,9 @@ Python Client for Public Certificate Authority
 
 |preview| |pypi| |versions|
 
-`Public Certificate Authority`_: simplifies the deployment and management of public CAs without managing infrastructure.
+`Public Certificate Authority`_: The Public Certificate Authority API may be used to create and manage ACME
+external account binding keys associated with Google Trust Services'
+publicly trusted certificate authority.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

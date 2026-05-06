@@ -31,6 +31,7 @@ from .reports import (
     ReportRow,
     SearchRequest,
     SearchResponse,
+    StoreType,
     TrafficSource,
 )
 
@@ -52,5 +53,6 @@ __all__ = (
     "ReportRow",
     "SearchRequest",
     "SearchResponse",
+    "StoreType",
     "TrafficSource",
 )

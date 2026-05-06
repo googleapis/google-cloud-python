@@ -111,6 +111,11 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "uri": "/v1/{parent=organizations/*/locations/*}/frameworkDeployments",
                     "body": "framework_deployment",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/frameworkDeployments",
+                    "body": "framework_deployment",
+                },
             ]
             return http_options
 
@@ -167,6 +172,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/frameworkDeployments/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/frameworkDeployments/*}",
+                },
             ]
             return http_options
 
@@ -213,6 +222,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/cloudControlDeployments/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/cloudControlDeployments/*}",
                 },
             ]
             return http_options
@@ -261,6 +274,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/frameworkDeployments/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/frameworkDeployments/*}",
+                },
             ]
             return http_options
 
@@ -307,6 +324,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=organizations/*/locations/*}/cloudControlDeployments",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/cloudControlDeployments",
                 },
             ]
             return http_options
@@ -355,6 +376,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "get",
                     "uri": "/v1/{parent=organizations/*/locations/*}/frameworkDeployments",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/frameworkDeployments",
+                },
             ]
             return http_options
 
@@ -392,6 +417,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -417,6 +446,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*}/locations",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*}/locations",
+                },
             ]
             return http_options
 
@@ -441,6 +474,11 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     "body": "*",
                 },
             ]
@@ -473,6 +511,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -498,6 +540,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -522,6 +568,10 @@ class _BaseDeploymentRestTransport(DeploymentTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}/operations",
                 },
             ]
             return http_options

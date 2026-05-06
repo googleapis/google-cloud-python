@@ -1,9 +1,9 @@
-Python Client for Google Cloud Memorystore for Redis API
-========================================================
+Python Client for Google Cloud Memorystore for Redis
+====================================================
 
 |preview| |pypi| |versions|
 
-`Google Cloud Memorystore for Redis API`_: Creates and manages Redis instances on the Google Cloud Platform.
+`Google Cloud Memorystore for Redis`_: Creates and manages Redis instances on the Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google Cloud Memorystore for Redis API
    :target: https://pypi.org/project/google-cloud-redis-cluster/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis-cluster.svg
    :target: https://pypi.org/project/google-cloud-redis-cluster/
-.. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore/
+.. _Google Cloud Memorystore for Redis: https://cloud.google.com/memorystore/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-redis-cluster/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/memorystore/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Memorystore for Redis API.`_
+3. `Enable the Google Cloud Memorystore for Redis.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Memorystore for Redis API.:  https://cloud.google.com/memorystore/
+.. _Enable the Google Cloud Memorystore for Redis.:  https://cloud.google.com/memorystore/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Memorystore for Redis API
+-  Read the `Client Library Documentation`_ for Google Cloud Memorystore for Redis
    to see other available methods on the client.
--  Read the `Google Cloud Memorystore for Redis API Product documentation`_ to learn
+-  Read the `Google Cloud Memorystore for Redis Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Memorystore for Redis API Product documentation:  https://cloud.google.com/memorystore/
+.. _Google Cloud Memorystore for Redis Product documentation:  https://cloud.google.com/memorystore/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
