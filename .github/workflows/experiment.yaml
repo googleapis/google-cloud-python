@@ -1,4 +1,4 @@
-name: CI Unit
+name: CI Unit (A-M)
 on: [pull_request]
 
 concurrency:
@@ -6,9 +6,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # =========================================================
-  # 1. DISCOVERY (Outputs up to 256 packages globally)
-  # =========================================================
   discover:
     runs-on: ubuntu-latest
     outputs:
@@ -18,21 +15,20 @@ jobs:
       - id: changes
         uses: tj-actions/changed-files@v44
         with:
-          files: packages/**      
+          # NATIVE SHARDING: Only grab the first half of the alphabet.
+          # Note: Adjust the prefix if all packages start with "google-cloud-"
+          files: packages/google-cloud-[a-m]*/**      
           dir_names: true         
           dir_names_max_depth: 2  
           matrix: true            
 
-  # =========================================================
-  # 2. EXECUTION (1 Job = 1 Package)
-  # =========================================================
   unit:
     needs: discover
     if: ${{ needs.discover.outputs.packages != '[]' && needs.discover.outputs.packages != '' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 40  # Org limit protection
+      max-parallel: 20  # Protects the org limit
       matrix:
         package: ${{ fromJSON(needs.discover.outputs.packages) }}
         
@@ -42,26 +38,14 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - name: Run Python Versions Sequentially
+          
+      - name: Run Unit Tests
         run: |
           cd ${{ matrix.package }}
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_PRERELEASE=allow
-          uvx --with 'nox[uv]' nox -s "unit-3.9" "unit-3.10" "unit-3.11" "unit-3.12" "unit-3.14"
-
-  # =========================================================
-  # 3. AGGREGATOR (Branch Protection Target)
-  # =========================================================
-  ci-unit-success:
-    name: Unit Tests Success
-    needs: [unit]
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Verify matrix passed
-        run: |
-          if [ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" = "true" ]; then
-            echo "::error::One or more unit tests failed."
-            exit 1
+          if [ ! -f "noxfile.py" ]; then
+            echo "::notice::No noxfile found in ${{ matrix.package }}. Skipping."
+            exit 0
           fi
-          echo "All unit tests passed!"
+          
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          uvx --with 'nox[uv]' nox -s "unit-3.9" "unit-3.10" "unit-3.11" "unit-3.12" "unit-3.14"
