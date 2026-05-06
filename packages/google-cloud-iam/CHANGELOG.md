@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.22.0...google-cloud-iam-v2.23.0) (2026-05-06)
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.21.0...google-cloud-iam-v2.22.0) (2026-03-26)
 
 

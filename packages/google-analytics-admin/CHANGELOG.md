@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-analytics-admin/#history
 
+## [0.29.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.28.0...google-analytics-admin-v0.29.0) (2026-05-06)
+
 ## [0.28.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.27.0...google-analytics-admin-v0.28.0) (2026-03-26)
 
 

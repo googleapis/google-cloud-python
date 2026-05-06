@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-netapp/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.9.0...google-cloud-netapp-v0.10.0) (2026-05-06)
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.8.0...google-cloud-netapp-v0.9.0) (2026-04-02)
 
 

@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.38.0...google-cloud-speech-v2.39.0) (2026-05-06)
+
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.37.0...google-cloud-speech-v2.38.0) (2026-03-26)
 
 

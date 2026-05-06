@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.27.0...google-cloud-firestore-v2.28.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Imropve improper pipeline aliases (#16651) ([f728bd6120c47f45f8e380a1e8c8d763e5e0c361](https://github.com/googleapis/google-cloud-python/commit/f728bd6120c47f45f8e380a1e8c8d763e5e0c361))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.25.0...google-cloud-firestore-v2.26.0) (2026-03-23)
 
 

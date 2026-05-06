@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
 
+## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.5...gcp-sphinx-docfx-yaml-v3.3.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+
 ## [3.2.5](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.4...gcp-sphinx-docfx-yaml-v3.2.5) (2026-04-02)
 
 

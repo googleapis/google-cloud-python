@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.18.0...google-cloud-discoveryengine-v0.19.0) (2026-05-06)
+
 ## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.17.0...google-cloud-discoveryengine-v0.18.0) (2026-03-26)
 
 
