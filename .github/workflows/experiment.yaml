@@ -6,27 +6,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # =========================================================
+  # 1. DISCOVERY 
+  # =========================================================
   discover:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.changes.outputs.all_changed_files }}
+      packages: ${{ steps.parse.outputs.packages }}
     steps:
       - uses: actions/checkout@v4
       - id: changes
         uses: tj-actions/changed-files@v44
         with:
-          files: packages/**      
-          # Output as a space-separated string, NOT a JSON matrix
-          matrix: false            
+          files: packages/**
 
+      # Bulletproof directory extraction (ignores file names)
+      - id: parse
+        name: Extract Package Directories
+        env:
+          ALL_FILES: ${{ steps.changes.outputs.all_changed_files }}
+        run: |
+          PKGS=$(echo "$ALL_FILES" | tr ' ' '\n' | cut -d'/' -f1,2 | sort -u | tr '\n' ' ')
+          echo "packages=$PKGS" >> $GITHUB_OUTPUT
+
+  # =========================================================
+  # 2. EXECUTION (Parallelized internally via xargs)
+  # =========================================================
   unit:
     needs: discover
     if: ${{ needs.discover.outputs.packages != '' }}
-    # USE YOUR ENTERPRISE RUNNER HERE
-    runs-on: ubuntu-latest-8-cores  
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        # Exactly 5 Jobs total. Never violates GitHub limits.
         python: ["3.9", "3.10", "3.11", "3.12", "3.14"]
         
     name: Unit (Python ${{ matrix.python }})
@@ -37,15 +50,29 @@ jobs:
           python-version: ${{ matrix.python }}
           enable-cache: true
           
-      - name: Run Tests Concurrently on 8 Cores
-        env:
-          NOX_DEFAULT_VENV_BACKEND: uv
+      - name: Run Tests Concurrently
         run: |
-          # xargs -P 8 runs up to 8 package tests at the exact same time
-          echo "${{ needs.discover.outputs.packages }}" | xargs -n 1 -P 8 -I {} sh -c '
-            cd {} && 
-            if [ -f "noxfile.py" ]; then 
-              echo "Testing {}..." &&
-              uvx --with "nox[uv]" nox -s "unit-${{ matrix.python }}"
+          export NOX_DEFAULT_VENV_BACKEND=uv
+          export UV_PRERELEASE=allow
+          
+          # We use xargs -P 4 to run tests in parallel on the standard runner.
+          # We redirect output to a file first so the GitHub UI logs don't interleave and become unreadable.
+          echo "${{ needs.discover.outputs.packages }}" | tr ' ' '\n' | xargs -n 1 -P 4 -I {} sh -c '
+            if [ -f "{}/noxfile.py" ]; then
+              cd {}
+              
+              # Run test and capture output
+              uvx --with "nox[uv]" nox -s "unit-${{ matrix.python }}" > nox_output.log 2>&1
+              STATUS=$?
+              
+              # Print cleanly to GitHub UI
+              echo "::group::Testing {}"
+              cat nox_output.log
+              echo "::endgroup::"
+              
+              # If the test failed, exit with failure so GitHub catches it
+              if [ $STATUS -ne 0 ]; then
+                exit 255
+              fi
             fi
           '
