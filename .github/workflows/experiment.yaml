@@ -12,12 +12,12 @@ concurrency:
 
 jobs:
   # ==========================================
-  # 1. DISCOVERY ENGINE (The Router)
+  # 1. DISCOVERY ENGINE (The Matrix Sharder)
   # ==========================================
   discover:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.build-matrix.outputs.packages }}
+      chunks: ${{ steps.build-matrix.outputs.chunks }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,35 +31,39 @@ jobs:
           dir_names: true               
           dir_names_max_depth: 2        
 
-      - name: Build Bulletproof JSON Matrix
+      - name: Build Dynamic Shards
         id: build-matrix
+        env:
+          RAW_LIST: ${{ steps.changes.outputs.all_changed_files }}
         run: |
-          RAW_LIST="${{ steps.changes.outputs.all_changed_files }}"
+          python -c '
+          import os, json
+          packages = os.environ.get("RAW_LIST", "").split()
+          print(f"Detected {len(packages)} changed packages.")
           
-          if [[ -z "$RAW_LIST" ]]; then
-            echo "No packages changed. Returning empty JSON array."
-            JSON_ARRAY="[]"
-          else
-            # Convert string to strict JSON array
-            JSON_ARRAY=$(echo -n "$RAW_LIST" | jq -R -c 'split(" ")')
-            echo "Constructed JSON Array: $JSON_ARRAY"
-          fi
+          if not packages:
+              chunks = []
+          else:
+              # Shard into groups of 10 to completely bypass GitHubs 256 total job limit
+              chunk_size = 10
+              chunks = [" ".join(packages[i:i+chunk_size]) for i in range(0, len(packages), chunk_size)]
           
-          # SAFELY PASS MASSIVE JSON ARRAYS USING EOF
-          echo "packages<<EOF" >> $GITHUB_OUTPUT
-          echo "$JSON_ARRAY" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          print(f"Created {len(chunks)} matrix shards.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"chunks={json.dumps(chunks)}\n")
+          '
+
   # ==========================================
   # 2. STATIC ANALYSIS
   # ==========================================
   static-checks:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false 
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -68,22 +72,33 @@ jobs:
           enable-cache: true
       - name: Run Lint and MyPy
         run: |
-          cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
-          uvx --with 'nox[uv]' nox -s lint mypy lint_setup_py
+          
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Linting $pkg"
+            cd $pkg
+            if ! uvx --with 'nox[uv]' nox -s lint mypy lint_setup_py; then
+              echo "::error::Linting failed in $pkg"
+              FAILED=1
+            fi
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
+          done
+          exit $FAILED
 
   # ==========================================
   # 3. DOCUMENTATION BUILD
   # ==========================================
   docs-build:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -92,22 +107,33 @@ jobs:
           enable-cache: true
       - name: Build Docs and DocFX
         run: |
-          cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
-          uvx --with 'nox[uv]' nox -s docs docfx
+          
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Docs $pkg"
+            cd $pkg
+            if ! uvx --with 'nox[uv]' nox -s docs docfx; then
+              echo "::error::Docs failed in $pkg"
+              FAILED=1
+            fi
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
+          done
+          exit $FAILED
 
   # ==========================================
-  # 4a. UNIT TESTS (Boundary: Python 3.9)
+  # 4a. UNIT TESTS (Python 3.9)
   # ==========================================
   unit-tests-3-9:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -116,28 +142,34 @@ jobs:
           enable-cache: true
       - name: Execute Unit Tests (Python 3.9)
         run: |
-          cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
           export UV_COMPILE_BYTECODE=1
           
-          for i in 1 2 3; do
-            if uvx --with 'nox[uv]' nox -s unit-3.9; then exit 0; fi
-            sleep 5
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Testing $pkg"
+            cd $pkg
+            if ! uvx --with 'nox[uv]' nox -s unit-3.9; then
+              echo "::error::Failed in $pkg"
+              FAILED=1
+            fi
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
           done
-          exit 1
+          exit $FAILED
 
   # ==========================================
-  # 4b. UNIT TESTS (Boundary: Python 3.14)
+  # 4b. UNIT TESTS (Python 3.14)
   # ==========================================
   unit-tests-3-14:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -146,41 +178,58 @@ jobs:
           enable-cache: true
       - name: Execute Unit Tests (Python 3.14)
         run: |
-          cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
           export UV_COMPILE_BYTECODE=1
           
-          for i in 1 2 3; do
-            if uvx --with 'nox[uv]' nox -s unit-3.14; then exit 0; fi
-            sleep 5
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Testing $pkg"
+            cd $pkg
+            if ! uvx --with 'nox[uv]' nox -s unit-3.14; then
+              echo "::error::Failed in $pkg"
+              FAILED=1
+            fi
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
           done
-          exit 1
+          exit $FAILED
 
   # ==========================================
   # 5. CORE DEPS FROM SOURCE
   # ==========================================
   unit-core-deps-from-source:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '[]' }}
+    if: ${{ needs.discover.outputs.chunks != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.packages) }}
+        chunk: ${{ fromJSON(needs.discover.outputs.chunks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.14"
           enable-cache: true
-      - name: Execute Core Deps from Source Tests
+      - name: Execute Core Deps
         run: |
-          cd ${{ matrix.package }}
           export NOX_DEFAULT_VENV_BACKEND=uv
           export UV_VENV_SEED=1
           export UV_COMPILE_BYTECODE=1
-          uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14"
+          
+          FAILED=0
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Testing $pkg"
+            cd $pkg
+            if ! uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14"; then
+              echo "::error::Failed in $pkg"
+              FAILED=1
+            fi
+            cd $GITHUB_WORKSPACE
+            echo "::endgroup::"
+          done
+          exit $FAILED
 
   # ==========================================
   # 6. THE GATEKEEPER
@@ -202,4 +251,10 @@ jobs:
             echo "::error::One or more required CI jobs failed."
             exit 1
           fi
-          exit 0
+          
+          if [[ "${{ needs.discover.outputs.chunks }}" == "[]" ]]; then
+            echo "No packages changed. Safely bypassing execution."
+            exit 0
+          fi
+          
+          echo "All jobs passed."
