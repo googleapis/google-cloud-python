@@ -82,32 +82,33 @@ Outputs are unordered and unindexed to allow for cleaner mapping with SQL.
    <td>Most APIs that take a table expression as input, also output a table
    expression with the same number of rows and passing through all unused
    columns.
- 
+
    <p>This should be used to pass through any index or ordering columns (as well
    as all other columns, if that's the SQL behavior), to allow for easy joining
    with the original input DataFrame.
    </td>
-   <td>Same number of rows as the input, so we should preserve index and ordering:<ul>
+   <td>Same number of rows as the input, so we should preserve index and ordering:
 
-<li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-predict?hl=en">ML.PREDICT</a>
+   <ul>
+   <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-predict?hl=en">ML.PREDICT</a>
+   </li></ul>
 
-<p>
-Different number of rows in output, so no need to preserve index or ordering.
-Default index / ordering should be specified with the Session's
-configuration:
+   <p>
+   Different number of rows in output, so no need to preserve index or ordering.
+   Default index / ordering should be specified with the Session's
+   configuration:
 
-<ul>
-<li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create?hl=en">CREATE MODEL</a>
-<li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#search">SEARCH</a>
-<li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#vector_search">VECTOR_SEARCH</a>
+   <ul>
+   <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create?hl=en">CREATE MODEL</a>
+   <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#search">SEARCH</a>
+   <li><a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#vector_search">VECTOR_SEARCH</a>
+   </li></ul>
 
-<p>
-Possible to have the same number of rows as the input, but joining with the original goes against the purpose of the feature:
+   <p>
+   Possible to have the same number of rows as the input, but joining with the original goes against the purpose of the feature:
 
-<ul>
-<li><a href="https://docs.cloud.google.com/bigquery/docs/differential-privacy#dp_define_privacy_unit_id">WITH DIFFERENTIAL_PRIVACY</a></li></ul>
-</li></ul>
-</li></ul>
+   <ul>
+   <li><a href="https://docs.cloud.google.com/bigquery/docs/differential-privacy#dp_define_privacy_unit_id">WITH DIFFERENTIAL_PRIVACY</a></li></ul>
 
    </td>
   </tr>
