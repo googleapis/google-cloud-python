@@ -102,6 +102,7 @@ class DualCompilerProxyExecutor(executor.Executor):
                 enable_cache=enable_cache,
             )
         # stable or legacy use ibis
+        # TODO(b/510408650): Use sqlglot by default.
         return self._ibis_executor.to_sql(
             array_value,
             offset_column=offset_column,
@@ -151,6 +152,7 @@ class DualCompilerProxyExecutor(executor.Executor):
 
         Does not actually execute the data but will get stats and indicate any invalid query errors.
         """
+        # TODO(b/510408650): Use sqlglot for dry runs when sqlglot has been validated.
         return self._ibis_executor.dry_run(array_value, ordered=ordered)
 
     def cached(
