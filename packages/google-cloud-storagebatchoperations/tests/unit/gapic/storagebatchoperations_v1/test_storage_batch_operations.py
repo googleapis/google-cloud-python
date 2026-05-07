@@ -6451,6 +6451,9 @@ def test_create_job_rest_call_success(request_type):
             "succeeded_object_count": 2307,
             "failed_object_count": 1987,
             "total_bytes_found": 1829,
+            "object_custom_contexts_created": 3199,
+            "object_custom_contexts_deleted": 3198,
+            "object_custom_contexts_updated": 3214,
         },
         "error_summaries": [
             {

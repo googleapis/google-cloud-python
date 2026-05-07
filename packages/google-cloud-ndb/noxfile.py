@@ -29,7 +29,7 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.14"
-ALL_INTERPRETERS = ("3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
+ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
@@ -47,7 +47,6 @@ nox.options.error_on_missing_interpreters = True
 
 nox.options.sessions = [
     "prerelease_deps",
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -359,7 +358,7 @@ def docfx(session):
     )
 
 
-@nox.session(py="3.9")
+@nox.session(py="3.10")
 def doctest(session):
     # Install all dependencies.
     session.install(
@@ -444,19 +443,66 @@ def system_default(session):
 
 
 @nox.session(python=DEFAULT_INTERPRETER)
-def core_deps_from_source(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable this test once this bug is fixed.
-    session.skip("Temporarily skip core_deps_from_source. See issue 16014")
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source"""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_INTERPRETER)
 def mypy(session):
     """Run the type checker."""
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable mypy once this bug is fixed.
-    session.skip("Temporarily skip mypy. See issue 16014")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+        "types-pytz",
+    )
+    session.install("-e", ".")
+    session.run(
+        "mypy",
+        "-p",
+        "google.cloud.ndb",
+        "--check-untyped-defs",
+        "--ignore-missing-imports",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_INTERPRETER)

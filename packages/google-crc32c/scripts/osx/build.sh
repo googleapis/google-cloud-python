@@ -41,7 +41,7 @@ ${OSX_DIR}/build_c_lib.sh
 rm -rf /Users/kbuilder/.pyenv
 git clone https://github.com/pyenv/pyenv.git /Users/kbuilder/.pyenv
 
-SUPPORTED_PYTHON_VERSIONS=("3.9" "3.10" "3.11" "3.12" "3.13" "3.14")
+SUPPORTED_PYTHON_VERSIONS=("3.10" "3.11" "3.12" "3.13" "3.14")
 
 for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
     echo "Build wheel for Python ${PYTHON_VERSION}"

@@ -3,7 +3,7 @@ Python Client for API Gateway
 
 |stable| |pypi| |versions|
 
-`API Gateway`_: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
+`API Gateway`_: API Gateway enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

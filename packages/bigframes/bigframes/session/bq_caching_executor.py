@@ -80,11 +80,15 @@ class BigQueryCachingExecutor(executor.Executor):
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
-        labels: Mapping[str, str] = {},
+        labels: tuple[tuple[str, str], ...] = (),
+        compiler_name: Literal["ibis", "sqlglot"] = "sqlglot",
+        cache: Optional[execution_cache.ExecutionCache] = None,
     ):
         self.bqclient = bqclient
         self.storage_manager = storage_manager
-        self.cache: execution_cache.ExecutionCache = execution_cache.ExecutionCache()
+        self.cache: execution_cache.ExecutionCache = (
+            cache or execution_cache.ExecutionCache()
+        )
         self.metrics = metrics
         self.loader = loader
         self.bqstoragereadclient = bqstoragereadclient
@@ -108,6 +112,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 polars_executor.PolarsExecutor(),
             )
         self._upload_lock = threading.Lock()
+        self._compiler_name = compiler_name
 
     def to_sql(
         self,
@@ -124,8 +129,9 @@ class BigQueryCachingExecutor(executor.Executor):
             else array_value.node
         )
         node = self._substitute_large_local_sources(node)
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(node, sort_rows=ordered)
+        compiled = compile.compile_sql(
+            compile.CompileRequest(node, sort_rows=ordered),
+            compiler_name=self._compiler_name,
         )
         return compiled.sql
 
@@ -157,7 +163,11 @@ class BigQueryCachingExecutor(executor.Executor):
                     "Ordering and peeking not supported for gbq export"
                 )
             # separate path for export_gbq, as it has all sorts of annoying logic, such as possibly running as dml
-            result = self._export_gbq(array_value, execution_spec.destination_spec)
+            result = self._export_gbq(
+                array_value,
+                execution_spec.destination_spec,
+                extra_labels=execution_spec.labels,
+            )
             self._publisher.publish(
                 bigframes.core.events.ExecutionFinished(
                     result=result,
@@ -173,6 +183,7 @@ class BigQueryCachingExecutor(executor.Executor):
             if isinstance(execution_spec.destination_spec, ex_spec.CacheSpec)
             else None,
             must_create_table=not execution_spec.promise_under_10gb,
+            extra_labels=execution_spec.labels,
         )
         # post steps: export
         if isinstance(execution_spec.destination_spec, ex_spec.GcsOutputSpec):
@@ -232,7 +243,10 @@ class BigQueryCachingExecutor(executor.Executor):
             return None
 
     def _export_gbq(
-        self, array_value: bigframes.core.ArrayValue, spec: ex_spec.TableOutputSpec
+        self,
+        array_value: bigframes.core.ArrayValue,
+        spec: ex_spec.TableOutputSpec,
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> executor.ExecuteResult:
         """
         Export the ArrayValue to an existing BigQuery table.
@@ -242,8 +256,9 @@ class BigQueryCachingExecutor(executor.Executor):
         # validate destination table
         existing_table = self._maybe_find_existing_table(spec)
 
-        compiled = compile.compiler().compile_sql(
-            compile.CompileRequest(plan, sort_rows=False)
+        compiled = compile.compile_sql(
+            compile.CompileRequest(plan, sort_rows=False),
+            compiler_name=self._compiler_name,
         )
         sql = compiled.sql
 
@@ -281,6 +296,7 @@ class BigQueryCachingExecutor(executor.Executor):
             sql=sql,
             job_config=job_config,
             session=array_value.session,
+            extra_labels=extra_labels,
         )
 
         has_special_dtype_col = any(
@@ -349,6 +365,7 @@ class BigQueryCachingExecutor(executor.Executor):
         job_config: Optional[bq_job.QueryJobConfig] = None,
         query_with_job: bool = True,
         session=None,
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
@@ -361,6 +378,8 @@ class BigQueryCachingExecutor(executor.Executor):
 
         if self._labels:
             job_config.labels.update(self._labels)
+        if extra_labels:
+            job_config.labels.update(extra_labels)
 
         try:
             # Trick the type checker into thinking we got a literal.
@@ -500,8 +519,9 @@ class BigQueryCachingExecutor(executor.Executor):
             max_complexity=QUERY_COMPLEXITY_LIMIT,
             cache=self.cache,
             # Heuristic: subtree_compleixty * (copies of subtree)^2
-            heuristic=lambda complexity, count: math.log(complexity)
-            + 2 * math.log(count),
+            heuristic=lambda complexity, count: (
+                math.log(complexity) + 2 * math.log(count)
+            ),
         )
         if selection is None:
             # No good subtrees to cache, just return original tree
@@ -574,6 +594,7 @@ class BigQueryCachingExecutor(executor.Executor):
         peek: Optional[int] = None,
         cache_spec: Optional[ex_spec.CacheSpec] = None,
         must_create_table: bool = True,
+        extra_labels: tuple[tuple[str, str], ...] = (),
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
         # TODO(swast): plumb through the api_name of the user-facing api that
@@ -604,13 +625,14 @@ class BigQueryCachingExecutor(executor.Executor):
                 ]
                 cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
 
-        compiled = compile.compiler().compile_sql(
+        compiled = compile.compile_sql(
             compile.CompileRequest(
                 plan,
                 sort_rows=ordered,
                 peek_count=peek,
                 materialize_all_order_keys=(cache_spec is not None),
-            )
+            ),
+            compiler_name=self._compiler_name,
         )
         # might have more columns than og schema, for hidden ordering columns
         compiled_schema = compiled.sql_schema
@@ -631,6 +653,7 @@ class BigQueryCachingExecutor(executor.Executor):
             job_config=job_config,
             query_with_job=(destination_table is not None),
             session=plan.session,
+            extra_labels=extra_labels,
         )
 
         # we could actually cache even when caching is not explicitly requested, but being conservative for now

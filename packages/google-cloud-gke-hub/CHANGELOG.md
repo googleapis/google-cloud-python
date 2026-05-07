@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-hub/#history
 
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.23.0...google-cloud-gke-hub-v1.24.0) (2026-05-06)
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.22.0...google-cloud-gke-hub-v1.23.0) (2026-03-26)
 
 

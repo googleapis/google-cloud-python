@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Run API
+# Cloud Run Admin API
 
-Overview of the APIs available for Cloud Run API.
+Overview of the APIs available for Cloud Run Admin API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Run API.
+Cloud Run Admin API.
 
 [classes](https://cloud.google.com/python/docs/reference/run/latest/summary_class.html)
 

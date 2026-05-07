@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-apps-script-type/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.6.0...google-apps-script-type-v0.7.0) (2026-05-06)
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.5.0...google-apps-script-type-v0.6.0) (2026-03-26)
 
 

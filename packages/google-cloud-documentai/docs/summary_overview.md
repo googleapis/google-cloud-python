@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Document AI API
+# Cloud Document AI API
 
-Overview of the APIs available for Document AI API.
+Overview of the APIs available for Cloud Document AI API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Document AI API.
+Cloud Document AI API.
 
 [classes](https://cloud.google.com/python/docs/reference/documentai/latest/summary_class.html)
 

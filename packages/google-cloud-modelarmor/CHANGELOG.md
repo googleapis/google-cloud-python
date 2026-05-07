@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-modelarmor/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.5.0...google-cloud-modelarmor-v0.6.0) (2026-05-06)
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.4.0...google-cloud-modelarmor-v0.5.0) (2026-03-26)
 
 

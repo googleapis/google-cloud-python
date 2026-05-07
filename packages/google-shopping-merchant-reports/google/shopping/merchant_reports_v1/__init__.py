@@ -48,6 +48,7 @@ from .types.reports import (
     ReportRow,
     SearchRequest,
     SearchResponse,
+    StoreType,
     TrafficSource,
 )
 
@@ -165,5 +166,6 @@ __all__ = (
     "ReportServiceClient",
     "SearchRequest",
     "SearchResponse",
+    "StoreType",
     "TrafficSource",
 )

@@ -19,7 +19,7 @@ import multiprocessing
 import os
 import random
 import time
-from io import BytesIO
+from typing import List, NamedTuple, Optional
 
 import pytest
 
@@ -39,9 +39,58 @@ from tests.perf.microbenchmarks.conftest import (
 all_params = config._get_params()
 
 
+class DownloadResult(NamedTuple):
+    total_bytes: int
+    measured_start_time: float
+    measured_end_time: float
+
+
 async def create_client():
     """Initializes async client and gets the current event loop."""
     return AsyncGrpcClient()
+
+
+def _aggregate_download_results(results: List[DownloadResult]) -> DownloadResult:
+    if not results:
+        raise ValueError("At least one download result is required.")
+
+    total_bytes = sum(result.total_bytes for result in results)
+    measured_start_time = min(result.measured_start_time for result in results)
+    measured_end_time = max(result.measured_end_time for result in results)
+    if measured_end_time <= measured_start_time:
+        raise ValueError("Measured elapsed time must be positive.")
+
+    return DownloadResult(
+        total_bytes=total_bytes,
+        measured_start_time=measured_start_time,
+        measured_end_time=measured_end_time,
+    )
+
+
+def _calculate_average_throughput_mib_s(
+    download_bytes_list: List[int], download_elapsed_times: List[float]
+) -> float:
+    total_bytes_downloaded = sum(download_bytes_list)
+    total_elapsed_time = sum(download_elapsed_times)
+    if total_elapsed_time <= 0:
+        raise ValueError("Total measured elapsed time must be positive.")
+
+    return (total_bytes_downloaded / total_elapsed_time) / (1024 * 1024)
+
+
+def _build_download_result(
+    total_bytes_downloaded: int,
+    measured_start_time: Optional[float],
+    measured_end_time: Optional[float],
+) -> DownloadResult:
+    if measured_start_time is None or measured_end_time is None:
+        raise ValueError("No downloads completed during the measured interval.")
+
+    return DownloadResult(
+        total_bytes=total_bytes_downloaded,
+        measured_start_time=measured_start_time,
+        measured_end_time=measured_end_time,
+    )
 
 
 # --- Global Variables for Worker Process ---
@@ -78,15 +127,18 @@ def _download_time_based_json(client, filename, params):
 
     offset = 0
     is_warming_up = True
-    start_time = time.monotonic()
+    start_time = time.perf_counter()
     warmup_end_time = start_time + params.warmup_duration
     test_end_time = warmup_end_time + params.duration
+    measured_start_time = None
+    measured_end_time = None
 
-    while time.monotonic() < test_end_time:
-        current_time = time.monotonic()
+    while time.perf_counter() < test_end_time:
+        current_time = time.perf_counter()
         if is_warming_up and current_time >= warmup_end_time:
             is_warming_up = False
             total_bytes_downloaded = 0  # Reset counter after warmup
+            measured_start_time = current_time
 
         bytes_in_iteration = 0
         # For JSON, we can't batch ranges like gRPC, so we download one by one
@@ -110,8 +162,31 @@ def _download_time_based_json(client, filename, params):
 
         if not is_warming_up:
             total_bytes_downloaded += bytes_in_iteration
+            measured_end_time = time.perf_counter()
 
-    return total_bytes_downloaded
+    return _build_download_result(
+        total_bytes_downloaded, measured_start_time, measured_end_time
+    )
+
+
+# _DummyListBuffer is used instead of io.BytesIO to avoid GIL contention
+# during profiling. io.BytesIO.write() holds the GIL while copying data,
+# which introduces significant noise and bottlenecks in performance tests
+# with high concurrency or large data transfers.
+# This buffer simply collects chunks in a list and tracks the total size.
+class _DummyListBuffer:
+    def __init__(self):
+        self.chunks = []
+        self.size = 0
+
+    def write(self, data):
+        self.chunks.append(data)
+        nbytes = len(data)
+        self.size += nbytes
+        return nbytes
+
+    def getvalue(self):
+        return b"".join(self.chunks)
 
 
 async def _download_time_based_async(client, filename, params):
@@ -122,15 +197,18 @@ async def _download_time_based_async(client, filename, params):
         total_bytes_downloaded = 0
         offset = 0
         is_warming_up = True
-        start_time = time.monotonic()
+        start_time = time.perf_counter()
         warmup_end_time = start_time + params.warmup_duration
         test_end_time = warmup_end_time + params.duration
+        measured_start_time = None
+        measured_end_time = None
 
-        while time.monotonic() < test_end_time:
-            current_time = time.monotonic()
+        while time.perf_counter() < test_end_time:
+            current_time = time.perf_counter()
             if is_warming_up and current_time >= warmup_end_time:
                 is_warming_up = False
                 total_bytes_downloaded = 0  # Reset counter after warmup
+                measured_start_time = current_time
 
             ranges = []
             if params.pattern == "rand":
@@ -138,28 +216,31 @@ async def _download_time_based_async(client, filename, params):
                     offset = random.randint(
                         0, params.file_size_bytes - params.chunk_size_bytes
                     )
-                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+                    ranges.append((offset, params.chunk_size_bytes, _DummyListBuffer()))
             else:  # seq
                 for _ in range(params.num_ranges):
-                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+                    ranges.append((offset, params.chunk_size_bytes, _DummyListBuffer()))
                     offset += params.chunk_size_bytes
                     if offset + params.chunk_size_bytes > params.file_size_bytes:
                         offset = 0  # Reset offset if end of file is reached
 
             await mrd.download_ranges(ranges)
 
-            bytes_in_buffers = sum(r[2].getbuffer().nbytes for r in ranges)
+            bytes_in_buffers = sum(r[2].size for r in ranges)
             assert bytes_in_buffers == params.chunk_size_bytes * params.num_ranges
 
             if not is_warming_up:
                 total_bytes_downloaded += params.chunk_size_bytes * params.num_ranges
-        return total_bytes_downloaded
+                measured_end_time = time.perf_counter()
+        return _build_download_result(
+            total_bytes_downloaded, measured_start_time, measured_end_time
+        )
 
     tasks = [asyncio.create_task(_worker_coro()) for _ in range(params.num_coros)]
     results = await asyncio.gather(*tasks)
 
     await mrd.close()
-    return sum(results)
+    return _aggregate_download_results(results)
 
 
 def _download_files_worker(process_idx, filename, params, bucket_type):
@@ -175,7 +256,8 @@ def download_files_mp_mc_wrapper(pool, files_names, params, bucket_type):
     args = [(i, files_names[i], params, bucket_type) for i in range(len(files_names))]
 
     results = pool.starmap(_download_files_worker, args)
-    return sum(results)
+    agg_res = _aggregate_download_results(results)
+    return agg_res.total_bytes, agg_res.measured_end_time - agg_res.measured_start_time
 
 
 @pytest.mark.parametrize(
@@ -198,9 +280,14 @@ def test_downloads_multi_proc_multi_coro(
     )
 
     download_bytes_list = []
+    download_elapsed_times = []
 
     def target_wrapper(*args, **kwargs):
-        download_bytes_list.append(download_files_mp_mc_wrapper(pool, *args, **kwargs))
+        total_bytes, measured_elapsed_time = download_files_mp_mc_wrapper(
+            pool, *args, **kwargs
+        )
+        download_bytes_list.append(total_bytes)
+        download_elapsed_times.append(measured_elapsed_time)
         return
 
     try:
@@ -214,10 +301,9 @@ def test_downloads_multi_proc_multi_coro(
     finally:
         pool.close()
         pool.join()
-        total_bytes_downloaded = sum(download_bytes_list)
-        throughput_mib_s = (
-            total_bytes_downloaded / params.duration / params.rounds
-        ) / (1024 * 1024)
+        throughput_mib_s = _calculate_average_throughput_mib_s(
+            download_bytes_list, download_elapsed_times
+        )
         benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
         print(
             f"Avg Throughput of {params.rounds} round(s): {throughput_mib_s:.2f} MiB/s"
@@ -226,6 +312,6 @@ def test_downloads_multi_proc_multi_coro(
             benchmark,
             params,
             download_bytes_list=download_bytes_list,
-            duration=params.duration,
+            duration=download_elapsed_times,
         )
         publish_resource_metrics(benchmark, m)

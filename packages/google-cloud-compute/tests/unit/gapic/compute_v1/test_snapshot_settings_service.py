@@ -1534,10 +1534,10 @@ def test_patch_rest_flattened():
         mock_args = dict(
             project="project_value",
             snapshot_settings_resource=compute.SnapshotSettings(
-                storage_location=compute.SnapshotSettingsStorageLocationSettings(
+                access_location=compute.SnapshotSettingsAccessLocation(
                     locations={
-                        "key_value": compute.SnapshotSettingsStorageLocationSettingsStorageLocationPreference(
-                            name="name_value"
+                        "key_value": compute.SnapshotSettingsAccessLocationAccessLocationPreference(
+                            region="region_value"
                         )
                     }
                 )
@@ -1581,10 +1581,10 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             compute.PatchSnapshotSettingRequest(),
             project="project_value",
             snapshot_settings_resource=compute.SnapshotSettings(
-                storage_location=compute.SnapshotSettingsStorageLocationSettings(
+                access_location=compute.SnapshotSettingsAccessLocation(
                     locations={
-                        "key_value": compute.SnapshotSettingsStorageLocationSettingsStorageLocationPreference(
-                            name="name_value"
+                        "key_value": compute.SnapshotSettingsAccessLocationAccessLocationPreference(
+                            region="region_value"
                         )
                     }
                 )
@@ -1755,10 +1755,10 @@ def test_patch_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             snapshot_settings_resource=compute.SnapshotSettings(
-                storage_location=compute.SnapshotSettingsStorageLocationSettings(
+                access_location=compute.SnapshotSettingsAccessLocation(
                     locations={
-                        "key_value": compute.SnapshotSettingsStorageLocationSettingsStorageLocationPreference(
-                            name="name_value"
+                        "key_value": compute.SnapshotSettingsAccessLocationAccessLocationPreference(
+                            region="region_value"
                         )
                     }
                 )
@@ -1802,10 +1802,10 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             compute.PatchSnapshotSettingRequest(),
             project="project_value",
             snapshot_settings_resource=compute.SnapshotSettings(
-                storage_location=compute.SnapshotSettingsStorageLocationSettings(
+                access_location=compute.SnapshotSettingsAccessLocation(
                     locations={
-                        "key_value": compute.SnapshotSettingsStorageLocationSettingsStorageLocationPreference(
-                            name="name_value"
+                        "key_value": compute.SnapshotSettingsAccessLocationAccessLocationPreference(
+                            region="region_value"
                         )
                     }
                 )
@@ -2059,7 +2059,8 @@ def test_patch_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["snapshot_settings_resource"] = {
-        "storage_location": {"locations": {}, "policy": "policy_value"}
+        "access_location": {"locations": {}, "policy": "policy_value"},
+        "storage_location": {"locations": {}, "policy": "policy_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

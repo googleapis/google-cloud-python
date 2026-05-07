@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Gemini Enterprise for Customer Experience API API
+# Gemini Enterprise for Customer Experience API
 
-Overview of the APIs available for Gemini Enterprise for Customer Experience API API.
+Overview of the APIs available for Gemini Enterprise for Customer Experience API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Gemini Enterprise for Customer Experience API API.
+Gemini Enterprise for Customer Experience API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-ces/latest/summary_class.html)
 

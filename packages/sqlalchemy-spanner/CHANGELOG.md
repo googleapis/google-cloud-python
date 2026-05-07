@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.17.3...sqlalchemy-spanner-v1.18.0) (2026-05-06)
+
+
+### Documentation
+
+* fix FAQ grammar in httplib2 example</li> <li><a href="https://github.com/psf/requests/commit/774a0b837a194ee885d4fdd9ca947900cc3daf71"><code>774a0b8</code></a> ([07a610c5df40fa8f0f18f88e975c266648f1ef5e](https://github.com/googleapis/google-cloud-python/commit/07a610c5df40fa8f0f18f88e975c266648f1ef5e))
+* same block as other sections</li> <li><a href="https://github.com/psf/requests/commit/9c72a41bec8597f948c9d8caa5dc3f12273b3303"><code>9c72a41</code></a> Bump github/codeql-action from 4.33.0 to 4.34.1</li> <li><a href="https://github.com/psf/requests/commit/ebf71906798ec82f34e07d3168f8b8aecaf8a3be"><code>ebf7190</code></a> Bump github/codeql-action from 4.32.0 to 4.33.0</li> <li><a href="https://github.com/psf/requests/commit/0e4ae38f0c93d4f92a96c774bd52c069d12a4798"><code>0e4ae38</code></a> ([07a610c5df40fa8f0f18f88e975c266648f1ef5e](https://github.com/googleapis/google-cloud-python/commit/07a610c5df40fa8f0f18f88e975c266648f1ef5e))
+* exclude Response.is_permanent_redirect from API docs (<a href="https://redirect.github.com/psf/requests/issues/7244">#7244</a>)</li> <li><a href="https://github.com/psf/requests/commit/d568f47278492e630cc990a259047c67991d007a"><code>d568f47</code></a> ([07a610c5df40fa8f0f18f88e975c266648f1ef5e](https://github.com/googleapis/google-cloud-python/commit/07a610c5df40fa8f0f18f88e975c266648f1ef5e))
+* clarify Quickstart POST example (<a href="https://redirect.github.com/psf/requests/issues/6960">#6960</a>)</li> <li>Additional commits viewable in <a href="https://github.com/psf/requests/compare/v2.32.5...v2.33.0">compare view</a></li> </ul> </details> <br /> ([07a610c5df40fa8f0f18f88e975c266648f1ef5e](https://github.com/googleapis/google-cloud-python/commit/07a610c5df40fa8f0f18f88e975c266648f1ef5e))
+* add AGENTS.md for project guidance and development commands</li> <li>Additional commits viewable in <a href="https://github.com/andialbrecht/sqlparse/compare/0.5.3...0.5.4">compare view</a></li> </ul> </details> <br /> ([dbbe4c813149a7f14da7e1c50502807bb143b416](https://github.com/googleapis/google-cloud-python/commit/dbbe4c813149a7f14da7e1c50502807bb143b416))
+
+
+### Bug Fixes
+
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+
 ## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.17.2...sqlalchemy-spanner-v1.17.3) (2026-03-23)
 
 

@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.75.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.74.0...googleapis-common-protos-v1.75.0) (2026-05-06)
+
 ## [1.74.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.73.1...googleapis-common-protos-v1.74.0) (2026-04-02)
 
 

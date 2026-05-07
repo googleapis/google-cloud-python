@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# IAM Logging Protos API
+# IAM Audit Logging API
 
-Overview of the APIs available for IAM Logging Protos API.
+Overview of the APIs available for IAM Audit Logging API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-IAM Logging Protos API.
+IAM Audit Logging API.
 
 [classes](https://cloud.google.com/python/docs/reference/iamlogging/latest/summary_class.html)
 

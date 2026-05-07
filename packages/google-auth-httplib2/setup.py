@@ -16,7 +16,7 @@ import io
 
 from setuptools import setup
 
-version = "0.3.1"
+version = "0.4.0"
 
 DEPENDENCIES = [
     "google-auth >= 1.32.0,<3.0.0",
@@ -36,13 +36,12 @@ setup(
     long_description=long_description,
     url="https://github.com/googleapis/google-cloud-python/packages/google-auth-httplib2",
     py_modules=["google_auth_httplib2"],
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=DEPENDENCIES,
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",

@@ -16,12 +16,14 @@ from __future__ import annotations
 
 from bigframes.operations.ai_ops import (
     AIClassify,
+    AIEmbed,
     AIGenerate,
     AIGenerateBool,
     AIGenerateDouble,
     AIGenerateInt,
     AIIf,
     AIScore,
+    AISimilarity,
 )
 from bigframes.operations.array_ops import (
     ArrayIndexOp,
@@ -434,8 +436,10 @@ __all__ = [
     "AIGenerateBool",
     "AIGenerateDouble",
     "AIGenerateInt",
+    "AIEmbed",
     "AIIf",
     "AIScore",
+    "AISimilarity",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",

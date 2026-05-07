@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.30.14...gapic-generator-v1.31.0) (2026-05-06)
+
+
+### Features
+
+* add `--resource-name-alias` flag to resolve namespace collisions (#16769) ([6fc78e58e08c9d5a277d8432f3f9740515b44dee](https://github.com/googleapis/google-cloud-python/commit/6fc78e58e08c9d5a277d8432f3f9740515b44dee))
+
+
+### Bug Fixes
+
+* pass resource aliases to file-level CommonResources (#16945) ([9652a08cb89441fac779eb4fa4d6f48f33b55d3b](https://github.com/googleapis/google-cloud-python/commit/9652a08cb89441fac779eb4fa4d6f48f33b55d3b))
+
 ## [1.30.14](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.30.13...gapic-generator-v1.30.14) (2026-04-02)
 
 

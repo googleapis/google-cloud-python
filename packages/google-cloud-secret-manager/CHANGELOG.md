@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-secret-manager/#history
 
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.27.0...google-cloud-secret-manager-v2.28.0) (2026-05-06)
+
 ## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.26.0...google-cloud-secret-manager-v2.27.0) (2026-03-26)
 
 

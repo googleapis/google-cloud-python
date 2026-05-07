@@ -149,67 +149,117 @@ class RegionNetworkPoliciesTransport(abc.ABC):
         self._wrapped_methods = {
             self.add_association: gapic_v1.method.wrap_method(
                 self.add_association,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.add_traffic_classification_rule: gapic_v1.method.wrap_method(
                 self.add_traffic_classification_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.aggregated_list: gapic_v1.method.wrap_method(
                 self.aggregated_list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_association: gapic_v1.method.wrap_method(
                 self.get_association,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_traffic_classification_rule: gapic_v1.method.wrap_method(
                 self.get_traffic_classification_rule,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.patch_traffic_classification_rule: gapic_v1.method.wrap_method(
                 self.patch_traffic_classification_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_association: gapic_v1.method.wrap_method(
                 self.remove_association,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_traffic_classification_rule: gapic_v1.method.wrap_method(
                 self.remove_traffic_classification_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

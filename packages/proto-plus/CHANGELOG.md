@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.2...proto-plus-v1.28.0) (2026-05-06)
+
 ## [1.27.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.1...proto-plus-v1.27.2) (2026-03-26)
 
 

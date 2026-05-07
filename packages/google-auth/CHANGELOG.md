@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.51.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.50.0...google-auth-v2.51.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.8 and 3.9 (#16946) ([dcbdd3b40eef6e4fee66b6b486daea056c3384db](https://github.com/googleapis/google-cloud-python/commit/dcbdd3b40eef6e4fee66b6b486daea056c3384db))
+
 ## [2.49.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.1...google-auth-v2.49.2) (2026-04-09)
 
 

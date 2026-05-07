@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
@@ -28,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "EvaluationState",
         "FindingClass",
+        "FrameworkComplianceSummaryView",
         "ListFrameworkComplianceSummariesRequest",
         "ListFrameworkComplianceSummariesResponse",
         "FrameworkComplianceReport",
@@ -48,6 +50,7 @@ __protobuf__ = proto.module(
         "SimilarControls",
         "AggregatedComplianceReport",
         "TargetResourceDetails",
+        "Trend",
     },
 )
 
@@ -122,6 +125,30 @@ class FindingClass(proto.Enum):
     CHOKEPOINT = 9
 
 
+class FrameworkComplianceSummaryView(proto.Enum):
+    r"""Specifies the view of the framework compliance summary to be
+    returned. New values may be added in the future.
+
+    Values:
+        FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_UNSPECIFIED (0):
+            The default / unset value. The API will
+            default to the BASIC view.
+        FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_BASIC (1):
+            Includes basic compliance metadata, but omits
+            trend data.
+        FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_FULL (2):
+            Includes all information, including
+            [finding_count][google.cloud.cloudsecuritycompliance.v1main.FrameworkComplianceSummary.finding_count]
+            and
+            [controls_passing_trend][google.cloud.cloudsecuritycompliance.v1main.FrameworkComplianceSummary.controls_passing_trend].
+            Trend data is provided for the last 30 days.
+    """
+
+    FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_UNSPECIFIED = 0
+    FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_BASIC = 1
+    FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_FULL = 2
+
+
 class ListFrameworkComplianceSummariesRequest(proto.Message):
     r"""The request message for
     [ListFrameworkComplianceSummariesRequest][google.cloud.cloudsecuritycompliance.v1.ListFrameworkComplianceSummariesRequest].
@@ -140,6 +167,9 @@ class ListFrameworkComplianceSummariesRequest(proto.Message):
             results that the server should return.
         filter (str):
             Optional. The filtering results.
+        view (google.cloud.cloudsecuritycompliance_v1.types.FrameworkComplianceSummaryView):
+            Optional. Specifies the level of detail to
+            return in the response.
     """
 
     parent: str = proto.Field(
@@ -157,6 +187,11 @@ class ListFrameworkComplianceSummariesRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    view: "FrameworkComplianceSummaryView" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="FrameworkComplianceSummaryView",
     )
 
 
@@ -296,6 +331,8 @@ class FetchFrameworkComplianceReportRequest(proto.Message):
             compliance report to retrieve.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The end time of the report.
+        filter (str):
+            Optional. The filtering results.
     """
 
     name: str = proto.Field(
@@ -306,6 +343,10 @@ class FetchFrameworkComplianceReportRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -566,6 +607,12 @@ class FrameworkComplianceSummary(proto.Message):
         target_resource_details (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.TargetResourceDetails]):
             The target resource details for the
             framework.
+        finding_count (int):
+            Output only. The count of the findings
+            generated against the framework.
+        controls_passing_trend (google.cloud.cloudsecuritycompliance_v1.types.Trend):
+            Output only. The trend of controls that are
+            passing for the given duration.
     """
 
     framework: str = proto.Field(
@@ -618,6 +665,15 @@ class FrameworkComplianceSummary(proto.Message):
             number=10,
             message="TargetResourceDetails",
         )
+    )
+    finding_count: int = proto.Field(
+        proto.INT64,
+        number=11,
+    )
+    controls_passing_trend: "Trend" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="Trend",
     )
 
 
@@ -1030,6 +1086,28 @@ class TargetResourceDetails(proto.Message):
     minor_revision_id: int = proto.Field(
         proto.INT64,
         number=7,
+    )
+
+
+class Trend(proto.Message):
+    r"""The trend of a compliance metric.
+
+    Attributes:
+        duration (google.protobuf.duration_pb2.Duration):
+            Output only. The duration for the trend.
+        value_percent (float):
+            Output only. The trend value as a percentage.
+            The value can be positive or negative.
+    """
+
+    duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    value_percent: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
     )
 
 

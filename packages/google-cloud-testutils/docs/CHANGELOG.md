@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.7.1...google-cloud-testutils-v1.8.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16948) ([cdc5dd5da9afc73fd7f9d0466a72b469d439aa78](https://github.com/googleapis/google-cloud-python/commit/cdc5dd5da9afc73fd7f9d0466a72b469d439aa78))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.7.0...google-cloud-testutils-v1.7.1) (2026-03-26)
 
 

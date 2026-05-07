@@ -2447,6 +2447,7 @@ def test_fetch_framework_compliance_report_non_empty_request_with_auto_populated
     # if they meet the requirements of AIP 4235.
     request = monitoring.FetchFrameworkComplianceReportRequest(
         name="name_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2461,6 +2462,7 @@ def test_fetch_framework_compliance_report_non_empty_request_with_auto_populated
         _, args, _ = call.mock_calls[0]
         assert args[0] == monitoring.FetchFrameworkComplianceReportRequest(
             name="name_value",
+            filter="filter_value",
         )
 
 
@@ -3725,6 +3727,7 @@ def test_list_framework_compliance_summaries_rest_required_fields(
             "filter",
             "page_size",
             "page_token",
+            "view",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3791,6 +3794,7 @@ def test_list_framework_compliance_summaries_rest_unset_required_fields():
                 "filter",
                 "pageSize",
                 "pageToken",
+                "view",
             )
         )
         & set(("parent",))
@@ -4261,7 +4265,12 @@ def test_fetch_framework_compliance_report_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).fetch_framework_compliance_report._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("end_time",))
+    assert not set(unset_fields) - set(
+        (
+            "end_time",
+            "filter",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4318,7 +4327,15 @@ def test_fetch_framework_compliance_report_rest_unset_required_fields():
     unset_fields = (
         transport.fetch_framework_compliance_report._get_unset_required_fields({})
     )
-    assert set(unset_fields) == (set(("endTime",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "endTime",
+                "filter",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_fetch_framework_compliance_report_rest_flattened():
