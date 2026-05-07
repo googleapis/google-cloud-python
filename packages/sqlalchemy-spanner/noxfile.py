@@ -179,6 +179,7 @@ def compliance_test_14(session):
         "--asyncio-mode=auto",
         "tests/test_suite_14.py",
         *session.posargs,
+        env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
     )
 
 
