@@ -64,20 +64,20 @@ jobs:
           FAILED=0
           
           for pkg in ${{ matrix.chunk }}; do
-            echo "::group::Testing $pkg (Python ${{ matrix.python }})"
+            echo "=========================================================="
+            echo "🚀 TESTING: $pkg (Python ${{ matrix.python }})"
+            echo "=========================================================="
             cd "$pkg"
             
-            # Run test, pipe to log for clean UI folding
-            if uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python }}" > nox_output.log 2>&1; then
-              cat nox_output.log
+            # Clean, readable bash: Check if the session exists before running it
+            if uvx --with 'nox[uv]' nox -l | grep -q "unit-${{ matrix.python }}"; then
+              # Run the test and stream logs directly to the UI
+              uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python }}" || FAILED=1
             else
-              cat nox_output.log
-              # Gracefully skip if the Python version isn't supported by this legacy package
-              grep -q "Sessions not found:" nox_output.log || FAILED=1
+              echo "⏭️ Session 'unit-${{ matrix.python }}' not defined for $pkg. Safely skipping."
             fi
             
             cd "$GITHUB_WORKSPACE"
-            echo "::endgroup::"
           done
           
           exit $FAILED
