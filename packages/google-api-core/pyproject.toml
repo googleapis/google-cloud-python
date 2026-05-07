@@ -20,7 +20,7 @@ build-backend = "setuptools.build_meta"
 name = "google-api-core"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = { text = "Apache 2.0" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 readme = "README.rst"
 description = "Google API client core library"
 classifiers = [
@@ -34,7 +34,6 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
 
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
