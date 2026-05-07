@@ -2044,7 +2044,12 @@ def _construct_prompt(
     return ibis.struct(prompt)
 
 
-def _construct_examples(examples: tuple[tuple[str, str]]) -> ibis_types.StructValue:
+def _construct_examples(
+    examples: tuple[tuple[str, str]] | None,
+) -> ibis_types.ArrayValue | None:
+    if examples is None:
+        return None
+
     results: list[ibis_types.StructValue] = []
 
     for example in examples:
