@@ -12,7 +12,7 @@ proto-plus==1.22.3
 grpc-google-iam-v1==0.12.6
 google-cloud-bigquery==3.14.0
 google-cloud-documentai==2.29.2
-google-cloud-storage==3.0.0
+google-cloud-storage==2.3.0
 google-cloud-vision==3.2.0
 numpy==1.23.5
 intervaltree==3.0.0
