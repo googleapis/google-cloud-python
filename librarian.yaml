@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.11.0
+version: v0.12.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -55,6 +55,7 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
+    skip_release: true
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
@@ -73,12 +74,10 @@ libraries:
     version: 1.31.0
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
     version: 3.3.0
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
     apis:
@@ -135,7 +134,6 @@ libraries:
     version: 2.31.0
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: google-apps-card
     version: 0.7.0
     apis:
@@ -226,10 +224,9 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.50.0
+    version: 2.52.0
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-auth-httplib2
     version: 0.4.0
     python:
@@ -238,7 +235,6 @@ libraries:
     version: 1.4.0
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-cloud-access-approval
     version: 1.20.0
     apis:
@@ -612,7 +608,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -744,15 +740,15 @@ libraries:
     version: 1.47.0
     apis:
       - path: google/cloud/compute/v1
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/compute/v1beta
     python:
-      issue_tracker_override: https://issuetracker.google.com/issues/new?component=187134&template=0
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
     version: 0.10.0
@@ -857,7 +853,8 @@ libraries:
       metadata_name_override: datacatalog
       default_version: v1
   - name: google-cloud-datacatalog-lineage
-    version: 0.7.0
+    version: 0.6.0
+    skip_generate: true
     apis:
       - path: google/cloud/datacatalog/lineage/v1
     python:
@@ -1128,6 +1125,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1468,7 +1466,6 @@ libraries:
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
-      skip_readme_copy: true
   - name: google-cloud-netapp
     version: 0.10.0
     apis:
@@ -1938,13 +1935,13 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
+    skip_release: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
         google/storage/v2:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=_storage
-      issue_tracker_override: https://issuetracker.google.com/savedsearches/559782
       metadata_name_override: storage
       default_version: v2
   - name: google-cloud-storage-control
@@ -2200,10 +2197,9 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_generate: true
+    skip_release: true
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-geo-type
     version: 0.7.0
     apis:
@@ -2306,7 +2302,7 @@ libraries:
     python:
       default_version: v1
   - name: google-resumable-media
-    version: 2.8.2
+    version: 2.9.0
     python:
       library_type: CORE
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-resumable-media/latest
@@ -2520,15 +2516,14 @@ libraries:
       metadata_name_override: grpc-iam
       default_version: apiVersion
   - name: pandas-gbq
-    version: 0.36.0
+    version: 0.35.0
+    skip_release: true
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true
   - name: proto-plus
     version: 1.28.0
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: sqlalchemy-bigquery
     version: 1.17.0
     python:
@@ -2537,4 +2532,3 @@ libraries:
     version: 1.18.0
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true

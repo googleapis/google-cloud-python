@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.5.1...google-cloud-core-v2.6.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16953) ([78a48b040a2abc0bf19ebe267aba0a1f410df2e6](https://github.com/googleapis/google-cloud-python/commit/78a48b040a2abc0bf19ebe267aba0a1f410df2e6))
+
 ## [2.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.5.0...google-cloud-core-v2.5.1) (2026-03-26)
 
 

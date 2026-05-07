@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.66.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.65.0...google-cloud-spanner-v3.66.0) (2026-05-06)
+
+
+### Features
+
+* Add last statement option samples (#16499) ([ee098051f562dd2f26743a622b52605e6cef19f1](https://github.com/googleapis/google-cloud-python/commit/ee098051f562dd2f26743a622b52605e6cef19f1))
+
+
+### Bug Fixes
+
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+
 ## [3.64.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.63.0...google-cloud-spanner-v3.64.0) (2026-04-01)
 
 

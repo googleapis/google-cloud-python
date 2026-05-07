@@ -29,6 +29,7 @@ INTEGRATION_TEST_LIBRARIES = [
     "logging",  # Java package remapping in gapic.yaml.
     "redis",  # Has a gapic.yaml.
     "redis_selective", # Selective generation.
+    "storagebatchoperations", # AIP 4235 testing : https://google.aip.dev/client-libraries/4235
     "logging_internal", # Selective generation with internal client classes.
 ]
 
@@ -193,6 +194,30 @@ py_test(
     legacy_create_init = False,
     deps = [
         ":redis_selective_py_gapic",
+    ],
+)
+
+py_gapic_library(
+    name = "storagebatchoperations_py_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/storagebatchoperations/v1:storagebatchoperations_proto"],
+    grpc_service_config = "storagebatchoperations_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+        "gapic-version=1.2.99",
+    ],
+    service_yaml = "storagebatchoperations_v1.yaml",
+    transport = "grpc+rest",
+)
+
+py_test(
+    name = "storagebatchoperations_py_gapic_test",
+    srcs = [
+        "storagebatchoperations_py_gapic_pytest.py",
+        "storagebatchoperations_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":storagebatchoperations_py_gapic",
     ],
 )
 

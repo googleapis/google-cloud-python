@@ -29,7 +29,7 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.14"
-ALL_INTERPRETERS = ("3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
+ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
@@ -47,7 +47,6 @@ nox.options.error_on_missing_interpreters = True
 
 nox.options.sessions = [
     "prerelease_deps",
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -359,7 +358,7 @@ def docfx(session):
     )
 
 
-@nox.session(py="3.9")
+@nox.session(py="3.10")
 def doctest(session):
     # Install all dependencies.
     session.install(

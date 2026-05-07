@@ -2005,6 +2005,8 @@ def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructVal
     return ai_ops.AIScore(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 

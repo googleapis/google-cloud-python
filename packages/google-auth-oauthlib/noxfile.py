@@ -36,7 +36,6 @@ LINT_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
