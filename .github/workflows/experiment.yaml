@@ -60,7 +60,15 @@ jobs:
 
       - name: Execute Chunk
         run: |
+          # The Engine: uv handles virtualenvs, nox delegates to uv
           export NOX_DEFAULT_VENV_BACKEND=uv
+          
+          # The Fix: Forces uv to install `pip` in the venv so legacy `pip freeze` commands don't crash
+          export UV_VENV_SEED=1 
+          
+          # Speed optimization: Pre-compile python bytecode
+          export UV_COMPILE_BYTECODE=1
+          
           FAILED=0
           
           for pkg in ${{ matrix.chunk }}; do
