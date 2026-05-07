@@ -403,7 +403,7 @@ def test_before_request_triggers_rab_refresh():
             lookup.return_value = {"encodedLocations": "0xA30"}
 
             creds = CredentialsImpl()
-            creds = creds._with_blocking_regional_access_boundary_lookup()
+            creds = creds._set_blocking_regional_access_boundary_lookup()
 
             request = mock.Mock()
             headers = {}

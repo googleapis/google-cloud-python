@@ -309,6 +309,16 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
 
+    @property
+    def regional_access_boundary(self):
+        """Optional[str]: The encoded Regional Access Boundary locations."""
+        return self._rab_manager._data.encoded_locations
+
+    @property
+    def regional_access_boundary_expiry(self):
+        """Optional[datetime.datetime]: The expiration time of the Regional Access Boundary."""
+        return self._rab_manager._data.expiry
+
     @abc.abstractmethod
     def _perform_refresh_token(self, request):
         """Refreshes the access token.
@@ -361,39 +371,37 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         new_manager._data = self._rab_manager._data
         target._rab_manager = new_manager
 
-    def _with_regional_access_boundary(self, seed):
-        """Returns a copy of these credentials with the the regional_access_boundary
-        set to the provided seed. This is intended for internal use only as invalid
+    def _set_regional_access_boundary(self, seed):
+        """Applies the regional_access_boundary set to the provided seed on these
+        credentials. This is intended for internal use only as invalid
         seeds would produce unexpected results until automatic recovery is supported.
         Currently this is used by the gcloud CLI and therefore changes to the
         contract MUST be backwards compatible (e.g. the method signature must be
-        unchanged and a copy of the credenials with the RAB set must be returned).
+        unchanged and the credentials with the RAB set must be returned).
 
 
         Returns:
-            google.auth.credentials.Credentials: A new credentials instance.
+            google.auth.credentials.Credentials: The credentials instance.
         """
-        creds = self._make_copy()
-        creds._rab_manager.set_initial_regional_access_boundary(
+        self._rab_manager.set_initial_regional_access_boundary(
             encoded_locations=seed.get("encodedLocations", None),
             expiry=seed.get("expiry", None),
         )
-        return creds
+        return self
 
-    def _with_blocking_regional_access_boundary_lookup(self):
-        """Returns a copy of these credentials with the blocking lookup mode enabled.
+    def _set_blocking_regional_access_boundary_lookup(self):
+        """Enables the blocking lookup mode on these credentials.
         This is intended for internal use only as blocking lookup requires additional
         care and consideration. Currently this is used by the gcloud CLI and
         therefore changes to the contract MUST be backwards compatible (e.g. the
-        method signature must be unchanged and a copy of the credentials with the
+        method signature must be unchanged and the credentials with the
         blocking lookup flag set to true must be returned).
 
         Returns:
-            google.auth.credentials.Credentials: A new credentials instance.
+            google.auth.credentials.Credentials: The credentials instance.
         """
-        creds = self._make_copy()
-        creds._rab_manager.enable_blocking_lookup()
-        return creds
+        self._rab_manager.enable_blocking_lookup()
+        return self
 
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """
