@@ -92,6 +92,7 @@ class BigQueryCachingExecutor(executor.Executor):
         self.loader = loader
         self._enable_polars_execution = enable_polars_execution
         self._publisher = publisher
+        self._compiler_name = compiler_name
 
         # TODO(tswast): Send events from semi-executors, too.
         self._semi_executors: Sequence[semi_executor.SemiExecutor] = (
@@ -188,7 +189,7 @@ class BigQueryCachingExecutor(executor.Executor):
             self._export_result_gcs(results, dest_spec)
             return results
         elif isinstance(dest_spec, ex_spec.TableOutputSpec):
-            return _execute_gbq_table_output(array_value, execution_spec)
+            return self._execute_gbq_table_output(array_value, execution_spec)
         # Force table creation if result might be large (and user explicitly allowed large results)
         elif isinstance(dest_spec, ex_spec.EphemeralTableSpec) or dest_spec is None:
             if not execution_spec.promise_under_10gb:

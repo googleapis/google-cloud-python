@@ -83,7 +83,7 @@ class TableOutputSpec:
     """
 
     table: bigquery.TableReference
-    cluster_cols: tuple[str, ...]
+    cluster_cols: tuple[str, ...] = ()
     if_exists: Literal["fail", "replace", "append"] = "fail"
 
 
