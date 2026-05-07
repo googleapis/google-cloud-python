@@ -152,13 +152,9 @@ class _X509Supplier(SubjectTokenSupplier):
 
     @_helpers.copy_docstring(SubjectTokenSupplier)
     def get_subject_token(self, context, request):
-        # Import OpennSSL inline because it is an extra import only required by customers
-        # using mTLS.
-        from OpenSSL import crypto
+        from cryptography import x509
 
-        leaf_cert = crypto.load_certificate(
-            crypto.FILETYPE_PEM, self._leaf_cert_callback()
-        )
+        leaf_cert = x509.load_pem_x509_certificate(self._leaf_cert_callback())
         trust_chain = self._read_trust_chain()
         cert_chain = []
 
@@ -184,9 +180,7 @@ class _X509Supplier(SubjectTokenSupplier):
         return json.dumps(cert_chain)
 
     def _read_trust_chain(self):
-        # Import OpennSSL inline because it is an extra import only required by customers
-        # using mTLS.
-        from OpenSSL import crypto
+        from cryptography import x509
 
         certificate_trust_chain = []
         # If no trust chain path was provided, return an empty list.
@@ -204,9 +198,7 @@ class _X509Supplier(SubjectTokenSupplier):
                         cert_data = b"-----BEGIN CERTIFICATE-----" + cert_block
                         try:
                             # Load each certificate and add it to the trust chain.
-                            cert = crypto.load_certificate(
-                                crypto.FILETYPE_PEM, cert_data
-                            )
+                            cert = x509.load_pem_x509_certificate(cert_data)
                             certificate_trust_chain.append(cert)
                         except Exception as e:
                             raise exceptions.RefreshError(
@@ -221,13 +213,11 @@ class _X509Supplier(SubjectTokenSupplier):
             )
 
     def _encode_cert(cert):
-        # Import OpennSSL inline because it is an extra import only required by customers
-        # using mTLS.
-        from OpenSSL import crypto
+        from cryptography.hazmat.primitives import serialization
 
-        return base64.b64encode(
-            crypto.dump_certificate(crypto.FILETYPE_ASN1, cert)
-        ).decode("utf-8")
+        return base64.b64encode(cert.public_bytes(serialization.Encoding.DER)).decode(
+            "utf-8"
+        )
 
 
 def _parse_token_data(token_content, format_type="text", subject_token_field_name=None):

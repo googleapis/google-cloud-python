@@ -204,30 +204,37 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         key (bytes): client private key in PEM format
 
     Raises:
-        ImportError: if certifi or pyOpenSSL is not installed
-        OpenSSL.crypto.Error: if client cert or key is invalid
+        ImportError: if certifi is not installed
     """
 
     def __init__(self, cert, key):
         import certifi
-        from OpenSSL import crypto
-        import urllib3.contrib.pyopenssl  # type: ignore
-
-        urllib3.contrib.pyopenssl.inject_into_urllib3()
-
-        pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
-        x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
+        import ssl
 
         ctx_poolmanager = create_urllib3_context()
         ctx_poolmanager.load_verify_locations(cafile=certifi.where())
-        ctx_poolmanager._ctx.use_certificate(x509)
-        ctx_poolmanager._ctx.use_privatekey(pkey)
-        self._ctx_poolmanager = ctx_poolmanager
 
         ctx_proxymanager = create_urllib3_context()
         ctx_proxymanager.load_verify_locations(cafile=certifi.where())
-        ctx_proxymanager._ctx.use_certificate(x509)
-        ctx_proxymanager._ctx.use_privatekey(pkey)
+
+        with _mtls_helper.secure_cert_key_paths(cert, key) as (
+            cert_path,
+            key_path,
+            passphrase,
+        ):
+            try:
+                ctx_poolmanager.load_cert_chain(
+                    certfile=cert_path, keyfile=key_path, password=passphrase
+                )
+                ctx_proxymanager.load_cert_chain(
+                    certfile=cert_path, keyfile=key_path, password=passphrase
+                )
+            except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+                raise exceptions.MutualTLSChannelError(
+                    "Failed to configure client certificate and key for mTLS."
+                ) from exc
+
+        self._ctx_poolmanager = ctx_poolmanager
         self._ctx_proxymanager = ctx_proxymanager
 
         super(_MutualTlsAdapter, self).__init__()
@@ -258,7 +265,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
                 }
 
     Raises:
-        ImportError: if certifi or pyOpenSSL is not installed
+        ImportError: if certifi is not installed
         google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
             creation failed for any reason.
     """
@@ -269,10 +276,6 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
 
         self.signer = _custom_tls_signer.CustomTlsSigner(enterprise_cert_file_path)
         self.signer.load_libraries()
-
-        import urllib3.contrib.pyopenssl
-
-        urllib3.contrib.pyopenssl.inject_into_urllib3()
 
         poolmanager = create_urllib3_context()
         poolmanager.load_verify_locations(cafile=certifi.where())
@@ -450,11 +453,6 @@ class AuthorizedSession(requests.Session):
         if not use_client_cert:
             return
 
-        try:
-            import OpenSSL
-        except ImportError as caught_exc:
-            new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
 
         try:
             (
@@ -473,7 +471,7 @@ class AuthorizedSession(requests.Session):
             exceptions.ClientCertError,
             ImportError,
             OSError,
-            OpenSSL.crypto.Error,
+            ValueError,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc

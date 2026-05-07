@@ -22,12 +22,6 @@ from requests.packages.urllib3.util.ssl_ import create_urllib3_context  # type: 
 from google.auth import exceptions
 from google.auth.transport import _custom_tls_signer
 
-urllib3_pyopenssl = pytest.importorskip(
-    "urllib3.contrib.pyopenssl",
-    reason="urllib3.contrib.pyopenssl not available in this environment",
-)
-
-urllib3_pyopenssl.inject_into_urllib3()
 
 FAKE_ENTERPRISE_CERT_FILE_PATH = "/path/to/enterprise/cert/file"
 ENTERPRISE_CERT_FILE = os.path.join(

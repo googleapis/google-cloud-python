@@ -27,24 +27,6 @@ KEY_DATA = b"client-key"
 
 class TestMTLS:
     @pytest.mark.asyncio
-    async def test__create_temp_file(self):
-        """Tests that _create_temp_file creates a file with correct content and deletes it."""
-        content = b"test cert data"
-
-        # Test file creation and content
-        with mtls._create_temp_file(content) as file_path:
-            assert os.path.exists(file_path)
-            # Verify file is not readable by others (mkstemp default)
-            if os.name == "posix":
-                assert (os.stat(file_path).st_mode & 0o777) == 0o600
-
-            with open(file_path, "rb") as f:
-                assert f.read() == content
-
-        # Test file deletion after context exit
-        assert not os.path.exists(file_path)
-
-    @pytest.mark.asyncio
     async def test_make_client_cert_ssl_context_success(self):
         """Tests successful creation of an SSLContext with client certificates."""
         cert_bytes = b"cert_data"

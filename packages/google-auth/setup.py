@@ -35,10 +35,7 @@ pyjwt_extra_require = ["pyjwt>=2.0"]
 
 reauth_extra_require = ["pyu2f>=0.1.5"]
 
-# TODO(https://github.com/googleapis/google-auth-library-python/issues/1738): Add bounds for pyopenssl dependency.
-enterprise_cert_extra_require = ["pyopenssl"]
-
-pyopenssl_extra_require = ["pyopenssl>=20.0.0"]
+enterprise_cert_extra_require = cryptography_base_require
 
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
 urllib3_extra_require = ["urllib3", "packaging"]
@@ -55,7 +52,6 @@ testing_extra_require = [
     "pytest",
     "pytest-cov",
     "pytest-localserver",
-    *pyopenssl_extra_require,
     *reauth_extra_require,
     "responses",
     *urllib3_extra_require,
@@ -63,10 +59,6 @@ testing_extra_require = [
     *aiohttp_extra_require,
     "aioresponses",
     "pytest-asyncio",
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1665): Remove the pinned version of pyopenssl
-    # once `TestDecryptPrivateKey::test_success` is updated to remove the deprecated `OpenSSL.crypto.sign` and
-    # `OpenSSL.crypto.verify` methods. See: https://www.pyopenssl.org/en/latest/changelog.html#id3.
-    "pyopenssl < 24.3.0",
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
     "aiohttp < 3.10.0",
@@ -77,7 +69,6 @@ extras = {
     "cryptography": cryptography_base_require,
     "aiohttp": aiohttp_extra_require,
     "enterprise_cert": enterprise_cert_extra_require,
-    "pyopenssl": pyopenssl_extra_require,
     "pyjwt": pyjwt_extra_require,
     "reauth": reauth_extra_require,
     "requests": requests_extra_require,

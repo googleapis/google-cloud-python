@@ -23,8 +23,6 @@ import logging
 import os
 import sys
 
-import cffi  # type: ignore
-
 from google.auth import exceptions
 
 _LOGGER = logging.getLogger(__name__)
@@ -43,11 +41,6 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
     ctypes.POINTER(ctypes.c_ubyte),  # tbs
     ctypes.c_size_t,  # tbs_len
 )
-
-
-# Cast SSL_CTX* to void*
-def _cast_ssl_ctx_to_void_p_pyopenssl(ssl_ctx):
-    return ctypes.cast(int(cffi.FFI().cast("intptr_t", ssl_ctx)), ctypes.c_void_p)
 
 
 # Cast SSL_CTX* to void*
@@ -274,7 +267,7 @@ class CustomTlsSigner(object):
             if not self._offload_lib.ConfigureSslContext(
                 self._sign_callback,
                 ctypes.c_char_p(self._cert),
-                _cast_ssl_ctx_to_void_p_pyopenssl(ctx._ctx._context),
+                _cast_ssl_ctx_to_void_p_stdlib(ctx),
             ):
                 raise exceptions.MutualTLSChannelError(
                     "failed to configure ECP Offload SSL context"

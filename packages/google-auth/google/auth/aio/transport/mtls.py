@@ -25,32 +25,10 @@ import tempfile
 from typing import Optional
 
 from google.auth import exceptions
-import google.auth.transport._mtls_helper
 import google.auth.transport.mtls
+from google.auth.transport._mtls_helper import secure_cert_key_paths
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@contextlib.contextmanager
-def _create_temp_file(content: bytes):
-    """Creates a temporary file with the given content.
-
-    Args:
-        content (bytes): The content to write to the file.
-
-    Yields:
-        str: The path to the temporary file.
-    """
-    # Create a temporary file that is readable only by the owner.
-    fd, file_path = tempfile.mkstemp()
-    try:
-        with os.fdopen(fd, "wb") as f:
-            f.write(content)
-        yield file_path
-    finally:
-        # Securely delete the file after use.
-        if os.path.exists(file_path):
-            os.remove(file_path)
 
 
 def make_client_cert_ssl_context(
@@ -71,13 +49,15 @@ def make_client_cert_ssl_context(
     Raises:
         google.auth.exceptions.TransportError: If there is an error loading the certificate.
     """
-    with _create_temp_file(cert_bytes) as cert_path, _create_temp_file(
-        key_bytes
-    ) as key_path:
+    with secure_cert_key_paths(cert_bytes, key_bytes, passphrase=passphrase) as (
+        cert_path,
+        key_path,
+        passphrase_val,
+    ):
         try:
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
             context.load_cert_chain(
-                certfile=cert_path, keyfile=key_path, password=passphrase
+                certfile=cert_path, keyfile=key_path, password=passphrase_val
             )
             return context
         except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:

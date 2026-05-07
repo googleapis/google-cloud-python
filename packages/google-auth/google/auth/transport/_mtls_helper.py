@@ -14,11 +14,13 @@
 
 """Helper functions for getting mTLS cert and key."""
 
+import contextlib
 import json
 import logging
 from os import environ, getenv, path
 import re
 import subprocess
+from typing import Generator, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
 from google.auth import environment_vars
@@ -69,6 +71,229 @@ _INCORRECT_CLOUD_RUN_CERT_PATH = (
 _INCORRECT_CLOUD_RUN_KEY_PATH = (
     "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
 )
+
+
+@contextlib.contextmanager
+def secure_cert_key_paths(
+    cert: Union[str, bytes],
+    key: Union[str, bytes],
+    passphrase: Optional[bytes] = None,
+) -> Generator[Tuple[str, str, Optional[bytes]], None, None]:
+    """Provides secure file paths for certificate and key.
+
+    Standard TLS libraries (like Python's standard library `ssl`) require file paths to
+    load credentials. To minimize exposure of raw private key bytes on physical storage,
+    this context manager implements a three-tier fallback strategy: yielding pass-through
+    paths (Tier 1), using RAM-backed virtual files on Linux (Tier 2), or falling back
+    to encrypted temporary files on disk (Tier 3).
+
+    Args:
+        cert (Union[str, bytes]): Certificate path or raw PEM content bytes.
+        key (Union[str, bytes]): Private key path or raw PEM content bytes.
+        passphrase (Optional[bytes]): Optional passphrase for the private key.
+
+    Yields:
+        Tuple[str, str, Optional[bytes]]: The certificate path, key path, and
+            the passphrase needed to load the key (either the user's original,
+            or the newly generated one if Tier 3 had to encrypt the key).
+    """
+    import os
+    import sys
+
+    # Tier 1: Pass-through (No-op). If the caller already provided file paths,
+    # we yield them directly to avoid any unnecessary file creation.
+    if isinstance(cert, str) and isinstance(key, str):
+        yield cert, key, passphrase
+        return
+
+    cert_bytes = cert if isinstance(cert, bytes) else None
+    key_bytes = key if isinstance(key, bytes) else None
+
+    # Tier 2: Linux RAM-backed virtual files. If supported by the OS, we write
+    # the bytes to anonymous in-memory files using memfd_create. This yields
+    # /proc/self/fd/... paths, keeping the private key entirely in memory.
+    if sys.platform == "linux" and hasattr(os, "memfd_create"):
+        cm = _memfd_cert_key_paths(cert_bytes, key_bytes)
+        try:
+            cert_path, key_path = cm.__enter__()
+        except OSError:
+            pass  # Fallback to Tier 3 on failure.
+        else:
+            try:
+                # Handle cases where path exists but might be restricted.
+                if (cert_path is None or os.path.exists(cert_path)) and (
+                    key_path is None or os.path.exists(key_path)
+                ):
+                    yield cert_path or cert, key_path or key, passphrase
+                    return
+            finally:
+                import sys
+
+                exc_info = sys.exc_info()
+                cm.__exit__(
+                    *(exc_info if exc_info[0] is not None else (None, None, None))
+                )
+            # If verification failed, fall through to Tier 3.
+
+    # Tier 3: Fallback Encrypted Temp Files. If in-memory files are not supported
+    # (macOS/Windows), we write to disk. To protect the key, we encrypt plaintext
+    # keys on-the-fly and securely wipe the files with null bytes during cleanup.
+    with _tempfile_cert_key_paths(cert_bytes, key_bytes, passphrase) as (
+        cert_path,
+        key_path,
+        new_passphrase,
+    ):
+        yield cert_path or cert, key_path or key, new_passphrase
+
+
+def _encrypt_key_if_plaintext(
+    key_bytes: bytes, passphrase: Optional[bytes]
+) -> Tuple[bytes, Optional[bytes]]:
+    """Encrypts a plaintext PEM key if necessary, returning the bytes and passphrase.
+
+    If the key is already encrypted, returns it as-is.
+    """
+    from cryptography.hazmat.primitives import serialization
+    import secrets
+
+    try:
+        pkey = serialization.load_pem_private_key(key_bytes, password=None)
+        # It's plaintext, encrypt it.
+        target_passphrase = (
+            passphrase
+            if passphrase is not None
+            else secrets.token_hex(32).encode("utf-8")
+        )
+        encrypted_content = pkey.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.BestAvailableEncryption(
+                target_passphrase
+            ),
+        )
+        return encrypted_content, target_passphrase
+    except (ValueError, TypeError):
+        # Likely already encrypted or invalid, return as-is.
+        return key_bytes, passphrase
+
+
+def _secure_wipe_and_remove(file_path: str):
+    """Overwrites a file with null bytes before deleting it.
+
+    This is an extra security measure to make file recovery harder. However, on modern
+    solid-state drives (SSDs), the hardware optimizes where data is written, meaning
+    the original private key bytes might still physically remain on the storage chips
+    until the drive cleans them up.
+    """
+    import os
+
+    if not os.path.exists(file_path):
+        return
+    try:
+        size = os.path.getsize(file_path)
+        with open(file_path, "r+b") as f:
+            f.write(b"\0" * size)
+            f.flush()
+            os.fsync(f.fileno())
+    except OSError:
+        pass  # Ignore permission/lock errors during cleanup.
+    finally:
+        try:
+            os.remove(file_path)
+        except OSError:
+            pass
+
+
+@contextlib.contextmanager
+def _memfd_cert_key_paths(cert_bytes: Optional[bytes], key_bytes: Optional[bytes]):
+    """Creates secure, in-memory virtual files on Linux using memfd_create.
+
+    Yields:
+        Tuple[Optional[str], Optional[str]]: In-memory file paths pointing to
+            the active descriptors (e.g., '/proc/self/fd/3').
+    """
+    import os
+
+    cleanup_fds = []
+    cert_path, key_path = None, None
+
+    try:
+        if cert_bytes is not None:
+            # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
+            fd_cert = os.memfd_create("mtls_cert", os.MFD_CLOEXEC)
+            os.write(fd_cert, cert_bytes)
+            cert_path = f"/proc/self/fd/{fd_cert}"
+            cleanup_fds.append(fd_cert)
+
+        if key_bytes is not None:
+            fd_key = os.memfd_create("mtls_key", os.MFD_CLOEXEC)
+            os.write(fd_key, key_bytes)
+            key_path = f"/proc/self/fd/{fd_key}"
+            cleanup_fds.append(fd_key)
+
+        yield cert_path, key_path
+    finally:
+        # Closing the descriptors automatically frees the RAM allocation.
+        for fd in cleanup_fds:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
+
+
+@contextlib.contextmanager
+def _tempfile_cert_key_paths(
+    cert_bytes: Optional[bytes], key_bytes: Optional[bytes], passphrase: Optional[bytes]
+):
+    """Creates secure temporary file paths on disk, encrypting private keys.
+
+    Yields:
+        Tuple[Optional[str], Optional[str], Optional[bytes]]: The temporary file
+            paths and the passphrase needed to load the key.
+    """
+    import os
+    import tempfile
+
+    # Prioritize RAM-backed /dev/shm to avoid writing secrets to physical storage.
+    tmp_dir = "/dev/shm" if os.path.isdir("/dev/shm") else None
+    cert_path, key_path = None, None
+    cleanup_files = []
+    new_passphrase = passphrase
+
+    try:
+        if cert_bytes is not None:
+            fd, cert_path = tempfile.mkstemp(dir=tmp_dir)
+            cleanup_files.append(cert_path)
+            with os.fdopen(fd, "wb") as f:
+                f.write(cert_bytes)
+                f.flush()
+                os.fsync(f.fileno())
+
+        if key_bytes is not None:
+            # Encrypt plaintext keys on-the-fly before dropping to disk.
+            encrypted_key_bytes, new_passphrase = _encrypt_key_if_plaintext(
+                key_bytes, passphrase
+            )
+
+            fd, key_path = tempfile.mkstemp(dir=tmp_dir)
+            cleanup_files.append(key_path)
+            with os.fdopen(fd, "wb") as f:
+                f.write(encrypted_key_bytes)
+                f.flush()
+                os.fsync(f.fileno())
+
+        yield cert_path, key_path, new_passphrase
+    finally:
+        for file_path in cleanup_files:
+            try:
+                # Wiping the private key with null bytes before removal.
+                if file_path == key_path:
+                    _secure_wipe_and_remove(file_path)
+                else:
+                    if os.path.exists(file_path):
+                        os.remove(file_path)
+            except OSError:
+                pass
 
 
 def _check_config_path(config_path):
@@ -443,16 +668,19 @@ def decrypt_private_key(key, passphrase):
         bytes: The decrypted private key in PEM format.
 
     Raises:
-        ImportError: If pyOpenSSL is not installed.
-        OpenSSL.crypto.Error: If there is any problem decrypting the private key.
+        ValueError: If there is any problem decrypting the private key.
     """
-    from OpenSSL import crypto
+    from cryptography.hazmat.primitives import serialization
 
     # First convert encrypted_key_bytes to PKey object
-    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key, passphrase=passphrase)
+    pkey = serialization.load_pem_private_key(key, password=passphrase)
 
     # Then dump the decrypted key bytes
-    return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
+    return pkey.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
 
 
 def _check_use_client_cert_env():

@@ -16,7 +16,9 @@ import os
 import re
 from unittest import mock
 
-from OpenSSL import crypto
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives import hashes
 import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
@@ -26,16 +28,17 @@ CERT_MOCK_VAL = b"cert"
 KEY_MOCK_VAL = b"key"
 CONTEXT_AWARE_METADATA = {"cert_provider_command": ["some command"]}
 ENCRYPTED_EC_PRIVATE_KEY = b"""-----BEGIN ENCRYPTED PRIVATE KEY-----
-MIHkME8GCSqGSIb3DQEFDTBCMCkGCSqGSIb3DQEFDDAcBAgl2/yVgs1h3QICCAAw
-DAYIKoZIhvcNAgkFADAVBgkrBgEEAZdVAQIECJk2GRrvxOaJBIGQXIBnMU4wmciT
-uA6yD8q0FxuIzjG7E2S6tc5VRgSbhRB00eBO3jWmO2pBybeQW+zVioDcn50zp2ts
-wYErWC+LCm1Zg3r+EGnT1E1GgNoODbVQ3AEHlKh1CGCYhEovxtn3G+Fjh7xOBrNB
-saVVeDb4tHD4tMkiVVUBrUcTZPndP73CtgyGHYEphasYPzEz3+AU
+MIH0MF8GCSqGSIb3DQEFDTBSMDEGCSqGSIb3DQEFDDAkBBClWcQyUELNC9Hjr+Sp
+WK85AgIIADAMBggqhkiG9w0CCQUAMB0GCWCGSAFlAwQBKgQQ6uJeoqE7P9HtxAgS
+n6rBFgSBkMRDYXLucNp7ew7LbQmkZCmjnRhgyw6b0dD3eK8f3jisj8UiR8aj9a2S
+1FZiNHKLmI7hkZHH+d2DPWYhe/tf5SS4iLzpZogBehMv4UDNnNaj0dvQZgpnpciK
+1H+0u/i+crc1WAGlemLAi7dktCCBTzeX19cRMGHie68rx1C82LHLZmefr7AEIVxp
+uUoJ+sLhBw==
 -----END ENCRYPTED PRIVATE KEY-----"""
 
 EC_PUBLIC_KEY = b"""-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvCNi1NoDY1oMqPHIgXI8RBbTYGi/
-brEjbre1nSiQW11xRTJbVeETdsuP0EAu2tG3PcRhhwDfeJ8zXREgTBurNw==
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwdsHzL05VUmqYJat2yGdbSHQAg49
+Wc+fhwLH3b+SCC/2/TqPNDy9yMdMxMtEfZfKal2EaeE2erJrtu7WNfjD0Q==
 -----END PUBLIC KEY-----"""
 
 PASSPHRASE = b"""-----BEGIN PASSPHRASE-----
@@ -755,17 +758,15 @@ class TestDecryptPrivateKey(object):
         decrypted_key = _mtls_helper.decrypt_private_key(
             ENCRYPTED_EC_PRIVATE_KEY, PASSPHRASE_VALUE
         )
-        private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, decrypted_key)
-        public_key = crypto.load_publickey(crypto.FILETYPE_PEM, EC_PUBLIC_KEY)
-        x509 = crypto.X509()
-        x509.set_pubkey(public_key)
+        private_key = serialization.load_pem_private_key(decrypted_key, password=None)
+        public_key = serialization.load_pem_public_key(EC_PUBLIC_KEY)
 
         # Test the decrypted key works by signing and verification.
-        signature = crypto.sign(private_key, b"data", "sha256")
-        crypto.verify(x509, signature, b"data", "sha256")
+        signature = private_key.sign(b"data", ec.ECDSA(hashes.SHA256()))
+        public_key.verify(signature, b"data", ec.ECDSA(hashes.SHA256()))
 
     def test_crypto_error(self):
-        with pytest.raises(crypto.Error):
+        with pytest.raises(ValueError):
             _mtls_helper.decrypt_private_key(
                 ENCRYPTED_EC_PRIVATE_KEY, b"wrong_password"
             )
