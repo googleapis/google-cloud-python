@@ -325,12 +325,13 @@ def unit(
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
 
-    # consider converting the following into a `match` statement.
-    if legacy_proto:
-        if legacy_proto == 4:
+    match legacy_proto:
+        case 4:
             # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
             session.install("protobuf>=4.25.8,<5.0.0")
-        else:
+        case None:
+            pass
+        case _:
             assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(
