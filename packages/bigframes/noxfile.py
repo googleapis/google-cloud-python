@@ -605,11 +605,11 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178
         "db-dtypes",
         # Ensure we catch breaking changes in the client libraries early.
-        "git+https://github.com/googleapis/python-bigquery.git#egg=google-cloud-bigquery",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery&subdirectory=packages/google-cloud-bigquery",
         "--upgrade",
         "-e",
         "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
-        "git+https://github.com/googleapis/python-bigquery-pandas.git#egg=pandas-gbq",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=pandas-gbq&subdirectory=packages/pandas-gbq",
     )
 
     # Print out prerelease package versions.
