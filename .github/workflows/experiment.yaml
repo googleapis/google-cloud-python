@@ -1,85 +1,99 @@
-name: CI
-on: [pull_request]
+name: CI Unit
+on:
+  pull_request:
+    branches: [ main, preview ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  # =========================================================
-  # 1. DISCOVERY 
-  # =========================================================
+  # ==========================================
+  # 1. DISCOVERY & BUCKETING
+  # ==========================================
   discover:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.parse.outputs.packages }}
+      buckets: ${{ steps.generate-matrix.outputs.buckets }}
     steps:
       - uses: actions/checkout@v4
-      - id: changes
+      
+      - name: Detect Changed Packages
+        id: changes
         uses: tj-actions/changed-files@v44
         with:
           files: packages/**
+          dir_names: true               
+          dir_names_max_depth: 2        
+          matrix: false
 
-      # Bulletproof directory extraction (ignores file names)
-      - id: parse
-        name: Extract Package Directories
+      - name: Generate Balanced Buckets
+        id: generate-matrix
         env:
-          ALL_FILES: ${{ steps.changes.outputs.all_changed_files }}
-        run: |
-          PKGS=$(echo "$ALL_FILES" | tr ' ' '\n' | cut -d'/' -f1,2 | sort -u | tr '\n' ' ')
-          echo "packages=$PKGS" >> $GITHUB_OUTPUT
+          CHANGED_DIRS: ${{ steps.changes.outputs.all_changed_files }}
+        run: python .github/scripts/matrix_generator.py --matrix-multiplier 6 --max-vms 40
 
-  # =========================================================
-  # 2. EXECUTION (Parallelized internally via xargs)
-  # =========================================================
-  unit:
+  # ==========================================
+  # 2. HORIZONTAL EXECUTION
+  # ==========================================
+  unit-tests:
     needs: discover
-    if: ${{ needs.discover.outputs.packages != '' }}
+    if: ${{ needs.discover.outputs.buckets != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 60
       matrix:
-        # Exactly 5 Jobs total. Never violates GitHub limits.
-        python: ["3.9", "3.10", "3.11", "3.12", "3.14"]
+        chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         
-    name: Unit (Python ${{ matrix.python }})
+    name: Unit (Py ${{ matrix.python }})
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
-          
-      - name: Run Tests Concurrently
+
+      - name: Optimize Core Dependencies
+        run: git config --global url."${GITHUB_WORKSPACE}".insteadOf "https://github.com/googleapis/google-cloud-python"
+
+      - name: Execute Chunk
         run: |
           export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_PRERELEASE=allow
+          FAILED=0
           
-          # Dropped -n 1 to fix the xargs warning.
-          echo "${{ needs.discover.outputs.packages }}" | tr ' ' '\n' | xargs -P 4 -I {} sh -c '
-            if [ -f "{}/noxfile.py" ]; then
-              cd {}
-              
-              # Run test and capture output
-              uvx --with "nox[uv]" nox -s "unit-${{ matrix.python }}" > nox_output.log 2>&1
-              STATUS=$?
-              
-              # Print output cleanly inside a GitHub group
-              echo "::group::Testing {} (Python ${{ matrix.python }})"
+          for pkg in ${{ matrix.chunk }}; do
+            echo "::group::Testing $pkg (Python ${{ matrix.python }})"
+            cd "$pkg"
+            
+            # Run test, pipe to log for clean UI folding
+            if uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python }}" > nox_output.log 2>&1; then
               cat nox_output.log
-              
-              if [ $STATUS -ne 0 ]; then
-                # Check if it failed just because the Python version isn"t supported by this package
-                if grep -q "Sessions not found:" nox_output.log; then
-                  echo "⏭️ Session unit-${{ matrix.python }} is not defined for this package. Safely skipping."
-                else
-                  echo "❌ Tests failed in {}!"
-                  echo "::endgroup::"
-                  # Exit 1 allows other packages to finish testing, but ensures the workflow fails
-                  exit 1
-                fi
-              fi
-              
-              echo "::endgroup::"
+            else
+              cat nox_output.log
+              # Gracefully skip if the Python version isn't supported by this legacy package
+              grep -q "Sessions not found:" nox_output.log || FAILED=1
             fi
-          '
+            
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+          
+          exit $FAILED
+
+  # ==========================================
+  # 3. GATEKEEPER
+  # ==========================================
+  presubmit-passed:
+    if: always() 
+    needs: [discover, unit-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate Pipeline Status
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "::error::One or more required CI jobs failed or were cancelled."
+            exit 1
+          fi
+          echo "All dynamically generated CI jobs completed successfully."
