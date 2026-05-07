@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -618,11 +618,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cluster(request=request)
+                operation = await client.create_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -766,11 +766,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_cluster(request=request)
+                operation = await client.update_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -923,11 +923,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_cluster(request=request)
+                operation = await client.export_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1099,11 +1099,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_cluster(request=request)
+                operation = await client.import_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1261,11 +1261,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.upgrade_cluster(request=request)
+                operation = await client.upgrade_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1396,11 +1396,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cluster(request=request)
+                operation = await client.delete_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1532,11 +1532,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.promote_cluster(request=request)
+                operation = await client.promote_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1662,11 +1662,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.switchover_cluster(request=request)
+                operation = await client.switchover_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1802,11 +1802,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_cluster(request=request)
+                operation = await client.restore_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1914,11 +1914,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_secondary_cluster(request=request)
+                operation = await client.create_secondary_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2313,11 +2313,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2462,11 +2462,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_secondary_instance(request=request)
+                operation = await client.create_secondary_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2621,11 +2621,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_instances(request=request)
+                operation = await client.batch_create_instances(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2727,11 +2727,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_instance(request=request)
+                operation = await client.update_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2864,11 +2864,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2999,11 +2999,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.failover_instance(request=request)
+                operation = await client.failover_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3128,11 +3128,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.inject_fault(request=request)
+                operation = await client.inject_fault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3264,11 +3264,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restart_instance(request=request)
+                operation = await client.restart_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3788,11 +3788,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup(request=request)
+                operation = await client.create_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3931,11 +3931,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup(request=request)
+                operation = await client.update_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4069,11 +4069,11 @@ class AlloyDBAdminAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
