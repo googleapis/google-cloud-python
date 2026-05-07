@@ -32,3 +32,129 @@ You can create a `.scannerignore` file in the directory you are scanning (usuall
 
 ## Known Issues & Future Investigations
 - **Binary Ignores in `.scannerignore`**: Recursive wildcard ignores (e.g., `*.jpg`) currently do not effectively ignore deeply nested binary files. The scanner logic should be investigated to support robust globbing or full-path suffix matching.
+
+---
+
+## Universal Prompt for EOL Runtime & Dependency Migration
+
+### Context & Overview
+
+#### Overview
+This plan outlines the approach to update Python packages to drop support for end-of-life Python runtimes (3.7, 3.8, 3.9) OR for deprecated dependencies, and ensure the packages are configured for modern Python.
+
+#### High-Level Strategy
+- **One Branch Per Package**: To keep PRs manageable and isolated, we suggest a dedicated worktree and branch for each package (e.g., `feat/drop-<dependency>-<version>-<package-name>` i.e. `feat/drop-protobuf-4.25.8-google-cloud-bigquery`).
+- **Small & Reversible Commits**: Group changes into logical commits (Metadata, Nox, Docs, Cleanup, Tests) following Conventional Commits.
+
+---
+
+### Per-Package Workflow
+
+Follow these steps for each package in the target list. Context and warnings are provided inline before the steps where they apply.
+
+#### Step 1: Sync & Branch
+1. Ensure `main` branch is up to date.
+2. Create the feature branch: `git checkout -b feat/drop-<dependency>-<version>-<package-name>`.
+
+#### Step 2: Scan (Baseline)
+1. Run the `version_scanner` for the package to get a list of all occurrences of the dependency and version.
+   > [!TIP]
+   > Use `# version-scanner: ignore` or `ignore-next-line` in code to silence true false-positives and maintain clean reports.
+
+---
+
+#### 💡 Context for Step 3: Standards & Cleanup
+*Before applying changes, review these standards to ensure consistency:*
+
+##### Runtime Version Checks
+- **Standard**: Use `sys.version_info < (X, Y)`.
+- **Rationale**: Python compares tuples lexicographically, making this robust.
+- **Avoid**: `sys.version_info.minor < Y` or string conversions.
+
+##### Pytest Skips
+- **Standard**: `@pytest.mark.skipif(sys.version_info < (X, Y), reason="Requires Python X.Y+")`.
+- **Avoid**: String-based conditions like `@pytest.mark.skipif("sys.version_info < ...")`.
+
+##### Noxfile Version Matches
+- **Standard**: `session.python == "X.Y"` (Nox uses strings).
+- **Avoid**: `float(session.python) < X.Y` (fails for `3.10`).
+
+##### Cleanup Rules
+- **Polyfills**: Remove dead `try/except` blocks guarding polyfills for features now standard in 3.10+.
+- **Obsolete Skips**: Remove pytest skips for features now universally available.
+
+##### Dependency Specific rules
+- Use idiomatic python references to detect dependency versions and to compare against the target version.
+
+---
+
+#### 💡 Context for Step 3: Disposition Rules
+*Every reference to the dependency version found by the scanner must be dispositioned in one of these ways:*
+
+1. **Update**: Update the reference if still necessary (e.g., changing `3.9` to `3.10` in support files).
+2. **Delete**: Delete if no longer relevant (dead code, obsolete comments).
+3. **Pragma Ignore**: Use `# version-scanner: ignore` or `# version-scanner: ignore-next-line` but ONLY for immutable historical facts or true false positives. Do NOT use for things that might change in future upgrades.
+
+#### Step 3: Apply Changes
+1. Update `setup.py` or `pyproject.toml` metadata and `requires-python`.
+2. Update `noxfile.py` to remove old versions from sessions.
+3. Update `README.rst` and `CONTRIBUTING.rst` documentation.
+4. Remove compatibility code and skips based on the standards above.
+5. **Sync Documentation**: If the package has a `docs` folder containing a `README.rst`, copy the updated top-level `README.rst` to overwrite it (unless it is a symlink).
+6. Continue with the update process until all rows from the scan have been properly dispositioned.
+
+---
+
+#### Step 4: Verify (Post-Scan)
+1. Run the `version_scanner` again. The result should be 0 matches (or only valid ignores).
+
+---
+
+#### 💡 Context for Step 5: Constraints & Conflicts
+*Review these lessons learned when dealing with constraints:*
+
+- **Lowest Runtime Constraints**: The file for the lowest accepted runtime (e.g., `constraints-3.10.txt`) must have pins matching the lowest acceptable versions in `setup.py` or `pyproject.toml`.
+- **Philosophy on Warnings**: Do not simply block warnings (like `six` or `pkg_resources`) to make tests pass. **Bump the lower bounds** of dependencies to versions that don't trigger warnings on the current lowest acceptable runtime. This protects customers who use strict warning filters.
+- **SQLAlchemy Transition**: For libraries supporting both 1.4 and 2.0, use `SQLALCHEMY_SILENCE_UBER_WARNING=1` in specific legacy Nox sessions rather than silencing globally.
+
+---
+
+#### Step 5: Local Test
+1. Run unit tests using Nox (e.g., `nox -s unit`).
+   > [!TIP]
+   > Use `nox -s unit-3.10` to save time when debugging specific runtime failures.
+2. Run `blacken` and `lint` sessions.
+
+#### Step 6: Push & PR
+1. Push the branch and create the PR using the template in the Appendix.
+
+---
+
+## Appendix
+
+### PR Template [^1]
+```text
+This PR updates `<dependency>` to establish version x.y.z as the minimum supported version.
+
+### Changes
+* Configuration: Updated `setup.py` and `noxfile.py` to require <dependency> <version> and remove references to older versions.
+* Cleanup: Removed dead code and polyfills no longer needed.
+
+Fixes internal issue: http://b/482126936 🦕
+```
+
+---
+
+## Candidates for `.conductor` or `gemini.md`
+
+*The following guidelines are universal for AI assistants workin' in this repo and should be moved to `.conductor` files or Gemini memories:*
+
+1. **AI & LLM Guidelines for Verification**:
+   - Use Git Worktrees to scan branches without switching.
+   - Run scanner from main branch pointing to worktree.
+   - Bypass env artifacts by worktree only checking out tracked files.
+2. **Automated Bisection**:
+   - Use `version_bisector.py` to find lowest workable versions.
+   - Abort tests early as soon as collection succeeds to save time.
+
+[^1]: Adapted from the standard PR template used in this repository.
