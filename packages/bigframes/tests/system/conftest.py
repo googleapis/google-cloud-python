@@ -22,6 +22,7 @@ import typing
 from datetime import datetime
 from typing import Dict, Generator, Optional
 
+import gcsfs
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
@@ -68,6 +69,14 @@ def _hash_digest_file(hasher, filepath):
     with open(filepath, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hasher.update(chunk)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def configure_gcsfs():
+    # gcsfs by default uses a cache that can be stale, causing file loads to
+    # fail if the file was uploaded indirectly (eg via bq export job) during the
+    # course of the tests. disable the cache to avoid this.
+    gcsfs.GCSFileSystem(use_listings_cache=False)
 
 
 @pytest.fixture(scope="session")
