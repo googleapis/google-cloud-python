@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-memorystore/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.4.0...google-cloud-memorystore-v0.5.0) (2026-05-06)
+
+
+### Features
+
+* enable gRPC transport (#16927) ([71b73e5407e5a5d1d3f57a80d478b345d128ee1d](https://github.com/googleapis/google-cloud-python/commit/71b73e5407e5a5d1d3f57a80d478b345d128ee1d))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.3.0...google-cloud-memorystore-v0.4.0) (2026-03-26)
 
 

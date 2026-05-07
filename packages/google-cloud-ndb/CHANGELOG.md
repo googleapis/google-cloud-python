@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.4.2...google-cloud-ndb-v2.5.0) (2026-05-06)
+
+
+### Features
+
+* enable mypy session for ndb (#16691) ([192ccc52a030a59f7e2c49ed9701130156d73d6f](https://github.com/googleapis/google-cloud-python/commit/192ccc52a030a59f7e2c49ed9701130156d73d6f))
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16950) ([d37a95301da1db1ee1be273d2ac9af320c91809f](https://github.com/googleapis/google-cloud-python/commit/d37a95301da1db1ee1be273d2ac9af320c91809f))
+
 ## [2.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.4.1...google-cloud-ndb-v2.4.2) (2026-04-02)
 
 

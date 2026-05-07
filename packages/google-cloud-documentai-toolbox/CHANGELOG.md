@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai-toolbox/#history
 
+## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.15.2...google-cloud-documentai-toolbox-v0.16.0) (2026-05-06)
+
 ## [0.15.1-alpha.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.15.1-alpha...google-cloud-documentai-toolbox-v0.15.1-alpha.1) (2026-03-26)
 
 

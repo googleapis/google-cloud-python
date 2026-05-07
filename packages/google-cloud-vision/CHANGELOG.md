@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.13.0...google-cloud-vision-v3.14.0) (2026-05-06)
+
 ## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.12.1...google-cloud-vision-v3.13.0) (2026-03-26)
 
 
