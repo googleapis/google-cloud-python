@@ -492,3 +492,68 @@ async def test__token_endpoint_request_no_throw_with_retry(can_retry):
         assert mock_request.call_count == 3
     else:
         assert mock_request.call_count == 1
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_success():
+    request = make_request({"encodedLocations": "0xA30", "locations": ["us-central1"]})
+    result = await _client._lookup_regional_access_boundary(
+        request, "http://example.com"
+    )
+    assert result == {"encodedLocations": "0xA30", "locations": ["us-central1"]}
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_malformed():
+    request = make_request({"locations": ["us-central1"]})
+    result = await _client._lookup_regional_access_boundary(
+        request, "http://example.com"
+    )
+    assert result is None
+
+
+@pytest.mark.asyncio
+@mock.patch("asyncio.wait_for", side_effect=asyncio.TimeoutError)
+async def test__lookup_regional_access_boundary_request_no_throw_timeout(mock_wait_for):
+    request = mock.AsyncMock(spec=["transport.Request"])
+
+    (
+        success,
+        data,
+        retryable,
+    ) = await _client._lookup_regional_access_boundary_request_no_throw(
+        request, "http://example.com", fail_fast=True
+    )
+
+    assert success is False
+    assert data == {}
+    assert retryable is False
+
+
+@pytest.mark.asyncio
+@mock.patch("asyncio.sleep", new_callable=mock.AsyncMock)
+async def test__lookup_regional_access_boundary_request_no_throw_bad_gateway_retry(
+    mock_sleep,
+):
+    bad_gateway_response = mock.AsyncMock(spec=["transport.Response"])
+    bad_gateway_response.status = http_client.BAD_GATEWAY
+    bad_gateway_response.content = mock.AsyncMock(return_value=b"{}")
+
+    ok_response = mock.AsyncMock(spec=["transport.Response"])
+    ok_response.status = http_client.OK
+    ok_response.content = mock.AsyncMock(return_value=b'{"encodedLocations": "0xA30"}')
+
+    request = mock.AsyncMock(spec=["transport.Request"])
+    request.side_effect = [bad_gateway_response, ok_response]
+
+    (
+        success,
+        data,
+        retryable,
+    ) = await _client._lookup_regional_access_boundary_request_no_throw(
+        request, "http://example.com"
+    )
+
+    assert success is True
+    assert data == {"encodedLocations": "0xA30"}
+    assert request.call_count == 2

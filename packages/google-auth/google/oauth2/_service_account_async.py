@@ -69,7 +69,9 @@ class Credentials(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._rab_manager.refresh_manager = _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        self._rab_manager.refresh_manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
 
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
@@ -98,7 +100,7 @@ class Credentials(
         headers = {}
         self._apply(headers)
         self._rab_manager.apply_headers(headers)
-        
+
         return await _client_async._lookup_regional_access_boundary(
             request, url, headers=headers, fail_fast=fail_fast
         )

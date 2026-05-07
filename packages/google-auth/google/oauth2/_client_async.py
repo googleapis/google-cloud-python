@@ -387,16 +387,19 @@ async def _lookup_regional_access_boundary_request_no_throw(
     response_data = {}
     retryable_error = False
 
-    timeout = client._BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if fail_fast else None
+    timeout = (
+        client._BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if fail_fast else None
+    )
     total_attempts = 1 if fail_fast else 6
-    retries = _exponential_backoff.AsyncExponentialBackoff(total_attempts=total_attempts)
+    retries = _exponential_backoff.AsyncExponentialBackoff(
+        total_attempts=total_attempts
+    )
 
     async for _ in retries:
         try:
             if timeout:
                 response = await asyncio.wait_for(
-                    request(method="GET", url=url, headers=headers),
-                    timeout=timeout
+                    request(method="GET", url=url, headers=headers), timeout=timeout
                 )
             else:
                 response = await request(method="GET", url=url, headers=headers)
