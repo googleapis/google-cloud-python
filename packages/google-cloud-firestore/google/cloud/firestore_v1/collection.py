@@ -146,7 +146,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
                 uppercase and lowercase and letters.
 
         Returns:
-            :class:`~google.cloud.firestore_v1.document.document.DocumentReference`:
+            :class:~google.cloud.firestore_v1.document.DocumentReference:
             The child document.
         """
         doc = super(CollectionReference, self).document(document_id)
