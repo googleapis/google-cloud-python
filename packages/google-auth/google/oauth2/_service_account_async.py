@@ -24,6 +24,7 @@ credentials file google.oauth2.service_account
 
 from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.oauth2 import _client_async
 from google.oauth2 import service_account
 
@@ -66,6 +67,10 @@ class Credentials(
         credentials = credentials.with_quota_project('myproject-123')
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._rab_manager.refresh_manager = _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
         assertion = self._make_authorization_grant_assertion()
@@ -75,12 +80,36 @@ class Credentials(
         self.token = access_token
         self.expiry = expiry
 
+    async def _lookup_regional_access_boundary(self, request, fail_fast=False):
+        """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
+
+        Args:
+            request (google.auth.aio.transport.Request): The object used to make
+                HTTP requests.
+            fail_fast (bool): Whether the lookup should fail fast.
+
+        Returns:
+            Optional[Dict[str, str]]: The Regional Access Boundary information.
+        """
+        url = self._build_regional_access_boundary_lookup_url(request=request)
+        if not url:
+            return None
+
+        headers = {}
+        self._apply(headers)
+        self._rab_manager.apply_headers(headers)
+        
+        return await _client_async._lookup_regional_access_boundary(
+            request, url, headers=headers, fail_fast=fail_fast
+        )
+
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def before_request(self, request, method, url, headers):
-        # Explicit override to bypass synchronous CredentialsWithRegionalAccessBoundary.
         await credentials_async.Credentials.before_request(
             self, request, method, url, headers
         )
+        self._maybe_start_regional_access_boundary_refresh(request, url)
+        self._rab_manager.apply_headers(headers)
 
 
 class IDTokenCredentials(

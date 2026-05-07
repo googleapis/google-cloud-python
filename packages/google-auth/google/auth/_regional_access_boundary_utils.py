@@ -15,6 +15,7 @@
 """Utilities for Regional Access Boundary management."""
 
 import copy
+import asyncio
 import datetime
 import functools
 import logging
@@ -384,3 +385,59 @@ class _RegionalAccessBoundaryRefreshManager(object):
                 credentials, copied_request, rab_manager
             )
             self._worker.start()
+class _AsyncRegionalAccessBoundaryRefreshManager(object):
+    """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def __getstate__(self):
+        """Pickle helper that serializes the _lock and _worker_task attributes."""
+        state = self.__dict__.copy()
+        state["_lock"] = None
+        state["_worker_task"] = None
+        return state
+
+    def __setstate__(self, state):
+        """Pickle helper that deserializes the _lock and _worker_task attributes."""
+        self.__dict__.update(state)
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def start_refresh(self, credentials, request, rab_manager):
+        """
+        Starts a background task to refresh the Regional Access Boundary if one is not already running.
+
+        Args:
+            credentials (CredentialsWithRegionalAccessBoundary): The credentials
+                to refresh.
+            request (google.auth.aio.transport.Request): The object used to make
+                HTTP requests.
+            rab_manager (_RegionalAccessBoundaryManager): The manager container to update.
+        """
+        with self._lock:
+            if self._worker_task and not self._worker_task.done():
+                # A refresh is already in progress.
+                return
+
+            async def _worker():
+                try:
+                    # credentials._lookup_regional_access_boundary should be async in the async creds class
+                    regional_access_boundary_info = (
+                        await credentials._lookup_regional_access_boundary(request)
+                    )
+                except Exception as e:
+                    if _helpers.is_logging_enabled(_LOGGER):
+                        _LOGGER.warning(
+                            "Asynchronous Regional Access Boundary lookup raised an exception: %s",
+                            e,
+                            exc_info=True,
+                        )
+                    regional_access_boundary_info = None
+
+                rab_manager.process_regional_access_boundary_info(
+                    regional_access_boundary_info
+                )
+
+            self._worker_task = asyncio.create_task(_worker())

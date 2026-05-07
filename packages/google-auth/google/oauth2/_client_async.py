@@ -26,6 +26,7 @@ For more information about the token endpoint, see
 import http.client as http_client
 import json
 import urllib
+import asyncio
 
 from google.auth import _exponential_backoff
 from google.auth import _helpers
@@ -288,3 +289,142 @@ async def refresh_grant(
         request, token_uri, body, can_retry=can_retry
     )
     return client._handle_refresh_grant_response(response_data, refresh_token)
+
+
+async def _lookup_regional_access_boundary(request, url, headers=None, fail_fast=False):
+    """Implements the global lookup of a credential Regional Access Boundary.
+    For the lookup, we send a request to the global lookup endpoint and then
+    parse the response. Service account credentials, workload identity
+    pools and workforce pools implementation may have Regional Access Boundaries configured.
+    Args:
+        request (google.auth.aio.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The Regional Access Boundary lookup url.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+        fail_fast (bool): Whether the lookup should fail fast (uses a short timeout and no retries).
+    Returns:
+        Optional[Mapping[str,list|str]]: A dictionary containing
+            "locations" as a list of allowed locations as strings and
+            "encodedLocations" as a hex string.
+            e.g:
+            {
+                "locations": [
+                    "us-central1", "us-east1", "europe-west1", "asia-east1"
+                ],
+                "encodedLocations": "0xA30"
+            }
+    """
+    response_data = await _lookup_regional_access_boundary_request(
+        request, url, headers=headers, fail_fast=fail_fast
+    )
+    if response_data is None:
+        # Error was already logged by _lookup_regional_access_boundary_request
+        return None
+
+    if "encodedLocations" not in response_data:
+        client._LOGGER.error(
+            "Regional Access Boundary response malformed: missing 'encodedLocations' key in %s",
+            response_data,
+        )
+        return None
+    return response_data
+
+
+async def _lookup_regional_access_boundary_request(
+    request, url, can_retry=True, headers=None, fail_fast=False
+):
+    """Makes a request to the Regional Access Boundary lookup endpoint.
+
+    Args:
+        request (google.auth.aio.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The Regional Access Boundary lookup url.
+        can_retry (bool): Enable or disable request retry behavior. Defaults to true.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+        fail_fast (bool): Whether the lookup should fail fast (uses a short timeout and no retries).
+
+    Returns:
+        Optional[Mapping[str, str]]: The JSON-decoded response data on success, or None on failure.
+    """
+    (
+        response_status_ok,
+        response_data,
+        retryable_error,
+    ) = await _lookup_regional_access_boundary_request_no_throw(
+        request, url, can_retry=can_retry, headers=headers, fail_fast=fail_fast
+    )
+    if not response_status_ok:
+        client._LOGGER.warning(
+            "Regional Access Boundary HTTP request failed after retries: response_data=%s, retryable_error=%s",
+            response_data,
+            retryable_error,
+        )
+        return None
+    return response_data
+
+
+async def _lookup_regional_access_boundary_request_no_throw(
+    request, url, can_retry=True, headers=None, fail_fast=False
+):
+    """Makes a request to the Regional Access Boundary lookup endpoint. This
+        function doesn't throw on response errors.
+
+    Args:
+        request (google.auth.aio.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The Regional Access Boundary lookup url.
+        can_retry (bool): Enable or disable request retry behavior. Defaults to true.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+        fail_fast (bool): Whether the lookup should fail fast (uses a short timeout and no retries).
+
+    Returns:
+        Tuple(bool, Mapping[str, str], Optional[bool]): A boolean indicating
+          if the request is successful, a mapping for the JSON-decoded response
+          data and in the case of an error a boolean indicating if the error
+          is retryable.
+    """
+
+    response_data = {}
+    retryable_error = False
+
+    timeout = client._BLOCKING_REGIONAL_ACCESS_BOUNDARY_LOOKUP_TIMEOUT if fail_fast else None
+    total_attempts = 1 if fail_fast else 6
+    retries = _exponential_backoff.AsyncExponentialBackoff(total_attempts=total_attempts)
+
+    async for _ in retries:
+        try:
+            if timeout:
+                response = await asyncio.wait_for(
+                    request(method="GET", url=url, headers=headers),
+                    timeout=timeout
+                )
+            else:
+                response = await request(method="GET", url=url, headers=headers)
+        except asyncio.TimeoutError:
+            return False, {}, False
+
+        response_body1 = await response.content()
+        response_body = (
+            response_body1.decode("utf-8")
+            if hasattr(response_body1, "decode")
+            else response_body1
+        )
+
+        try:
+            response_data = json.loads(response_body)
+        except ValueError:
+            response_data = response_body
+
+        if response.status == http_client.OK:
+            return True, response_data, None
+
+        retryable_error = client._can_retry(
+            status_code=response.status, response_data=response_data
+        )
+        if response.status == http_client.BAD_GATEWAY:
+            retryable_error = True
+
+        if not can_retry or not retryable_error:
+            return False, response_data, retryable_error
+
+    return False, response_data, retryable_error
