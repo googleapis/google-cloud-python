@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1921,11 +1915,7 @@ async def test_list_endpoint_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_endpoint_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_endpoint_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3911,11 +3901,7 @@ async def test_list_wasm_plugin_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_wasm_plugin_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_wasm_plugin_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5546,11 +5532,7 @@ async def test_list_wasm_plugins_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_wasm_plugins(request={})
-        ).pages:
+        async for page_ in (await client.list_wasm_plugins(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7463,11 +7445,7 @@ async def test_list_gateways_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_gateways(request={})
-        ).pages:
+        async for page_ in (await client.list_gateways(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9372,11 +9350,7 @@ async def test_list_grpc_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_grpc_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_grpc_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11297,11 +11271,7 @@ async def test_list_http_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_http_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_http_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13220,11 +13190,7 @@ async def test_list_tcp_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tcp_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_tcp_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15093,11 +15059,7 @@ async def test_list_tls_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tls_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_tls_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16994,11 +16956,7 @@ async def test_list_service_bindings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_service_bindings(request={})
-        ).pages:
+        async for page_ in (await client.list_service_bindings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -18940,11 +18898,7 @@ async def test_list_meshes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_meshes(request={})
-        ).pages:
+        async for page_ in (await client.list_meshes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -20835,11 +20789,7 @@ async def test_list_service_lb_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_service_lb_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_service_lb_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -23529,11 +23479,7 @@ async def test_list_gateway_route_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_gateway_route_views(request={})
-        ).pages:
+        async for page_ in (await client.list_gateway_route_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -24079,11 +24025,7 @@ async def test_list_mesh_route_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_mesh_route_views(request={})
-        ).pages:
+        async for page_ in (await client.list_mesh_route_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
