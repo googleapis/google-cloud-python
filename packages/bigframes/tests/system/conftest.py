@@ -22,7 +22,7 @@ import typing
 from datetime import datetime
 from typing import Dict, Generator, Optional
 
-import fsspec
+import fsspec  # type: ignore[import-untyped]
 import gcsfs  # type: ignore[import-untyped]
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
