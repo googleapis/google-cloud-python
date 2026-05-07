@@ -15,6 +15,7 @@
 import base64
 import datetime
 import http.client as http_client
+import importlib
 import json
 from unittest import mock
 
@@ -113,3 +114,37 @@ class TestSigner(object):
         with pytest.raises(exceptions.TransportError):
             signer.sign("123")
         request.call_count == 3
+
+
+def test_endpoint_constants_mtls(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Mock check_use_client_cert to return True (simulating mTLS environment)
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+    # Force a reload of the iam module to trigger the top-level domain computation
+    importlib.reload(iam)
+
+    try:
+        # Verify it constructed the mTLS domain for ALL endpoints
+        assert (
+            "iamcredentials.mtls.googleapis.com"
+            in iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT
+        )
+        assert (
+            "iamcredentials.mtls.googleapis.com"
+            in iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT
+        )
+        assert (
+            "iamcredentials.mtls.googleapis.com"
+            in iam._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT
+        )
+        assert "iamcredentials.mtls.googleapis.com" in iam._IAM_ENDPOINT
+        assert "iamcredentials.mtls.googleapis.com" in iam._IAM_SIGN_ENDPOINT
+        assert "iamcredentials.mtls.googleapis.com" in iam._IAM_SIGNJWT_ENDPOINT
+        assert "iamcredentials.mtls.googleapis.com" in iam._IAM_IDTOKEN_ENDPOINT
+        
+    finally:
+        # Restore the original state for other tests by undoing the patch and reloading again
+        monkeypatch.undo()
+        importlib.reload(iam)
