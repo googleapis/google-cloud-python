@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.14.0...bigquery-magics-v0.15.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16949) ([fab4e7123cd7f7b5d5fef3e8eb923a37d8999388](https://github.com/googleapis/google-cloud-python/commit/fab4e7123cd7f7b5d5fef3e8eb923a37d8999388))
+
 ## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.2...bigquery-magics-v0.13.0) (2026-04-09)
 
 

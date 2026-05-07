@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-orchestration-airflow/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.20.0...google-cloud-orchestration-airflow-v1.21.0) (2026-05-06)
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.19.0...google-cloud-orchestration-airflow-v1.20.0) (2026-03-26)
 
 

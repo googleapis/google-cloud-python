@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-dataplex/#history
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.18.0...google-cloud-dataplex-v2.19.0) (2026-05-06)
+
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.17.0...google-cloud-dataplex-v2.18.0) (2026-03-26)
 
 
