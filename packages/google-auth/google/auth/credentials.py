@@ -372,7 +372,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         target._rab_manager = new_manager
 
     def _set_regional_access_boundary(self, seed):
-        """Applies the regional_access_boundary set to the provided seed on these
+        """Applies the regional_access_boundary provided via the seed on these
         credentials. This is intended for internal use only as invalid
         seeds would produce unexpected results until automatic recovery is supported.
         Currently this is used by the gcloud CLI and therefore changes to the
