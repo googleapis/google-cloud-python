@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Callable, Literal, Optional, Tuple
+from typing import Callable, Literal, Mapping, Optional, Tuple
 
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
@@ -135,8 +135,9 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         )
 
         if (isinstance(dest_spec, execution_spec.EphemeralTableSpec)) or (
-            result_bq_data is not None and not result_mostly_cached
+            (result_bq_data is not None) and not result_mostly_cached
         ):
+            assert result_bq_data is not None, "expected result table but none exists"
             return executor.BQTableExecuteResult(
                 data=result_bq_data,
                 project_id=self.bqclient.project,

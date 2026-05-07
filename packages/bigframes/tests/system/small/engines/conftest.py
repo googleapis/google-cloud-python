@@ -14,12 +14,12 @@
 import pathlib
 from typing import Generator
 
+import google.cloud.bigquery_storage_v1
 import pandas as pd
 import pytest
 from google.cloud import bigquery
 
 import bigframes
-import google.cloud.bigquery_storage_v1
 from bigframes.core import ArrayValue, events, local_data
 from bigframes.session import (
     direct_gbq_execution,
@@ -44,8 +44,12 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
     with bigframes.core.global_session._GlobalSessionContext(session):
         yield session
 
+
 @pytest.fixture(scope="session")
-def sqlglot_engine(bigquery_client: bigquery.Client, bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient):
+def sqlglot_engine(
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+):
     return direct_gbq_execution.DirectGbqExecutor(
         bigquery_client,
         bqstoragereadclient=bigquery_storage_read_client,
@@ -53,13 +57,18 @@ def sqlglot_engine(bigquery_client: bigquery.Client, bigquery_storage_read_clien
         publisher=events.Publisher(),
     )
 
+
 @pytest.fixture(scope="session")
-def bq_engine(bigquery_client: bigquery.Client, bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient):
+def bq_engine(
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+):
     return direct_gbq_execution.DirectGbqExecutor(
         bigquery_client,
         bqstoragereadclient=bigquery_storage_read_client,
         publisher=events.Publisher(),
     )
+
 
 @pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
 def engine(

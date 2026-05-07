@@ -347,19 +347,19 @@ class BigQueryCachingExecutor(executor.Executor):
             order_col_id = guid.generate_guid()
             plan = nodes.PromoteOffsetsNode(plan, identifiers.ColumnId(order_col_id))
             cluster_cols = [order_col_id]
+            ordering = bigframes.core.ordering.TotalOrdering.from_offset_col(order_col_id)
         elif cache_spec.ordering == "order_key":
             plan, ordering = rewrite.pull_out_order(plan)
         destination_table = self.storage_manager.create_temp_table(
             plan.schema.to_bigquery(), cluster_cols
         )
         arr_value = bigframes.core.ArrayValue(plan)
-        execution_spec = dataclasses.replace(
-            execution_spec,
+        execution_spec = ex_spec.ExecutionSpec(
             destination_spec=ex_spec.TableOutputSpec(
                 table=destination_table,
-                cluster_cols=cache_spec.cluster_cols,
+                cluster_cols=cluster_cols,
                 if_exists="replace",
-            ),
+            )
         )
         # We don't use _execute_gbq_table_output, because we want to skip slower DML path.
         result = self._execute_gbq_query_only(arr_value, execution_spec)
@@ -427,7 +427,7 @@ class BigQueryCachingExecutor(executor.Executor):
         """Executes the query and uses the resulting table to rewrite future executions."""
         result = self._execute_to_cached_table(
             array_value.node,
-            ex_spec.CacheSpec(cluster_cols=tuple(cluster_cols), ordering="order_key"),
+            ex_spec.CacheSpec(ordering="offsets_col"),
         )
         assert isinstance(result, executor.BQTableExecuteResult)
         assert result._data.ordering is not None

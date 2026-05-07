@@ -51,6 +51,7 @@ def pull_out_order(
     node: bigframes.core.nodes.BigFrameNode,
 ) -> Tuple[bigframes.core.nodes.BigFrameNode, bigframes.core.ordering.RowOrdering]:
     import bigframes.core.rewrite.slices
+
     node = node.bottom_up(bigframes.core.rewrite.slices.rewrite_slice)
     return _pull_up_order(node, order_root=True)
 
