@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.37.0...google-cloud-bigtable-v2.38.0) (2026-05-07)
+
+
+### Features
+
+* Add ValueBitmask to the filter DSL (#16981) ([3f429f23386a63e5e6773216b8d00dbed4940c0c](https://github.com/googleapis/google-cloud-python/commit/3f429f23386a63e5e6773216b8d00dbed4940c0c))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.35.0...google-cloud-bigtable-v2.36.0) (2026-04-02)
 
 
