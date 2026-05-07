@@ -5,6 +5,7 @@
     "language": "python",
     "library_type": "REST",
     "name": "dns",
+    "name_pretty": "Cloud DNS",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

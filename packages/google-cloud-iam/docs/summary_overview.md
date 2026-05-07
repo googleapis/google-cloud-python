@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Identity and Access Management (IAM) API
+# Cloud Identity and Access Management API
 
-Overview of the APIs available for Identity and Access Management (IAM) API.
+Overview of the APIs available for Cloud Identity and Access Management API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Identity and Access Management (IAM) API.
+Cloud Identity and Access Management API.
 
 [classes](https://cloud.google.com/python/docs/reference/iam/latest/summary_class.html)
 

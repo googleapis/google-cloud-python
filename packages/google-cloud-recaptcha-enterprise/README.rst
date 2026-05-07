@@ -3,8 +3,7 @@ Python Client for reCAPTCHA Enterprise
 
 |stable| |pypi| |versions|
 
-`reCAPTCHA Enterprise`_: Help protect your website from fraudulent activity, spam, and abuse without
-creating friction.
+`reCAPTCHA Enterprise`_: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

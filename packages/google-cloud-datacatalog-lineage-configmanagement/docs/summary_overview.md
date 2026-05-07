@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Data Lineage API
+# Data Lineage API API
 
-Overview of the APIs available for Data Lineage API.
+Overview of the APIs available for Data Lineage API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Data Lineage API.
+Data Lineage API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-datacatalog-lineage-configmanagement/latest/summary_class.html)
 

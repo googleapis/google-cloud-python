@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Parallelstore API
+# Parallelstore API API
 
-Overview of the APIs available for Parallelstore API.
+Overview of the APIs available for Parallelstore API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Parallelstore API.
+Parallelstore API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest/summary_class.html)
 

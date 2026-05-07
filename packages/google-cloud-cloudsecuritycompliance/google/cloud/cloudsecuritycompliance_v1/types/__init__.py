@@ -46,7 +46,6 @@ from .common import (
     CloudControlCategory,
     CloudControlDetails,
     CloudProvider,
-    Control,
     ControlFamily,
     EnforcementMode,
     Framework,
@@ -116,7 +115,6 @@ from .monitoring import (
     FindingSummary,
     FrameworkComplianceReport,
     FrameworkComplianceSummary,
-    FrameworkComplianceSummaryView,
     ListControlComplianceSummariesRequest,
     ListControlComplianceSummariesResponse,
     ListFindingSummariesRequest,
@@ -126,7 +124,6 @@ from .monitoring import (
     ManualCloudControlAssessmentDetails,
     SimilarControls,
     TargetResourceDetails,
-    Trend,
 )
 
 __all__ = (
@@ -156,7 +153,6 @@ __all__ = (
     "CELExpression",
     "CloudControl",
     "CloudControlDetails",
-    "Control",
     "ControlFamily",
     "Framework",
     "FrameworkReference",
@@ -229,8 +225,6 @@ __all__ = (
     "ManualCloudControlAssessmentDetails",
     "SimilarControls",
     "TargetResourceDetails",
-    "Trend",
     "EvaluationState",
     "FindingClass",
-    "FrameworkComplianceSummaryView",
 )

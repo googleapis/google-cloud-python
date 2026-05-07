@@ -80,7 +80,6 @@ from .types.data import (
     StreamPartition,
     TimestampRange,
     Value,
-    ValueBitmask,
     ValueRange,
 )
 from .types.feature_flags import FeatureFlags
@@ -246,6 +245,5 @@ __all__ = (
     "TimestampRange",
     "Type",
     "Value",
-    "ValueBitmask",
     "ValueRange",
 )

@@ -133,24 +133,14 @@ for path in `find 'packages' \
   package_path="packages/${package_name}"
 
   # Determine if we should skip based on git diff
-  # We always check for changes in these specific versioning/config files
-  files_to_check=(
-    "${package_path}/CHANGELOG.md"
-    "${package_path}/setup.py"
-    "${package_path}/pyproject.toml"
-    "${package_path}/**/gapic_version.py"
-    "${package_path}/**/version.py"
-  )
-
-  # If the package is in our "always run full system tests" list, check the whole directory
+  files_to_check="${package_path}/CHANGELOG.md"
   if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check=("${package_path}")
+    files_to_check="${package_path}"
   fi
 
-  echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check[*]}'"
+  echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
   set +e
-  # Passing the array expanded as arguments to git diff
-  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
+  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then

@@ -55,7 +55,8 @@ class ProtoEnumMeta(enum.EnumMeta):
         opts = attrs.pop(pb_options, {})
         # This is the only portable way to remove the _pb_options name
         # from the enum attrs.
-        # TODO: Use _ignore_ attribute to ignore _pb_options (Issue #16911)
+        # In 3.7 onwards, we can define an _ignore_ attribute and do some
+        # mucking around with that.
         if pb_options in attrs._member_names:
             if isinstance(attrs._member_names, list):
                 idx = attrs._member_names.index(pb_options)

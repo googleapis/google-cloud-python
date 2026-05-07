@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "grpc-iam",
-    "name_pretty": "IAM Meta",
+    "name_pretty": "Cloud Identity and Access Management",
     "product_documentation": "https://cloud.google.com/iam/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

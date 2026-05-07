@@ -5321,7 +5321,7 @@ class ObjectContexts(dict):
     """
 
     def __init__(self, blob):
-        super(ObjectContexts, self).__init__({"custom": {}})
+        super().__init__({"custom": {}})
         self._blob = blob
 
     @classmethod
@@ -5338,7 +5338,8 @@ class ObjectContexts(dict):
         :returns: ObjectContexts configuration created from resource.
         """
         instance = cls(blob)
-        instance.update(resource)
+        if resource:
+            instance.update(resource)
         return instance
 
     @property
@@ -5350,6 +5351,20 @@ class ObjectContexts(dict):
         """
         return self._blob
 
+    @property
+    def custom(self):
+        """User-defined object contexts.
+
+        :rtype: dict
+        :returns: A mapping of user-defined object contexts.
+        """
+        raw_custom = self.get("custom") or {}
+        return {
+            k: ObjectCustomContextPayload.from_api_repr(v)
+            for k, v in raw_custom.items()
+            if v is not None
+        }
+
     def set_custom_context(self, key, value):
         """Sets a custom context key-value pair.
 
@@ -5359,7 +5374,9 @@ class ObjectContexts(dict):
         :type value: str
         :param value: The value of the custom context.
         """
-        self.setdefault("custom", {})[key] = {"value": value}
+        if self.get("custom") is None:
+            self["custom"] = {}
+        self["custom"][key] = {"value": value}
         self.blob._patch_property("contexts", self)
 
     def delete_custom_context(self, key):
@@ -5368,5 +5385,78 @@ class ObjectContexts(dict):
         :type key: str
         :param key: The key of the custom context to delete.
         """
-        self.setdefault("custom", {})[key] = {"delete": True}
+        if self.get("custom") is None:
+            self["custom"] = {}
+        self["custom"][key] = None
         self.blob._patch_property("contexts", self)
+
+    def clear_custom_contexts(self):
+        """Clears all custom context key-value pairs."""
+        self["custom"] = None
+        self.blob._patch_property("contexts", self)
+
+
+class ObjectCustomContextPayload(dict):
+    """Represents the payload of a single user-defined object context.
+
+    :type value: str or ``NoneType``
+    :param value: (Optional) The value of the object context.
+
+    :type create_time: :class:`datetime.datetime` or ``NoneType``
+    :param create_time: (Optional) The time at which the object context was created.
+
+    :type update_time: :class:`datetime.datetime` or ``NoneType``
+    :param update_time: (Optional) The time at which the object context was last updated.
+    """
+
+    def __init__(self, value=None, create_time=None, update_time=None):
+        super().__init__()
+        if value is not None:
+            self["value"] = value
+        if create_time is not None:
+            self["createTime"] = _datetime_to_rfc3339(create_time)
+        if update_time is not None:
+            self["updateTime"] = _datetime_to_rfc3339(update_time)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`ObjectCustomContextPayload`
+        :returns: ObjectCustomContextPayload created from resource.
+        """
+        instance = cls()
+        if resource:
+            instance.update(resource)
+        return instance
+
+    @property
+    def value(self):
+        """The value of the object context.
+
+        :rtype: str or ``NoneType``
+        """
+        return self.get("value")
+
+    @property
+    def create_time(self):
+        """The time at which the object context was created.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        """
+        value = self.get("createTime")
+        if value is not None:
+            return _rfc3339_nanos_to_datetime(value)
+
+    @property
+    def update_time(self):
+        """The time at which the object context was last updated.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        """
+        value = self.get("updateTime")
+        if value is not None:
+            return _rfc3339_nanos_to_datetime(value)

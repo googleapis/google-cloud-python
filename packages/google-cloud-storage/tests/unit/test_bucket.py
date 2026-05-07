@@ -1221,6 +1221,7 @@ class Test_Bucket(unittest.TestCase):
         expected_include_folders_as_prefixes = None
         soft_deleted = None
         page_size = None
+        expected_filter = None
         client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1239,7 +1240,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=soft_deleted,
             page_size=page_size,
-            filter=None,
+            filter_=expected_filter,
         )
 
     def test_list_blobs_w_explicit(self):
@@ -1256,6 +1257,7 @@ class Test_Bucket(unittest.TestCase):
         versions = True
         soft_deleted = True
         page_size = 2
+        filter_ = "name: foo"
         projection = "full"
         fields = "items/contentLanguage,nextPageToken"
         bucket = self._make_one(client=None, name=name)
@@ -1282,6 +1284,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
             page_size=page_size,
+            filter_=filter_,
         )
 
         self.assertIs(iterator, other_client.list_blobs.return_value)
@@ -1300,6 +1303,7 @@ class Test_Bucket(unittest.TestCase):
         expected_include_folders_as_prefixes = include_folders_as_prefixes
         expected_soft_deleted = soft_deleted
         expected_page_size = page_size
+        expected_filter = filter_
         other_client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1318,37 +1322,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=expected_soft_deleted,
             page_size=expected_page_size,
-            filter=None,
-        )
-
-    def test_list_blobs_w_filter(self):
-        name = "name"
-        client = self._make_client()
-        client.list_blobs = mock.Mock(spec=[])
-        bucket = self._make_one(client=client, name=name)
-        filter_expr = 'custom.foo = "bar"'
-
-        bucket.list_blobs(filter=filter_expr)
-
-        client.list_blobs.assert_called_once_with(
-            bucket,
-            max_results=None,
-            page_token=None,
-            prefix=None,
-            delimiter=None,
-            start_offset=None,
-            end_offset=None,
-            include_trailing_delimiter=None,
-            versions=None,
-            projection="noAcl",
-            fields=None,
-            timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
-            match_glob=None,
-            include_folders_as_prefixes=None,
-            soft_deleted=None,
-            page_size=None,
-            filter=filter_expr,
+            filter_=expected_filter,
         )
 
     def test_list_notifications_w_defaults(self):

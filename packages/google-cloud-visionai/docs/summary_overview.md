@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Vision AI API
+# Vision AI API API
 
-Overview of the APIs available for Vision AI API.
+Overview of the APIs available for Vision AI API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Vision AI API.
+Vision AI API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest/summary_class.html)
 

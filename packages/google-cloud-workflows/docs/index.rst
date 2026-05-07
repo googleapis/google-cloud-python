@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Workflows.
+This package includes clients for multiple versions of Cloud Workflows.
 By default, you will get version ``workflows_v1``.
 
 

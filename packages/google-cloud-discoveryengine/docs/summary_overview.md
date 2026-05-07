@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Discovery Engine API
+# Discovery Engine API API
 
-Overview of the APIs available for Discovery Engine API.
+Overview of the APIs available for Discovery Engine API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Discovery Engine API.
+Discovery Engine API API.
 
 [classes](https://cloud.google.com/python/docs/reference/discoveryengine/latest/summary_class.html)
 

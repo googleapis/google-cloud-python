@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# VMware Engine API
+# Google Cloud VMware Engine API
 
-Overview of the APIs available for VMware Engine API.
+Overview of the APIs available for Google Cloud VMware Engine API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-VMware Engine API.
+Google Cloud VMware Engine API.
 
 [classes](https://cloud.google.com/python/docs/reference/vmwareengine/latest/summary_class.html)
 

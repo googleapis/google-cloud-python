@@ -3,9 +3,7 @@ Python Client for Recommendations AI
 
 |preview| |pypi| |versions|
 
-`Recommendations AI`_: Recommendations AI service enables customers to build end-to-end
-personalized recommendation systems without requiring a high level of
-expertise in machine learning, recommendation system, or Google Cloud.
+`Recommendations AI`_: delivers highly personalized product recommendations at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

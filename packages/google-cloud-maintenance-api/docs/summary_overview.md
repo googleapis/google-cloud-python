@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Maintenance API
+# Maintenance API API
 
-Overview of the APIs available for Maintenance API.
+Overview of the APIs available for Maintenance API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Maintenance API.
+Maintenance API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-maintenance-api/latest/summary_class.html)
 

@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Notebooks.
+This package includes clients for multiple versions of AI Platform Notebooks.
 By default, you will get version ``notebooks_v1``.
 
 

@@ -3,9 +3,7 @@ Python Client for Cloud Vision
 
 |stable| |pypi| |versions|
 
-`Cloud Vision`_: Integrates Google Vision features, including image labeling, face, logo,
-and landmark detection, optical character recognition (OCR), and detection
-of explicit content, into applications.
+`Cloud Vision`_: allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

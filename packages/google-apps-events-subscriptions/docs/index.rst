@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Workspace Events.
+This package includes clients for multiple versions of Google Workspace Events API.
 By default, you will get version ``events_subscriptions_v1``.
 
 

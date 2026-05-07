@@ -46,13 +46,9 @@ class ListFrameworksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name, in one of the following
-            formats:
-
-            - ``organizations/{organization}/locations/{location}``
-            - ``projects/{project}/locations/{location}``.
-
-            The only supported location is ``global``.
+            Required. The parent resource name, in the format
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
             Optional. The maximum number of frameworks to return. The
             default value is ``500``.
@@ -112,12 +108,9 @@ class GetFrameworkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the framework to retrieve, in one of
-            the following formats:
-            ``organizations/{organization}/locations/{location}/frameworks/{framework}``
-            or
-            ``projects/{project}/locations/{location}/frameworks/{framework}``.
-
+            Required. The name of the framework to retrieve, in the
+            format
+            ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``
             The only supported location is ``global``.
         major_revision_id (int):
             Optional. The framework major version to retrieve. If not
@@ -140,13 +133,9 @@ class CreateFrameworkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name, in one of the following
-            formats:
-
-            - ``organizations/{organization}/locations/{location}``
-            - ``projects/{project}/locations/{location}``.
-
-            The only supported location is ``global``.
+            Required. The parent resource name, in the format
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         framework_id (str):
             Required. The identifier (ID) of the
             framework. The ID is not the full name of the
@@ -210,12 +199,8 @@ class DeleteFrameworkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource, in one of the following
-            formats:
-            ``organizations/{organization}/locations/{location}/frameworks/{framework}``
-            or
-            ``projects/{project}/locations/{location}/frameworks/{framework}``.
-
+            Required. The name of the resource, in the format
+            ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
             The only supported location is ``global``.
     """
 
@@ -230,13 +215,9 @@ class ListCloudControlsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name, in one of the following
-            formats:
-
-            - ``organizations/{organization}/locations/{location}``
-            - ``projects/{project}/locations/{location}``.
-
-            The only supported location is ``global``.
+            Required. The parent resource name, in the format
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
             Optional. The maximum number of cloud controls to return.
             The default value is ``500``.
@@ -299,12 +280,9 @@ class GetCloudControlRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the cloud control to retrieve, in one
-            of the following formats:
-            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``
-            or
-            ``projects/{project}/locations/{location}/cloudControls/{cloud_control}``.
-
+            Required. The name of the cloud control to retrieve, in the
+            format
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``.
             The only supported location is ``global``.
         major_revision_id (int):
             Optional. The major version of the cloud control to
@@ -327,13 +305,9 @@ class CreateCloudControlRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name, in one of the following
-            formats:
-
-            - ``organizations/{organization}/locations/{location}``.
-            - ``projects/{project}/locations/{location}``.
-
-            The only supported location is ``global``.
+            Required. The parent resource name, in the format
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         cloud_control_id (str):
             Required. The identifier for the cloud control, which is the
             last segment of the cloud control name. The format is
@@ -399,12 +373,9 @@ class DeleteCloudControlRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the cloud control to delete, in one of
-            the following formats:
-            ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``
-            or
-            ``projects/{project}/locations/{location}/CloudControls/{CloudControl}``.
-
+            Required. The name of the cloud control to delete, in the
+            format
+            ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``.
             The only supported location is ``global``.
     """
 

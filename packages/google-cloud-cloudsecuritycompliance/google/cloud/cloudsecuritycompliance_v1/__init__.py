@@ -70,7 +70,6 @@ from .types.common import (
     CloudControlCategory,
     CloudControlDetails,
     CloudProvider,
-    Control,
     ControlFamily,
     EnforcementMode,
     Framework,
@@ -140,7 +139,6 @@ from .types.monitoring import (
     FindingSummary,
     FrameworkComplianceReport,
     FrameworkComplianceSummary,
-    FrameworkComplianceSummaryView,
     ListControlComplianceSummariesRequest,
     ListControlComplianceSummariesResponse,
     ListFindingSummariesRequest,
@@ -150,7 +148,6 @@ from .types.monitoring import (
     ManualCloudControlAssessmentDetails,
     SimilarControls,
     TargetResourceDetails,
-    Trend,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -279,7 +276,6 @@ __all__ = (
     "CmEnrollmentServiceClient",
     "ComplianceState",
     "ConfigClient",
-    "Control",
     "ControlAssessmentDetails",
     "ControlComplianceSummary",
     "ControlFamily",
@@ -306,7 +302,6 @@ __all__ = (
     "FrameworkCategory",
     "FrameworkComplianceReport",
     "FrameworkComplianceSummary",
-    "FrameworkComplianceSummaryView",
     "FrameworkDeployment",
     "FrameworkDeploymentReference",
     "FrameworkReference",
@@ -356,7 +351,6 @@ __all__ = (
     "TargetResourceCreationConfig",
     "TargetResourceDetails",
     "TargetResourceType",
-    "Trend",
     "UpdateCloudControlRequest",
     "UpdateCmEnrollmentRequest",
     "UpdateFrameworkRequest",

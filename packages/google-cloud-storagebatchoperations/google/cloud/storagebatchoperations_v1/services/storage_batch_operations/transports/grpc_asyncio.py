@@ -618,30 +618,12 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
             ),
             self.list_bucket_operations: self._wrap_method(
                 self.list_bucket_operations,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_bucket_operation: self._wrap_method(
                 self.get_bucket_operation,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

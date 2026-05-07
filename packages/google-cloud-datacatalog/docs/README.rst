@@ -3,8 +3,7 @@ Python Client for Google Cloud Data Catalog
 
 |stable| |pypi| |versions|
 
-`Google Cloud Data Catalog`_: A fully managed and highly scalable data discovery and metadata management
-service.
+`Google Cloud Data Catalog`_: is a fully managed and highly scalable data discovery and metadata management service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

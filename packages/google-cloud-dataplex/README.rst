@@ -3,7 +3,7 @@ Python Client for Cloud Dataplex
 
 |stable| |pypi| |versions|
 
-`Cloud Dataplex`_: A unified, intelligent governance solution for data and AI assets.
+`Cloud Dataplex`_: provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

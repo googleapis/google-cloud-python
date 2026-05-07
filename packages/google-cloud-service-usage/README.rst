@@ -3,9 +3,7 @@ Python Client for Service Usage
 
 |stable| |pypi| |versions|
 
-`Service Usage`_: Enables services that service consumers want to use on Google Cloud
-Platform, lists the available or enabled services, or disables services
-that service consumers no longer use.
+`Service Usage`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

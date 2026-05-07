@@ -3,8 +3,7 @@ Python Client for Cloud Billing
 
 |stable| |pypi| |versions|
 
-`Cloud Billing`_: Allows developers to manage billing for their Google Cloud Platform
-projects     programmatically.
+`Cloud Billing`_: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

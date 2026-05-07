@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Vertex AI Search for commerce.
+This package includes clients for multiple versions of Retail.
 By default, you will get version ``retail_v2``.
 
 

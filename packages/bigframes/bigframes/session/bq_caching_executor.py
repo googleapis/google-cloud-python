@@ -547,9 +547,8 @@ class BigQueryCachingExecutor(executor.Executor):
             max_complexity=QUERY_COMPLEXITY_LIMIT,
             cache=self.cache,
             # Heuristic: subtree_compleixty * (copies of subtree)^2
-            heuristic=lambda complexity, count: (
-                math.log(complexity) + 2 * math.log(count)
-            ),
+            heuristic=lambda complexity, count: math.log(complexity)
+            + 2 * math.log(count),
         )
         if selection is None:
             # No good subtrees to cache, just return original tree

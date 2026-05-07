@@ -344,10 +344,6 @@ class _BaseAuditRestTransport(AuditTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
             ]
             return http_options
 
@@ -373,10 +369,6 @@ class _BaseAuditRestTransport(AuditTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*}/locations",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
             ]
             return http_options
 
@@ -401,11 +393,6 @@ class _BaseAuditRestTransport(AuditTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     "body": "*",
                 },
             ]
@@ -438,10 +425,6 @@ class _BaseAuditRestTransport(AuditTransport):
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
             ]
             return http_options
 
@@ -467,10 +450,6 @@ class _BaseAuditRestTransport(AuditTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
             ]
             return http_options
 
@@ -495,10 +474,6 @@ class _BaseAuditRestTransport(AuditTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
                 },
             ]
             return http_options

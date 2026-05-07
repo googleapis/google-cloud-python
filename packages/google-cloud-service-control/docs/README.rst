@@ -3,8 +3,7 @@ Python Client for Service Control
 
 |stable| |pypi| |versions|
 
-`Service Control`_: Provides admission control and telemetry reporting for services integrated
-with Service Infrastructure.
+`Service Control`_:  is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

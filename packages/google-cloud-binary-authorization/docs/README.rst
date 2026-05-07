@@ -3,9 +3,7 @@ Python Client for Binary Authorization
 
 |stable| |pypi| |versions|
 
-`Binary Authorization`_: The management interface for Binary Authorization, a system providing
-policy control for images deployed to Kubernetes Engine clusters, Anthos
-clusters on VMware, and Cloud Run.
+`Binary Authorization`_:  is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware
 
 - `Client Library Documentation`_
 - `Product Documentation`_

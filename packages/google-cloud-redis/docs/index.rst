@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Cloud Memorystore for Redis.
+This package includes clients for multiple versions of Cloud Redis.
 By default, you will get version ``redis_v1``.
 
 

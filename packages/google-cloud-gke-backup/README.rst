@@ -3,8 +3,7 @@ Python Client for Backup for GKE
 
 |preview| |pypi| |versions|
 
-`Backup for GKE`_: Backup for GKE is a managed Kubernetes workload backup and restore
-service for GKE clusters.
+`Backup for GKE`_: An API for backing up and restoring workloads in GKE.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

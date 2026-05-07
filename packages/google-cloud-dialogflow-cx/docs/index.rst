@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Dialogflow.
+This package includes clients for multiple versions of Dialogflow CX.
 By default, you will get version ``dialogflowcx_v3``.
 
 

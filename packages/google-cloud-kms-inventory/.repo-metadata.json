@@ -1,5 +1,5 @@
 {
-    "api_description": "Cloud Key Management Service (Cloud KMS) lets you create and manage cryptographic keys for use in compatible Google Cloud services and in your own applications.",
+    "api_description": "KMS Inventory API",
     "api_id": "kmsinventory.googleapis.com",
     "api_shortname": "kmsinventory",
     "client_documentation": "https://cloud.google.com/python/docs/reference/inventory/latest",
@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "inventory",
-    "name_pretty": "KMS Inventory",
+    "name_pretty": "KMS Inventory API",
     "product_documentation": "https://cloud.google.com/kms/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

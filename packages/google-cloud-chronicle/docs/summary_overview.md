@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Chronicle API
+# Chronicle API API
 
-Overview of the APIs available for Chronicle API.
+Overview of the APIs available for Chronicle API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Chronicle API.
+Chronicle API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-chronicle/latest/summary_class.html)
 

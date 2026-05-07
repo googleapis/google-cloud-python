@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Batch API
+# Cloud Batch API
 
-Overview of the APIs available for Batch API.
+Overview of the APIs available for Cloud Batch API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Batch API.
+Cloud Batch API.
 
 [classes](https://cloud.google.com/python/docs/reference/batch/latest/summary_class.html)
 

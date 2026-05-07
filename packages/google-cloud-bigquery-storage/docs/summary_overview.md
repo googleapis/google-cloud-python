@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# BigQuery Storage API
+# Google BigQuery Storage API
 
-Overview of the APIs available for BigQuery Storage API.
+Overview of the APIs available for Google BigQuery Storage API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-BigQuery Storage API.
+Google BigQuery Storage API.
 
 [classes](https://cloud.google.com/python/docs/reference/bigquerystorage/latest/summary_class.html)
 

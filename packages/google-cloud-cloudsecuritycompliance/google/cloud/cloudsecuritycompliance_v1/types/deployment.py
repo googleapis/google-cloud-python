@@ -59,8 +59,6 @@ class DeploymentState(proto.Enum):
             Deployment is being created.
         DEPLOYMENT_STATE_DELETING (3):
             Deployment is being deleted.
-        DEPLOYMENT_STATE_UPDATING (8):
-            Deployment is being updated.
         DEPLOYMENT_STATE_FAILED (4):
             Deployment has failed. All the changes made
             by the deployment were successfully rolled back.
@@ -84,7 +82,6 @@ class DeploymentState(proto.Enum):
     DEPLOYMENT_STATE_VALIDATING = 1
     DEPLOYMENT_STATE_CREATING = 2
     DEPLOYMENT_STATE_DELETING = 3
-    DEPLOYMENT_STATE_UPDATING = 8
     DEPLOYMENT_STATE_FAILED = 4
     DEPLOYMENT_STATE_READY = 5
     DEPLOYMENT_STATE_PARTIALLY_DEPLOYED = 6
@@ -100,9 +97,7 @@ class FrameworkDeployment(proto.Message):
         name (str):
             Identifier. The name of the framework deployment, in the
             format
-            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-            or
-            ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
             The only supported location is ``global``.
         target_resource_config (google.cloud.cloudsecuritycompliance_v1.types.TargetResourceConfig):
             Required. The details of the target resource
@@ -240,9 +235,7 @@ class CloudControlDeployment(proto.Message):
         name (str):
             Identifier. The name for the cloud control deployment, in
             the format
-            ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``
-            or
-            ``projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``.
+            ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}``.
             The only supported location is ``global``.
         target_resource_config (google.cloud.cloudsecuritycompliance_v1.types.TargetResourceConfig):
             Required. The details of the target resource
@@ -514,9 +507,8 @@ class CreateFrameworkDeploymentRequest(proto.Message):
         parent (str):
             Required. The parent resource of the framework deployment in
             the format
-            ``organizations/{organization}/locations/{location}`` or
-            ``projects/{project}/locations/{location}``. Only the global
-            location is supported.
+            ``organizations/{organization}/locations/{location}``. Only
+            the global location is supported.
         framework_deployment_id (str):
             Optional. An identifier for the framework
             deployment that's unique in scope of the parent.
@@ -549,9 +541,7 @@ class DeleteFrameworkDeploymentRequest(proto.Message):
         name (str):
             Required. The name of the framework deployment that you want
             to delete, in the format
-            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-            or
-            ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
             The only supported location is ``global``.
         etag (str):
             Optional. An opaque identifier for the current version of
@@ -582,9 +572,7 @@ class GetFrameworkDeploymentRequest(proto.Message):
         name (str):
             Required. The name of the framework deployment, in the
             format
-            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-            or
-            ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
             The only supported location is ``global``.
     """
 
@@ -601,9 +589,8 @@ class ListFrameworkDeploymentsRequest(proto.Message):
         parent (str):
             Required. The parent resource of the framework deployment,
             in the format
-            ``organizations/{organization}/locations/{location}`` or
-            ``projects/{project}/locations/{location}``. The only
-            supported location is ``global``.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
             Optional. The requested page size. The server
             might return fewer items than requested.
@@ -682,9 +669,7 @@ class GetCloudControlDeploymentRequest(proto.Message):
         name (str):
             Required. The name for the cloud control deployment, in the
             format
-            ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``
-            or
-            ``projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``.
+            ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}``.
             The only supported location is ``global``.
     """
 
@@ -701,9 +686,8 @@ class ListCloudControlDeploymentsRequest(proto.Message):
         parent (str):
             Required. The parent resource for the cloud control
             deployment, in the format
-            ``organizations/{organization}/locations/{location}`` or
-            ``projects/{project}/locations/{location}``. The only
-            supported location is ``global``.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
             Optional. The requested page size. The server
             might return fewer items than you requested.
@@ -783,9 +767,7 @@ class CloudControlDeploymentReference(proto.Message):
         cloud_control_deployment (str):
             Output only. The name of the CloudControlDeployment. The
             format is
-            ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``
-            or
-            ``projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``.
+            ``organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}``.
             The only supported location is ``global``.
     """
 
@@ -802,9 +784,7 @@ class FrameworkDeploymentReference(proto.Message):
         framework_deployment (str):
             Output only. The name of the framework deployment, in the
             format
-            ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-            or
-            ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+            ``organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
             The only supported location is ``global``.
         framework_reference (google.cloud.cloudsecuritycompliance_v1.types.FrameworkReference):
             Optional. The reference to the framework that this
@@ -814,7 +794,7 @@ class FrameworkDeploymentReference(proto.Message):
 
                {
                  framework:
-                 "organizations/{organization}/locations/{location}/frameworks/{framework}",
+                 "organizations/{org}/locations/{location}/frameworks/{framework}",
                  major_revision_id: 1
                }
 

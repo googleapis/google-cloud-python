@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Meet.
+This package includes clients for multiple versions of Google Meet API.
 By default, you will get version ``meet_v2``.
 
 

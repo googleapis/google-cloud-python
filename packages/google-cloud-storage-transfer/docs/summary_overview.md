@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Storage Transfer API
+# Storage Transfer Service API
 
-Overview of the APIs available for Storage Transfer API.
+Overview of the APIs available for Storage Transfer Service API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Storage Transfer API.
+Storage Transfer Service API.
 
 [classes](https://cloud.google.com/python/docs/reference/storagetransfer/latest/summary_class.html)
 

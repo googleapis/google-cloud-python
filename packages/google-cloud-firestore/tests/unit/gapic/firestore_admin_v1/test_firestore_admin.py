@@ -20071,10 +20071,6 @@ def test_create_index_rest_call_success(request_type):
                 "order": 1,
                 "array_config": 1,
                 "vector_config": {"dimension": 966, "flat": {}},
-                "search_config": {
-                    "text_spec": {"index_specs": [{"index_type": 1, "match_type": 1}]},
-                    "geo_spec": {"geo_json_indexing_disabled": True},
-                },
             }
         ],
         "state": 1,
@@ -20082,10 +20078,6 @@ def test_create_index_rest_call_success(request_type):
         "multikey": True,
         "shard_count": 1178,
         "unique": True,
-        "search_index_options": {
-            "text_language": "text_language_value",
-            "text_language_override_field_path": "text_language_override_field_path_value",
-        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20826,12 +20818,6 @@ def test_update_field_rest_call_success(request_type):
                             "order": 1,
                             "array_config": 1,
                             "vector_config": {"dimension": 966, "flat": {}},
-                            "search_config": {
-                                "text_spec": {
-                                    "index_specs": [{"index_type": 1, "match_type": 1}]
-                                },
-                                "geo_spec": {"geo_json_indexing_disabled": True},
-                            },
                         }
                     ],
                     "state": 1,
@@ -20839,10 +20825,6 @@ def test_update_field_rest_call_success(request_type):
                     "multikey": True,
                     "shard_count": 1178,
                     "unique": True,
-                    "search_index_options": {
-                        "text_language": "text_language_value",
-                        "text_language_override_field_path": "text_language_override_field_path_value",
-                    },
                 }
             ],
             "uses_ancestor_config": True,

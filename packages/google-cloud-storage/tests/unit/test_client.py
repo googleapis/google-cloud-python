@@ -2180,6 +2180,7 @@ class TestClient(unittest.TestCase):
         include_folders_as_prefixes = True
         soft_deleted = False
         versions = True
+        filter_ = "contexts.foo:*"
         projection = "full"
         page_size = 2
         fields = "items/contentLanguage,nextPageToken"
@@ -2213,6 +2214,7 @@ class TestClient(unittest.TestCase):
             match_glob=match_glob,
             include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
+            filter_=filter_,
         )
 
         self.assertIs(iterator, client._list_resource.return_value)
@@ -2236,6 +2238,7 @@ class TestClient(unittest.TestCase):
             "userProject": user_project,
             "includeFoldersAsPrefixes": include_folders_as_prefixes,
             "softDeleted": soft_deleted,
+            "filter": filter_,
         }
         expected_page_start = _blobs_page_start
         expected_page_size = 2
@@ -2249,40 +2252,6 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=timeout,
             retry=retry,
-        )
-
-    def test_list_blobs_w_filter(self):
-        from google.cloud.storage.bucket import _blobs_page_start, _item_to_blob
-
-        project = "PROJECT"
-        bucket_name = "name"
-        filter_expr = 'custom.foo = "bar"'
-        credentials = _make_credentials()
-        client = self._make_one(project=project, credentials=credentials)
-        client._list_resource = mock.Mock(spec=[])
-        client._bucket_arg_to_bucket = mock.Mock(spec=[])
-        bucket = client._bucket_arg_to_bucket.return_value = mock.Mock(
-            spec=["path", "user_project"],
-        )
-        bucket.path = f"/b/{bucket_name}"
-        bucket.user_project = None
-
-        client.list_blobs(bucket_name, filter=filter_expr)
-
-        expected_extra_params = {
-            "projection": "noAcl",
-            "filter": filter_expr,
-        }
-        client._list_resource.assert_called_once_with(
-            f"/b/{bucket_name}/o",
-            _item_to_blob,
-            page_token=None,
-            max_results=None,
-            extra_params=expected_extra_params,
-            page_start=_blobs_page_start,
-            page_size=None,
-            timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
         )
 
     def test_list_buckets_wo_project(self):

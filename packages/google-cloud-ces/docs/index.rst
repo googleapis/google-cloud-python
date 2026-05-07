@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Gemini Enterprise for Customer Experience.
+This package includes clients for multiple versions of Gemini Enterprise for Customer Experience API.
 By default, you will get version ``ces_v1``.
 
 

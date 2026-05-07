@@ -15,7 +15,7 @@ import io
 import os
 import socket
 import statistics
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional
 
 import psutil
 
@@ -28,7 +28,7 @@ def publish_benchmark_extra_info(
     benchmark_group: str = "read",
     true_times: List[float] = [],
     download_bytes_list: Optional[List[int]] = None,
-    duration: Optional[Union[float, List[float]]] = None,
+    duration: Optional[int] = None,
 ) -> None:
     """
     Helper function to publish benchmark parameters to the extra_info property.
@@ -50,19 +50,9 @@ def publish_benchmark_extra_info(
 
     if download_bytes_list is not None:
         assert duration is not None, (
-            "Duration must be provided if download_bytes_list is provided."
+            "Duration must be provided if total_bytes_transferred is provided."
         )
-        if isinstance(duration, list):
-            assert len(download_bytes_list) == len(duration), (
-                "Download bytes and duration lists must have the same length."
-            )
-            throughputs_list = [
-                x / d / (1024 * 1024) for x, d in zip(download_bytes_list, duration)
-            ]
-        else:
-            throughputs_list = [
-                x / duration / (1024 * 1024) for x in download_bytes_list
-            ]
+        throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
         min_throughput = min(throughputs_list)
         max_throughput = max(throughputs_list)
         mean_throughput = statistics.mean(throughputs_list)

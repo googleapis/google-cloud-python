@@ -1290,13 +1290,19 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     # Use caching to avoid repeated computation
-    @functools.cache
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
+    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.lru_cache(maxsize=None)
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
     @property
     # Use caching to avoid repeated computation
-    @functools.cache
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
+    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.lru_cache(maxsize=None)
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field

@@ -18,9 +18,6 @@ from google.cloud.memorystore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.memorystore_v1.services.memorystore.async_client import (
-    MemorystoreAsyncClient,
-)
 from google.cloud.memorystore_v1.services.memorystore.client import MemorystoreClient
 from google.cloud.memorystore_v1.types.memorystore import (
     AutomatedBackupConfig,
@@ -67,7 +64,6 @@ from google.cloud.memorystore_v1.types.memorystore import (
 
 __all__ = (
     "MemorystoreClient",
-    "MemorystoreAsyncClient",
     "AutomatedBackupConfig",
     "Backup",
     "BackupCollection",

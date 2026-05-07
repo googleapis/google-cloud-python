@@ -1,10 +1,9 @@
-Python Client for Container Analysis
-====================================
+Python Client for Grafeas
+=========================
 
 |stable| |pypi| |versions|
 
-`Container Analysis`_: An implementation of the Grafeas API, which stores, and enables querying and
-retrieval of critical metadata about all of your software artifacts.
+`Grafeas`_: An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,7 +14,7 @@ retrieval of critical metadata about all of your software artifacts.
    :target: https://pypi.org/project/grafeas/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/grafeas.svg
    :target: https://pypi.org/project/grafeas/
-.. _Container Analysis: https://grafeas.io
+.. _Grafeas: https://grafeas.io
 .. _Client Library Documentation: https://googleapis.dev/python/grafeas/latest
 .. _Product Documentation:  https://grafeas.io
 
@@ -26,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Container Analysis.`_
+3. `Enable the Grafeas.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Container Analysis.:  https://grafeas.io
+.. _Enable the Grafeas.:  https://grafeas.io
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -98,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Container Analysis
+-  Read the `Client Library Documentation`_ for Grafeas
    to see other available methods on the client.
--  Read the `Container Analysis Product documentation`_ to learn
+-  Read the `Grafeas Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Container Analysis Product documentation:  https://grafeas.io
+.. _Grafeas Product documentation:  https://grafeas.io
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -361,40 +361,6 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         new_manager._data = self._rab_manager._data
         target._rab_manager = new_manager
 
-    def _with_regional_access_boundary(self, seed):
-        """Returns a copy of these credentials with the the regional_access_boundary
-        set to the provided seed. This is intended for internal use only as invalid
-        seeds would produce unexpected results until automatic recovery is supported.
-        Currently this is used by the gcloud CLI and therefore changes to the
-        contract MUST be backwards compatible (e.g. the method signature must be
-        unchanged and a copy of the credenials with the RAB set must be returned).
-
-
-        Returns:
-            google.auth.credentials.Credentials: A new credentials instance.
-        """
-        creds = self._make_copy()
-        creds._rab_manager.set_initial_regional_access_boundary(
-            encoded_locations=seed.get("encodedLocations", None),
-            expiry=seed.get("expiry", None),
-        )
-        return creds
-
-    def _with_blocking_regional_access_boundary_lookup(self):
-        """Returns a copy of these credentials with the blocking lookup mode enabled.
-        This is intended for internal use only as blocking lookup requires additional
-        care and consideration. Currently this is used by the gcloud CLI and
-        therefore changes to the contract MUST be backwards compatible (e.g. the
-        method signature must be unchanged and a copy of the credentials with the
-        blocking lookup flag set to true must be returned).
-
-        Returns:
-            google.auth.credentials.Credentials: A new credentials instance.
-        """
-        creds = self._make_copy()
-        creds._rab_manager.enable_blocking_lookup()
-        return creds
-
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """
         Starts a background thread to refresh the Regional Access Boundary if needed.
@@ -455,15 +421,10 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         """Refreshes the access token and triggers the Regional Access Boundary
         lookup if necessary.
         """
-        if self._use_non_blocking_refresh:
-            self._non_blocking_refresh(request)
-        else:
-            self._blocking_refresh(request)
-
+        super(CredentialsWithRegionalAccessBoundary, self).before_request(
+            request, method, url, headers
+        )
         self._maybe_start_regional_access_boundary_refresh(request, url)
-
-        metrics.add_metric_header(headers, self._metric_header_for_usage())
-        self.apply(headers)
 
     def refresh(self, request):
         """Refreshes the access token.
@@ -474,16 +435,13 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         self._perform_refresh_token(request)
 
     def _lookup_regional_access_boundary(
-        self,
-        request: "google.auth.transport.Request",  # noqa: F821
-        fail_fast: bool = False,
+        self, request: "google.auth.transport.Request"  # noqa: F821
     ) -> "Optional[Dict[str, str]]":
         """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
 
         Args:
             request (google.auth.transport.Request): The object used to make
                 HTTP requests.
-            fail_fast (bool): Whether the lookup should fail fast (short timeout, no retries).
 
         Returns:
             Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
@@ -498,9 +456,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         headers: Dict[str, str] = {}
         self._apply(headers)
         self._rab_manager.apply_headers(headers)
-        return _client._lookup_regional_access_boundary(
-            request, url, headers=headers, fail_fast=fail_fast
-        )
+        return _client._lookup_regional_access_boundary(request, url, headers=headers)
 
     @abc.abstractmethod
     def _build_regional_access_boundary_lookup_url(

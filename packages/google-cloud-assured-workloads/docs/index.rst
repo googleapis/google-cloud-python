@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Assured Workloads.
+This package includes clients for multiple versions of Assured Workloads for Government.
 By default, you will get version ``assuredworkloads_v1``.
 
 

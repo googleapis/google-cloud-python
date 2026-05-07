@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Service Config API
+# Google APIs Common Protos API
 
-Overview of the APIs available for Service Config API.
+Overview of the APIs available for Google APIs Common Protos API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Service Config API.
+Google APIs Common Protos API.
 
 [classes](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_class.html)
 

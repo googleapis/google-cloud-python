@@ -90,8 +90,6 @@ class DeploymentAsyncClient:
     parse_cloud_control_deployment_path = staticmethod(
         DeploymentClient.parse_cloud_control_deployment_path
     )
-    framework_path = staticmethod(DeploymentClient.framework_path)
-    parse_framework_path = staticmethod(DeploymentClient.parse_framework_path)
     framework_deployment_path = staticmethod(DeploymentClient.framework_deployment_path)
     parse_framework_deployment_path = staticmethod(
         DeploymentClient.parse_framework_deployment_path
@@ -371,9 +369,8 @@ class DeploymentAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource of the framework
                 deployment in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. Only the
-                global location is supported.
+                ``organizations/{organization}/locations/{location}``.
+                Only the global location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -522,9 +519,7 @@ class DeploymentAsyncClient:
             name (:class:`str`):
                 Required. The name of the framework deployment that you
                 want to delete, in the format
-                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-                or
-                ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -654,9 +649,7 @@ class DeploymentAsyncClient:
             name (:class:`str`):
                 Required. The name of the framework deployment, in the
                 format
-                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-                or
-                ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -774,9 +767,8 @@ class DeploymentAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource of the framework
                 deployment, in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. The only
-                supported location is ``global``.
+                ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -902,9 +894,7 @@ class DeploymentAsyncClient:
             name (:class:`str`):
                 Required. The name for the cloud control deployment, in
                 the format
-                ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``
-                or
-                ``projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``.
+                ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -1022,9 +1012,8 @@ class DeploymentAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource for the cloud control
                 deployment, in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. The only
-                supported location is ``global``.
+                ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

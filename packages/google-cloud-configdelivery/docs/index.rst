@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Config Delivery.
+This package includes clients for multiple versions of Config Delivery API.
 By default, you will get version ``configdelivery_v1alpha``.
 
 

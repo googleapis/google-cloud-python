@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Error Reporting API
+# Error Reporting API API
 
-Overview of the APIs available for Error Reporting API.
+Overview of the APIs available for Error Reporting API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Error Reporting API.
+Error Reporting API API.
 
 [classes](https://cloud.google.com/python/docs/reference/clouderrorreporting/latest/summary_class.html)
 

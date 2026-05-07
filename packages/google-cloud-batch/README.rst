@@ -1,9 +1,9 @@
-Python Client for Batch
-=======================
+Python Client for Cloud Batch
+=============================
 
 |preview| |pypi| |versions|
 
-`Batch`_: An API to manage the running of Batch resources on Google Cloud Platform.
+`Cloud Batch`_: An API to manage the running of Batch resources on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Batch
    :target: https://pypi.org/project/google-cloud-batch/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-batch.svg
    :target: https://pypi.org/project/google-cloud-batch/
-.. _Batch: https://cloud.google.com/batch/docs
+.. _Cloud Batch: https://cloud.google.com/batch/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/batch/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/batch/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Batch.`_
+3. `Enable the Cloud Batch.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Batch.:  https://cloud.google.com/batch/docs
+.. _Enable the Cloud Batch.:  https://cloud.google.com/batch/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Batch
+-  Read the `Client Library Documentation`_ for Cloud Batch
    to see other available methods on the client.
--  Read the `Batch Product documentation`_ to learn
+-  Read the `Cloud Batch Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Batch Product documentation:  https://cloud.google.com/batch/docs
+.. _Cloud Batch Product documentation:  https://cloud.google.com/batch/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

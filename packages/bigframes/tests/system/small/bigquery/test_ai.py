@@ -323,13 +323,9 @@ def test_ai_if(session):
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
 
-    result = bbq.ai.if_(
-        prompt,
-        optimization_mode="maximize_quality",
-        max_error_ratio=0.5,
-    )
+    result = bbq.ai.if_(prompt)
 
-    assert len(result) == len(s1)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
@@ -342,7 +338,7 @@ def test_ai_if_multi_model(session, bq_connection):
 
     result = bbq.ai.if_((df["image"], " contains an animal"))
 
-    assert len(result) == len(df)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
@@ -351,7 +347,7 @@ def test_ai_classify(session):
 
     result = bbq.ai.classify(s, ["animal", "plant"])
 
-    assert len(result) == len(s)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
@@ -364,7 +360,7 @@ def test_ai_classify_multi_model(session, bq_connection):
 
     result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
 
-    assert len(result) == len(df)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
@@ -374,7 +370,7 @@ def test_ai_score(session):
 
     result = bbq.ai.score(prompt)
 
-    assert len(result) == len(s)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
@@ -386,7 +382,7 @@ def test_ai_score_multi_model(session):
 
     result = bbq.ai.score(prompt)
 
-    assert len(result) == len(df)
+    assert _contains_no_nulls(result)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 

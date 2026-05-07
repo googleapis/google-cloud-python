@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Cloud Support.
+This package includes clients for multiple versions of Google Cloud Support API.
 By default, you will get version ``support_v2``.
 
 

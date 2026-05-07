@@ -3,8 +3,7 @@ Python Client for Cloud Life Sciences
 
 |preview| |pypi| |versions|
 
-`Cloud Life Sciences`_: Cloud Life Sciences is a suite of services and tools for managing,
-processing, and transforming life sciences data.
+`Cloud Life Sciences`_: is a suite of services and tools for managing, processing, and transforming life sciences data.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

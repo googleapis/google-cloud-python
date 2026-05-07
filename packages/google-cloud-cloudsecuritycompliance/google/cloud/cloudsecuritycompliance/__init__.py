@@ -77,7 +77,6 @@ from google.cloud.cloudsecuritycompliance_v1.types.common import (
     CloudControlCategory,
     CloudControlDetails,
     CloudProvider,
-    Control,
     ControlFamily,
     EnforcementMode,
     Framework,
@@ -147,7 +146,6 @@ from google.cloud.cloudsecuritycompliance_v1.types.monitoring import (
     FindingSummary,
     FrameworkComplianceReport,
     FrameworkComplianceSummary,
-    FrameworkComplianceSummaryView,
     ListControlComplianceSummariesRequest,
     ListControlComplianceSummariesResponse,
     ListFindingSummariesRequest,
@@ -157,7 +155,6 @@ from google.cloud.cloudsecuritycompliance_v1.types.monitoring import (
     ManualCloudControlAssessmentDetails,
     SimilarControls,
     TargetResourceDetails,
-    Trend,
 )
 
 __all__ = (
@@ -197,7 +194,6 @@ __all__ = (
     "CELExpression",
     "CloudControl",
     "CloudControlDetails",
-    "Control",
     "ControlFamily",
     "Framework",
     "FrameworkReference",
@@ -270,8 +266,6 @@ __all__ = (
     "ManualCloudControlAssessmentDetails",
     "SimilarControls",
     "TargetResourceDetails",
-    "Trend",
     "EvaluationState",
     "FindingClass",
-    "FrameworkComplianceSummaryView",
 )

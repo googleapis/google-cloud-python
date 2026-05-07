@@ -202,30 +202,12 @@ class StorageBatchOperationsTransport(abc.ABC):
             ),
             self.list_bucket_operations: gapic_v1.method.wrap_method(
                 self.list_bucket_operations,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_bucket_operation: gapic_v1.method.wrap_method(
                 self.get_bucket_operation,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(

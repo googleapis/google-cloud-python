@@ -1,18 +1,9 @@
-Python Client for Policy Simulator
-==================================
+Python Client for Policy Simulator API
+======================================
 
 |preview| |pypi| |versions|
 
-`Policy Simulator`_: Policy Simulator is a collection of endpoints for creating, running, and
-viewing a [Replay][google.cloud.policysimulator.v1.Replay]. A `Replay` is
-a type of simulation that lets you see how your members' access to
-resources might change if you changed your IAM policy.
-
-During a `Replay`, Policy Simulator re-evaluates, or replays, past access
-attempts under both the current policy and your proposed policy, and
-compares those results to determine how your members' access might change
-under the
-proposed policy.
+`Policy Simulator API`_: Policy Simulator is a collection of endpoints for creating, running, and viewing a `Replay`. A `Replay` is a type of simulation that lets you see how your members' access to resources might change if you changed your IAM policy.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -23,7 +14,7 @@ proposed policy.
    :target: https://pypi.org/project/google-cloud-policysimulator/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policysimulator.svg
    :target: https://pypi.org/project/google-cloud-policysimulator/
-.. _Policy Simulator: https://cloud.google.com/policy-intelligence/
+.. _Policy Simulator API: https://cloud.google.com/policy-intelligence/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policysimulator/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/policy-intelligence/
 
@@ -34,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Policy Simulator.`_
+3. `Enable the Policy Simulator API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Policy Simulator.:  https://cloud.google.com/policy-intelligence/
+.. _Enable the Policy Simulator API.:  https://cloud.google.com/policy-intelligence/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -106,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Policy Simulator
+-  Read the `Client Library Documentation`_ for Policy Simulator API
    to see other available methods on the client.
--  Read the `Policy Simulator Product documentation`_ to learn
+-  Read the `Policy Simulator API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Policy Simulator Product documentation:  https://cloud.google.com/policy-intelligence/
+.. _Policy Simulator API Product documentation:  https://cloud.google.com/policy-intelligence/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

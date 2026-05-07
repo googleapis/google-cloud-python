@@ -1,14 +1,9 @@
-Python Client for Identity and Access Management (IAM)
+Python Client for Cloud Identity and Access Management
 ======================================================
 
 |stable| |pypi| |versions|
 
-`Identity and Access Management (IAM)`_: Manages identity and access control for Google Cloud resources, including
-the creation of service accounts, which you can use to authenticate to
-Google and make API calls. Enabling this API also enables the IAM Service
-Account Credentials API (iamcredentials.googleapis.com). However,
-disabling this API doesn't disable the IAM Service Account Credentials
-API.
+`Cloud Identity and Access Management`_: Manages identity and access control for Google Cloud Platform resources, including the creation of service accounts, which you can use to authenticate to Google and make API calls.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -19,7 +14,7 @@ API.
    :target: https://pypi.org/project/google-cloud-iam/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam.svg
    :target: https://pypi.org/project/google-cloud-iam/
-.. _Identity and Access Management (IAM): https://cloud.google.com/iam/
+.. _Cloud Identity and Access Management: https://cloud.google.com/iam/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/iam/
 
@@ -30,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Identity and Access Management (IAM).`_
+3. `Enable the Cloud Identity and Access Management.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Identity and Access Management (IAM).:  https://cloud.google.com/iam/
+.. _Enable the Cloud Identity and Access Management.:  https://cloud.google.com/iam/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -102,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Identity and Access Management (IAM)
+-  Read the `Client Library Documentation`_ for Cloud Identity and Access Management
    to see other available methods on the client.
--  Read the `Identity and Access Management (IAM) Product documentation`_ to learn
+-  Read the `Cloud Identity and Access Management Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Identity and Access Management (IAM) Product documentation:  https://cloud.google.com/iam/
+.. _Cloud Identity and Access Management Product documentation:  https://cloud.google.com/iam/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

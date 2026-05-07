@@ -1,9 +1,10 @@
 {
-    "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest",
+    "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html",
     "distribution_name": "sqlalchemy-bigquery",
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "sqlalchemy-bigquery",
+    "name_pretty": "SQLAlchemy dialect for BigQuery",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

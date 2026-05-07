@@ -280,28 +280,6 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def framework_path(
-        organization: str,
-        location: str,
-        framework: str,
-    ) -> str:
-        """Returns a fully-qualified framework string."""
-        return "organizations/{organization}/locations/{location}/frameworks/{framework}".format(
-            organization=organization,
-            location=location,
-            framework=framework,
-        )
-
-    @staticmethod
-    def parse_framework_path(path: str) -> Dict[str, str]:
-        """Parses a framework path into its component segments."""
-        m = re.match(
-            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/frameworks/(?P<framework>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def framework_deployment_path(
         organization: str,
         location: str,
@@ -862,9 +840,8 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             parent (str):
                 Required. The parent resource of the framework
                 deployment in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. Only the
-                global location is supported.
+                ``organizations/{organization}/locations/{location}``.
+                Only the global location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1012,9 +989,7 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             name (str):
                 Required. The name of the framework deployment that you
                 want to delete, in the format
-                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-                or
-                ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -1143,9 +1118,7 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             name (str):
                 Required. The name of the framework deployment, in the
                 format
-                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}``
-                or
-                ``projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}``.
+                ``organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -1260,9 +1233,8 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             parent (str):
                 Required. The parent resource of the framework
                 deployment, in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. The only
-                supported location is ``global``.
+                ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1387,9 +1359,7 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             name (str):
                 Required. The name for the cloud control deployment, in
                 the format
-                ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``
-                or
-                ``projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}``.
+                ``organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}``.
                 The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
@@ -1506,9 +1476,8 @@ class DeploymentClient(metaclass=DeploymentClientMeta):
             parent (str):
                 Required. The parent resource for the cloud control
                 deployment, in the format
-                ``organizations/{organization}/locations/{location}`` or
-                ``projects/{project}/locations/{location}``. The only
-                supported location is ``global``.
+                ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

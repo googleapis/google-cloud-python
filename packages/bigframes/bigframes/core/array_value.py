@@ -212,17 +212,11 @@ class ArrayValue:
             return arr.drop_columns(filter_ids)
 
     def order_by(
-        self,
-        by: Sequence[OrderingExpression],
-        is_total_order: bool = False,
-        stable: bool = True,
+        self, by: Sequence[OrderingExpression], is_total_order: bool = False
     ) -> ArrayValue:
         return ArrayValue(
             nodes.OrderByNode(
-                child=self.node,
-                by=tuple(by),
-                is_total_order=is_total_order,
-                stable=stable,
+                child=self.node, by=tuple(by), is_total_order=is_total_order
             )
         )
 

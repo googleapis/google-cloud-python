@@ -28,6 +28,7 @@ MOCKSERVER_TEST_PYTHON_VERSION = "3.12"
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS = [
+    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -122,7 +123,8 @@ def default(session, django_version="5.2"):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    # TODO: Remove this check once support for Python 3.14 is added to Protobuf
+    if session.python == "3.9":
+        session.skip("Python 3.9 is not supported for Django 5.2 tests")
     if session.python == "3.14":
         session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
     print("Unit tests with django 5.2")

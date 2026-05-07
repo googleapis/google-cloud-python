@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Logging API
+# Cloud Logging API API
 
-Overview of the APIs available for Cloud Logging API.
+Overview of the APIs available for Cloud Logging API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Logging API.
+Cloud Logging API API.
 
 [classes](https://cloud.google.com/python/docs/reference/logging/latest/summary_class.html)
 

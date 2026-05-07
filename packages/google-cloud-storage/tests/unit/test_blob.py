@@ -6247,8 +6247,72 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket)
 
         blob.contexts.delete_custom_context("foo")
-        self.assertEqual(blob.contexts["custom"]["foo"], {"delete": True})
+        self.assertIsNone(blob.contexts["custom"]["foo"])
         self.assertIn("contexts", blob._changes)
+
+    def test_contexts_clear_custom_contexts(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob.contexts["custom"] = {"foo": {"value": "bar"}}
+
+        blob.contexts.clear_custom_contexts()
+        self.assertIsNone(blob.contexts["custom"])
+        self.assertIn("contexts", blob._changes)
+
+    def test_contexts_custom_property(self):
+        from google.cloud.storage.blob import ObjectCustomContextPayload
+
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        properties = {
+            "contexts": {
+                "custom": {
+                    "foo": {
+                        "value": "bar",
+                        "createTime": "2026-01-01T00:00:00.000000Z",
+                        "updateTime": "2026-01-01T00:00:01.000000Z",
+                    }
+                }
+            }
+        }
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+
+        custom = blob.contexts.custom
+        self.assertIsInstance(custom["foo"], ObjectCustomContextPayload)
+        self.assertEqual(custom["foo"].value, "bar")
+        self.assertEqual(
+            custom["foo"].create_time,
+            datetime.datetime(2026, 1, 1, 0, 0, 0, tzinfo=_UTC),
+        )
+        self.assertEqual(
+            custom["foo"].update_time,
+            datetime.datetime(2026, 1, 1, 0, 0, 1, tzinfo=_UTC),
+        )
+
+    def test_contexts_custom_property_w_none(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob.contexts["custom"] = None
+
+        self.assertEqual(blob.contexts.custom, {})
+
+    def test_contexts_from_api_repr_w_none(self):
+        from google.cloud.storage.blob import ObjectContexts
+
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        contexts = ObjectContexts.from_api_repr(None, blob)
+        self.assertEqual(contexts, {"custom": {}})
+
+    def test_payload_from_api_repr_w_none(self):
+        from google.cloud.storage.blob import ObjectCustomContextPayload
+
+        payload = ObjectCustomContextPayload.from_api_repr(None)
+        self.assertEqual(payload, {})
 
 
 class Test__quote(unittest.TestCase):

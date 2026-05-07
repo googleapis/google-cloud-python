@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Generative Language.
+This package includes clients for multiple versions of Generative Language API.
 By default, you will get version ``generativelanguage_v1beta``.
 
 

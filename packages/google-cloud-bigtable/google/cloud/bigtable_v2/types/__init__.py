@@ -63,7 +63,6 @@ from .data import (
     StreamPartition,
     TimestampRange,
     Value,
-    ValueBitmask,
     ValueRange,
 )
 from .feature_flags import (
@@ -133,7 +132,6 @@ __all__ = (
     "StreamPartition",
     "TimestampRange",
     "Value",
-    "ValueBitmask",
     "ValueRange",
     "FeatureFlags",
     "PeerInfo",

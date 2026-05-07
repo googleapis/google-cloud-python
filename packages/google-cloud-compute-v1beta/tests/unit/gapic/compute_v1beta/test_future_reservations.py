@@ -4291,7 +4291,6 @@ def test_get_rest_call_success(request_type):
         return_value = compute.FutureReservation(
             auto_created_reservations_delete_time="auto_created_reservations_delete_time_value",
             auto_delete_auto_created_reservations=True,
-            confidential_compute_type="confidential_compute_type_value",
             creation_timestamp="creation_timestamp_value",
             deployment_type="deployment_type_value",
             description="description_value",
@@ -4330,7 +4329,6 @@ def test_get_rest_call_success(request_type):
         == "auto_created_reservations_delete_time_value"
     )
     assert response.auto_delete_auto_created_reservations is True
-    assert response.confidential_compute_type == "confidential_compute_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.deployment_type == "deployment_type_value"
     assert response.description == "description_value"
@@ -4480,7 +4478,6 @@ def test_insert_rest_call_success(request_type):
             "commitment_plan": "commitment_plan_value",
             "previous_commitment_terms": "previous_commitment_terms_value",
         },
-        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
@@ -4489,7 +4486,6 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "name_prefix": "name_prefix_value",
-        "params": {"resource_manager_tags": {}},
         "planning_status": "planning_status_value",
         "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",
@@ -4979,7 +4975,6 @@ def test_update_rest_call_success(request_type):
             "commitment_plan": "commitment_plan_value",
             "previous_commitment_terms": "previous_commitment_terms_value",
         },
-        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
@@ -4988,7 +4983,6 @@ def test_update_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "name_prefix": "name_prefix_value",
-        "params": {"resource_manager_tags": {}},
         "planning_status": "planning_status_value",
         "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",

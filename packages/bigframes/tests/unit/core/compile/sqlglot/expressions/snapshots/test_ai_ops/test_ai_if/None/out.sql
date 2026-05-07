@@ -1,7 +1,3 @@
 SELECT
-  AI.IF(
-    prompt => (`string_col`, ' is the same as ', `string_col`),
-    optimization_mode => 'MINIMIZE_COST',
-    max_error_ratio => 0.5
-  ) AS `result`
+  AI.IF(prompt => (`string_col`, ' is the same as ', `string_col`)) AS `result`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
