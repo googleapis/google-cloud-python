@@ -556,8 +556,17 @@ def test_download_many_to_path_raises_invalid_path_error():
                 skip_if_exists=True,
             )
 
-    assert len(w) == 1
-    assert "will **NOT** be downloaded" in str(w[0].message)
+    invalid_path_warnings = [
+        warning
+        for warning in w
+        if str(warning.message).startswith("The blob ")
+        and "will **NOT** be downloaded" in str(warning.message)
+    ]
+
+    assert len(invalid_path_warnings) == 1, (
+        f"Expected 1 invalid path warning, found {len(invalid_path_warnings)}. All warnings: {[str(warning.message) for warning in w]}"
+    )
+
     assert len(results) == 1
     assert isinstance(results[0], UserWarning)
 

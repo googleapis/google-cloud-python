@@ -67,6 +67,7 @@ def get_bigframes_functions(project, region):
     functions = GCF_CLIENT.list_functions(
         functions_v2.ListFunctionsRequest(parent=parent)
     )
+
     # Filter bigframes created functions
     functions = [
         function

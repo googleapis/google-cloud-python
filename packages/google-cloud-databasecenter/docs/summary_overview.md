@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Database Center API API
+# Database Center API
 
-Overview of the APIs available for Database Center API API.
+Overview of the APIs available for Database Center API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Database Center API API.
+Database Center API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-databasecenter/latest/summary_class.html)
 

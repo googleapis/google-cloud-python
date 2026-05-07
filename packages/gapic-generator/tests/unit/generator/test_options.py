@@ -254,3 +254,29 @@ google.apps.script.type"
         "google.apps.script.type.slides",
         "google.apps.script.type",
     )
+
+
+def test_options_resource_name_aliases():
+    with mock.patch.object(warnings, "warn") as warn:
+        opts = Options.build(
+            "resource-name-alias=ces.googleapis.com/Tool:CesTool,"
+            "resource-name-alias=workspace.googleapis.com/Tool:WorkspaceTool,"
+            "resource-name-alias=bad_string_without_colon,"
+            "resource-name-alias=:MissingPath,"
+            "resource-name-alias=MissingAlias:,"
+            "resource-name-alias=" # Covers empty string ("")
+        )
+
+        # Verify the dictionary is perfectly formed
+        expected = {
+            "ces.googleapis.com/Tool": "CesTool",
+            "workspace.googleapis.com/Tool": "WorkspaceTool",
+        }
+        assert opts.resource_name_aliases == expected
+        
+        # We expect exactly 3 warnings: 
+        # 1. bad_string
+        # 2. :MissingPath 
+        # 3. MissingAlias: 
+        # (The empty ' ' string safely 'continues' without warning, as intended)
+        assert warn.call_count == 3

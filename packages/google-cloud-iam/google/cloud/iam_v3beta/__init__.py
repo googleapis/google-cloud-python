@@ -29,10 +29,26 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
+from .services.access_policies import AccessPoliciesAsyncClient, AccessPoliciesClient
 from .services.policy_bindings import PolicyBindingsAsyncClient, PolicyBindingsClient
 from .services.principal_access_boundary_policies import (
     PrincipalAccessBoundaryPoliciesAsyncClient,
     PrincipalAccessBoundaryPoliciesClient,
+)
+from .types.access_policies_service import (
+    CreateAccessPolicyRequest,
+    DeleteAccessPolicyRequest,
+    GetAccessPolicyRequest,
+    ListAccessPoliciesRequest,
+    ListAccessPoliciesResponse,
+    SearchAccessPolicyBindingsRequest,
+    SearchAccessPolicyBindingsResponse,
+    UpdateAccessPolicyRequest,
+)
+from .types.access_policy_resources import (
+    AccessPolicy,
+    AccessPolicyDetails,
+    AccessPolicyRule,
 )
 from .types.operation_metadata import OperationMetadata
 from .types.policy_binding_resources import PolicyBinding
@@ -157,14 +173,24 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "AccessPoliciesAsyncClient",
     "PolicyBindingsAsyncClient",
     "PrincipalAccessBoundaryPoliciesAsyncClient",
+    "AccessPoliciesClient",
+    "AccessPolicy",
+    "AccessPolicyDetails",
+    "AccessPolicyRule",
+    "CreateAccessPolicyRequest",
     "CreatePolicyBindingRequest",
     "CreatePrincipalAccessBoundaryPolicyRequest",
+    "DeleteAccessPolicyRequest",
     "DeletePolicyBindingRequest",
     "DeletePrincipalAccessBoundaryPolicyRequest",
+    "GetAccessPolicyRequest",
     "GetPolicyBindingRequest",
     "GetPrincipalAccessBoundaryPolicyRequest",
+    "ListAccessPoliciesRequest",
+    "ListAccessPoliciesResponse",
     "ListPolicyBindingsRequest",
     "ListPolicyBindingsResponse",
     "ListPrincipalAccessBoundaryPoliciesRequest",
@@ -176,10 +202,13 @@ __all__ = (
     "PrincipalAccessBoundaryPolicy",
     "PrincipalAccessBoundaryPolicyDetails",
     "PrincipalAccessBoundaryPolicyRule",
+    "SearchAccessPolicyBindingsRequest",
+    "SearchAccessPolicyBindingsResponse",
     "SearchPrincipalAccessBoundaryPolicyBindingsRequest",
     "SearchPrincipalAccessBoundaryPolicyBindingsResponse",
     "SearchTargetPolicyBindingsRequest",
     "SearchTargetPolicyBindingsResponse",
+    "UpdateAccessPolicyRequest",
     "UpdatePolicyBindingRequest",
     "UpdatePrincipalAccessBoundaryPolicyRequest",
 )

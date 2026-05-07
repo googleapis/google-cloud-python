@@ -476,7 +476,7 @@ replacements:
     before: |
       .. include:: README.rst\n
       .. include:: multiprocessing.rst\n
-      This package includes clients for multiple versions of Google BigQuery Storage.
+      This package includes clients for multiple versions of BigQuery Storage.
       By default, you will get version ``bigquery_storage_v1``.\n\n
       API Reference
       -------------

@@ -1,5 +1,5 @@
 {
-    "api_description": "is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.",
+    "api_description": "Cloud Optimization API provides a portfolio of solvers to address common\noptimization use cases starting with optimal route planning for vehicle\nfleets.",
     "api_id": "cloudoptimization.googleapis.com",
     "api_shortname": "cloudoptimization",
     "client_documentation": "https://cloud.google.com/python/docs/reference/optimization/latest",

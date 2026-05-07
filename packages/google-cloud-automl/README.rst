@@ -3,7 +3,8 @@ Python Client for Cloud AutoML
 
 |stable| |pypi| |versions|
 
-`Cloud AutoML`_: **AutoML API Python Client is now available in Vertex AI. Please visit** `Vertex SDK for Python <https://github.com/googleapis/python-aiplatform>`_ **for the new Python Vertex AI client.** Vertex AI is our next generation AI Platform, with many new features that are unavailable in the current platform. `Migrate your resources to Vertex AI <https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai>`_ to get the latest machine learning features, simplify end-to-end journeys, and productionize models with MLOps. The `Cloud AutoML API <https://cloud.google.com/automl>`_ is a suite of machine learning products that enables developers with limited machine learning expertise to train high-quality models specific to their business needs, by leveraging Google's state-of-the-art transfer learning, and Neural Architecture Search technology.
+`Cloud AutoML`_: Train high-quality custom machine learning models with minimum effort and
+machine learning expertise.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Cloud AutoML
    :target: https://pypi.org/project/google-cloud-automl/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-automl.svg
    :target: https://pypi.org/project/google-cloud-automl/
-.. _Cloud AutoML: https://cloud.google.com/automl/docs/
+.. _Cloud AutoML: https://cloud.google.com/automl/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/automl/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/automl/docs/
+.. _Product Documentation:  https://cloud.google.com/automl/
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud AutoML.:  https://cloud.google.com/automl/docs/
+.. _Enable the Cloud AutoML.:  https://cloud.google.com/automl/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud AutoML Product documentation:  https://cloud.google.com/automl/docs/
+.. _Cloud AutoML Product documentation:  https://cloud.google.com/automl/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

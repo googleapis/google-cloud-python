@@ -1131,3 +1131,315 @@ class ListResourceDriftsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDeploymentGroupsPager:
+    """A pager for iterating through ``list_deployment_groups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListDeploymentGroupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``deployment_groups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDeploymentGroups`` requests and continue to iterate
+    through the ``deployment_groups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListDeploymentGroupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., config.ListDeploymentGroupsResponse],
+        request: config.ListDeploymentGroupsRequest,
+        response: config.ListDeploymentGroupsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListDeploymentGroupsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListDeploymentGroupsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListDeploymentGroupsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[config.ListDeploymentGroupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[config.DeploymentGroup]:
+        for page in self.pages:
+            yield from page.deployment_groups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDeploymentGroupsAsyncPager:
+    """A pager for iterating through ``list_deployment_groups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListDeploymentGroupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``deployment_groups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDeploymentGroups`` requests and continue to iterate
+    through the ``deployment_groups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListDeploymentGroupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[config.ListDeploymentGroupsResponse]],
+        request: config.ListDeploymentGroupsRequest,
+        response: config.ListDeploymentGroupsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListDeploymentGroupsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListDeploymentGroupsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListDeploymentGroupsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[config.ListDeploymentGroupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[config.DeploymentGroup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.deployment_groups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDeploymentGroupRevisionsPager:
+    """A pager for iterating through ``list_deployment_group_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``deployment_group_revisions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDeploymentGroupRevisions`` requests and continue to iterate
+    through the ``deployment_group_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., config.ListDeploymentGroupRevisionsResponse],
+        request: config.ListDeploymentGroupRevisionsRequest,
+        response: config.ListDeploymentGroupRevisionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListDeploymentGroupRevisionsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListDeploymentGroupRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[config.ListDeploymentGroupRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[config.DeploymentGroupRevision]:
+        for page in self.pages:
+            yield from page.deployment_group_revisions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDeploymentGroupRevisionsAsyncPager:
+    """A pager for iterating through ``list_deployment_group_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``deployment_group_revisions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDeploymentGroupRevisions`` requests and continue to iterate
+    through the ``deployment_group_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[config.ListDeploymentGroupRevisionsResponse]],
+        request: config.ListDeploymentGroupRevisionsRequest,
+        response: config.ListDeploymentGroupRevisionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListDeploymentGroupRevisionsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListDeploymentGroupRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListDeploymentGroupRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[config.ListDeploymentGroupRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[config.DeploymentGroupRevision]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.deployment_group_revisions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

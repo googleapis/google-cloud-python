@@ -117,6 +117,86 @@ class ListInstancesPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListInstancesAsyncPager:
+    """A pager for iterating through ``list_instances`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.memorystore_v1.types.ListInstancesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``instances`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListInstances`` requests and continue to iterate
+    through the ``instances`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.memorystore_v1.types.ListInstancesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[memorystore.ListInstancesResponse]],
+        request: memorystore.ListInstancesRequest,
+        response: memorystore.ListInstancesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.memorystore_v1.types.ListInstancesRequest):
+                The initial request object.
+            response (google.cloud.memorystore_v1.types.ListInstancesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = memorystore.ListInstancesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[memorystore.ListInstancesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[memorystore.Instance]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.instances:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListBackupCollectionsPager:
     """A pager for iterating through ``list_backup_collections`` requests.
 
@@ -193,6 +273,86 @@ class ListBackupCollectionsPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListBackupCollectionsAsyncPager:
+    """A pager for iterating through ``list_backup_collections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.memorystore_v1.types.ListBackupCollectionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_collections`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupCollections`` requests and continue to iterate
+    through the ``backup_collections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.memorystore_v1.types.ListBackupCollectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[memorystore.ListBackupCollectionsResponse]],
+        request: memorystore.ListBackupCollectionsRequest,
+        response: memorystore.ListBackupCollectionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.memorystore_v1.types.ListBackupCollectionsRequest):
+                The initial request object.
+            response (google.cloud.memorystore_v1.types.ListBackupCollectionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = memorystore.ListBackupCollectionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[memorystore.ListBackupCollectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[memorystore.BackupCollection]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_collections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListBackupsPager:
     """A pager for iterating through ``list_backups`` requests.
 
@@ -264,6 +424,86 @@ class ListBackupsPager:
     def __iter__(self) -> Iterator[memorystore.Backup]:
         for page in self.pages:
             yield from page.backups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsAsyncPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.memorystore_v1.types.ListBackupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.memorystore_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[memorystore.ListBackupsResponse]],
+        request: memorystore.ListBackupsRequest,
+        response: memorystore.ListBackupsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.memorystore_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.memorystore_v1.types.ListBackupsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = memorystore.ListBackupsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[memorystore.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[memorystore.Backup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backups:
+                    yield response
+
+        return async_generator()
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

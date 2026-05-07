@@ -147,6 +147,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.execute = mock.MagicMock()
             new_field = IntegerField(null=True)
             new_field.set_attributes_from_name("age")
+            new_field.model = Author
             schema_editor.add_field(Author, new_field)
 
             schema_editor.execute.assert_called_once_with(
@@ -162,6 +163,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor._constraint_names = mock.MagicMock()
             remove_field = IntegerField(unique=True)
             remove_field.set_attributes_from_name("num")
+            remove_field.model = Author
             schema_editor.remove_field(Author, remove_field)
 
             schema_editor.execute.assert_called_once_with(
@@ -200,6 +202,7 @@ class TestUtils(SpannerSimpleTestClass):
 
             remove_field = IntegerField(unique=True)
             remove_field.set_attributes_from_name("num")
+            remove_field.model = Author
             schema_editor.remove_field(Author, remove_field)
 
             calls = [
@@ -239,6 +242,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.execute = mock.MagicMock()
             new_field = IntegerField()
             new_field.set_attributes_from_name("num")
+            new_field.model = Author
             sql, params = schema_editor.column_sql(Author, new_field)
             self.assertEqual(sql, "INT64 NOT NULL")
             self.assertEqual(params, [])
@@ -251,6 +255,7 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.execute = mock.MagicMock()
             new_field = IntegerField(null=True)
             new_field.set_attributes_from_name("num")
+            new_field.model = Author
             sql, params = schema_editor.column_sql(Author, new_field)
             self.assertEqual(sql, "INT64")
             self.assertEqual(params, [])
@@ -291,8 +296,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor.execute = mock.MagicMock()
             old_field = IntegerField()
             old_field.set_attributes_from_name("num")
+            old_field.model = Author
             new_field = IntegerField()
             new_field.set_attributes_from_name("author_num")
+            new_field.model = Author
             schema_editor.alter_field(Author, old_field, new_field)
 
             schema_editor.execute.assert_called_once_with(
@@ -322,8 +329,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor._constraint_names = constraint_names
             old_field = IntegerField(null=True, db_index=True)
             old_field.set_attributes_from_name("num")
+            old_field.model = Author
             new_field = IntegerField(db_index=True)
             new_field.set_attributes_from_name("author_num")
+            new_field.model = Author
             schema_editor.alter_field(Author, old_field, new_field)
 
             calls = [
@@ -381,8 +390,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor._constraint_names = constraint_names
             old_field = IntegerField(null=True)
             old_field.set_attributes_from_name("num")
+            old_field.model = Author
             new_field = IntegerField()
             new_field.set_attributes_from_name("author_num")
+            new_field.model = Author
             with self.assertRaises(NotSupportedError):
                 schema_editor.alter_field(Author, old_field, new_field)
 
@@ -399,8 +410,10 @@ class TestUtils(SpannerSimpleTestClass):
             schema_editor._constraint_names = constraint_names
             old_field = IntegerField(null=True, db_index=True)
             old_field.set_attributes_from_name("num")
+            old_field.model = Author
             new_field = IntegerField()
             new_field.set_attributes_from_name("author_num")
+            new_field.model = Author
             with self.assertRaises(NotSupportedError):
                 schema_editor.alter_field(Author, old_field, new_field)
 
@@ -408,8 +421,6 @@ class TestUtils(SpannerSimpleTestClass):
         """Spanner, default is not provided."""
         field = AutoField(name="field_name")
         assert gen_rand_int64 == field.default
-        # db_returning must be explicitly False because Spanner is handling ID generation client-side
-        assert getattr(field, "db_returning", True) is False
 
     def test_autofield_default(self):
         """Spanner, default provided."""
@@ -417,18 +428,12 @@ class TestUtils(SpannerSimpleTestClass):
         field = AutoField(name="field_name", default=mock_func)
         assert gen_rand_int64 != field.default
         assert mock_func == field.default
-        # A default was already provided, so Spanner does not generate random IDs client-side.
-        # Therefore, db_returning does not need to be overridden to False.
-        assert field.db_returning is True
 
     def test_autofield_not_spanner(self):
         """Not Spanner, default not provided."""
         connection.settings_dict["ENGINE"] = "another_db"
         field = AutoField(name="field_name")
         assert gen_rand_int64 != field.default
-        # db_returning should remain untouched (implicitly True) for non-Spanner databases
-        # so that Django retrieves the auto-increment ID correctly.
-        assert field.db_returning is True
         connection.settings_dict["ENGINE"] = "django_spanner"
 
     def test_autofield_not_spanner_w_default(self):
@@ -438,8 +443,6 @@ class TestUtils(SpannerSimpleTestClass):
         field = AutoField(name="field_name", default=mock_func)
         assert gen_rand_int64 != field.default
         assert mock_func == field.default
-        # Because it's not a Spanner database, the behavior shouldn't be altered in any way.
-        assert field.db_returning is True
         connection.settings_dict["ENGINE"] = "django_spanner"
 
     def test_autofield_spanner_as_non_default_db_random_generation_enabled(
@@ -451,9 +454,6 @@ class TestUtils(SpannerSimpleTestClass):
         connections.settings["secondary"]["RANDOM_ID_GENERATION_ENABLED"] = "true"
         field = AutoField(name="field_name")
         assert gen_rand_int64 == field.default
-        # Since this specific connection explicitly enables client-side random generation,
-        # we must tell Django not to attempt retrieving the DB's returned ID.
-        assert getattr(field, "db_returning", True) is False
         connections.settings["default"]["ENGINE"] = "django_spanner"
         connections.settings["secondary"]["ENGINE"] = "django_spanner"
         del connections.settings["secondary"]["RANDOM_ID_GENERATION_ENABLED"]
@@ -463,7 +463,4 @@ class TestUtils(SpannerSimpleTestClass):
         connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"] = "false"
         field = AutoField(name="field_name")
         assert gen_rand_int64 != field.default
-        # Because we're delegating ID generation back to the database backend,
-        # Django needs to be able to retrieve the assigned ID.
-        assert field.db_returning is True
         del connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"]

@@ -654,19 +654,24 @@ _default_location_lock = threading.Lock()
 def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
     # Address circular imports in doctest due to bigframes/session/__init__.py
     # containing a lot of logic and samples.
+    import bigframes._config.auth
     from bigframes.session import clients
 
+    credentials, project = bigframes._config.auth.resolve_credentials_and_project(
+        config.options.bigquery
+    )
+
     clients_provider = clients.ClientsProvider(
-        project=config.options.bigquery.project,
+        project=project,
         location=config.options.bigquery.location,
         use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
-        credentials=config.options.bigquery.credentials,
+        credentials=credentials,
         application_name=config.options.bigquery.application_name,
         bq_kms_key_name=config.options.bigquery.kms_key_name,
         client_endpoints_override=config.options.bigquery.client_endpoints_override,
         requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
     )
-    return clients_provider.bqclient, clients_provider._project
+    return clients_provider.bqclient, project
 
 
 def _dry_run(query, bqclient) -> bigquery.QueryJob:

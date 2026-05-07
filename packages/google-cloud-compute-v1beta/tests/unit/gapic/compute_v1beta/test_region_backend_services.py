@@ -5796,6 +5796,7 @@ def test_insert_rest_call_success(request_type):
                 "max_utilization": 0.1633,
                 "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
+                "service": "service_value",
                 "traffic_duration": "traffic_duration_value",
             }
         ],
@@ -6524,6 +6525,7 @@ def test_patch_rest_call_success(request_type):
                 "max_utilization": 0.1633,
                 "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
+                "service": "service_value",
                 "traffic_duration": "traffic_duration_value",
             }
         ],
@@ -7702,6 +7704,7 @@ def test_update_rest_call_success(request_type):
                 "max_utilization": 0.1633,
                 "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
+                "service": "service_value",
                 "traffic_duration": "traffic_duration_value",
             }
         ],

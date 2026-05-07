@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Literal, Optional, Union
+from typing import Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
@@ -24,7 +24,7 @@ from google.cloud import bigquery
 class ExecutionSpec:
     # destination for the result of the operation. Executor may also incidentally create other temporary tables for its own purposes.
     destination_spec: Union[
-        TableOutputSpec, GcsOutputSpec, EphemeralTableSpec, SessionTableSpec, None
+        TableOutputSpec, GcsOutputSpec, EphemeralTableSpec, None
     ] = None
     # If set, the result will be truncated to the given number of rows. Which N rows is
     # implementation dependent and not stable.
@@ -34,6 +34,11 @@ class ExecutionSpec:
     ordered: bool = False
     # This is an optimization flag for gbq execution, it doesn't change semantics, but if promise is falsely made, errors may occur
     promise_under_10gb: bool = False
+
+    labels: tuple[tuple[str, str], ...] = ()
+
+    def add_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
+        return dataclasses.replace(self, labels=self.labels + tuple(labels.items()))
 
 
 # Used internally by execution
@@ -51,7 +56,7 @@ class EphemeralTableSpec:
 
 
 @dataclasses.dataclass(frozen=True)
-class SessionTableSpec:
+class CacheSpec:
     """
     Specifies that the result of an operation should be a session temp table.
     The table will be automatically deleted after the session ends.
@@ -80,8 +85,6 @@ class TableOutputSpec:
     table: bigquery.TableReference
     cluster_cols: tuple[str, ...]
     if_exists: Literal["fail", "replace", "append"] = "fail"
-    # Allow DML to be used to populate table
-    permit_dml: bool = True
 
 
 @dataclasses.dataclass(frozen=True)

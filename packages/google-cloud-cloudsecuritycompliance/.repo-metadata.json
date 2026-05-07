@@ -1,5 +1,5 @@
 {
-    "api_description": "null ",
+    "api_description": "Compliance Manager uses software-defined controls that let you assess support for multiple compliance programs and security requirements within a Google Cloud organization.",
     "api_id": "cloudsecuritycompliance.googleapis.com",
     "api_shortname": "cloudsecuritycompliance",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-cloudsecuritycompliance/latest",
@@ -9,8 +9,8 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-cloudsecuritycompliance",
-    "name_pretty": "Cloud Security Compliance API",
-    "product_documentation": "https://cloud.google.com/security-command-center/docs/compliance-manager-overview",
+    "name_pretty": "Cloud Security Compliance",
+    "product_documentation": "https://cloud.google.com/security-command-center/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

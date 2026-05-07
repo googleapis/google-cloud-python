@@ -149,47 +149,92 @@ class SnapshotsTransport(abc.ABC):
         self._wrapped_methods = {
             self.aggregated_list: gapic_v1.method.wrap_method(
                 self.aggregated_list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
                 self.set_iam_policy,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_labels: gapic_v1.method.wrap_method(
                 self.set_labels,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
-                default_timeout=None,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.update_kms_key: gapic_v1.method.wrap_method(
+                self.update_kms_key,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }
@@ -285,6 +330,15 @@ class SnapshotsTransport(abc.ABC):
         Union[
             compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_kms_key(
+        self,
+    ) -> Callable[
+        [compute.UpdateKmsKeySnapshotRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

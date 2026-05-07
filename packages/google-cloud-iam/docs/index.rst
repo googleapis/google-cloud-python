@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Identity and Access Management.
+This package includes clients for multiple versions of Identity and Access Management (IAM).
 By default, you will get version ``iam_v2``.
 
 

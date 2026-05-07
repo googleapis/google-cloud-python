@@ -947,13 +947,37 @@ class Counters(proto.Message):
         succeeded_object_count (int):
             Output only. Number of objects completed.
         failed_object_count (int):
-            Output only. Number of objects failed.
+            Output only. The number of objects that
+            failed due to user errors or service errors.
         total_bytes_found (int):
             Output only. Number of bytes found from
             source. This field is only populated for jobs
             with a prefix list object configuration.
 
             This field is a member of `oneof`_ ``_total_bytes_found``.
+        object_custom_contexts_created (int):
+            Output only. Number of object custom contexts
+            created. This field is only populated for jobs
+            with the UpdateObjectCustomContext
+            transformation.
+
+            This field is a member of `oneof`_ ``_object_custom_contexts_created``.
+        object_custom_contexts_deleted (int):
+            Output only. Number of object custom contexts
+            deleted. This field is only populated for jobs
+            with the UpdateObjectCustomContext
+            transformation.
+
+            This field is a member of `oneof`_ ``_object_custom_contexts_deleted``.
+        object_custom_contexts_updated (int):
+            Output only. Number of object custom contexts
+            updated. This counter tracks custom contexts
+            where the key already existed, but the payload
+            was modified. This field is only populated for
+            jobs with the UpdateObjectCustomContext
+            transformation.
+
+            This field is a member of `oneof`_ ``_object_custom_contexts_updated``.
     """
 
     total_object_count: int = proto.Field(
@@ -971,6 +995,21 @@ class Counters(proto.Message):
     total_bytes_found: int = proto.Field(
         proto.INT64,
         number=4,
+        optional=True,
+    )
+    object_custom_contexts_created: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    object_custom_contexts_deleted: int = proto.Field(
+        proto.INT64,
+        number=6,
+        optional=True,
+    )
+    object_custom_contexts_updated: int = proto.Field(
+        proto.INT64,
+        number=7,
         optional=True,
     )
 

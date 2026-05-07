@@ -88,6 +88,10 @@ class Index(proto.Message):
             Optional. Whether it is an unique index.
             Unique index ensures all values for the indexed
             field(s) are unique across documents.
+        search_index_options (google.cloud.firestore_admin_v1.types.Index.SearchIndexOptions):
+            Optional. Options for search indexes that are at the index
+            definition level. This field is only currently supported for
+            indexes with MONGODB_COMPATIBLE_API ApiScope.
     """
 
     class QueryScope(proto.Enum):
@@ -286,6 +290,12 @@ class Index(proto.Message):
                 neighbor and distance operations on vector.
 
                 This field is a member of `oneof`_ ``value_mode``.
+            search_config (google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig):
+                Indicates that this field supports search operations. This
+                field is only currently supported for indexes with
+                MONGODB_COMPATIBLE_API ApiScope.
+
+                This field is a member of `oneof`_ ``value_mode``.
         """
 
         class Order(proto.Enum):
@@ -356,6 +366,116 @@ class Index(proto.Message):
                 message="Index.IndexField.VectorConfig.FlatIndex",
             )
 
+        class SearchConfig(proto.Message):
+            r"""The configuration for how to index a field for search.
+
+            Attributes:
+                text_spec (google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig.SearchTextSpec):
+                    Optional. The specification for building a
+                    text search index for a field.
+                geo_spec (google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig.SearchGeoSpec):
+                    Optional. The specification for building a
+                    geo search index for a field.
+            """
+
+            class TextIndexType(proto.Enum):
+                r"""Ways to index the text field value.
+
+                Values:
+                    TEXT_INDEX_TYPE_UNSPECIFIED (0):
+                        The index type is unspecified. Not a valid
+                        option.
+                    TOKENIZED (1):
+                        Field values are tokenized. This is the only way currently
+                        supported for MONGODB_COMPATIBLE_API.
+                """
+
+                TEXT_INDEX_TYPE_UNSPECIFIED = 0
+                TOKENIZED = 1
+
+            class TextMatchType(proto.Enum):
+                r"""Types of text matches that are supported for the
+                field.
+
+                Values:
+                    TEXT_MATCH_TYPE_UNSPECIFIED (0):
+                        The match type is unspecified. Not a valid
+                        option.
+                    MATCH_GLOBALLY (1):
+                        Match on any indexed field. This is the only way currently
+                        supported for MONGODB_COMPATIBLE_API.
+                """
+
+                TEXT_MATCH_TYPE_UNSPECIFIED = 0
+                MATCH_GLOBALLY = 1
+
+            class SearchTextIndexSpec(proto.Message):
+                r"""Specification of how the field should be indexed for search
+                text indexes.
+
+                Attributes:
+                    index_type (google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig.TextIndexType):
+                        Required. How to index the text field value.
+                    match_type (google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig.TextMatchType):
+                        Required. How to match the text field value.
+                """
+
+                index_type: "Index.IndexField.SearchConfig.TextIndexType" = proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum="Index.IndexField.SearchConfig.TextIndexType",
+                )
+                match_type: "Index.IndexField.SearchConfig.TextMatchType" = proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="Index.IndexField.SearchConfig.TextMatchType",
+                )
+
+            class SearchTextSpec(proto.Message):
+                r"""The specification for how to build a text search index for a
+                field.
+
+                Attributes:
+                    index_specs (MutableSequence[google.cloud.firestore_admin_v1.types.Index.IndexField.SearchConfig.SearchTextIndexSpec]):
+                        Required. Specifications for how the field
+                        should be indexed. Repeated so that the field
+                        can be indexed in multiple ways.
+                """
+
+                index_specs: MutableSequence[
+                    "Index.IndexField.SearchConfig.SearchTextIndexSpec"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Index.IndexField.SearchConfig.SearchTextIndexSpec",
+                )
+
+            class SearchGeoSpec(proto.Message):
+                r"""The specification for how to build a geo search index for a
+                field.
+
+                Attributes:
+                    geo_json_indexing_disabled (bool):
+                        Optional. Disables geoJSON indexing for the
+                        field. By default, geoJSON points are indexed.
+                """
+
+                geo_json_indexing_disabled: bool = proto.Field(
+                    proto.BOOL,
+                    number=1,
+                )
+
+            text_spec: "Index.IndexField.SearchConfig.SearchTextSpec" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Index.IndexField.SearchConfig.SearchTextSpec",
+            )
+            geo_spec: "Index.IndexField.SearchConfig.SearchGeoSpec" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="Index.IndexField.SearchConfig.SearchGeoSpec",
+            )
+
         field_path: str = proto.Field(
             proto.STRING,
             number=1,
@@ -377,6 +497,42 @@ class Index(proto.Message):
             number=4,
             oneof="value_mode",
             message="Index.IndexField.VectorConfig",
+        )
+        search_config: "Index.IndexField.SearchConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="value_mode",
+            message="Index.IndexField.SearchConfig",
+        )
+
+    class SearchIndexOptions(proto.Message):
+        r"""Options for search indexes at the definition level.
+
+        Attributes:
+            text_language (str):
+                Optional. The language to use for text search indexes. Used
+                as the default language if not overridden at the document
+                level by specifying the ``text_language_override_field``.
+                The language is specified as a BCP 47 language code. For
+                indexes with MONGODB_COMPATIBLE_API ApiScope: If
+                unspecified, the default language is English. For indexes
+                with ``ANY_API`` ApiScope: If unspecified, the default
+                behavior is autodetect.
+            text_language_override_field_path (str):
+                Optional. The field in the document that specifies which
+                language to use for that specific document. For indexes with
+                MONGODB_COMPATIBLE_API ApiScope: if unspecified, the
+                language is taken from the "language" field if it exists or
+                from ``text_language`` if it does not.
+        """
+
+        text_language: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        text_language_override_field_path: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -419,6 +575,11 @@ class Index(proto.Message):
     unique: bool = proto.Field(
         proto.BOOL,
         number=10,
+    )
+    search_index_options: SearchIndexOptions = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=SearchIndexOptions,
     )
 
 

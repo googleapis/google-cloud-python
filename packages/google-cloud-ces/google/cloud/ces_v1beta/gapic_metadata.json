@@ -844,6 +844,11 @@
                 "delete_scheduled_evaluation_run"
               ]
             },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
+              ]
+            },
             "GenerateEvaluation": {
               "methods": [
                 "generate_evaluation"
@@ -1004,6 +1009,11 @@
                 "delete_scheduled_evaluation_run"
               ]
             },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
+              ]
+            },
             "GenerateEvaluation": {
               "methods": [
                 "generate_evaluation"
@@ -1162,6 +1172,11 @@
             "DeleteScheduledEvaluationRun": {
               "methods": [
                 "delete_scheduled_evaluation_run"
+              ]
+            },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
               ]
             },
             "GenerateEvaluation": {

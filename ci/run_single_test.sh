@@ -16,7 +16,7 @@
 
 # This script requires the following environment variables to be set:
 # `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
-# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+# `PY_VERSION` should be one of ["3.10", "3.11", "3.12", "3.13"]
 
 # This script is called by the `ci/run_conditional_tests.sh` script.
 # A specific `nox` session will be run, depending on the value of 
@@ -70,17 +70,14 @@ case ${TEST_TYPE} in
         ;;
     unit)
         case ${PY_VERSION} in
-        "3.7")
-            nox -s unit-3.7
-            retval=$?
-            ;;
-        "3.8")
-            nox -s unit-3.8
-            retval=$?
-            ;;
         "3.9")
-            nox -s unit-3.9
-            retval=$?
+            if nox --list-sessions | grep -q "unit-3.9"; then
+                nox -s unit-3.9
+                retval=$?
+            else
+                echo "Skipping unit-3.9 as it is not supported by this package."
+                retval=0
+            fi
             ;;
         "3.10")
             nox -s unit-3.10

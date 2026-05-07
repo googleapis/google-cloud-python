@@ -1,14 +1,9 @@
 {
-    "api_id": "bigquery.googleapis.com",
-    "api_shortname": "bigquery",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/bigframes/latest",
+    "client_documentation": "https://googleapis.dev/python/bigframes/latest",
     "distribution_name": "bigframes",
-    "issue_tracker": "https://github.com/googleapis/python-bigquery-dataframes/issues",
     "language": "python",
     "library_type": "INTEGRATION",
     "name": "bigframes",
-    "name_pretty": "A unified Python API in BigQuery",
-    "product_documentation": "https://cloud.google.com/bigquery",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

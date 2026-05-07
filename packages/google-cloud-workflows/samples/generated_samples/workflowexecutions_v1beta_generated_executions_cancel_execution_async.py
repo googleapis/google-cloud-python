@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-workflows-executions
+#   python3 -m pip install google-cloud-workflows
 
 
 # [START workflowexecutions_v1beta_generated_Executions_CancelExecution_async]

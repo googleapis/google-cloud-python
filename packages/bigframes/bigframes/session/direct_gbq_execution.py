@@ -25,6 +25,7 @@ import bigframes.core.events
 import bigframes.session.metrics
 import bigframes.session._io.bigquery as bq_io
 from bigframes.core import bq_data, compile, nodes
+import bigframes.core.compile
 from bigframes.session import executor, semi_executor, execution_spec
 from bigframes.core.compile.configs import CompileRequest, CompileResult
 from bigframes import exceptions as bfe
@@ -47,21 +48,13 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         bqclient: bigquery.Client,
         bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         *,
-        compiler: Literal["ibis", "sqlglot"]
-        | Callable[[CompileRequest], CompileResult] = "ibis",
+        compiler: Literal["ibis", "sqlglot"] = "ibis",
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         publisher: Optional[bigframes.core.events.Publisher] = None,
         labels: Mapping[str, str] = {},
     ):
         self.bqclient = bqclient
-        if isinstance(compiler, str):
-            self._compile_fn = (
-                ibis_compiler.compile_sql
-                if compiler == "ibis"
-                else sqlglot_compiler.compile_sql
-            )
-        else:
-            self._compile_fn = compiler
+        self._compiler_name = compiler
         self._bqstoragereadclient = bqstoragereadclient
         self._publisher = publisher
         self._metrics = metrics
@@ -81,7 +74,9 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             peek_count=spec.peek,
         )
 
-        compiled = self._compile_fn(compile_request)
+        compiled = compile.compile_sql(
+            compile_request, compiler_name=self._compiler_name
+        )
         # might have more columns than og schema, for hidden ordering columns
         compiled_schema = compiled.sql_schema
 
@@ -104,6 +99,9 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             )
 
         job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
+        if spec.labels:
+            job_config.labels.update(spec.labels)
+
         iterator, query_job = self._run_execute_query(
             sql=compiled.sql,
             job_config=job_config,
