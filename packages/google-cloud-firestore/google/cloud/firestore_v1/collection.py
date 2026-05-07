@@ -136,7 +136,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         return write_result.update_time, document_ref
 
 
-    def document(self, document_id: str | None = None) -> DocumentReference:
+    def document(self, document_id: Union[str, None] = None) -> "DocumentReference":
         """Create a sub-document underneath the current collection.
 
         Args:
