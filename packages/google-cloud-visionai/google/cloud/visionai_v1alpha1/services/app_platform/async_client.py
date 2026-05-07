@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -580,11 +580,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_application(request=request)
+                operation = await client.create_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -714,11 +714,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_application(request=request)
+                operation = await client.update_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -852,11 +852,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_application(request=request)
+                operation = await client.delete_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -982,11 +982,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.deploy_application(request=request)
+                operation = await client.deploy_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1108,11 +1108,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undeploy_application(request=request)
+                operation = await client.undeploy_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1241,11 +1241,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_application_stream_input(request=request)
+                operation = await client.add_application_stream_input(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1374,11 +1374,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_application_stream_input(request=request)
+                operation = await client.remove_application_stream_input(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1507,11 +1507,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_application_stream_input(request=request)
+                operation = await client.update_application_stream_input(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1877,11 +1877,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_application_instances(request=request)
+                operation = await client.create_application_instances(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2011,11 +2011,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_application_instances(request=request)
+                operation = await client.delete_application_instances(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2149,11 +2149,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_application_instances(request=request)
+                operation = await client.update_application_instances(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2523,11 +2523,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_draft(request=request)
+                operation = await client.create_draft(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2666,11 +2666,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_draft(request=request)
+                operation = await client.update_draft(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2804,11 +2804,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_draft(request=request)
+                operation = await client.delete_draft(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3286,11 +3286,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_processor(request=request)
+                operation = await client.create_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3428,11 +3428,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_processor(request=request)
+                operation = await client.update_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3565,11 +3565,11 @@ class AppPlatformAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_processor(request=request)
+                operation = await client.delete_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

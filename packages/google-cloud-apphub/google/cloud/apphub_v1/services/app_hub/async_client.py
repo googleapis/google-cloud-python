@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -618,11 +618,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service_project_attachment(request=request)
+                operation = await client.create_service_project_attachment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -897,11 +897,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service_project_attachment(request=request)
+                operation = await client.delete_service_project_attachment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1657,11 +1657,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service(request=request)
+                operation = await client.create_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1922,11 +1922,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_service(request=request)
+                operation = await client.update_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2065,11 +2065,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service(request=request)
+                operation = await client.delete_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2706,11 +2706,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_workload(request=request)
+                operation = await client.create_workload(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2973,11 +2973,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_workload(request=request)
+                operation = await client.update_workload(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3117,11 +3117,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_workload(request=request)
+                operation = await client.delete_workload(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3384,11 +3384,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_application(request=request)
+                operation = await client.create_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3650,11 +3650,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_application(request=request)
+                operation = await client.update_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3794,11 +3794,11 @@ class AppHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_application(request=request)
+                operation = await client.delete_application(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

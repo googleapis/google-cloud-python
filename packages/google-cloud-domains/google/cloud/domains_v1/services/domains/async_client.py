@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -600,11 +600,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.register_domain(request=request)
+                operation = await client.register_domain(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -928,11 +928,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.transfer_domain(request=request)
+                operation = await client.transfer_domain(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1372,11 +1372,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_registration(request=request)
+                operation = await client.update_registration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1531,11 +1531,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.configure_management_settings(request=request)
+                operation = await client.configure_management_settings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1698,11 +1698,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.configure_dns_settings(request=request)
+                operation = await client.configure_dns_settings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1873,11 +1873,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.configure_contact_settings(request=request)
+                operation = await client.configure_contact_settings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2047,11 +2047,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_registration(request=request)
+                operation = await client.export_registration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2212,11 +2212,11 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_registration(request=request)
+                operation = await client.delete_registration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

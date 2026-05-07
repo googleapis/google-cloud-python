@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -517,11 +517,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_process_documents(request=request)
+                operation = await client.batch_process_documents(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1268,11 +1268,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.train_processor_version(request=request)
+                operation = await client.train_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1664,11 +1664,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_processor_version(request=request)
+                operation = await client.delete_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1802,11 +1802,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.deploy_processor_version(request=request)
+                operation = await client.deploy_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1933,11 +1933,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undeploy_processor_version(request=request)
+                operation = await client.undeploy_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2210,11 +2210,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_processor(request=request)
+                operation = await client.delete_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2345,11 +2345,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.enable_processor(request=request)
+                operation = await client.enable_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2450,11 +2450,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.disable_processor(request=request)
+                operation = await client.disable_processor(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2561,11 +2561,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.set_default_processor_version(request=request)
+                operation = await client.set_default_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2677,11 +2677,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.review_document(request=request)
+                operation = await client.review_document(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2815,11 +2815,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.evaluate_processor_version(request=request)
+                operation = await client.evaluate_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3198,11 +3198,11 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_processor_version(request=request)
+                operation = await client.import_processor_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

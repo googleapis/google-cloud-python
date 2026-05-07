@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -368,11 +368,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_aws_cluster(request=request)
+                operation = await client.create_aws_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -549,11 +549,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_aws_cluster(request=request)
+                operation = await client.update_aws_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -994,11 +994,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_aws_cluster(request=request)
+                operation = await client.delete_aws_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1352,11 +1352,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_aws_node_pool(request=request)
+                operation = await client.create_aws_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1529,11 +1529,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_aws_node_pool(request=request)
+                operation = await client.update_aws_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1712,11 +1712,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.rollback_aws_node_pool_update(request=request)
+                operation = await client.rollback_aws_node_pool_update(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2123,11 +2123,11 @@ class AwsClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_aws_node_pool(request=request)
+                operation = await client.delete_aws_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

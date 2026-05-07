@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -639,11 +639,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_trigger(request=request)
+                operation = await client.create_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -782,11 +782,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_trigger(request=request)
+                operation = await client.update_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -930,11 +930,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_trigger(request=request)
+                operation = await client.delete_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1317,11 +1317,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_channel(request=request)
+                operation = await client.create_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1462,11 +1462,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_channel(request=request)
+                operation = await client.update_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1602,11 +1602,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_channel(request=request)
+                operation = await client.delete_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2218,11 +2218,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_channel_connection(request=request)
+                operation = await client.create_channel_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2364,11 +2364,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_channel_connection(request=request)
+                operation = await client.delete_channel_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3121,11 +3121,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_message_bus(request=request)
+                operation = await client.create_message_bus(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3266,11 +3266,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_message_bus(request=request)
+                operation = await client.update_message_bus(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3409,11 +3409,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_message_bus(request=request)
+                operation = await client.delete_message_bus(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3797,11 +3797,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_enrollment(request=request)
+                operation = await client.create_enrollment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3947,11 +3947,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_enrollment(request=request)
+                operation = await client.update_enrollment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4089,11 +4089,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_enrollment(request=request)
+                operation = await client.delete_enrollment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4471,11 +4471,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_pipeline(request=request)
+                operation = await client.create_pipeline(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4618,11 +4618,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_pipeline(request=request)
+                operation = await client.update_pipeline(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4757,11 +4757,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_pipeline(request=request)
+                operation = await client.delete_pipeline(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5140,11 +5140,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_google_api_source(request=request)
+                operation = await client.create_google_api_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5291,11 +5291,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_google_api_source(request=request)
+                operation = await client.update_google_api_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5433,11 +5433,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_google_api_source(request=request)
+                operation = await client.delete_google_api_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -625,11 +625,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_management_server(request=request)
+                operation = await client.create_management_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -774,11 +774,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_management_server(request=request)
+                operation = await client.delete_management_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -909,11 +909,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_vault(request=request)
+                operation = await client.create_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1427,11 +1427,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_vault(request=request)
+                operation = await client.update_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1566,11 +1566,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_vault(request=request)
+                operation = await client.delete_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1940,11 +1940,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_data_source(request=request)
+                operation = await client.update_data_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2459,11 +2459,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup(request=request)
+                operation = await client.update_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2598,11 +2598,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2726,11 +2726,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_backup(request=request)
+                operation = await client.restore_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2867,11 +2867,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_plan(request=request)
+                operation = await client.create_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3025,11 +3025,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_plan(request=request)
+                operation = await client.update_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3411,11 +3411,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_plan(request=request)
+                operation = await client.delete_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3805,11 +3805,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_plan_association(request=request)
+                operation = await client.create_backup_plan_association(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3963,11 +3963,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_plan_association(request=request)
+                operation = await client.update_backup_plan_association(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4519,11 +4519,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_plan_association(request=request)
+                operation = await client.delete_backup_plan_association(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4659,11 +4659,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.trigger_backup(request=request)
+                operation = await client.trigger_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5194,11 +5194,11 @@ class BackupDRAsyncClient:
                 )
 
                 # Make the request
-                operation = client.initialize_service(request=request)
+                operation = await client.initialize_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

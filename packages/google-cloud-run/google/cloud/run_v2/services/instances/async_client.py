@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -352,11 +352,11 @@ class InstancesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -489,11 +489,11 @@ class InstancesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -874,11 +874,11 @@ class InstancesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.stop_instance(request=request)
+                operation = await client.stop_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1000,11 +1000,11 @@ class InstancesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.start_instance(request=request)
+                operation = await client.start_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

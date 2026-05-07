@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -352,11 +352,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_connection(request=request)
+                operation = await client.create_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -733,11 +733,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_connection(request=request)
+                operation = await client.update_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -864,11 +864,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_connection(request=request)
+                operation = await client.delete_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1003,11 +1003,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_repository(request=request)
+                operation = await client.create_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1160,11 +1160,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_repositories(request=request)
+                operation = await client.batch_create_repositories(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1537,11 +1537,11 @@ class RepositoryManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_repository(request=request)
+                operation = await client.delete_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

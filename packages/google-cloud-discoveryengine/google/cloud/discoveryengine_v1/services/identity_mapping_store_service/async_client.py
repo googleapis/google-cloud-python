@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -649,11 +649,11 @@ class IdentityMappingStoreServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_identity_mapping_store(request=request)
+                operation = await client.delete_identity_mapping_store(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -789,11 +789,11 @@ class IdentityMappingStoreServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_identity_mappings(request=request)
+                operation = await client.import_identity_mappings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -898,11 +898,11 @@ class IdentityMappingStoreServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.purge_identity_mappings(request=request)
+                operation = await client.purge_identity_mappings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

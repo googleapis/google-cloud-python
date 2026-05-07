@@ -1,6 +1,9 @@
-# -*- coding: utf-8 -*-
-# This constraints file is required for unit tests.
-# List all library dependencies and extras in this file.
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List all library dependencies and extras in this file,
+# pinning their versions to their lower bounds.
+# For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+# then this file should have google-cloud-foo==1.14.0
 google-auth
 # cryptography is a direct dependency of google-auth
 cryptography

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -862,11 +862,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_asset(request=request)
+                operation = await client.delete_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1005,11 +1005,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.upload_asset(request=request)
+                operation = await client.upload_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1194,11 +1194,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.analyze_asset(request=request)
+                operation = await client.analyze_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1295,11 +1295,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.index_asset(request=request)
+                operation = await client.index_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1396,11 +1396,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_index_asset(request=request)
+                operation = await client.remove_index_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1630,11 +1630,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_index(request=request)
+                operation = await client.create_index(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1783,11 +1783,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_index(request=request)
+                operation = await client.update_index(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2164,11 +2164,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_index(request=request)
+                operation = await client.delete_index(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2301,11 +2301,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_corpus(request=request)
+                operation = await client.create_corpus(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2893,11 +2893,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.analyze_corpus(request=request)
+                operation = await client.analyze_corpus(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4445,11 +4445,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_assets(request=request)
+                operation = await client.import_assets(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5998,11 +5998,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_index_endpoint(request=request)
+                operation = await client.create_index_endpoint(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6387,11 +6387,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_index_endpoint(request=request)
+                operation = await client.update_index_endpoint(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6528,11 +6528,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_index_endpoint(request=request)
+                operation = await client.delete_index_endpoint(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6662,11 +6662,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.deploy_index(request=request)
+                operation = await client.deploy_index(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6764,11 +6764,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undeploy_index(request=request)
+                operation = await client.undeploy_index(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6870,11 +6870,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_collection(request=request)
+                operation = await client.create_collection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7019,11 +7019,11 @@ class WarehouseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_collection(request=request)
+                operation = await client.delete_collection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -375,11 +375,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_azure_client(request=request)
+                operation = await client.create_azure_client(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -847,11 +847,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_azure_client(request=request)
+                operation = await client.delete_azure_client(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1014,11 +1014,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_azure_cluster(request=request)
+                operation = await client.create_azure_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1192,11 +1192,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_azure_cluster(request=request)
+                operation = await client.update_azure_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1633,11 +1633,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_azure_cluster(request=request)
+                operation = await client.delete_azure_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1991,11 +1991,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_azure_node_pool(request=request)
+                operation = await client.create_azure_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2167,11 +2167,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_azure_node_pool(request=request)
+                operation = await client.update_azure_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2594,11 +2594,11 @@ class AzureClustersAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_azure_node_pool(request=request)
+                operation = await client.delete_azure_node_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

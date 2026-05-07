@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1029,11 +1029,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.activate_certificate_authority(request=request)
+                operation = await client.activate_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1173,11 +1173,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_certificate_authority(request=request)
+                operation = await client.create_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1325,11 +1325,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.disable_certificate_authority(request=request)
+                operation = await client.disable_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1458,11 +1458,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.enable_certificate_authority(request=request)
+                operation = await client.enable_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1966,11 +1966,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_certificate_authority(request=request)
+                operation = await client.restore_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2100,11 +2100,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.schedule_delete_certificate_authority(request=request)
+                operation = await client.schedule_delete_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2240,11 +2240,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_certificate_authority(request=request)
+                operation = await client.update_certificate_authority(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2636,11 +2636,11 @@ class CertificateAuthorityServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_certificate_revocation_list(request=request)
+                operation = await client.update_certificate_revocation_list(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

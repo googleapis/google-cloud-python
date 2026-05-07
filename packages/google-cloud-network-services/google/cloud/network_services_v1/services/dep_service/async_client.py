@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -603,11 +603,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_traffic_extension(request=request)
+                operation = await client.create_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -757,11 +757,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_traffic_extension(request=request)
+                operation = await client.update_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -897,11 +897,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_traffic_extension(request=request)
+                operation = await client.delete_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1284,11 +1284,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_route_extension(request=request)
+                operation = await client.create_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1436,11 +1436,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_route_extension(request=request)
+                operation = await client.update_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1573,11 +1573,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_route_extension(request=request)
+                operation = await client.delete_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1961,11 +1961,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_edge_extension(request=request)
+                operation = await client.create_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2114,11 +2114,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_edge_extension(request=request)
+                operation = await client.update_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2252,11 +2252,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_edge_extension(request=request)
+                operation = await client.delete_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2637,11 +2637,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_authz_extension(request=request)
+                operation = await client.create_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2787,11 +2787,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_authz_extension(request=request)
+                operation = await client.update_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2925,11 +2925,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_authz_extension(request=request)
+                operation = await client.delete_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

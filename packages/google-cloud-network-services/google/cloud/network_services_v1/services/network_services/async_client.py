@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -697,11 +697,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_endpoint_policy(request=request)
+                operation = await client.create_endpoint_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -850,11 +850,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_endpoint_policy(request=request)
+                operation = await client.update_endpoint_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -996,11 +996,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_endpoint_policy(request=request)
+                operation = await client.delete_endpoint_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1383,11 +1383,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_wasm_plugin_version(request=request)
+                operation = await client.create_wasm_plugin_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1527,11 +1527,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_wasm_plugin_version(request=request)
+                operation = await client.delete_wasm_plugin_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1901,11 +1901,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_wasm_plugin(request=request)
+                operation = await client.create_wasm_plugin(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2042,11 +2042,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_wasm_plugin(request=request)
+                operation = await client.update_wasm_plugin(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2184,11 +2184,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_wasm_plugin(request=request)
+                operation = await client.delete_wasm_plugin(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2569,11 +2569,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_gateway(request=request)
+                operation = await client.create_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2720,11 +2720,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_gateway(request=request)
+                operation = await client.update_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2862,11 +2862,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_gateway(request=request)
+                operation = await client.delete_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3242,11 +3242,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_grpc_route(request=request)
+                operation = await client.create_grpc_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3389,11 +3389,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_grpc_route(request=request)
+                operation = await client.update_grpc_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3527,11 +3527,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_grpc_route(request=request)
+                operation = await client.delete_grpc_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3907,11 +3907,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_http_route(request=request)
+                operation = await client.create_http_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4053,11 +4053,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_http_route(request=request)
+                operation = await client.update_http_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4191,11 +4191,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_http_route(request=request)
+                operation = await client.delete_http_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4567,11 +4567,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_tcp_route(request=request)
+                operation = await client.create_tcp_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4709,11 +4709,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_tcp_route(request=request)
+                operation = await client.update_tcp_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4847,11 +4847,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_tcp_route(request=request)
+                operation = await client.delete_tcp_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5227,11 +5227,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_tls_route(request=request)
+                operation = await client.create_tls_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5373,11 +5373,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_tls_route(request=request)
+                operation = await client.update_tls_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5511,11 +5511,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_tls_route(request=request)
+                operation = await client.delete_tls_route(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5901,11 +5901,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service_binding(request=request)
+                operation = await client.create_service_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6053,11 +6053,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_service_binding(request=request)
+                operation = await client.update_service_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6203,11 +6203,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service_binding(request=request)
+                operation = await client.delete_service_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6579,11 +6579,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_mesh(request=request)
+                operation = await client.create_mesh(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6724,11 +6724,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_mesh(request=request)
+                operation = await client.update_mesh(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6864,11 +6864,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_mesh(request=request)
+                operation = await client.delete_mesh(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7249,11 +7249,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service_lb_policy(request=request)
+                operation = await client.create_service_lb_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7398,11 +7398,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_service_lb_policy(request=request)
+                operation = await client.update_service_lb_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7542,11 +7542,11 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service_lb_policy(request=request)
+                operation = await client.delete_service_lb_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

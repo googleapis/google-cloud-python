@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -347,11 +347,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_environment(request=request)
+                operation = await client.create_environment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -716,11 +716,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_environment(request=request)
+                operation = await client.update_environment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1067,11 +1067,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_environment(request=request)
+                operation = await client.delete_environment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1198,11 +1198,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restart_web_server(request=request)
+                operation = await client.restart_web_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1300,11 +1300,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.check_upgrade(request=request)
+                operation = await client.check_upgrade(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2998,11 +2998,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.save_snapshot(request=request)
+                operation = await client.save_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3104,11 +3104,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.load_snapshot(request=request)
+                operation = await client.load_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3207,11 +3207,11 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.database_failover(request=request)
+                operation = await client.database_failover(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

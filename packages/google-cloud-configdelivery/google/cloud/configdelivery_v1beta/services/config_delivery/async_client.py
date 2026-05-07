@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -594,11 +594,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_resource_bundle(request=request)
+                operation = await client.create_resource_bundle(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -738,11 +738,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_resource_bundle(request=request)
+                operation = await client.update_resource_bundle(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -880,11 +880,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_resource_bundle(request=request)
+                operation = await client.delete_resource_bundle(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1259,11 +1259,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_fleet_package(request=request)
+                operation = await client.create_fleet_package(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1411,11 +1411,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_fleet_package(request=request)
+                operation = await client.update_fleet_package(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1555,11 +1555,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_fleet_package(request=request)
+                operation = await client.delete_fleet_package(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1927,11 +1927,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_release(request=request)
+                operation = await client.create_release(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2072,11 +2072,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_release(request=request)
+                operation = await client.update_release(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2211,11 +2211,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_release(request=request)
+                operation = await client.delete_release(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2583,11 +2583,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_variant(request=request)
+                operation = await client.create_variant(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2725,11 +2725,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_variant(request=request)
+                operation = await client.update_variant(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2864,11 +2864,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_variant(request=request)
+                operation = await client.delete_variant(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3233,11 +3233,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.suspend_rollout(request=request)
+                operation = await client.suspend_rollout(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3359,11 +3359,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resume_rollout(request=request)
+                operation = await client.resume_rollout(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3485,11 +3485,11 @@ class ConfigDeliveryAsyncClient:
                 )
 
                 # Make the request
-                operation = client.abort_rollout(request=request)
+                operation = await client.abort_rollout(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

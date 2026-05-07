@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -600,11 +600,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_gateway(request=request)
+                operation = await client.create_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -748,11 +748,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_gateway(request=request)
+                operation = await client.update_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -888,11 +888,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_gateway(request=request)
+                operation = await client.delete_gateway(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1259,11 +1259,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_api(request=request)
+                operation = await client.create_api(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1402,11 +1402,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_api(request=request)
+                operation = await client.update_api(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1539,11 +1539,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_api(request=request)
+                operation = await client.delete_api(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1914,11 +1914,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_api_config(request=request)
+                operation = await client.create_api_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2056,11 +2056,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_api_config(request=request)
+                operation = await client.update_api_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2194,11 +2194,11 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_api_config(request=request)
+                operation = await client.delete_api_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -618,11 +618,11 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service(request=request)
+                operation = await client.create_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -744,11 +744,11 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service(request=request)
+                operation = await client.delete_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -887,11 +887,11 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undelete_service(request=request)
+                operation = await client.undelete_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1494,11 +1494,11 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.submit_config_source(request=request)
+                operation = await client.submit_config_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1950,11 +1950,11 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service_rollout(request=request)
+                operation = await client.create_service_rollout(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

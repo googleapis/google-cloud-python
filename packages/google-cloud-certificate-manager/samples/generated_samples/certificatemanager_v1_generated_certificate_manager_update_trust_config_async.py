@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,11 +42,11 @@ async def sample_update_trust_config():
     request = certificate_manager_v1.UpdateTrustConfigRequest()
 
     # Make the request
-    operation = client.update_trust_config(request=request)
+    operation = await client.update_trust_config(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

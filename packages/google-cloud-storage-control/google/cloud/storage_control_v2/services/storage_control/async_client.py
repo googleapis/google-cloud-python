@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -888,11 +888,11 @@ class StorageControlAsyncClient:
                 )
 
                 # Make the request
-                operation = client.rename_folder(request=request)
+                operation = await client.rename_folder(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1036,11 +1036,11 @@ class StorageControlAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_folder_recursive(request=request)
+                operation = await client.delete_folder_recursive(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1821,11 +1821,11 @@ class StorageControlAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_anywhere_cache(request=request)
+                operation = await client.create_anywhere_cache(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1971,11 +1971,11 @@ class StorageControlAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_anywhere_cache(request=request)
+                operation = await client.update_anywhere_cache(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
