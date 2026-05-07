@@ -839,6 +839,62 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
             )
         return self._stubs["batch_search_link_processes"]
 
+    @property
+    def search_lineage_streaming(
+        self,
+    ) -> Callable[
+        [lineage.SearchLineageStreamingRequest],
+        Awaitable[lineage.SearchLineageStreamingResponse],
+    ]:
+        r"""Return a callable for the search lineage streaming method over gRPC.
+
+        Retrieves a streaming response of lineage links connected to the
+        requested assets by performing a breadth-first search in the
+        given direction. Links represent the data flow between
+        **source** (upstream) and **target** (downstream) assets in
+        transformation pipelines. Links are stored in the same project
+        as the Lineage Events that create them. This method retrieves
+        links from all valid locations provided in the request. This
+        method supports Column-Level Lineage (CLL) along with wildcard
+        support to retrieve all CLL for an Entity FQN.
+
+        Following permissions are required to retrieve links:
+
+        - ``datalineage.events.get`` permission for the project where
+          the link is stored for entity-level lineage.
+        - ``datalineage.events.getFields`` permission for the project
+          where the link is stored for column-level lineage.
+
+        This method also returns processes that created the links if
+        explicitly requested by setting
+        `max_process_per_link <google.cloud.datacatalog.lineage.v1.SearchLineageStreamingRequest.limits.max_process_per_link>`__
+        is non-zero and full process details are requested via
+        ``links.processes.process`` in the
+        `FieldMask <https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask>`__.
+
+        Permission required to retrieve processes:
+
+        - ``datalineage.processes.get`` permission for the project where
+          the process is stored.
+
+        Returns:
+            Callable[[~.SearchLineageStreamingRequest],
+                    Awaitable[~.SearchLineageStreamingResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_lineage_streaming" not in self._stubs:
+            self._stubs["search_lineage_streaming"] = self._logged_channel.unary_stream(
+                "/google.cloud.datacatalog.lineage.v1.Lineage/SearchLineageStreaming",
+                request_serializer=lineage.SearchLineageStreamingRequest.serialize,
+                response_deserializer=lineage.SearchLineageStreamingResponse.deserialize,
+            )
+        return self._stubs["search_lineage_streaming"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -924,6 +980,11 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
             ),
             self.batch_search_link_processes: self._wrap_method(
                 self.batch_search_link_processes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_lineage_streaming: self._wrap_method(
+                self.search_lineage_streaming,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -16,8 +16,8 @@ version: v0.12.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 8bd905897f61fb6f2e7d8b7cb3e2ca41d0cbc9c8
-    sha256: bad85ba8a113ccb3dbe9bf54b80f25068a76a2b9c7d59b6af98a524f40712e69
+    commit: 6810d0e5d1a01de57a8a56a13204adbe90f91026
+    sha256: 7d62ba209b9e843f5a195e512e815e01a36f1ec3c8a61e067914c389e399bef2
 release:
   ignored_changes:
     - .repo-metadata.json

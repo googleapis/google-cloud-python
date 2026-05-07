@@ -229,6 +229,11 @@ class LineageTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.search_lineage_streaming: gapic_v1.method.wrap_method(
+                self.search_lineage_streaming,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -417,6 +422,18 @@ class LineageTransport(abc.ABC):
         Union[
             lineage.BatchSearchLinkProcessesResponse,
             Awaitable[lineage.BatchSearchLinkProcessesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_lineage_streaming(
+        self,
+    ) -> Callable[
+        [lineage.SearchLineageStreamingRequest],
+        Union[
+            lineage.SearchLineageStreamingResponse,
+            Awaitable[lineage.SearchLineageStreamingResponse],
         ],
     ]:
         raise NotImplementedError()
