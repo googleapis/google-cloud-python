@@ -149,7 +149,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
             :class:~google.cloud.firestore_v1.document.DocumentReference:
             The child document.
         """
-        doc = super(CollectionReference, self).document(document_id)
+        doc = super().document(document_id)
         return cast("DocumentReference", doc)
     
     def list_documents(
