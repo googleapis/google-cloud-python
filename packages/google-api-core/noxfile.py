@@ -329,7 +329,7 @@ def unit(
         case 4:
             # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
             session.install("protobuf>=4.25.8,<5.0.0")
-        case None:
+        case None | False:
             pass
         case _:
             assert False, f"Unknown legacy_proto: {legacy_proto}"
