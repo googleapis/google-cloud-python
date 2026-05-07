@@ -17,6 +17,7 @@
 import datetime
 import enum
 import functools
+from importlib import metadata
 import logging
 import warnings
 import sys
@@ -131,9 +132,6 @@ EOL_GRACE_PERIOD = datetime.timedelta(weeks=1)
 def _flatten_message(text: str) -> str:
     """Dedent a multi-line string and flatten it into a single line."""
     return " ".join(textwrap.dedent(text).strip().split())
-
-
-from importlib import metadata
 
 
 @functools.cache
