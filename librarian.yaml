@@ -854,6 +854,7 @@ libraries:
       default_version: v1
   - name: google-cloud-datacatalog-lineage
     version: 0.6.0
+    skip_generate: true
     apis:
       - path: google/cloud/datacatalog/lineage/v1
     python:
