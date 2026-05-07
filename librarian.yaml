@@ -55,6 +55,7 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
+    skip_release: true
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
@@ -1933,6 +1934,7 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
+    skip_release: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
@@ -2194,6 +2196,7 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
+    skip_release: false
     python:
       library_type: OTHER
   - name: google-geo-type
