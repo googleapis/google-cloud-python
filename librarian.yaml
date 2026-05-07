@@ -2196,7 +2196,7 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_release: false
+    skip_release: true
     python:
       library_type: OTHER
   - name: google-geo-type
