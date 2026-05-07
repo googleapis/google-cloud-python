@@ -8,8 +8,6 @@ substitutions:
 
 
 steps:
-  - name: 'bash'
-    args: ['echo', 'This job is currently disabled. See https://github.com/googleapis/google-cloud-python/issues/16487. Skipping tests...']
   # Step 0: Generate a persistent SSH key for this build run.
   # This prevents gcloud from adding a new key to the OS Login profile on every ssh/scp command.
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
