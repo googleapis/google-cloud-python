@@ -143,7 +143,7 @@ def test_endpoint_constants_mtls(monkeypatch):
         assert "iamcredentials.mtls.googleapis.com" in iam._IAM_SIGN_ENDPOINT
         assert "iamcredentials.mtls.googleapis.com" in iam._IAM_SIGNJWT_ENDPOINT
         assert "iamcredentials.mtls.googleapis.com" in iam._IAM_IDTOKEN_ENDPOINT
-        
+
     finally:
         # Restore the original state for other tests by undoing the patch and reloading again
         monkeypatch.undo()

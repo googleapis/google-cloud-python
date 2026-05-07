@@ -239,8 +239,24 @@ class Credentials(_BaseCredentials):
         else:
             self._blocking_refresh(request)
 
+        self._after_refresh(request, method, url, headers)
+
         metrics.add_metric_header(headers, self._metric_header_for_usage())
         self.apply(headers)
+
+    def _after_refresh(self, request, method, url, headers):
+        """Hook for subclasses to perform actions after refresh but before
+        applying credentials to headers.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+            method (str): The request's HTTP method or the RPC method being
+                invoked.
+            url (str): The request's URI or the RPC service's URI.
+            headers (Mapping): The request's headers.
+        """
+        pass
 
     def with_non_blocking_refresh(self):
         self._use_non_blocking_refresh = True
@@ -459,19 +475,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         super().apply(headers, token)
         self._rab_manager.apply_headers(headers)
 
-    def before_request(self, request, method, url, headers):
-        """Refreshes the access token and triggers the Regional Access Boundary
-        lookup if necessary.
-        """
-        if self._use_non_blocking_refresh:
-            self._non_blocking_refresh(request)
-        else:
-            self._blocking_refresh(request)
-
+    def _after_refresh(self, request, method, url, headers):
+        """Triggers the Regional Access Boundary lookup if necessary."""
         self._maybe_start_regional_access_boundary_refresh(request, url)
-
-        metrics.add_metric_header(headers, self._metric_header_for_usage())
-        self.apply(headers)
 
     def refresh(self, request):
         """Refreshes the access token.
