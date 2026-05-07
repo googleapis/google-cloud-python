@@ -172,6 +172,8 @@ class AIScore(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
+    endpoint: str | None
+    max_error_ratio: float | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE

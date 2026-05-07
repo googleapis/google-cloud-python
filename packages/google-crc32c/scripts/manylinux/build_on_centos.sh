@@ -48,10 +48,7 @@ if [[ -z ${BUILD_PYTHON} ]]; then
     # Collect all target Python versions.
     for PYTHON_BIN in /opt/python/*/bin; do
         # H/T: https://stackoverflow.com/a/229606/1068170
-        if [[ "${PYTHON_BIN}" == *"39"* ]]; then
-            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
-            continue
-        elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
+        if [[ "${PYTHON_BIN}" == *"310"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"311"* ]]; then

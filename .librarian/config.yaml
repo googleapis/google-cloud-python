@@ -33,4 +33,12 @@ libraries:
   # TODO(https://github.com/googleapis/google-cloud-python/issues/16780): Disabling automatic releases until resolved.
   - id: "google-cloud-compute"
     release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16962):
+  # Disable automatic releases until tests stabilize.
+  - id: "pandas-gbq"
+    release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16970):
+  # Disable automatic releases until system tests are sped up or reorganized.
+  - id: "google-cloud-firestore"
+    release_blocked: true
 
