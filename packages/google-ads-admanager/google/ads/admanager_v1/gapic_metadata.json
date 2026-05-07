@@ -127,6 +127,31 @@
         "rest": {
           "libraryClient": "ApplicationServiceClient",
           "rpcs": {
+            "BatchArchiveApplications": {
+              "methods": [
+                "batch_archive_applications"
+              ]
+            },
+            "BatchCreateApplications": {
+              "methods": [
+                "batch_create_applications"
+              ]
+            },
+            "BatchUnarchiveApplications": {
+              "methods": [
+                "batch_unarchive_applications"
+              ]
+            },
+            "BatchUpdateApplications": {
+              "methods": [
+                "batch_update_applications"
+              ]
+            },
+            "CreateApplication": {
+              "methods": [
+                "create_application"
+              ]
+            },
             "GetApplication": {
               "methods": [
                 "get_application"
@@ -135,6 +160,11 @@
             "ListApplications": {
               "methods": [
                 "list_applications"
+              ]
+            },
+            "UpdateApplication": {
+              "methods": [
+                "update_application"
               ]
             }
           }
@@ -222,6 +252,16 @@
         "rest": {
           "libraryClient": "CmsMetadataKeyServiceClient",
           "rpcs": {
+            "BatchActivateCmsMetadataKeys": {
+              "methods": [
+                "batch_activate_cms_metadata_keys"
+              ]
+            },
+            "BatchDeactivateCmsMetadataKeys": {
+              "methods": [
+                "batch_deactivate_cms_metadata_keys"
+              ]
+            },
             "GetCmsMetadataKey": {
               "methods": [
                 "get_cms_metadata_key"
@@ -241,6 +281,16 @@
         "rest": {
           "libraryClient": "CmsMetadataValueServiceClient",
           "rpcs": {
+            "BatchActivateCmsMetadataValues": {
+              "methods": [
+                "batch_activate_cms_metadata_values"
+              ]
+            },
+            "BatchDeactivateCmsMetadataValues": {
+              "methods": [
+                "batch_deactivate_cms_metadata_values"
+              ]
+            },
             "GetCmsMetadataValue": {
               "methods": [
                 "get_cms_metadata_value"
@@ -621,6 +671,55 @@
         }
       }
     },
+    "LabelService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LabelServiceClient",
+          "rpcs": {
+            "BatchActivateLabels": {
+              "methods": [
+                "batch_activate_labels"
+              ]
+            },
+            "BatchCreateLabels": {
+              "methods": [
+                "batch_create_labels"
+              ]
+            },
+            "BatchDeactivateLabels": {
+              "methods": [
+                "batch_deactivate_labels"
+              ]
+            },
+            "BatchUpdateLabels": {
+              "methods": [
+                "batch_update_labels"
+              ]
+            },
+            "CreateLabel": {
+              "methods": [
+                "create_label"
+              ]
+            },
+            "GetLabel": {
+              "methods": [
+                "get_label"
+              ]
+            },
+            "ListLabels": {
+              "methods": [
+                "list_labels"
+              ]
+            },
+            "UpdateLabel": {
+              "methods": [
+                "update_label"
+              ]
+            }
+          }
+        }
+      }
+    },
     "LineItemService": {
       "clients": {
         "rest": {
@@ -634,6 +733,39 @@
             "ListLineItems": {
               "methods": [
                 "list_line_items"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LinkedDeviceService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LinkedDeviceServiceClient",
+          "rpcs": {
+            "GetLinkedDevice": {
+              "methods": [
+                "get_linked_device"
+              ]
+            },
+            "ListLinkedDevices": {
+              "methods": [
+                "list_linked_devices"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "McmEarningsService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "McmEarningsServiceClient",
+          "rpcs": {
+            "FetchMcmEarnings": {
+              "methods": [
+                "fetch_mcm_earnings"
               ]
             }
           }
@@ -937,6 +1069,25 @@
             "UpdateReport": {
               "methods": [
                 "update_report"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RichMediaAdsCompanyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RichMediaAdsCompanyServiceClient",
+          "rpcs": {
+            "GetRichMediaAdsCompany": {
+              "methods": [
+                "get_rich_media_ads_company"
+              ]
+            },
+            "ListRichMediaAdsCompanies": {
+              "methods": [
+                "list_rich_media_ads_companies"
               ]
             }
           }

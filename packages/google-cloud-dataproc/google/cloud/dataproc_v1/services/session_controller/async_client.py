@@ -84,6 +84,8 @@ class SessionControllerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SessionControllerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SessionControllerClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(SessionControllerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(SessionControllerClient.parse_crypto_key_path)
     service_path = staticmethod(SessionControllerClient.service_path)
     parse_service_path = staticmethod(SessionControllerClient.parse_service_path)
     session_path = staticmethod(SessionControllerClient.session_path)
@@ -343,12 +345,8 @@ class SessionControllerAsyncClient:
                 client = dataproc_v1.SessionControllerAsyncClient()
 
                 # Initialize request argument(s)
-                session = dataproc_v1.Session()
-                session.name = "name_value"
-
                 request = dataproc_v1.CreateSessionRequest(
                     parent="parent_value",
-                    session=session,
                     session_id="session_id_value",
                 )
 

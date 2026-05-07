@@ -1895,15 +1895,7 @@ def test_update_report_rest_unset_required_fields():
     )
 
     unset_fields = transport.update_report._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "report",
-                "updateMask",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("report",)))
 
 
 def test_update_report_rest_flattened():
@@ -2736,7 +2728,9 @@ def test_create_report_rest_call_success(request_type):
                 "relative": 1,
             },
             "comparison_date_range": {},
+            "cms_metadata_dimension_key_ids": [3152, 3153],
             "custom_dimension_key_ids": [2568, 2569],
+            "ekv_dimension_key_ids": [2227, 2228],
             "line_item_custom_field_ids": [2739, 2740],
             "order_custom_field_ids": [2329, 2330],
             "creative_custom_field_ids": [2640, 2641],
@@ -2752,6 +2746,7 @@ def test_create_report_rest_call_success(request_type):
                     "metric_value_type": 1,
                 }
             ],
+            "expanded_compatibility": True,
         },
         "display_name": "display_name_value",
         "update_time": {"seconds": 751, "nanos": 543},
@@ -3026,7 +3021,9 @@ def test_update_report_rest_call_success(request_type):
                 "relative": 1,
             },
             "comparison_date_range": {},
+            "cms_metadata_dimension_key_ids": [3152, 3153],
             "custom_dimension_key_ids": [2568, 2569],
+            "ekv_dimension_key_ids": [2227, 2228],
             "line_item_custom_field_ids": [2739, 2740],
             "order_custom_field_ids": [2329, 2330],
             "creative_custom_field_ids": [2640, 2641],
@@ -3042,6 +3039,7 @@ def test_update_report_rest_call_success(request_type):
                     "metric_value_type": 1,
                 }
             ],
+            "expanded_compatibility": True,
         },
         "display_name": "display_name_value",
         "update_time": {"seconds": 751, "nanos": 543},
@@ -3491,6 +3489,69 @@ def test_fetch_report_result_rows_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
@@ -3729,6 +3790,7 @@ def test_report_service_base_transport():
         "run_report",
         "fetch_report_result_rows",
         "get_operation",
+        "cancel_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3770,7 +3832,10 @@ def test_report_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3796,7 +3861,10 @@ def test_report_service_auth_adc():
         ReportServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id=None,
         )
 
