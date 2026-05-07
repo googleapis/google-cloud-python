@@ -33,6 +33,14 @@ except ImportError:  # pragma: NO COVER
 from google.api_core import bidi_async
 from google.api_core import exceptions
 
+# TODO: remove this when droppping support for "Python 3.10" and below.
+if sys.version_info <= (3, 10):  # type: ignore[operator]
+
+    def aiter(obj):
+        return obj.__aiter__()
+
+    async def anext(obj):
+        return await obj.__anext__()
 
 
 @pytest.mark.asyncio
