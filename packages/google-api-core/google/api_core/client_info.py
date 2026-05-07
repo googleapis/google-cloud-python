@@ -45,7 +45,7 @@ class ClientInfo(object):
 
     Args:
         python_version (str): The Python interpreter version, for example,
-            ``'3.9.6'``.
+            ``'3.10.0'``.
         grpc_version (Optional[str]): The gRPC library version.
         api_core_version (str): The google-api-core library version.
         gapic_version (Optional[str]): The version of gapic-generated client
