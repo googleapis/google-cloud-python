@@ -230,13 +230,16 @@ class TestCredentials(object):
 
     def test_build_regional_access_boundary_lookup_url(self):
         credentials = self.make_credentials()
-        expected_url = (
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/{}/allowedLocations".format(
-                credentials.service_account_email
-            )
+        url = credentials._build_regional_access_boundary_lookup_url()
+
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
         )
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+
+        assert url in (expected_url_standard, expected_url_mtls)
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()

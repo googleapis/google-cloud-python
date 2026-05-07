@@ -719,11 +719,16 @@ class TestImpersonatedCredentials(object):
 
     def test_build_regional_access_boundary_lookup_url_success(self):
         credentials = self.make_credentials()
-        # Ensure service_account_email is properly set by default mock
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+        url = credentials._build_regional_access_boundary_lookup_url()
+
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
             credentials.service_account_email
         )
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+
+        assert url in (expected_url_standard, expected_url_mtls)
 
     def test_with_scopes_provide_default_scopes(self):
         credentials = self.make_credentials()

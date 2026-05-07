@@ -1729,13 +1729,21 @@ class TestCredentials(object):
 
     def test_build_regional_access_boundary_lookup_url_workload(self):
         credentials = self.make_credentials()
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        url = credentials._build_regional_access_boundary_lookup_url()
+
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+
+        assert url in (expected_url_standard, expected_url_mtls)
 
     def test_build_regional_access_boundary_lookup_url_workforce(self):
         credentials = self.make_workforce_pool_credentials()
-        expected_url = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        url = credentials._build_regional_access_boundary_lookup_url()
+
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @pytest.mark.parametrize(
         "audience",

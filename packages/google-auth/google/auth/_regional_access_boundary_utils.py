@@ -385,6 +385,8 @@ class _RegionalAccessBoundaryRefreshManager(object):
                 credentials, copied_request, rab_manager
             )
             self._worker.start()
+
+
 class _AsyncRegionalAccessBoundaryRefreshManager(object):
     """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
 

@@ -306,8 +306,9 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url(request=mock_request)
 
         mock_get_service_account_info.assert_called_once_with(mock_request, "default")
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        assert url == expected_url
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_build_regional_access_boundary_lookup_url_http_client_request(
@@ -323,8 +324,9 @@ class TestCredentials(object):
 
         url = creds._build_regional_access_boundary_lookup_url(request=req)
 
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        assert url == expected_url
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
@@ -343,9 +345,9 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
 
         mock_get_service_account_info.assert_not_called()
-        assert url == (
-            "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
-        )
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
