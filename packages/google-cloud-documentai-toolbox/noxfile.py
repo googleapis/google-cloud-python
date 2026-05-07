@@ -49,7 +49,6 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
-    "setuptools",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -156,7 +155,6 @@ def lint_setup_py(session):
 
 def install_unittest_dependencies(session, *constraints):
     standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
-    session.install("setuptools")
     session.install(*standard_deps, *constraints)
 
     if UNIT_TEST_EXTERNAL_DEPENDENCIES:
