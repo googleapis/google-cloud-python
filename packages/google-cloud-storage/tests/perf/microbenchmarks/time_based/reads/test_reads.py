@@ -22,6 +22,17 @@ import time
 from io import BytesIO
 
 import pytest
+import aiohttp
+import subprocess
+import math
+
+token = subprocess.run(
+    ["gcloud", "auth", "print-access-token"],
+    capture_output=True,
+    text=True,
+    check=True,
+).stdout.strip()
+
 
 import tests.perf.microbenchmarks.time_based.reads.config as config
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
@@ -48,6 +59,7 @@ async def create_client():
 worker_loop = None
 worker_client = None
 worker_json_client = None
+worker_session = None
 
 
 # TODO: b/479135274 close clients properly.
@@ -59,23 +71,28 @@ def _worker_init(bucket_type):
             0, {i for i in range(0, os.cpu_count()) if i not in cpu_affinity}
         )
 
-    global worker_loop, worker_client, worker_json_client
+    global worker_loop, worker_client, worker_json_client, worker_session
     if bucket_type == "zonal":
         worker_loop = asyncio.new_event_loop()
         asyncio.set_event_loop(worker_loop)
         worker_client = worker_loop.run_until_complete(create_client())
     else:  # regional
-        from google.cloud import storage
+        worker_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(worker_loop)
+        async def _init_session():
+            return aiohttp.ClientSession()
+        worker_session = worker_loop.run_until_complete(_init_session())
 
-        worker_json_client = storage.Client()
+        import atexit
+        def _cleanup_session():
+            if not worker_session.closed:
+                worker_loop.run_until_complete(worker_session.close())
+        atexit.register(_cleanup_session)
 
 
-def _download_time_based_json(client, filename, params):
-    """Performs time-based downloads using the JSON API."""
+async def _download_time_based_json_async(session, filename, params):
+    """Performs time-based downloads using the JSON API via aiohttp."""
     total_bytes_downloaded = 0
-    bucket = client.bucket(params.bucket_name)
-    blob = bucket.blob(filename)
-
     offset = 0
     is_warming_up = True
     start_time = time.monotonic()
@@ -89,17 +106,20 @@ def _download_time_based_json(client, filename, params):
             total_bytes_downloaded = 0  # Reset counter after warmup
 
         bytes_in_iteration = 0
-        # For JSON, we can't batch ranges like gRPC, so we download one by one
         for _ in range(params.num_ranges):
             if params.pattern == "rand":
                 offset = random.randint(
                     0, params.file_size_bytes - params.chunk_size_bytes
                 )
 
-            data = blob.download_as_bytes(
-                start=offset, end=offset + params.chunk_size_bytes - 1
-            )
-            bytes_in_iteration += len(data)
+            url = f"https://storage.googleapis.com/storage/v1/b/{params.bucket_name}/o/{filename}?alt=media"
+            headers = {
+                "Authorization": f"Bearer {token}",
+                "Range": f"bytes={offset}-{offset + params.chunk_size_bytes - 1}",
+            }
+            async with session.get(url, headers=headers) as response:
+                data = await response.read()
+                bytes_in_iteration += len(data)
 
             if params.pattern == "seq":
                 offset += params.chunk_size_bytes
@@ -168,7 +188,9 @@ def _download_files_worker(process_idx, filename, params, bucket_type):
             _download_time_based_async(worker_client, filename, params)
         )
     else:  # regional
-        return _download_time_based_json(worker_json_client, filename, params)
+        return worker_loop.run_until_complete(
+            _download_time_based_json_async(worker_session, filename, params)
+        )
 
 
 def download_files_mp_mc_wrapper(pool, files_names, params, bucket_type):
