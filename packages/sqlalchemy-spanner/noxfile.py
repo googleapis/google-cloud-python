@@ -179,6 +179,7 @@ def compliance_test_14(session):
         "--asyncio-mode=auto",
         "tests/test_suite_14.py",
         *session.posargs,
+        # Silence SQLAlchemy 2.0 transition warnings for this 1.4 compatibility session.
         env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
     )
 
