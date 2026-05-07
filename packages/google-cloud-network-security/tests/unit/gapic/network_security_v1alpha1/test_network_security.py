@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1931,11 +1925,7 @@ async def test_list_authorization_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_authorization_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_authorization_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3940,9 +3930,7 @@ async def test_list_backend_authentication_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_backend_authentication_configs(request={})
         ).pages:
             pages.append(page_)
@@ -5994,11 +5982,7 @@ async def test_list_server_tls_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_server_tls_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_server_tls_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7963,11 +7947,7 @@ async def test_list_client_tls_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_client_tls_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_client_tls_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9948,9 +9928,7 @@ async def test_list_gateway_security_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_gateway_security_policies(request={})
         ).pages:
             pages.append(page_)
@@ -11957,9 +11935,7 @@ async def test_list_gateway_security_policy_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_gateway_security_policy_rules(request={})
         ).pages:
             pages.append(page_)
@@ -13958,11 +13934,7 @@ async def test_list_url_lists_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_url_lists(request={})
-        ).pages:
+        async for page_ in (await client.list_url_lists(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15851,9 +15823,7 @@ async def test_list_tls_inspection_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_tls_inspection_policies(request={})
         ).pages:
             pages.append(page_)
@@ -17872,11 +17842,7 @@ async def test_list_authz_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_authz_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_authz_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token

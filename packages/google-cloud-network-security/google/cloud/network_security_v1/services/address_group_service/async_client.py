@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -602,11 +602,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_address_group(request=request)
+                operation = await client.create_address_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -756,11 +756,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_address_group(request=request)
+                operation = await client.update_address_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -900,11 +900,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_address_group_items(request=request)
+                operation = await client.add_address_group_items(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1039,11 +1039,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_address_group_items(request=request)
+                operation = await client.remove_address_group_items(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1178,11 +1178,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.clone_address_group_items(request=request)
+                operation = await client.clone_address_group_items(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1315,11 +1315,11 @@ class AddressGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_address_group(request=request)
+                operation = await client.delete_address_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
