@@ -244,22 +244,29 @@ class TestCredentials(object):
         }
 
         request = mock.AsyncMock(spec=["transport.Request"])
-        headers = {}
+        headers1 = {}
 
         with mock.patch.object(
             credentials,
             "_is_regional_access_boundary_lookup_required",
             return_value=True,
         ):
+            # First request triggers background refresh, but proceeds without the header
             await credentials.before_request(
-                request, "GET", "https://storage.googleapis.com/bucket", headers
+                request, "GET", "https://storage.googleapis.com/bucket", headers1
             )
+            assert "x-allowed-locations" not in headers1
 
-            # Yield control to allow the background refresh task to run
-            await asyncio.sleep(0)
-
+            # Wait for the background task to finish and update the cache
+            await credentials._rab_manager.refresh_manager._worker_task
             assert mock_lookup.called
-            assert headers["x-allowed-locations"] == "0xA30"
+
+            # Second request should now find the data in the cache and attach the header
+            headers2 = {}
+            await credentials.before_request(
+                request, "GET", "https://storage.googleapis.com/bucket", headers2
+            )
+            assert headers2["x-allowed-locations"] == "0xA30"
 
     @mock.patch(
         "google.oauth2._client_async._lookup_regional_access_boundary", autospec=True
@@ -284,8 +291,8 @@ class TestCredentials(object):
                 request, "GET", "https://storage.googleapis.com/bucket", headers
             )
 
-            # Yield control to allow the background refresh task to run
-            await asyncio.sleep(0)
+            # Wait for the background task to finish
+            await credentials._rab_manager.refresh_manager._worker_task
 
             assert mock_lookup.called
             assert "x-allowed-locations" not in headers

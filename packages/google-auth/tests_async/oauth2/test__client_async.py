@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import asyncio
 import http.client as http_client
 import json
 from unittest import mock
