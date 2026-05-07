@@ -22,6 +22,7 @@ import typing
 from datetime import datetime
 from typing import Dict, Generator, Optional
 
+import fsspec
 import gcsfs  # type: ignore[import-untyped]
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
@@ -76,7 +77,8 @@ def configure_gcsfs():
     # gcsfs by default uses a cache that can be stale, causing file loads to
     # fail if the file was uploaded indirectly (eg via bq export job) during the
     # course of the tests. disable the cache to avoid this.
-    gcsfs.GCSFileSystem(use_listings_cache=False)
+    fsspec.config.conf["gcs"] = {"use_listings_cache": False}
+    gcsfs.GCSFileSystem.clear_instance_cache()
 
 
 @pytest.fixture(scope="session")
