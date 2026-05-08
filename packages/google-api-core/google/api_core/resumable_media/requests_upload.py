@@ -14,7 +14,7 @@
 
 import datetime
 import logging
-from typing import Any, BinaryIO, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Any, BinaryIO, Callable, Dict, Optional, Sequence, Tuple
 
 import requests
 import google.api_core.retry
@@ -136,7 +136,11 @@ class RequestsResumableUpload:
             if isinstance(exc, requests.exceptions.RequestException):
                 if isinstance(
                     exc,
-                    (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError, requests.exceptions.Timeout),
+                    (
+                        requests.exceptions.ConnectionError,
+                        requests.exceptions.ChunkedEncodingError,
+                        requests.exceptions.Timeout,
+                    ),
                 ):
                     return True
             if isinstance(exc, exceptions.GoogleAPICallError):

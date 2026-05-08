@@ -351,4 +351,3 @@ def test_make_resumable_upload_with_custom_headers(caplog):
     # Check for upload/finalize request logs NOT containing the custom header
     assert f"HTTP Request: POST {session_url}" in caplog.text
     assert caplog.text.count("'X-Custom-Header': 'CustomValue'") == 1
-
