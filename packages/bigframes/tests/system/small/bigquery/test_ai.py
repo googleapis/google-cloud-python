@@ -26,8 +26,13 @@ from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
 
 
-def _create_mock_obj_ref_df(session, uris, name="image"):
+def _create_mock_obj_ref_df(session, uris, name="image", connection=None):
     df = bpd.DataFrame({name: uris}, session=session)
+    # Convert string URIs to ObjectRef structs
+    if connection is None:
+        connection = "us.bigframes-rf-conn"
+    df[name] = bbq.obj.make_ref(df[name], authorizer=connection)
+
     table_id = f"bigframes-dev.bigframes_tests_sys.tmp_obj_ref_{uuid.uuid4().hex}"
     df.to_gbq(table_id, if_exists="replace")
 
@@ -41,6 +46,7 @@ def _create_mock_obj_ref_df(session, uris, name="image"):
                 field_type=field.field_type,
                 mode=field.mode,
                 description="bigframes_dtype: OBJ_REF_DTYPE",
+                fields=field.fields,
             )
             break
     table.schema = schema
@@ -183,9 +189,12 @@ def test_ai_generate_bool(session):
     )
 
 
-def test_ai_generate_bool_multi_model(session):
+def test_ai_generate_bool_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
@@ -221,9 +230,12 @@ def test_ai_generate_int(session):
     )
 
 
-def test_ai_generate_int_multi_model(session):
+def test_ai_generate_int_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
@@ -261,9 +273,12 @@ def test_ai_generate_double(session):
     )
 
 
-def test_ai_generate_double_multi_model(session):
+def test_ai_generate_double_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
@@ -363,7 +378,10 @@ def test_ai_if(session):
 
 def test_ai_if_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
@@ -393,7 +411,10 @@ def test_ai_classify_with_examples(session):
 
 def test_ai_classify_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
@@ -413,9 +434,12 @@ def test_ai_score(session):
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
-def test_ai_score_multi_model(session):
+def test_ai_score_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
-        session, ["gs://cloud-samples-data/vision/ocr/sign.jpg"], name="image"
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
     prompt = ("Rank the liveliness of ", image_runtime, "on the scale from 1 to 3")
