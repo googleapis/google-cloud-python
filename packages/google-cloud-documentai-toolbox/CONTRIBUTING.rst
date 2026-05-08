@@ -148,7 +148,6 @@ Running System Tests
 
   .. note::
 
-      System tests are only configured to run under Python 3.10 and 3.14.
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
