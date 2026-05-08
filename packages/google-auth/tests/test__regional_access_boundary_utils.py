@@ -301,6 +301,26 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert unpickled.refresh_manager._lock is not None
         assert unpickled.refresh_manager._worker is None
 
+    def test_unpickle_old_credentials_without_rab(self):
+        import pickle
+
+        creds = CredentialsImpl()
+        old_state = creds.__dict__.copy()
+        if "_rab_manager" in old_state:
+            del old_state["_rab_manager"]
+        if "_use_non_blocking_refresh" in old_state:
+            del old_state["_use_non_blocking_refresh"]
+        if "_refresh_worker" in old_state:
+            del old_state["_refresh_worker"]
+
+        new_instance = CredentialsImpl.__new__(CredentialsImpl)
+        new_instance.__setstate__(old_state)
+
+        assert hasattr(new_instance, "_rab_manager")
+        assert new_instance._rab_manager is not None
+        assert new_instance._use_non_blocking_refresh is False
+        assert new_instance._refresh_worker is not None
+
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )

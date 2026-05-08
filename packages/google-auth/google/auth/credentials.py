@@ -325,6 +325,22 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
 
+    def __setstate__(self, state):
+        """Pickle helper that restores state, safely reconstructing RAB fields if missing."""
+        self.__dict__.update(state)
+        if "_rab_manager" not in self.__dict__:
+            from google.auth import _regional_access_boundary_utils
+
+            self._rab_manager = (
+                _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+            )
+        if "_use_non_blocking_refresh" not in self.__dict__:
+            self._use_non_blocking_refresh = False
+        if "_refresh_worker" not in self.__dict__:
+            from google.auth._refresh_worker import RefreshThreadManager
+
+            self._refresh_worker = RefreshThreadManager()
+
     @property
     def regional_access_boundary(self):
         """Optional[str]: The encoded Regional Access Boundary locations."""
