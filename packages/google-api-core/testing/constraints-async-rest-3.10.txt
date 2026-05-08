@@ -12,3 +12,8 @@ requests==2.33.0
 grpcio==1.80.0
 grpcio-status==1.33.2
 proto-plus==1.22.3
+# Note: We pin aiohttp to 3.9.0 to avoid deprecation warnings about '@coroutine'
+# decorators which were deprecated since Python 3.8. When older versions of aiohttp
+# load, because they used @coroutine deep inside their internals, the warnings
+# bubble up and cause our nox session to fail.
+aiohttp==3.9.0
