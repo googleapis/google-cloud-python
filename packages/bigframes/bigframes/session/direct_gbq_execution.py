@@ -161,15 +161,24 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             job_config.labels.update(self._labels)
 
         try:
-            return bq_io.start_query_with_client(
-                self.bqclient,
-                sql,
-                job_config=job_config,
-                metrics=self._metrics,
-                query_with_job=query_with_job,
-                publisher=self._publisher,
-                session=session,
-            )
+            if query_with_job:
+                return bq_io.start_query_with_job(
+                    self.bqclient,
+                    sql,
+                    job_config=job_config,
+                    metrics=self._metrics,
+                    publisher=self._publisher,
+                    session=session,
+                )
+            else:
+                return bq_io.start_query_with_job_optional(
+                    self.bqclient,
+                    sql,
+                    job_config=job_config,
+                    metrics=self._metrics,
+                    publisher=self._publisher,
+                    session=session,
+                )
         except google.api_core.exceptions.BadRequest as e:
             # Unfortunately, this error type does not have a separate error code or exception type
             if "Resources exceeded during query execution" in e.message:

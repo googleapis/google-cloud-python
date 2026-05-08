@@ -768,7 +768,7 @@ def test_read_gbq_function_runs_existing_udf_4_params(session):
 
 
 def test_read_gbq_function_runs_existing_udf_array_output(session, routine_id_unique):
-    bigframes.session._io.bigquery.start_query_with_client(
+    bigframes.session._io.bigquery.start_query_with_job(
         session.bqclient,
         textwrap.dedent(
             f"""
@@ -784,7 +784,6 @@ def test_read_gbq_function_runs_existing_udf_array_output(session, routine_id_un
         project=None,
         timeout=None,
         metrics=None,
-        query_with_job=True,
         publisher=bigframes.core.events.Publisher(),
     )
     func = session.read_gbq_function(routine_id_unique)
@@ -807,7 +806,7 @@ def test_read_gbq_function_runs_existing_udf_array_output(session, routine_id_un
 def test_read_gbq_function_runs_existing_udf_2_params_array_output(
     session, routine_id_unique
 ):
-    bigframes.session._io.bigquery.start_query_with_client(
+    bigframes.session._io.bigquery.start_query_with_job(
         session.bqclient,
         textwrap.dedent(
             f"""
@@ -823,7 +822,6 @@ def test_read_gbq_function_runs_existing_udf_2_params_array_output(
         project=None,
         timeout=None,
         metrics=None,
-        query_with_job=True,
         publisher=bigframes.core.events.Publisher(),
     )
     func = session.read_gbq_function(routine_id_unique)
@@ -848,7 +846,7 @@ def test_read_gbq_function_runs_existing_udf_2_params_array_output(
 def test_read_gbq_function_runs_existing_udf_4_params_array_output(
     session, routine_id_unique
 ):
-    bigframes.session._io.bigquery.start_query_with_client(
+    bigframes.session._io.bigquery.start_query_with_job(
         session.bqclient,
         textwrap.dedent(
             f"""
@@ -864,7 +862,6 @@ def test_read_gbq_function_runs_existing_udf_4_params_array_output(
         project=None,
         timeout=None,
         metrics=None,
-        query_with_job=True,
         publisher=bigframes.core.events.Publisher(),
     )
     func = session.read_gbq_function(routine_id_unique)

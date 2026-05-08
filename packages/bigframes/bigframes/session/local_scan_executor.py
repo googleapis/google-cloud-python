@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Optional
 
 from bigframes.core import bigframe_node, rewrite
-from bigframes.session import executor, semi_executor, execution_spec
+from bigframes.session import execution_spec, executor, semi_executor
 
 
 class LocalScanExecutor(semi_executor.SemiExecutor):

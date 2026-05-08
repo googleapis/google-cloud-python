@@ -223,6 +223,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 execution_spec, destination_spec=ex_spec.EphemeralTableSpec()
             )
             results = self._execute_bigquery(array_value, execution_spec)
+            assert isinstance(results, executor.BQTableExecuteResult)
             self._export_gbq_with_dml(results, dest_spec)
             result = results
         else:
@@ -265,7 +266,7 @@ class BigQueryCachingExecutor(executor.Executor):
             format=gcs_export_spec.format,
             export_options=dict(gcs_export_spec.export_options),
         )
-        bq_io.start_query_with_client(
+        bq_io.start_query_with_job(
             self.bqclient,
             export_data_statement,
             job_config=bigquery.QueryJobConfig(),
@@ -273,19 +274,20 @@ class BigQueryCachingExecutor(executor.Executor):
             project=None,
             location=None,
             timeout=None,
-            query_with_job=True,
             publisher=self._publisher,
         )
 
     def _export_gbq_with_dml(
-        self, result: executor.ExecuteResult, spec: ex_spec.TableOutputSpec
-    ) -> executor.ExecuteResult:
+        self, result: executor.BQTableExecuteResult, spec: ex_spec.TableOutputSpec
+    ):
         """
         Export the ArrayValue to an existing BigQuery table, using DML.
         """
         # b/409086472: Uses DML for table appends and replacements to avoid
         # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
         # https://cloud.google.com/bigquery/quotas#standard_tables
+        assert result.query_job is not None
+        assert result.query_job.destination is not None
         ir = sqlglot_ir.SQLGlotIR.from_table(
             result.query_job.destination.project,
             result.query_job.destination.dataset_id,
@@ -298,13 +300,12 @@ class BigQueryCachingExecutor(executor.Executor):
             assert spec.if_exists == "replace"
             sql = sg_sql.to_sql(sg_sql.replace(ir.expr.as_select_all(), spec.table))
 
-        bq_io.start_query_with_client(
+        bq_io.start_query_with_job(
             self.bqclient,
             sql,
             job_config=bigquery.QueryJobConfig(),
             metrics=self.metrics,
             publisher=self._publisher,
-            query_with_job=True,
         )
 
     def dry_run(
@@ -357,9 +358,9 @@ class BigQueryCachingExecutor(executor.Executor):
         if cache_spec.ordering == "offsets_col":
             order_col_id = guid.generate_guid()
             plan = nodes.PromoteOffsetsNode(plan, identifiers.ColumnId(order_col_id))
-            cluster_cols = [order_col_id]
-            ordering = bigframes.core.ordering.TotalOrdering.from_offset_col(
-                order_col_id
+            cluster_cols = (order_col_id,)
+            ordering: bigframes.core.ordering.RowOrdering = (
+                bigframes.core.ordering.TotalOrdering.from_offset_col(order_col_id)
             )
         elif cache_spec.ordering == "order_key":
             plan, ordering = rewrite.pull_out_order(plan)
@@ -376,6 +377,9 @@ class BigQueryCachingExecutor(executor.Executor):
         )
         # We don't use _execute_gbq_table_export, as this result is internal, not exported.
         result = self._execute_gbq_query_only(arr_value, execution_spec)
+        assert isinstance(result, executor.BQTableExecuteResult), (
+            "expected result to be BQTableExecuteResult"
+        )
         result._data = dataclasses.replace(result._data, ordering=ordering)
         return result
 

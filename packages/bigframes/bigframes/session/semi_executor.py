@@ -15,7 +15,7 @@ import abc
 from typing import Optional
 
 from bigframes.core import bigframe_node
-from bigframes.session import executor, execution_spec
+from bigframes.session import execution_spec, executor
 
 
 # Unstable interface, in development

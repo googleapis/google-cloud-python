@@ -34,7 +34,7 @@ from bigframes.operations import (
     numeric_ops,
     string_ops,
 )
-from bigframes.session import executor, semi_executor, execution_spec
+from bigframes.session import execution_spec, executor, semi_executor
 
 if TYPE_CHECKING:
     import polars as pl

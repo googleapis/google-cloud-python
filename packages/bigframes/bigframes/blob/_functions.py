@@ -103,7 +103,7 @@ AS r\"\"\"
 \"\"\"
         """
 
-        bf_io_bigquery.start_query_with_client(
+        bf_io_bigquery.start_query_with_job(
             self._session.bqclient,
             sql,
             job_config=bigquery.QueryJobConfig(),
@@ -111,7 +111,6 @@ AS r\"\"\"
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             publisher=self._session._publisher,
         )
 

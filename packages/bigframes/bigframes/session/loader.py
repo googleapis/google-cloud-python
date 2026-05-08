@@ -1442,7 +1442,7 @@ class GbqDataLoader:
         job_config = bigquery.QueryJobConfig() if job_config is None else job_config
 
         if bigframes.options.compute.maximum_bytes_billed is not None:
-            # Maybe this should be pushed down into start_query_with_client
+            # Maybe this should be pushed down into start_query_with_job
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
             )
@@ -1462,7 +1462,7 @@ class GbqDataLoader:
         Do not execute dataframe through this API, instead use the executor.
         """
         job_config = self._prepare_job_config(job_config)
-        rows, _ = bf_io_bigquery.start_query_with_client(
+        rows, _ = bf_io_bigquery.start_query_with_job_optional(
             self._bqclient,
             sql,
             job_config=job_config,
@@ -1470,7 +1470,6 @@ class GbqDataLoader:
             location=None,
             project=None,
             metrics=None,
-            query_with_job=False,
             publisher=self._publisher,
             session=self._session,
         )
@@ -1489,7 +1488,7 @@ class GbqDataLoader:
         Do not execute dataframe through this API, instead use the executor.
         """
         job_config = self._prepare_job_config(job_config)
-        _, query_job = bf_io_bigquery.start_query_with_client(
+        _, query_job = bf_io_bigquery.start_query_with_job(
             self._bqclient,
             sql,
             job_config=job_config,
@@ -1497,7 +1496,6 @@ class GbqDataLoader:
             location=None,
             project=None,
             metrics=None,
-            query_with_job=True,
             publisher=self._publisher,
             session=self._session,
         )

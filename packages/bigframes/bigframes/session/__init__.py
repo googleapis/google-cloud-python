@@ -2310,7 +2310,7 @@ class Session(
         # so we must reset any encryption set in the job config
         # https://cloud.google.com/bigquery/docs/customer-managed-encryption#encrypt-model
         job_config.destination_encryption_configuration = None
-        iterator, query_job = bf_io_bigquery.start_query_with_client(
+        iterator, query_job = bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=job_config,
@@ -2318,7 +2318,6 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             job_retry=third_party_gcb_retry.DEFAULT_ML_JOB_RETRY,
             publisher=self._publisher,
             session=self,
@@ -2340,7 +2339,7 @@ class Session(
                 uris = ['{path}']);
             """
         )
-        bf_io_bigquery.start_query_with_client(
+        bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=bigquery.QueryJobConfig(),
@@ -2348,7 +2347,6 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             publisher=self._publisher,
             session=self,
         )

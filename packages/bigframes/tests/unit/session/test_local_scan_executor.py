@@ -17,7 +17,7 @@ import pyarrow
 import pytest
 
 from bigframes.core import identifiers, local_data, nodes
-from bigframes.session import local_scan_executor, execution_spec
+from bigframes.session import execution_spec, local_scan_executor
 from bigframes.testing import mocks
 
 SPEC = execution_spec.ExecutionSpec(

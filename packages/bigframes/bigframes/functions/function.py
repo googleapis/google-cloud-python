@@ -183,10 +183,9 @@ class BigqueryCallableRoutine:
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
-        iter, job = bf_io_bigquery.start_query_with_client(
+        iter, job = bf_io_bigquery.start_query_with_job(
             self._session.bqclient,
             sql=sql,
-            query_with_job=True,
             job_config=bigquery.QueryJobConfig(),
             publisher=self._session._publisher,
         )  # type: ignore
@@ -257,10 +256,9 @@ class BigqueryCallableRowRoutine:
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
-        iter, job = bf_io_bigquery.start_query_with_client(
+        iter, job = bf_io_bigquery.start_query_with_job(
             self._session.bqclient,
             sql=sql,
-            query_with_job=True,
             job_config=bigquery.QueryJobConfig(),
             publisher=self._session._publisher,
         )  # type: ignore
