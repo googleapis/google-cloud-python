@@ -1,5 +1,5 @@
 {
-    "api_description": "delivers highly personalized product recommendations at scale.",
+    "api_description": "Recommendations AI service enables customers to build end-to-end\npersonalized recommendation systems without requiring a high level of\nexpertise in machine learning, recommendation system, or Google Cloud.",
     "api_id": "recommendationengine.googleapis.com",
     "api_shortname": "recommendationengine",
     "client_documentation": "https://cloud.google.com/python/docs/reference/recommendationengine/latest",

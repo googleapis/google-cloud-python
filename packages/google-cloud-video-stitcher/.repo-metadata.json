@@ -1,5 +1,5 @@
 {
-    "api_description": "The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.",
+    "api_description": "The Video Stitcher API allows you to manipulate video content to dynamically insert ads prior to delivery to client devices.",
     "api_id": "videostitcher.googleapis.com",
     "api_shortname": "videostitcher",
     "client_documentation": "https://cloud.google.com/python/docs/reference/videostitcher/latest",

@@ -1,5 +1,5 @@
 {
-    "api_description": "Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.",
+    "api_description": "TPU API provides customers with access to Google TPU technology.",
     "api_id": "tpu.googleapis.com",
     "api_shortname": "tpu",
     "client_documentation": "https://cloud.google.com/python/docs/reference/tpu/latest",

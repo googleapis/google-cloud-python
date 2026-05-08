@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Key Management Service API
+# Cloud Key Management Service (KMS) API
 
-Overview of the APIs available for Google Cloud Key Management Service API.
+Overview of the APIs available for Cloud Key Management Service (KMS) API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Key Management Service API.
+Cloud Key Management Service (KMS) API.
 
 [classes](https://cloud.google.com/python/docs/reference/cloudkms/latest/summary_class.html)
 

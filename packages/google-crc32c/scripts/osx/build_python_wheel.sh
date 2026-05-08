@@ -59,7 +59,7 @@ OSX_DIR="${REPO_ROOT}/scripts/osx"
 VENV=${REPO_ROOT}/venv${PY_BIN}
 "python${PY_BIN}" -m venv ${VENV}
 
-curl https://bootstrap.pypa.io/get-pip.py | ${VENV}/bin/python
+curl https://bootstrap.pypa.io/pip/3.9/get-pip.py | ${VENV}/bin/python
 ${VENV}/bin/python -m pip install \
     --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
 

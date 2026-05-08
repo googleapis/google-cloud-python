@@ -1,5 +1,5 @@
 {
-    "api_description": "protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.",
+    "api_description": "Help protect your website from fraudulent activity, spam, and abuse without\ncreating friction.",
     "api_id": "recaptchaenterprise.googleapis.com",
     "api_shortname": "recaptchaenterprise",
     "client_documentation": "https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest",

@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Telco Automation API.
+This package includes clients for multiple versions of Telco Automation.
 By default, you will get version ``telcoautomation_v1``.
 
 

@@ -12,9 +12,9 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.24.7",
-    "jest": "^29.7.0",
+    "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.2.0",
     "@testing-library/jest-dom": "^6.4.6",
-    "jsdom": "^24.1.0"
+    "jsdom": "^29.0.0"
   }
 }

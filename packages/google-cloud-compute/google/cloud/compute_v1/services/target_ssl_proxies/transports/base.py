@@ -149,52 +149,72 @@ class TargetSslProxiesTransport(abc.ABC):
         self._wrapped_methods = {
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_backend_service: gapic_v1.method.wrap_method(
                 self.set_backend_service,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_certificate_map: gapic_v1.method.wrap_method(
                 self.set_certificate_map,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_proxy_header: gapic_v1.method.wrap_method(
                 self.set_proxy_header,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_ssl_certificates: gapic_v1.method.wrap_method(
                 self.set_ssl_certificates,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_ssl_policy: gapic_v1.method.wrap_method(
                 self.set_ssl_policy,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

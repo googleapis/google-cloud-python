@@ -1352,7 +1352,11 @@ def test_session_controller_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=None,
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -4677,6 +4681,7 @@ def test_create_session_rest_call_success(request_type):
                 "shuffle_storage_gb_seconds": 2743,
                 "milli_accelerator_seconds": 2633,
                 "accelerator_type": "accelerator_type_value",
+                "update_time": {},
             },
             "current_usage": {
                 "milli_dcu": 946,
@@ -4714,6 +4719,7 @@ def test_create_session_rest_call_success(request_type):
                 "ttl": {},
                 "staging_bucket": "staging_bucket_value",
                 "authentication_config": {"user_workload_authentication_type": 1},
+                "resource_manager_tags": {},
             },
             "peripherals_config": {
                 "metastore_service": "metastore_service_value",
@@ -6048,7 +6054,11 @@ def test_session_controller_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6074,7 +6084,11 @@ def test_session_controller_auth_adc():
         SessionControllerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id=None,
         )
 
@@ -6094,7 +6108,11 @@ def test_session_controller_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6147,7 +6165,11 @@ def test_session_controller_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=["1", "2"],
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -6455,10 +6477,41 @@ def test_session_controller_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_service_path():
+def test_crypto_key_path():
     project = "squid"
     location = "clam"
-    service = "whelk"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = SessionControllerClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = SessionControllerClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionControllerClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "winkle"
+    location = "nautilus"
+    service = "scallop"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -6470,9 +6523,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "service": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "service": "clam",
     }
     path = SessionControllerClient.service_path(**expected)
 
@@ -6482,9 +6535,9 @@ def test_parse_service_path():
 
 
 def test_session_path():
-    project = "cuttlefish"
-    location = "mussel"
-    session = "winkle"
+    project = "whelk"
+    location = "octopus"
+    session = "oyster"
     expected = "projects/{project}/locations/{location}/sessions/{session}".format(
         project=project,
         location=location,
@@ -6496,9 +6549,9 @@ def test_session_path():
 
 def test_parse_session_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "session": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "session": "mussel",
     }
     path = SessionControllerClient.session_path(**expected)
 
@@ -6508,9 +6561,9 @@ def test_parse_session_path():
 
 
 def test_session_template_path():
-    project = "squid"
-    location = "clam"
-    template = "whelk"
+    project = "winkle"
+    location = "nautilus"
+    template = "scallop"
     expected = (
         "projects/{project}/locations/{location}/sessionTemplates/{template}".format(
             project=project,
@@ -6524,9 +6577,9 @@ def test_session_template_path():
 
 def test_parse_session_template_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "template": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "template": "clam",
     }
     path = SessionControllerClient.session_template_path(**expected)
 
@@ -6536,7 +6589,7 @@ def test_parse_session_template_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6546,7 +6599,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = SessionControllerClient.common_billing_account_path(**expected)
 
@@ -6556,7 +6609,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6566,7 +6619,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = SessionControllerClient.common_folder_path(**expected)
 
@@ -6576,7 +6629,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6586,7 +6639,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = SessionControllerClient.common_organization_path(**expected)
 
@@ -6596,7 +6649,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6606,7 +6659,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = SessionControllerClient.common_project_path(**expected)
 
@@ -6616,8 +6669,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6628,8 +6681,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = SessionControllerClient.common_location_path(**expected)
 

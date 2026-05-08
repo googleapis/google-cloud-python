@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-apps-meet",
-    "name_pretty": "Google Meet API",
+    "name_pretty": "Google Meet",
     "product_documentation": "https://developers.google.com/meet/api/guides/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

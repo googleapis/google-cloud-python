@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Common API
+# Common Operation Metadata type API
 
-Overview of the APIs available for Google Cloud Common API.
+Overview of the APIs available for Common Operation Metadata type API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Common API.
+Common Operation Metadata type API.
 
 [classes](https://cloud.google.com/python/docs/reference/common/latest/summary_class.html)
 

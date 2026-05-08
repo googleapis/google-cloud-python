@@ -1134,6 +1134,9 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_AIGenerateDouble(self, op, **kwargs):
         return sge.func("AI.GENERATE_DOUBLE", *self._compile_ai_args(**kwargs))
 
+    def visit_AIEmbed(self, op, **kwargs):
+        return sge.func("AI.EMBED", *self._compile_ai_args(**kwargs))
+
     def visit_AIIf(self, op, **kwargs):
         return sge.func("AI.IF", *self._compile_ai_args(**kwargs))
 
@@ -1142,6 +1145,9 @@ class BigQueryCompiler(SQLGlotCompiler):
 
     def visit_AIScore(self, op, **kwargs):
         return sge.func("AI.SCORE", *self._compile_ai_args(**kwargs))
+
+    def visit_AISimilarity(self, op, **kwargs):
+        return sge.func("AI.SIMILARITY", *self._compile_ai_args(**kwargs))
 
     def _compile_ai_args(self, **kwargs):
         args = []

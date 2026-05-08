@@ -1,9 +1,9 @@
-Python Client for Dialogflow CX
-===============================
+Python Client for Dialogflow
+============================
 
 |stable| |pypi| |versions|
 
-`Dialogflow CX`_: Builds conversational interfaces (for example, chatbots, and voice-powered
+`Dialogflow`_: Builds conversational interfaces (for example, chatbots, and voice-powered
 apps and devices).
 
 - `Client Library Documentation`_
@@ -15,7 +15,7 @@ apps and devices).
    :target: https://pypi.org/project/google-cloud-dialogflow-cx/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dialogflow-cx.svg
    :target: https://pypi.org/project/google-cloud-dialogflow-cx/
-.. _Dialogflow CX: https://cloud.google.com/dialogflow/cx/docs
+.. _Dialogflow: https://cloud.google.com/dialogflow/cx/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow-cx/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dialogflow/cx/docs
 
@@ -26,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Dialogflow CX.`_
+3. `Enable the Dialogflow.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Dialogflow CX.:  https://cloud.google.com/dialogflow/cx/docs
+.. _Enable the Dialogflow.:  https://cloud.google.com/dialogflow/cx/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -98,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Dialogflow CX
+-  Read the `Client Library Documentation`_ for Dialogflow
    to see other available methods on the client.
--  Read the `Dialogflow CX Product documentation`_ to learn
+-  Read the `Dialogflow Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Dialogflow CX Product documentation:  https://cloud.google.com/dialogflow/cx/docs
+.. _Dialogflow Product documentation:  https://cloud.google.com/dialogflow/cx/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

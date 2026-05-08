@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .async_client import MemorystoreAsyncClient
 from .client import MemorystoreClient
 
-__all__ = ("MemorystoreClient",)
+__all__ = (
+    "MemorystoreClient",
+    "MemorystoreAsyncClient",
+)

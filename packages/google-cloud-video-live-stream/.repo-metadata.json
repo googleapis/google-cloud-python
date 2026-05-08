@@ -1,5 +1,5 @@
 {
-    "api_description": "transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.",
+    "api_description": "The Live Stream API transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.",
     "api_id": "livestream.googleapis.com",
     "api_shortname": "livestream",
     "client_documentation": "https://cloud.google.com/python/docs/reference/livestream/latest",

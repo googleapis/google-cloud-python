@@ -49,6 +49,7 @@ __protobuf__ = proto.module(
         "Rule",
         "CELExpression",
         "OperationMetadata",
+        "Control",
         "ControlFamily",
     },
 )
@@ -162,6 +163,14 @@ class CloudControlCategory(proto.Enum):
         CC_CATEGORY_BCDR (15):
             The business continuity and disaster recovery
             (BCDR) category.
+        CC_CATEGORY_ADMIN_ACCESS (16):
+            The admin access category.
+        CC_CATEGORY_DATA_RESIDENCY (17):
+            DRZ (Data Residency).
+        CC_CATEGORY_RESOURCE_USAGE_RESTRICTION (18):
+            RUR (Resource Usage Restriction).
+        CC_CATEGORY_SERVICE_SPECIFIC (19):
+            SERVICE SPECIFIC
     """
 
     CLOUD_CONTROL_CATEGORY_UNSPECIFIED = 0
@@ -180,6 +189,10 @@ class CloudControlCategory(proto.Enum):
     CC_CATEGORY_VULNERABILITY_MANAGEMENT = 13
     CC_CATEGORY_PRIVACY = 14
     CC_CATEGORY_BCDR = 15
+    CC_CATEGORY_ADMIN_ACCESS = 16
+    CC_CATEGORY_DATA_RESIDENCY = 17
+    CC_CATEGORY_RESOURCE_USAGE_RESTRICTION = 18
+    CC_CATEGORY_SERVICE_SPECIFIC = 19
 
 
 class CloudProvider(proto.Enum):
@@ -329,9 +342,12 @@ class Framework(proto.Message):
 
     Attributes:
         name (str):
-            Required. Identifier. The name of the framework, in the
-            format
-            ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``.
+            Required. Identifier. The name of the framework, in one of
+            the following formats:
+            ``organizations/{organization}/locations/{location}/frameworks/{framework}``
+            or
+            ``projects/{project}/locations/{location}/frameworks/{framework}``.
+
             The only supported location is ``global``.
         major_revision_id (int):
             Output only. The major version of the
@@ -437,8 +453,12 @@ class CloudControlDetails(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the cloud control, in the format
-            ``organizations/{organization}/locations/{location}/cloudControls/{cloud-control}``.
+            Required. The name of the cloud control, in one of the
+            following formats:
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``
+            or
+            ``projects/{project}/locations/{location}/cloudControls/{cloud_control}``.
+
             The only supported location is ``global``.
         major_revision_id (int):
             Required. The major version of the cloud
@@ -467,8 +487,11 @@ class CloudControlDetails(proto.Message):
 
 
 class FrameworkReference(proto.Message):
-    r"""The reference of a framework, in the format
-    ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
+    r"""The reference of a framework, in one of the following formats:
+
+    - ``organizations/{organization}/locations/{location}/frameworks/{framework}``
+    - ``projects/{project}/locations/{location}/frameworks/{framework}``.
+
     The only supported location is ``global``.
 
 
@@ -528,9 +551,12 @@ class CloudControl(proto.Message):
 
     Attributes:
         name (str):
-            Required. Identifier. The name of the cloud control, in the
-            format
-            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}``.
+            Required. Identifier. The name of the cloud control, in
+            either of the formats:
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``
+            or
+            ``projects/{project}/locations/{location}/cloudControls/{cloud_control}``.
+
             The only supported location is ``global``.
         major_revision_id (int):
             Output only. The major version of the cloud
@@ -896,23 +922,23 @@ class ParamValue(proto.Message):
 
     Attributes:
         string_value (str):
-            A string value.
+            Optional. A string value.
 
             This field is a member of `oneof`_ ``kind``.
         bool_value (bool):
-            A boolean value.
+            Optional. A boolean value.
 
             This field is a member of `oneof`_ ``kind``.
         string_list_value (google.cloud.cloudsecuritycompliance_v1.types.StringList):
-            A repeated string.
+            Optional. A repeated string.
 
             This field is a member of `oneof`_ ``kind``.
         number_value (float):
-            A double value.
+            Optional. A double value.
 
             This field is a member of `oneof`_ ``kind``.
         oneof_value (google.cloud.cloudsecuritycompliance_v1.types.Parameter):
-            Sub-parameter values.
+            Optional. Sub-parameter values.
 
             This field is a member of `oneof`_ ``kind``.
     """
@@ -1141,6 +1167,182 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class Control(proto.Message):
+    r"""The regulatory control.
+
+    Attributes:
+        name (str):
+            Output only. The name of a regulatory control, in one of the
+            following formats:
+
+            - ``organizations/{organization}/locations/{location}/controls/{control}``
+            - ``projects/{project}/locations/{location}/controls/{control}``.
+
+            The only supported location is ``global``.
+        display_name (str):
+            Output only. The friendly name for the
+            regulatory control.
+        description (str):
+            Output only. The description of the
+            regulatory control.
+        family (google.cloud.cloudsecuritycompliance_v1.types.Control.Family):
+            Output only. The regulatory group that the
+            control belongs to.
+        control_family (google.cloud.cloudsecuritycompliance_v1.types.ControlFamily):
+            Output only. The regulatory family that the
+            control belongs to.
+        responsibility_type (google.cloud.cloudsecuritycompliance_v1.types.RegulatoryControlResponsibilityType):
+            Output only. The entity that's responsible
+            for the control, whether Google, you as the
+            customer, or both.
+        google_responsibility_description (str):
+            Output only. A description of Google's
+            responsibility for the regulatory control.
+        google_responsibility_implementation (str):
+            Output only. A description of Google's
+            responsibility for implementing the regulatory
+            control.
+        customer_responsibility_description (str):
+            Output only. A description of your
+            responsibility for the regulatory control.
+        customer_responsibility_implementation (str):
+            Output only. A description of the your
+            responsibility for implementing the regulatory
+            control.
+        shared_responsibility_description (str):
+            Output only. A description of the
+            responsibility that's shared between Google and
+            you in implementing this control.
+        additional_content_uri (str):
+            Output only. A link to the documentation
+            that's related to this control.
+        related_frameworks (MutableSequence[str]):
+            Output only. The frameworks that include this
+            control.
+    """
+
+    class Family(proto.Enum):
+        r"""The regulatory control family.
+
+        Values:
+            FAMILY_UNSPECIFIED (0):
+                Default value. This value is unused.
+            AC (1):
+                Access control
+            AT (2):
+                Awareness and araining
+            AU (3):
+                Audit and accountability
+            CA (4):
+                Certification, accreditation, and security
+                assessments
+            CM (5):
+                Configuration management
+            CP (6):
+                Contingency planning
+            IA (7):
+                Identification and authentication
+            IR (8):
+                Incident response
+            MA (9):
+                Maintenance
+            MP (10):
+                Media protection
+            PE (11):
+                Physical and environmental protection
+            PL (12):
+                Security planning
+            PS (13):
+                Personnel aecurity
+            RA (14):
+                Risk assessment
+            SA (15):
+                System services and acquisition
+            SC (16):
+                System and communications protection
+            SI (17):
+                System and information integrity
+            SR (18):
+                Supply chain risk management
+        """
+
+        FAMILY_UNSPECIFIED = 0
+        AC = 1
+        AT = 2
+        AU = 3
+        CA = 4
+        CM = 5
+        CP = 6
+        IA = 7
+        IR = 8
+        MA = 9
+        MP = 10
+        PE = 11
+        PL = 12
+        PS = 13
+        RA = 14
+        SA = 15
+        SC = 16
+        SI = 17
+        SR = 18
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    family: Family = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Family,
+    )
+    control_family: "ControlFamily" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ControlFamily",
+    )
+    responsibility_type: "RegulatoryControlResponsibilityType" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="RegulatoryControlResponsibilityType",
+    )
+    google_responsibility_description: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    google_responsibility_implementation: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    customer_responsibility_description: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    customer_responsibility_implementation: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    shared_responsibility_description: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    additional_content_uri: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    related_frameworks: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=14,
     )
 
 

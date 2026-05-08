@@ -3,7 +3,8 @@ Python Client for BigQuery Data Transfer
 
 |stable| |pypi| |versions|
 
-`BigQuery Data Transfer`_: allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.
+`BigQuery Data Transfer`_: Schedule queries or transfer external data from SaaS applications to Google
+BigQuery on a regular basis.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

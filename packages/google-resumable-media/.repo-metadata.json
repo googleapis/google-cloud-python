@@ -4,7 +4,6 @@
     "language": "python",
     "library_type": "CORE",
     "name": "google-resumable-media",
-    "name_pretty": "Google Resumable Media",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

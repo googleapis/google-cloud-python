@@ -35,6 +35,7 @@ from grpc.experimental import aio  # type: ignore
 from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
 from google.cloud.spanner_v1.types import (
     commit_response,
+    location,
     result_set,
     spanner,
     transaction,
@@ -924,6 +925,40 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             )
         return self._stubs["batch_write"]
 
+    @property
+    def fetch_cache_update(
+        self,
+    ) -> Callable[[spanner.FetchCacheUpdateRequest], Awaitable[location.CacheUpdate]]:
+        r"""Return a callable for the fetch cache update method over gRPC.
+
+        Retrieves a cache update for a given database.
+
+        This RPC can be used to warm up the client cache by fetching key
+        recipes and server information for a given database. It is
+        recommended to call this RPC at the beginning of the client's
+        lifecycle, prior to any other data plane operations.
+
+        The cache update is returned as a stream because the response
+        can be too large to fit into a single ``CacheUpdate`` message.
+
+        Returns:
+            Callable[[~.FetchCacheUpdateRequest],
+                    Awaitable[~.CacheUpdate]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_cache_update" not in self._stubs:
+            self._stubs["fetch_cache_update"] = self._logged_channel.unary_stream(
+                "/google.spanner.v1.Spanner/FetchCacheUpdate",
+                request_serializer=spanner.FetchCacheUpdateRequest.serialize,
+                response_deserializer=location.CacheUpdate.deserialize,
+            )
+        return self._stubs["fetch_cache_update"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1135,6 +1170,11 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             self.batch_write: self._wrap_method(
                 self.batch_write,
                 default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.fetch_cache_update: self._wrap_method(
+                self.fetch_cache_update,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

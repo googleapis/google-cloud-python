@@ -1,5 +1,5 @@
 {
-    "api_description": "is a fully managed, highly available, autoscaled, autohealing, OSS-native metastore service that greatly simplifies technical metadata management. Dataproc Metastore service is based on Apache Hive metastore and serves as a critical component towards enterprise data lakes.",
+    "api_description": "The Dataproc Metastore API is used to manage the lifecycle and\nconfiguration of metastore services.",
     "api_id": "metastore.googleapis.com",
     "api_shortname": "metastore",
     "client_documentation": "https://cloud.google.com/python/docs/reference/metastore/latest",

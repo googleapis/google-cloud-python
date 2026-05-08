@@ -70,6 +70,15 @@ class ListRolesRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>builtIn</code></li>
+              <li><code>description</code></li>
+              <li><code>displayName</code></li>
+              <li><code>name</code></li>
+              <li><code>status</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

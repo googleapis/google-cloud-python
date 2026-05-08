@@ -490,6 +490,11 @@
               "methods": [
                 "update"
               ]
+            },
+            "UpdateKmsKey": {
+              "methods": [
+                "update_kms_key"
+              ]
             }
           }
         }
@@ -3368,6 +3373,11 @@
                 "get"
               ]
             },
+            "GetHealth": {
+              "methods": [
+                "get_health"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -3518,6 +3528,11 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            },
+            "UpdateKmsKey": {
+              "methods": [
+                "update_kms_key"
               ]
             }
           }
@@ -3674,6 +3689,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetHealth": {
+              "methods": [
+                "get_health"
               ]
             },
             "Insert": {
@@ -4507,6 +4527,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateKmsKey": {
+              "methods": [
+                "update_kms_key"
               ]
             }
           }
@@ -5490,6 +5515,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateKmsKey": {
+              "methods": [
+                "update_kms_key"
               ]
             }
           }

@@ -3101,6 +3101,7 @@ def test_insert_rest_call_success(request_type):
                     "nic_type": "nic_type_value",
                     "parent_nic_name": "parent_nic_name_value",
                     "queue_count": 1197,
+                    "service_class_id": "service_class_id_value",
                     "stack_type": "stack_type_value",
                     "subnetwork": "subnetwork_value",
                     "vlan": 433,

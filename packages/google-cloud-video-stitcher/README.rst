@@ -3,7 +3,7 @@ Python Client for Video Stitcher
 
 |preview| |pypi| |versions|
 
-`Video Stitcher`_: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
+`Video Stitcher`_: The Video Stitcher API allows you to manipulate video content to dynamically insert ads prior to delivery to client devices.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

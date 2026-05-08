@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Speech API
+# Cloud Speech-to-Text API
 
-Overview of the APIs available for Cloud Speech API.
+Overview of the APIs available for Cloud Speech-to-Text API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Speech API.
+Cloud Speech-to-Text API.
 
 [classes](https://cloud.google.com/python/docs/reference/speech/latest/summary_class.html)
 

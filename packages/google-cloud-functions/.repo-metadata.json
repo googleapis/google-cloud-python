@@ -1,5 +1,5 @@
 {
-    "api_description": "is a scalable pay as you go Functions-as-a-Service (FaaS) to run your code with zero server management.",
+    "api_description": "Manages lightweight user-provided functions executed in response to events.",
     "api_id": "cloudfunctions.googleapis.com",
     "api_shortname": "cloudfunctions",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudfunctions/latest",

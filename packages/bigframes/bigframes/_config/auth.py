@@ -14,12 +14,16 @@
 
 from __future__ import annotations
 
+import os
 import threading
 from typing import Optional
 
 import google.auth.credentials
 import google.auth.transport.requests
 import pydata_google_auth
+
+import bigframes._config.bigquery_options as bigquery_options
+from bigframes._config import options
 
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
@@ -30,7 +34,33 @@ _cached_credentials: Optional[google.auth.credentials.Credentials] = None
 _cached_project_default: Optional[str] = None
 
 
-def get_default_credentials_with_project() -> tuple[
+_GOOGLE_CLOUD_PROJECT = "GOOGLE_CLOUD_PROJECT"
+
+
+def resolve_credentials_and_project(
+    options: bigquery_options.BigQueryOptions,
+) -> tuple[google.auth.credentials.Credentials, str]:
+    project = options.project
+    credentials = options.credentials
+    if project is None:
+        project = os.getenv(_GOOGLE_CLOUD_PROJECT)
+
+    if credentials is None:
+        credentials, cred_project = _get_default_credentials_with_project()
+        # This might conflict with explicit project, which will be ignored, credentials project
+        # only used if nothing else specified
+        if project is None:
+            project = cred_project
+
+    if project is None:
+        raise ValueError(
+            "Project must be set to initialize BigQuery client. "
+            "Try setting `bigframes.options.bigquery.project` first."
+        )
+    return credentials, project
+
+
+def _get_default_credentials_with_project() -> tuple[
     google.auth.credentials.Credentials, Optional[str]
 ]:
     global _AUTH_LOCK, _cached_credentials, _cached_project_default

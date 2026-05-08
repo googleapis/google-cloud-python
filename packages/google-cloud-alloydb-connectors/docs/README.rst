@@ -3,7 +3,7 @@ Python Client for AlloyDB connectors
 
 |preview| |pypi| |versions|
 
-`AlloyDB connectors`_: provides enterprise-grade performance and availability while maintaining 100% compatibility with open-source PostgreSQL.
+`AlloyDB connectors`_: AlloyDB connectors ensure a secure connection to your AlloyDB instances using IAM.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

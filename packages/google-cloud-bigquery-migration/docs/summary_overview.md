@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google BigQuery Migration API
+# BigQuery Migration API
 
-Overview of the APIs available for Google BigQuery Migration API.
+Overview of the APIs available for BigQuery Migration API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google BigQuery Migration API.
+BigQuery Migration API.
 
 [classes](https://cloud.google.com/python/docs/reference/bigquerymigration/latest/summary_class.html)
 

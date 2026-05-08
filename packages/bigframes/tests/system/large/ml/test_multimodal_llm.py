@@ -24,8 +24,8 @@ from bigframes.testing import utils
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -65,7 +65,7 @@ def test_multimodal_embedding_generator_predict_default_params_success(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("gemini-2.0-flash-001",),
+    ("gemini-2.5-flash",),
 )
 @pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_multimodal_structured_output(

@@ -5,12 +5,12 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-geminidataanalytics/latest",
     "default_version": "v1alpha",
     "distribution_name": "google-cloud-geminidataanalytics",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1604598\u0026template=2061286",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-geminidataanalytics",
     "name_pretty": "Data Analytics API with Gemini",
-    "product_documentation": "https://cloud.google.com/gemini/docs/conversational-analytics-api/overview",
+    "product_documentation": "https://cloud.google.com/gemini/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

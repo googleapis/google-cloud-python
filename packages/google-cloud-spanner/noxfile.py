@@ -655,6 +655,12 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
+    system_test_exists = os.path.exists(system_test_path)
+    system_test_folder_exists = os.path.exists(system_test_folder_path)
+    # Sanity check: only run tests if found.
+    if not system_test_exists and not system_test_folder_exists:
+        session.skip("System tests were not found")
+
     if os.environ.get("SPANNER_EMULATOR_HOST"):
         # Run tests against the emulator
         run_system = True
@@ -675,24 +681,77 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         run_system = False
 
     if run_system:
-        # Run the tests (deduplicated logic)
-        test_path = (
-            system_test_path
-            if os.path.exists(system_test_path)
-            else system_test_folder_path
-        )
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )
+        # Run py.test against the system tests.
+        if system_test_exists:
+            args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+            ]
+            if not session.posargs:
+                args.append(system_test_path)
+            args.extend(session.posargs)
+
+            session.run(
+                *args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+        elif system_test_folder_exists:
+            # Run sync tests
+            sync_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sync_sponge_log.xml",
+            ]
+            if not session.posargs:
+                sync_args.append(system_test_folder_path)
+                sync_args.append(
+                    f"--ignore={os.path.join(system_test_folder_path, '_async')}"
+                )
+            else:
+                sync_args.extend(session.posargs)
+
+            session.run(
+                *sync_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+
+            # Run async tests
+            async_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_async_sponge_log.xml",
+            ]
+            if not session.posargs:
+                async_args.append(os.path.join(system_test_folder_path, "_async"))
+            else:
+                # If posargs are provided, only run if they match async tests
+                # or just skip if they were already run in sync.
+                # For simplicity, we only run async folder if no posargs.
+                return
+
+            session.run(
+                *async_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
 
 
 @nox.session(python=ALL_PYTHON)

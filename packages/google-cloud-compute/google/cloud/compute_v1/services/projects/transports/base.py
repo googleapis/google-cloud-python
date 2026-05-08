@@ -149,72 +149,102 @@ class ProjectsTransport(abc.ABC):
         self._wrapped_methods = {
             self.disable_xpn_host: gapic_v1.method.wrap_method(
                 self.disable_xpn_host,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.disable_xpn_resource: gapic_v1.method.wrap_method(
                 self.disable_xpn_resource,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.enable_xpn_host: gapic_v1.method.wrap_method(
                 self.enable_xpn_host,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.enable_xpn_resource: gapic_v1.method.wrap_method(
                 self.enable_xpn_resource,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_xpn_host: gapic_v1.method.wrap_method(
                 self.get_xpn_host,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_xpn_resources: gapic_v1.method.wrap_method(
                 self.get_xpn_resources,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list_xpn_hosts: gapic_v1.method.wrap_method(
                 self.list_xpn_hosts,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.move_disk: gapic_v1.method.wrap_method(
                 self.move_disk,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.move_instance: gapic_v1.method.wrap_method(
                 self.move_instance,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_cloud_armor_tier: gapic_v1.method.wrap_method(
                 self.set_cloud_armor_tier,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_common_instance_metadata: gapic_v1.method.wrap_method(
                 self.set_common_instance_metadata,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_default_network_tier: gapic_v1.method.wrap_method(
                 self.set_default_network_tier,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_usage_export_bucket: gapic_v1.method.wrap_method(
                 self.set_usage_export_bucket,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

@@ -40,9 +40,9 @@ def sample_update_report():
 
     # Initialize request argument(s)
     report = admanager_v1.Report()
-    report.report_definition.dimensions = ["CUSTOM_DIMENSION_9_VALUE"]
+    report.report_definition.dimensions = ["EKV_DIMENSION_9_VALUE"]
     report.report_definition.metrics = ["YIELD_GROUP_SUCCESSFUL_RESPONSES"]
-    report.report_definition.report_type = "AD_SPEED"
+    report.report_definition.report_type = "ON_PLATFORM_MULTICALL"
 
     request = admanager_v1.UpdateReportRequest(
         report=report,

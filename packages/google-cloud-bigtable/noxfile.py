@@ -168,8 +168,14 @@ def format(session):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16984):
+    # Update to the latest version of mypy
     session.install(
-        "mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests"
+        "mypy<2.0.0",
+        "types-setuptools",
+        "types-protobuf",
+        "types-mock",
+        "types-requests",
     )
     session.install("google-cloud-testutils")
     session.run("mypy", "-p", "google.cloud.bigtable.data")

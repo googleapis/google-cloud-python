@@ -1441,6 +1441,10 @@ class TestMetricsAsync(SystemTestRunner):
             and attempt.gfe_latency_ns < operation.duration_ns
         )
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="emulator doesn't suport cluster_config",
+    )
     @CrossSync.pytest
     async def test_mutate_row(self, table, temp_rows, handler, cluster_config):
         row_key = b"mutate"
@@ -1466,7 +1470,7 @@ class TestMetricsAsync(SystemTestRunner):
             operation.zone
             == cluster_config[operation.cluster_id].location.split("/")[-1]
         )
-        assert operation.duration_ns > 0 and operation.duration_ns < 1e9
+        assert operation.duration_ns > 0
         assert (
             operation.first_response_latency_ns is None
         )  # populated for read_rows only

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Storage Batch Operations API API
+# Storage Batch Operations API
 
-Overview of the APIs available for Storage Batch Operations API API.
+Overview of the APIs available for Storage Batch Operations API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Storage Batch Operations API API.
+Storage Batch Operations API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-storagebatchoperations/latest/summary_class.html)
 
