@@ -19,11 +19,7 @@ from unittest import mock
 
 from pyasn1_modules import pem  # type: ignore
 import pytest  # type: ignore
-
-try:
-    import rsa
-except ImportError:
-    pytest.skip("rsa module not available", allow_module_level=True)
+import rsa  # type: ignore
 
 from google.auth import _helpers
 from google.auth.crypt import _python_rsa
