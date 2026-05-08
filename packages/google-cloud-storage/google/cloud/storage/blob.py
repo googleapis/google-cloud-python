@@ -101,6 +101,7 @@ _WRITABLE_FIELDS = (
     "crc32c",
     "customTime",
     "md5Hash",
+    "contexts",
     "metadata",
     "name",
     "retention",
@@ -5009,6 +5010,16 @@ class Blob(_PropertyMixin):
         return Retention.from_api_repr(info, self)
 
     @property
+    def contexts(self):
+        """Retrieve the object contexts for this object.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: an instance for managing the object's contexts.
+        """
+        info = self._properties.get("contexts", {})
+        return ObjectContexts.from_api_repr(info, self)
+
+    @property
     def soft_delete_time(self):
         """If this object has been soft-deleted, returns the time at which it became soft-deleted.
 
@@ -5300,3 +5311,78 @@ class Retention(dict):
         retention_expiration_time = self.get("retentionExpirationTime")
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
+
+
+class ObjectContexts(dict):
+    """Map an object's contexts.
+
+    :type blob: :class:`Blob`
+    :param blob: blob for which these contexts apply to.
+
+    :type custom: dict or ``NoneType``
+    :param custom:
+        (Optional) A map of custom contexts.
+    """
+
+    def __init__(self, blob, custom=None):
+        super().__init__({"custom": custom})
+        self._blob = blob
+
+    @classmethod
+    def from_api_repr(cls, resource, blob):
+        """Factory:  construct instance from resource.
+
+        :type blob: :class:`Blob`
+        :param blob: Blob for which these contexts apply to.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: ObjectContexts created from resource.
+        """
+        instance = cls(blob)
+        if resource:
+            instance.update(resource)
+        return instance
+
+    @property
+    def blob(self):
+        """Blob for which these contexts apply to.
+
+        :rtype: :class:`Blob`
+        :returns: the instance's blob.
+        """
+        return self._blob
+
+    def set_custom_context(self, key, value):
+        """Set a custom context.
+
+        :type key: str
+        :param key: The key of the custom context.
+
+        :type value: str
+        :param value: The value of the custom context.
+        """
+        custom = self.get("custom")
+        if custom is None:
+            custom = {}
+            self["custom"] = custom
+        custom[key] = {"value": value}
+        self.blob._patch_property("contexts", self)
+
+    def delete_custom_context(self, key):
+        """Delete a custom context.
+
+        :type key: str
+        :param key: The key of the custom context to delete.
+        """
+        custom = self.get("custom")
+        if custom is not None:
+            custom[key] = None
+            self.blob._patch_property("contexts", self)
+
+    def clear_custom_contexts(self):
+        """Clear all custom contexts."""
+        self["custom"] = None
+        self.blob._patch_property("contexts", self)
