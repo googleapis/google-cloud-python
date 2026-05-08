@@ -27,13 +27,10 @@ libraries:
   # Allow release for google-crc32c once this bug is fixed.
   - id: "google-crc32c"
     release_blocked: true
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/16780):
-  # Allow release for google-cloud-compute (and beta) after we've checked that
-  # the gRPC service config is okay.
-  - id: "google-cloud-compute"
-    release_blocked: true
-  - id: "google-cloud-compute-v1beta"
-    release_blocked: true
   # TODO(b/501132869): Disabling automatic releases until resolved.
   - id: "google-cloud-bigtable"
     release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16780): Disabling automatic releases until resolved.
+  - id: "google-cloud-compute"
+    release_blocked: true
+

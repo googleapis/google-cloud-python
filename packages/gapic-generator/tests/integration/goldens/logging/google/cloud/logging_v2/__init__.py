@@ -20,12 +20,7 @@ import sys
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
 
 
 from .services.config_service_v2 import ConfigServiceV2Client
@@ -120,24 +115,15 @@ else:   # pragma: NO COVER
     # functions above. We do equivalent checks manually.
     try:
         import warnings
-        import sys
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.logging_v2"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn("You are using a non-supported Python version " +
                           f"({_py_version_str}).  Google will not post any further " +
                           f"updates to {_package_label} supporting this Python version. " +
                           "Please upgrade to the latest Python version, or at " +
-                          f"least to Python 3.9, and then update {_package_label}.",
-                          FutureWarning)
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(f"You are using a Python version ({_py_version_str}) " +
-                          f"which Google will stop supporting in {_package_label} in " +
-                          "January 2026. Please " +
-                          "upgrade to the latest Python version, or at " +
-                          "least to Python 3.10, before then, and " +
-                          f"then update {_package_label}.",
+                          f"least to Python 3.10, and then update {_package_label}.",
                           FutureWarning)
 
         def parse_version_to_tuple(version_string: str):

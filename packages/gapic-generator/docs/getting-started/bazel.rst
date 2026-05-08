@@ -29,7 +29,7 @@ install it is simply downloading the binary and making it executable:
 Python and Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~
 Bazel build is mostly hermetic, with a few exceptions for Python generator.
-Specifically it expects Python 3.7+ with the python dev packages to be installed.
+Specifically it expects Python 3.10+ with the python dev packages to be installed.
 
 On Linux, to install those, simply run:
 

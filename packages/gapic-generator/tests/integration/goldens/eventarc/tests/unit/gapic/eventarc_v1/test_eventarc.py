@@ -14,12 +14,8 @@
 # limitations under the License.
 #
 import os
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 from grpc.experimental import aio
@@ -1809,9 +1805,7 @@ async def test_list_triggers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.list_triggers(request={})
         ).pages:
             pages.append(page_)
@@ -3655,9 +3649,7 @@ async def test_list_channels_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.list_channels(request={})
         ).pages:
             pages.append(page_)
@@ -5464,9 +5456,7 @@ async def test_list_providers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.list_providers(request={})
         ).pages:
             pages.append(page_)
@@ -6296,9 +6286,7 @@ async def test_list_channel_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.list_channel_connections(request={})
         ).pages:
             pages.append(page_)

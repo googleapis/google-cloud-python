@@ -17,7 +17,7 @@
 # `BUILD_TYPE` should be one of ["presubmit", "continuous"]
 # `TEST_TYPE` should be one of ["docs", "docfx", "prerelease", "unit"]
 # or match the name of the nox session that you want to run.
-# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+# `PY_VERSION` should be one of ["3.10", "3.11", "3.12"]
 
 # `TEST_TYPE` and `PY_VERSION` are required by the script `ci/run_single_test.sh`
 
