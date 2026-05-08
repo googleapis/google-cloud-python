@@ -15,6 +15,7 @@
 #
 import os
 import re
+_UUID4_RE = re.compile(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -1863,7 +1864,7 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         assert args[0] == storage_batch_operations.CreateJobRequest(
@@ -2215,7 +2216,7 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         assert args[0] == storage_batch_operations.DeleteJobRequest(
@@ -2533,7 +2534,7 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         assert args[0] == storage_batch_operations.CancelJobRequest(
@@ -4135,7 +4136,7 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
-                    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
+                    assert _UUID4_RE.match(value)
                     break
 
             # Include requestId within expected_params with value mock.ANY
@@ -4313,7 +4314,7 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
-                    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
+                    assert _UUID4_RE.match(value)
                     break
 
             # Include requestId within expected_params with value mock.ANY
@@ -4489,7 +4490,7 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
-                    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
+                    assert _UUID4_RE.match(value)
                     break
 
             # Include requestId within expected_params with value mock.ANY
@@ -5125,7 +5126,7 @@ def test_create_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
@@ -5152,7 +5153,7 @@ def test_delete_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
@@ -5179,7 +5180,7 @@ def test_cancel_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
@@ -5330,7 +5331,7 @@ async def test_create_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
@@ -5359,7 +5360,7 @@ async def test_delete_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
@@ -5389,7 +5390,7 @@ async def test_cancel_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
@@ -6647,7 +6648,7 @@ def test_create_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
@@ -6673,7 +6674,7 @@ def test_delete_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
@@ -6699,7 +6700,7 @@ def test_cancel_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].request_id)
+        assert _UUID4_RE.match(args[0].request_id)
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
