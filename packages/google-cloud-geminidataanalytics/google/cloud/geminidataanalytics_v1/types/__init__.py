@@ -13,24 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.geminidataanalytics import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.cloud.geminidataanalytics_v1.services.data_agent_service.async_client import (
-    DataAgentServiceAsyncClient,
-)
-from google.cloud.geminidataanalytics_v1.services.data_agent_service.client import (
-    DataAgentServiceClient,
-)
-from google.cloud.geminidataanalytics_v1.services.data_chat_service.async_client import (
-    DataChatServiceAsyncClient,
-)
-from google.cloud.geminidataanalytics_v1.services.data_chat_service.client import (
-    DataChatServiceClient,
-)
-from google.cloud.geminidataanalytics_v1.types.context import (
+from .context import (
     AnalysisOptions,
     BigQueryRoutine,
     BigQueryRoutineReference,
@@ -48,7 +31,7 @@ from google.cloud.geminidataanalytics_v1.types.context import (
     QueryParameterValues,
     UserFunctions,
 )
-from google.cloud.geminidataanalytics_v1.types.conversation import (
+from .conversation import (
     Conversation,
     CreateConversationRequest,
     DeleteConversationRequest,
@@ -56,12 +39,14 @@ from google.cloud.geminidataanalytics_v1.types.conversation import (
     ListConversationsRequest,
     ListConversationsResponse,
 )
-from google.cloud.geminidataanalytics_v1.types.credentials import (
+from .credentials import (
     Credentials,
     OAuthCredentials,
 )
-from google.cloud.geminidataanalytics_v1.types.data_agent import DataAgent
-from google.cloud.geminidataanalytics_v1.types.data_agent_service import (
+from .data_agent import (
+    DataAgent,
+)
+from .data_agent_service import (
     CreateDataAgentRequest,
     DeleteDataAgentRequest,
     GetDataAgentRequest,
@@ -72,10 +57,10 @@ from google.cloud.geminidataanalytics_v1.types.data_agent_service import (
     OperationMetadata,
     UpdateDataAgentRequest,
 )
-from google.cloud.geminidataanalytics_v1.types.data_analytics_agent import (
+from .data_analytics_agent import (
     DataAnalyticsAgent,
 )
-from google.cloud.geminidataanalytics_v1.types.data_chat_service import (
+from .data_chat_service import (
     AnalysisEvent,
     AnalysisMessage,
     AnalysisQuery,
@@ -104,7 +89,7 @@ from google.cloud.geminidataanalytics_v1.types.data_chat_service import (
     TextMessage,
     UserMessage,
 )
-from google.cloud.geminidataanalytics_v1.types.datasource import (
+from .datasource import (
     BigQueryPropertyGraphReference,
     BigQueryTableReference,
     BigQueryTableReferences,
@@ -122,10 +107,6 @@ from google.cloud.geminidataanalytics_v1.types.datasource import (
 )
 
 __all__ = (
-    "DataAgentServiceClient",
-    "DataAgentServiceAsyncClient",
-    "DataChatServiceClient",
-    "DataChatServiceAsyncClient",
     "AnalysisOptions",
     "BigQueryRoutine",
     "BigQueryRoutineReference",
