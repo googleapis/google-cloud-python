@@ -31,10 +31,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   `,
   styles: [`
     .angular-widget {
-      padding: 10px;
+      background-color: #f9f9f9;
       border: 1px solid #ccc;
       border-radius: 4px;
-      background-color: #f9f9f9;
+      padding: 10px;
     }
   `]
 })
