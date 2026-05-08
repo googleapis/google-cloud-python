@@ -73,13 +73,12 @@ class ResumableUpload(object):
     @property
     def chunk_size(self) -> int:
         """int: The block-aligned chunk size informed by server granularity."""
-        actual_chunk_size = self._chunk_size
         if self._chunk_granularity:
-            if actual_chunk_size % self._chunk_granularity != 0:
-                actual_chunk_size = (
-                    (actual_chunk_size // self._chunk_granularity) + 1
-                ) * self._chunk_granularity
-        return actual_chunk_size
+            return (
+                (self._chunk_size + self._chunk_granularity - 1)
+                // self._chunk_granularity
+            ) * self._chunk_granularity
+        return self._chunk_size
 
     def build_initiate_request(
         self,
@@ -110,7 +109,7 @@ class ResumableUpload(object):
         # Merge user metadata first
         if stream_metadata:
             for k, v in stream_metadata:
-                headers[k] = str(v)
+                headers[k] = v.decode("utf-8") if isinstance(v, bytes) else str(v)
 
         # Critical protocol headers overwrite user metadata
         headers[_common.UPLOAD_PROTOCOL_HEADER] = _common.UPLOAD_PROTOCOL_VALUE

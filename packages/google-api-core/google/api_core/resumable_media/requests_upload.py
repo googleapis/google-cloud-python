@@ -112,10 +112,18 @@ class RequestsResumableUpload:
         """bool: Indicates if the upload has completed successfully."""
         return self._machine.finished
 
+    @property
+    def invalid(self) -> bool:
+        """bool: Indicates if the upload has entered an unrecoverable state."""
+        return self._machine.invalid
+
     def _check_deadline(self) -> Optional[float]:
         if self.deadline:
             now = datetime.datetime.now(datetime.timezone.utc)
-            timeout = (self.deadline - now).total_seconds()
+            deadline = self.deadline
+            if deadline.tzinfo is None:
+                deadline = deadline.replace(tzinfo=datetime.timezone.utc)
+            timeout = (deadline - now).total_seconds()
             if timeout <= 0:
                 raise exceptions.DeadlineExceeded(
                     f"Upload deadline {self.deadline} was exceeded."
@@ -128,7 +136,7 @@ class RequestsResumableUpload:
             if isinstance(exc, requests.exceptions.RequestException):
                 if isinstance(
                     exc,
-                    (requests.exceptions.ConnectionError, requests.exceptions.Timeout),
+                    (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError, requests.exceptions.Timeout),
                 ):
                     return True
             if isinstance(exc, exceptions.GoogleAPICallError):
@@ -469,7 +477,7 @@ def make_resumable_upload(
     )
 
     final_response = None
-    while not upload.finished:
+    while not upload.finished and not upload.invalid:
         final_response = upload.transmit_next_chunk(transport=transport)
     assert final_response is not None
     return final_response
