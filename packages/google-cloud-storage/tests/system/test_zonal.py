@@ -1,5 +1,6 @@
 # py standard imports
 import asyncio
+import datetime
 import gc
 import os
 import random
@@ -347,6 +348,11 @@ def test_write_from_blob(
     object_name = f"test_from_blob-{str(uuid.uuid4())[:4]}"
     content_type = "text/plain"
     metadata = {"environment": "system-test"}
+    cache_control = "public, max-age=3600"
+    content_disposition = "attachment; filename=test.txt"
+    content_encoding = "identity"
+    content_language = "en"
+    custom_time = datetime.datetime(2025, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc)
     test_data = b"system-test-data"
 
     async def _run():
@@ -354,6 +360,11 @@ def test_write_from_blob(
         blob = storage_client.bucket(_ZONAL_BUCKET).blob(object_name)
         blob.content_type = content_type
         blob.metadata = metadata
+        blob.cache_control = cache_control
+        blob.content_disposition = content_disposition
+        blob.content_encoding = content_encoding
+        blob.content_language = content_language
+        blob.custom_time = custom_time
 
         # 2. Use from_blob to create the writer
         writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
@@ -369,6 +380,11 @@ def test_write_from_blob(
 
         assert obj.content_type == content_type
         assert obj.metadata["environment"] == "system-test"
+        assert obj.cache_control == cache_control
+        assert obj.content_disposition == content_disposition
+        assert obj.content_encoding == content_encoding
+        assert obj.content_language == content_language
+        assert int(obj.custom_time.timestamp()) == int(custom_time.timestamp())
 
         blobs_to_delete.append(blob)
 

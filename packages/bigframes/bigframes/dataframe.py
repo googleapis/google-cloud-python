@@ -1743,7 +1743,8 @@ class DataFrame:
         )
         if query_job:
             self._set_internal_query_job(query_job)
-        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+        df.columns = self._block.column_labels
+        return df
 
     def to_pandas_batches(
         self,
@@ -1869,7 +1870,8 @@ class DataFrame:
                 raise ValueError(
                     "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
                 )
-        return maybe_result.set_axis(self._block.column_labels, axis=1, copy=False)
+        maybe_result.columns = self._block.column_labels
+        return maybe_result
 
     def nlargest(
         self,

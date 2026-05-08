@@ -24,12 +24,12 @@ libraries:
     release_exclude_paths:
       - packages/bigframes/.repo-metadata.json
       - packages/bigframes/noxfile.py
-      - packages/bigframes/tests/  
+      - packages/bigframes/tests/
       - packages/bigframes/README.rst
       - packages/bigframes/docs/
     tag_format: '{id}-v{version}'
   - id: bigquery-magics
-    version: 0.14.0
+    version: 0.15.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -39,12 +39,12 @@ libraries:
     release_exclude_paths:
       - packages/bigquery-magics/.repo-metadata.json
       - packages/bigquery-magics/noxfile.py
-      - packages/bigquery-magics/tests/  
+      - packages/bigquery-magics/tests/
       - packages/bigquery-magics/README.rst
       - packages/bigquery-magics/docs/
     tag_format: '{id}-v{version}'
   - id: db-dtypes
-    version: 1.5.1
+    version: 1.6.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -54,7 +54,7 @@ libraries:
     release_exclude_paths:
       - packages/db-dtypes/.repo-metadata.json
       - packages/db-dtypes/noxfile.py
-      - packages/db-dtypes/tests/  
+      - packages/db-dtypes/tests/
       - packages/db-dtypes/README.rst
       - packages/db-dtypes/docs/
     tag_format: '{id}-v{version}'
@@ -69,12 +69,12 @@ libraries:
     release_exclude_paths:
       - packages/django-google-spanner/.repo-metadata.json
       - packages/django-google-spanner/noxfile.py
-      - packages/django-google-spanner/tests/  
+      - packages/django-google-spanner/tests/
       - packages/django-google-spanner/README.rst
       - packages/django-google-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.30.14
+    version: 1.31.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -84,12 +84,12 @@ libraries:
     release_exclude_paths:
       - packages/gapic-generator/.repo-metadata.json
       - packages/gapic-generator/noxfile.py
-      - packages/gapic-generator/tests/  
+      - packages/gapic-generator/tests/
       - packages/gapic-generator/README.rst
       - packages/gapic-generator/docs/
     tag_format: '{id}-v{version}'
   - id: gcp-sphinx-docfx-yaml
-    version: 3.2.5
+    version: 3.3.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -99,7 +99,7 @@ libraries:
     release_exclude_paths:
       - packages/gcp-sphinx-docfx-yaml/.repo-metadata.json
       - packages/gcp-sphinx-docfx-yaml/noxfile.py
-      - packages/gcp-sphinx-docfx-yaml/tests/  
+      - packages/gcp-sphinx-docfx-yaml/tests/
       - packages/gcp-sphinx-docfx-yaml/README.rst
       - packages/gcp-sphinx-docfx-yaml/docs/
     tag_format: '{id}-v{version}'
@@ -119,7 +119,7 @@ libraries:
     release_exclude_paths:
       - packages/google-ads-admanager/.repo-metadata.json
       - packages/google-ads-admanager/noxfile.py
-      - packages/google-ads-admanager/tests/  
+      - packages/google-ads-admanager/tests/
       - packages/google-ads-admanager/README.rst
       - packages/google-ads-admanager/docs/
     tag_format: '{id}-v{version}'
@@ -139,7 +139,7 @@ libraries:
     release_exclude_paths:
       - packages/google-ads-datamanager/.repo-metadata.json
       - packages/google-ads-datamanager/noxfile.py
-      - packages/google-ads-datamanager/tests/  
+      - packages/google-ads-datamanager/tests/
       - packages/google-ads-datamanager/README.rst
       - packages/google-ads-datamanager/docs/
     tag_format: '{id}-v{version}'
@@ -159,7 +159,7 @@ libraries:
     release_exclude_paths:
       - packages/google-ads-marketingplatform-admin/.repo-metadata.json
       - packages/google-ads-marketingplatform-admin/noxfile.py
-      - packages/google-ads-marketingplatform-admin/tests/  
+      - packages/google-ads-marketingplatform-admin/tests/
       - packages/google-ads-marketingplatform-admin/README.rst
       - packages/google-ads-marketingplatform-admin/docs/
     tag_format: '{id}-v{version}'
@@ -187,12 +187,12 @@ libraries:
     release_exclude_paths:
       - packages/google-ai-generativelanguage/.repo-metadata.json
       - packages/google-ai-generativelanguage/noxfile.py
-      - packages/google-ai-generativelanguage/tests/  
+      - packages/google-ai-generativelanguage/tests/
       - packages/google-ai-generativelanguage/README.rst
       - packages/google-ai-generativelanguage/docs/
     tag_format: '{id}-v{version}'
   - id: google-analytics-admin
-    version: 0.28.0
+    version: 0.29.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/analytics/admin/v1beta
@@ -209,12 +209,12 @@ libraries:
     release_exclude_paths:
       - packages/google-analytics-admin/.repo-metadata.json
       - packages/google-analytics-admin/noxfile.py
-      - packages/google-analytics-admin/tests/  
+      - packages/google-analytics-admin/tests/
       - packages/google-analytics-admin/README.rst
       - packages/google-analytics-admin/docs/
     tag_format: '{id}-v{version}'
   - id: google-analytics-data
-    version: 0.21.0
+    version: 0.22.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/analytics/data/v1alpha
@@ -231,7 +231,7 @@ libraries:
     release_exclude_paths:
       - packages/google-analytics-data/.repo-metadata.json
       - packages/google-analytics-data/noxfile.py
-      - packages/google-analytics-data/tests/  
+      - packages/google-analytics-data/tests/
       - packages/google-analytics-data/README.rst
       - packages/google-analytics-data/docs/
     tag_format: '{id}-v{version}'
@@ -246,7 +246,7 @@ libraries:
     release_exclude_paths:
       - packages/google-api-core/.repo-metadata.json
       - packages/google-api-core/noxfile.py
-      - packages/google-api-core/tests/  
+      - packages/google-api-core/tests/
       - packages/google-api-core/README.rst
       - packages/google-api-core/docs/
     tag_format: '{id}-v{version}'
@@ -266,12 +266,12 @@ libraries:
     release_exclude_paths:
       - packages/google-apps-card/.repo-metadata.json
       - packages/google-apps-card/noxfile.py
-      - packages/google-apps-card/tests/  
+      - packages/google-apps-card/tests/
       - packages/google-apps-card/README.rst
       - packages/google-apps-card/docs/
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/chat/v1
@@ -286,7 +286,7 @@ libraries:
     release_exclude_paths:
       - packages/google-apps-chat/.repo-metadata.json
       - packages/google-apps-chat/noxfile.py
-      - packages/google-apps-chat/tests/  
+      - packages/google-apps-chat/tests/
       - packages/google-apps-chat/README.rst
       - packages/google-apps-chat/docs/
     tag_format: '{id}-v{version}'
@@ -308,7 +308,7 @@ libraries:
     release_exclude_paths:
       - packages/google-apps-events-subscriptions/.repo-metadata.json
       - packages/google-apps-events-subscriptions/noxfile.py
-      - packages/google-apps-events-subscriptions/tests/  
+      - packages/google-apps-events-subscriptions/tests/
       - packages/google-apps-events-subscriptions/README.rst
       - packages/google-apps-events-subscriptions/docs/
     tag_format: '{id}-v{version}'
@@ -330,12 +330,12 @@ libraries:
     release_exclude_paths:
       - packages/google-apps-meet/.repo-metadata.json
       - packages/google-apps-meet/noxfile.py
-      - packages/google-apps-meet/tests/  
+      - packages/google-apps-meet/tests/
       - packages/google-apps-meet/README.rst
       - packages/google-apps-meet/docs/
     tag_format: '{id}-v{version}'
   - id: google-apps-script-type
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/apps/script/type
@@ -362,7 +362,7 @@ libraries:
     release_exclude_paths:
       - packages/google-apps-script-type/.repo-metadata.json
       - packages/google-apps-script-type/noxfile.py
-      - packages/google-apps-script-type/tests/  
+      - packages/google-apps-script-type/tests/
       - packages/google-apps-script-type/README.rst
       - packages/google-apps-script-type/docs/
     tag_format: '{id}-v{version}'
@@ -382,12 +382,12 @@ libraries:
     release_exclude_paths:
       - packages/google-area120-tables/.repo-metadata.json
       - packages/google-area120-tables/noxfile.py
-      - packages/google-area120-tables/tests/  
+      - packages/google-area120-tables/tests/
       - packages/google-area120-tables/README.rst
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.50.0
+    version: 2.52.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -397,12 +397,12 @@ libraries:
     release_exclude_paths:
       - packages/google-auth/.repo-metadata.json
       - packages/google-auth/noxfile.py
-      - packages/google-auth/tests/  
+      - packages/google-auth/tests/
       - packages/google-auth/README.rst
       - packages/google-auth/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth-httplib2
-    version: 0.3.1
+    version: 0.4.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -412,12 +412,12 @@ libraries:
     release_exclude_paths:
       - packages/google-auth-httplib2/.repo-metadata.json
       - packages/google-auth-httplib2/noxfile.py
-      - packages/google-auth-httplib2/tests/  
+      - packages/google-auth-httplib2/tests/
       - packages/google-auth-httplib2/README.rst
       - packages/google-auth-httplib2/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth-oauthlib
-    version: 1.3.1
+    version: 1.4.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -427,7 +427,7 @@ libraries:
     release_exclude_paths:
       - packages/google-auth-oauthlib/.repo-metadata.json
       - packages/google-auth-oauthlib/noxfile.py
-      - packages/google-auth-oauthlib/tests/  
+      - packages/google-auth-oauthlib/tests/
       - packages/google-auth-oauthlib/README.rst
       - packages/google-auth-oauthlib/docs/
     tag_format: '{id}-v{version}'
@@ -448,12 +448,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-access-approval/.repo-metadata.json
       - packages/google-cloud-access-approval/noxfile.py
-      - packages/google-cloud-access-approval/tests/  
+      - packages/google-cloud-access-approval/tests/
       - packages/google-cloud-access-approval/README.rst
       - packages/google-cloud-access-approval/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-context-manager
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/identity/accesscontextmanager/v1
@@ -466,13 +466,13 @@ libraries:
       - ^packages/google-cloud-access-context-manager/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
       - noxfile.py
-      - tests/  
+      - tests/
       - README.rst
       - docs/summary_overview.md
     release_exclude_paths:
       - packages/google-cloud-access-context-manager/.repo-metadata.json
       - packages/google-cloud-access-context-manager/noxfile.py
-      - packages/google-cloud-access-context-manager/tests/  
+      - packages/google-cloud-access-context-manager/tests/
       - packages/google-cloud-access-context-manager/README.rst
       - packages/google-cloud-access-context-manager/docs/
     tag_format: '{id}-v{version}'
@@ -492,7 +492,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-advisorynotifications/.repo-metadata.json
       - packages/google-cloud-advisorynotifications/noxfile.py
-      - packages/google-cloud-advisorynotifications/tests/  
+      - packages/google-cloud-advisorynotifications/tests/
       - packages/google-cloud-advisorynotifications/README.rst
       - packages/google-cloud-advisorynotifications/docs/
     tag_format: '{id}-v{version}'
@@ -516,7 +516,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-alloydb/.repo-metadata.json
       - packages/google-cloud-alloydb/noxfile.py
-      - packages/google-cloud-alloydb/tests/  
+      - packages/google-cloud-alloydb/tests/
       - packages/google-cloud-alloydb/README.rst
       - packages/google-cloud-alloydb/docs/
     tag_format: '{id}-v{version}'
@@ -541,7 +541,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-alloydb-connectors/.repo-metadata.json
       - packages/google-cloud-alloydb-connectors/noxfile.py
-      - packages/google-cloud-alloydb-connectors/tests/  
+      - packages/google-cloud-alloydb-connectors/tests/
       - packages/google-cloud-alloydb-connectors/README.rst
       - packages/google-cloud-alloydb-connectors/docs/
     tag_format: '{id}-v{version}'
@@ -561,7 +561,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-api-gateway/.repo-metadata.json
       - packages/google-cloud-api-gateway/noxfile.py
-      - packages/google-cloud-api-gateway/tests/  
+      - packages/google-cloud-api-gateway/tests/
       - packages/google-cloud-api-gateway/README.rst
       - packages/google-cloud-api-gateway/docs/
     tag_format: '{id}-v{version}'
@@ -581,7 +581,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-api-keys/.repo-metadata.json
       - packages/google-cloud-api-keys/noxfile.py
-      - packages/google-cloud-api-keys/tests/  
+      - packages/google-cloud-api-keys/tests/
       - packages/google-cloud-api-keys/README.rst
       - packages/google-cloud-api-keys/docs/
     tag_format: '{id}-v{version}'
@@ -601,7 +601,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-apigee-connect/.repo-metadata.json
       - packages/google-cloud-apigee-connect/noxfile.py
-      - packages/google-cloud-apigee-connect/tests/  
+      - packages/google-cloud-apigee-connect/tests/
       - packages/google-cloud-apigee-connect/README.rst
       - packages/google-cloud-apigee-connect/docs/
     tag_format: '{id}-v{version}'
@@ -621,7 +621,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-apigee-registry/.repo-metadata.json
       - packages/google-cloud-apigee-registry/noxfile.py
-      - packages/google-cloud-apigee-registry/tests/  
+      - packages/google-cloud-apigee-registry/tests/
       - packages/google-cloud-apigee-registry/README.rst
       - packages/google-cloud-apigee-registry/docs/
     tag_format: '{id}-v{version}'
@@ -641,7 +641,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-apihub/.repo-metadata.json
       - packages/google-cloud-apihub/noxfile.py
-      - packages/google-cloud-apihub/tests/  
+      - packages/google-cloud-apihub/tests/
       - packages/google-cloud-apihub/README.rst
       - packages/google-cloud-apihub/docs/
     tag_format: '{id}-v{version}'
@@ -665,7 +665,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-apiregistry/.repo-metadata.json
       - packages/google-cloud-apiregistry/noxfile.py
-      - packages/google-cloud-apiregistry/tests/  
+      - packages/google-cloud-apiregistry/tests/
       - packages/google-cloud-apiregistry/README.rst
       - packages/google-cloud-apiregistry/docs/
     tag_format: '{id}-v{version}'
@@ -685,7 +685,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-appengine-admin/.repo-metadata.json
       - packages/google-cloud-appengine-admin/noxfile.py
-      - packages/google-cloud-appengine-admin/tests/  
+      - packages/google-cloud-appengine-admin/tests/
       - packages/google-cloud-appengine-admin/README.rst
       - packages/google-cloud-appengine-admin/docs/
     tag_format: '{id}-v{version}'
@@ -705,7 +705,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-appengine-logging/.repo-metadata.json
       - packages/google-cloud-appengine-logging/noxfile.py
-      - packages/google-cloud-appengine-logging/tests/  
+      - packages/google-cloud-appengine-logging/tests/
       - packages/google-cloud-appengine-logging/README.rst
       - packages/google-cloud-appengine-logging/docs/
     tag_format: '{id}-v{version}'
@@ -725,7 +725,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-apphub/.repo-metadata.json
       - packages/google-cloud-apphub/noxfile.py
-      - packages/google-cloud-apphub/tests/  
+      - packages/google-cloud-apphub/tests/
       - packages/google-cloud-apphub/README.rst
       - packages/google-cloud-apphub/docs/
     tag_format: '{id}-v{version}'
@@ -749,7 +749,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-appoptimize/.repo-metadata.json
       - packages/google-cloud-appoptimize/noxfile.py
-      - packages/google-cloud-appoptimize/tests/  
+      - packages/google-cloud-appoptimize/tests/
       - packages/google-cloud-appoptimize/README.rst
       - packages/google-cloud-appoptimize/docs/
     tag_format: '{id}-v{version}'
@@ -771,7 +771,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-artifact-registry/.repo-metadata.json
       - packages/google-cloud-artifact-registry/noxfile.py
-      - packages/google-cloud-artifact-registry/tests/  
+      - packages/google-cloud-artifact-registry/tests/
       - packages/google-cloud-artifact-registry/README.rst
       - packages/google-cloud-artifact-registry/docs/
     tag_format: '{id}-v{version}'
@@ -797,7 +797,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-asset/.repo-metadata.json
       - packages/google-cloud-asset/noxfile.py
-      - packages/google-cloud-asset/tests/  
+      - packages/google-cloud-asset/tests/
       - packages/google-cloud-asset/README.rst
       - packages/google-cloud-asset/docs/
     tag_format: '{id}-v{version}'
@@ -819,7 +819,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-assured-workloads/.repo-metadata.json
       - packages/google-cloud-assured-workloads/noxfile.py
-      - packages/google-cloud-assured-workloads/tests/  
+      - packages/google-cloud-assured-workloads/tests/
       - packages/google-cloud-assured-workloads/README.rst
       - packages/google-cloud-assured-workloads/docs/
     tag_format: '{id}-v{version}'
@@ -836,13 +836,13 @@ libraries:
       - ^packages/google-cloud-audit-log/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
       - noxfile.py
-      - tests/  
+      - tests/
       - README.rst
       - docs/summary_overview.md
     release_exclude_paths:
       - packages/google-cloud-audit-log/.repo-metadata.json
       - packages/google-cloud-audit-log/noxfile.py
-      - packages/google-cloud-audit-log/tests/  
+      - packages/google-cloud-audit-log/tests/
       - packages/google-cloud-audit-log/README.rst
       - packages/google-cloud-audit-log/docs/
     tag_format: '{id}-v{version}'
@@ -866,7 +866,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-auditmanager/.repo-metadata.json
       - packages/google-cloud-auditmanager/noxfile.py
-      - packages/google-cloud-auditmanager/tests/  
+      - packages/google-cloud-auditmanager/tests/
       - packages/google-cloud-auditmanager/README.rst
       - packages/google-cloud-auditmanager/docs/
     tag_format: '{id}-v{version}'
@@ -894,7 +894,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-automl/.repo-metadata.json
       - packages/google-cloud-automl/noxfile.py
-      - packages/google-cloud-automl/tests/  
+      - packages/google-cloud-automl/tests/
       - packages/google-cloud-automl/README.rst
       - packages/google-cloud-automl/docs/
     tag_format: '{id}-v{version}'
@@ -914,7 +914,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-backupdr/.repo-metadata.json
       - packages/google-cloud-backupdr/noxfile.py
-      - packages/google-cloud-backupdr/tests/  
+      - packages/google-cloud-backupdr/tests/
       - packages/google-cloud-backupdr/README.rst
       - packages/google-cloud-backupdr/docs/
     tag_format: '{id}-v{version}'
@@ -934,7 +934,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bare-metal-solution/.repo-metadata.json
       - packages/google-cloud-bare-metal-solution/noxfile.py
-      - packages/google-cloud-bare-metal-solution/tests/  
+      - packages/google-cloud-bare-metal-solution/tests/
       - packages/google-cloud-bare-metal-solution/README.rst
       - packages/google-cloud-bare-metal-solution/docs/
     tag_format: '{id}-v{version}'
@@ -956,7 +956,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-batch/.repo-metadata.json
       - packages/google-cloud-batch/noxfile.py
-      - packages/google-cloud-batch/tests/  
+      - packages/google-cloud-batch/tests/
       - packages/google-cloud-batch/README.rst
       - packages/google-cloud-batch/docs/
     tag_format: '{id}-v{version}'
@@ -976,7 +976,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-beyondcorp-appconnections/.repo-metadata.json
       - packages/google-cloud-beyondcorp-appconnections/noxfile.py
-      - packages/google-cloud-beyondcorp-appconnections/tests/  
+      - packages/google-cloud-beyondcorp-appconnections/tests/
       - packages/google-cloud-beyondcorp-appconnections/README.rst
       - packages/google-cloud-beyondcorp-appconnections/docs/
     tag_format: '{id}-v{version}'
@@ -996,7 +996,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-beyondcorp-appconnectors/.repo-metadata.json
       - packages/google-cloud-beyondcorp-appconnectors/noxfile.py
-      - packages/google-cloud-beyondcorp-appconnectors/tests/  
+      - packages/google-cloud-beyondcorp-appconnectors/tests/
       - packages/google-cloud-beyondcorp-appconnectors/README.rst
       - packages/google-cloud-beyondcorp-appconnectors/docs/
     tag_format: '{id}-v{version}'
@@ -1016,7 +1016,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-beyondcorp-appgateways/.repo-metadata.json
       - packages/google-cloud-beyondcorp-appgateways/noxfile.py
-      - packages/google-cloud-beyondcorp-appgateways/tests/  
+      - packages/google-cloud-beyondcorp-appgateways/tests/
       - packages/google-cloud-beyondcorp-appgateways/README.rst
       - packages/google-cloud-beyondcorp-appgateways/docs/
     tag_format: '{id}-v{version}'
@@ -1056,7 +1056,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-beyondcorp-clientgateways/.repo-metadata.json
       - packages/google-cloud-beyondcorp-clientgateways/noxfile.py
-      - packages/google-cloud-beyondcorp-clientgateways/tests/  
+      - packages/google-cloud-beyondcorp-clientgateways/tests/
       - packages/google-cloud-beyondcorp-clientgateways/README.rst
       - packages/google-cloud-beyondcorp-clientgateways/docs/
     tag_format: '{id}-v{version}'
@@ -1076,12 +1076,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-biglake/.repo-metadata.json
       - packages/google-cloud-biglake/noxfile.py
-      - packages/google-cloud-biglake/tests/  
+      - packages/google-cloud-biglake/tests/
       - packages/google-cloud-biglake/README.rst
       - packages/google-cloud-biglake/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-biglake-hive
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: 6649b7fea255d74c5bdd027a19ed444d0121f946
     apis:
       - path: google/cloud/biglake/hive/v1beta
@@ -1100,7 +1100,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-biglake-hive/.repo-metadata.json
       - packages/google-cloud-biglake-hive/noxfile.py
-      - packages/google-cloud-biglake-hive/tests/  
+      - packages/google-cloud-biglake-hive/tests/
       - packages/google-cloud-biglake-hive/README.rst
       - packages/google-cloud-biglake-hive/docs/
     tag_format: '{id}-v{version}'
@@ -1115,7 +1115,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery/.repo-metadata.json
       - packages/google-cloud-bigquery/noxfile.py
-      - packages/google-cloud-bigquery/tests/  
+      - packages/google-cloud-bigquery/tests/
       - packages/google-cloud-bigquery/README.rst
       - packages/google-cloud-bigquery/docs/
     tag_format: '{id}-v{version}'
@@ -1135,7 +1135,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-analyticshub/.repo-metadata.json
       - packages/google-cloud-bigquery-analyticshub/noxfile.py
-      - packages/google-cloud-bigquery-analyticshub/tests/  
+      - packages/google-cloud-bigquery-analyticshub/tests/
       - packages/google-cloud-bigquery-analyticshub/README.rst
       - packages/google-cloud-bigquery-analyticshub/docs/
     tag_format: '{id}-v{version}'
@@ -1157,7 +1157,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-biglake/.repo-metadata.json
       - packages/google-cloud-bigquery-biglake/noxfile.py
-      - packages/google-cloud-bigquery-biglake/tests/  
+      - packages/google-cloud-bigquery-biglake/tests/
       - packages/google-cloud-bigquery-biglake/README.rst
       - packages/google-cloud-bigquery-biglake/docs/
     tag_format: '{id}-v{version}'
@@ -1178,7 +1178,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-connection/.repo-metadata.json
       - packages/google-cloud-bigquery-connection/noxfile.py
-      - packages/google-cloud-bigquery-connection/tests/  
+      - packages/google-cloud-bigquery-connection/tests/
       - packages/google-cloud-bigquery-connection/README.rst
       - packages/google-cloud-bigquery-connection/docs/
     tag_format: '{id}-v{version}'
@@ -1198,7 +1198,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-data-exchange/.repo-metadata.json
       - packages/google-cloud-bigquery-data-exchange/noxfile.py
-      - packages/google-cloud-bigquery-data-exchange/tests/  
+      - packages/google-cloud-bigquery-data-exchange/tests/
       - packages/google-cloud-bigquery-data-exchange/README.rst
       - packages/google-cloud-bigquery-data-exchange/docs/
     tag_format: '{id}-v{version}'
@@ -1224,7 +1224,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-datapolicies/.repo-metadata.json
       - packages/google-cloud-bigquery-datapolicies/noxfile.py
-      - packages/google-cloud-bigquery-datapolicies/tests/  
+      - packages/google-cloud-bigquery-datapolicies/tests/
       - packages/google-cloud-bigquery-datapolicies/README.rst
       - packages/google-cloud-bigquery-datapolicies/docs/
     tag_format: '{id}-v{version}'
@@ -1245,7 +1245,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-datatransfer/.repo-metadata.json
       - packages/google-cloud-bigquery-datatransfer/noxfile.py
-      - packages/google-cloud-bigquery-datatransfer/tests/  
+      - packages/google-cloud-bigquery-datatransfer/tests/
       - packages/google-cloud-bigquery-datatransfer/README.rst
       - packages/google-cloud-bigquery-datatransfer/docs/
     tag_format: '{id}-v{version}'
@@ -1265,7 +1265,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-logging/.repo-metadata.json
       - packages/google-cloud-bigquery-logging/noxfile.py
-      - packages/google-cloud-bigquery-logging/tests/  
+      - packages/google-cloud-bigquery-logging/tests/
       - packages/google-cloud-bigquery-logging/README.rst
       - packages/google-cloud-bigquery-logging/docs/
     tag_format: '{id}-v{version}'
@@ -1287,12 +1287,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-migration/.repo-metadata.json
       - packages/google-cloud-bigquery-migration/noxfile.py
-      - packages/google-cloud-bigquery-migration/tests/  
+      - packages/google-cloud-bigquery-migration/tests/
       - packages/google-cloud-bigquery-migration/README.rst
       - packages/google-cloud-bigquery-migration/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-reservation
-    version: 1.23.0
+    version: 1.24.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/bigquery/reservation/v1
@@ -1308,12 +1308,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-reservation/.repo-metadata.json
       - packages/google-cloud-bigquery-reservation/noxfile.py
-      - packages/google-cloud-bigquery-reservation/tests/  
+      - packages/google-cloud-bigquery-reservation/tests/
       - packages/google-cloud-bigquery-reservation/README.rst
       - packages/google-cloud-bigquery-reservation/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.37.0
+    version: 2.38.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1356,12 +1356,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigquery-storage/.repo-metadata.json
       - packages/google-cloud-bigquery-storage/noxfile.py
-      - packages/google-cloud-bigquery-storage/tests/  
+      - packages/google-cloud-bigquery-storage/tests/
       - packages/google-cloud-bigquery-storage/README.rst
       - packages/google-cloud-bigquery-storage/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
-    version: 2.37.0
+    version: 2.38.0
     last_generated_commit: a6cbf809c4c165e618ee23a059442af90a80a0f5
     apis:
       - path: google/bigtable/admin/v2
@@ -1378,7 +1378,7 @@ libraries:
       - ^packages/google-cloud-bigtable/.flake8
       - ^packages/google-cloud-bigtable/.repo-metadata.json
       - ^packages/google-cloud-bigtable/noxfile.py
-      - ^packages/google-cloud-bigtable/tests/  
+      - ^packages/google-cloud-bigtable/tests/
       - ^packages/google-cloud-bigtable/LICENSE
       - ^packages/google-cloud-bigtable/MANIFEST.in
       - ^packages/google-cloud-bigtable/README.rst
@@ -1412,7 +1412,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-bigtable/.repo-metadata.json
       - packages/google-cloud-bigtable/noxfile.py
-      - packages/google-cloud-bigtable/tests/  
+      - packages/google-cloud-bigtable/tests/
       - packages/google-cloud-bigtable/README.rst
       - packages/google-cloud-bigtable/docs/
     tag_format: '{id}-v{version}'
@@ -1432,7 +1432,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-billing/.repo-metadata.json
       - packages/google-cloud-billing/noxfile.py
-      - packages/google-cloud-billing/tests/  
+      - packages/google-cloud-billing/tests/
       - packages/google-cloud-billing/README.rst
       - packages/google-cloud-billing/docs/
     tag_format: '{id}-v{version}'
@@ -1454,7 +1454,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-billing-budgets/.repo-metadata.json
       - packages/google-cloud-billing-budgets/noxfile.py
-      - packages/google-cloud-billing-budgets/tests/  
+      - packages/google-cloud-billing-budgets/tests/
       - packages/google-cloud-billing-budgets/README.rst
       - packages/google-cloud-billing-budgets/docs/
     tag_format: '{id}-v{version}'
@@ -1476,7 +1476,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-binary-authorization/.repo-metadata.json
       - packages/google-cloud-binary-authorization/noxfile.py
-      - packages/google-cloud-binary-authorization/tests/  
+      - packages/google-cloud-binary-authorization/tests/
       - packages/google-cloud-binary-authorization/README.rst
       - packages/google-cloud-binary-authorization/docs/
     tag_format: '{id}-v{version}'
@@ -1498,7 +1498,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-build/.repo-metadata.json
       - packages/google-cloud-build/noxfile.py
-      - packages/google-cloud-build/tests/  
+      - packages/google-cloud-build/tests/
       - packages/google-cloud-build/README.rst
       - packages/google-cloud-build/docs/
     tag_format: '{id}-v{version}'
@@ -1518,7 +1518,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-capacityplanner/.repo-metadata.json
       - packages/google-cloud-capacityplanner/noxfile.py
-      - packages/google-cloud-capacityplanner/tests/  
+      - packages/google-cloud-capacityplanner/tests/
       - packages/google-cloud-capacityplanner/README.rst
       - packages/google-cloud-capacityplanner/docs/
     tag_format: '{id}-v{version}'
@@ -1538,12 +1538,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-certificate-manager/.repo-metadata.json
       - packages/google-cloud-certificate-manager/noxfile.py
-      - packages/google-cloud-certificate-manager/tests/  
+      - packages/google-cloud-certificate-manager/tests/
       - packages/google-cloud-certificate-manager/README.rst
       - packages/google-cloud-certificate-manager/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/ces/v1
@@ -1564,7 +1564,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-ces/.repo-metadata.json
       - packages/google-cloud-ces/noxfile.py
-      - packages/google-cloud-ces/tests/  
+      - packages/google-cloud-ces/tests/
       - packages/google-cloud-ces/README.rst
       - packages/google-cloud-ces/docs/
     tag_format: '{id}-v{version}'
@@ -1584,12 +1584,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-channel/.repo-metadata.json
       - packages/google-cloud-channel/noxfile.py
-      - packages/google-cloud-channel/tests/  
+      - packages/google-cloud-channel/tests/
       - packages/google-cloud-channel/README.rst
       - packages/google-cloud-channel/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-chronicle
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/chronicle/v1
@@ -1604,7 +1604,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-chronicle/.repo-metadata.json
       - packages/google-cloud-chronicle/noxfile.py
-      - packages/google-cloud-chronicle/tests/  
+      - packages/google-cloud-chronicle/tests/
       - packages/google-cloud-chronicle/README.rst
       - packages/google-cloud-chronicle/docs/
     tag_format: '{id}-v{version}'
@@ -1626,12 +1626,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-cloudcontrolspartner/.repo-metadata.json
       - packages/google-cloud-cloudcontrolspartner/noxfile.py
-      - packages/google-cloud-cloudcontrolspartner/tests/  
+      - packages/google-cloud-cloudcontrolspartner/tests/
       - packages/google-cloud-cloudcontrolspartner/README.rst
       - packages/google-cloud-cloudcontrolspartner/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudsecuritycompliance
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 53f97391f3451398f7b53c7f86dabd325d205677
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
@@ -1646,7 +1646,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-cloudsecuritycompliance/.repo-metadata.json
       - packages/google-cloud-cloudsecuritycompliance/noxfile.py
-      - packages/google-cloud-cloudsecuritycompliance/tests/  
+      - packages/google-cloud-cloudsecuritycompliance/tests/
       - packages/google-cloud-cloudsecuritycompliance/README.rst
       - packages/google-cloud-cloudsecuritycompliance/docs/
     tag_format: '{id}-v{version}'
@@ -1668,7 +1668,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-commerce-consumer-procurement/.repo-metadata.json
       - packages/google-cloud-commerce-consumer-procurement/noxfile.py
-      - packages/google-cloud-commerce-consumer-procurement/tests/  
+      - packages/google-cloud-commerce-consumer-procurement/tests/
       - packages/google-cloud-commerce-consumer-procurement/README.rst
       - packages/google-cloud-commerce-consumer-procurement/docs/
     tag_format: '{id}-v{version}'
@@ -1689,7 +1689,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-common/.repo-metadata.json
       - packages/google-cloud-common/noxfile.py
-      - packages/google-cloud-common/tests/  
+      - packages/google-cloud-common/tests/
       - packages/google-cloud-common/README.rst
       - packages/google-cloud-common/docs/
     tag_format: '{id}-v{version}'
@@ -1710,12 +1710,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-compute/.repo-metadata.json
       - packages/google-cloud-compute/noxfile.py
-      - packages/google-cloud-compute/tests/  
+      - packages/google-cloud-compute/tests/
       - packages/google-cloud-compute/README.rst
       - packages/google-cloud-compute/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
-    version: 0.10.0
+    version: 0.11.0
     last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/cloud/compute/v1beta
@@ -1730,7 +1730,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-compute-v1beta/.repo-metadata.json
       - packages/google-cloud-compute-v1beta/noxfile.py
-      - packages/google-cloud-compute-v1beta/tests/  
+      - packages/google-cloud-compute-v1beta/tests/
       - packages/google-cloud-compute-v1beta/README.rst
       - packages/google-cloud-compute-v1beta/docs/
     tag_format: '{id}-v{version}'
@@ -1750,12 +1750,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-confidentialcomputing/.repo-metadata.json
       - packages/google-cloud-confidentialcomputing/noxfile.py
-      - packages/google-cloud-confidentialcomputing/tests/  
+      - packages/google-cloud-confidentialcomputing/tests/
       - packages/google-cloud-confidentialcomputing/README.rst
       - packages/google-cloud-confidentialcomputing/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-config
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/config/v1
@@ -1770,7 +1770,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-config/.repo-metadata.json
       - packages/google-cloud-config/noxfile.py
-      - packages/google-cloud-config/tests/  
+      - packages/google-cloud-config/tests/
       - packages/google-cloud-config/README.rst
       - packages/google-cloud-config/docs/
     tag_format: '{id}-v{version}'
@@ -1794,7 +1794,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-configdelivery/.repo-metadata.json
       - packages/google-cloud-configdelivery/noxfile.py
-      - packages/google-cloud-configdelivery/tests/  
+      - packages/google-cloud-configdelivery/tests/
       - packages/google-cloud-configdelivery/README.rst
       - packages/google-cloud-configdelivery/docs/
     tag_format: '{id}-v{version}'
@@ -1814,7 +1814,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-contact-center-insights/.repo-metadata.json
       - packages/google-cloud-contact-center-insights/noxfile.py
-      - packages/google-cloud-contact-center-insights/tests/  
+      - packages/google-cloud-contact-center-insights/tests/
       - packages/google-cloud-contact-center-insights/README.rst
       - packages/google-cloud-contact-center-insights/docs/
     tag_format: '{id}-v{version}'
@@ -1837,7 +1837,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-container/.repo-metadata.json
       - packages/google-cloud-container/noxfile.py
-      - packages/google-cloud-container/tests/  
+      - packages/google-cloud-container/tests/
       - packages/google-cloud-container/README.rst
       - packages/google-cloud-container/docs/
     tag_format: '{id}-v{version}'
@@ -1858,7 +1858,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-containeranalysis/.repo-metadata.json
       - packages/google-cloud-containeranalysis/noxfile.py
-      - packages/google-cloud-containeranalysis/tests/  
+      - packages/google-cloud-containeranalysis/tests/
       - packages/google-cloud-containeranalysis/README.rst
       - packages/google-cloud-containeranalysis/docs/
     tag_format: '{id}-v{version}'
@@ -1878,12 +1878,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-contentwarehouse/.repo-metadata.json
       - packages/google-cloud-contentwarehouse/noxfile.py
-      - packages/google-cloud-contentwarehouse/tests/  
+      - packages/google-cloud-contentwarehouse/tests/
       - packages/google-cloud-contentwarehouse/README.rst
       - packages/google-cloud-contentwarehouse/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-core
-    version: 2.5.1
+    version: 2.6.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1893,7 +1893,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-core/.repo-metadata.json
       - packages/google-cloud-core/noxfile.py
-      - packages/google-cloud-core/tests/  
+      - packages/google-cloud-core/tests/
       - packages/google-cloud-core/README.rst
       - packages/google-cloud-core/docs/
     tag_format: '{id}-v{version}'
@@ -1913,7 +1913,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-data-fusion/.repo-metadata.json
       - packages/google-cloud-data-fusion/noxfile.py
-      - packages/google-cloud-data-fusion/tests/  
+      - packages/google-cloud-data-fusion/tests/
       - packages/google-cloud-data-fusion/README.rst
       - packages/google-cloud-data-fusion/docs/
     tag_format: '{id}-v{version}'
@@ -1933,12 +1933,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-data-qna/.repo-metadata.json
       - packages/google-cloud-data-qna/noxfile.py
-      - packages/google-cloud-data-qna/tests/  
+      - packages/google-cloud-data-qna/tests/
       - packages/google-cloud-data-qna/README.rst
       - packages/google-cloud-data-qna/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1954,7 +1954,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-databasecenter/.repo-metadata.json
       - packages/google-cloud-databasecenter/noxfile.py
-      - packages/google-cloud-databasecenter/tests/  
+      - packages/google-cloud-databasecenter/tests/
       - packages/google-cloud-databasecenter/README.rst
       - packages/google-cloud-databasecenter/docs/
     tag_format: '{id}-v{version}'
@@ -1976,7 +1976,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-datacatalog/.repo-metadata.json
       - packages/google-cloud-datacatalog/noxfile.py
-      - packages/google-cloud-datacatalog/tests/  
+      - packages/google-cloud-datacatalog/tests/
       - packages/google-cloud-datacatalog/README.rst
       - packages/google-cloud-datacatalog/docs/
     tag_format: '{id}-v{version}'
@@ -1996,12 +1996,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-datacatalog-lineage/.repo-metadata.json
       - packages/google-cloud-datacatalog-lineage/noxfile.py
-      - packages/google-cloud-datacatalog-lineage/tests/  
+      - packages/google-cloud-datacatalog-lineage/tests/
       - packages/google-cloud-datacatalog-lineage/README.rst
       - packages/google-cloud-datacatalog-lineage/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog-lineage-configmanagement
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: 0b3dec847f1045e47991c1539d4c69d8b025cfe8
     apis:
       - path: google/cloud/datacatalog/lineage/configmanagement/v1
@@ -2040,7 +2040,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dataflow-client/.repo-metadata.json
       - packages/google-cloud-dataflow-client/noxfile.py
-      - packages/google-cloud-dataflow-client/tests/  
+      - packages/google-cloud-dataflow-client/tests/
       - packages/google-cloud-dataflow-client/README.rst
       - packages/google-cloud-dataflow-client/docs/
     tag_format: '{id}-v{version}'
@@ -2062,7 +2062,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dataform/.repo-metadata.json
       - packages/google-cloud-dataform/noxfile.py
-      - packages/google-cloud-dataform/tests/  
+      - packages/google-cloud-dataform/tests/
       - packages/google-cloud-dataform/README.rst
       - packages/google-cloud-dataform/docs/
     tag_format: '{id}-v{version}'
@@ -2082,12 +2082,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-datalabeling/.repo-metadata.json
       - packages/google-cloud-datalabeling/noxfile.py
-      - packages/google-cloud-datalabeling/tests/  
+      - packages/google-cloud-datalabeling/tests/
       - packages/google-cloud-datalabeling/README.rst
       - packages/google-cloud-datalabeling/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataplex
-    version: 2.18.0
+    version: 2.19.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/dataplex/v1
@@ -2102,7 +2102,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dataplex/.repo-metadata.json
       - packages/google-cloud-dataplex/noxfile.py
-      - packages/google-cloud-dataplex/tests/  
+      - packages/google-cloud-dataplex/tests/
       - packages/google-cloud-dataplex/README.rst
       - packages/google-cloud-dataplex/docs/
     tag_format: '{id}-v{version}'
@@ -2123,7 +2123,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dataproc/.repo-metadata.json
       - packages/google-cloud-dataproc/noxfile.py
-      - packages/google-cloud-dataproc/tests/  
+      - packages/google-cloud-dataproc/tests/
       - packages/google-cloud-dataproc/README.rst
       - packages/google-cloud-dataproc/docs/
     tag_format: '{id}-v{version}'
@@ -2147,7 +2147,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dataproc-metastore/.repo-metadata.json
       - packages/google-cloud-dataproc-metastore/noxfile.py
-      - packages/google-cloud-dataproc-metastore/tests/  
+      - packages/google-cloud-dataproc-metastore/tests/
       - packages/google-cloud-dataproc-metastore/README.rst
       - packages/google-cloud-dataproc-metastore/docs/
     tag_format: '{id}-v{version}'
@@ -2169,7 +2169,7 @@ libraries:
       - ^packages/google-cloud-datastore/.flake8
       - ^packages/google-cloud-datastore/.repo-metadata.json
       - ^packages/google-cloud-datastore/noxfile.py
-      - ^packages/google-cloud-datastore/tests/  
+      - ^packages/google-cloud-datastore/tests/
       - ^packages/google-cloud-datastore/LICENSE
       - ^packages/google-cloud-datastore/MANIFEST.in
       - ^packages/google-cloud-datastore/README.rst
@@ -2217,7 +2217,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-datastore/.repo-metadata.json
       - packages/google-cloud-datastore/noxfile.py
-      - packages/google-cloud-datastore/tests/  
+      - packages/google-cloud-datastore/tests/
       - packages/google-cloud-datastore/README.rst
       - packages/google-cloud-datastore/docs/
     tag_format: '{id}-v{version}'
@@ -2239,7 +2239,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-datastream/.repo-metadata.json
       - packages/google-cloud-datastream/noxfile.py
-      - packages/google-cloud-datastream/tests/  
+      - packages/google-cloud-datastream/tests/
       - packages/google-cloud-datastream/README.rst
       - packages/google-cloud-datastream/docs/
     tag_format: '{id}-v{version}'
@@ -2259,7 +2259,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-deploy/.repo-metadata.json
       - packages/google-cloud-deploy/noxfile.py
-      - packages/google-cloud-deploy/tests/  
+      - packages/google-cloud-deploy/tests/
       - packages/google-cloud-deploy/README.rst
       - packages/google-cloud-deploy/docs/
     tag_format: '{id}-v{version}'
@@ -2279,7 +2279,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-developerconnect/.repo-metadata.json
       - packages/google-cloud-developerconnect/noxfile.py
-      - packages/google-cloud-developerconnect/tests/  
+      - packages/google-cloud-developerconnect/tests/
       - packages/google-cloud-developerconnect/README.rst
       - packages/google-cloud-developerconnect/docs/
     tag_format: '{id}-v{version}'
@@ -2299,7 +2299,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-devicestreaming/.repo-metadata.json
       - packages/google-cloud-devicestreaming/noxfile.py
-      - packages/google-cloud-devicestreaming/tests/  
+      - packages/google-cloud-devicestreaming/tests/
       - packages/google-cloud-devicestreaming/README.rst
       - packages/google-cloud-devicestreaming/docs/
     tag_format: '{id}-v{version}'
@@ -2321,7 +2321,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dialogflow/.repo-metadata.json
       - packages/google-cloud-dialogflow/noxfile.py
-      - packages/google-cloud-dialogflow/tests/  
+      - packages/google-cloud-dialogflow/tests/
       - packages/google-cloud-dialogflow/README.rst
       - packages/google-cloud-dialogflow/docs/
     tag_format: '{id}-v{version}'
@@ -2343,12 +2343,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dialogflow-cx/.repo-metadata.json
       - packages/google-cloud-dialogflow-cx/noxfile.py
-      - packages/google-cloud-dialogflow-cx/tests/  
+      - packages/google-cloud-dialogflow-cx/tests/
       - packages/google-cloud-dialogflow-cx/README.rst
       - packages/google-cloud-dialogflow-cx/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
-    version: 0.18.0
+    version: 0.19.0
     last_generated_commit: 59d5f2b46924714af627ac29ea6de78641a00835
     apis:
       - path: google/cloud/discoveryengine/v1
@@ -2367,7 +2367,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-discoveryengine/.repo-metadata.json
       - packages/google-cloud-discoveryengine/noxfile.py
-      - packages/google-cloud-discoveryengine/tests/  
+      - packages/google-cloud-discoveryengine/tests/
       - packages/google-cloud-discoveryengine/README.rst
       - packages/google-cloud-discoveryengine/docs/
     tag_format: '{id}-v{version}'
@@ -2388,7 +2388,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dlp/.repo-metadata.json
       - packages/google-cloud-dlp/noxfile.py
-      - packages/google-cloud-dlp/tests/  
+      - packages/google-cloud-dlp/tests/
       - packages/google-cloud-dlp/README.rst
       - packages/google-cloud-dlp/docs/
     tag_format: '{id}-v{version}'
@@ -2408,12 +2408,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dms/.repo-metadata.json
       - packages/google-cloud-dms/noxfile.py
-      - packages/google-cloud-dms/tests/  
+      - packages/google-cloud-dms/tests/
       - packages/google-cloud-dms/README.rst
       - packages/google-cloud-dms/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dns
-    version: 0.36.1
+    version: 0.37.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2423,7 +2423,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-dns/.repo-metadata.json
       - packages/google-cloud-dns/noxfile.py
-      - packages/google-cloud-dns/tests/  
+      - packages/google-cloud-dns/tests/
       - packages/google-cloud-dns/README.rst
       - packages/google-cloud-dns/docs/
     tag_format: '{id}-v{version}'
@@ -2445,12 +2445,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-documentai/.repo-metadata.json
       - packages/google-cloud-documentai/noxfile.py
-      - packages/google-cloud-documentai/tests/  
+      - packages/google-cloud-documentai/tests/
       - packages/google-cloud-documentai/README.rst
       - packages/google-cloud-documentai/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai-toolbox
-    version: 0.15.2
+    version: 0.16.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2460,7 +2460,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-documentai-toolbox/.repo-metadata.json
       - packages/google-cloud-documentai-toolbox/noxfile.py
-      - packages/google-cloud-documentai-toolbox/tests/  
+      - packages/google-cloud-documentai-toolbox/tests/
       - packages/google-cloud-documentai-toolbox/README.rst
       - packages/google-cloud-documentai-toolbox/docs/
     tag_format: '{id}-v{version}'
@@ -2482,7 +2482,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-domains/.repo-metadata.json
       - packages/google-cloud-domains/noxfile.py
-      - packages/google-cloud-domains/tests/  
+      - packages/google-cloud-domains/tests/
       - packages/google-cloud-domains/README.rst
       - packages/google-cloud-domains/docs/
     tag_format: '{id}-v{version}'
@@ -2502,7 +2502,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-edgecontainer/.repo-metadata.json
       - packages/google-cloud-edgecontainer/noxfile.py
-      - packages/google-cloud-edgecontainer/tests/  
+      - packages/google-cloud-edgecontainer/tests/
       - packages/google-cloud-edgecontainer/README.rst
       - packages/google-cloud-edgecontainer/docs/
     tag_format: '{id}-v{version}'
@@ -2522,7 +2522,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-edgenetwork/.repo-metadata.json
       - packages/google-cloud-edgenetwork/noxfile.py
-      - packages/google-cloud-edgenetwork/tests/  
+      - packages/google-cloud-edgenetwork/tests/
       - packages/google-cloud-edgenetwork/README.rst
       - packages/google-cloud-edgenetwork/docs/
     tag_format: '{id}-v{version}'
@@ -2542,7 +2542,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-enterpriseknowledgegraph/.repo-metadata.json
       - packages/google-cloud-enterpriseknowledgegraph/noxfile.py
-      - packages/google-cloud-enterpriseknowledgegraph/tests/  
+      - packages/google-cloud-enterpriseknowledgegraph/tests/
       - packages/google-cloud-enterpriseknowledgegraph/README.rst
       - packages/google-cloud-enterpriseknowledgegraph/docs/
     tag_format: '{id}-v{version}'
@@ -2575,7 +2575,7 @@ libraries:
       - ^packages/google-cloud-error-reporting/.flake8
       - ^packages/google-cloud-error-reporting/.repo-metadata.json
       - ^packages/google-cloud-error-reporting/noxfile.py
-      - ^packages/google-cloud-error-reporting/tests/  
+      - ^packages/google-cloud-error-reporting/tests/
       - ^packages/google-cloud-error-reporting/.trampolinerc
       - ^packages/google-cloud-error-reporting/LICENSE
       - ^packages/google-cloud-error-reporting/MANIFEST.in
@@ -2588,7 +2588,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-error-reporting/.repo-metadata.json
       - packages/google-cloud-error-reporting/noxfile.py
-      - packages/google-cloud-error-reporting/tests/  
+      - packages/google-cloud-error-reporting/tests/
       - packages/google-cloud-error-reporting/README.rst
       - packages/google-cloud-error-reporting/docs/
     tag_format: '{id}-v{version}'
@@ -2608,7 +2608,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-essential-contacts/.repo-metadata.json
       - packages/google-cloud-essential-contacts/noxfile.py
-      - packages/google-cloud-essential-contacts/tests/  
+      - packages/google-cloud-essential-contacts/tests/
       - packages/google-cloud-essential-contacts/README.rst
       - packages/google-cloud-essential-contacts/docs/
     tag_format: '{id}-v{version}'
@@ -2628,7 +2628,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-eventarc/.repo-metadata.json
       - packages/google-cloud-eventarc/noxfile.py
-      - packages/google-cloud-eventarc/tests/  
+      - packages/google-cloud-eventarc/tests/
       - packages/google-cloud-eventarc/README.rst
       - packages/google-cloud-eventarc/docs/
     tag_format: '{id}-v{version}'
@@ -2648,7 +2648,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-eventarc-publishing/.repo-metadata.json
       - packages/google-cloud-eventarc-publishing/noxfile.py
-      - packages/google-cloud-eventarc-publishing/tests/  
+      - packages/google-cloud-eventarc-publishing/tests/
       - packages/google-cloud-eventarc-publishing/README.rst
       - packages/google-cloud-eventarc-publishing/docs/
     tag_format: '{id}-v{version}'
@@ -2668,7 +2668,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-filestore/.repo-metadata.json
       - packages/google-cloud-filestore/noxfile.py
-      - packages/google-cloud-filestore/tests/  
+      - packages/google-cloud-filestore/tests/
       - packages/google-cloud-filestore/README.rst
       - packages/google-cloud-filestore/docs/
     tag_format: '{id}-v{version}'
@@ -2688,7 +2688,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-financialservices/.repo-metadata.json
       - packages/google-cloud-financialservices/noxfile.py
-      - packages/google-cloud-financialservices/tests/  
+      - packages/google-cloud-financialservices/tests/
       - packages/google-cloud-financialservices/README.rst
       - packages/google-cloud-financialservices/docs/
     tag_format: '{id}-v{version}'
@@ -2734,7 +2734,7 @@ libraries:
       - ^packages/google-cloud-firestore/.flake8
       - ^packages/google-cloud-firestore/.repo-metadata.json
       - ^packages/google-cloud-firestore/noxfile.py
-      - ^packages/google-cloud-firestore/tests/  
+      - ^packages/google-cloud-firestore/tests/
       - ^packages/google-cloud-firestore/.coveragerc
       - ^packages/google-cloud-firestore/mypy.ini
       - ^packages/google-cloud-firestore/LICENSE
@@ -2758,7 +2758,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-firestore/.repo-metadata.json
       - packages/google-cloud-firestore/noxfile.py
-      - packages/google-cloud-firestore/tests/  
+      - packages/google-cloud-firestore/tests/
       - packages/google-cloud-firestore/README.rst
       - packages/google-cloud-firestore/docs/
     tag_format: '{id}-v{version}'
@@ -2780,7 +2780,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-functions/.repo-metadata.json
       - packages/google-cloud-functions/noxfile.py
-      - packages/google-cloud-functions/tests/  
+      - packages/google-cloud-functions/tests/
       - packages/google-cloud-functions/README.rst
       - packages/google-cloud-functions/docs/
     tag_format: '{id}-v{version}'
@@ -2800,7 +2800,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gdchardwaremanagement/.repo-metadata.json
       - packages/google-cloud-gdchardwaremanagement/noxfile.py
-      - packages/google-cloud-gdchardwaremanagement/tests/  
+      - packages/google-cloud-gdchardwaremanagement/tests/
       - packages/google-cloud-gdchardwaremanagement/README.rst
       - packages/google-cloud-gdchardwaremanagement/docs/
     tag_format: '{id}-v{version}'
@@ -2822,7 +2822,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-geminidataanalytics/.repo-metadata.json
       - packages/google-cloud-geminidataanalytics/noxfile.py
-      - packages/google-cloud-geminidataanalytics/tests/  
+      - packages/google-cloud-geminidataanalytics/tests/
       - packages/google-cloud-geminidataanalytics/README.rst
       - packages/google-cloud-geminidataanalytics/docs/
     tag_format: '{id}-v{version}'
@@ -2842,7 +2842,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gke-backup/.repo-metadata.json
       - packages/google-cloud-gke-backup/noxfile.py
-      - packages/google-cloud-gke-backup/tests/  
+      - packages/google-cloud-gke-backup/tests/
       - packages/google-cloud-gke-backup/README.rst
       - packages/google-cloud-gke-backup/docs/
     tag_format: '{id}-v{version}'
@@ -2864,12 +2864,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gke-connect-gateway/.repo-metadata.json
       - packages/google-cloud-gke-connect-gateway/noxfile.py
-      - packages/google-cloud-gke-connect-gateway/tests/  
+      - packages/google-cloud-gke-connect-gateway/tests/
       - packages/google-cloud-gke-connect-gateway/README.rst
       - packages/google-cloud-gke-connect-gateway/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-hub
-    version: 1.23.0
+    version: 1.24.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/gkehub/v1
@@ -2892,7 +2892,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gke-hub/.repo-metadata.json
       - packages/google-cloud-gke-hub/noxfile.py
-      - packages/google-cloud-gke-hub/tests/  
+      - packages/google-cloud-gke-hub/tests/
       - packages/google-cloud-gke-hub/README.rst
       - packages/google-cloud-gke-hub/docs/
     tag_format: '{id}-v{version}'
@@ -2912,7 +2912,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gke-multicloud/.repo-metadata.json
       - packages/google-cloud-gke-multicloud/noxfile.py
-      - packages/google-cloud-gke-multicloud/tests/  
+      - packages/google-cloud-gke-multicloud/tests/
       - packages/google-cloud-gke-multicloud/README.rst
       - packages/google-cloud-gke-multicloud/docs/
     tag_format: '{id}-v{version}'
@@ -2932,7 +2932,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gkerecommender/.repo-metadata.json
       - packages/google-cloud-gkerecommender/noxfile.py
-      - packages/google-cloud-gkerecommender/tests/  
+      - packages/google-cloud-gkerecommender/tests/
       - packages/google-cloud-gkerecommender/README.rst
       - packages/google-cloud-gkerecommender/docs/
     tag_format: '{id}-v{version}'
@@ -2952,7 +2952,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-gsuiteaddons/.repo-metadata.json
       - packages/google-cloud-gsuiteaddons/noxfile.py
-      - packages/google-cloud-gsuiteaddons/tests/  
+      - packages/google-cloud-gsuiteaddons/tests/
       - packages/google-cloud-gsuiteaddons/README.rst
       - packages/google-cloud-gsuiteaddons/docs/
     tag_format: '{id}-v{version}'
@@ -2974,12 +2974,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-hypercomputecluster/.repo-metadata.json
       - packages/google-cloud-hypercomputecluster/noxfile.py
-      - packages/google-cloud-hypercomputecluster/tests/  
+      - packages/google-cloud-hypercomputecluster/tests/
       - packages/google-cloud-hypercomputecluster/README.rst
       - packages/google-cloud-hypercomputecluster/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-iam
-    version: 2.22.0
+    version: 2.23.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/iam/v3
@@ -3004,7 +3004,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-iam/.repo-metadata.json
       - packages/google-cloud-iam/noxfile.py
-      - packages/google-cloud-iam/tests/  
+      - packages/google-cloud-iam/tests/
       - packages/google-cloud-iam/README.rst
       - packages/google-cloud-iam/docs/
     tag_format: '{id}-v{version}'
@@ -3024,7 +3024,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-iam-logging/.repo-metadata.json
       - packages/google-cloud-iam-logging/noxfile.py
-      - packages/google-cloud-iam-logging/tests/  
+      - packages/google-cloud-iam-logging/tests/
       - packages/google-cloud-iam-logging/README.rst
       - packages/google-cloud-iam-logging/docs/
     tag_format: '{id}-v{version}'
@@ -3048,7 +3048,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-iamconnectorcredentials/.repo-metadata.json
       - packages/google-cloud-iamconnectorcredentials/noxfile.py
-      - packages/google-cloud-iamconnectorcredentials/tests/  
+      - packages/google-cloud-iamconnectorcredentials/tests/
       - packages/google-cloud-iamconnectorcredentials/README.rst
       - packages/google-cloud-iamconnectorcredentials/docs/
     tag_format: '{id}-v{version}'
@@ -3068,7 +3068,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-iap/.repo-metadata.json
       - packages/google-cloud-iap/noxfile.py
-      - packages/google-cloud-iap/tests/  
+      - packages/google-cloud-iap/tests/
       - packages/google-cloud-iap/README.rst
       - packages/google-cloud-iap/docs/
     tag_format: '{id}-v{version}'
@@ -3088,12 +3088,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-ids/.repo-metadata.json
       - packages/google-cloud-ids/noxfile.py
-      - packages/google-cloud-ids/tests/  
+      - packages/google-cloud-ids/tests/
       - packages/google-cloud-ids/README.rst
       - packages/google-cloud-ids/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
-    version: 3.12.0
+    version: 3.13.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/v1
@@ -3109,7 +3109,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-kms/.repo-metadata.json
       - packages/google-cloud-kms/noxfile.py
-      - packages/google-cloud-kms/tests/  
+      - packages/google-cloud-kms/tests/
       - packages/google-cloud-kms/README.rst
       - packages/google-cloud-kms/docs/
     tag_format: '{id}-v{version}'
@@ -3129,7 +3129,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-kms-inventory/.repo-metadata.json
       - packages/google-cloud-kms-inventory/noxfile.py
-      - packages/google-cloud-kms-inventory/tests/  
+      - packages/google-cloud-kms-inventory/tests/
       - packages/google-cloud-kms-inventory/README.rst
       - packages/google-cloud-kms-inventory/docs/
     tag_format: '{id}-v{version}'
@@ -3154,7 +3154,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-language/.repo-metadata.json
       - packages/google-cloud-language/noxfile.py
-      - packages/google-cloud-language/tests/  
+      - packages/google-cloud-language/tests/
       - packages/google-cloud-language/README.rst
       - packages/google-cloud-language/docs/
     tag_format: '{id}-v{version}'
@@ -3174,7 +3174,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-licensemanager/.repo-metadata.json
       - packages/google-cloud-licensemanager/noxfile.py
-      - packages/google-cloud-licensemanager/tests/  
+      - packages/google-cloud-licensemanager/tests/
       - packages/google-cloud-licensemanager/README.rst
       - packages/google-cloud-licensemanager/docs/
     tag_format: '{id}-v{version}'
@@ -3194,7 +3194,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-life-sciences/.repo-metadata.json
       - packages/google-cloud-life-sciences/noxfile.py
-      - packages/google-cloud-life-sciences/tests/  
+      - packages/google-cloud-life-sciences/tests/
       - packages/google-cloud-life-sciences/README.rst
       - packages/google-cloud-life-sciences/docs/
     tag_format: '{id}-v{version}'
@@ -3214,7 +3214,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-locationfinder/.repo-metadata.json
       - packages/google-cloud-locationfinder/noxfile.py
-      - packages/google-cloud-locationfinder/tests/  
+      - packages/google-cloud-locationfinder/tests/
       - packages/google-cloud-locationfinder/README.rst
       - packages/google-cloud-locationfinder/docs/
     tag_format: '{id}-v{version}'
@@ -3234,7 +3234,7 @@ libraries:
       - ^packages/google-cloud-logging/.flake8
       - ^packages/google-cloud-logging/.repo-metadata.json
       - ^packages/google-cloud-logging/noxfile.py
-      - ^packages/google-cloud-logging/tests/  
+      - ^packages/google-cloud-logging/tests/
       - ^packages/google-cloud-logging/LICENSE
       - ^packages/google-cloud-logging/MANIFEST.in
       - ^packages/google-cloud-logging/README.rst
@@ -3267,7 +3267,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-logging/.repo-metadata.json
       - packages/google-cloud-logging/noxfile.py
-      - packages/google-cloud-logging/tests/  
+      - packages/google-cloud-logging/tests/
       - packages/google-cloud-logging/README.rst
       - packages/google-cloud-logging/docs/
     tag_format: '{id}-v{version}'
@@ -3287,7 +3287,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-lustre/.repo-metadata.json
       - packages/google-cloud-lustre/noxfile.py
-      - packages/google-cloud-lustre/tests/  
+      - packages/google-cloud-lustre/tests/
       - packages/google-cloud-lustre/README.rst
       - packages/google-cloud-lustre/docs/
     tag_format: '{id}-v{version}'
@@ -3309,7 +3309,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-maintenance-api/.repo-metadata.json
       - packages/google-cloud-maintenance-api/noxfile.py
-      - packages/google-cloud-maintenance-api/tests/  
+      - packages/google-cloud-maintenance-api/tests/
       - packages/google-cloud-maintenance-api/README.rst
       - packages/google-cloud-maintenance-api/docs/
     tag_format: '{id}-v{version}'
@@ -3329,7 +3329,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-managed-identities/.repo-metadata.json
       - packages/google-cloud-managed-identities/noxfile.py
-      - packages/google-cloud-managed-identities/tests/  
+      - packages/google-cloud-managed-identities/tests/
       - packages/google-cloud-managed-identities/README.rst
       - packages/google-cloud-managed-identities/docs/
     tag_format: '{id}-v{version}'
@@ -3349,7 +3349,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-managedkafka/.repo-metadata.json
       - packages/google-cloud-managedkafka/noxfile.py
-      - packages/google-cloud-managedkafka/tests/  
+      - packages/google-cloud-managedkafka/tests/
       - packages/google-cloud-managedkafka/README.rst
       - packages/google-cloud-managedkafka/docs/
     tag_format: '{id}-v{version}'
@@ -3369,7 +3369,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-managedkafka-schemaregistry/.repo-metadata.json
       - packages/google-cloud-managedkafka-schemaregistry/noxfile.py
-      - packages/google-cloud-managedkafka-schemaregistry/tests/  
+      - packages/google-cloud-managedkafka-schemaregistry/tests/
       - packages/google-cloud-managedkafka-schemaregistry/README.rst
       - packages/google-cloud-managedkafka-schemaregistry/docs/
     tag_format: '{id}-v{version}'
@@ -3389,7 +3389,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-media-translation/.repo-metadata.json
       - packages/google-cloud-media-translation/noxfile.py
-      - packages/google-cloud-media-translation/tests/  
+      - packages/google-cloud-media-translation/tests/
       - packages/google-cloud-media-translation/README.rst
       - packages/google-cloud-media-translation/docs/
     tag_format: '{id}-v{version}'
@@ -3411,12 +3411,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-memcache/.repo-metadata.json
       - packages/google-cloud-memcache/noxfile.py
-      - packages/google-cloud-memcache/tests/  
+      - packages/google-cloud-memcache/tests/
       - packages/google-cloud-memcache/README.rst
       - packages/google-cloud-memcache/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/cloud/memorystore/v1beta
@@ -3433,7 +3433,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-memorystore/.repo-metadata.json
       - packages/google-cloud-memorystore/noxfile.py
-      - packages/google-cloud-memorystore/tests/  
+      - packages/google-cloud-memorystore/tests/
       - packages/google-cloud-memorystore/README.rst
       - packages/google-cloud-memorystore/docs/
     tag_format: '{id}-v{version}'
@@ -3453,12 +3453,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-migrationcenter/.repo-metadata.json
       - packages/google-cloud-migrationcenter/noxfile.py
-      - packages/google-cloud-migrationcenter/tests/  
+      - packages/google-cloud-migrationcenter/tests/
       - packages/google-cloud-migrationcenter/README.rst
       - packages/google-cloud-migrationcenter/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-modelarmor
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/modelarmor/v1beta
@@ -3475,7 +3475,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-modelarmor/.repo-metadata.json
       - packages/google-cloud-modelarmor/noxfile.py
-      - packages/google-cloud-modelarmor/tests/  
+      - packages/google-cloud-modelarmor/tests/
       - packages/google-cloud-modelarmor/README.rst
       - packages/google-cloud-modelarmor/docs/
     tag_format: '{id}-v{version}'
@@ -3501,7 +3501,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-monitoring/.repo-metadata.json
       - packages/google-cloud-monitoring/noxfile.py
-      - packages/google-cloud-monitoring/tests/  
+      - packages/google-cloud-monitoring/tests/
       - packages/google-cloud-monitoring/README.rst
       - packages/google-cloud-monitoring/docs/
     tag_format: '{id}-v{version}'
@@ -3523,7 +3523,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-monitoring-dashboards/.repo-metadata.json
       - packages/google-cloud-monitoring-dashboards/noxfile.py
-      - packages/google-cloud-monitoring-dashboards/tests/  
+      - packages/google-cloud-monitoring-dashboards/tests/
       - packages/google-cloud-monitoring-dashboards/README.rst
       - packages/google-cloud-monitoring-dashboards/docs/
     tag_format: '{id}-v{version}'
@@ -3543,12 +3543,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-monitoring-metrics-scopes/.repo-metadata.json
       - packages/google-cloud-monitoring-metrics-scopes/noxfile.py
-      - packages/google-cloud-monitoring-metrics-scopes/tests/  
+      - packages/google-cloud-monitoring-metrics-scopes/tests/
       - packages/google-cloud-monitoring-metrics-scopes/README.rst
       - packages/google-cloud-monitoring-metrics-scopes/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ndb
-    version: 2.4.2
+    version: 2.5.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -3558,12 +3558,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-ndb/.repo-metadata.json
       - packages/google-cloud-ndb/noxfile.py
-      - packages/google-cloud-ndb/tests/  
+      - packages/google-cloud-ndb/tests/
       - packages/google-cloud-ndb/README.rst
       - packages/google-cloud-ndb/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/netapp/v1
@@ -3578,7 +3578,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-netapp/.repo-metadata.json
       - packages/google-cloud-netapp/noxfile.py
-      - packages/google-cloud-netapp/tests/  
+      - packages/google-cloud-netapp/tests/
       - packages/google-cloud-netapp/README.rst
       - packages/google-cloud-netapp/docs/
     tag_format: '{id}-v{version}'
@@ -3602,12 +3602,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-network-connectivity/.repo-metadata.json
       - packages/google-cloud-network-connectivity/noxfile.py
-      - packages/google-cloud-network-connectivity/tests/  
+      - packages/google-cloud-network-connectivity/tests/
       - packages/google-cloud-network-connectivity/README.rst
       - packages/google-cloud-network-connectivity/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
-    version: 1.34.0
+    version: 1.35.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/networkmanagement/v1
@@ -3622,7 +3622,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-network-management/.repo-metadata.json
       - packages/google-cloud-network-management/noxfile.py
-      - packages/google-cloud-network-management/tests/  
+      - packages/google-cloud-network-management/tests/
       - packages/google-cloud-network-management/README.rst
       - packages/google-cloud-network-management/docs/
     tag_format: '{id}-v{version}'
@@ -3646,7 +3646,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-network-security/.repo-metadata.json
       - packages/google-cloud-network-security/noxfile.py
-      - packages/google-cloud-network-security/tests/  
+      - packages/google-cloud-network-security/tests/
       - packages/google-cloud-network-security/README.rst
       - packages/google-cloud-network-security/docs/
     tag_format: '{id}-v{version}'
@@ -3666,7 +3666,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-network-services/.repo-metadata.json
       - packages/google-cloud-network-services/noxfile.py
-      - packages/google-cloud-network-services/tests/  
+      - packages/google-cloud-network-services/tests/
       - packages/google-cloud-network-services/README.rst
       - packages/google-cloud-network-services/docs/
     tag_format: '{id}-v{version}'
@@ -3690,7 +3690,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-notebooks/.repo-metadata.json
       - packages/google-cloud-notebooks/noxfile.py
-      - packages/google-cloud-notebooks/tests/  
+      - packages/google-cloud-notebooks/tests/
       - packages/google-cloud-notebooks/README.rst
       - packages/google-cloud-notebooks/docs/
     tag_format: '{id}-v{version}'
@@ -3710,7 +3710,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-optimization/.repo-metadata.json
       - packages/google-cloud-optimization/noxfile.py
-      - packages/google-cloud-optimization/tests/  
+      - packages/google-cloud-optimization/tests/
       - packages/google-cloud-optimization/README.rst
       - packages/google-cloud-optimization/docs/
     tag_format: '{id}-v{version}'
@@ -3730,12 +3730,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-oracledatabase/.repo-metadata.json
       - packages/google-cloud-oracledatabase/noxfile.py
-      - packages/google-cloud-oracledatabase/tests/  
+      - packages/google-cloud-oracledatabase/tests/
       - packages/google-cloud-oracledatabase/README.rst
       - packages/google-cloud-oracledatabase/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-orchestration-airflow
-    version: 1.20.0
+    version: 1.21.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
@@ -3752,7 +3752,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-orchestration-airflow/.repo-metadata.json
       - packages/google-cloud-orchestration-airflow/noxfile.py
-      - packages/google-cloud-orchestration-airflow/tests/  
+      - packages/google-cloud-orchestration-airflow/tests/
       - packages/google-cloud-orchestration-airflow/README.rst
       - packages/google-cloud-orchestration-airflow/docs/
     tag_format: '{id}-v{version}'
@@ -3776,7 +3776,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-org-policy/.repo-metadata.json
       - packages/google-cloud-org-policy/noxfile.py
-      - packages/google-cloud-org-policy/tests/  
+      - packages/google-cloud-org-policy/tests/
       - packages/google-cloud-org-policy/README.rst
       - packages/google-cloud-org-policy/docs/
     tag_format: '{id}-v{version}'
@@ -3799,12 +3799,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-os-config/.repo-metadata.json
       - packages/google-cloud-os-config/noxfile.py
-      - packages/google-cloud-os-config/tests/  
+      - packages/google-cloud-os-config/tests/
       - packages/google-cloud-os-config/README.rst
       - packages/google-cloud-os-config/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-login
-    version: 2.20.0
+    version: 2.21.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/oslogin/v1
@@ -3821,7 +3821,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-os-login/.repo-metadata.json
       - packages/google-cloud-os-login/noxfile.py
-      - packages/google-cloud-os-login/tests/  
+      - packages/google-cloud-os-login/tests/
       - packages/google-cloud-os-login/README.rst
       - packages/google-cloud-os-login/docs/
     tag_format: '{id}-v{version}'
@@ -3843,7 +3843,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-parallelstore/.repo-metadata.json
       - packages/google-cloud-parallelstore/noxfile.py
-      - packages/google-cloud-parallelstore/tests/  
+      - packages/google-cloud-parallelstore/tests/
       - packages/google-cloud-parallelstore/README.rst
       - packages/google-cloud-parallelstore/docs/
     tag_format: '{id}-v{version}'
@@ -3863,7 +3863,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-parametermanager/.repo-metadata.json
       - packages/google-cloud-parametermanager/noxfile.py
-      - packages/google-cloud-parametermanager/tests/  
+      - packages/google-cloud-parametermanager/tests/
       - packages/google-cloud-parametermanager/README.rst
       - packages/google-cloud-parametermanager/docs/
     tag_format: '{id}-v{version}'
@@ -3883,7 +3883,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-phishing-protection/.repo-metadata.json
       - packages/google-cloud-phishing-protection/noxfile.py
-      - packages/google-cloud-phishing-protection/tests/  
+      - packages/google-cloud-phishing-protection/tests/
       - packages/google-cloud-phishing-protection/README.rst
       - packages/google-cloud-phishing-protection/docs/
     tag_format: '{id}-v{version}'
@@ -3903,7 +3903,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-policy-troubleshooter/.repo-metadata.json
       - packages/google-cloud-policy-troubleshooter/noxfile.py
-      - packages/google-cloud-policy-troubleshooter/tests/  
+      - packages/google-cloud-policy-troubleshooter/tests/
       - packages/google-cloud-policy-troubleshooter/README.rst
       - packages/google-cloud-policy-troubleshooter/docs/
     tag_format: '{id}-v{version}'
@@ -3923,12 +3923,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-policysimulator/.repo-metadata.json
       - packages/google-cloud-policysimulator/noxfile.py
-      - packages/google-cloud-policysimulator/tests/  
+      - packages/google-cloud-policysimulator/tests/
       - packages/google-cloud-policysimulator/README.rst
       - packages/google-cloud-policysimulator/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-policytroubleshooter-iam
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
@@ -3943,7 +3943,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-policytroubleshooter-iam/.repo-metadata.json
       - packages/google-cloud-policytroubleshooter-iam/noxfile.py
-      - packages/google-cloud-policytroubleshooter-iam/tests/  
+      - packages/google-cloud-policytroubleshooter-iam/tests/
       - packages/google-cloud-policytroubleshooter-iam/README.rst
       - packages/google-cloud-policytroubleshooter-iam/docs/
     tag_format: '{id}-v{version}'
@@ -3965,7 +3965,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-private-ca/.repo-metadata.json
       - packages/google-cloud-private-ca/noxfile.py
-      - packages/google-cloud-private-ca/tests/  
+      - packages/google-cloud-private-ca/tests/
       - packages/google-cloud-private-ca/README.rst
       - packages/google-cloud-private-ca/docs/
     tag_format: '{id}-v{version}'
@@ -3985,7 +3985,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-private-catalog/.repo-metadata.json
       - packages/google-cloud-private-catalog/noxfile.py
-      - packages/google-cloud-private-catalog/tests/  
+      - packages/google-cloud-private-catalog/tests/
       - packages/google-cloud-private-catalog/README.rst
       - packages/google-cloud-private-catalog/docs/
     tag_format: '{id}-v{version}'
@@ -4005,12 +4005,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-privilegedaccessmanager/.repo-metadata.json
       - packages/google-cloud-privilegedaccessmanager/noxfile.py
-      - packages/google-cloud-privilegedaccessmanager/tests/  
+      - packages/google-cloud-privilegedaccessmanager/tests/
       - packages/google-cloud-privilegedaccessmanager/README.rst
       - packages/google-cloud-privilegedaccessmanager/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
-    version: 2.37.0
+    version: 2.38.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/pubsub/v1
@@ -4025,7 +4025,7 @@ libraries:
       - ^packages/google-cloud-pubsub/.flake8
       - ^packages/google-cloud-pubsub/.repo-metadata.json
       - ^packages/google-cloud-pubsub/noxfile.py
-      - ^packages/google-cloud-pubsub/tests/  
+      - ^packages/google-cloud-pubsub/tests/
       - ^packages/google-cloud-pubsub/LICENSE
       - ^packages/google-cloud-pubsub/MANIFEST.in
       - ^packages/google-cloud-pubsub/README.rst
@@ -4050,7 +4050,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-pubsub/.repo-metadata.json
       - packages/google-cloud-pubsub/noxfile.py
-      - packages/google-cloud-pubsub/tests/  
+      - packages/google-cloud-pubsub/tests/
       - packages/google-cloud-pubsub/README.rst
       - packages/google-cloud-pubsub/docs/
     tag_format: '{id}-v{version}'
@@ -4072,7 +4072,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-quotas/.repo-metadata.json
       - packages/google-cloud-quotas/noxfile.py
-      - packages/google-cloud-quotas/tests/  
+      - packages/google-cloud-quotas/tests/
       - packages/google-cloud-quotas/README.rst
       - packages/google-cloud-quotas/docs/
     tag_format: '{id}-v{version}'
@@ -4092,7 +4092,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-rapidmigrationassessment/.repo-metadata.json
       - packages/google-cloud-rapidmigrationassessment/noxfile.py
-      - packages/google-cloud-rapidmigrationassessment/tests/  
+      - packages/google-cloud-rapidmigrationassessment/tests/
       - packages/google-cloud-rapidmigrationassessment/README.rst
       - packages/google-cloud-rapidmigrationassessment/docs/
     tag_format: '{id}-v{version}'
@@ -4112,7 +4112,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-recaptcha-enterprise/.repo-metadata.json
       - packages/google-cloud-recaptcha-enterprise/noxfile.py
-      - packages/google-cloud-recaptcha-enterprise/tests/  
+      - packages/google-cloud-recaptcha-enterprise/tests/
       - packages/google-cloud-recaptcha-enterprise/README.rst
       - packages/google-cloud-recaptcha-enterprise/docs/
     tag_format: '{id}-v{version}'
@@ -4132,7 +4132,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-recommendations-ai/.repo-metadata.json
       - packages/google-cloud-recommendations-ai/noxfile.py
-      - packages/google-cloud-recommendations-ai/tests/  
+      - packages/google-cloud-recommendations-ai/tests/
       - packages/google-cloud-recommendations-ai/README.rst
       - packages/google-cloud-recommendations-ai/docs/
     tag_format: '{id}-v{version}'
@@ -4154,7 +4154,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-recommender/.repo-metadata.json
       - packages/google-cloud-recommender/noxfile.py
-      - packages/google-cloud-recommender/tests/  
+      - packages/google-cloud-recommender/tests/
       - packages/google-cloud-recommender/README.rst
       - packages/google-cloud-recommender/docs/
     tag_format: '{id}-v{version}'
@@ -4176,12 +4176,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-redis/.repo-metadata.json
       - packages/google-cloud-redis/noxfile.py
-      - packages/google-cloud-redis/tests/  
+      - packages/google-cloud-redis/tests/
       - packages/google-cloud-redis/README.rst
       - packages/google-cloud-redis/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/redis/cluster/v1
@@ -4198,7 +4198,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-redis-cluster/.repo-metadata.json
       - packages/google-cloud-redis-cluster/noxfile.py
-      - packages/google-cloud-redis-cluster/tests/  
+      - packages/google-cloud-redis-cluster/tests/
       - packages/google-cloud-redis-cluster/README.rst
       - packages/google-cloud-redis-cluster/docs/
     tag_format: '{id}-v{version}'
@@ -4218,7 +4218,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-resource-manager/.repo-metadata.json
       - packages/google-cloud-resource-manager/noxfile.py
-      - packages/google-cloud-resource-manager/tests/  
+      - packages/google-cloud-resource-manager/tests/
       - packages/google-cloud-resource-manager/README.rst
       - packages/google-cloud-resource-manager/docs/
     tag_format: '{id}-v{version}'
@@ -4242,7 +4242,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-retail/.repo-metadata.json
       - packages/google-cloud-retail/noxfile.py
-      - packages/google-cloud-retail/tests/  
+      - packages/google-cloud-retail/tests/
       - packages/google-cloud-retail/README.rst
       - packages/google-cloud-retail/docs/
     tag_format: '{id}-v{version}'
@@ -4262,12 +4262,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-run/.repo-metadata.json
       - packages/google-cloud-run/noxfile.py
-      - packages/google-cloud-run/tests/  
+      - packages/google-cloud-run/tests/
       - packages/google-cloud-run/README.rst
       - packages/google-cloud-run/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-runtimeconfig
-    version: 0.36.1
+    version: 0.37.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -4277,12 +4277,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-runtimeconfig/.repo-metadata.json
       - packages/google-cloud-runtimeconfig/noxfile.py
-      - packages/google-cloud-runtimeconfig/tests/  
+      - packages/google-cloud-runtimeconfig/tests/
       - packages/google-cloud-runtimeconfig/README.rst
       - packages/google-cloud-runtimeconfig/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
@@ -4297,7 +4297,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-saasplatform-saasservicemgmt/.repo-metadata.json
       - packages/google-cloud-saasplatform-saasservicemgmt/noxfile.py
-      - packages/google-cloud-saasplatform-saasservicemgmt/tests/  
+      - packages/google-cloud-saasplatform-saasservicemgmt/tests/
       - packages/google-cloud-saasplatform-saasservicemgmt/README.rst
       - packages/google-cloud-saasplatform-saasservicemgmt/docs/
     tag_format: '{id}-v{version}'
@@ -4320,12 +4320,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-scheduler/.repo-metadata.json
       - packages/google-cloud-scheduler/noxfile.py
-      - packages/google-cloud-scheduler/tests/  
+      - packages/google-cloud-scheduler/tests/
       - packages/google-cloud-scheduler/README.rst
       - packages/google-cloud-scheduler/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-secret-manager
-    version: 2.27.0
+    version: 2.28.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/cloud/secretmanager/v1
@@ -4344,7 +4344,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-secret-manager/.repo-metadata.json
       - packages/google-cloud-secret-manager/noxfile.py
-      - packages/google-cloud-secret-manager/tests/  
+      - packages/google-cloud-secret-manager/tests/
       - packages/google-cloud-secret-manager/README.rst
       - packages/google-cloud-secret-manager/docs/
     tag_format: '{id}-v{version}'
@@ -4364,7 +4364,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-securesourcemanager/.repo-metadata.json
       - packages/google-cloud-securesourcemanager/noxfile.py
-      - packages/google-cloud-securesourcemanager/tests/  
+      - packages/google-cloud-securesourcemanager/tests/
       - packages/google-cloud-securesourcemanager/README.rst
       - packages/google-cloud-securesourcemanager/docs/
     tag_format: '{id}-v{version}'
@@ -4386,7 +4386,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-security-publicca/.repo-metadata.json
       - packages/google-cloud-security-publicca/noxfile.py
-      - packages/google-cloud-security-publicca/tests/  
+      - packages/google-cloud-security-publicca/tests/
       - packages/google-cloud-security-publicca/README.rst
       - packages/google-cloud-security-publicca/docs/
     tag_format: '{id}-v{version}'
@@ -4412,7 +4412,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-securitycenter/.repo-metadata.json
       - packages/google-cloud-securitycenter/noxfile.py
-      - packages/google-cloud-securitycenter/tests/  
+      - packages/google-cloud-securitycenter/tests/
       - packages/google-cloud-securitycenter/README.rst
       - packages/google-cloud-securitycenter/docs/
     tag_format: '{id}-v{version}'
@@ -4432,7 +4432,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-securitycentermanagement/.repo-metadata.json
       - packages/google-cloud-securitycentermanagement/noxfile.py
-      - packages/google-cloud-securitycentermanagement/tests/  
+      - packages/google-cloud-securitycentermanagement/tests/
       - packages/google-cloud-securitycentermanagement/README.rst
       - packages/google-cloud-securitycentermanagement/docs/
     tag_format: '{id}-v{version}'
@@ -4454,7 +4454,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-service-control/.repo-metadata.json
       - packages/google-cloud-service-control/noxfile.py
-      - packages/google-cloud-service-control/tests/  
+      - packages/google-cloud-service-control/tests/
       - packages/google-cloud-service-control/README.rst
       - packages/google-cloud-service-control/docs/
     tag_format: '{id}-v{version}'
@@ -4476,7 +4476,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-service-directory/.repo-metadata.json
       - packages/google-cloud-service-directory/noxfile.py
-      - packages/google-cloud-service-directory/tests/  
+      - packages/google-cloud-service-directory/tests/
       - packages/google-cloud-service-directory/README.rst
       - packages/google-cloud-service-directory/docs/
     tag_format: '{id}-v{version}'
@@ -4496,7 +4496,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-service-management/.repo-metadata.json
       - packages/google-cloud-service-management/noxfile.py
-      - packages/google-cloud-service-management/tests/  
+      - packages/google-cloud-service-management/tests/
       - packages/google-cloud-service-management/README.rst
       - packages/google-cloud-service-management/docs/
     tag_format: '{id}-v{version}'
@@ -4516,7 +4516,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-service-usage/.repo-metadata.json
       - packages/google-cloud-service-usage/noxfile.py
-      - packages/google-cloud-service-usage/tests/  
+      - packages/google-cloud-service-usage/tests/
       - packages/google-cloud-service-usage/README.rst
       - packages/google-cloud-service-usage/docs/
     tag_format: '{id}-v{version}'
@@ -4536,7 +4536,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-servicehealth/.repo-metadata.json
       - packages/google-cloud-servicehealth/noxfile.py
-      - packages/google-cloud-servicehealth/tests/  
+      - packages/google-cloud-servicehealth/tests/
       - packages/google-cloud-servicehealth/README.rst
       - packages/google-cloud-servicehealth/docs/
     tag_format: '{id}-v{version}'
@@ -4556,7 +4556,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-shell/.repo-metadata.json
       - packages/google-cloud-shell/noxfile.py
-      - packages/google-cloud-shell/tests/  
+      - packages/google-cloud-shell/tests/
       - packages/google-cloud-shell/README.rst
       - packages/google-cloud-shell/docs/
     tag_format: '{id}-v{version}'
@@ -4576,12 +4576,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-source-context/.repo-metadata.json
       - packages/google-cloud-source-context/noxfile.py
-      - packages/google-cloud-source-context/tests/  
+      - packages/google-cloud-source-context/tests/
       - packages/google-cloud-source-context/README.rst
       - packages/google-cloud-source-context/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
-    version: 3.65.0
+    version: 3.66.0
     last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
     apis:
       - path: google/spanner/admin/instance/v1
@@ -4600,7 +4600,7 @@ libraries:
       - ^packages/google-cloud-spanner/.flake8
       - ^packages/google-cloud-spanner/.repo-metadata.json
       - ^packages/google-cloud-spanner/noxfile.py
-      - ^packages/google-cloud-spanner/tests/  
+      - ^packages/google-cloud-spanner/tests/
       - ^packages/google-cloud-spanner/LICENSE
       - ^packages/google-cloud-spanner/MANIFEST.in
       - ^packages/google-cloud-spanner/README.rst
@@ -4667,12 +4667,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-spanner/.repo-metadata.json
       - packages/google-cloud-spanner/noxfile.py
-      - packages/google-cloud-spanner/tests/  
+      - packages/google-cloud-spanner/tests/
       - packages/google-cloud-spanner/README.rst
       - packages/google-cloud-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
-    version: 2.38.0
+    version: 2.39.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/cloud/speech/v1
@@ -4694,7 +4694,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-speech/.repo-metadata.json
       - packages/google-cloud-speech/noxfile.py
-      - packages/google-cloud-speech/tests/  
+      - packages/google-cloud-speech/tests/
       - packages/google-cloud-speech/README.rst
       - packages/google-cloud-speech/docs/
     tag_format: '{id}-v{version}'
@@ -4714,7 +4714,7 @@ libraries:
       - ^packages/google-cloud-storage/.flake8
       - ^packages/google-cloud-storage/.repo-metadata.json
       - ^packages/google-cloud-storage/noxfile.py
-      - ^packages/google-cloud-storage/tests/  
+      - ^packages/google-cloud-storage/tests/
       - ^packages/google-cloud-storage/LICENSE
       - ^packages/google-cloud-storage/MANIFEST.in
       - ^packages/google-cloud-storage/README.rst
@@ -4739,7 +4739,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-storage/.repo-metadata.json
       - packages/google-cloud-storage/noxfile.py
-      - packages/google-cloud-storage/tests/  
+      - packages/google-cloud-storage/tests/
       - packages/google-cloud-storage/README.rst
       - packages/google-cloud-storage/docs/
     tag_format: '{id}-v{version}'
@@ -4759,7 +4759,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-storage-control/.repo-metadata.json
       - packages/google-cloud-storage-control/noxfile.py
-      - packages/google-cloud-storage-control/tests/  
+      - packages/google-cloud-storage-control/tests/
       - packages/google-cloud-storage-control/README.rst
       - packages/google-cloud-storage-control/docs/
     tag_format: '{id}-v{version}'
@@ -4779,12 +4779,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-storage-transfer/.repo-metadata.json
       - packages/google-cloud-storage-transfer/noxfile.py
-      - packages/google-cloud-storage-transfer/tests/  
+      - packages/google-cloud-storage-transfer/tests/
       - packages/google-cloud-storage-transfer/README.rst
       - packages/google-cloud-storage-transfer/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/storagebatchoperations/v1
@@ -4799,7 +4799,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-storagebatchoperations/.repo-metadata.json
       - packages/google-cloud-storagebatchoperations/noxfile.py
-      - packages/google-cloud-storagebatchoperations/tests/  
+      - packages/google-cloud-storagebatchoperations/tests/
       - packages/google-cloud-storagebatchoperations/README.rst
       - packages/google-cloud-storagebatchoperations/docs/
     tag_format: '{id}-v{version}'
@@ -4819,7 +4819,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-storageinsights/.repo-metadata.json
       - packages/google-cloud-storageinsights/noxfile.py
-      - packages/google-cloud-storageinsights/tests/  
+      - packages/google-cloud-storageinsights/tests/
       - packages/google-cloud-storageinsights/README.rst
       - packages/google-cloud-storageinsights/docs/
     tag_format: '{id}-v{version}'
@@ -4841,7 +4841,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-support/.repo-metadata.json
       - packages/google-cloud-support/noxfile.py
-      - packages/google-cloud-support/tests/  
+      - packages/google-cloud-support/tests/
       - packages/google-cloud-support/README.rst
       - packages/google-cloud-support/docs/
     tag_format: '{id}-v{version}'
@@ -4863,7 +4863,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-talent/.repo-metadata.json
       - packages/google-cloud-talent/noxfile.py
-      - packages/google-cloud-talent/tests/  
+      - packages/google-cloud-talent/tests/
       - packages/google-cloud-talent/README.rst
       - packages/google-cloud-talent/docs/
     tag_format: '{id}-v{version}'
@@ -4889,7 +4889,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-tasks/.repo-metadata.json
       - packages/google-cloud-tasks/noxfile.py
-      - packages/google-cloud-tasks/tests/  
+      - packages/google-cloud-tasks/tests/
       - packages/google-cloud-tasks/README.rst
       - packages/google-cloud-tasks/docs/
     tag_format: '{id}-v{version}'
@@ -4912,12 +4912,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-telcoautomation/.repo-metadata.json
       - packages/google-cloud-telcoautomation/noxfile.py
-      - packages/google-cloud-telcoautomation/tests/  
+      - packages/google-cloud-telcoautomation/tests/
       - packages/google-cloud-telcoautomation/README.rst
       - packages/google-cloud-telcoautomation/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-testutils
-    version: 1.7.1
+    version: 1.8.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -4927,7 +4927,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-testutils/.repo-metadata.json
       - packages/google-cloud-testutils/noxfile.py
-      - packages/google-cloud-testutils/tests/  
+      - packages/google-cloud-testutils/tests/
       - packages/google-cloud-testutils/README.rst
       - packages/google-cloud-testutils/docs/
     tag_format: '{id}-v{version}'
@@ -4950,7 +4950,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-texttospeech/.repo-metadata.json
       - packages/google-cloud-texttospeech/noxfile.py
-      - packages/google-cloud-texttospeech/tests/  
+      - packages/google-cloud-texttospeech/tests/
       - packages/google-cloud-texttospeech/README.rst
       - packages/google-cloud-texttospeech/docs/
     tag_format: '{id}-v{version}'
@@ -4974,7 +4974,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-tpu/.repo-metadata.json
       - packages/google-cloud-tpu/noxfile.py
-      - packages/google-cloud-tpu/tests/  
+      - packages/google-cloud-tpu/tests/
       - packages/google-cloud-tpu/README.rst
       - packages/google-cloud-tpu/docs/
     tag_format: '{id}-v{version}'
@@ -4996,7 +4996,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-trace/.repo-metadata.json
       - packages/google-cloud-trace/noxfile.py
-      - packages/google-cloud-trace/tests/  
+      - packages/google-cloud-trace/tests/
       - packages/google-cloud-trace/README.rst
       - packages/google-cloud-trace/docs/
     tag_format: '{id}-v{version}'
@@ -5023,7 +5023,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-translate/.repo-metadata.json
       - packages/google-cloud-translate/noxfile.py
-      - packages/google-cloud-translate/tests/  
+      - packages/google-cloud-translate/tests/
       - packages/google-cloud-translate/README.rst
       - packages/google-cloud-translate/docs/
     tag_format: '{id}-v{version}'
@@ -5045,7 +5045,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-vectorsearch/.repo-metadata.json
       - packages/google-cloud-vectorsearch/noxfile.py
-      - packages/google-cloud-vectorsearch/tests/  
+      - packages/google-cloud-vectorsearch/tests/
       - packages/google-cloud-vectorsearch/README.rst
       - packages/google-cloud-vectorsearch/docs/
     tag_format: '{id}-v{version}'
@@ -5065,7 +5065,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-video-live-stream/.repo-metadata.json
       - packages/google-cloud-video-live-stream/noxfile.py
-      - packages/google-cloud-video-live-stream/tests/  
+      - packages/google-cloud-video-live-stream/tests/
       - packages/google-cloud-video-live-stream/README.rst
       - packages/google-cloud-video-live-stream/docs/
     tag_format: '{id}-v{version}'
@@ -5085,7 +5085,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-video-stitcher/.repo-metadata.json
       - packages/google-cloud-video-stitcher/noxfile.py
-      - packages/google-cloud-video-stitcher/tests/  
+      - packages/google-cloud-video-stitcher/tests/
       - packages/google-cloud-video-stitcher/README.rst
       - packages/google-cloud-video-stitcher/docs/
     tag_format: '{id}-v{version}'
@@ -5105,7 +5105,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-video-transcoder/.repo-metadata.json
       - packages/google-cloud-video-transcoder/noxfile.py
-      - packages/google-cloud-video-transcoder/tests/  
+      - packages/google-cloud-video-transcoder/tests/
       - packages/google-cloud-video-transcoder/README.rst
       - packages/google-cloud-video-transcoder/docs/
     tag_format: '{id}-v{version}'
@@ -5134,12 +5134,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-videointelligence/.repo-metadata.json
       - packages/google-cloud-videointelligence/noxfile.py
-      - packages/google-cloud-videointelligence/tests/  
+      - packages/google-cloud-videointelligence/tests/
       - packages/google-cloud-videointelligence/README.rst
       - packages/google-cloud-videointelligence/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vision
-    version: 3.13.0
+    version: 3.14.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/vision/v1p3beta1
@@ -5166,7 +5166,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-vision/.repo-metadata.json
       - packages/google-cloud-vision/noxfile.py
-      - packages/google-cloud-vision/tests/  
+      - packages/google-cloud-vision/tests/
       - packages/google-cloud-vision/README.rst
       - packages/google-cloud-vision/docs/
     tag_format: '{id}-v{version}'
@@ -5188,7 +5188,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-visionai/.repo-metadata.json
       - packages/google-cloud-visionai/noxfile.py
-      - packages/google-cloud-visionai/tests/  
+      - packages/google-cloud-visionai/tests/
       - packages/google-cloud-visionai/README.rst
       - packages/google-cloud-visionai/docs/
     tag_format: '{id}-v{version}'
@@ -5208,7 +5208,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-vm-migration/.repo-metadata.json
       - packages/google-cloud-vm-migration/noxfile.py
-      - packages/google-cloud-vm-migration/tests/  
+      - packages/google-cloud-vm-migration/tests/
       - packages/google-cloud-vm-migration/README.rst
       - packages/google-cloud-vm-migration/docs/
     tag_format: '{id}-v{version}'
@@ -5228,7 +5228,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-vmwareengine/.repo-metadata.json
       - packages/google-cloud-vmwareengine/noxfile.py
-      - packages/google-cloud-vmwareengine/tests/  
+      - packages/google-cloud-vmwareengine/tests/
       - packages/google-cloud-vmwareengine/README.rst
       - packages/google-cloud-vmwareengine/docs/
     tag_format: '{id}-v{version}'
@@ -5248,7 +5248,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-vpc-access/.repo-metadata.json
       - packages/google-cloud-vpc-access/noxfile.py
-      - packages/google-cloud-vpc-access/tests/  
+      - packages/google-cloud-vpc-access/tests/
       - packages/google-cloud-vpc-access/README.rst
       - packages/google-cloud-vpc-access/docs/
     tag_format: '{id}-v{version}'
@@ -5270,7 +5270,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-webrisk/.repo-metadata.json
       - packages/google-cloud-webrisk/noxfile.py
-      - packages/google-cloud-webrisk/tests/  
+      - packages/google-cloud-webrisk/tests/
       - packages/google-cloud-webrisk/README.rst
       - packages/google-cloud-webrisk/docs/
     tag_format: '{id}-v{version}'
@@ -5294,12 +5294,12 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-websecurityscanner/.repo-metadata.json
       - packages/google-cloud-websecurityscanner/noxfile.py
-      - packages/google-cloud-websecurityscanner/tests/  
+      - packages/google-cloud-websecurityscanner/tests/
       - packages/google-cloud-websecurityscanner/README.rst
       - packages/google-cloud-websecurityscanner/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-workflows
-    version: 1.21.0
+    version: 1.22.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/workflows/executions/v1
@@ -5320,7 +5320,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-workflows/.repo-metadata.json
       - packages/google-cloud-workflows/noxfile.py
-      - packages/google-cloud-workflows/tests/  
+      - packages/google-cloud-workflows/tests/
       - packages/google-cloud-workflows/README.rst
       - packages/google-cloud-workflows/docs/
     tag_format: '{id}-v{version}'
@@ -5344,7 +5344,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-workloadmanager/.repo-metadata.json
       - packages/google-cloud-workloadmanager/noxfile.py
-      - packages/google-cloud-workloadmanager/tests/  
+      - packages/google-cloud-workloadmanager/tests/
       - packages/google-cloud-workloadmanager/README.rst
       - packages/google-cloud-workloadmanager/docs/
     tag_format: '{id}-v{version}'
@@ -5366,7 +5366,7 @@ libraries:
     release_exclude_paths:
       - packages/google-cloud-workstations/.repo-metadata.json
       - packages/google-cloud-workstations/noxfile.py
-      - packages/google-cloud-workstations/tests/  
+      - packages/google-cloud-workstations/tests/
       - packages/google-cloud-workstations/README.rst
       - packages/google-cloud-workstations/docs/
     tag_format: '{id}-v{version}'
@@ -5381,7 +5381,7 @@ libraries:
     release_exclude_paths:
       - packages/google-crc32c/.repo-metadata.json
       - packages/google-crc32c/noxfile.py
-      - packages/google-crc32c/tests/  
+      - packages/google-crc32c/tests/
       - packages/google-crc32c/README.rst
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
@@ -5402,7 +5402,7 @@ libraries:
     release_exclude_paths:
       - packages/google-geo-type/.repo-metadata.json
       - packages/google-geo-type/noxfile.py
-      - packages/google-geo-type/tests/  
+      - packages/google-geo-type/tests/
       - packages/google-geo-type/README.rst
       - packages/google-geo-type/docs/
     tag_format: '{id}-v{version}'
@@ -5422,7 +5422,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-addressvalidation/.repo-metadata.json
       - packages/google-maps-addressvalidation/noxfile.py
-      - packages/google-maps-addressvalidation/tests/  
+      - packages/google-maps-addressvalidation/tests/
       - packages/google-maps-addressvalidation/README.rst
       - packages/google-maps-addressvalidation/docs/
     tag_format: '{id}-v{version}'
@@ -5442,7 +5442,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-areainsights/.repo-metadata.json
       - packages/google-maps-areainsights/noxfile.py
-      - packages/google-maps-areainsights/tests/  
+      - packages/google-maps-areainsights/tests/
       - packages/google-maps-areainsights/README.rst
       - packages/google-maps-areainsights/docs/
     tag_format: '{id}-v{version}'
@@ -5462,7 +5462,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-fleetengine/.repo-metadata.json
       - packages/google-maps-fleetengine/noxfile.py
-      - packages/google-maps-fleetengine/tests/  
+      - packages/google-maps-fleetengine/tests/
       - packages/google-maps-fleetengine/README.rst
       - packages/google-maps-fleetengine/docs/
     tag_format: '{id}-v{version}'
@@ -5482,7 +5482,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-fleetengine-delivery/.repo-metadata.json
       - packages/google-maps-fleetengine-delivery/noxfile.py
-      - packages/google-maps-fleetengine-delivery/tests/  
+      - packages/google-maps-fleetengine-delivery/tests/
       - packages/google-maps-fleetengine-delivery/README.rst
       - packages/google-maps-fleetengine-delivery/docs/
     tag_format: '{id}-v{version}'
@@ -5506,7 +5506,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-geocode/.repo-metadata.json
       - packages/google-maps-geocode/noxfile.py
-      - packages/google-maps-geocode/tests/  
+      - packages/google-maps-geocode/tests/
       - packages/google-maps-geocode/README.rst
       - packages/google-maps-geocode/docs/
     tag_format: '{id}-v{version}'
@@ -5526,7 +5526,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-mapsplatformdatasets/.repo-metadata.json
       - packages/google-maps-mapsplatformdatasets/noxfile.py
-      - packages/google-maps-mapsplatformdatasets/tests/  
+      - packages/google-maps-mapsplatformdatasets/tests/
       - packages/google-maps-mapsplatformdatasets/README.rst
       - packages/google-maps-mapsplatformdatasets/docs/
     tag_format: '{id}-v{version}'
@@ -5550,7 +5550,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-navconnect/.repo-metadata.json
       - packages/google-maps-navconnect/noxfile.py
-      - packages/google-maps-navconnect/tests/  
+      - packages/google-maps-navconnect/tests/
       - packages/google-maps-navconnect/README.rst
       - packages/google-maps-navconnect/docs/
     tag_format: '{id}-v{version}'
@@ -5570,7 +5570,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-places/.repo-metadata.json
       - packages/google-maps-places/noxfile.py
-      - packages/google-maps-places/tests/  
+      - packages/google-maps-places/tests/
       - packages/google-maps-places/README.rst
       - packages/google-maps-places/docs/
     tag_format: '{id}-v{version}'
@@ -5590,7 +5590,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-routeoptimization/.repo-metadata.json
       - packages/google-maps-routeoptimization/noxfile.py
-      - packages/google-maps-routeoptimization/tests/  
+      - packages/google-maps-routeoptimization/tests/
       - packages/google-maps-routeoptimization/README.rst
       - packages/google-maps-routeoptimization/docs/
     tag_format: '{id}-v{version}'
@@ -5610,7 +5610,7 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-routing/.repo-metadata.json
       - packages/google-maps-routing/noxfile.py
-      - packages/google-maps-routing/tests/  
+      - packages/google-maps-routing/tests/
       - packages/google-maps-routing/README.rst
       - packages/google-maps-routing/docs/
     tag_format: '{id}-v{version}'
@@ -5630,12 +5630,12 @@ libraries:
     release_exclude_paths:
       - packages/google-maps-solar/.repo-metadata.json
       - packages/google-maps-solar/noxfile.py
-      - packages/google-maps-solar/tests/  
+      - packages/google-maps-solar/tests/
       - packages/google-maps-solar/README.rst
       - packages/google-maps-solar/docs/
     tag_format: '{id}-v{version}'
   - id: google-resumable-media
-    version: 2.8.2
+    version: 2.9.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -5645,7 +5645,7 @@ libraries:
     release_exclude_paths:
       - packages/google-resumable-media/.repo-metadata.json
       - packages/google-resumable-media/noxfile.py
-      - packages/google-resumable-media/tests/  
+      - packages/google-resumable-media/tests/
       - packages/google-resumable-media/README.rst
       - packages/google-resumable-media/docs/
     tag_format: '{id}-v{version}'
@@ -5665,7 +5665,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-css/.repo-metadata.json
       - packages/google-shopping-css/noxfile.py
-      - packages/google-shopping-css/tests/  
+      - packages/google-shopping-css/tests/
       - packages/google-shopping-css/README.rst
       - packages/google-shopping-css/docs/
     tag_format: '{id}-v{version}'
@@ -5687,7 +5687,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-accounts/.repo-metadata.json
       - packages/google-shopping-merchant-accounts/noxfile.py
-      - packages/google-shopping-merchant-accounts/tests/  
+      - packages/google-shopping-merchant-accounts/tests/
       - packages/google-shopping-merchant-accounts/README.rst
       - packages/google-shopping-merchant-accounts/docs/
     tag_format: '{id}-v{version}'
@@ -5709,7 +5709,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-conversions/.repo-metadata.json
       - packages/google-shopping-merchant-conversions/noxfile.py
-      - packages/google-shopping-merchant-conversions/tests/  
+      - packages/google-shopping-merchant-conversions/tests/
       - packages/google-shopping-merchant-conversions/README.rst
       - packages/google-shopping-merchant-conversions/docs/
     tag_format: '{id}-v{version}'
@@ -5731,12 +5731,12 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-datasources/.repo-metadata.json
       - packages/google-shopping-merchant-datasources/noxfile.py
-      - packages/google-shopping-merchant-datasources/tests/  
+      - packages/google-shopping-merchant-datasources/tests/
       - packages/google-shopping-merchant-datasources/README.rst
       - packages/google-shopping-merchant-datasources/docs/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-inventories
-    version: 1.3.0
+    version: 1.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/inventories/v1beta
@@ -5753,7 +5753,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-inventories/.repo-metadata.json
       - packages/google-shopping-merchant-inventories/noxfile.py
-      - packages/google-shopping-merchant-inventories/tests/  
+      - packages/google-shopping-merchant-inventories/tests/
       - packages/google-shopping-merchant-inventories/README.rst
       - packages/google-shopping-merchant-inventories/docs/
     tag_format: '{id}-v{version}'
@@ -5775,7 +5775,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-issueresolution/.repo-metadata.json
       - packages/google-shopping-merchant-issueresolution/noxfile.py
-      - packages/google-shopping-merchant-issueresolution/tests/  
+      - packages/google-shopping-merchant-issueresolution/tests/
       - packages/google-shopping-merchant-issueresolution/README.rst
       - packages/google-shopping-merchant-issueresolution/docs/
     tag_format: '{id}-v{version}'
@@ -5797,7 +5797,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-lfp/.repo-metadata.json
       - packages/google-shopping-merchant-lfp/noxfile.py
-      - packages/google-shopping-merchant-lfp/tests/  
+      - packages/google-shopping-merchant-lfp/tests/
       - packages/google-shopping-merchant-lfp/README.rst
       - packages/google-shopping-merchant-lfp/docs/
     tag_format: '{id}-v{version}'
@@ -5819,7 +5819,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-notifications/.repo-metadata.json
       - packages/google-shopping-merchant-notifications/noxfile.py
-      - packages/google-shopping-merchant-notifications/tests/  
+      - packages/google-shopping-merchant-notifications/tests/
       - packages/google-shopping-merchant-notifications/README.rst
       - packages/google-shopping-merchant-notifications/docs/
     tag_format: '{id}-v{version}'
@@ -5841,12 +5841,12 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-ordertracking/.repo-metadata.json
       - packages/google-shopping-merchant-ordertracking/noxfile.py
-      - packages/google-shopping-merchant-ordertracking/tests/  
+      - packages/google-shopping-merchant-ordertracking/tests/
       - packages/google-shopping-merchant-ordertracking/README.rst
       - packages/google-shopping-merchant-ordertracking/docs/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
-    version: 1.5.0
+    version: 1.6.0
     last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
     apis:
       - path: google/shopping/merchant/products/v1
@@ -5863,7 +5863,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-products/.repo-metadata.json
       - packages/google-shopping-merchant-products/noxfile.py
-      - packages/google-shopping-merchant-products/tests/  
+      - packages/google-shopping-merchant-products/tests/
       - packages/google-shopping-merchant-products/README.rst
       - packages/google-shopping-merchant-products/docs/
     tag_format: '{id}-v{version}'
@@ -5883,7 +5883,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-productstudio/.repo-metadata.json
       - packages/google-shopping-merchant-productstudio/noxfile.py
-      - packages/google-shopping-merchant-productstudio/tests/  
+      - packages/google-shopping-merchant-productstudio/tests/
       - packages/google-shopping-merchant-productstudio/README.rst
       - packages/google-shopping-merchant-productstudio/docs/
     tag_format: '{id}-v{version}'
@@ -5905,7 +5905,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-promotions/.repo-metadata.json
       - packages/google-shopping-merchant-promotions/noxfile.py
-      - packages/google-shopping-merchant-promotions/tests/  
+      - packages/google-shopping-merchant-promotions/tests/
       - packages/google-shopping-merchant-promotions/README.rst
       - packages/google-shopping-merchant-promotions/docs/
     tag_format: '{id}-v{version}'
@@ -5927,12 +5927,12 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-quota/.repo-metadata.json
       - packages/google-shopping-merchant-quota/noxfile.py
-      - packages/google-shopping-merchant-quota/tests/  
+      - packages/google-shopping-merchant-quota/tests/
       - packages/google-shopping-merchant-quota/README.rst
       - packages/google-shopping-merchant-quota/docs/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reports
-    version: 1.3.0
+    version: 1.4.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/shopping/merchant/reports/v1beta
@@ -5951,7 +5951,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-reports/.repo-metadata.json
       - packages/google-shopping-merchant-reports/noxfile.py
-      - packages/google-shopping-merchant-reports/tests/  
+      - packages/google-shopping-merchant-reports/tests/
       - packages/google-shopping-merchant-reports/README.rst
       - packages/google-shopping-merchant-reports/docs/
     tag_format: '{id}-v{version}'
@@ -5971,7 +5971,7 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-merchant-reviews/.repo-metadata.json
       - packages/google-shopping-merchant-reviews/noxfile.py
-      - packages/google-shopping-merchant-reviews/tests/  
+      - packages/google-shopping-merchant-reviews/tests/
       - packages/google-shopping-merchant-reviews/README.rst
       - packages/google-shopping-merchant-reviews/docs/
     tag_format: '{id}-v{version}'
@@ -5991,12 +5991,12 @@ libraries:
     release_exclude_paths:
       - packages/google-shopping-type/.repo-metadata.json
       - packages/google-shopping-type/noxfile.py
-      - packages/google-shopping-type/tests/  
+      - packages/google-shopping-type/tests/
       - packages/google-shopping-type/README.rst
       - packages/google-shopping-type/docs/
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
-    version: 1.74.0
+    version: 1.75.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/api
@@ -6017,13 +6017,13 @@ libraries:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|logging|rpc|type)/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
       - noxfile.py
-      - tests/  
+      - tests/
       - README.rst
       - docs/summary_overview.md
     release_exclude_paths:
       - packages/googleapis-common-protos/.repo-metadata.json
       - packages/googleapis-common-protos/noxfile.py
-      - packages/googleapis-common-protos/tests/  
+      - packages/googleapis-common-protos/tests/
       - packages/googleapis-common-protos/README.rst
       - packages/googleapis-common-protos/docs/
     tag_format: '{id}-v{version}'
@@ -6046,7 +6046,7 @@ libraries:
     release_exclude_paths:
       - packages/grafeas/.repo-metadata.json
       - packages/grafeas/noxfile.py
-      - packages/grafeas/tests/  
+      - packages/grafeas/tests/
       - packages/grafeas/README.rst
       - packages/grafeas/docs/
     tag_format: '{id}-v{version}'
@@ -6063,13 +6063,13 @@ libraries:
       - ^packages/grpc-google-iam-v1/google/iam/v1/[^/]*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
       - noxfile.py
-      - tests/  
+      - tests/
       - README.rst
       - docs/summary_overview.md
     release_exclude_paths:
       - packages/grpc-google-iam-v1/.repo-metadata.json
       - packages/grpc-google-iam-v1/noxfile.py
-      - packages/grpc-google-iam-v1/tests/  
+      - packages/grpc-google-iam-v1/tests/
       - packages/grpc-google-iam-v1/README.rst
       - packages/grpc-google-iam-v1/docs/
     tag_format: '{id}-v{version}'
@@ -6084,12 +6084,12 @@ libraries:
     release_exclude_paths:
       - packages/pandas-gbq/.repo-metadata.json
       - packages/pandas-gbq/noxfile.py
-      - packages/pandas-gbq/tests/  
+      - packages/pandas-gbq/tests/
       - packages/pandas-gbq/README.rst
       - packages/pandas-gbq/docs/
     tag_format: '{id}-v{version}'
   - id: proto-plus
-    version: 1.27.2
+    version: 1.28.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -6099,12 +6099,12 @@ libraries:
     release_exclude_paths:
       - packages/proto-plus/.repo-metadata.json
       - packages/proto-plus/noxfile.py
-      - packages/proto-plus/tests/  
+      - packages/proto-plus/tests/
       - packages/proto-plus/README.rst
       - packages/proto-plus/docs/
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-bigquery
-    version: 1.16.0
+    version: 1.17.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -6114,12 +6114,12 @@ libraries:
     release_exclude_paths:
       - packages/sqlalchemy-bigquery/.repo-metadata.json
       - packages/sqlalchemy-bigquery/noxfile.py
-      - packages/sqlalchemy-bigquery/tests/  
+      - packages/sqlalchemy-bigquery/tests/
       - packages/sqlalchemy-bigquery/README.rst
       - packages/sqlalchemy-bigquery/docs/
     tag_format: '{id}-v{version}'
   - id: sqlalchemy-spanner
-    version: 1.17.3
+    version: 1.18.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -6129,7 +6129,7 @@ libraries:
     release_exclude_paths:
       - packages/sqlalchemy-spanner/.repo-metadata.json
       - packages/sqlalchemy-spanner/noxfile.py
-      - packages/sqlalchemy-spanner/tests/  
+      - packages/sqlalchemy-spanner/tests/
       - packages/sqlalchemy-spanner/README.rst
       - packages/sqlalchemy-spanner/docs/
     tag_format: '{id}-v{version}'

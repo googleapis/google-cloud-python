@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,13 @@ import google.protobuf
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import discovery
+from google.cloud.eventarc_v1.types import enrollment
 from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import google_api_source
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
+from google.cloud.eventarc_v1.types import message_bus
+from google.cloud.eventarc_v1.types import pipeline
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -228,6 +232,111 @@ class EventarcTransport(abc.ABC):
             ),
             self.update_google_channel_config: gapic_v1.method.wrap_method(
                 self.update_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_message_bus: gapic_v1.method.wrap_method(
+                self.get_message_bus,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_message_buses: gapic_v1.method.wrap_method(
+                self.list_message_buses,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_message_bus_enrollments: gapic_v1.method.wrap_method(
+                self.list_message_bus_enrollments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_message_bus: gapic_v1.method.wrap_method(
+                self.create_message_bus,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_message_bus: gapic_v1.method.wrap_method(
+                self.update_message_bus,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_message_bus: gapic_v1.method.wrap_method(
+                self.delete_message_bus,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_enrollment: gapic_v1.method.wrap_method(
+                self.get_enrollment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_enrollments: gapic_v1.method.wrap_method(
+                self.list_enrollments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_enrollment: gapic_v1.method.wrap_method(
+                self.create_enrollment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_enrollment: gapic_v1.method.wrap_method(
+                self.update_enrollment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_enrollment: gapic_v1.method.wrap_method(
+                self.delete_enrollment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_pipeline: gapic_v1.method.wrap_method(
+                self.get_pipeline,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_pipelines: gapic_v1.method.wrap_method(
+                self.list_pipelines,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_pipeline: gapic_v1.method.wrap_method(
+                self.create_pipeline,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_pipeline: gapic_v1.method.wrap_method(
+                self.update_pipeline,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_pipeline: gapic_v1.method.wrap_method(
+                self.delete_pipeline,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_google_api_source: gapic_v1.method.wrap_method(
+                self.get_google_api_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_google_api_sources: gapic_v1.method.wrap_method(
+                self.list_google_api_sources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_google_api_source: gapic_v1.method.wrap_method(
+                self.create_google_api_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_google_api_source: gapic_v1.method.wrap_method(
+                self.update_google_api_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_google_api_source: gapic_v1.method.wrap_method(
+                self.delete_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -451,6 +560,195 @@ class EventarcTransport(abc.ABC):
             Union[
                 gce_google_channel_config.GoogleChannelConfig,
                 Awaitable[gce_google_channel_config.GoogleChannelConfig]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_message_bus(self) -> Callable[
+            [eventarc.GetMessageBusRequest],
+            Union[
+                message_bus.MessageBus,
+                Awaitable[message_bus.MessageBus]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_message_buses(self) -> Callable[
+            [eventarc.ListMessageBusesRequest],
+            Union[
+                eventarc.ListMessageBusesResponse,
+                Awaitable[eventarc.ListMessageBusesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_message_bus_enrollments(self) -> Callable[
+            [eventarc.ListMessageBusEnrollmentsRequest],
+            Union[
+                eventarc.ListMessageBusEnrollmentsResponse,
+                Awaitable[eventarc.ListMessageBusEnrollmentsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_message_bus(self) -> Callable[
+            [eventarc.CreateMessageBusRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_message_bus(self) -> Callable[
+            [eventarc.UpdateMessageBusRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_message_bus(self) -> Callable[
+            [eventarc.DeleteMessageBusRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_enrollment(self) -> Callable[
+            [eventarc.GetEnrollmentRequest],
+            Union[
+                enrollment.Enrollment,
+                Awaitable[enrollment.Enrollment]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_enrollments(self) -> Callable[
+            [eventarc.ListEnrollmentsRequest],
+            Union[
+                eventarc.ListEnrollmentsResponse,
+                Awaitable[eventarc.ListEnrollmentsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_enrollment(self) -> Callable[
+            [eventarc.CreateEnrollmentRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_enrollment(self) -> Callable[
+            [eventarc.UpdateEnrollmentRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_enrollment(self) -> Callable[
+            [eventarc.DeleteEnrollmentRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_pipeline(self) -> Callable[
+            [eventarc.GetPipelineRequest],
+            Union[
+                pipeline.Pipeline,
+                Awaitable[pipeline.Pipeline]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_pipelines(self) -> Callable[
+            [eventarc.ListPipelinesRequest],
+            Union[
+                eventarc.ListPipelinesResponse,
+                Awaitable[eventarc.ListPipelinesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_pipeline(self) -> Callable[
+            [eventarc.CreatePipelineRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_pipeline(self) -> Callable[
+            [eventarc.UpdatePipelineRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_pipeline(self) -> Callable[
+            [eventarc.DeletePipelineRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_google_api_source(self) -> Callable[
+            [eventarc.GetGoogleApiSourceRequest],
+            Union[
+                google_api_source.GoogleApiSource,
+                Awaitable[google_api_source.GoogleApiSource]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_google_api_sources(self) -> Callable[
+            [eventarc.ListGoogleApiSourcesRequest],
+            Union[
+                eventarc.ListGoogleApiSourcesResponse,
+                Awaitable[eventarc.ListGoogleApiSourcesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_google_api_source(self) -> Callable[
+            [eventarc.CreateGoogleApiSourceRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_google_api_source(self) -> Callable[
+            [eventarc.UpdateGoogleApiSourceRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_google_api_source(self) -> Callable[
+            [eventarc.DeleteGoogleApiSourceRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
             ]]:
         raise NotImplementedError()
 

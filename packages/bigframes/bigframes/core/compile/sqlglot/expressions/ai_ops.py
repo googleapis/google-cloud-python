@@ -149,6 +149,16 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
             args.append(
                 sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
             )
+        elif field == "examples":
+            example_expressions = [
+                sge.Tuple(
+                    expressions=[sge.Literal.string(key), sge.Literal.string(val)]
+                )
+                for key, val in value
+            ]
+            args.append(
+                sge.Kwarg(this=field, expression=sge.array(*example_expressions))
+            )
         else:
             args.append(
                 sge.Kwarg(this=field, expression=sge.Literal.string(str(value)))

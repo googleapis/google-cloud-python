@@ -83,6 +83,16 @@ class ListCustomTargetingKeysRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>adTagName</code></li>
+              <li><code>displayName</code></li>
+              <li><code>name</code></li>
+              <li><code>reportableType</code></li>
+              <li><code>status</code></li>
+              <li><code>type</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -243,7 +253,7 @@ class UpdateCustomTargetingKeyRequest(proto.Message):
             The ``CustomTargetingKey``'s ``name`` is used to identify
             the ``CustomTargetingKey`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = (

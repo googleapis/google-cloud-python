@@ -40,6 +40,7 @@ def sample_search_ad_review_center_ads():
 
     # Initialize request argument(s)
     request = admanager_v1.SearchAdReviewCenterAdsRequest(
+        status="UNREVIEWED",
         parent="parent_value",
     )
 
