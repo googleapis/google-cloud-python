@@ -80,11 +80,10 @@ UPGRADE_CODE = """def upgrade():
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py", "samples"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
-SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS = ["3.8", "3.12", "3.14"]
+SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS = ["3.12", "3.14"]
 DEFAULT_PYTHON_VERSION = "3.14"
 DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20 = "3.14"
 
@@ -180,6 +179,8 @@ def compliance_test_14(session):
         "--asyncio-mode=auto",
         "tests/test_suite_14.py",
         *session.posargs,
+        # Silence SQLAlchemy 2.0 transition warnings for this 1.4 compatibility session.
+        env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
     )
 
 
@@ -318,8 +319,6 @@ def _migration_test(session):
 @nox.parametrize("test_type", ["unit", "mockserver"])
 def unit(session, test_type):
     """Run unit tests."""
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
 
     if (
         test_type == "mockserver"
