@@ -553,6 +553,44 @@ class TestCredentials(object):
         self.credentials.before_request(None, "GET", "http://example.com?a=1#3", {})
         assert self.credentials.valid
 
+    def test_build_regional_access_boundary_lookup_url(self):
+        url = self.credentials._build_regional_access_boundary_lookup_url()
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            self.SERVICE_ACCOUNT_EMAIL
+        )
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            self.SERVICE_ACCOUNT_EMAIL
+        )
+
+        assert url in (expected_url_standard, expected_url_mtls)
+
+    def test_cloning_retains_rab_manager_data(self):
+        self.credentials._rab_manager._data = mock.sentinel.rab_data
+
+        cloned_claims = self.credentials.with_claims(audience="new-audience")
+        cloned_quota = self.credentials.with_quota_project("new-quota")
+
+        # Verify references to immutable boundary data are shared
+        assert cloned_claims._rab_manager._data == mock.sentinel.rab_data
+        assert cloned_quota._rab_manager._data == mock.sentinel.rab_data
+
+        # Verify manager objects and lock properties are isolated to prevent race conditions
+        assert cloned_claims._rab_manager is not self.credentials._rab_manager
+        assert cloned_quota._rab_manager is not self.credentials._rab_manager
+
+    def test_from_signing_credentials_copies_rab_state(self):
+        from google.oauth2 import service_account
+
+        sa_creds = service_account.Credentials.from_service_account_info(
+            SERVICE_ACCOUNT_INFO
+        )
+        sa_creds._rab_manager._data = mock.sentinel.rab_data
+
+        jwt_creds = jwt.Credentials.from_signing_credentials(sa_creds, audience="aud")
+
+        assert jwt_creds._rab_manager._data == mock.sentinel.rab_data
+        assert jwt_creds._rab_manager is not sa_creds._rab_manager
+
 
 class TestOnDemandCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
