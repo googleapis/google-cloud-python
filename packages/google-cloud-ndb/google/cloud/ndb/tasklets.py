@@ -496,6 +496,7 @@ def tasklet(wrapped):
             # then we'll extract the result from the StopIteration exception.
             returned = _get_return_value(stop)
 
+        future: Future
         if isinstance(returned, types.GeneratorType):
             # We have a tasklet, start it
             future = _TaskletFuture(returned, context, info=wrapped.__name__)

@@ -3,7 +3,8 @@ Python Client for Artifact Registry
 
 |stable| |pypi| |versions|
 
-`Artifact Registry`_: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
+`Artifact Registry`_: Store and manage build artifacts in a scalable and integrated service built
+on Google infrastructure.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

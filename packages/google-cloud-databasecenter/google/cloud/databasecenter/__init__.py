@@ -24,12 +24,16 @@ from google.cloud.databasecenter_v1beta.services.database_center.async_client im
 from google.cloud.databasecenter_v1beta.services.database_center.client import (
     DatabaseCenterClient,
 )
+from google.cloud.databasecenter_v1beta.types.affiliation import Affiliation
 from google.cloud.databasecenter_v1beta.types.machine_config import MachineConfig
 from google.cloud.databasecenter_v1beta.types.maintenance import (
     MaintenanceInfo,
+    MaintenanceState,
     Phase,
+    PossibleFailureReason,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
+    UpcomingMaintenance,
 )
 from google.cloud.databasecenter_v1beta.types.metric_data import (
     MetricData,
@@ -102,11 +106,15 @@ from google.cloud.databasecenter_v1beta.types.suspension_reason import Suspensio
 __all__ = (
     "DatabaseCenterClient",
     "DatabaseCenterAsyncClient",
+    "Affiliation",
     "MachineConfig",
     "MaintenanceInfo",
     "ResourceMaintenanceDenySchedule",
     "ResourceMaintenanceSchedule",
+    "UpcomingMaintenance",
+    "MaintenanceState",
     "Phase",
+    "PossibleFailureReason",
     "MetricData",
     "Metrics",
     "TypedValue",

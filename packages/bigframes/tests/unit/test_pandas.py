@@ -37,6 +37,8 @@ def all_session_methods():
     session_attributes.remove("close")
     # streaming isn't in pandas
     session_attributes.remove("read_gbq_table_streaming")
+    # execution_history is in base namespace, not pandas
+    session_attributes.remove("execution_history")
 
     for attribute in sorted(session_attributes):
         session_method = getattr(bigframes.session.Session, attribute)
@@ -52,11 +54,6 @@ def all_session_methods():
     [(method_name,) for method_name in all_session_methods()],
 )
 def test_method_matches_session(method_name: str):
-    if sys.version_info < (3, 10):
-        pytest.skip(
-            "Need Python 3.10 to reconcile deferred annotations."
-        )  # pragma: no cover
-
     session_method = getattr(bigframes.session.Session, method_name)
     session_doc = inspect.getdoc(session_method)
     assert session_doc is not None, "docstrings are required"

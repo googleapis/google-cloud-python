@@ -94,6 +94,21 @@ def read_arrow(pa_table: pa.Table) -> bigframes.dataframe.DataFrame:
     return session.read_arrow(pa_table=pa_table)
 
 
+def read_avro(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_avro,
+        path,
+        engine=engine,
+    )
+
+
+read_avro.__doc__ = inspect.getdoc(bigframes.session.Session.read_avro)
+
+
 def read_csv(
     filepath_or_buffer: str | IO["bytes"],
     *,
@@ -514,6 +529,23 @@ def read_gbq_table(
 read_gbq_table.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_table)
 
 
+def read_orc(
+    path: str | IO["bytes"],
+    *,
+    engine: str = "auto",
+    write_engine: constants.WriteEngineType = "default",
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.read_orc,
+        path,
+        engine=engine,
+        write_engine=write_engine,
+    )
+
+
+read_orc.__doc__ = inspect.getdoc(bigframes.session.Session.read_orc)
+
+
 @typing.overload
 def read_pandas(
     pandas_dataframe: pandas.DataFrame,
@@ -622,19 +654,24 @@ _default_location_lock = threading.Lock()
 def _get_bqclient_and_project() -> Tuple[bigquery.Client, str]:
     # Address circular imports in doctest due to bigframes/session/__init__.py
     # containing a lot of logic and samples.
+    import bigframes._config.auth
     from bigframes.session import clients
 
+    credentials, project = bigframes._config.auth.resolve_credentials_and_project(
+        config.options.bigquery
+    )
+
     clients_provider = clients.ClientsProvider(
-        project=config.options.bigquery.project,
+        project=project,
         location=config.options.bigquery.location,
         use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
-        credentials=config.options.bigquery.credentials,
+        credentials=credentials,
         application_name=config.options.bigquery.application_name,
         bq_kms_key_name=config.options.bigquery.kms_key_name,
         client_endpoints_override=config.options.bigquery.client_endpoints_override,
         requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
     )
-    return clients_provider.bqclient, clients_provider._project
+    return clients_provider.bqclient, project
 
 
 def _dry_run(query, bqclient) -> bigquery.QueryJob:

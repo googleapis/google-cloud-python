@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.shopping.merchant.inventories.v1",
     manifest={
         "LocalInventoryAttributes",
+        "InventoryLoyaltyProgram",
         "RegionalInventoryAttributes",
     },
 )
@@ -76,6 +77,25 @@ class LocalInventoryAttributes(proto.Message):
             store. Maximum length is 20 bytes.
 
             This field is a member of `oneof`_ ``_instore_product_location``.
+        loyalty_programs (MutableSequence[google.shopping.merchant_inventories_v1.types.InventoryLoyaltyProgram]):
+            Optional. An optional list of loyalty programs containing
+            applicable loyalty member prices for this product at this
+            store.
+
+            This field is used to show store-specific member prices on
+            Local Inventory Ads (LIA).
+
+            To use this, the loyalty program must be configured in
+            Google Merchant Center. The benefits provided must match the
+            merchant's website and be clear to members. This is only
+            applicable for merchants in supported countries.
+
+            See `Loyalty
+            program <https://support.google.com/merchants/answer/12922446>`__
+            for details on supported countries and loyalty program
+            configuration. For local inventory specific details, see the
+            `Local inventory data
+            specification <https://support.google.com/merchants/answer/3061342>`__.
     """
 
     class Availability(proto.Enum):
@@ -214,6 +234,110 @@ class LocalInventoryAttributes(proto.Message):
         number=8,
         optional=True,
     )
+    loyalty_programs: MutableSequence["InventoryLoyaltyProgram"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="InventoryLoyaltyProgram",
+    )
+
+
+class InventoryLoyaltyProgram(proto.Message):
+    r"""A message that represents loyalty program.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        program_label (str):
+            The label of the loyalty program. This is an
+            internal label that uniquely identifies the
+            relationship between a business entity and a
+            loyalty program entity. The label must be
+            provided if there are multiple loyalty programs
+            available for the merchant, so that the system
+            can associate the assets below (for example,
+            price and points) with the correct business. The
+            corresponding program must be linked to the
+            Merchant Center account.
+
+            This field is a member of `oneof`_ ``_program_label``.
+        tier_label (str):
+            The label of the tier within the loyalty
+            program. Must match one of the labels within the
+            program.
+
+            This field is a member of `oneof`_ ``_tier_label``.
+        price (google.shopping.type.types.Price):
+            The price for members of the given tier, that
+            is, the instant discount price. Must be smaller
+            or equal to the regular price.
+
+            This field is a member of `oneof`_ ``_price``.
+        cashback_for_future_use (google.shopping.type.types.Price):
+            The cashback that can be used for future
+            purchases.
+
+            This field is a member of `oneof`_ ``_cashback_for_future_use``.
+        loyalty_points (int):
+            The amount of loyalty points earned on a
+            purchase.
+
+            This field is a member of `oneof`_ ``_loyalty_points``.
+        member_price_effective_interval (google.type.interval_pb2.Interval):
+            A date range during which the item is
+            eligible for member price. If not specified, the
+            member price is always applicable. The date
+            range is represented by a pair of ISO 8601 dates
+            separated by a space, comma, or slash.
+
+            This field is a member of `oneof`_ ``_member_price_effective_interval``.
+        shipping_label (str):
+            The label of the shipping benefit. If the
+            field has value, this offer has loyalty shipping
+            benefit. If the field value isn't provided, the
+            item is not eligible for loyalty shipping for
+            the given loyalty tier.
+
+            This field is a member of `oneof`_ ``_shipping_label``.
+    """
+
+    program_label: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    tier_label: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=types.Price,
+    )
+    cashback_for_future_use: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=types.Price,
+    )
+    loyalty_points: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    member_price_effective_interval: interval_pb2.Interval = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=interval_pb2.Interval,
+    )
+    shipping_label: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 class RegionalInventoryAttributes(proto.Message):
@@ -239,6 +363,29 @@ class RegionalInventoryAttributes(proto.Message):
             of the product in this region.
 
             This field is a member of `oneof`_ ``_availability``.
+        loyalty_programs (MutableSequence[google.shopping.merchant_inventories_v1.types.InventoryLoyaltyProgram]):
+            Optional. An optional list of loyalty programs containing
+            applicable loyalty member prices for this product in this
+            region.
+
+            This field is used to show region-specific member prices on
+            Product Listing Ads (PLA).
+
+            To use this, the loyalty program must be configured in
+            Google Merchant Center, and the merchant must be using the
+            Regional Availability and Pricing (RAAP) feature. The
+            benefits provided must match the merchant's website and be
+            clear to members. This is only applicable for merchants in
+            supported countries.
+
+            See `Loyalty
+            program <https://support.google.com/merchants/answer/12922446>`__
+            for details on supported countries and loyalty program
+            configuration. Also see `Regional availability and
+            pricing <https://support.google.com/merchants/answer/14644124>`__
+            and `How to set up regional member
+            pricing <https://support.google.com/merchants/answer/16388178>`__
+            for more information.
     """
 
     class Availability(proto.Enum):
@@ -279,6 +426,11 @@ class RegionalInventoryAttributes(proto.Message):
         number=4,
         optional=True,
         enum=Availability,
+    )
+    loyalty_programs: MutableSequence["InventoryLoyaltyProgram"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="InventoryLoyaltyProgram",
     )
 
 

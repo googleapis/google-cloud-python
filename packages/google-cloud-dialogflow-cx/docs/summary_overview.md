@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Dialogflow CX API
+# Dialogflow API
 
-Overview of the APIs available for Dialogflow CX API.
+Overview of the APIs available for Dialogflow API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Dialogflow CX API.
+Dialogflow API.
 
 [classes](https://cloud.google.com/python/docs/reference/dialogflow-cx/latest/summary_class.html)
 

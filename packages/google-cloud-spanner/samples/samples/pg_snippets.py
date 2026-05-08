@@ -19,6 +19,7 @@ Spanner PostgreSql dialect.
 
 For more information, see the README.rst under /spanner.
 """
+
 import argparse
 import base64
 import datetime
@@ -491,7 +492,7 @@ def read_data_with_storing_index(instance_id, database_id):
         )
 
         for row in results:
-            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(*row))
+            print("AlbumId: {}, AlbumTitle: {}, MarketingBudget: {}".format(*row))
 
 
 # [END spanner_postgresql_read_data_with_storing_index]
@@ -600,7 +601,7 @@ def query_data_with_parameter(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT SingerId, FirstName, LastName FROM Singers " "WHERE LastName = $1",
+            "SELECT SingerId, FirstName, LastName FROM Singers WHERE LastName = $1",
             params={"p1": "Garcia"},
             param_types={"p1": spanner.param_types.STRING},
         )
@@ -624,7 +625,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # Transfer marketing budget from one album to another. Performed in a
         # single transaction to ensure that the transfer is atomic.
         second_album_result = transaction.execute_sql(
-            "SELECT MarketingBudget from Albums " "WHERE SingerId = 2 and AlbumId = 2"
+            "SELECT MarketingBudget from Albums WHERE SingerId = 2 and AlbumId = 2"
         )
         second_album_row = list(second_album_result)[0]
         second_album_budget = second_album_row[0]
@@ -636,8 +637,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # will be rerun by the client library
         if second_album_budget >= transfer_amount:
             first_album_result = transaction.execute_sql(
-                "SELECT MarketingBudget from Albums "
-                "WHERE SingerId = 1 and AlbumId = 1"
+                "SELECT MarketingBudget from Albums WHERE SingerId = 1 and AlbumId = 1"
             )
             first_album_row = list(first_album_result)[0]
             first_album_budget = first_album_row[0]
@@ -969,8 +969,7 @@ def delete_data_with_dml_returning(instance_id, database_id):
     # deleted records by using 'RETURNING *'.
     def delete_singers(transaction):
         results = transaction.execute_sql(
-            "DELETE FROM Singers WHERE FirstName = 'David' "
-            "RETURNING SingerId, FullName"
+            "DELETE FROM Singers WHERE FirstName = 'David' RETURNING SingerId, FullName"
         )
         for result in results:
             print("SingerId: {}, FullName: {}".format(*result))
@@ -1079,6 +1078,35 @@ def update_with_batch_dml(instance_id, database_id):
 
     database.run_in_transaction(update_albums)
     # [END spanner_postgresql_dml_batch_update]
+
+
+def dml_last_statement_option(instance_id, database_id):
+    """Inserts and updates using DML where the update sets the last statement option."""
+    # [START spanner_postgresql_dml_last_statement]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def insert_and_update_singers(transaction):
+        insert_row_ct = transaction.execute_update(
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
+            "VALUES (54214, 'John', 'Do')"
+        )
+
+        print("{} record(s) inserted.".format(insert_row_ct))
+
+        update_row_ct = transaction.execute_update(
+            "UPDATE Singers SET LastName = 'Doe' WHERE SingerId = 54214",
+            last_statement=True,
+        )
+
+        print("{} record(s) updated.".format(update_row_ct))
+
+    database.run_in_transaction(insert_and_update_singers)
+    # [END spanner_postgresql_dml_last_statement]
 
 
 def create_table_with_datatypes(instance_id, database_id):
@@ -1226,7 +1254,7 @@ def query_data_with_bytes(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueInfo = $1",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueInfo = $1",
             params=param,
             param_types=param_type,
         )
@@ -1277,7 +1305,7 @@ def query_data_with_int(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName, Capacity FROM Venues " "WHERE Capacity >= $1",
+            "SELECT VenueId, VenueName, Capacity FROM Venues WHERE Capacity >= $1",
             params=param,
             param_types=param_type,
         )
@@ -1302,7 +1330,7 @@ def query_data_with_string(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueName = $1",
+            "SELECT VenueId, VenueName FROM Venues WHERE VenueName = $1",
             params=param,
             param_types=param_type,
         )
@@ -1769,7 +1797,7 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("insert_data_with_dml", help=insert_data_with_dml.__doc__)
     subparsers.add_parser("update_data_with_dml", help=update_data_with_dml.__doc__)
     subparsers.add_parser(
-        "update_data_with_dml", help=update_data_with_dml_returning.__doc__
+        "update_data_with_dml_returning", help=update_data_with_dml_returning.__doc__
     )
     subparsers.add_parser("delete_data_with_dml", help=delete_data_with_dml.__doc__)
     subparsers.add_parser(
@@ -1797,6 +1825,9 @@ if __name__ == "__main__":  # noqa: C901
         help=delete_data_with_partitioned_dml.__doc__,
     )
     subparsers.add_parser("update_with_batch_dml", help=update_with_batch_dml.__doc__)
+    subparsers.add_parser(
+        "dml_last_statement_option", help=dml_last_statement_option.__doc__
+    )
     subparsers.add_parser(
         "create_table_with_datatypes", help=create_table_with_datatypes.__doc__
     )
@@ -1899,6 +1930,8 @@ if __name__ == "__main__":  # noqa: C901
         delete_data_with_partitioned_dml(args.instance_id, args.database_id)
     elif args.command == "update_with_batch_dml":
         update_with_batch_dml(args.instance_id, args.database_id)
+    elif args.command == "dml_last_statement_option":
+        dml_last_statement_option(args.instance_id, args.database_id)
     elif args.command == "create_table_with_datatypes":
         create_table_with_datatypes(args.instance_id, args.database_id)
     elif args.command == "insert_datatypes_data":

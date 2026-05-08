@@ -31,6 +31,7 @@ from google.shopping.merchant_inventories_v1.services.regional_inventory_service
     RegionalInventoryServiceClient,
 )
 from google.shopping.merchant_inventories_v1.types.inventories_common import (
+    InventoryLoyaltyProgram,
     LocalInventoryAttributes,
     RegionalInventoryAttributes,
 )
@@ -54,6 +55,7 @@ __all__ = (
     "LocalInventoryServiceAsyncClient",
     "RegionalInventoryServiceClient",
     "RegionalInventoryServiceAsyncClient",
+    "InventoryLoyaltyProgram",
     "LocalInventoryAttributes",
     "RegionalInventoryAttributes",
     "DeleteLocalInventoryRequest",

@@ -1965,11 +1965,27 @@ def ai_generate_double(
     ).to_expr()
 
 
+@scalar_op_compiler.register_unary_op(ops.AIEmbed, pass_op=True)
+def ai_embed(value: ibis_types.Value, op: ops.AIEmbed) -> ibis_types.StructValue:
+    return ai_ops.AIEmbed(
+        value,  # type: ignore
+        connection_id=op.connection_id,  # type: ignore
+        endpoint=op.endpoint,  # type: ignore
+        model=op.model,  # type: ignore
+        task_type=op.task_type.upper() if op.task_type is not None else None,  # type: ignore
+        title=op.title,  # type: ignore
+        model_params=op.model_params,  # type: ignore
+    ).to_expr()
+
+
 @scalar_op_compiler.register_nary_op(ops.AIIf, pass_op=True)
 def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
     return ai_ops.AIIf(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -1980,7 +1996,11 @@ def ai_classify(
     return ai_ops.AIClassify(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.categories,  # type: ignore
+        _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -1988,6 +2008,22 @@ def ai_classify(
 def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructValue:
     return ai_ops.AIScore(
         _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.max_error_ratio,  # type: ignore
+    ).to_expr()
+
+
+@scalar_op_compiler.register_binary_op(ops.AISimilarity, pass_op=True)
+def ai_similarity(
+    content1: ibis_types.Value, content2: ibis_types.Value, op: ops.AISimilarity
+) -> ibis_types.Value:
+    return ai_ops.AISimilarity(
+        content1,  # type: ignore
+        content2,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.model,  # type: ignore
+        op.model_params,  # type: ignore
         op.connection_id,  # type: ignore
     ).to_expr()
 
@@ -2006,6 +2042,26 @@ def _construct_prompt(
             prompt[f"_field_{idx + 1}"] = elem
 
     return ibis.struct(prompt)
+
+
+def _construct_examples(
+    examples: tuple[tuple[str, str]] | None,
+) -> ibis_types.ArrayValue | None:
+    if examples is None:
+        return None
+
+    results: list[ibis_types.StructValue] = []
+
+    for example in examples:
+        ibis_example = ibis.struct(
+            {
+                "_field_1": example[0],
+                "_field_2": example[1],
+            }
+        )
+        results.append(ibis_example)
+
+    return ibis.array(results)
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)

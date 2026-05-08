@@ -369,10 +369,10 @@ class ProductsServiceAsyncClient:
 
                    - Example: To represent the product ID
                      ``en~US~sku/123``, the ``{product}`` segment must
-                     be the base64url encoding of this string, which is
-                     ``ZW5-VVMtc2t1LzEyMw``. The full resource name for
-                     the product would be
-                     ``accounts/123/products/ZW5-VVMtc2t1LzEyMw``.
+                     be the unpadded base64url encoding of this string,
+                     which is ``ZW5-VVN-c2t1LzEyMw``. The full resource
+                     name for the product would be
+                     ``accounts/123/products/ZW5-VVN-c2t1LzEyMw``.
 
                 2. **Plain Format**: The ``{product}`` segment is the
                    tilde-separated string

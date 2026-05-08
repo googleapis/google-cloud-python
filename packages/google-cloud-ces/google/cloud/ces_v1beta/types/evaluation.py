@@ -1039,11 +1039,14 @@ class EvaluationResult(proto.Message):
                 Evaluation/Expectation failed. In the case of
                 an evaluation, this means that at least one
                 expectation was not met.
+            SKIPPED (3):
+                Evaluation/Expectation was skipped.
         """
 
         OUTCOME_UNSPECIFIED = 0
         PASS = 1
         FAIL = 2
+        SKIPPED = 3
 
     class ExecutionState(proto.Enum):
         r"""The state of the evaluation result execution.

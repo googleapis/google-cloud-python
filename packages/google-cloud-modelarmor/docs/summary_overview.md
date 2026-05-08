@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Model Armor API API
+# Model Armor API
 
-Overview of the APIs available for Model Armor API API.
+Overview of the APIs available for Model Armor API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Model Armor API API.
+Model Armor API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-modelarmor/latest/summary_class.html)
 

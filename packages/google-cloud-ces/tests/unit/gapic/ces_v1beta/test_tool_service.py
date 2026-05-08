@@ -65,7 +65,14 @@ from google.cloud.ces_v1beta.services.tool_service import (
     ToolServiceClient,
     transports,
 )
-from google.cloud.ces_v1beta.types import schema, tool, tool_service, toolset_tool
+from google.cloud.ces_v1beta.types import (
+    mocks,
+    schema,
+    session_service,
+    tool,
+    tool_service,
+    toolset_tool,
+)
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",

@@ -45,6 +45,7 @@ import bigframes.extensions.pandas.dataframe_accessor  # noqa: F401, E402
 from bigframes._config.bigquery_options import BigQueryOptions  # noqa: E402
 from bigframes.core.global_session import (  # noqa: E402
     close_session,
+    execution_history,
     get_global_session,
 )
 from bigframes.session import Session, connect  # noqa: E402
@@ -69,6 +70,7 @@ __all__ = [
     "BigQueryOptions",
     "get_global_session",
     "close_session",
+    "execution_history",
     "enums",
     "exceptions",
     "connect",

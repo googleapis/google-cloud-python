@@ -82,6 +82,8 @@ class AlphaAnalyticsDataAsyncClient:
     parse_audience_list_path = staticmethod(
         AlphaAnalyticsDataClient.parse_audience_list_path
     )
+    metadata_path = staticmethod(AlphaAnalyticsDataClient.metadata_path)
+    parse_metadata_path = staticmethod(AlphaAnalyticsDataClient.parse_metadata_path)
     property_quotas_snapshot_path = staticmethod(
         AlphaAnalyticsDataClient.property_quotas_snapshot_path
     )
@@ -702,139 +704,6 @@ class AlphaAnalyticsDataAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.query_audience_list
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def sheet_export_audience_list(
-        self,
-        request: Optional[
-            Union[analytics_data_api.SheetExportAudienceListRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_data_api.SheetExportAudienceListResponse:
-        r"""Exports an audience list of users to a Google Sheet. After
-        creating an audience, the users are not immediately available
-        for listing. First, a request to ``CreateAudienceList`` is
-        necessary to create an audience list of users, and then second,
-        this method is used to export those users in the audience list
-        to a Google Sheet.
-
-        See `Creating an Audience
-        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
-        for an introduction to Audience Lists with examples.
-
-        Audiences in Google Analytics 4 allow you to segment your users
-        in the ways that are important to your business. To learn more,
-        see https://support.google.com/analytics/answer/9267572.
-
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
-        Analytics Audience Export API
-        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import data_v1alpha
-
-            async def sample_sheet_export_audience_list():
-                # Create a client
-                client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
-
-                # Initialize request argument(s)
-                request = data_v1alpha.SheetExportAudienceListRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.sheet_export_audience_list(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.analytics.data_v1alpha.types.SheetExportAudienceListRequest, dict]]):
-                The request object. A request to export users in an
-                audience list to a Google Sheet.
-            name (:class:`str`):
-                Required. The name of the audience list to retrieve
-                users from. Format:
-                ``properties/{property}/audienceLists/{audience_list}``
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.data_v1alpha.types.SheetExportAudienceListResponse:
-                The created Google Sheet with the
-                list of users in an audience list.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_data_api.SheetExportAudienceListRequest):
-            request = analytics_data_api.SheetExportAudienceListRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.sheet_export_audience_list
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -2170,6 +2039,231 @@ class AlphaAnalyticsDataAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def run_report(
+        self,
+        request: Optional[Union[analytics_data_api.RunReportRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> analytics_data_api.RunReportResponse:
+        r"""Returns a customized report of your Google Analytics
+        event data. Reports contain statistics derived from data
+        collected by the Google Analytics tracking code. The
+        data returned from the API is as a table with columns
+        for the requested dimensions and metrics. Metrics are
+        individual measurements of user activity on your
+        property, such as active users or event count.
+        Dimensions break down metrics across some common
+        criteria, such as country or event name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            async def sample_run_report():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.RunReportRequest(
+                    property="property_value",
+                )
+
+                # Make the request
+                response = await client.run_report(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1alpha.types.RunReportRequest, dict]]):
+                The request object. The request to generate a report.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.data_v1alpha.types.RunReportResponse:
+                The response report table
+                corresponding to a request.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.RunReportRequest):
+            request = analytics_data_api.RunReportRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_report
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_metadata(
+        self,
+        request: Optional[Union[analytics_data_api.GetMetadataRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> analytics_data_api.Metadata:
+        r"""Returns metadata for dimensions and metrics available in
+        reporting methods. Used to explore the dimensions and metrics.
+        In this method, a Google Analytics property identifier is
+        specified in the request, and the metadata response includes
+        Custom dimensions and metrics as well as Universal metadata.
+
+        For example if a custom metric with parameter name
+        ``levels_unlocked`` is registered to a property, the Metadata
+        response will contain ``customEvent:levels_unlocked``. Universal
+        metadata are dimensions and metrics applicable to any property
+        such as ``country`` and ``totalUsers``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            async def sample_get_metadata():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.GetMetadataRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_metadata(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1alpha.types.GetMetadataRequest, dict]]):
+                The request object. Request for a property's dimension
+                and metric metadata.
+            name (:class:`str`):
+                Required. The resource name of the metadata to retrieve.
+                This name field is specified in the URL path and not URL
+                parameters. Property is a numeric Google Analytics
+                property identifier. To learn more, see `where to find
+                your Property
+                ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+
+                Example: properties/1234/metadata
+
+                Set the Property ID to 0 for dimensions and metrics
+                common to all properties. In this special mode, this
+                method will not return custom dimensions and metrics.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.data_v1alpha.types.Metadata:
+                The dimensions, metrics and
+                comparisons currently accepted in
+                reporting methods.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetMetadataRequest):
+            request = analytics_data_api.GetMetadataRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metadata
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

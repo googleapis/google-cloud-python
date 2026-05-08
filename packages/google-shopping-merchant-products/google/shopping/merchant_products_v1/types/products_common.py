@@ -749,7 +749,7 @@ class ProductAttributes(proto.Message):
             This field is a member of `oneof`_ ``_google_product_category``.
         gtins (MutableSequence[str]):
             Global Trade Item Numbers
-            (`GTIN <https://support.google.com/merchants/answer/188494#gtin>`__)
+            (`GTIN <https://support.google.com/merchants/answer/6324461>`__)
             of the item. You can provide up to 10 GTINs.
         item_group_id (str):
             Shared identifier for all variants of the
@@ -765,7 +765,7 @@ class ProductAttributes(proto.Message):
             This field is a member of `oneof`_ ``_material``.
         mpn (str):
             Manufacturer Part Number
-            (`MPN <https://support.google.com/merchants/answer/188494#mpn>`__)
+            (`MPN <https://support.google.com/merchants/answer/6324482>`__)
             of the item.
 
             This field is a member of `oneof`_ ``_mpn``.
@@ -862,10 +862,19 @@ class ProductAttributes(proto.Message):
         handling_cutoff_times (MutableSequence[google.shopping.merchant_products_v1.types.HandlingCutoffTime]):
             The handling cutoff times for shipping.
         shipping_label (str):
-            The shipping label of the product, used to
-            group product in account-level shipping rules.
+            The shipping label of the product, used to group products in
+            account-level shipping rules. Max. 100 characters. For more
+            information, see `Shipping
+            label <https://support.google.com/merchants/answer/6324504>`__.
 
             This field is a member of `oneof`_ ``_shipping_label``.
+        return_policy_label (str):
+            The return label of the product, used to group products in
+            account-level return policies. Max. 100 characters. For more
+            information, see `Return policy
+            label <https://support.google.com/merchants/answer/9445425>`__.
+
+            This field is a member of `oneof`_ ``_return_policy_label``.
         transit_time_label (str):
             The transit time label of the product, used
             to group product in account-level transit time
@@ -1107,6 +1116,12 @@ class ProductAttributes(proto.Message):
         sustainability_incentives (MutableSequence[google.shopping.merchant_products_v1.types.ProductSustainabilityIncentive]):
             The list of sustainability incentive
             programs.
+        video_links (MutableSequence[str]):
+            Optional. A list of video URLs for the item. Use this
+            attribute to provide more visuals for your product beyond
+            your image attributes. See the `Help Center
+            article <https://support.google.com/merchants/answer/15216925>`__
+            for more information.
     """
 
     class CarrierPriceOption(proto.Enum):
@@ -1826,6 +1841,11 @@ class ProductAttributes(proto.Message):
         number=46,
         optional=True,
     )
+    return_policy_label: str = proto.Field(
+        proto.STRING,
+        number=170,
+        optional=True,
+    )
     transit_time_label: str = proto.Field(
         proto.STRING,
         number=47,
@@ -2057,6 +2077,10 @@ class ProductAttributes(proto.Message):
             message="ProductSustainabilityIncentive",
         )
     )
+    video_links: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=169,
+    )
 
 
 class ShippingWeight(proto.Message):
@@ -2195,6 +2219,10 @@ class ProductInstallment(proto.Message):
             Type of installment payments.
 
             This field is a member of `oneof`_ ``_credit_type``.
+        annual_percentage_rate (float):
+            Optional. Annual percentage rate for ``credit_type`` finance
+
+            This field is a member of `oneof`_ ``_annual_percentage_rate``.
     """
 
     months: int = proto.Field(
@@ -2217,6 +2245,11 @@ class ProductInstallment(proto.Message):
         number=4,
         optional=True,
         enum="CreditType",
+    )
+    annual_percentage_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
 
 

@@ -1353,6 +1353,54 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["find_direct_message"]
 
     @property
+    def find_group_chats(
+        self,
+    ) -> Callable[[space.FindGroupChatsRequest], space.FindGroupChatsResponse]:
+        r"""Return a callable for the find group chats method over gRPC.
+
+        Returns all spaces with ``spaceType == GROUP_CHAT``, whose human
+        memberships contain exactly the calling user, and the users
+        specified in ``FindGroupChatsRequest.users``. Only members that
+        have joined the conversation are supported. For an example, see
+        `Find group
+        chats <https://developers.google.com/workspace/chat/find-group-chats>`__.
+
+        If the calling user blocks, or is blocked by, some users, and no
+        spaces with the entire specified set of users are found, this
+        method returns spaces that don't include the blocked or blocking
+        users.
+
+        The specified set of users must contain only human (non-app)
+        memberships. A request that contains non-human users doesn't
+        return any spaces.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+        - ``https://www.googleapis.com/auth/chat.memberships``
+
+        Returns:
+            Callable[[~.FindGroupChatsRequest],
+                    ~.FindGroupChatsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "find_group_chats" not in self._stubs:
+            self._stubs["find_group_chats"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/FindGroupChats",
+                request_serializer=space.FindGroupChatsRequest.serialize,
+                response_deserializer=space.FindGroupChatsResponse.deserialize,
+            )
+        return self._stubs["find_group_chats"]
+
+    @property
     def create_membership(
         self,
     ) -> Callable[[gc_membership.CreateMembershipRequest], gc_membership.Membership]:

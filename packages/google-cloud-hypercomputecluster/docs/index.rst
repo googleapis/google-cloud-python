@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cluster Director API.
+This package includes clients for multiple versions of Cluster Director.
 By default, you will get version ``hypercomputecluster_v1``.
 
 

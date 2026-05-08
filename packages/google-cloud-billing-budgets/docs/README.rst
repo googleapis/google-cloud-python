@@ -3,7 +3,9 @@ Python Client for Cloud Billing Budget
 
 |stable| |pypi| |versions|
 
-`Cloud Billing Budget`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan.
+`Cloud Billing Budget`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
+budget plan and the rules to execute as spend is tracked against that
+plan.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +16,9 @@ Python Client for Cloud Billing Budget
    :target: https://pypi.org/project/google-cloud-billing-budgets/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing-budgets.svg
    :target: https://pypi.org/project/google-cloud-billing-budgets/
-.. _Cloud Billing Budget: https://cloud.google.com/billing/docs/how-to/budget-api-overview
+.. _Cloud Billing Budget: https://cloud.google.com/billing/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/billingbudgets/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
+.. _Product Documentation:  https://cloud.google.com/billing/
 
 Quick Start
 -----------
@@ -30,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Billing Budget.:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
+.. _Enable the Cloud Billing Budget.:  https://cloud.google.com/billing/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +106,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Billing Budget Product documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
+.. _Cloud Billing Budget Product documentation:  https://cloud.google.com/billing/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

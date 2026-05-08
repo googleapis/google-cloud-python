@@ -424,7 +424,7 @@ def convert_from_config(
 
     print("-------- Converting Started --------")
     files, labels, did_not_convert = _get_docproto_files(
-        futures_list, project_id, location, processor_id
+        list(futures_list), project_id, location, processor_id
     )
 
     print("-------- Finished Converting --------")

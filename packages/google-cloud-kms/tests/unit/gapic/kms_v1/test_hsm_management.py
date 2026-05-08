@@ -1911,6 +1911,7 @@ def test_get_single_tenant_hsm_instance(request_type, transport: str = "grpc"):
         call.return_value = hsm_management.SingleTenantHsmInstance(
             name="name_value",
             state=hsm_management.SingleTenantHsmInstance.State.CREATING,
+            key_portability_enabled=True,
         )
         response = client.get_single_tenant_hsm_instance(request)
 
@@ -1924,6 +1925,7 @@ def test_get_single_tenant_hsm_instance(request_type, transport: str = "grpc"):
     assert isinstance(response, hsm_management.SingleTenantHsmInstance)
     assert response.name == "name_value"
     assert response.state == hsm_management.SingleTenantHsmInstance.State.CREATING
+    assert response.key_portability_enabled is True
 
 
 def test_get_single_tenant_hsm_instance_non_empty_request_with_auto_populated_field():
@@ -2061,6 +2063,7 @@ async def test_get_single_tenant_hsm_instance_async(
             hsm_management.SingleTenantHsmInstance(
                 name="name_value",
                 state=hsm_management.SingleTenantHsmInstance.State.CREATING,
+                key_portability_enabled=True,
             )
         )
         response = await client.get_single_tenant_hsm_instance(request)
@@ -2075,6 +2078,7 @@ async def test_get_single_tenant_hsm_instance_async(
     assert isinstance(response, hsm_management.SingleTenantHsmInstance)
     assert response.name == "name_value"
     assert response.state == hsm_management.SingleTenantHsmInstance.State.CREATING
+    assert response.key_portability_enabled is True
 
 
 @pytest.mark.asyncio
@@ -7347,6 +7351,7 @@ async def test_get_single_tenant_hsm_instance_empty_call_grpc_asyncio():
             hsm_management.SingleTenantHsmInstance(
                 name="name_value",
                 state=hsm_management.SingleTenantHsmInstance.State.CREATING,
+                key_portability_enabled=True,
             )
         )
         await client.get_single_tenant_hsm_instance(request=None)
@@ -7754,6 +7759,7 @@ def test_get_single_tenant_hsm_instance_rest_call_success(request_type):
         return_value = hsm_management.SingleTenantHsmInstance(
             name="name_value",
             state=hsm_management.SingleTenantHsmInstance.State.CREATING,
+            key_portability_enabled=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -7772,6 +7778,7 @@ def test_get_single_tenant_hsm_instance_rest_call_success(request_type):
     assert isinstance(response, hsm_management.SingleTenantHsmInstance)
     assert response.name == "name_value"
     assert response.state == hsm_management.SingleTenantHsmInstance.State.CREATING
+    assert response.key_portability_enabled is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7901,6 +7908,7 @@ def test_create_single_tenant_hsm_instance_rest_call_success(request_type):
         "delete_time": {},
         "unrefreshed_duration_until_disable": {"seconds": 751, "nanos": 543},
         "disable_time": {},
+        "key_portability_enabled": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

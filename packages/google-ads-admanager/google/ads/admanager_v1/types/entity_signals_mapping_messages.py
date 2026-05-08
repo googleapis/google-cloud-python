@@ -58,7 +58,7 @@ class EntitySignalsMapping(proto.Message):
             ``EntitySignalsMapping``. Format:
             ``networks/{network_code}/entitySignalsMappings/{entity_signals_mapping_id}``
         entity_signals_mapping_id (int):
-            Output only. ``EntitySignalsMapping`` ID.
+            Output only. Deprecated: ``EntitySignalsMapping`` ID.
 
             This field is a member of `oneof`_ ``_entity_signals_mapping_id``.
         taxonomy_category_ids (MutableSequence[int]):

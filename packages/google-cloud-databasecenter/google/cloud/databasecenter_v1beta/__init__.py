@@ -30,12 +30,16 @@ else:  # pragma: NO COVER
 
 
 from .services.database_center import DatabaseCenterAsyncClient, DatabaseCenterClient
+from .types.affiliation import Affiliation
 from .types.machine_config import MachineConfig
 from .types.maintenance import (
     MaintenanceInfo,
+    MaintenanceState,
     Phase,
+    PossibleFailureReason,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
+    UpcomingMaintenance,
 )
 from .types.metric_data import MetricData, Metrics, TypedValue
 from .types.operation_error_type import OperationErrorType
@@ -192,6 +196,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "DatabaseCenterAsyncClient",
     "AdditionalDetail",
+    "Affiliation",
     "AggregateFleetRequest",
     "AggregateFleetResponse",
     "AggregateFleetRow",
@@ -218,12 +223,14 @@ __all__ = (
     "MachineConfig",
     "MaintenanceInfo",
     "MaintenanceRecommendationInfo",
+    "MaintenanceState",
     "ManagementType",
     "MetricData",
     "Metrics",
     "OperationErrorType",
     "OutdatedMinorVersionInfo",
     "Phase",
+    "PossibleFailureReason",
     "Product",
     "ProductType",
     "QueryDatabaseResourceGroupsRequest",
@@ -254,4 +261,5 @@ __all__ = (
     "SuspensionReason",
     "Tag",
     "TypedValue",
+    "UpcomingMaintenance",
 )

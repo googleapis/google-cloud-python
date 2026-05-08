@@ -2,6 +2,13 @@
 
 [1]: https://pypi.org/project/google-auth-httplib2/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.3.1...google-auth-httplib2-v0.4.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.7, 3.8, and 3.9 (#16937) ([b4fa220048f78a76da9d07c4c367e4cbc79360e6](https://github.com/googleapis/google-cloud-python/commit/b4fa220048f78a76da9d07c4c367e4cbc79360e6))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.3.0...google-auth-httplib2-v0.3.1) (2026-03-26)
 
 

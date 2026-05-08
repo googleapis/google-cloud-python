@@ -18,6 +18,7 @@
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import re
@@ -27,8 +28,8 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
-
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
@@ -70,6 +71,36 @@ def blacken(session):
     """
     session.install(BLACK_VERSION)
     session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
 
 
 def install_prerelease_dependencies(session, constraints_path):

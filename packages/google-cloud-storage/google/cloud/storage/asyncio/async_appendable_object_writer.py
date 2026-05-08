@@ -24,6 +24,7 @@ from google.rpc import status_pb2
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
+from google.cloud.storage import Blob
 from google.cloud.storage.asyncio.async_grpc_client import (
     AsyncGrpcClient,
 )
@@ -211,6 +212,60 @@ class AsyncAppendableObjectWriter:
         self._routing_token: Optional[str] = None
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
+        self.blob: Optional[Blob] = None
+
+    @classmethod
+    def from_blob(
+        cls,
+        client: AsyncGrpcClient,
+        blob: Blob,
+        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
+        writer_options: Optional[dict] = None,
+    ) -> "AsyncAppendableObjectWriter":
+        """Creates an AsyncAppendableObjectWriter from an existing Blob object.
+
+        This factory method extracts the bucket and object names directly from
+        the provided blob instance.
+
+        .. code-block:: python
+
+            from google.cloud.storage.bucket import Bucket
+            from google.cloud.storage.blob import Blob
+
+            bucket = Bucket(client, name="my-bucket")
+            blob = Blob(name="my-object.txt", bucket=bucket)
+
+            writer = AsyncAppendableObjectWriter.from_blob(
+                client=client,
+                blob=blob
+            )
+
+        :type client: :class:`~google.cloud.storage.client.AsyncGrpcClient`
+        :param client: The async gRPC client to use for write operations.
+
+        :type blob: :class:`~google.cloud.storage.blob.Blob`
+        :param blob: The blob instance providing the target path.
+
+        :type write_handle: :class:`~google.storage.v2.BidiWriteHandle`
+        :param write_handle: (Optional) An existing BidiWriteHandle to resume a session.
+
+        :type writer_options: dict
+        :param writer_options: (Optional) Configuration settings for the underlying
+            appendable writer.
+
+        :rtype: :class:`AsyncAppendableObjectWriter`
+        :returns: An initialized writer instance.
+        """
+        instance = cls(
+            client=client,
+            bucket_name=blob.bucket.name,
+            object_name=blob.name,
+            generation=blob.generation,
+            write_handle=write_handle,
+            writer_options=writer_options,
+        )
+        instance.blob = blob
+        return instance
 
     async def state_lookup(self) -> int:
         """Returns the persisted_size
@@ -297,6 +352,7 @@ class AsyncAppendableObjectWriter:
                 client=self.client.grpc_client,
                 bucket_name=self.bucket_name,
                 object_name=self.object_name,
+                blob=self.blob,
                 generation_number=self.generation,
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,

@@ -2251,6 +2251,7 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
             hot_tier_size_used_gib=2329,
             type_=common.StoragePoolType.FILE,
             mode=storage_pool.Mode.DEFAULT,
+            scale_type=common.ScaleType.SCALE_TYPE_DEFAULT,
         )
         response = client.get_storage_pool(request)
 
@@ -2293,6 +2294,7 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
     assert response.mode == storage_pool.Mode.DEFAULT
+    assert response.scale_type == common.ScaleType.SCALE_TYPE_DEFAULT
 
 
 def test_get_storage_pool_non_empty_request_with_auto_populated_field():
@@ -2451,6 +2453,7 @@ async def test_get_storage_pool_async(
                 hot_tier_size_used_gib=2329,
                 type_=common.StoragePoolType.FILE,
                 mode=storage_pool.Mode.DEFAULT,
+                scale_type=common.ScaleType.SCALE_TYPE_DEFAULT,
             )
         )
         response = await client.get_storage_pool(request)
@@ -2494,6 +2497,7 @@ async def test_get_storage_pool_async(
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
     assert response.mode == storage_pool.Mode.DEFAULT
+    assert response.scale_type == common.ScaleType.SCALE_TYPE_DEFAULT
 
 
 @pytest.mark.asyncio
@@ -42080,6 +42084,7 @@ async def test_get_storage_pool_empty_call_grpc_asyncio():
                 hot_tier_size_used_gib=2329,
                 type_=common.StoragePoolType.FILE,
                 mode=storage_pool.Mode.DEFAULT,
+                scale_type=common.ScaleType.SCALE_TYPE_DEFAULT,
             )
         )
         await client.get_storage_pool(request=None)
@@ -44253,6 +44258,7 @@ def test_create_storage_pool_rest_call_success(request_type):
         "hot_tier_size_used_gib": 2329,
         "type_": 1,
         "mode": 1,
+        "scale_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44481,6 +44487,7 @@ def test_get_storage_pool_rest_call_success(request_type):
             hot_tier_size_used_gib=2329,
             type_=common.StoragePoolType.FILE,
             mode=storage_pool.Mode.DEFAULT,
+            scale_type=common.ScaleType.SCALE_TYPE_DEFAULT,
         )
 
         # Wrap the value into a proper Response obj
@@ -44528,6 +44535,7 @@ def test_get_storage_pool_rest_call_success(request_type):
     assert response.hot_tier_size_used_gib == 2329
     assert response.type_ == common.StoragePoolType.FILE
     assert response.mode == storage_pool.Mode.DEFAULT
+    assert response.scale_type == common.ScaleType.SCALE_TYPE_DEFAULT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -44674,6 +44682,7 @@ def test_update_storage_pool_rest_call_success(request_type):
         "hot_tier_size_used_gib": 2329,
         "type_": 1,
         "mode": 1,
+        "scale_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -45692,6 +45701,7 @@ def test_create_volume_rest_call_success(request_type):
                 "os_type": 1,
             }
         ],
+        "large_capacity_config": {"constituent_count": 1864},
         "clone_details": {
             "source_snapshot": "source_snapshot_value",
             "source_volume": "source_volume_value",
@@ -46040,6 +46050,7 @@ def test_update_volume_rest_call_success(request_type):
                 "os_type": 1,
             }
         ],
+        "large_capacity_config": {"constituent_count": 1864},
         "clone_details": {
             "source_snapshot": "source_snapshot_value",
             "source_volume": "source_volume_value",

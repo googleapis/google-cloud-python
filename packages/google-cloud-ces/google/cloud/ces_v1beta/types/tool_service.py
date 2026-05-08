@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import schema
+from google.cloud.ces_v1beta.types import schema, session_service
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset_tool as gcc_toolset_tool
 
@@ -80,6 +80,11 @@ class ExecuteToolRequest(proto.Message):
         args (google.protobuf.struct_pb2.Struct):
             Optional. The input parameters and values for
             the tool in JSON object format.
+        mock_config (google.cloud.ces_v1beta.types.MockConfig):
+            Optional. Mock configuration for the tool
+            execution. If this field is set, tools that call
+            other tools will be mocked based on the provided
+            patterns and responses.
     """
 
     tool: str = proto.Field(
@@ -113,6 +118,11 @@ class ExecuteToolRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
+    )
+    mock_config: session_service.MockConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=session_service.MockConfig,
     )
 
 

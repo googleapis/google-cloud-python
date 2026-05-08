@@ -992,9 +992,9 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=900.0,
+                    deadline=1800.0,
                 ),
-                default_timeout=900.0,
+                default_timeout=1800.0,
                 client_info=client_info,
             ),
             self.modify_push_config: self._wrap_method(

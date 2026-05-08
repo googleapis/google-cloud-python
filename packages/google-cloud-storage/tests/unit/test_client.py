@@ -300,7 +300,8 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         credentials = _make_credentials(project=PROJECT)
 
-        client = self._make_one(credentials=credentials)
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
@@ -368,10 +369,11 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_bypass_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(
-            client_options={"api_endpoint": custom_endpoint},
-            use_auth_w_custom_endpoint=False,
-        )
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(
+                client_options={"api_endpoint": custom_endpoint},
+                use_auth_w_custom_endpoint=False,
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, None)
         self.assertIsInstance(client._connection, Connection)
@@ -381,9 +383,11 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         custom_endpoint = "storage-example.p.googleapis.com"
         credentials = _make_credentials(project=PROJECT)
-        client = self._make_one(
-            credentials=credentials, client_options={"api_endpoint": custom_endpoint}
-        )
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(
+                credentials=credentials,
+                client_options={"api_endpoint": custom_endpoint},
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)

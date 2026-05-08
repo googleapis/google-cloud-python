@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Model Armor API.
+This package includes clients for multiple versions of Model Armor.
 By default, you will get version ``modelarmor_v1``.
 
 

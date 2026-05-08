@@ -1513,11 +1513,17 @@ class SearchRequest(proto.Message):
                     Disables Search As You Type.
                 ENABLED (2):
                     Enables Search As You Type.
+                AUTO (3):
+                    Automatic switching between
+                    search-as-you-type and standard search modes,
+                    ideal for single-API implementations (e.g.,
+                    debouncing).
             """
 
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
+            AUTO = 3
 
         condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
             proto.ENUM,

@@ -945,41 +945,55 @@ def test_join_repr(scalars_dfs_maybe_ordered):
 
 
 def test_repr_w_display_options(scalars_dfs, session):
-    metrics = session._metrics
     scalars_df, _ = scalars_dfs
     # get a pandas df of the expected format
     df, _ = scalars_df._block.to_pandas()
     pandas_df = df.set_axis(scalars_df._block.column_labels, axis=1)
     pandas_df.index.name = scalars_df.index.name
 
-    executions_pre = metrics.execution_count
+    history_pre = session.execution_history().to_dataframe()
+    queries_pre = (
+        len(history_pre[history_pre["job_type"] == "query"])
+        if "job_type" in history_pre.columns
+        else 0
+    )
+
     with bigframes.option_context(
         "display.max_rows", 10, "display.max_columns", 5, "display.max_colwidth", 10
     ):
         # When there are 10 or fewer rows, the outputs should be identical except for the extra note.
         actual = scalars_df.head(10).__repr__()
-        executions_post = metrics.execution_count
+
+        history_post = session.execution_history().to_dataframe()
+        queries_post = len(history_post[history_post["job_type"] == "query"])
 
         with display_options.pandas_repr(bigframes.options.display):
             pandas_repr = pandas_df.head(10).__repr__()
 
     assert actual == pandas_repr
-    assert (executions_post - executions_pre) <= 3
+    assert (queries_post - queries_pre) <= 2
 
 
 def test_mimebundle_html_repr_w_all_rows(scalars_dfs, session):
-    metrics = session._metrics
     scalars_df, _ = scalars_dfs
     # get a pandas df of the expected format
     df, _ = scalars_df._block.to_pandas()
     pandas_df = df.set_axis(scalars_df._block.column_labels, axis=1)
     pandas_df.index.name = scalars_df.index.name
 
-    executions_pre = metrics.execution_count
+    history_pre = session.execution_history().to_dataframe()
+    queries_pre = (
+        len(history_pre[history_pre["job_type"] == "query"])
+        if "job_type" in history_pre.columns
+        else 0
+    )
+
     # When there are 10 or fewer rows, the outputs should be identical except for the extra note.
     bundle = scalars_df.head(10)._repr_mimebundle_()
     actual = bundle["text/html"]
-    executions_post = metrics.execution_count
+
+    history_post = session.execution_history().to_dataframe()
+    queries_post = len(history_post[history_post["job_type"] == "query"])
 
     with display_options.pandas_repr(bigframes.options.display):
         pandas_repr = pandas_df.head(10)._repr_html_()
@@ -989,7 +1003,7 @@ def test_mimebundle_html_repr_w_all_rows(scalars_dfs, session):
         + f"[{len(pandas_df.index)} rows x {len(pandas_df.columns)} columns in total]"
     )
     assert actual == expected
-    assert (executions_post - executions_pre) <= 3
+    assert (queries_post - queries_pre) <= 2
 
 
 def test_df_column_name_with_space(scalars_dfs):
@@ -3094,18 +3108,23 @@ def test_binop_with_self_aggregate(scalars_dfs_maybe_ordered):
 
     df_columns = ["int64_col", "float64_col", "int64_too"]
 
-    # Ensure that this takes the optimized single-query path by counting executions
-    execution_count_before = scalars_df._session._metrics.execution_count
+    history_before = scalars_df._session.execution_history().to_dataframe()
+    queries_before = (
+        len(history_before[history_before["job_type"] == "query"])
+        if "job_type" in history_before.columns
+        else 0
+    )
+
     bf_df = scalars_df[df_columns]
     bf_result = (bf_df - bf_df.mean()).to_pandas()
-    execution_count_after = scalars_df._session._metrics.execution_count
+
+    history_after = scalars_df._session.execution_history().to_dataframe()
+    queries_after = len(history_after[history_after["job_type"] == "query"])
 
     pd_df = scalars_pandas_df[df_columns]
     pd_result = pd_df - pd_df.mean()
 
-    executions = execution_count_after - execution_count_before
-
-    assert executions == 1
+    assert (queries_after - queries_before) == 1
     assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
@@ -3114,18 +3133,23 @@ def test_binop_with_self_aggregate_w_index_reset(scalars_dfs_maybe_ordered):
 
     df_columns = ["int64_col", "float64_col", "int64_too"]
 
-    # Ensure that this takes the optimized single-query path by counting executions
-    execution_count_before = scalars_df._session._metrics.execution_count
+    history_before = scalars_df._session.execution_history().to_dataframe()
+    queries_before = (
+        len(history_before[history_before["job_type"] == "query"])
+        if "job_type" in history_before.columns
+        else 0
+    )
+
     bf_df = scalars_df[df_columns].reset_index(drop=True)
     bf_result = (bf_df - bf_df.mean()).to_pandas()
-    execution_count_after = scalars_df._session._metrics.execution_count
+
+    history_after = scalars_df._session.execution_history().to_dataframe()
+    queries_after = len(history_after[history_after["job_type"] == "query"])
 
     pd_df = scalars_pandas_df[df_columns].reset_index(drop=True)
     pd_result = pd_df - pd_df.mean()
 
-    executions = execution_count_after - execution_count_before
-
-    assert executions == 1
+    assert (queries_after - queries_before) == 1
     pd_result.index = pd_result.index.astype("Int64")
     assert_frame_equal(bf_result, pd_result, check_dtype=False, check_index_type=False)
 
@@ -5948,16 +5972,22 @@ def test_dataframe_explode(col_names, ignore_index, session):
         "C": [["a", "b", "c"], np.nan, ["d", "e"]],
     }
 
-    metrics = session._metrics
     df = bpd.DataFrame(data, session=session)
     pd_df = df.to_pandas()
     pd_result = pd_df.explode(col_names, ignore_index=ignore_index)
     bf_result = df.explode(col_names, ignore_index=ignore_index)
 
-    # Check that to_pandas() results in at most a single query execution
-    execs_pre = metrics.execution_count
+    history_pre = session.execution_history().to_dataframe()
+    queries_pre = (
+        len(history_pre[history_pre["job_type"] == "query"])
+        if "job_type" in history_pre.columns
+        else 0
+    )
+
     bf_materialized = bf_result.to_pandas()
-    execs_post = metrics.execution_count
+
+    history_post = session.execution_history().to_dataframe()
+    queries_post = len(history_post[history_post["job_type"] == "query"])
 
     bigframes.testing.utils.assert_frame_equal(
         bf_materialized,
@@ -5967,7 +5997,7 @@ def test_dataframe_explode(col_names, ignore_index, session):
     )
     # we test this property on this method in particular as compilation
     # is non-deterministic and won't use the query cache as implemented
-    assert execs_post - execs_pre <= 1
+    assert (queries_post - queries_pre) <= 1
 
 
 @pytest.mark.parametrize(

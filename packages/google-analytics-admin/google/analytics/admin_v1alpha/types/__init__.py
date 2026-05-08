@@ -133,6 +133,7 @@ from .analytics_admin import (
     GetSKAdNetworkConversionValueSchemaRequest,
     GetSubpropertyEventFilterRequest,
     GetSubpropertySyncConfigRequest,
+    GetUserProvidedDataSettingsRequest,
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     ListAccountsRequest,
@@ -309,6 +310,7 @@ from .resources import (
     ServiceLevel,
     SKAdNetworkConversionValueSchema,
     SubpropertySyncConfig,
+    UserProvidedDataSettings,
 )
 from .subproperty_event_filter import (
     SubpropertyEventFilter,
@@ -436,6 +438,7 @@ __all__ = (
     "GetSKAdNetworkConversionValueSchemaRequest",
     "GetSubpropertyEventFilterRequest",
     "GetSubpropertySyncConfigRequest",
+    "GetUserProvidedDataSettingsRequest",
     "ListAccessBindingsRequest",
     "ListAccessBindingsResponse",
     "ListAccountsRequest",
@@ -591,6 +594,7 @@ __all__ = (
     "SearchAds360Link",
     "SKAdNetworkConversionValueSchema",
     "SubpropertySyncConfig",
+    "UserProvidedDataSettings",
     "ActionType",
     "ActorType",
     "ChangeHistoryResourceType",

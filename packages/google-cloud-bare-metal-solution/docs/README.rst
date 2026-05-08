@@ -3,7 +3,8 @@ Python Client for Bare Metal Solution
 
 |stable| |pypi| |versions|
 
-`Bare Metal Solution`_: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
+`Bare Metal Solution`_: Provides ways to manage Bare Metal Solution hardware installed in a
+regional extension located near a Google Cloud data center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -149,82 +149,142 @@ class OrganizationSecurityPoliciesTransport(abc.ABC):
         self._wrapped_methods = {
             self.add_association: gapic_v1.method.wrap_method(
                 self.add_association,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.add_rule: gapic_v1.method.wrap_method(
                 self.add_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.copy_rules: gapic_v1.method.wrap_method(
                 self.copy_rules,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_association: gapic_v1.method.wrap_method(
                 self.get_association,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_rule: gapic_v1.method.wrap_method(
                 self.get_rule,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list_associations: gapic_v1.method.wrap_method(
                 self.list_associations,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list_preconfigured_expression_sets: gapic_v1.method.wrap_method(
                 self.list_preconfigured_expression_sets,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.move: gapic_v1.method.wrap_method(
                 self.move,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.patch_rule: gapic_v1.method.wrap_method(
                 self.patch_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_association: gapic_v1.method.wrap_method(
                 self.remove_association,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_rule: gapic_v1.method.wrap_method(
                 self.remove_rule,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

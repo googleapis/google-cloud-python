@@ -288,6 +288,12 @@ class AnalyticsAdminServiceAsyncClient:
     parse_subproperty_sync_config_path = staticmethod(
         AnalyticsAdminServiceClient.parse_subproperty_sync_config_path
     )
+    user_provided_data_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.user_provided_data_settings_path
+    )
+    parse_user_provided_data_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_user_provided_data_settings_path
+    )
     common_billing_account_path = staticmethod(
         AnalyticsAdminServiceClient.common_billing_account_path
     )
@@ -14672,8 +14678,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.ReportingIdentitySettings:
-        r"""Returns the singleton data retention settings for
-        this property.
+        r"""Returns the reporting identity settings for this
+        property.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetReportingIdentitySettingsRequest, dict]]):
@@ -14731,6 +14737,97 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_reporting_identity_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_user_provided_data_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetUserProvidedDataSettingsRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.UserProvidedDataSettings:
+        r"""Looks up settings related to user-provided data for a
+        property.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetUserProvidedDataSettingsRequest, dict]]):
+                The request object. Request message for
+                GetUserProvidedDataSettings RPC
+            name (:class:`str`):
+                Required. The name of the user
+                provided data settings to retrieve.
+                Format:
+                properties/{property}/userProvidedDataSettings
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.UserProvidedDataSettings:
+                Configuration for user-provided data
+                collection. This is a singleton resource
+                for a Google Analytics property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetUserProvidedDataSettingsRequest):
+            request = analytics_admin.GetUserProvidedDataSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_user_provided_data_settings
         ]
 
         # Certain fields should be provided within the metadata header;

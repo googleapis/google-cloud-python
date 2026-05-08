@@ -42,6 +42,7 @@ from .data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
+    VertexRanker,
 )
 from .data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -114,6 +115,7 @@ __all__ = (
     "SemanticSearch",
     "TextSearch",
     "VectorSearch",
+    "VertexRanker",
     "AggregationMethod",
     "BatchCreateDataObjectsRequest",
     "BatchCreateDataObjectsResponse",

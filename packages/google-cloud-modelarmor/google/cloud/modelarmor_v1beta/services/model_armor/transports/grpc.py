@@ -565,6 +565,66 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
             )
         return self._stubs["sanitize_model_response"]
 
+    @property
+    def stream_sanitize_user_prompt(
+        self,
+    ) -> Callable[
+        [service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse
+    ]:
+        r"""Return a callable for the stream sanitize user prompt method over gRPC.
+
+        Streaming version of Sanitize User Prompt.
+
+        Returns:
+            Callable[[~.SanitizeUserPromptRequest],
+                    ~.SanitizeUserPromptResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_sanitize_user_prompt" not in self._stubs:
+            self._stubs["stream_sanitize_user_prompt"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.modelarmor.v1beta.ModelArmor/StreamSanitizeUserPrompt",
+                    request_serializer=service.SanitizeUserPromptRequest.serialize,
+                    response_deserializer=service.SanitizeUserPromptResponse.deserialize,
+                )
+            )
+        return self._stubs["stream_sanitize_user_prompt"]
+
+    @property
+    def stream_sanitize_model_response(
+        self,
+    ) -> Callable[
+        [service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse
+    ]:
+        r"""Return a callable for the stream sanitize model response method over gRPC.
+
+        Streaming version of Sanitizes Model Response.
+
+        Returns:
+            Callable[[~.SanitizeModelResponseRequest],
+                    ~.SanitizeModelResponseResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_sanitize_model_response" not in self._stubs:
+            self._stubs["stream_sanitize_model_response"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.modelarmor.v1beta.ModelArmor/StreamSanitizeModelResponse",
+                    request_serializer=service.SanitizeModelResponseRequest.serialize,
+                    response_deserializer=service.SanitizeModelResponseResponse.deserialize,
+                )
+            )
+        return self._stubs["stream_sanitize_model_response"]
+
     def close(self):
         self._logged_channel.close()
 

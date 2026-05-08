@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Stackdriver Monitoring API
+# Cloud Monitoring API
 
-Overview of the APIs available for Stackdriver Monitoring API.
+Overview of the APIs available for Cloud Monitoring API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Stackdriver Monitoring API.
+Cloud Monitoring API.
 
 [classes](https://cloud.google.com/python/docs/reference/monitoring/latest/summary_class.html)
 

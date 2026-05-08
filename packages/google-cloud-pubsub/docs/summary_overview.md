@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Pub/Sub API
+# Cloud Pub/Sub API
 
-Overview of the APIs available for Google Cloud Pub/Sub API.
+Overview of the APIs available for Cloud Pub/Sub API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Pub/Sub API.
+Cloud Pub/Sub API.
 
 [classes](https://cloud.google.com/python/docs/reference/pubsub/latest/summary_class.html)
 

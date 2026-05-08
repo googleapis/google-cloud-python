@@ -17,6 +17,7 @@
 
 import pytest
 from grpc import ClientCallDetails, RpcError
+
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._metrics.data_model import (
     ActiveOperationMetric,

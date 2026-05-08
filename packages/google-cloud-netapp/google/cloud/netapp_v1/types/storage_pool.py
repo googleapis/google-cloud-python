@@ -361,6 +361,9 @@ class StoragePool(proto.Message):
             specified during creation, it defaults to ``DEFAULT``.
 
             This field is a member of `oneof`_ ``_mode``.
+        scale_type (google.cloud.netapp_v1.types.ScaleType):
+            Optional. The scale type of the storage pool. Defaults to
+            ``SCALE_TYPE_DEFAULT`` if not specified.
     """
 
     class State(proto.Enum):
@@ -537,6 +540,11 @@ class StoragePool(proto.Message):
         number=36,
         optional=True,
         enum="Mode",
+    )
+    scale_type: common.ScaleType = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum=common.ScaleType,
     )
 
 

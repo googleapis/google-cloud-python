@@ -754,8 +754,8 @@ def test_blob_pdf_chunk_verbose(pdf_mm_df: bpd.DataFrame, bq_connection: str):
 @pytest.mark.parametrize(
     "model_name",
     [
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ],
 )
 def test_blob_transcribe(
@@ -805,8 +805,8 @@ def test_blob_transcribe(
 @pytest.mark.parametrize(
     "model_name",
     [
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ],
 )
 def test_blob_transcribe_verbose(

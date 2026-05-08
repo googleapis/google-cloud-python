@@ -188,7 +188,7 @@ class UpdatePrivateAuctionRequest(proto.Message):
             The ``PrivateAuction``'s ``name`` is used to identify the
             ``PrivateAuction`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     private_auction: private_auction_messages.PrivateAuction = proto.Field(

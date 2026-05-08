@@ -3375,6 +3375,7 @@ def test_search_target_policy_bindings_non_empty_request_with_auto_populated_fie
         target="target_value",
         page_token="page_token_value",
         parent="parent_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3391,6 +3392,7 @@ def test_search_target_policy_bindings_non_empty_request_with_auto_populated_fie
             target="target_value",
             page_token="page_token_value",
             parent="parent_value",
+            filter="filter_value",
         )
 
 
@@ -5035,6 +5037,7 @@ def test_search_target_policy_bindings_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
             "target",
@@ -5111,6 +5114,7 @@ def test_search_target_policy_bindings_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
                 "target",
@@ -5738,7 +5742,10 @@ def test_create_policy_binding_rest_call_success(request_type):
         "etag": "etag_value",
         "display_name": "display_name_value",
         "annotations": {},
-        "target": {"principal_set": "principal_set_value"},
+        "target": {
+            "principal_set": "principal_set_value",
+            "resource": "resource_value",
+        },
         "policy_kind": 1,
         "policy": "policy_value",
         "policy_uid": "policy_uid_value",
@@ -6111,7 +6118,10 @@ def test_update_policy_binding_rest_call_success(request_type):
         "etag": "etag_value",
         "display_name": "display_name_value",
         "annotations": {},
-        "target": {"principal_set": "principal_set_value"},
+        "target": {
+            "principal_set": "principal_set_value",
+            "resource": "resource_value",
+        },
         "policy_kind": 1,
         "policy": "policy_value",
         "policy_uid": "policy_uid_value",

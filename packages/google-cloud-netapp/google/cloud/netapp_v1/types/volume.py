@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "DeleteVolumeRequest",
         "RevertVolumeRequest",
         "Volume",
+        "LargeCapacityConfig",
         "ExportPolicy",
         "SimpleExportPolicyRule",
         "SnapshotPolicy",
@@ -464,8 +465,11 @@ class Volume(proto.Message):
             Optional. List of actions that are restricted
             on this volume.
         large_capacity (bool):
-            Optional. Flag indicating if the volume will
-            be a large capacity volume or a regular volume.
+            Optional. Flag indicating if the volume will be a large
+            capacity volume or a regular volume. This field is used for
+            legacy FILE pools. For Unified pools, use the
+            ``large_capacity_config`` field instead. This field and
+            ``large_capacity_config`` are mutually exclusive.
         multiple_endpoints (bool):
             Optional. Flag indicating if the volume will have an IP
             address per node for volumes supporting multiple IP
@@ -499,6 +503,12 @@ class Volume(proto.Message):
             Optional. Block devices for the volume.
             Currently, only one block device is permitted
             per Volume.
+        large_capacity_config (google.cloud.netapp_v1.types.LargeCapacityConfig):
+            Optional. Large capacity config for the volume. Enables and
+            configures large capacity for volumes in Unified pools with
+            File protocols. Not applicable for Block protocols in
+            Unified pools. This field and the legacy ``large_capacity``
+            boolean field are mutually exclusive.
         clone_details (google.cloud.netapp_v1.types.Volume.CloneDetails):
             Output only. If this volume is a clone, this
             field contains details about the clone.
@@ -767,10 +777,34 @@ class Volume(proto.Message):
         number=45,
         message="BlockDevice",
     )
+    large_capacity_config: "LargeCapacityConfig" = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message="LargeCapacityConfig",
+    )
     clone_details: CloneDetails = proto.Field(
         proto.MESSAGE,
         number=47,
         message=CloneDetails,
+    )
+
+
+class LargeCapacityConfig(proto.Message):
+    r"""Configuration for a Large Capacity Volume. A Large Capacity
+    Volume supports sizes ranging from 4.8 TiB to 20 PiB, it is
+    composed of multiple internal constituents, and must be created
+    in a large capacity pool.
+
+    Attributes:
+        constituent_count (int):
+            Optional. The number of internal constituents
+            (e.g., FlexVols) for this large volume. The
+            minimum number of constituents is 2.
+    """
+
+    constituent_count: int = proto.Field(
+        proto.INT32,
+        number=1,
     )
 
 

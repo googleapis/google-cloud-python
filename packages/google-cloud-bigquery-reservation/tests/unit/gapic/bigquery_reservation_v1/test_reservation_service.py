@@ -6482,6 +6482,7 @@ def test_create_assignment(request_type, transport: str = "grpc"):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
         response = client.create_assignment(request)
 
@@ -6498,6 +6499,7 @@ def test_create_assignment(request_type, transport: str = "grpc"):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 def test_create_assignment_non_empty_request_with_auto_populated_field():
@@ -6636,6 +6638,7 @@ async def test_create_assignment_async(
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         response = await client.create_assignment(request)
@@ -6653,6 +6656,7 @@ async def test_create_assignment_async(
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.asyncio
@@ -8811,6 +8815,7 @@ def test_move_assignment(request_type, transport: str = "grpc"):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
         response = client.move_assignment(request)
 
@@ -8827,6 +8832,7 @@ def test_move_assignment(request_type, transport: str = "grpc"):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 def test_move_assignment_non_empty_request_with_auto_populated_field():
@@ -8961,6 +8967,7 @@ async def test_move_assignment_async(
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         response = await client.move_assignment(request)
@@ -8978,6 +8985,7 @@ async def test_move_assignment_async(
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.asyncio
@@ -9166,6 +9174,7 @@ def test_update_assignment(request_type, transport: str = "grpc"):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
         response = client.update_assignment(request)
 
@@ -9182,6 +9191,7 @@ def test_update_assignment(request_type, transport: str = "grpc"):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 def test_update_assignment_non_empty_request_with_auto_populated_field():
@@ -9314,6 +9324,7 @@ async def test_update_assignment_async(
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         response = await client.update_assignment(request)
@@ -9331,6 +9342,7 @@ async def test_update_assignment_async(
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.asyncio
@@ -19127,6 +19139,7 @@ async def test_create_assignment_empty_call_grpc_asyncio():
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         await client.create_assignment(request=None)
@@ -19268,6 +19281,7 @@ async def test_move_assignment_empty_call_grpc_asyncio():
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         await client.move_assignment(request=None)
@@ -19301,6 +19315,7 @@ async def test_update_assignment_empty_call_grpc_asyncio():
                 job_type=reservation.Assignment.JobType.PIPELINE,
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
+                principal="principal_value",
             )
         )
         await client.update_assignment(request=None)
@@ -21880,6 +21895,7 @@ def test_create_assignment_rest_call_success(request_type):
         "state": 1,
         "enable_gemini_in_bigquery": True,
         "scheduling_policy": {"concurrency": 1195, "max_slots": 986},
+        "principal": "principal_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21959,6 +21975,7 @@ def test_create_assignment_rest_call_success(request_type):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -21980,6 +21997,7 @@ def test_create_assignment_rest_call_success(request_type):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22624,6 +22642,7 @@ def test_move_assignment_rest_call_success(request_type):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -22645,6 +22664,7 @@ def test_move_assignment_rest_call_success(request_type):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22767,6 +22787,7 @@ def test_update_assignment_rest_call_success(request_type):
         "state": 1,
         "enable_gemini_in_bigquery": True,
         "scheduling_policy": {"concurrency": 1195, "max_slots": 986},
+        "principal": "principal_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -22846,6 +22867,7 @@ def test_update_assignment_rest_call_success(request_type):
             job_type=reservation.Assignment.JobType.PIPELINE,
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
+            principal="principal_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -22867,6 +22889,7 @@ def test_update_assignment_rest_call_success(request_type):
     assert response.job_type == reservation.Assignment.JobType.PIPELINE
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
+    assert response.principal == "principal_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

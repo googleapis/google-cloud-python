@@ -6,8 +6,8 @@ import importlib
 import sys
 
 
-if sys.version_info < (3, 7):
-    raise ImportError('This module requires Python 3.7 or later.')
+if sys.version_info < (3, 10):
+    raise ImportError('This module requires Python 3.10 or later.')
 
 
 _lazy_type_to_package_map = {
@@ -30,14 +30,14 @@ _lazy_type_to_package_map = {
 
 
 # Background on how this behaves: https://www.python.org/dev/peps/pep-0562/
-def __getattr__(name):  # Requires Python >= 3.7
+def __getattr__(name):
     if name == '__all__':
         all_names = globals()['__all__'] = sorted(_lazy_type_to_package_map)
         return all_names
     elif name in _lazy_type_to_package_map:
         module = importlib.import_module(f'{_lazy_type_to_package_map[name]}')
         klass = getattr(module, name)
-        {# new_klass = type(name, (klass,), {'__doc__': klass.__doc__}) #}
+
         globals()[name] = klass
         return klass
     else:

@@ -23,7 +23,7 @@ version of the ``db`` API (hence ``ndb``).
 
 from google.cloud.ndb import version
 
-__version__ = version.__version__
+__version__: str = version.__version__
 
 from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher

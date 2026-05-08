@@ -61,6 +61,7 @@ from pandas._typing import (
 )
 
 import bigframes._config
+import bigframes._config.auth
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
@@ -79,7 +80,7 @@ from bigframes import exceptions as bfe
 from bigframes import version
 from bigframes.core import blocks, utils
 from bigframes.core.logging import log_adapter
-from bigframes.session import bigquery_session, bq_caching_executor, executor
+from bigframes.session import bigquery_session, executor, proxy_executor
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
@@ -107,6 +108,46 @@ _VALID_ENCODINGS = {
 MAX_INLINE_DF_BYTES = 5000
 
 logger = logging.getLogger(__name__)
+
+
+class _ExecutionHistory:
+    def __init__(self, jobs: list[dict]):
+        self._df = pandas.DataFrame(jobs)
+
+    def to_dataframe(self) -> pandas.DataFrame:
+        """Returns the execution history as a pandas DataFrame."""
+        return self._df
+
+    def _repr_html_(self) -> str | None:
+        import bigframes.formatting_helpers as formatter
+
+        if self._df.empty:
+            return "<div>No executions found.</div>"
+
+        cols = ["job_type", "job_id", "status", "total_bytes_processed", "job_url"]
+
+        # Filter columns to only those that exist in the dataframe
+        available_cols = [c for c in cols if c in self._df.columns]
+
+        def format_url(url):
+            return f'<a target="_blank" href="{url}">Open Job</a>' if url else ""
+
+        try:
+            df_display = self._df[available_cols].copy()
+            if "total_bytes_processed" in df_display.columns:
+                df_display["total_bytes_processed"] = df_display[
+                    "total_bytes_processed"
+                ].apply(formatter.get_formatted_bytes)
+            if "job_url" in df_display.columns:
+                df_display["job_url"] = df_display["job_url"].apply(format_url)
+
+            # Rename job_id to query_id to match user expectations
+            if "job_id" in df_display.columns:
+                df_display = df_display.rename(columns={"job_id": "query_id"})
+
+            return df_display.to_html(escape=False, index=False)
+        except Exception:
+            return self._df.to_html()
 
 
 @log_adapter.class_logger
@@ -147,41 +188,56 @@ class Session(
         if context is None:
             context = bigquery_options.BigQueryOptions()
 
-        if context.location is None:
-            self._location = "US"
-            msg = bfe.format_message(
-                f"No explicit location is set, so using location {self._location} for the session."
-            )
-            # User's code
-            # -> get_global_session()
-            # -> connect()
-            # -> Session()
-            #
-            # Note: We could also have:
-            # User's code
-            # -> read_gbq()
-            # -> with_default_session()
-            # -> get_global_session()
-            # -> connect()
-            # -> Session()
-            # but we currently have no way to disambiguate these
-            # situations.
-            warnings.warn(msg, stacklevel=4, category=bfe.DefaultLocationWarning)
-        else:
-            self._location = context.location
-
         self._bq_kms_key_name = context.kms_key_name
 
         # Instantiate a clients provider to help with cloud clients that will be
         # used in the future operations in the session
         if clients_provider:
+            # this path is only for unit testing. Not meant to be used by end users.
             self._clients_provider = clients_provider
+            self._location = context.location or "US"
         else:
+            credentials, project = (
+                bigframes._config.auth.resolve_credentials_and_project(context)
+            )
+            if context.location is None:
+                with bigquery.Client(
+                    project=project,
+                    credentials=credentials,
+                ) as temp_client:
+                    row_iter = temp_client.query_and_wait(
+                        "SELECT 1",
+                        job_config=bigquery.QueryJobConfig(dry_run=True),
+                    )
+                    self._location = row_iter.location or "US"
+                    msg = bfe.format_message(
+                        f"No explicit location is set, so using location {self._location} for the session."
+                    )
+                    # User's code
+                    # -> get_global_session()
+                    # -> connect()
+                    # -> Session()
+                    #
+                    # Note: We could also have:
+                    # User's code
+                    # -> read_gbq()
+                    # -> with_default_session()
+                    # -> get_global_session()
+                    # -> connect()
+                    # -> Session()
+                    # but we currently have no way to disambiguate these
+                    # situations.
+                    warnings.warn(
+                        msg, stacklevel=4, category=bfe.DefaultLocationWarning
+                    )
+            else:
+                self._location = context.location
+
             self._clients_provider = clients.ClientsProvider(
-                project=context.project,
+                project=project,
+                credentials=credentials,
                 location=self._location,
                 use_regional_endpoints=context.use_regional_endpoints,
-                credentials=context.credentials,
                 application_name=context.application_name,
                 bq_kms_key_name=self._bq_kms_key_name,
                 client_endpoints_override=context.client_endpoints_override,
@@ -233,6 +289,7 @@ class Session(
         )
 
         self._metrics = metrics.ExecutionMetrics()
+        self._publisher.subscribe(self._metrics.on_event)
         self._function_session = bff_session.FunctionSession()
         self._anon_dataset_manager = anonymous_dataset.AnonymousDatasetManager(
             self._clients_provider.bqclient,
@@ -270,7 +327,7 @@ class Session(
         if not self._strictly_ordered:
             labels["bigframes-mode"] = "unordered"
 
-        self._executor: executor.Executor = bq_caching_executor.BigQueryCachingExecutor(
+        self._executor: executor.Executor = proxy_executor.DualCompilerProxyExecutor(
             bqclient=self._clients_provider.bqclient,
             bqstoragereadclient=self._clients_provider.bqstoragereadclient,
             loader=self._loader,
@@ -278,7 +335,7 @@ class Session(
             metrics=self._metrics,
             enable_polars_execution=context.enable_polars_execution,
             publisher=self._publisher,
-            labels=labels,
+            labels=tuple(labels.items()),
         )
 
     def __del__(self):
@@ -370,6 +427,13 @@ class Session(
     def slot_millis_sum(self):
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
+
+    def execution_history(self) -> _ExecutionHistory:
+        """Returns the history of executions initiated by BigFrames in the current session.
+
+        Use `.to_dataframe()` on the result to get a pandas DataFrame.
+        """
+        return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
 
     @property
     def _allows_ambiguity(self) -> bool:
@@ -1344,7 +1408,7 @@ class Session(
                     "The provided path contains a wildcard character (*), which is not "
                     "supported by the current engine. To read files from wildcard paths, "
                     "please use the 'bigquery' engine by setting `engine='bigquery'` in "
-                    "your configuration."
+                    "the function call."
                 )
 
             read_parquet_kwargs: Dict[str, Any] = {}
@@ -1359,6 +1423,87 @@ class Session(
                 **read_parquet_kwargs,
             )
             return self._read_pandas(pandas_obj, write_engine=write_engine)
+
+    def read_orc(
+        self,
+        path: str | IO["bytes"],
+        *,
+        engine: str = "auto",
+        write_engine: constants.WriteEngineType = "default",
+    ) -> dataframe.DataFrame:
+        """Load an ORC file to a BigQuery DataFrames DataFrame.
+
+        Args:
+            path (str or IO):
+                The path or buffer to the ORC file. Can be a local path or Google Cloud Storage URI.
+            engine (str, default "auto"):
+                The engine used to read the file. Supported values: `auto`, `bigquery`, `pyarrow`.
+            write_engine (str, default "default"):
+                The write engine used to persist the data to BigQuery if needed.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                A new DataFrame representing the data from the ORC file.
+        """
+        bigframes.session.validation.validate_engine_compatibility(
+            engine=engine,
+            write_engine=write_engine,
+        )
+        if engine == "bigquery":
+            job_config = bigquery.LoadJobConfig()
+            job_config.source_format = bigquery.SourceFormat.ORC
+            job_config.labels = {"bigframes-api": "read_orc"}
+            table_id = self._loader.load_file(path, job_config=job_config)
+            return self._loader.read_gbq_table(table_id)
+        elif engine in ("auto", "pyarrow"):
+            if isinstance(path, str) and "*" in path:
+                raise ValueError(
+                    "The provided path contains a wildcard character (*), which is not "
+                    "supported by the current engine. To read files from wildcard paths, "
+                    "please use the 'bigquery' engine by setting `engine='bigquery'` in "
+                    "your configuration."
+                )
+
+            read_orc_kwargs: Dict[str, Any] = {}
+            if not pandas.__version__.startswith("1."):
+                read_orc_kwargs["dtype_backend"] = "pyarrow"
+
+            pandas_obj = pandas.read_orc(path, **read_orc_kwargs)
+            return self._read_pandas(pandas_obj, write_engine=write_engine)
+        else:
+            raise ValueError(
+                f"Unsupported engine: {repr(engine)}. Supported values: 'auto', 'bigquery', 'pyarrow'."
+            )
+
+    def read_avro(
+        self,
+        path: str | IO["bytes"],
+        *,
+        engine: str = "auto",
+    ) -> dataframe.DataFrame:
+        """Load an Avro file to a BigQuery DataFrames DataFrame.
+
+        Args:
+            path (str or IO):
+                The path or buffer to the Avro file. Can be a local path or Google Cloud Storage URI.
+            engine (str, default "auto"):
+                The engine used to read the file. Only `bigquery` is supported for Avro.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                A new DataFrame representing the data from the Avro file.
+        """
+        if engine not in ("auto", "bigquery"):
+            raise ValueError(
+                f"Unsupported engine: {repr(engine)}. Supported values: 'auto', 'bigquery'."
+            )
+
+        job_config = bigquery.LoadJobConfig()
+        job_config.use_avro_logical_types = True
+        job_config.source_format = bigquery.SourceFormat.AVRO
+        job_config.labels = {"bigframes-api": "read_avro"}
+        table_id = self._loader.load_file(path, job_config=job_config)
+        return self._loader.read_gbq_table(table_id)
 
     def read_json(
         self,

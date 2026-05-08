@@ -73,6 +73,46 @@ class ApplicationServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomApplicationServiceInterceptor(ApplicationServiceRestInterceptor):
+            def pre_batch_archive_applications(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_archive_applications(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_create_applications(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_applications(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_unarchive_applications(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_unarchive_applications(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_applications(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_applications(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_application(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_application(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_application(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -89,11 +129,278 @@ class ApplicationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_application(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_application(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = ApplicationServiceRestTransport(interceptor=MyCustomApplicationServiceInterceptor())
         client = ApplicationServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_archive_applications(
+        self,
+        request: application_service.BatchArchiveApplicationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchArchiveApplicationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_archive_applications
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_batch_archive_applications(
+        self, response: application_service.BatchArchiveApplicationsResponse
+    ) -> application_service.BatchArchiveApplicationsResponse:
+        """Post-rpc interceptor for batch_archive_applications
+
+        DEPRECATED. Please use the `post_batch_archive_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_batch_archive_applications` interceptor runs
+        before the `post_batch_archive_applications_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_archive_applications_with_metadata(
+        self,
+        response: application_service.BatchArchiveApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchArchiveApplicationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_archive_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_archive_applications_with_metadata`
+        interceptor in new development instead of the `post_batch_archive_applications` interceptor.
+        When both interceptors are used, this `post_batch_archive_applications_with_metadata` interceptor runs after the
+        `post_batch_archive_applications` interceptor. The (possibly modified) response returned by
+        `post_batch_archive_applications` will be passed to
+        `post_batch_archive_applications_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_create_applications(
+        self,
+        request: application_service.BatchCreateApplicationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchCreateApplicationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_applications
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_batch_create_applications(
+        self, response: application_service.BatchCreateApplicationsResponse
+    ) -> application_service.BatchCreateApplicationsResponse:
+        """Post-rpc interceptor for batch_create_applications
+
+        DEPRECATED. Please use the `post_batch_create_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_batch_create_applications` interceptor runs
+        before the `post_batch_create_applications_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_applications_with_metadata(
+        self,
+        response: application_service.BatchCreateApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchCreateApplicationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_applications_with_metadata`
+        interceptor in new development instead of the `post_batch_create_applications` interceptor.
+        When both interceptors are used, this `post_batch_create_applications_with_metadata` interceptor runs after the
+        `post_batch_create_applications` interceptor. The (possibly modified) response returned by
+        `post_batch_create_applications` will be passed to
+        `post_batch_create_applications_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_unarchive_applications(
+        self,
+        request: application_service.BatchUnarchiveApplicationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchUnarchiveApplicationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_unarchive_applications
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_batch_unarchive_applications(
+        self, response: application_service.BatchUnarchiveApplicationsResponse
+    ) -> application_service.BatchUnarchiveApplicationsResponse:
+        """Post-rpc interceptor for batch_unarchive_applications
+
+        DEPRECATED. Please use the `post_batch_unarchive_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_batch_unarchive_applications` interceptor runs
+        before the `post_batch_unarchive_applications_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_unarchive_applications_with_metadata(
+        self,
+        response: application_service.BatchUnarchiveApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchUnarchiveApplicationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_unarchive_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_unarchive_applications_with_metadata`
+        interceptor in new development instead of the `post_batch_unarchive_applications` interceptor.
+        When both interceptors are used, this `post_batch_unarchive_applications_with_metadata` interceptor runs after the
+        `post_batch_unarchive_applications` interceptor. The (possibly modified) response returned by
+        `post_batch_unarchive_applications` will be passed to
+        `post_batch_unarchive_applications_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_applications(
+        self,
+        request: application_service.BatchUpdateApplicationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchUpdateApplicationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_applications
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_batch_update_applications(
+        self, response: application_service.BatchUpdateApplicationsResponse
+    ) -> application_service.BatchUpdateApplicationsResponse:
+        """Post-rpc interceptor for batch_update_applications
+
+        DEPRECATED. Please use the `post_batch_update_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_batch_update_applications` interceptor runs
+        before the `post_batch_update_applications_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_applications_with_metadata(
+        self,
+        response: application_service.BatchUpdateApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.BatchUpdateApplicationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_applications_with_metadata`
+        interceptor in new development instead of the `post_batch_update_applications` interceptor.
+        When both interceptors are used, this `post_batch_update_applications_with_metadata` interceptor runs after the
+        `post_batch_update_applications` interceptor. The (possibly modified) response returned by
+        `post_batch_update_applications` will be passed to
+        `post_batch_update_applications_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_application(
+        self,
+        request: application_service.CreateApplicationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.CreateApplicationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_application
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_create_application(
+        self, response: application_messages.Application
+    ) -> application_messages.Application:
+        """Post-rpc interceptor for create_application
+
+        DEPRECATED. Please use the `post_create_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_create_application` interceptor runs
+        before the `post_create_application_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_application_with_metadata(
+        self,
+        response: application_messages.Application,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_messages.Application, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_application_with_metadata`
+        interceptor in new development instead of the `post_create_application` interceptor.
+        When both interceptors are used, this `post_create_application_with_metadata` interceptor runs after the
+        `post_create_application` interceptor. The (possibly modified) response returned by
+        `post_create_application` will be passed to
+        `post_create_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_application(
         self,
@@ -197,6 +504,80 @@ class ApplicationServiceRestInterceptor:
         `post_list_applications_with_metadata`.
         """
         return response, metadata
+
+    def pre_update_application(
+        self,
+        request: application_service.UpdateApplicationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_service.UpdateApplicationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_application
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_update_application(
+        self, response: application_messages.Application
+    ) -> application_messages.Application:
+        """Post-rpc interceptor for update_application
+
+        DEPRECATED. Please use the `post_update_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code. This `post_update_application` interceptor runs
+        before the `post_update_application_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_application_with_metadata(
+        self,
+        response: application_messages.Application,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        application_messages.Application, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApplicationService server but before it is returned to user code.
+
+        We recommend only using this `post_update_application_with_metadata`
+        interceptor in new development instead of the `post_update_application` interceptor.
+        When both interceptors are used, this `post_update_application_with_metadata` interceptor runs after the
+        `post_update_application` interceptor. The (possibly modified) response returned by
+        `post_update_application` will be passed to
+        `post_update_application_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApplicationService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ApplicationService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_get_operation(
         self,
@@ -316,6 +697,794 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ApplicationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchArchiveApplications(
+        _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.BatchArchiveApplications")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.BatchArchiveApplicationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_service.BatchArchiveApplicationsResponse:
+            r"""Call the batch archive
+            applications method over HTTP.
+
+                Args:
+                    request (~.application_service.BatchArchiveApplicationsRequest):
+                        The request object. Request object for ``BatchArchiveApplications`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.application_service.BatchArchiveApplicationsResponse:
+                        Response object for ``BatchArchiveApplications`` method.
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_archive_applications(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.BatchArchiveApplications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchArchiveApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApplicationServiceRestTransport._BatchArchiveApplications._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_service.BatchArchiveApplicationsResponse()
+            pb_resp = application_service.BatchArchiveApplicationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_archive_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_archive_applications_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        application_service.BatchArchiveApplicationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.batch_archive_applications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchArchiveApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchCreateApplications(
+        _BaseApplicationServiceRestTransport._BaseBatchCreateApplications,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.BatchCreateApplications")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.BatchCreateApplicationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_service.BatchCreateApplicationsResponse:
+            r"""Call the batch create applications method over HTTP.
+
+            Args:
+                request (~.application_service.BatchCreateApplicationsRequest):
+                    The request object. Request object for ``BatchCreateApplications`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.application_service.BatchCreateApplicationsResponse:
+                    Response object for ``BatchCreateApplications`` method.
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_create_applications(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.BatchCreateApplications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchCreateApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApplicationServiceRestTransport._BatchCreateApplications._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_service.BatchCreateApplicationsResponse()
+            pb_resp = application_service.BatchCreateApplicationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_applications_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        application_service.BatchCreateApplicationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.batch_create_applications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchCreateApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUnarchiveApplications(
+        _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.BatchUnarchiveApplications")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.BatchUnarchiveApplicationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_service.BatchUnarchiveApplicationsResponse:
+            r"""Call the batch unarchive
+            applications method over HTTP.
+
+                Args:
+                    request (~.application_service.BatchUnarchiveApplicationsRequest):
+                        The request object. Request object for ``BatchUnarchiveApplications``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.application_service.BatchUnarchiveApplicationsResponse:
+                        Response object for ``BatchUnarchiveApplications``
+                    method.
+
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_unarchive_applications(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.BatchUnarchiveApplications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchUnarchiveApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApplicationServiceRestTransport._BatchUnarchiveApplications._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_service.BatchUnarchiveApplicationsResponse()
+            pb_resp = application_service.BatchUnarchiveApplicationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_unarchive_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_unarchive_applications_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        application_service.BatchUnarchiveApplicationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.batch_unarchive_applications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchUnarchiveApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdateApplications(
+        _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.BatchUpdateApplications")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.BatchUpdateApplicationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_service.BatchUpdateApplicationsResponse:
+            r"""Call the batch update applications method over HTTP.
+
+            Args:
+                request (~.application_service.BatchUpdateApplicationsRequest):
+                    The request object. Request object for ``BatchUpdateApplications`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.application_service.BatchUpdateApplicationsResponse:
+                    Response object for ``BatchUpdateApplications`` method.
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_update_applications(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.BatchUpdateApplications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchUpdateApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApplicationServiceRestTransport._BatchUpdateApplications._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_service.BatchUpdateApplicationsResponse()
+            pb_resp = application_service.BatchUpdateApplicationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_applications_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        application_service.BatchUpdateApplicationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.batch_update_applications",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "BatchUpdateApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateApplication(
+        _BaseApplicationServiceRestTransport._BaseCreateApplication,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.CreateApplication")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.CreateApplicationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_messages.Application:
+            r"""Call the create application method over HTTP.
+
+            Args:
+                request (~.application_service.CreateApplicationRequest):
+                    The request object. Request object for ``CreateApplication`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.application_messages.Application:
+                    An application that has been added to
+                or "claimed" by the network to be used
+                for targeting purposes. These mobile
+                apps can come from various app stores.
+
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_application(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.CreateApplication",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "CreateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApplicationServiceRestTransport._CreateApplication._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_messages.Application()
+            pb_resp = application_messages.Application.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_application_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = application_messages.Application.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.create_application",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "CreateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetApplication(
         _BaseApplicationServiceRestTransport._BaseGetApplication,
@@ -615,6 +1784,225 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
                 )
             return resp
 
+    class _UpdateApplication(
+        _BaseApplicationServiceRestTransport._BaseUpdateApplication,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.UpdateApplication")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: application_service.UpdateApplicationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> application_messages.Application:
+            r"""Call the update application method over HTTP.
+
+            Args:
+                request (~.application_service.UpdateApplicationRequest):
+                    The request object. Request object for ``UpdateApplication`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.application_messages.Application:
+                    An application that has been added to
+                or "claimed" by the network to be used
+                for targeting purposes. These mobile
+                apps can come from various app stores.
+
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_application(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.UpdateApplication",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "UpdateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApplicationServiceRestTransport._UpdateApplication._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = application_messages.Application()
+            pb_resp = application_messages.Application.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_application_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = application_messages.Application.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ApplicationServiceClient.update_application",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "UpdateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_archive_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchArchiveApplicationsRequest],
+        application_service.BatchArchiveApplicationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchArchiveApplications(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_create_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchCreateApplicationsRequest],
+        application_service.BatchCreateApplicationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateApplications(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_unarchive_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchUnarchiveApplicationsRequest],
+        application_service.BatchUnarchiveApplicationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUnarchiveApplications(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_update_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchUpdateApplicationsRequest],
+        application_service.BatchUpdateApplicationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateApplications(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def create_application(
+        self,
+    ) -> Callable[
+        [application_service.CreateApplicationRequest], application_messages.Application
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateApplication(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def get_application(
         self,
@@ -635,6 +2023,129 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApplications(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_application(
+        self,
+    ) -> Callable[
+        [application_service.UpdateApplicationRequest], application_messages.Application
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateApplication(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(
+        _BaseApplicationServiceRestTransport._BaseCancelOperation,
+        ApplicationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApplicationServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_http_options()
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ApplicationServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ApplicationService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApplicationServiceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
 
     @property
     def get_operation(self):

@@ -896,3 +896,42 @@ tests:
         - Pipeline:
           - Subcollection: reviews
     assert_error: ".*start of a nested pipeline.*"
+  - description: cannot_call_expression_methods_on_aliased_expression
+    pipeline:
+      - Collection: books
+      - Select:
+        - FunctionExpression.add:
+          - AliasedExpression:
+            - Field: pages
+            - pages_alias
+          - 5
+    assert_error: "Cannot call 'add' on AliasedExpression"
+  - description: cannot_chain_aliases
+    pipeline:
+      - Collection: books
+      - Select:
+        - AliasedExpression:
+          - AliasedExpression:
+            - Field: pages
+            - pages_alias
+          - final_alias
+    assert_error: "Cannot wrap an AliasedExpression"
+  - description: valid_aliased_expression_proto
+    pipeline:
+      - Collection: books
+      - Select:
+        - AliasedExpression:
+          - Field: pages
+          - pages_alias
+    assert_proto:
+      pipeline:
+        stages:
+          - args:
+            - referenceValue: /books
+            name: collection
+          - args:
+            - mapValue:
+                fields:
+                  pages_alias:
+                    fieldReferenceValue: pages
+            name: select

@@ -1740,17 +1740,17 @@ def test_file_level_resources():
     expected = collections.OrderedDict(
         (
             (
-                "nomenclature.linnaen.com/Species",
-                wrappers.CommonResource(
-                    type_name="nomenclature.linnaen.com/Species",
-                    pattern="families/{family}/genera/{genus}/species/{species}",
-                ).message_type,
-            ),
-            (
                 "nomenclature.linnaen.com/Phylum",
                 wrappers.CommonResource(
                     type_name="nomenclature.linnaen.com/Phylum",
                     pattern="kingdoms/{kingdom}/phyla/{phylum}",
+                ).message_type,
+            ),
+            (
+                "nomenclature.linnaen.com/Species",
+                wrappers.CommonResource(
+                    type_name="nomenclature.linnaen.com/Species",
+                    pattern="families/{family}/genera/{genus}/species/{species}",
                 ).message_type,
             ),
         )
@@ -1767,7 +1767,7 @@ def test_file_level_resources():
     # The service doesn't own any method that owns a message that references
     # Phylum, so the service doesn't count it among its resource messages.
     expected.pop("nomenclature.linnaen.com/Phylum")
-    expected = frozenset(expected.values())
+    expected = tuple(expected.values())
     actual = service.resource_messages
 
     assert actual == expected
@@ -1822,7 +1822,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
         name_resource_opts.child_type = species_resource_opts.type
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
-    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
+    expected = (api_schema.messages["nomenclature.linneaen.v1.Species"],)
     actual = api_schema.services[
         "nomenclature.linneaen.v1.SpeciesService"
     ].resource_messages
@@ -4499,3 +4499,33 @@ def test_method_settings_invalid_multiple_issues():
     assert re.match(".*squid.*not.*uuid4.*", error_yaml[method_example1][1].lower())
     assert re.match(".*octopus.*not.*uuid4.*", error_yaml[method_example1][2].lower())
     assert re.match(".*method.*not found.*", error_yaml[method_example2][0].lower())
+
+
+def test_file_level_resources_with_aliases():
+    """Proves that CLI aliases are passed down to file-level CommonResources."""
+    fdp = make_file_pb2(
+        name="nomenclature.proto",
+        package="nomenclature.linneaen.v1",
+        messages=(
+            make_message_pb2(
+                name="CreateSpeciesRequest",
+                fields=(make_field_pb2(name="species", number=1, type=9),),
+            ),
+        ),
+    )
+    res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
+    resource_definition = res_pb2.add()
+    resource_definition.type = "nomenclature.linnaen.com/Species"
+    resource_definition.pattern.append("families/{family}/genera/{genus}/species/{species}")
+
+    # Pass down the resource-name-alias cli option
+    opts = Options.build("resource-name-alias=nomenclature.linnaen.com/Species:CustomSpecies")
+    
+    api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1", opts=opts)
+    
+    # Trigger the property that evaluates the CommonResource
+    resource_msgs = api_schema.protos["nomenclature.proto"].resource_messages
+
+    # Verify that the resource exists with the overriden type
+    assert "nomenclature.linnaen.com/Species" in resource_msgs
+    assert resource_msgs["nomenclature.linnaen.com/Species"].resource_type == "CustomSpecies"

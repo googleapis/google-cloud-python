@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "EncryptionType",
         "DirectoryServiceType",
         "StoragePoolType",
+        "ScaleType",
         "HybridReplicationSchedule",
         "QosType",
         "OsType",
@@ -125,6 +126,27 @@ class StoragePoolType(proto.Enum):
     STORAGE_POOL_TYPE_UNSPECIFIED = 0
     FILE = 1
     UNIFIED = 2
+
+
+class ScaleType(proto.Enum):
+    r"""Defines the scale-type of a UNIFIED Storage Pool.
+
+    Values:
+        SCALE_TYPE_UNSPECIFIED (0):
+            Unspecified scale type.
+        SCALE_TYPE_DEFAULT (1):
+            Represents standard capacity and performance
+            scale-type. Suitable for general purpose
+            workloads.
+        SCALE_TYPE_SCALEOUT (2):
+            Represents higher capacity and performance
+            scale-type. Suitable for more demanding
+            workloads.
+    """
+
+    SCALE_TYPE_UNSPECIFIED = 0
+    SCALE_TYPE_DEFAULT = 1
+    SCALE_TYPE_SCALEOUT = 2
 
 
 class HybridReplicationSchedule(proto.Enum):

@@ -26,12 +26,15 @@ from google.apps.chat_v1.types import history_state
 __protobuf__ = proto.module(
     package="google.chat.v1",
     manifest={
+        "SpaceView",
         "Space",
         "CreateSpaceRequest",
         "ListSpacesRequest",
         "ListSpacesResponse",
         "GetSpaceRequest",
         "FindDirectMessageRequest",
+        "FindGroupChatsRequest",
+        "FindGroupChatsResponse",
         "UpdateSpaceRequest",
         "SearchSpacesRequest",
         "SearchSpacesResponse",
@@ -40,6 +43,31 @@ __protobuf__ = proto.module(
         "CompleteImportSpaceResponse",
     },
 )
+
+
+class SpaceView(proto.Enum):
+    r"""A view that specifies which fields should be populated on the
+    ```Space`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>`__
+    resource. To ensure compatibility with future releases, we recommend
+    that your code account for additional values.
+
+    Values:
+        SPACE_VIEW_UNSPECIFIED (0):
+            The default / unset value.
+        SPACE_VIEW_RESOURCE_NAME_ONLY (3):
+            Populates only the Space resource name.
+        SPACE_VIEW_EXPANDED (4):
+            Populates Space resource fields. Note: the
+            ``permissionSettings`` field will not be populated. Requests
+            that specify SPACE_VIEW_EXPANDED must include scopes that
+            allow reading space data, for example,
+            https://www.googleapis.com/auth/chat.spaces or
+            https://www.googleapis.com/auth/chat.spaces.readonly.
+    """
+
+    SPACE_VIEW_UNSPECIFIED = 0
+    SPACE_VIEW_RESOURCE_NAME_ONLY = 3
+    SPACE_VIEW_EXPANDED = 4
 
 
 class Space(proto.Message):
@@ -864,6 +892,106 @@ class FindDirectMessageRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class FindGroupChatsRequest(proto.Message):
+    r"""A request to get group chat spaces based on user resources.
+
+    Attributes:
+        users (MutableSequence[str]):
+            Optional. Resource names of all human users in group chat
+            with the calling user. Chat apps can't be included in the
+            request.
+
+            The maximum number of users that can be specified in a
+            single request is ``49``.
+
+            Format: ``users/{user}``, where ``{user}`` is either the
+            ``id`` for the
+            `person <https://developers.google.com/people/api/rest/v1/people>`__
+            from the People API, or the ``id`` for the
+            `user <https://developers.google.com/admin-sdk/directory/reference/rest/v1/users>`__
+            in the Directory API. For example, to find all group chats
+            with the calling user and two other users, with People API
+            profile IDs ``123456789`` and ``987654321``, you can use
+            ``users/123456789`` and ``users/987654321``. You can also
+            use the email as an alias for ``{user}``. For example,
+            ``users/example@gmail.com`` where ``example@gmail.com`` is
+            the email of the Google Chat user.
+        page_size (int):
+            Optional. The maximum number of spaces to return. The
+            service might return fewer than this value.
+
+            If unspecified, at most 10 spaces are returned.
+
+            The maximum value is 30. If you use a value more than 30,
+            it's automatically changed to 30.
+
+            Negative values return an ``INVALID_ARGUMENT`` error.
+        page_token (str):
+            Optional. A page token, received from a
+            previous call to find group chats. Provide this
+            parameter to retrieve the subsequent page.
+
+            When paginating, all other parameters provided
+            should match the call that provided the token.
+            Passing different values may lead to unexpected
+            results.
+        space_view (google.apps.chat_v1.types.SpaceView):
+            Requested space view type. If unset, defaults to
+            ``SPACE_VIEW_RESOURCE_NAME_ONLY``. Requests that specify
+            ``SPACE_VIEW_EXPANDED`` must include scopes that allow
+            reading space data, for example,
+            https://www.googleapis.com/auth/chat.spaces or
+            https://www.googleapis.com/auth/chat.spaces.readonly.
+    """
+
+    users: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    space_view: "SpaceView" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="SpaceView",
+    )
+
+
+class FindGroupChatsResponse(proto.Message):
+    r"""A response containing group chat spaces with exactly the
+    calling user and the requested users.
+
+    Attributes:
+        spaces (MutableSequence[google.apps.chat_v1.types.Space]):
+            List of spaces in the requested (or first)
+            page.
+        next_page_token (str):
+            A token that you can send as ``pageToken`` to retrieve the
+            next page of results. If empty, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    spaces: MutableSequence["Space"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Space",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
