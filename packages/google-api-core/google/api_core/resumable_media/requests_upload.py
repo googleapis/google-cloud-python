@@ -186,12 +186,16 @@ class RequestsResumableUpload:
     def _log_response(self, response: requests.Response):
         if not _LOGGER.isEnabledFor(logging.DEBUG):
             return
+        try:
+            body = response.text
+        except (ValueError, AttributeError):
+            body = "<unavailable or closed>"
         _LOGGER.debug(
             "HTTP Response: %s %s\nHeaders: %s\nBody: %s",
             response.status_code,
             response.reason,
             response.headers,
-            response.text,
+            body,
         )
 
     def initiate(

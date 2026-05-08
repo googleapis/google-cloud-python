@@ -72,7 +72,13 @@ class ResumableUpload(object):
 
     @property
     def chunk_size(self) -> int:
-        """int: The block-aligned chunk size informed by server granularity."""
+        """int: The block-aligned chunk size informed by server granularity.
+
+        All chunks (except the last one) must have a size that is a multiple
+        of the server's chunk granularity. We round the user's requested size
+        up to the nearest granularity multiple to ensure all intermediate
+        chunks conform to this protocol constraint.
+        """
         if self._chunk_granularity:
             return (
                 (self._chunk_size + self._chunk_granularity - 1)

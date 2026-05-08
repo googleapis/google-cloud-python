@@ -43,7 +43,13 @@ def test_deadline_exceeded():
 
 
 @responses.activate
-def test_happy_path_upload():
+def test_happy_path_upload(caplog):
+    import logging
+
+    caplog.set_level(
+        logging.DEBUG, logger="google.api_core.resumable_media.requests_upload"
+    )
+
     initial_url = "http://example.com/start"
     session_url = "http://example.com/session/123"
     data = b"hello world"
@@ -70,7 +76,7 @@ def test_happy_path_upload():
     session = requests.Session()
     response = requests_upload.make_resumable_upload(
         transport=session,
-        request_body="",
+        request_body="test-initiate-metadata",
         stream=stream,
         upload_url=initial_url,
         size=len(data),
@@ -89,6 +95,13 @@ def test_happy_path_upload():
         responses.calls[1].request.headers["X-Goog-Upload-Command"].lower()
         == "upload, finalize"
     )
+
+    # Check that the initiation and chunk response logs are successfully written without raising exceptions
+    assert f"HTTP Request: POST {initial_url}" in caplog.text
+    assert "Body: test-initiate-metadata" in caplog.text
+    assert f"HTTP Request: POST {session_url}" in caplog.text
+    assert "HTTP Response: 200" in caplog.text
+    assert "Body: Success" in caplog.text
 
 
 @responses.activate
