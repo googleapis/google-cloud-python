@@ -114,10 +114,11 @@ def test_read_gbq_tokyo(
     df.sort_index(inplace=True)
     expected = scalars_pandas_df_index
 
-    # don't promise under 10gb, so table creation, and job creation are guaranteed
     exec_result = session_tokyo._executor.execute(
         df._block.expr,
-        bigframes.session.execution_spec.ExecutionSpec(promise_under_10gb=False),
+        bigframes.session.execution_spec.ExecutionSpec(
+            destination_spec=bigframes.session.execution_spec.EphemeralTableSpec()
+        ),
     )
     assert exec_result.query_job is not None
     assert exec_result.query_job.location == tokyo_location
@@ -948,7 +949,9 @@ def test_read_pandas_tokyo(
 
     result = session_tokyo._executor.execute(
         df._block.expr,
-        bigframes.session.execution_spec.ExecutionSpec(promise_under_10gb=False),
+        bigframes.session.execution_spec.ExecutionSpec(
+            destination_spec=bigframes.session.execution_spec.EphemeralTableSpec()
+        ),
     )
     assert result.query_job is not None
     assert result.query_job.location == tokyo_location

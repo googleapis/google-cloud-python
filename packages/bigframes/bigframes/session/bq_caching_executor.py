@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import concurrent.futures
+import dataclasses
 import math
 import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
@@ -28,8 +29,8 @@ import bigframes.constants
 import bigframes.core
 import bigframes.core.events
 import bigframes.core.guid
-import bigframes.core.ordering
 import bigframes.core.nodes as nodes
+import bigframes.core.ordering
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
@@ -43,14 +44,13 @@ from bigframes.core import bq_data, compile, guid, identifiers, local_data, rewr
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (
+    direct_gbq_execution,
     executor,
     loader,
     local_scan_executor,
     read_api_execution,
     semi_executor,
-    direct_gbq_execution,
 )
-import dataclasses
 
 # Max complexity that should be executed as a single query
 QUERY_COMPLEXITY_LIMIT = 1e7
@@ -189,9 +189,9 @@ class BigQueryCachingExecutor(executor.Executor):
             self._export_result_gcs(results, dest_spec)
             return results
         elif isinstance(dest_spec, ex_spec.TableOutputSpec):
-            return self._execute_gbq_table_output(array_value, execution_spec)
+            return self._execute_gbq_table_export(array_value, execution_spec)
         # Force table creation if result might be large (and user explicitly allowed large results)
-        elif isinstance(dest_spec, ex_spec.EphemeralTableSpec) or dest_spec is None:
+        elif isinstance(dest_spec, ex_spec.EphemeralTableSpec) or (dest_spec is None):
             if not execution_spec.promise_under_10gb:
                 table = self.storage_manager.create_temp_table(
                     array_value.schema.to_bigquery()
@@ -202,12 +202,12 @@ class BigQueryCachingExecutor(executor.Executor):
                         table=table, if_exists="append"
                     ),
                 )
-                # We don't use _execute_gbq_table_output, because we want to skip slower DML path.
+                # We don't use _execute_gbq_table_export, as this result is internal, not exported.
                 return self._execute_gbq_query_only(array_value, execution_spec)
         # At this point, dst should be unspecified, a specific bq table, or an ephemeral temp table that fits in <10gb
         return self._execute_gbq_query_only(array_value, execution_spec)
 
-    def _execute_gbq_table_output(
+    def _execute_gbq_table_export(
         self,
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
@@ -224,9 +224,20 @@ class BigQueryCachingExecutor(executor.Executor):
             )
             results = self._execute_bigquery(array_value, execution_spec)
             self._export_gbq_with_dml(results, dest_spec)
-            return results
-        # If not compatible with DML path, just run query with destination unchanged
-        return self._execute_gbq_query_only(array_value, execution_spec)
+            result = results
+        else:
+            result = self._execute_gbq_query_only(array_value, execution_spec)
+
+        has_special_dtype_col = any(
+            t in (bigframes.dtypes.TIMEDELTA_DTYPE, bigframes.dtypes.OBJ_REF_DTYPE)
+            for t in array_value.schema.dtypes
+        )
+        if dest_spec.if_exists != "append" and has_special_dtype_col:
+            table = self.bqclient.get_table(dest_spec.table)
+            table.schema = array_value.schema.to_bigquery()
+            self.bqclient.update_table(table, ["schema"])
+
+        return result
 
     def _execute_gbq_query_only(
         self,
@@ -347,7 +358,9 @@ class BigQueryCachingExecutor(executor.Executor):
             order_col_id = guid.generate_guid()
             plan = nodes.PromoteOffsetsNode(plan, identifiers.ColumnId(order_col_id))
             cluster_cols = [order_col_id]
-            ordering = bigframes.core.ordering.TotalOrdering.from_offset_col(order_col_id)
+            ordering = bigframes.core.ordering.TotalOrdering.from_offset_col(
+                order_col_id
+            )
         elif cache_spec.ordering == "order_key":
             plan, ordering = rewrite.pull_out_order(plan)
         destination_table = self.storage_manager.create_temp_table(
@@ -361,7 +374,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 if_exists="replace",
             )
         )
-        # We don't use _execute_gbq_table_output, because we want to skip slower DML path.
+        # We don't use _execute_gbq_table_export, as this result is internal, not exported.
         result = self._execute_gbq_query_only(arr_value, execution_spec)
         result._data = dataclasses.replace(result._data, ordering=ordering)
         return result

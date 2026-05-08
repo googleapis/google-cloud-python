@@ -162,7 +162,7 @@ def _pull_up_order(
                 )
         elif isinstance(node, bigframes.core.nodes.ReadTableNode):
             if node.source.ordering is not None:
-                return node.with_order_cols()
+                return node.pull_out_order()
             else:
                 # No defined ordering
                 return node, bigframes.core.ordering.RowOrdering()

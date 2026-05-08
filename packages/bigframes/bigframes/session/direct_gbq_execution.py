@@ -15,25 +15,23 @@ from __future__ import annotations
 
 from typing import Callable, Literal, Mapping, Optional, Tuple
 
+import google.api_core.exceptions
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
+import google.cloud.bigquery_storage_v1
 from google.cloud import bigquery
 
+import bigframes.core.compile
 import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
 import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 import bigframes.core.events
-import bigframes.session.metrics
-import bigframes.session._io.bigquery as bq_io
-from bigframes.core import bq_data, compile, nodes
-import bigframes.core.compile
-from bigframes.session import executor, semi_executor, execution_spec
-from bigframes.core.compile.configs import CompileRequest, CompileResult
-from bigframes import exceptions as bfe
 import bigframes.core.schema as schemata
-import google.cloud.bigquery_storage_v1
-
-import google.api_core.exceptions
-
+import bigframes.session._io.bigquery as bq_io
+import bigframes.session.metrics
+from bigframes import exceptions as bfe
+from bigframes.core import bq_data, compile, nodes
+from bigframes.core.compile.configs import CompileRequest, CompileResult
+from bigframes.session import execution_spec, executor, semi_executor
 
 _WRITE_DISPOSITIONS = {
     "fail": bigquery.WriteDisposition.WRITE_EMPTY,
@@ -66,20 +64,14 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         spec: execution_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
-
-        og_schema = plan.schema
-        compile_request = CompileRequest(
-            plan,
-            sort_rows=spec.ordered,
-            peek_count=spec.peek,
-        )
-
         compiled = compile.compile_sql(
-            compile_request, compiler_name=self._compiler_name
+            CompileRequest(
+                plan,
+                sort_rows=spec.ordered,
+                peek_count=spec.peek,
+            ),
+            compiler_name=self._compiler_name,
         )
-        # might have more columns than og schema, for hidden ordering columns
-        compiled_schema = compiled.sql_schema
-
         job_config = bigquery.QueryJobConfig()
         dest_spec = spec.destination_spec
         cluster_cols = None
@@ -110,18 +102,16 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         )
         result_bq_data = None
         if query_job and query_job.destination:
-            # we might add extra sql columns in compilation, esp if caching w ordering, infer a bigframes type for them
-            result_bf_schema = _result_schema(og_schema, list(compiled.sql_schema))
             dst = query_job.destination
             result_bq_data = bq_data.BigqueryDataSource(
                 table=bq_data.GbqNativeTable.from_ref_and_schema(
                     dst,
-                    tuple(compiled_schema),
+                    tuple(compiled.sql_schema),
                     cluster_cols=cluster_cols or (),
                     location=iterator.location or self.bqclient.location,
                     table_type="TABLE",
                 ),
-                schema=result_bf_schema,
+                schema=plan.schema,
                 ordering=compiled.row_order,
                 n_rows=iterator.total_rows,
             )
@@ -143,11 +133,11 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                 project_id=self.bqclient.project,
                 storage_client=self._bqstoragereadclient,
                 execution_metadata=execution_metadata,
-                selected_fields=tuple((col, col) for col in og_schema.names),
+                selected_fields=tuple((col, col) for col in plan.schema.names),
             )
         else:
             return executor.LocalExecuteResult(
-                data=iterator.to_arrow().select(og_schema.names),
+                data=iterator.to_arrow().select(plan.schema.names),
                 bf_schema=plan.schema,
                 execution_metadata=execution_metadata,
             )
@@ -155,14 +145,13 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
     def _run_execute_query(
         self,
         sql: str,
-        job_config: Optional[bq_job.QueryJobConfig] = None,
-        query_with_job: bool = True,
-        session=None,
+        job_config: bq_job.QueryJobConfig,
+        query_with_job: bool,
+        session,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
         """
-        job_config = bq_job.QueryJobConfig() if job_config is None else job_config
         if bigframes.options.compute.maximum_bytes_billed is not None:
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
@@ -188,13 +177,3 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                 raise bfe.QueryComplexityError(new_message) from e
             else:
                 raise
-
-
-def _result_schema(
-    logical_schema: schemata.ArraySchema, sql_schema: list[bigquery.SchemaField]
-) -> schemata.ArraySchema:
-    inferred_schema = bigframes.dtypes.bf_type_from_type_kind(sql_schema)
-    inferred_schema.update(logical_schema._mapping)
-    return schemata.ArraySchema(
-        tuple(schemata.SchemaItem(col, dtype) for col, dtype in inferred_schema.items())
-    )
