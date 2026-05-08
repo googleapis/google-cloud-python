@@ -1996,7 +1996,11 @@ def ai_classify(
     return ai_ops.AIClassify(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.categories,  # type: ignore
+        _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -2038,6 +2042,26 @@ def _construct_prompt(
             prompt[f"_field_{idx + 1}"] = elem
 
     return ibis.struct(prompt)
+
+
+def _construct_examples(
+    examples: tuple[tuple[str, str]] | None,
+) -> ibis_types.ArrayValue | None:
+    if examples is None:
+        return None
+
+    results: list[ibis_types.StructValue] = []
+
+    for example in examples:
+        ibis_example = ibis.struct(
+            {
+                "_field_1": example[0],
+                "_field_2": example[1],
+            }
+        )
+        results.append(ibis_example)
+
+    return ibis.array(results)
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)

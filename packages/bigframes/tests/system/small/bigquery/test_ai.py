@@ -355,6 +355,15 @@ def test_ai_classify(session):
     assert result.dtype == dtypes.STRING_DTYPE
 
 
+def test_ai_classify_with_examples(session):
+    s = bpd.Series(["cat", "orchid"], session=session)
+
+    result = bbq.ai.classify(s, ["animal", "plant"], examples=[("dog", "animal")])
+
+    assert len(result) == len(s)
+    assert result.dtype == dtypes.STRING_DTYPE
+
+
 def test_ai_classify_multi_model(session, bq_connection):
     df = session.from_glob_path(
         "gs://bigframes-dev-testing/a_multimodel/images/*",
