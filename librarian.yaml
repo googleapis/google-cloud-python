@@ -18,10 +18,6 @@ sources:
   googleapis:
     commit: 8bd905897f61fb6f2e7d8b7cb3e2ca41d0cbc9c8
     sha256: bad85ba8a113ccb3dbe9bf54b80f25068a76a2b9c7d59b6af98a524f40712e69
-release:
-  ignored_changes:
-    - .repo-metadata.json
-    - docs/README.rst
 default:
   output: packages
   tag_format: '{name}-v{version}'
