@@ -453,7 +453,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+    {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
     @staticmethod
     def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.

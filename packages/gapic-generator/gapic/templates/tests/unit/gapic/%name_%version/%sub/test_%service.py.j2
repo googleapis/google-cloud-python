@@ -415,7 +415,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
 
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 def test__setup_request_id():
     class MockRequest:
         def __init__(self, **kwargs):
