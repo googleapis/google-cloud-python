@@ -81,7 +81,7 @@ Declare them in Python using the :class:`~.RepeatedField` class:
         >>> row.values = [struct_pb2.Value(string_value="hello")]
         Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-        File "/usr/local/google/home/busunkim/github/python-automl/.nox/unit-3-8/lib/python3.8/site-packages/proto/message.py", line 543, in __setattr__
+        File "/usr/local/google/home/busunkim/github/python-automl/.nox/unit-3-10/lib/python3.10/site-packages/proto/message.py", line 543, in __setattr__
             self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
         TypeError: Value must be iterable
 

@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-analytics-data/#history
 
+## [0.22.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.21.0...google-analytics-data-v0.22.0) (2026-05-06)
+
 ## [0.21.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.20.0...google-analytics-data-v0.21.0) (2026-03-26)
 
 

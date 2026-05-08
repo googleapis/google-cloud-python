@@ -81,6 +81,15 @@ class ListSitesRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>approvalStatus</code></li>
+              <li><code>approvalStatusUpdateTime</code></li>
+            <li><code>childNetworkCode</code></li>
+              <li><code>name</code></li>
+              <li><code>url</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -232,7 +241,7 @@ class UpdateSiteRequest(proto.Message):
             The ``Site``'s ``name`` is used to identify the ``Site`` to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     site: site_messages.Site = proto.Field(

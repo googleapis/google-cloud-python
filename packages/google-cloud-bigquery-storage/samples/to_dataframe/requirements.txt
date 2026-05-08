@@ -1,4 +1,4 @@
-google-auth==2.49.2
+google-auth==2.50.0
 google-cloud-bigquery-storage==2.37.0
 google-cloud-bigquery===3.30.0; python_version <= '3.8'
 google-cloud-bigquery==3.41.0; python_version >= '3.9'

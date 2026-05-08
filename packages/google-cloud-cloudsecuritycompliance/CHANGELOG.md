@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-cloudsecuritycompliance/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudsecuritycompliance-v0.6.0...google-cloud-cloudsecuritycompliance-v0.7.0) (2026-05-06)
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudsecuritycompliance-v0.5.0...google-cloud-cloudsecuritycompliance-v0.6.0) (2026-03-26)
 
 

@@ -1290,19 +1290,13 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
     @property
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field
@@ -2087,10 +2081,11 @@ class Method:
 class CommonResource:
     type_name: str
     pattern: str
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     @classmethod
-    def build(cls, resource: resource_pb2.ResourceDescriptor):
-        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)))
+    def build(cls, resource: resource_pb2.ResourceDescriptor, aliases: Optional[Mapping[str, str]] = None):
+        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)), resource_name_aliases=aliases or {})
 
     @utils.cached_property
     def message_type(self):
@@ -2104,6 +2099,7 @@ class CommonResource:
             fields={},
             nested_enums={},
             nested_messages={},
+            resource_name_aliases=self.resource_name_aliases,
         )
 
 

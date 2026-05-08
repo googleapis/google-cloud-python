@@ -86,6 +86,8 @@ class BatchControllerAsyncClient:
 
     batch_path = staticmethod(BatchControllerClient.batch_path)
     parse_batch_path = staticmethod(BatchControllerClient.parse_batch_path)
+    crypto_key_path = staticmethod(BatchControllerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(BatchControllerClient.parse_crypto_key_path)
     service_path = staticmethod(BatchControllerClient.service_path)
     parse_service_path = staticmethod(BatchControllerClient.parse_service_path)
     common_billing_account_path = staticmethod(
@@ -706,8 +708,10 @@ class BatchControllerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the batch workload resource. If the batch is not in
-        terminal state, the delete fails and the response returns
+        r"""Deletes the batch workload resource. If the batch is not in a
+        ``CANCELLED``, ``SUCCEEDED`` or ``FAILED``
+        [``State``][google.cloud.dataproc.v1.Batch.State], the delete
+        operation fails and the response returns
         ``FAILED_PRECONDITION``.
 
         .. code-block:: python

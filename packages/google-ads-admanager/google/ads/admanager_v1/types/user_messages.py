@@ -37,7 +37,7 @@ class User(proto.Message):
             Identifier. The resource name of the User. Format:
             ``networks/{network_code}/users/{user_id}``
         user_id (int):
-            Output only. ``User`` ID.
+            Output only. Deprecated: ``User`` ID.
 
             This field is a member of `oneof`_ ``_user_id``.
         display_name (str):

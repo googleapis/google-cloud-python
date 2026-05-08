@@ -82,6 +82,19 @@ class ListCustomFieldsRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>dataType</code></li>
+              <li><code>description</code></li>
+              <li><code>displayName</code></li>
+              <li><code>entityType</code></li>
+              <li><code>name</code></li>
+            <li><code>options.customFieldOptionId</code></li>
+            <li><code>options.displayName</code></li>
+              <li><code>status</code></li>
+              <li><code>visibility</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -237,7 +250,7 @@ class UpdateCustomFieldRequest(proto.Message):
             The ``CustomField``'s ``name`` is used to identify the
             ``CustomField`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     custom_field: custom_field_messages.CustomField = proto.Field(
