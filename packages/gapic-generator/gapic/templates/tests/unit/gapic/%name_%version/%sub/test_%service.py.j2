@@ -443,6 +443,26 @@ def test__setup_request_id():
     request = MockRequest(request_id="already_set")
     {{ service.client_name }}._setup_request_id(request, "request_id", False)
     assert request.request_id == "already_set"
+
+    # Test with dict and proto3 optional field not in request
+    request = {}
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
+
+    # Test with dict and proto3 optional field already in request
+    request = {"request_id": "already_set"}
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert request["request_id"] == "already_set"
+
+    # Test with dict and non-proto3 optional field empty
+    request = {"request_id": ""}
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
+
+    # Test with dict and non-proto3 optional field already set
+    request = {"request_id": "already_set"}
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert request["request_id"] == "already_set"
 {% endif %}
 
 @pytest.mark.parametrize("client_class,transport_name", [
