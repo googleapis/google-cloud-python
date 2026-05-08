@@ -18,12 +18,11 @@ import dataclasses
 import datetime
 import threading
 import uuid
-from typing import Any, Callable, Optional, Set
+from typing import Any, Callable, Literal, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
 import google.cloud.bigquery.table
-from google.cloud.bigquery.job.query import QueryPlanEntry
 
 import bigframes.session.executor
 
@@ -31,7 +30,9 @@ _DEFAULT = "default"
 
 
 class Subscriber:
-    def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):  # noqa: E501
+    def __init__(
+        self, callback: Callable[[Event], None], *, publisher: Publisher
+    ):  # noqa: E501
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
@@ -109,7 +110,7 @@ class ExecutionRunning(Event):
 
 @dataclasses.dataclass(frozen=True)
 class ExecutionFinished(Event):
-    result: Optional[bigframes.session.executor.ExecuteResult] = None
+    result: bigframes.session.executor.ExecuteResult | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -124,17 +125,18 @@ class BigQuerySentEvent(ExecutionRunning):
     """Query sent to BigQuery."""
 
     query: str
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    request_id: Optional[str] = None
-    progress_bar: Optional[str] = _DEFAULT
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    request_id: str | None = None
+    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QuerySentEvent,
-        progress_bar: Optional[str] = _DEFAULT,
+        progress_bar: Literal["default", "auto", "notebook", "terminal"]
+        | None = _DEFAULT,
     ):
         return cls(
             query=event.query,
@@ -151,17 +153,18 @@ class BigQueryRetryEvent(ExecutionRunning):
     """Query sent another time because the previous attempt failed."""
 
     query: str
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    request_id: Optional[str] = None
-    progress_bar: Optional[str] = _DEFAULT
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    request_id: str | None = None
+    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryRetryEvent,
-        progress_bar: Optional[str] = _DEFAULT,
+        progress_bar: Literal["default", "auto", "notebook", "terminal"]
+        | None = _DEFAULT,
     ):
         return cls(
             query=event.query,
@@ -177,22 +180,23 @@ class BigQueryRetryEvent(ExecutionRunning):
 class BigQueryReceivedEvent(ExecutionRunning):
     """Query received and acknowledged by the BigQuery API."""
 
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    statement_type: Optional[str] = None
-    state: Optional[str] = None
-    query_plan: Optional[list[QueryPlanEntry]] = None
-    created: Optional[datetime.datetime] = None
-    started: Optional[datetime.datetime] = None
-    ended: Optional[datetime.datetime] = None
-    progress_bar: Optional[str] = _DEFAULT
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    statement_type: str | None = None
+    state: str | None = None
+    query_plan: list[google.cloud.bigquery.job.query.QueryPlanEntry] | None = None
+    created: datetime.datetime | None = None
+    started: datetime.datetime | None = None
+    ended: datetime.datetime | None = None
+    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryReceivedEvent,
-        progress_bar: Optional[str] = _DEFAULT,
+        progress_bar: Literal["default", "auto", "notebook", "terminal"]
+        | None = _DEFAULT,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -212,24 +216,25 @@ class BigQueryReceivedEvent(ExecutionRunning):
 class BigQueryFinishedEvent(ExecutionRunning):
     """Query finished successfully."""
 
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    query_id: Optional[str] = None
-    job_id: Optional[str] = None
-    destination: Optional[google.cloud.bigquery.table.TableReference] = None
-    total_rows: Optional[int] = None
-    total_bytes_processed: Optional[int] = None
-    slot_millis: Optional[int] = None
-    created: Optional[datetime.datetime] = None
-    started: Optional[datetime.datetime] = None
-    ended: Optional[datetime.datetime] = None
-    progress_bar: Optional[str] = _DEFAULT
+    billing_project: str | None = None
+    location: str | None = None
+    query_id: str | None = None
+    job_id: str | None = None
+    destination: google.cloud.bigquery.table.TableReference | None = None
+    total_rows: int | None = None
+    total_bytes_processed: int | None = None
+    slot_millis: int | None = None
+    created: datetime.datetime | None = None
+    started: datetime.datetime | None = None
+    ended: datetime.datetime | None = None
+    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryFinishedEvent,
-        progress_bar: Optional[str] = _DEFAULT,
+        progress_bar: Literal["default", "auto", "notebook", "terminal"]
+        | None = _DEFAULT,
     ):
         return cls(
             billing_project=event.billing_project,
