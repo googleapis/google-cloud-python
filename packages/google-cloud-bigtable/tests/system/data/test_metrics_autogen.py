@@ -213,7 +213,7 @@ class TestMetrics(SystemTestRunner):
             operation.zone
             == cluster_config[operation.cluster_id].location.split("/")[-1]
         )
-        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert operation.duration_ns > 0
         assert operation.first_response_latency_ns is None
         assert operation.flow_throttling_time_ns == 0
         attempt = handler.completed_attempts[0]

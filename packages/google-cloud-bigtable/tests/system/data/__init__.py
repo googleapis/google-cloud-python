@@ -253,7 +253,9 @@ class SystemTestRunner:
             if new_view_id:
                 print(f"Deleting view: {new_path}")
                 try:
-                    admin_client.table_admin_client.delete_authorized_view(name=new_path)
+                    admin_client.table_admin_client.delete_authorized_view(
+                        name=new_path
+                    )
                 except exceptions.NotFound:
                     print(f"View {new_view_id} not found, skipping deletion")
 

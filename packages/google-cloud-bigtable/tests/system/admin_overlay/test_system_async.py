@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
+from google.api_core import exceptions
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud import bigtable_admin_v2 as admin_v2
@@ -39,7 +40,6 @@ from .conftest import (
     generate_unique_suffix,
 )
 
-from google.api_core import exceptions
 if CrossSync.is_async:
     from google.api_core import operation_async as api_core_operation
 else:
@@ -176,7 +176,6 @@ async def create_instance(
         # replace with full instance object
         instances_to_delete[-1] = instance
 
-
     # Create a table within the instance
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
@@ -261,7 +260,9 @@ async def create_backup(
     )
 
     # add to cleanup list before waiting for result, in case of timeout
-    backups_to_delete.append(admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}"))
+    backups_to_delete.append(
+        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
+    )
 
     backup = await operation.result()
 
