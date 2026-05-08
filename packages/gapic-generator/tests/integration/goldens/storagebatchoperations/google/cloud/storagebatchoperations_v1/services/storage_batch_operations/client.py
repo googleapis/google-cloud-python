@@ -471,6 +471,22 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
+    @staticmethod
+    def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
+        """Populate a UUID4 field in the request if it is not already set.
+
+        Args:
+            request (Union[google.protobuf.message.Message, dict]): The request object.
+            field_name (str): The name of the field to populate.
+            is_proto3_optional (bool): Whether the field is proto3 optional.
+        """
+        if is_proto3_optional:
+            if field_name not in request:
+                setattr(request, field_name, str(uuid.uuid4()))
+        else:
+            if not getattr(request, field_name):
+                setattr(request, field_name, str(uuid.uuid4()))
+
     def _add_cred_info_for_auth_errors(
         self,
         error: core_exceptions.GoogleAPICallError
@@ -1005,8 +1021,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             )),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1111,8 +1126,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             )),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1213,8 +1227,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             )),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
