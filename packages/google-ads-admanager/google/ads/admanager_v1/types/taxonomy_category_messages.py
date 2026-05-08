@@ -40,7 +40,7 @@ class TaxonomyCategory(proto.Message):
             Format:
             ``networks/{network_code}/taxonomyCategories/{taxonomy_category_id}``
         taxonomy_category_id (int):
-            Output only. ``TaxonomyCategory`` ID.
+            Output only. Deprecated: ``TaxonomyCategory`` ID.
 
             This field is a member of `oneof`_ ``_taxonomy_category_id``.
         display_name (str):

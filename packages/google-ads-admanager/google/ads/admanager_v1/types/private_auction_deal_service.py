@@ -75,6 +75,23 @@ class ListPrivateAuctionDealsRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>auctionPriorityEnabled</code></li>
+            <li><code>blockOverrideEnabled</code></li>
+              <li><code>buyerAccountId</code></li>
+              <li><code>buyerPermissionType</code></li>
+              <li><code>endTime</code></li>
+              <li><code>externalDealId</code></li>
+              <li><code>floorPrice</code></li>
+              <li><code>name</code></li>
+              <li><code>privateAuctionDealId</code></li>
+            <li><code>privateAuctionDisplayName</code></li>
+            <li><code>privateAuctionId</code></li>
+              <li><code>status</code></li>
+              <li><code>updateTime</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -193,7 +210,7 @@ class UpdatePrivateAuctionDealRequest(proto.Message):
             The ``PrivateAuctionDeal``'s ``name`` is used to identify
             the ``PrivateAuctionDeal`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     private_auction_deal: private_auction_deal_messages.PrivateAuctionDeal = (

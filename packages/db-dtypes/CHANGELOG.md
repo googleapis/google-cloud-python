@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.5.1...db-dtypes-v1.6.0) (2026-05-06)
+
+
+### Features
+
+* enable mypy session for db-dtypes (#16689) ([856731e10a7e8b7531a08f8f799d0321e2fc167d](https://github.com/googleapis/google-cloud-python/commit/856731e10a7e8b7531a08f8f799d0321e2fc167d))
+
 ## [1.5.1](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.5.0...db-dtypes-v1.5.1) (2026-03-26)
 
 

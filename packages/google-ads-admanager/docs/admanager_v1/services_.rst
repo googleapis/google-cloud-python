@@ -27,7 +27,10 @@ Services for Google Ads Admanager v1 API
     device_manufacturer_service
     entity_signals_mapping_service
     geo_target_service
+    label_service
     line_item_service
+    linked_device_service
+    mcm_earnings_service
     mobile_carrier_service
     mobile_device_service
     mobile_device_submodel_service
@@ -40,6 +43,7 @@ Services for Google Ads Admanager v1 API
     private_auction_service
     programmatic_buyer_service
     report_service
+    rich_media_ads_company_service
     role_service
     site_service
     taxonomy_category_service
