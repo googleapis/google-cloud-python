@@ -183,7 +183,6 @@ def unit(session):
         "--cov-report=term-missing",
         "tests",
         "tests_async",
-        *session.posargs,
     )
 
 
