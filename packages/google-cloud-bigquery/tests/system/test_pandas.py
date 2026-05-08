@@ -1053,7 +1053,6 @@ def test_list_rows_max_results_w_bqstorage(bigquery_client):
     assert len(dataframe.index) == 100
 
 
-@pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
 @pytest.mark.parametrize(
     ("max_results",),
     (
