@@ -40,7 +40,7 @@ class CustomTargetingKey(proto.Message):
             Format:
             ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}``
         custom_targeting_key_id (int):
-            Output only. ``CustomTargetingKey`` ID.
+            Output only. Deprecated: ``CustomTargetingKey`` ID.
 
             This field is a member of `oneof`_ ``_custom_targeting_key_id``.
         ad_tag_name (str):
