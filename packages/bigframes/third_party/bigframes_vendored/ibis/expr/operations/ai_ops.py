@@ -155,12 +155,16 @@ class AIClassify(Value):
 
     input: Value
     categories: Value[dt.Array[dt.String]]
+    examples: Optional[Value]
     connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    optimization_mode: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
 
     shape = rlz.shape_like("input")
 
     @attribute
-    def dtype(self) -> dt.Struct:
+    def dtype(self) -> dt.DataType:
         return dt.string
 
 

@@ -1,4 +1,5 @@
-# Copyright 2024 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from .async_client import DashboardQueryServiceAsyncClient
+from .client import DashboardQueryServiceClient
 
-"""Shared helper functions for verifying versions of installed modules."""
-
-
-import sys
-from typing import Tuple
-
-
-def extract_runtime_version() -> Tuple[int, int, int]:
-    # Retrieve the version information
-    version_info = sys.version_info
-
-    # Extract the major, minor, and micro components
-    major = version_info.major
-    minor = version_info.minor
-    micro = version_info.micro
-
-    # Display the version number in a clear format
-    return major, minor, micro
+__all__ = (
+    "DashboardQueryServiceClient",
+    "DashboardQueryServiceAsyncClient",
+)

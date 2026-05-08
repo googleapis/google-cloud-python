@@ -16,12 +16,8 @@ version: v0.12.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 8bd905897f61fb6f2e7d8b7cb3e2ca41d0cbc9c8
-    sha256: bad85ba8a113ccb3dbe9bf54b80f25068a76a2b9c7d59b6af98a524f40712e69
-release:
-  ignored_changes:
-    - .repo-metadata.json
-    - docs/README.rst
+    commit: 392c8aa259daf4570073220faa9e842cf1e2e173
+    sha256: 2b3be6d9749cdf2a337f2c76aa08857096671ebd4b17007d09ee3752b7b10fe9
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -854,9 +850,9 @@ libraries:
       default_version: v1
   - name: google-cloud-datacatalog-lineage
     version: 0.6.0
-    skip_generate: true
     apis:
       - path: google/cloud/datacatalog/lineage/v1
+    skip_generate: true
     python:
       metadata_name_override: lineage
       default_version: v1

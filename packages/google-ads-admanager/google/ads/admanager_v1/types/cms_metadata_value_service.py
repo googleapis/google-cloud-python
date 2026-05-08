@@ -27,6 +27,10 @@ __protobuf__ = proto.module(
         "GetCmsMetadataValueRequest",
         "ListCmsMetadataValuesRequest",
         "ListCmsMetadataValuesResponse",
+        "BatchActivateCmsMetadataValuesRequest",
+        "BatchActivateCmsMetadataValuesResponse",
+        "BatchDeactivateCmsMetadataValuesRequest",
+        "BatchDeactivateCmsMetadataValuesResponse",
     },
 )
 
@@ -71,6 +75,14 @@ class ListCmsMetadataValuesRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>displayName</code></li>
+              <li><code>key</code></li>
+              <li><code>name</code></li>
+              <li><code>status</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -151,6 +163,60 @@ class ListCmsMetadataValuesResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class BatchActivateCmsMetadataValuesRequest(proto.Message):
+    r"""Request object for ``BatchActivateCmsMetadataValues`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CmsMetadataValues``
+            will be activated. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``CmsMetadataValue``\ s
+            to activate. Format:
+            ``networks/{network_code}/cmsMetadataValues/{cms_metadata_value_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchActivateCmsMetadataValuesResponse(proto.Message):
+    r"""Response object for ``BatchActivateCmsMetadataValues`` method."""
+
+
+class BatchDeactivateCmsMetadataValuesRequest(proto.Message):
+    r"""Request object for ``BatchDeactivateCmsMetadataValues`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CmsMetadataValues``
+            will be deactivated. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``CmsMetadataValue``\ s
+            to deactivate. Format:
+            ``networks/{network_code}/cmsMetadataValues/{cms_metadata_value_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDeactivateCmsMetadataValuesResponse(proto.Message):
+    r"""Response object for ``BatchDeactivateCmsMetadataValues`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

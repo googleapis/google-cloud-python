@@ -392,7 +392,29 @@ def test_ai_classify(scalar_types_df: dataframe.DataFrame, snapshot, connection_
     op = ops.AIClassify(
         prompt_context=(None,),
         categories=("greeting", "rejection"),
+        examples=None,
         connection_id=connection_id,
+        endpoint=None,
+        optimization_mode=None,
+        max_error_ratio=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_classify_with_params(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIClassify(
+        prompt_context=(None,),
+        categories=("greeting", "rejection"),
+        examples=(("hi", "greeting"), ("bye", "rejection")),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        optimization_mode=None,
+        max_error_ratio=0.1,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
