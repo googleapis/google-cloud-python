@@ -193,7 +193,7 @@ def is_time_travel_eligible(
         )
         try:
             # If this succeeds, we know that time travel will for sure work.
-            bigframes.session._io.bigquery.start_query_with_job_optional(
+            bigframes.session._io.bigquery.start_query_job_optional(
                 bq_client=bqclient,
                 sql=snapshot_sql,
                 job_config=bigquery.QueryJobConfig(dry_run=True),
@@ -265,7 +265,7 @@ def check_if_index_columns_are_unique(
         index_cols, table.get_table_ref()
     )
     job_config = bigquery.QueryJobConfig()
-    results, _ = bigframes.session._io.bigquery.start_query_with_job_optional(
+    results = bigframes.session._io.bigquery.start_query_job_optional(
         bq_client=bqclient,
         sql=is_unique_sql,
         job_config=job_config,

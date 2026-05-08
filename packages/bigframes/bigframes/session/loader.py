@@ -1462,7 +1462,7 @@ class GbqDataLoader:
         Do not execute dataframe through this API, instead use the executor.
         """
         job_config = self._prepare_job_config(job_config)
-        rows, _ = bf_io_bigquery.start_query_with_job_optional(
+        rows = bf_io_bigquery.start_query_job_optional(
             self._bqclient,
             sql,
             job_config=job_config,

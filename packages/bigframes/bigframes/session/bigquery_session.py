@@ -116,7 +116,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             self._sessiondaemon.stop()
 
         if self._session_id is not None and self.bqclient is not None:
-            bfbqio.start_query_with_job_optional(
+            bfbqio.start_query_job_optional(
                 self.bqclient,
                 f"CALL BQ.ABORT_SESSION('{self._session_id}')",
                 job_config=bigquery.QueryJobConfig(),
@@ -166,7 +166,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 ]
             )
             try:
-                bfbqio.start_query_with_job_optional(
+                bfbqio.start_query_job_optional(
                     self.bqclient,
                     "SELECT 1",
                     job_config=job_config,

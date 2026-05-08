@@ -116,7 +116,7 @@ class BigQueryCachingExecutor(executor.Executor):
             bqstoragereadclient=bqstoragereadclient,
             metrics=self.metrics,
             publisher=self._publisher,
-            labels=labels,
+            labels=dict(labels),
         )
 
     def to_sql(
@@ -225,7 +225,7 @@ class BigQueryCachingExecutor(executor.Executor):
             results = self._execute_bigquery(array_value, execution_spec)
             assert isinstance(results, executor.BQTableExecuteResult)
             self._export_gbq_with_dml(results, dest_spec)
-            result = results
+            result: executor.ExecuteResult = results
         else:
             result = self._execute_gbq_query_only(array_value, execution_spec)
 

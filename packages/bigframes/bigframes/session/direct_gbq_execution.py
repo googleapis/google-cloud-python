@@ -46,9 +46,9 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         bqclient: bigquery.Client,
         bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         *,
+        publisher: bigframes.core.events.Publisher,
         compiler: Literal["ibis", "sqlglot"] = "ibis",
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
-        publisher: Optional[bigframes.core.events.Publisher] = None,
         labels: Mapping[str, str] = {},
     ):
         self.bqclient = bqclient
@@ -171,13 +171,16 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                     session=session,
                 )
             else:
-                return bq_io.start_query_with_job_optional(
-                    self.bqclient,
-                    sql,
-                    job_config=job_config,
-                    metrics=self._metrics,
-                    publisher=self._publisher,
-                    session=session,
+                return (
+                    bq_io.start_query_job_optional(
+                        self.bqclient,
+                        sql,
+                        job_config=job_config,
+                        metrics=self._metrics,
+                        publisher=self._publisher,
+                        session=session,
+                    ),
+                    None,
                 )
         except google.api_core.exceptions.BadRequest as e:
             # Unfortunately, this error type does not have a separate error code or exception type

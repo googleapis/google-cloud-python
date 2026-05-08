@@ -278,7 +278,7 @@ def start_query_with_job(
     job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
     """
     Starts query job and waits for results.
     """
@@ -328,7 +328,7 @@ def start_query_job_optional(
     job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
     publisher: bigframes.core.events.Publisher,
     session=None,
-):
+) -> google.cloud.bigquery.table.RowIterator:
     add_and_trim_labels(job_config, session=session)
     try:
         results_iterator = bq_client._query_and_wait_bigframes(
@@ -342,7 +342,7 @@ def start_query_job_optional(
         )
         if metrics is not None:
             metrics.count_job_stats(row_iterator=results_iterator)
-        return results_iterator, None
+        return results_iterator
     except google.api_core.exceptions.Forbidden as ex:
         if "Drive credentials" in ex.message:
             ex.message += CHECK_DRIVE_PERMISSIONS
