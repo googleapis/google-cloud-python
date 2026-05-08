@@ -1,14 +1,10 @@
 {
-    "api_id": "runtimeconfig.googleapis.com",
-    "api_shortname": "runtimeconfig",
     "client_documentation": "https://cloud.google.com/python/docs/reference/runtimeconfig/latest",
     "distribution_name": "google-cloud-runtimeconfig",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559663",
     "language": "python",
     "library_type": "GAPIC_MANUAL",
     "name": "runtimeconfig",
-    "name_pretty": "Google Cloud Runtime Configurator",
-    "product_documentation": "https://cloud.google.com/deployment-manager/runtime-configurator/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

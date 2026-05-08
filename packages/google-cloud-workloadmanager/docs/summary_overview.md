@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Workload Manager API API
+# Workload Manager API
 
-Overview of the APIs available for Workload Manager API API.
+Overview of the APIs available for Workload Manager API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Workload Manager API API.
+Workload Manager API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-workloadmanager/latest/summary_class.html)
 

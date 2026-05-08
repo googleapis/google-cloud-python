@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from typing import Any
 
 import bigframes_vendored.sqlglot.expressions as sge
 
@@ -23,6 +24,8 @@ from bigframes.core.compile.sqlglot import expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_nary_op = expression_compiler.expression_compiler.register_nary_op
+register_binary_op = expression_compiler.expression_compiler.register_binary_op
+register_unary_op = expression_compiler.expression_compiler.register_unary_op
 
 
 @register_nary_op(ops.AIGenerate, pass_op=True)
@@ -53,6 +56,13 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
     return sge.func("AI.GENERATE_DOUBLE", *args)
 
 
+@register_unary_op(ops.AIEmbed, pass_op=True)
+def _(expr: TypedExpr, op: ops.AIEmbed) -> sge.Expression:
+    args: list[Any] = [expr.expr] + _construct_named_args(op)
+
+    return sge.func("AI.EMBED", *args)
+
+
 @register_nary_op(ops.AIIf, pass_op=True)
 def _(*exprs: TypedExpr, op: ops.AIIf) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
@@ -62,14 +72,8 @@ def _(*exprs: TypedExpr, op: ops.AIIf) -> sge.Expression:
 
 @register_nary_op(ops.AIClassify, pass_op=True)
 def _(*exprs: TypedExpr, op: ops.AIClassify) -> sge.Expression:
-    category_literals = [sge.Literal.string(cat) for cat in op.categories]
-    categories_arg = sge.Kwarg(
-        this="categories", expression=sge.array(*category_literals)
-    )
-
     args = [
         _construct_prompt(exprs, op.prompt_context, param_name="input"),
-        categories_arg,
     ] + _construct_named_args(op)
 
     return sge.func("AI.CLASSIFY", *args)
@@ -80,6 +84,16 @@ def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
 
     return sge.func("AI.SCORE", *args)
+
+
+@register_binary_op(ops.AISimilarity, pass_op=True)
+def _(content1: TypedExpr, content2: TypedExpr, op: ops.AISimilarity) -> sge.Expression:
+    args = [
+        sge.Kwarg(this="content1", expression=content1.expr),
+        sge.Kwarg(this="content2", expression=content2.expr),
+    ] + _construct_named_args(op)
+
+    return sge.func("AI.SIMILARITY", *args)
 
 
 def _construct_prompt(
@@ -100,49 +114,54 @@ def _construct_prompt(
     return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
 
 
-def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
+def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
     args = []
 
     op_args = asdict(op)
 
-    connection_id = op_args.get("connection_id", None)
-    if connection_id is not None:
-        args.append(
-            sge.Kwarg(
-                this="connection_id", expression=sge.Literal.string(connection_id)
-            )
-        )
+    for field, value in op_args.items():
+        if value is None or field == "prompt_context":
+            continue
 
-    endpoint = op_args.get("endpoint", None)
-    if endpoint is not None:
-        args.append(sge.Kwarg(this="endpoint", expression=sge.Literal.string(endpoint)))
-
-    request_type = op_args.get("request_type", None)
-    if request_type is not None:
-        args.append(
-            sge.Kwarg(
-                this="request_type", expression=sge.Literal.string(request_type.upper())
+        if field == "categories":
+            category_literals = [sge.Literal.string(cat) for cat in value]
+            categories_arg = sge.Kwarg(
+                this="categories", expression=sge.array(*category_literals)
             )
-        )
-
-    model_params = op_args.get("model_params", None)
-    if model_params is not None:
-        args.append(
-            sge.Kwarg(
-                this="model_params",
-                # sge.JSON requires the SQLGlot version to be at least 25.18.0
-                # PARSE_JSON won't work as the function requires a JSON literal.
-                expression=sge.JSON(this=sge.Literal.string(model_params)),
+            args.append(categories_arg)
+        elif field == "model_params":
+            # model_params is a JSON string, so we need to use the JSON function to pass it as a named argument.
+            args.append(
+                sge.Kwarg(
+                    this="model_params",
+                    # sge.JSON requires the SQLGlot version to be at least 25.18.0
+                    # PARSE_JSON won't work as the function requires a JSON literal.
+                    expression=sge.JSON(this=sge.Literal.string(value)),
+                )
             )
-        )
-
-    output_schema = op_args.get("output_schema", None)
-    if output_schema is not None:
-        args.append(
-            sge.Kwarg(
-                this="output_schema",
-                expression=sge.Literal.string(output_schema),
+        elif field == "optimization_mode":
+            args.append(
+                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
             )
-        )
+        elif field == "max_error_ratio":
+            args.append(sge.Kwarg(this=field, expression=sge.Literal.number(value)))
+        elif field == "request_type":
+            args.append(
+                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
+            )
+        elif field == "examples":
+            example_expressions = [
+                sge.Tuple(
+                    expressions=[sge.Literal.string(key), sge.Literal.string(val)]
+                )
+                for key, val in value
+            ]
+            args.append(
+                sge.Kwarg(this=field, expression=sge.array(*example_expressions))
+            )
+        else:
+            args.append(
+                sge.Kwarg(this=field, expression=sge.Literal.string(str(value)))
+            )
 
     return args

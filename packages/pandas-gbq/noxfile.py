@@ -40,10 +40,6 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
-    # Not supported, but included so that we can explicitly skip the session
-    # from here. Keep unsupported versions last so that they don't conflict with
-    # the prerelease_deps session.
-    "3.9",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -235,8 +231,6 @@ def default(session):
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
-    if session.python == "3.9":
-        session.skip("Python 3.9 is not supported.")
     default(session)
 
 
@@ -533,10 +527,47 @@ def mypy(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+@_calculate_duration
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        "-W default::PendingDeprecationWarning",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=pandas_gbq",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )

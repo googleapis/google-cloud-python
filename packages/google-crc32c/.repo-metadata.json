@@ -1,11 +1,9 @@
 {
-    "client_documentation": "https://github.com/googleapis/python-crc32c",
+    "client_documentation": "https://googleapis.dev/python/google-crc32c/latest",
     "distribution_name": "google-crc32c",
-    "issue_tracker": "https://github.com/googleapis/python-crc32c/issues",
     "language": "python",
     "library_type": "OTHER",
     "name": "google-crc32c",
-    "name_pretty": "A python wrapper of the C library 'Google CRC32C'",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

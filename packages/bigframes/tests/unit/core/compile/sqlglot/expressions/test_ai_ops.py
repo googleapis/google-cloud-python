@@ -281,6 +281,76 @@ def test_ai_generate_double_with_model_param(
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_ai_embed(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_connection_id(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=CONNECTION_ID,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint=None,
+        model="embeddinggemma-300m",
+        task_type=None,
+        title=None,
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_embed_with_task_type_and_title(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    col_name = "string_col"
+
+    op = ops.AIEmbed(
+        endpoint="text-embedding-005",
+        model=None,
+        task_type="retrieval_document",
+        title="My Document",
+        model_params=json.dumps({"outputDimensionality": 256}),
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 @pytest.mark.parametrize("connection_id", [None, CONNECTION_ID])
 def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
     col_name = "string_col"
@@ -288,6 +358,24 @@ def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
     op = ops.AIIf(
         prompt_context=(None, " is the same as ", None),
         connection_id=connection_id,
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.5,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_if_with_endpoint(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIIf(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -304,7 +392,29 @@ def test_ai_classify(scalar_types_df: dataframe.DataFrame, snapshot, connection_
     op = ops.AIClassify(
         prompt_context=(None,),
         categories=("greeting", "rejection"),
+        examples=None,
         connection_id=connection_id,
+        endpoint=None,
+        optimization_mode=None,
+        max_error_ratio=None,
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_classify_with_params(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIClassify(
+        prompt_context=(None,),
+        categories=("greeting", "rejection"),
+        examples=(("hi", "greeting"), ("bye", "rejection")),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        optimization_mode=None,
+        max_error_ratio=0.1,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
@@ -319,6 +429,79 @@ def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot, connection_id)
     op = ops.AIScore(
         prompt_context=(None, " is the same as ", None),
         connection_id=connection_id,
+        endpoint=None,
+        max_error_ratio=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_score_with_endpoint_and_max_error_ratio(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    col_name = "string_col"
+
+    op = ops.AIScore(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        max_error_ratio=0.5,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+@pytest.mark.parametrize("connection_id", [None, CONNECTION_ID])
+def test_ai_similarity(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint="text-embedding-005",
+        model=None,
+        model_params=None,
+        connection_id=connection_id,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_similarity_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint=None,
+        model="embeddinggemma-300m",
+        model_params=None,
+        connection_id=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_similarity_with_model_param(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AISimilarity(
+        endpoint="text-embedding-005",
+        model=None,
+        model_params=json.dumps({"outputDimensionality": 256}),
+        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(

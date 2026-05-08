@@ -18,7 +18,7 @@ env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
   LATEST_STABLE_PYTHON: 3.14
-  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+  ALL_PYTHON: "['3.10', '3.11', '3.12', '3.13', '3.14']"
 
 jobs:
   check_changes:
@@ -30,8 +30,8 @@ jobs:
     outputs:
       run_generator: ${{ steps.filter.outputs.generator }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -60,7 +60,7 @@ jobs:
         logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -84,7 +84,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -101,7 +101,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -115,12 +115,23 @@ jobs:
           for pkg in credentials eventarc logging redis; do
             nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ needs.python_config.outputs.latest_stable_python }}
           done
+      # Run pylint (errors-only) over the goldens so generator regressions
+      # like undefined names or import-time breakage that ruff/flake8 do
+      # not flag are caught at PR time.
+      # See https://github.com/googleapis/google-cloud-python/issues/16393.
+      - name: Pylint goldens (errors only)
+        run: |
+          pip install --quiet pylint
+          cd packages/gapic-generator/tests/integration/goldens
+          for pkg in credentials eventarc logging redis; do
+            pylint --rcfile=.pylintrc --errors-only --recursive=y "$pkg/google"
+          done
 
   goldens-prerelease:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -142,7 +153,7 @@ jobs:
         python: ["3.10", "3.14"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -172,11 +183,11 @@ jobs:
     runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/bazel
           # Ensure CACHE_VERSION is defined in the mono-repo secrets!

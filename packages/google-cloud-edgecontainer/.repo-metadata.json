@@ -1,5 +1,5 @@
 {
-    "api_description": "Google Distributed Cloud Edge allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.",
+    "api_description": "Google Distributed Cloud Edge is a fully managed product that brings Google Cloud infrastructure and services closer to where data is being generated and consumed.",
     "api_id": "edgecontainer.googleapis.com",
     "api_shortname": "edgecontainer",
     "client_documentation": "https://cloud.google.com/python/docs/reference/edgecontainer/latest",

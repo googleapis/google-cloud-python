@@ -1,0 +1,43 @@
+name: check that Librarian and legacylibrarian configs are consistent
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  config-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      # Use this action, rather than a file filter so that we can make this
+      # mandatory.
+      # See https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-including-branches
+      # for more details.
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            librarian:
+              - 'librarian.yaml'
+              - '.librarian/config.yaml'
+              - '.librarian/state.yaml'
+      - name: Config check
+        id: config-check
+        if: steps.filter.outputs.librarian == 'true'
+        run: |
+          V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
+          go run "github.com/googleapis/librarian/tool/cmd/configcheck@${V}" .
+      - name: Report any failures
+        if: failure() && steps.config-check.outcome == 'failure'
+        run: |
+          echo "Library configuration is different between state.yaml and librarian.yaml.
+          Update library configuration in the configs according to the error message and
+          regenerate libraries using:
+          
+          V=\$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
+          go run github.com/googleapis/librarian/cmd/librarian@\${V} generate --all
+          "
+          # Make sure this step fails too, so that it's highlighted in the action logs.
+          exit 1

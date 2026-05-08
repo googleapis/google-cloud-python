@@ -14,7 +14,12 @@
 
 import pytest
 
+import bigframes.bigquery as bbq
+import bigframes.core.col as col
+import bigframes.core.expression as ex
 import bigframes.core.sql.ml
+import bigframes.dtypes as dtypes
+import bigframes.operations.numeric_ops as numeric_ops
 
 pytest.importorskip("pytest_snapshot")
 
@@ -95,6 +100,19 @@ def test_create_model_list_option(snapshot):
         training_data="SELECT * FROM t",
     )
     snapshot.assert_match(sql, "create_model_list_option.sql")
+
+
+def test_create_model_hparam_tuning(snapshot):
+    sql = bigframes.core.sql.ml.create_model_ddl(
+        model_name="my_model",
+        options={
+            "model_type": "LINEAR_REG",
+            "learn_rate": bbq.hparam_range(0.0001, 1.0),
+            "optimizer": bbq.hparam_candidates(["ADAGRAD", "SGD"]),
+        },
+        training_data="SELECT * FROM t",
+    )
+    snapshot.assert_match(sql, "create_model_hparam_tuning.sql")
 
 
 def test_evaluate_model_basic(snapshot):

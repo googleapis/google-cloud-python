@@ -520,6 +520,7 @@ class MessageType:
         default_factory=metadata.Metadata,
     )
     oneofs: Optional[Mapping[str, "Oneof"]] = None
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -688,7 +689,12 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find("/") + 1 :] if resource else None
+        if not resource.type:
+            return None
+            
+        default_type = resource.type[resource.type.find("/") + 1 :]
+
+        return self.resource_name_aliases.get(resource.type, default_type)
 
     @property
     def resource_type_full_path(self) -> Optional[str]:
@@ -1284,19 +1290,13 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
     @property
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field
@@ -2081,10 +2081,11 @@ class Method:
 class CommonResource:
     type_name: str
     pattern: str
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     @classmethod
-    def build(cls, resource: resource_pb2.ResourceDescriptor):
-        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)))
+    def build(cls, resource: resource_pb2.ResourceDescriptor, aliases: Optional[Mapping[str, str]] = None):
+        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)), resource_name_aliases=aliases or {})
 
     @utils.cached_property
     def message_type(self):
@@ -2098,6 +2099,7 @@ class CommonResource:
             fields={},
             nested_enums={},
             nested_messages={},
+            resource_name_aliases=self.resource_name_aliases,
         )
 
 
@@ -2278,7 +2280,7 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
         request and response fields in the service."""
 
@@ -2301,7 +2303,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2315,6 +2317,38 @@ class Service:
                 ),
             )
         )
+
+        # Convert the set to a sorted tuple using the resource path or message name.
+        # This is needed to prevent non-deterministic code generation.
+        sorted_messages = sorted(
+            unique_messages,
+            key=lambda m: m.resource_type_full_path or m.name
+        )
+
+        # Fail-fast collision detection
+        seen_types: Dict[str, "MessageType"] = {}
+        for msg in sorted_messages:
+            res_type = msg.resource_type
+            if not res_type:
+                # Fail fast if a resource is missing type
+                raise ValueError(
+                    f"\n\nFatal: Message '{msg.name}' defines a resource pattern but is missing a resource type. "
+                    f"This violates AIP-123 (https://google.aip.dev/123). Please define a 'type' in the google.api.resource option."
+                )
+                
+            if res_type in seen_types:
+                incumbent = seen_types[res_type]
+                raise ValueError(
+                    f"\n\nFatal: Namespace collision detected for resource type '{res_type}'.\n"
+                    f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
+                    f"both flatten to the exact same method name.\n"
+                    f"To protect backward compatibility, explicitly alias one of these using "
+                    f"the `--resource-name-alias` CLI parameter.\n"
+                    f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
+                )
+            seen_types[res_type] = msg
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:

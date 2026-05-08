@@ -45,7 +45,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class SessionTemplateControllerTransport(abc.ABC):
     """Abstract transport class for SessionTemplateController."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dataproc",
+        "https://www.googleapis.com/auth/dataproc.read-only",
+    )
 
     DEFAULT_HOST: str = "dataproc.googleapis.com"
 

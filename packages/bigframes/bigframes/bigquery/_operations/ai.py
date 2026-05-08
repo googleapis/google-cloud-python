@@ -23,7 +23,7 @@ from typing import Any, Dict, Iterable, List, Literal, Mapping, Optional, Tuple,
 
 import pandas as pd
 
-from bigframes import clients, dataframe, dtypes, series, session
+from bigframes import dataframe, dtypes, series, session
 from bigframes import pandas as bpd
 from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
@@ -706,10 +706,120 @@ def generate_table(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def embed(
+    content: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    task_type: (
+        Literal[
+            "retrieval_query",
+            "retrieval_document",
+            "semantic_similarity",
+            "classification",
+            "clustering",
+            "question_answering",
+            "fact_verification",
+            "code_retrieval_query",
+        ]
+        | None
+    ) = None,
+    title: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Creates embeddings from text or image data in BigQuery.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+        >>> s = bpd.Series(['dog']) # doctest: +SKIP
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +SKIP
+        0    {'result': array([ 1.78243860e-03, -1.10658340...
+
+    Args:
+        content (str | Series):
+            A string literal or a Series (either BigFrames series or pandas Series) that provides the text or image to embed.
+        endpoint (str, optional):
+            A string value that specifies a supported Vertex AI embedding model endpoint to use.
+            The endpoint value that you specify must include the model version, for example,
+            `"text-embedding-005"`. If you specify this parameter, you can't specify the
+            `model` parameter.
+        model (str, optional):
+            A string value that specifies a built-in embedding model. The only supported value is
+            `"embeddinggemma-300m"`. If you specify this parameter, you can't specify the `endpoint`,
+            `title`, `model_params`, or `connection_id` parameters.
+        task_type (str, optional):
+            A string literal that specifies the intended downstream application to help the model
+            produce better quality embeddings. Accepts `"retrieval_query"`, `"retrieval_document"`,
+            `"semantic_similarity"`, `"classification"`, `"clustering"`, `"question_answering"`,
+            `"fact_verification"`, `"code_retrieval_query"`.
+        title (str, optional):
+            A string value that specifies the document title, which the model uses to improve
+            embedding quality. You can only use this parameter if you specify `"retrieval_document"`
+            for the `task_type` value.
+        model_params (Mapping[Any, Any], optional):
+            A JSON literal that provides additional parameters to the model. For example,
+            `{"outputDimensionality": 768}` lets you specify the number of dimensions to use when
+            generating embeddings.
+        connection_id (str, optional):
+            A STRING value specifying the connection to use to communicate with the model, in the
+            format `PROJECT_ID.LOCATION.CONNECTION_ID`. For example, `myproject.us.myconnection`.
+            If not provided, the query uses your end-user credential.
+
+    Returns:
+        bigframes.series.Series: A new struct Series with the result data. The struct contains these fields:
+        * "result": an ARRAY<FLOAT64> value containing the generated embeddings.
+        * "status": a STRING value that contains the API response status for the corresponding row. This value is empty if the operation was successful.
+    """
+
+    if model is not None:
+        if any(x is not None for x in [endpoint, title, model_params, connection_id]):
+            raise ValueError(
+                "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
+            )
+    elif endpoint is None:
+        raise ValueError(
+            "You must specify exactly one of 'endpoint' or 'model' argument."
+        )
+
+    if title is not None and task_type != "retrieval_document":
+        raise ValueError(
+            "You can only use 'title' parameter if you specify retrieval_document for the task_type value."
+        )
+
+    operator = ai_ops.AIEmbed(
+        endpoint=endpoint,
+        model=model,
+        task_type=task_type,
+        title=title,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    if isinstance(content, str):
+        return series.Series([content])._apply_unary_op(operator)
+    elif isinstance(content, pd.Series):
+        return series.Series(content)._apply_unary_op(operator)
+    elif isinstance(content, series.Series):
+        return content._apply_unary_op(operator)
+    else:
+        raise ValueError(f"Unsupported 'content' parameter type: {type(content)}")
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def if_(
     prompt: PROMPT_TYPE,
     *,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
@@ -731,13 +841,6 @@ def if_(
         1         Illinois
         dtype: string
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -745,6 +848,19 @@ def if_(
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
+            best cost to quality tradeoff for the task.
+        optimization_mode (Literal["minimize_cost", "maximize_quality"]):
+            Specifies the optimization strategy to use. Supported values are:
+            * "minimize_cost" (default): uses a local, distilled model to process the majority of rows, reducing latency and cost.
+            * "maximize_quality": always uses the remote LLM for inference.
+        max_error_ratio (float):
+            A float value between 0.0 and 1.0 that contains the maximum acceptable ratio of row-level inference failures to
+            rows processed on this function. If this value is exceeded, then the query fails. The default value is 1.0.
+            This argument isn't supported when `optimization_mode` is set to "minimize_cost".
 
     Returns:
         bigframes.series.Series: A new series of bools.
@@ -756,6 +872,9 @@ def if_(
     operator = ai_ops.AIIf(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
+        endpoint=endpoint,
+        optimization_mode=optimization_mode,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -766,7 +885,11 @@ def classify(
     input: PROMPT_TYPE,
     categories: tuple[str, ...] | list[str],
     *,
+    examples: list[tuple[str, str]] | None = None,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Classifies a given input into one of the specified categories. It will always return one of the provided categories best fit the prompt input.
@@ -784,22 +907,30 @@ def classify(
         <BLANKLINE>
         [2 rows x 2 columns]
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         input (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the input to send to the model. The Series can be BigFrames Series
             or pandas Series.
         categories (tuple[str, ...] | list[str]):
             Categories to classify the input into.
+        examples (list[tuple[str, str]], optional):
+            An array that contains representative examples of input strings and the output category
+            that you expect. You can provide examples to help the model understand your
+            intended threshold for a condition with nuanced or subjective logic. We recommend providing at most 5 examples.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            A STRING value that specifies the Vertex AI endpoint to use for the model. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically
+            identifies and uses the full endpoint of the model.
+        optimization_mode (Literal["minimize_cost", "maximize_quality"], optional):
+            A STRING value that specifies the optimization strategy to use. Supported values are ``minimize_cost``
+            and ``maximize_quality``.
+        max_error_ratio (float, optional):
+            A value between ``0.0`` and ``1.0`` that contains the maximum acceptable ratio of row-level
+            inference failures to rows processed on this function. The default value is 1.0.
+            This argument isn't supported when ``optimization_mode`` is set to ``minimize_cost``.
 
     Returns:
         bigframes.series.Series: A new series of strings.
@@ -808,10 +939,16 @@ def classify(
     prompt_context, series_list = _separate_context_and_series(input)
     assert len(series_list) > 0
 
+    example_tuples = tuple(examples) if examples is not None else None
+
     operator = ai_ops.AIClassify(
         prompt_context=tuple(prompt_context),
         categories=tuple(categories),
+        examples=example_tuples,
         connection_id=connection_id,
+        endpoint=endpoint,
+        optimization_mode=optimization_mode,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -822,6 +959,8 @@ def score(
     prompt: PROMPT_TYPE,
     *,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Computes a score based on rubrics described in natural language. It will return a double value.
@@ -839,13 +978,6 @@ def score(
         2    3.0
         dtype: Float64
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -853,6 +985,14 @@ def score(
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an endpoint value, BigQuery ML dynamically chooses a model
+            based on your query to have the best cost to quality tradeoff for the task.
+        max_error_ratio (float, optional):
+            A value between `0.0` and `1.0` that contains the maximum acceptable ratio of row-level inference failures to
+            rows processed on this function. If this value is exceeded, then the query fails.
 
     Returns:
         bigframes.series.Series: A new series of double (float) values.
@@ -864,9 +1004,92 @@ def score(
     operator = ai_ops.AIScore(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
+        endpoint=endpoint,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def similarity(
+    content1: str | series.Series | pd.Series,
+    content2: str | series.Series | pd.Series,
+    *,
+    endpoint: str | None = None,
+    model: str | None = None,
+    model_params: Mapping[Any, Any] | None = None,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Returns a FLOAT64 value that represents the cosine similarity between the two inputs.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({'word': ['happy', 'sad']})
+        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005') # doctest: +SKIP
+        0    0.916601
+        1    0.660579
+
+    Args:
+        content1 (str | Series):
+            A string or series that provides the first value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        content2 (str | Series):
+            A string or series that provides the second value to compare. Both a BigFrames Series or a pandas Series are allowed.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the text embedding model.
+            If you specify the model name, such as `'text-embedding-005'`, rather than a URL, then BigQuery ML automatically identifies the model and uses the model's full endpoint.
+        model (str, optional):
+            Specifies a built-in text embedding model. The only supported value is the embeddinggemma-300m model.
+            If you specify this parameter, you can't specify the `endpoint`, `model_params`, or `connection_id` parameters.
+        model_params (Mapping[Any, Any], optional):
+            Provides additional parameters to the model. You can use any of the parameters object fields.
+            One of these fields, `outputDimensionality`, lets you specify the number of dimensions to use when generating embeddings.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+
+    Returns:
+        bigframes.series.Series: A new series of FLOAT64 values representing the cosine similarity.
+    """
+    if model is not None:
+        if any(x is not None for x in [endpoint, model_params, connection_id]):
+            raise ValueError(
+                "If 'model' is specified, you cannot specify 'endpoint', 'model_params', or 'connection_id'."
+            )
+    elif endpoint is None:
+        raise ValueError("You must specify either 'model' or 'endpoint'.")
+
+    operator = ai_ops.AISimilarity(
+        endpoint=endpoint,
+        model=model,
+        model_params=json.dumps(model_params) if model_params else None,
+        connection_id=connection_id,
+    )
+
+    # Find a unifying session for the subsequent operations.
+    bf_session = None
+    if isinstance(content1, series.Series):
+        bf_session = content1._session
+    elif isinstance(content2, series.Series):
+        bf_session = content2._session
+
+    if isinstance(content1, str) and isinstance(content2, str):
+        content1 = series.Series([content1], session=bf_session)
+        return content1._apply_binary_op(content2, operator)
+    elif isinstance(content1, str):
+        # content2 must be a series
+        content2 = convert.to_bf_series(
+            content2, default_index=None, session=bf_session
+        )
+        return content2._apply_binary_op(content1, operator)
+    else:
+        # content1 must be a series.
+        content1 = convert.to_bf_series(
+            content1, default_index=None, session=bf_session
+        )
+        return content1._apply_binary_op(content2, operator)
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
@@ -1042,14 +1265,6 @@ def _convert_series(
         # Support multimodel
         return result.blob.read_url()
     return result
-
-
-def _resolve_connection_id(series: series.Series, connection_id: str | None):
-    return clients.get_canonical_bq_connection_id(
-        connection_id or series._session.bq_connection,
-        series._session._project,
-        series._session._location,
-    )
 
 
 def _to_dataframe(

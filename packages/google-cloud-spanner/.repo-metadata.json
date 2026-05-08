@@ -1,16 +1,16 @@
 {
-    "api_description": "is the world's first fully managed relational database service \nto offer both strong consistency and horizontal scalability for \nmission-critical online transaction processing (OLTP) applications. With Cloud \nSpanner you enjoy all the traditional benefits of a relational database; but \nunlike any other relational database service, Cloud Spanner scales horizontally \nto hundreds or thousands of servers to handle the biggest transactional \nworkloads.",
+    "api_description": "Cloud Spanner is a managed, mission-critical, globally consistent and\nscalable relational database service.",
     "api_id": "spanner.googleapis.com",
     "api_shortname": "spanner",
     "client_documentation": "https://cloud.google.com/python/docs/reference/spanner/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-spanner",
-    "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=190851\u0026template=0",
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "name": "spanner",
     "name_pretty": "Cloud Spanner",
-    "product_documentation": "https://cloud.google.com/spanner/docs/",
+    "product_documentation": "https://cloud.google.com/spanner/",
     "release_level": "stable",
     "repo": "googleapis/google-cloud-python"
 }

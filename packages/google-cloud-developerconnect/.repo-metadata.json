@@ -1,5 +1,5 @@
 {
-    "api_description": "Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.",
+    "api_description": "Connect third-party source code management to Google",
     "api_id": "developerconnect.googleapis.com",
     "api_shortname": "developerconnect",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-developerconnect/latest",
@@ -9,8 +9,8 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-developerconnect",
-    "name_pretty": "Developer Connect API",
-    "product_documentation": "https://cloud.google.com/developer-connect/docs/overview",
+    "name_pretty": "Developer Connect",
+    "product_documentation": "https://cloud.google.com/developer-connect/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

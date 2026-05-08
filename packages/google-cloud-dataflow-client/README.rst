@@ -3,7 +3,7 @@ Python Client for Dataflow
 
 |preview| |pypi| |versions|
 
-`Dataflow`_: Unified stream and batch data processing that's serverless, fast, and cost-effective.
+`Dataflow`_: Manages Google Cloud Dataflow projects on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

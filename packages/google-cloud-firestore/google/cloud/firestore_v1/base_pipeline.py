@@ -14,8 +14,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence, TypeVar, Type
-
+from typing import TYPE_CHECKING, Sequence, Type, TypeVar
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1 import pipeline_types as types
@@ -26,8 +25,8 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     BooleanExpression,
     Expression,
     Field,
-    Selectable,
     FunctionExpression,
+    Selectable,
     _PipelineValueExpression,
 )
 from google.cloud.firestore_v1.types.pipeline import (

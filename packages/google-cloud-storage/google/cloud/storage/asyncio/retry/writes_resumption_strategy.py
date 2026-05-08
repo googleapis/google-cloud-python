@@ -84,8 +84,7 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
                 break
 
             checksummed_data = storage_type.ChecksummedData(content=chunk)
-            checksum = google_crc32c.Checksum(chunk)
-            checksummed_data.crc32c = int.from_bytes(checksum.digest(), "big")
+            checksummed_data.crc32c = google_crc32c.value(chunk)
 
             request = storage_type.BidiWriteObjectRequest(
                 write_offset=write_state.bytes_sent,

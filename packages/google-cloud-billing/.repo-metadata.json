@@ -1,5 +1,5 @@
 {
-    "api_description": "allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.",
+    "api_description": "Allows developers to manage billing for their Google Cloud Platform\nprojects     programmatically.",
     "api_id": "cloudbilling.googleapis.com",
     "api_shortname": "cloudbilling",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudbilling/latest",

@@ -30,7 +30,7 @@ with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
 
-version = "1.3.1"
+version = "1.4.0"
 
 setup(
     name="google-auth-oauthlib",
@@ -54,12 +54,11 @@ setup(
             "google-oauthlib-tool" "=google_auth_oauthlib.tool.__main__:main [tool]"
         ]
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     license="Apache 2.0",
     keywords="google auth oauth client oauthlib",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",

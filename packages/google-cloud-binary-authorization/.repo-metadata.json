@@ -1,5 +1,5 @@
 {
-    "api_description": " is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware",
+    "api_description": "The management interface for Binary Authorization, a system providing\npolicy control for images deployed to Kubernetes Engine clusters, Anthos\nclusters on VMware, and Cloud Run.",
     "api_id": "binaryauthorization.googleapis.com",
     "api_shortname": "binaryauthorization",
     "client_documentation": "https://cloud.google.com/python/docs/reference/binaryauthorization/latest",

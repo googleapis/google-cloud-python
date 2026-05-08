@@ -1,5 +1,5 @@
 {
-    "api_description": "provides a collection of network performance monitoring and diagnostic capabilities.",
+    "api_description": "The Network Management API provides a collection of network performance\nmonitoring and diagnostic capabilities.",
     "api_id": "networkmanagement.googleapis.com",
     "api_shortname": "networkmanagement",
     "client_documentation": "https://cloud.google.com/python/docs/reference/networkmanagement/latest",

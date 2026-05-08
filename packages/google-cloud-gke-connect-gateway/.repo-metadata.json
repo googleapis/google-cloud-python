@@ -1,5 +1,5 @@
 {
-    "api_description": "builds on the power of fleets to let Anthos users connect to and run commands against registered Anthos clusters in a simple, consistent, and secured way, whether the clusters are on Google Cloud, other public clouds, or on premises, and makes it easier to automate DevOps processes across all your clusters.",
+    "api_description": "The Connect Gateway service allows connectivity from external parties to\nconnected Kubernetes clusters.",
     "api_id": "connectgateway.googleapis.com",
     "api_shortname": "connectgateway",
     "client_documentation": "https://cloud.google.com/python/docs/reference/connectgateway/latest",
@@ -9,8 +9,8 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "connectgateway",
-    "name_pretty": "GKE Connect Gateway",
-    "product_documentation": "https://cloud.google.com/anthos/multicluster-management/gateway",
+    "name_pretty": "Connect Gateway",
+    "product_documentation": "https://cloud.google.com/kubernetes-engine/enterprise/multicluster-management/gateway",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"
 }

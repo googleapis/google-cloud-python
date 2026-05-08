@@ -1,5 +1,5 @@
 {
-    "api_description": "Stores, manages, and secures access to application secrets.",
+    "api_description": "Stores sensitive data such as API keys, passwords, and certificates.\nProvides convenience while improving security.",
     "api_id": "secretmanager.googleapis.com",
     "api_shortname": "secretmanager",
     "client_documentation": "https://cloud.google.com/python/docs/reference/secretmanager/latest",

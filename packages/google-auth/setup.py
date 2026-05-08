@@ -29,7 +29,7 @@ DEPENDENCIES = (
 
 requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.6.2, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
@@ -112,13 +112,11 @@ setup(
     package_data={"google.auth": ["py.typed"], "google.oauth2": ["py.typed"]},
     install_requires=DEPENDENCIES,
     extras_require=extras,
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",

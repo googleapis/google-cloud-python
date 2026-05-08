@@ -73,7 +73,7 @@ def gapic_generator_python():
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
-    _commit_sha = "fae3e6e091418d6343902debaf545cfc8f32c3ff"
+    _commit_sha = "2638026851b9110c280d75338581a752a4271340"
     _maybe(
         http_archive,
         name = "com_google_googleapis",

@@ -71,7 +71,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
-    "pytest>9.0",
+    "pytest",
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
@@ -399,7 +399,6 @@ def system(session):
         session.run(
             "py.test",
             "--quiet",
-            "-s",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
             *session.posargs,
@@ -408,7 +407,6 @@ def system(session):
         session.run(
             "py.test",
             "--quiet",
-            "-s",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
             *session.posargs,

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# KMS Inventory API API
+# KMS Inventory API
 
-Overview of the APIs available for KMS Inventory API API.
+Overview of the APIs available for KMS Inventory API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-KMS Inventory API API.
+KMS Inventory API.
 
 [classes](https://cloud.google.com/python/docs/reference/inventory/latest/summary_class.html)
 

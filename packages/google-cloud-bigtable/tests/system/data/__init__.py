@@ -109,22 +109,27 @@ class SystemTestRunner:
             yield instance_id
         else:
             try:
-                operation = admin_client.instance_admin_client.create_instance(
-                    parent=f"projects/{project_id}",
-                    instance_id=instance_id,
-                    instance=types.Instance(
-                        display_name="Test Instance",
-                        # labels={"python-system-test": "true"},
-                    ),
-                    clusters=cluster_config,
-                )
-                operation.result(timeout=240)
-            except exceptions.AlreadyExists:
-                pass
-            yield instance_id
-            admin_client.instance_admin_client.delete_instance(
-                name=f"projects/{project_id}/instances/{instance_id}"
-            )
+                try:
+                    operation = admin_client.instance_admin_client.create_instance(
+                        parent=f"projects/{project_id}",
+                        instance_id=instance_id,
+                        instance=types.Instance(
+                            display_name="Test Instance",
+                            # labels={"python-system-test": "true"},
+                        ),
+                        clusters=cluster_config,
+                    )
+                    operation.result(timeout=240)
+                except exceptions.AlreadyExists:
+                    pass
+                yield instance_id
+            finally:
+                try:
+                    admin_client.instance_admin_client.delete_instance(
+                        name=f"projects/{project_id}/instances/{instance_id}"
+                    )
+                except exceptions.NotFound:
+                    pass
 
     @pytest.fixture(scope="session")
     def column_split_config(self):
@@ -168,28 +173,30 @@ class SystemTestRunner:
         retry = retry.Retry(
             predicate=retry.if_exception_type(exceptions.FailedPrecondition)
         )
+        parent_path = f"projects/{project_id}/instances/{instance_id}"
         try:
-            parent_path = f"projects/{project_id}/instances/{instance_id}"
-            print(f"Creating table: {parent_path}/tables/{init_table_id}")
-            admin_client.table_admin_client.create_table(
-                request={
-                    "parent": parent_path,
-                    "table_id": init_table_id,
-                    "table": {"column_families": column_family_config},
-                    "initial_splits": [{"key": key} for key in column_split_config],
-                },
-                retry=retry,
-            )
-        except exceptions.AlreadyExists:
-            pass
-        yield init_table_id
-        print(f"Deleting table: {parent_path}/tables/{init_table_id}")
-        try:
-            admin_client.table_admin_client.delete_table(
-                name=f"{parent_path}/tables/{init_table_id}"
-            )
-        except exceptions.NotFound:
-            print(f"Table {init_table_id} not found, skipping deletion")
+            try:
+                print(f"Creating table: {parent_path}/tables/{init_table_id}")
+                admin_client.table_admin_client.create_table(
+                    request={
+                        "parent": parent_path,
+                        "table_id": init_table_id,
+                        "table": {"column_families": column_family_config},
+                        "initial_splits": [{"key": key} for key in column_split_config],
+                    },
+                    retry=retry,
+                )
+            except exceptions.AlreadyExists:
+                pass
+            yield init_table_id
+        finally:
+            print(f"Deleting table: {parent_path}/tables/{init_table_id}")
+            try:
+                admin_client.table_admin_client.delete_table(
+                    name=f"{parent_path}/tables/{init_table_id}"
+                )
+            except exceptions.NotFound:
+                print(f"Table {init_table_id} not found, skipping deletion")
 
     @pytest.fixture(scope="session")
     def authorized_view_id(
@@ -217,36 +224,40 @@ class SystemTestRunner:
         parent_path = f"projects/{project_id}/instances/{instance_id}/tables/{table_id}"
         new_path = f"{parent_path}/authorizedViews/{new_view_id}"
         try:
-            print(f"Creating view: {new_path}")
-            admin_client.table_admin_client.create_authorized_view(
-                request={
-                    "parent": parent_path,
-                    "authorized_view_id": new_view_id,
-                    "authorized_view": {
-                        "subset_view": {
-                            "row_prefixes": [ALLOW_ALL],
-                            "family_subsets": {
-                                TEST_FAMILY: ALL_QUALIFIERS,
-                                TEST_FAMILY_2: ALL_QUALIFIERS,
-                                TEST_AGGREGATE_FAMILY: ALL_QUALIFIERS,
+            try:
+                print(f"Creating view: {new_path}")
+                admin_client.table_admin_client.create_authorized_view(
+                    request={
+                        "parent": parent_path,
+                        "authorized_view_id": new_view_id,
+                        "authorized_view": {
+                            "subset_view": {
+                                "row_prefixes": [ALLOW_ALL],
+                                "family_subsets": {
+                                    TEST_FAMILY: ALL_QUALIFIERS,
+                                    TEST_FAMILY_2: ALL_QUALIFIERS,
+                                    TEST_AGGREGATE_FAMILY: ALL_QUALIFIERS,
+                                },
                             },
                         },
                     },
-                },
-                retry=retry,
-            )
-        except exceptions.AlreadyExists:
-            pass
-        except exceptions.MethodNotImplemented:
-            # will occur when run in emulator. Pass empty id
-            new_view_id = None
-        yield new_view_id
-        if new_view_id:
-            print(f"Deleting view: {new_path}")
-            try:
-                admin_client.table_admin_client.delete_authorized_view(name=new_path)
-            except exceptions.NotFound:
-                print(f"View {new_view_id} not found, skipping deletion")
+                    retry=retry,
+                )
+            except exceptions.AlreadyExists:
+                pass
+            except exceptions.MethodNotImplemented:
+                # will occur when run in emulator. Pass empty id
+                new_view_id = None
+            yield new_view_id
+        finally:
+            if new_view_id:
+                print(f"Deleting view: {new_path}")
+                try:
+                    admin_client.table_admin_client.delete_authorized_view(
+                        name=new_path
+                    )
+                except exceptions.NotFound:
+                    print(f"View {new_view_id} not found, skipping deletion")
 
     @pytest.fixture(scope="session")
     def project_id(self, client):

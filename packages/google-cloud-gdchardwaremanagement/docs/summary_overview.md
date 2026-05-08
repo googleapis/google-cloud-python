@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# GDC Hardware Management API API
+# GDC Hardware Management API
 
-Overview of the APIs available for GDC Hardware Management API API.
+Overview of the APIs available for GDC Hardware Management API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-GDC Hardware Management API API.
+GDC Hardware Management API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-gdchardwaremanagement/latest/summary_class.html)
 

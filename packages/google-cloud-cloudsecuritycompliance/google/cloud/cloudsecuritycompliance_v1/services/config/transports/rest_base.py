@@ -114,6 +114,11 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "uri": "/v1/{parent=organizations/*/locations/*}/cloudControls",
                     "body": "cloud_control",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/cloudControls",
+                    "body": "cloud_control",
+                },
             ]
             return http_options
 
@@ -173,6 +178,11 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "uri": "/v1/{parent=organizations/*/locations/*}/frameworks",
                     "body": "framework",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/frameworks",
+                    "body": "framework",
+                },
             ]
             return http_options
 
@@ -229,6 +239,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/cloudControls/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/cloudControls/*}",
+                },
             ]
             return http_options
 
@@ -275,6 +289,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/frameworks/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/frameworks/*}",
                 },
             ]
             return http_options
@@ -323,6 +341,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/cloudControls/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/cloudControls/*}",
+                },
             ]
             return http_options
 
@@ -369,6 +391,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/frameworks/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/frameworks/*}",
                 },
             ]
             return http_options
@@ -417,6 +443,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{parent=organizations/*/locations/*}/cloudControls",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/cloudControls",
+                },
             ]
             return http_options
 
@@ -464,6 +494,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{parent=organizations/*/locations/*}/frameworks",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/frameworks",
+                },
             ]
             return http_options
 
@@ -510,6 +544,11 @@ class _BaseConfigRestTransport(ConfigTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{cloud_control.name=organizations/*/locations/*/cloudControls/*}",
+                    "body": "cloud_control",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{cloud_control.name=projects/*/locations/*/cloudControls/*}",
                     "body": "cloud_control",
                 },
             ]
@@ -569,6 +608,11 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "uri": "/v1/{framework.name=organizations/*/locations/*/frameworks/*}",
                     "body": "framework",
                 },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{framework.name=projects/*/locations/*/frameworks/*}",
+                    "body": "framework",
+                },
             ]
             return http_options
 
@@ -615,6 +659,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -640,6 +688,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*}/locations",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*}/locations",
+                },
             ]
             return http_options
 
@@ -664,6 +716,11 @@ class _BaseConfigRestTransport(ConfigTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     "body": "*",
                 },
             ]
@@ -696,6 +753,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "delete",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -721,6 +782,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -745,6 +810,10 @@ class _BaseConfigRestTransport(ConfigTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}/operations",
                 },
             ]
             return http_options

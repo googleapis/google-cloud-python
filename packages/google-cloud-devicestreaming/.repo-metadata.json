@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-devicestreaming",
-    "name_pretty": "Device Streaming API",
+    "name_pretty": "Device Streaming",
     "product_documentation": "https://cloud.google.com/device-streaming/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

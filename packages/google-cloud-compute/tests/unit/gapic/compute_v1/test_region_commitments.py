@@ -3226,6 +3226,7 @@ def test_insert_rest_call_success(request_type):
             "merge_source_commitments_value2",
         ],
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "plan": "plan_value",
         "region": "region_value",
         "reservations": [
@@ -3247,6 +3248,7 @@ def test_insert_rest_call_success(request_type):
                     "workload_type": "workload_type_value",
                 },
                 "commitment": "commitment_value",
+                "confidential_compute_type": "confidential_compute_type_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "delete_after_duration": {"nanos": 543, "seconds": 751},
                 "delete_at_time": "delete_at_time_value",
@@ -3743,6 +3745,7 @@ def test_update_rest_call_success(request_type):
             "merge_source_commitments_value2",
         ],
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "plan": "plan_value",
         "region": "region_value",
         "reservations": [
@@ -3764,6 +3767,7 @@ def test_update_rest_call_success(request_type):
                     "workload_type": "workload_type_value",
                 },
                 "commitment": "commitment_value",
+                "confidential_compute_type": "confidential_compute_type_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "delete_after_duration": {"nanos": 543, "seconds": 751},
                 "delete_at_time": "delete_at_time_value",

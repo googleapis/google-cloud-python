@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Privileged Access Manager API API
+# Privileged Access Manager API
 
-Overview of the APIs available for Privileged Access Manager API API.
+Overview of the APIs available for Privileged Access Manager API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Privileged Access Manager API API.
+Privileged Access Manager API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-privilegedaccessmanager/latest/summary_class.html)
 

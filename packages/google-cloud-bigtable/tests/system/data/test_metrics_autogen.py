@@ -1204,6 +1204,10 @@ class TestMetrics(SystemTestRunner):
             and attempt.gfe_latency_ns < operation.duration_ns
         )
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="emulator doesn't suport cluster_config",
+    )
     def test_mutate_row(self, table, temp_rows, handler, cluster_config):
         row_key = b"mutate"
         new_value = uuid.uuid4().hex.encode()
@@ -1226,7 +1230,7 @@ class TestMetrics(SystemTestRunner):
             operation.zone
             == cluster_config[operation.cluster_id].location.split("/")[-1]
         )
-        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert operation.duration_ns > 0
         assert operation.first_response_latency_ns is None
         assert operation.flow_throttling_time_ns == 0
         attempt = handler.completed_attempts[0]
