@@ -2213,7 +2213,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% endmacro %}{# empty_call_test #}
 
 {% macro get_uuid4_re() -%}
-[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}
+{{ uuid4_re }}
 {%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
