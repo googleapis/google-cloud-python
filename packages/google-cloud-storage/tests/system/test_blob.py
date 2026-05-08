@@ -1209,3 +1209,77 @@ def test_blob_download_as_bytes_single_shot_download(
 
     result_single_shot_download = blob.download_as_bytes(single_shot_download=True)
     assert result_single_shot_download == payload
+
+def test_blob_contexts(shared_bucket, blobs_to_delete):
+    blob_name = f"context-test-{uuid.uuid4().hex}"
+    blob = shared_bucket.blob(blob_name)
+    blob.upload_from_string(b"foo")
+    blobs_to_delete.append(blob)
+
+    # Set context
+    blob.contexts.set_custom_context("foo", "bar")
+    blob.patch()
+
+    assert blob.contexts["custom"]["foo"]["value"] == "bar"
+    assert "create_time" in blob.contexts["custom"]["foo"]
+
+    # Reload and check
+    blob.reload()
+    assert blob.contexts["custom"]["foo"]["value"] == "bar"
+
+    # Update context
+    blob.contexts.set_custom_context("foo", "baz")
+    blob.patch()
+    assert blob.contexts["custom"]["foo"]["value"] == "baz"
+
+    # Add another context
+    blob.contexts.set_custom_context("another", "value")
+    blob.patch()
+    assert blob.contexts["custom"]["another"]["value"] == "value"
+
+    # Delete one context
+    blob.contexts.delete_custom_context("foo")
+    blob.patch()
+    assert "foo" not in blob.contexts["custom"] or blob.contexts["custom"]["foo"] is None
+    assert blob.contexts["custom"]["another"]["value"] == "value"
+
+    # Clear all custom contexts
+    blob.contexts.clear_custom_contexts()
+    blob.patch()
+    assert blob.contexts["custom"] is None
+
+def test_list_blobs_with_filter(shared_bucket, blobs_to_delete):
+    suffix = uuid.uuid4().hex
+    blob1_name = f"filter-test-1-{suffix}"
+    blob2_name = f"filter-test-2-{suffix}"
+
+    blob1 = shared_bucket.blob(blob1_name)
+    blob1.contexts.set_custom_context("color", "red")
+    blob1.upload_from_string(b"red-content")
+    blobs_to_delete.append(blob1)
+
+    blob2 = shared_bucket.blob(blob2_name)
+    blob2.contexts.set_custom_context("color", "blue")
+    blob2.upload_from_string(b"blue-content")
+    blobs_to_delete.append(blob2)
+
+    # Filter for red
+    # The GCS filter syntax uses 'contexts' for the field name regardless of internal SDK representation.
+    filter_expr = f'contexts.custom.color.value="red" AND name="{blob1_name}"'
+    blobs = list(shared_bucket.list_blobs(filter_=filter_expr))
+
+    assert len(blobs) == 1
+    assert blobs[0].name == blob1_name
+
+    # Filter for blue
+    filter_expr = f'contexts.custom.color.value="blue" AND name="{blob2_name}"'
+    blobs = list(shared_bucket.list_blobs(filter_=filter_expr))
+
+    assert len(blobs) == 1
+    assert blobs[0].name == blob2_name
+
+    # Filter for non-existent value
+    filter_expr = f'contexts.custom.color.value="green" AND name.startsWith("filter-test-")'
+    blobs = list(shared_bucket.list_blobs(filter_=filter_expr))
+
+    assert len(blobs) == 0

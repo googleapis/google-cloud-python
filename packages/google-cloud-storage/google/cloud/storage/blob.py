@@ -101,7 +101,7 @@ _WRITABLE_FIELDS = (
     "crc32c",
     "customTime",
     "md5Hash",
-    "contexts",
+    "objectContexts",
     "metadata",
     "name",
     "retention",
@@ -233,12 +233,22 @@ class Blob(_PropertyMixin):
         )
 
         self._encryption_key = encryption_key
+        self._contexts = None
 
         if kms_key_name is not None:
             self._properties["kmsKeyName"] = kms_key_name
 
         if generation is not None:
             self._properties["generation"] = generation
+
+    def _set_properties(self, value):
+        """Set the properties for the current object.
+
+        :type value: dict or :class:`google.cloud.storage.batch._FutureDict`
+        :param value: The properties to be set.
+        """
+        super()._set_properties(value)
+        self._contexts = None
 
     @property
     def bucket(self):
@@ -5016,8 +5026,10 @@ class Blob(_PropertyMixin):
         :rtype: :class:`ObjectContexts`
         :returns: an instance for managing the object's contexts.
         """
-        info = self._properties.get("contexts", {})
-        return ObjectContexts.from_api_repr(info, self)
+        if self._contexts is None:
+            info = self._properties.get("objectContexts", {})
+            self._contexts = ObjectContexts.from_api_repr(info, self)
+        return self._contexts
 
     @property
     def soft_delete_time(self):
@@ -5343,6 +5355,18 @@ class ObjectContexts(dict):
         """
         instance = cls(blob)
         if resource:
+            # Handle timestamps in the resource if present
+            custom = resource.get("custom")
+            if custom:
+                for payload in custom.values():
+                    if payload and "createTime" in payload:
+                        payload["create_time"] = _rfc3339_nanos_to_datetime(
+                            payload["createTime"]
+                        )
+                    if payload and "updateTime" in payload:
+                        payload["update_time"] = _rfc3339_nanos_to_datetime(
+                            payload["updateTime"]
+                        )
             instance.update(resource)
         return instance
 
@@ -5369,7 +5393,7 @@ class ObjectContexts(dict):
             custom = {}
             self["custom"] = custom
         custom[key] = {"value": value}
-        self.blob._patch_property("contexts", self)
+        self.blob._patch_property("objectContexts", self)
 
     def delete_custom_context(self, key):
         """Delete a custom context.
@@ -5380,9 +5404,9 @@ class ObjectContexts(dict):
         custom = self.get("custom")
         if custom is not None:
             custom[key] = None
-            self.blob._patch_property("contexts", self)
+            self.blob._patch_property("objectContexts", self)
 
     def clear_custom_contexts(self):
         """Clear all custom contexts."""
         self["custom"] = None
-        self.blob._patch_property("contexts", self)
+        self.blob._patch_property("objectContexts", self)

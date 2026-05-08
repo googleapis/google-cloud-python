@@ -1239,6 +1239,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=soft_deleted,
             page_size=page_size,
+            filter_=None,
         )
 
     def test_list_blobs_w_explicit(self):
@@ -1254,6 +1255,7 @@ class Test_Bucket(unittest.TestCase):
         include_folders_as_prefixes = True
         versions = True
         soft_deleted = True
+        filter_ = 'objectContexts.custom.foo.value="bar"'
         page_size = 2
         projection = "full"
         fields = "items/contentLanguage,nextPageToken"
@@ -1281,6 +1283,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
             page_size=page_size,
+            filter_=filter_,
         )
 
         self.assertIs(iterator, other_client.list_blobs.return_value)
@@ -1298,6 +1301,7 @@ class Test_Bucket(unittest.TestCase):
         expected_fields = fields
         expected_include_folders_as_prefixes = include_folders_as_prefixes
         expected_soft_deleted = soft_deleted
+        expected_filter = filter_
         expected_page_size = page_size
         other_client.list_blobs.assert_called_once_with(
             bucket,
@@ -1317,6 +1321,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=expected_soft_deleted,
             page_size=expected_page_size,
+            filter_=expected_filter,
         )
 
     def test_list_notifications_w_defaults(self):

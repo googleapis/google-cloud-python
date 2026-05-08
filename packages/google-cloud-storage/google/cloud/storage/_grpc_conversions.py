@@ -87,4 +87,22 @@ def blob_to_proto(blob):
             retain_until_time=retain_until_time_proto,
         )
 
+    contexts = getattr(blob, "contexts", None)
+    if contexts:
+        custom_contexts = contexts.get("custom")
+        if custom_contexts is not None:
+            custom_contexts_proto = {}
+            for key, payload in custom_contexts.items():
+                if payload is not None:
+                    custom_contexts_proto[key] = _storage_v2.ObjectCustomContextPayload(
+                        value=payload.get("value")
+                    )
+
+            resource_params["contexts"] = _storage_v2.ObjectContexts(
+                custom=custom_contexts_proto
+            )
+        else:
+            # Signal clearing of all custom contexts.
+            resource_params["contexts"] = _storage_v2.ObjectContexts(custom=None)
+
     return _storage_v2.Object(**resource_params)

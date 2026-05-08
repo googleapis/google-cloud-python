@@ -2179,6 +2179,7 @@ class TestClient(unittest.TestCase):
         include_trailing_delimiter = True
         include_folders_as_prefixes = True
         soft_deleted = False
+        filter_ = 'objectContexts.custom.foo.value="bar"'
         versions = True
         projection = "full"
         page_size = 2
@@ -2213,6 +2214,7 @@ class TestClient(unittest.TestCase):
             match_glob=match_glob,
             include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
+            filter_=filter_,
         )
 
         self.assertIs(iterator, client._list_resource.return_value)
@@ -2236,6 +2238,7 @@ class TestClient(unittest.TestCase):
             "userProject": user_project,
             "includeFoldersAsPrefixes": include_folders_as_prefixes,
             "softDeleted": soft_deleted,
+            "filter": filter_,
         }
         expected_page_start = _blobs_page_start
         expected_page_size = 2
