@@ -110,8 +110,16 @@ def wait_for_query(
     while True:
         if query_job.query_plan:
             default_total = len(query_job.query_plan)
+            # The query plan can shrink between iterations: query_job.reload()
+            # below pulls a fresh plan from the server, and BigQuery may re-emit
+            # fewer stages than the previous response (observed for MERGE and
+            # similar queries — see issue #16168). Clamp the cursor so we never
+            # index out of range; the worst case is that the progress bar
+            # plateaus at the last available stage until the query completes.
+            if i >= default_total:
+                i = default_total - 1
             current_stage = query_job.query_plan[i]
-            progress_bar.total = len(query_job.query_plan)
+            progress_bar.total = default_total
             progress_bar.set_description(
                 f"Query executing stage {current_stage.name} and status {current_stage.status} : {time.perf_counter() - start_time:.2f}s"
             )
