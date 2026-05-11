@@ -3849,6 +3849,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        delete_source_objects=None,
     ):
         """Concatenate source blobs into this one.
 
@@ -3908,6 +3909,11 @@ class Blob(_PropertyMixin):
             Change the value to ``DEFAULT_RETRY`` or another `google.api_core.retry.Retry` object
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :type delete_source_objects: bool
+        :param delete_source_objects:
+            (Optional) If True, the source objects will be deleted after a
+            successful composition.
         """
         with create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
@@ -3963,6 +3969,9 @@ class Blob(_PropertyMixin):
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
             }
+
+            if delete_source_objects is not None:
+                request["deleteSourceObjects"] = delete_source_objects
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
