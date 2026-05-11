@@ -138,7 +138,7 @@ current_display_id: Optional[str] = None
 
 
 def progress_callback(
-    event: bigframes.core.events.Event,
+    envelope: bigframes.core.events.EventEnvelope,
 ):
     """Displays a progress bar while the query is running"""
     global current_display_id
@@ -152,7 +152,10 @@ def progress_callback(
         # This will allow cleanup to continue.
         return
 
-    progress_bar = bigframes._config.options.display.progress_bar
+    event = envelope.event
+    progress_bar = envelope.progress_bar
+    if progress_bar == bigframes.core.events._DEFAULT:
+        progress_bar = bigframes._config.options.display.progress_bar
 
     if progress_bar == "auto":
         progress_bar = "notebook" if in_ipython() else "terminal"

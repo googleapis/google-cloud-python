@@ -30,7 +30,9 @@ _DEFAULT: Literal["default"] = "default"
 
 
 class Subscriber:
-    def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):  # noqa: E501
+    def __init__(
+        self, callback: Callable[[Event], None], *, publisher: Publisher
+    ):  # noqa: E501
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
@@ -83,14 +85,20 @@ class Publisher:
         with self._subscribers_lock:
             self._subscribers.remove(subscriber)
 
-    def publish(self, event: Event):
+    def publish(self, envelope: "EventEnvelope"):
         with self._subscribers_lock:
             for subscriber in self._subscribers:
-                subscriber(event)
+                subscriber(envelope)
 
 
 class Event:
     pass
+
+
+@dataclasses.dataclass(frozen=True)
+class EventEnvelope:
+    event: Event
+    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = None
 
 
 @dataclasses.dataclass(frozen=True)

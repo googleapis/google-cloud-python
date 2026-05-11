@@ -236,12 +236,17 @@ class ExecutionMetrics:
                 exec_seconds=exec_seconds,
             )
 
-    def on_event(self, event: Any):
+    def on_event(self, envelope: Any):
         try:
             import bigframes.core.events
             from bigframes.session.executor import LocalExecuteResult
         except ImportError:
             return
+
+        if isinstance(envelope, bigframes.core.events.EventEnvelope):
+            event = envelope.event
+        else:
+            event = envelope
 
         if isinstance(event, bigframes.core.events.ExecutionFinished):
             if event.result and isinstance(event.result, LocalExecuteResult):
