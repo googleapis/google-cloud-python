@@ -45,7 +45,7 @@ For the translation example, we'll create a new directory, set up a virtual envi
 and install the package.
 
 Note that for simplicity, the sample code below uses synchronous calls. Most libraries also provide
-asynchronous clients (usually prefixed with `Async`) for use in naturally asynchronous environments
+asynchronous clients (usually with suffix `AsyncClient`, rather than `Client`) for use in naturally asynchronous environments
 using `asyncio`.
 
 ```sh
@@ -58,7 +58,7 @@ pip install google-cloud-translate
 
 > **Dependencies**
 > If you install the library, you may notice
-> a lot of transitive dependencies being installed. This is entirely expected, but you may not recognize
+> transitive dependencies being installed. This is entirely expected, but you may not recognize
 > some of those dependencies. The list below is not comprehensive, but highlights some of the packages
 > you'll see being installed.
 >
@@ -72,10 +72,10 @@ pip install google-cloud-translate
 
 The first step in making any API calls is to create a client. Some libraries have multiple clients
 for operations involving different resources; others have a single client. In the Translation API
-we're using, we use `TranslationServiceClient`.
+we're using, we use `TranslationServiceClient` which can be used to create a synchronous client.
 
 Clients can be configured in a number of ways, but in many cases the defaults are fine. The most
-common reason to use explicit configuration is to use specific credentials for
+common reason to use an explicit configuration is to specify credentials for
 [authentication](https://cloud.google.com/docs/authentication/use-cases). For this example, we'll just use
 [Application Default Credentials (ADC)](https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev).
 To set up ADC in your local environment, follow the instructions in
@@ -97,7 +97,7 @@ to represent requests and responses, with some additional types to make the APIs
 convenient to work with.
 
 Most APIs are expressed in terms of a single request returning a single response, although
-there are also some streaming APIs involving multiple requests and/or multiple responses.
+there are also streaming APIs requiring multiple requests and/or multiple responses.
 For our Translation API example, we'll create a simple request for the `translate_text` API.
 
 ```python
@@ -146,7 +146,6 @@ print()
 for translation in response.translations:
     print(f"Detected language: {translation.detected_language_code}")
     print(f"Translated text: {translation.translated_text}")
-    print()
 ```
 
 This produces output of:
