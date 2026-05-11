@@ -3,11 +3,26 @@ import json
 import argparse
 from typing import List, Dict, Tuple
 
+# ---------------------------------------------------------
+# THE VIP LIST: Known mammoths that must bypass the queue
+# ---------------------------------------------------------
+MAMMOTH_OVERRIDES = {
+    "google-cloud-spanner": 9999,
+    "google-cloud-bigquery": 9999,
+    "google-cloud-storage": 9999,
+    "google-cloud-aiplatform": 9999,
+    "pandas-gbq": 9999
+}
+
 def calculate_package_weight(pkg_path: str) -> int:
     """
-    Dynamically profiles a package to determine its computational weight.
-    GAPIC clients are lightweight. Handwritten clients are heavy (based on test count).
+    Determines computational weight. Mammoths get massive artificial weights 
+    to guarantee they are processed first.
     """
+    pkg_name = os.path.basename(os.path.normpath(pkg_path))
+    if pkg_name in MAMMOTH_OVERRIDES:
+        return MAMMOTH_OVERRIDES[pkg_name]
+
     base_weight = 1
     
     meta_path = os.path.join(pkg_path, ".repo-metadata.json")
@@ -19,48 +34,40 @@ def calculate_package_weight(pkg_path: str) -> int:
         except Exception:
             pass 
             
+    # Fallback for standard packages: roughly estimate by test file count
     test_dir = os.path.join(pkg_path, "tests")
-    test_file_count = 0
     if os.path.isdir(test_dir):
         for root, _, files in os.walk(test_dir):
-            test_file_count += sum(1 for f in files if f.endswith(".py"))
+            base_weight += sum(1 for f in files if f.endswith(".py"))
             
-    return base_weight + test_file_count
+    return base_weight
 
-def create_balanced_buckets(packages: List[str], max_buckets: int) -> List[str]:
-    """
-    Distributes packages using the Longest Processing Time (LPT) algorithm.
-    """
+def create_balanced_buckets(packages: List[str], max_buckets: int) -> List[Dict]:
     valid_pkgs = [p for p in packages if os.path.isfile(os.path.join(p, "noxfile.py"))]
     if not valid_pkgs:
         return []
         
-    pkg_weights: List[Tuple[str, int]] = []
-    for pkg in valid_pkgs:
-        pkg_weights.append((pkg, calculate_package_weight(pkg)))
-        
+    pkg_weights = [(pkg, calculate_package_weight(pkg)) for pkg in valid_pkgs]
+    
+    # Sort heaviest to lightest. Mammoths (9999) will always be at the front.
     pkg_weights.sort(key=lambda x: x[1], reverse=True)
     
-    # Do not spin up empty VMs if we have fewer packages than max_buckets
     num_buckets = min(len(valid_pkgs), max_buckets)
-    buckets: List[Dict] = [{"packages": [], "total_weight": 0} for _ in range(num_buckets)]
+    buckets = [{"id": i + 1, "packages": [], "total_weight": 0} for i in range(num_buckets)]
     
     for pkg, weight in pkg_weights:
-        lightest_bucket = min(buckets, key=lambda b: b["total_weight"])
-        lightest_bucket["packages"].append(pkg)
-        lightest_bucket["total_weight"] += weight
+        lightest = min(buckets, key=lambda b: b["total_weight"])
+        lightest["packages"].append(pkg)
+        lightest["total_weight"] += weight
         
-    return [" ".join(b["packages"]) for b in buckets]
+    return [{"id": b["id"], "packages": " ".join(b["packages"])} for b in buckets if b["packages"]]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--matrix-multiplier", type=int, required=True, 
-                        help="Number of matrix permutations (e.g., 6 for Py versions)")
-    parser.add_argument("--max-vms", type=int, default=40, 
-                        help="Hard cap on VMs to protect the organization concurrency limit")
+    parser.add_argument("--matrix-multiplier", type=int, required=True)
+    parser.add_argument("--max-vms", type=int, default=40)
     args = parser.parse_args()
 
-    # THE L8 MATH: Never exceed ~250 jobs per workflow run.
     safe_github_limit = 250 // args.matrix_multiplier
     max_allowed_buckets = min(safe_github_limit, args.max_vms)
 
