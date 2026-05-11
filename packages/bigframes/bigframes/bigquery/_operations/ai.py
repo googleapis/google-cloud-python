@@ -60,17 +60,17 @@ def generate(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> country = bpd.Series(["Japan", "Canada"])
-        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")) # doctest: +SKIP
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only"))
         0    {'result': 'Tokyo', 'full_response': '{"cand...
         1    {'result': 'Ottawa', 'full_response': '{"can...
         dtype: struct<result: string, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")).struct.field("result") # doctest: +SKIP
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")).struct.field("result")
         0     Tokyo
         1    Ottawa
         Name: result, dtype: string
 
-    You get structured output when the `output_schema` parameter is set:
+    You get structured output when the ``output_schema`` parameter is set:
 
         >>> animals = bpd.Series(["Rabbit", "Spider"])
         >>> bbq.ai.generate(animals, output_schema={"number_of_legs": "INT64", "is_herbivore": "BOOL"})
@@ -78,22 +78,15 @@ def generate(
         1    {'is_herbivore': False, 'number_of_legs': 8, '...
         dtype: struct<is_herbivore: bool, number_of_legs: int64, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -109,7 +102,7 @@ def generate(
             Provides additional parameters to the model. The MODEL_PARAMS value must conform to the generateContent request body format.
         output_schema (Mapping[str, str]):
             A mapping value that specifies the schema of the output, in the form {field_name: data_type}. Supported data types include
-            `STRING`, `INT64`, `FLOAT64`, `BOOL`, `ARRAY`, and `STRUCT`.
+            ``STRING``, ``INT64``, ``FLOAT64``, ``BOOL``, ``ARRAY``, and ``STRUCT``.
 
     Returns:
         bigframes.series.Series: A new struct Series with the result data. The struct contains these fields:
@@ -176,22 +169,15 @@ def generate_bool(
         2    False
         Name: result, dtype: boolean
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -257,22 +243,15 @@ def generate_int(
         2    8
         Name: result, dtype: Int64
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -338,22 +317,15 @@ def generate_double(
         2    8.0
         Name: result, dtype: Float64
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -413,7 +385,7 @@ def generate_embedding(
         >>> bbq.ai.generate_embedding(
         ...     "project.dataset.model_name",
         ...     df
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -516,7 +488,7 @@ def generate_text(
         >>> bbq.ai.generate_text(
         ...     "project.dataset.model_name",
         ...     df
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -632,7 +604,7 @@ def generate_table(
         ...     "project.dataset.model_name",
         ...     data=df,
         ...     output_schema="category STRING"
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -645,7 +617,7 @@ def generate_table(
         output_schema (str | Mapping[str, str]):
             A string defining the output schema (e.g., "col1 STRING, col2 INT64"),
             or a mapping value that specifies the schema of the output, in the form {field_name: data_type}.
-            Supported data types include `STRING`, `INT64`, `FLOAT64`, `BOOL`, `ARRAY`, and `STRUCT`.
+            Supported data types include ``STRING``, ``INT64``, ``FLOAT64``, ``BOOL``, ``ARRAY``, and ``STRUCT``.
         temperature (float, optional):
             A FLOAT64 value that is used for sampling promiscuity. The value
             must be in the range ``[0.0, 1.0]``.
@@ -735,11 +707,11 @@ def embed(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +SKIP
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005")
         0    {'result': array([ 1.78243860e-03, -1.10658340...
 
-        >>> s = bpd.Series(['dog']) # doctest: +SKIP
-        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +SKIP
+        >>> s = bpd.Series(['dog'])
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005')
         0    {'result': array([ 1.78243860e-03, -1.10658340...
 
     Args:
@@ -748,28 +720,28 @@ def embed(
         endpoint (str, optional):
             A string value that specifies a supported Vertex AI embedding model endpoint to use.
             The endpoint value that you specify must include the model version, for example,
-            `"text-embedding-005"`. If you specify this parameter, you can't specify the
-            `model` parameter.
+            ``"text-embedding-005"``. If you specify this parameter, you can't specify the
+            ``model`` parameter.
         model (str, optional):
             A string value that specifies a built-in embedding model. The only supported value is
-            `"embeddinggemma-300m"`. If you specify this parameter, you can't specify the `endpoint`,
-            `title`, `model_params`, or `connection_id` parameters.
+            ``"embeddinggemma-300m"``. If you specify this parameter, you can't specify the ``endpoint``,
+            ``title``, ``model_params``, or ``connection_id`` parameters.
         task_type (str, optional):
             A string literal that specifies the intended downstream application to help the model
-            produce better quality embeddings. Accepts `"retrieval_query"`, `"retrieval_document"`,
-            `"semantic_similarity"`, `"classification"`, `"clustering"`, `"question_answering"`,
-            `"fact_verification"`, `"code_retrieval_query"`.
+            produce better quality embeddings. Accepts ``"retrieval_query"``, ``"retrieval_document"``,
+            ``"semantic_similarity"``, ``"classification"``, ``"clustering"``, ``"question_answering"``,
+            ``"fact_verification"``, ``"code_retrieval_query"``.
         title (str, optional):
             A string value that specifies the document title, which the model uses to improve
-            embedding quality. You can only use this parameter if you specify `"retrieval_document"`
-            for the `task_type` value.
+            embedding quality. You can only use this parameter if you specify ``"retrieval_document"``
+            for the ``task_type`` value.
         model_params (Mapping[Any, Any], optional):
             A JSON literal that provides additional parameters to the model. For example,
-            `{"outputDimensionality": 768}` lets you specify the number of dimensions to use when
+            ``{"outputDimensionality": 768}`` lets you specify the number of dimensions to use when
             generating embeddings.
         connection_id (str, optional):
             A STRING value specifying the connection to use to communicate with the model, in the
-            format `PROJECT_ID.LOCATION.CONNECTION_ID`. For example, `myproject.us.myconnection`.
+            format ``PROJECT_ID.LOCATION.CONNECTION_ID``. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
 
     Returns:
@@ -777,21 +749,6 @@ def embed(
         * "result": an ARRAY<FLOAT64> value containing the generated embeddings.
         * "status": a STRING value that contains the API response status for the corresponding row. This value is empty if the operation was successful.
     """
-
-    if model is not None:
-        if any(x is not None for x in [endpoint, title, model_params, connection_id]):
-            raise ValueError(
-                "You cannot specify endpoint, title, model_params, or connection_id when the model is set."
-            )
-    elif endpoint is None:
-        raise ValueError(
-            "You must specify exactly one of 'endpoint' or 'model' argument."
-        )
-
-    if title is not None and task_type != "retrieval_document":
-        raise ValueError(
-            "You can only use 'title' parameter if you specify retrieval_document for the task_type value."
-        )
 
     operator = ai_ops.AIEmbed(
         endpoint=endpoint,
@@ -822,7 +779,7 @@ def if_(
     max_error_ratio: float | None = None,
 ) -> series.Series:
     """
-    Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
+    Evaluates the prompt to True or False. Compared to ``ai.generate_bool()``, this function
     provides optimization such that not all rows are evaluated with the LLM.
 
     **Examples:**
@@ -846,10 +803,10 @@ def if_(
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
             best cost to quality tradeoff for the task.
@@ -860,7 +817,7 @@ def if_(
         max_error_ratio (float):
             A float value between 0.0 and 1.0 that contains the maximum acceptable ratio of row-level inference failures to
             rows processed on this function. If this value is exceeded, then the query fails. The default value is 1.0.
-            This argument isn't supported when `optimization_mode` is set to "minimize_cost".
+            This argument isn't supported when ``optimization_mode`` is set to "minimize_cost".
 
     Returns:
         bigframes.series.Series: A new series of bools.
@@ -918,7 +875,7 @@ def classify(
             that you expect. You can provide examples to help the model understand your
             intended threshold for a condition with nuanced or subjective logic. We recommend providing at most 5 examples.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
             A STRING value that specifies the Vertex AI endpoint to use for the model. You can specify any
@@ -972,7 +929,7 @@ def score(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
-        >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
+        >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3"))
         0    2.0
         1    1.0
         2    3.0
@@ -983,15 +940,15 @@ def score(
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an endpoint value, BigQuery ML dynamically chooses a model
             based on your query to have the best cost to quality tradeoff for the task.
         max_error_ratio (float, optional):
-            A value between `0.0` and `1.0` that contains the maximum acceptable ratio of row-level inference failures to
+            A value between ``0.0`` and ``1.0`` that contains the maximum acceptable ratio of row-level inference failures to
             rows processed on this function. If this value is exceeded, then the query fails.
 
     Returns:
@@ -1029,7 +986,7 @@ def similarity(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> df = bpd.DataFrame({'word': ['happy', 'sad']})
-        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005') # doctest: +SKIP
+        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005')
         0    0.916601
         1    0.660579
 
@@ -1040,26 +997,19 @@ def similarity(
             A string or series that provides the second value to compare. Both a BigFrames Series or a pandas Series are allowed.
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the text embedding model.
-            If you specify the model name, such as `'text-embedding-005'`, rather than a URL, then BigQuery ML automatically identifies the model and uses the model's full endpoint.
+            If you specify the model name, such as ``'text-embedding-005'``, rather than a URL, then BigQuery ML automatically identifies the model and uses the model's full endpoint.
         model (str, optional):
             Specifies a built-in text embedding model. The only supported value is the embeddinggemma-300m model.
-            If you specify this parameter, you can't specify the `endpoint`, `model_params`, or `connection_id` parameters.
+            If you specify this parameter, you can't specify the ``endpoint``, ``model_params``, or ``connection_id`` parameters.
         model_params (Mapping[Any, Any], optional):
             Provides additional parameters to the model. You can use any of the parameters object fields.
-            One of these fields, `outputDimensionality`, lets you specify the number of dimensions to use when generating embeddings.
+            One of these fields, ``outputDimensionality``, lets you specify the number of dimensions to use when generating embeddings.
         connection_id (str, optional):
-            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
 
     Returns:
         bigframes.series.Series: A new series of FLOAT64 values representing the cosine similarity.
     """
-    if model is not None:
-        if any(x is not None for x in [endpoint, model_params, connection_id]):
-            raise ValueError(
-                "If 'model' is specified, you cannot specify 'endpoint', 'model_params', or 'connection_id'."
-            )
-    elif endpoint is None:
-        raise ValueError("You must specify either 'model' or 'endpoint'.")
 
     operator = ai_ops.AISimilarity(
         endpoint=endpoint,
@@ -1108,13 +1058,6 @@ def forecast(
     """
     Forecast time series at future horizon. Using Google Research's open source TimesFM(https://github.com/google-research/timesfm) model.
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     **Examples:**
 
         Forecast using a pandas DataFrame:
@@ -1122,16 +1065,16 @@ def forecast(
         >>> import pandas as pd
         >>> import bigframes.pandas as bpd
         >>> df = pd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
-        >>> bpd.options.display.progress_bar = None # doctest: +SKIP
-        >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
-        >>> type(forecasted_pandas_df) # doctest: +SKIP
+        >>> bpd.options.display.progress_bar = None
+        >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2)
+        >>> type(forecasted_pandas_df)
         <class 'pandas.core.frame.DataFrame'>
 
         Forecast using a BigFrames DataFrame:
 
         >>> bf_df = bpd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
-        >>> forecasted_bf_df = bf_df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
-        >>> type(forecasted_bf_df) # doctest: +SKIP
+        >>> forecasted_bf_df = bf_df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2)
+        >>> type(forecasted_bf_df)
         <class 'bigframes.dataframe.DataFrame'>
 
     Args:
