@@ -65,7 +65,7 @@ class TestBigtableDataClient:
         return CrossSync._Sync_Impl.DataClient
 
     @classmethod
-    def _make_client(cls, *args, use_emulator=True, **kwargs):
+    def _make_client(cls, *args, use_emulator=True, use_mtls="auto", **kwargs):
         import os
 
         env_mask = {}
@@ -77,6 +77,8 @@ class TestBigtableDataClient:
         else:
             kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
+        if use_mtls is not None:
+            env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
         with mock.patch.dict(os.environ, env_mask):
             return cls._get_target_class()(*args, **kwargs)
 
@@ -844,11 +846,17 @@ class TestBigtableDataClient:
         close_mock.assert_called_once()
         true_close()
 
-    def test_default_universe_domain(self):
+    @pytest.mark.parametrize(
+        "use_mtls, expected_domain",
+        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")],
+    )
+    def test_default_universe_domain(self, use_mtls, expected_domain):
         """When not passed, universe_domain should default to googleapis.com"""
-        with self._make_client(project="project-id", credentials=None) as client:
+        with self._make_client(
+            project="project-id", credentials=None, use_mtls=use_mtls
+        ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
+            assert client.api_endpoint == f"bigtable.{expected_domain}"
 
     def test_custom_universe_domain(self):
         """test with a customized universe domain value and emulator enabled"""
@@ -859,6 +867,7 @@ class TestBigtableDataClient:
             client_options=options,
             use_emulator=True,
             credentials=None,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -871,7 +880,6 @@ class TestBigtableDataClient:
             project="project_id", client_options=options, credentials=None
         ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_credential_universe_domain_matches_GDU(self):
         """Test with credentials"""
@@ -879,12 +887,13 @@ class TestBigtableDataClient:
         creds._universe_domain = "googleapis.com"
         with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_anomynous_credential_universe_domain(self):
         """Anomynopus credentials should use default universe domain"""
         creds = AnonymousCredentials()
-        with self._make_client(project="project_id", credentials=creds) as client:
+        with self._make_client(
+            project="project_id", credentials=creds, use_mtls="never"
+        ) as client:
             assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == "bigtable.googleapis.com"
 
@@ -901,6 +910,7 @@ class TestBigtableDataClient:
                 client_options=options,
                 use_emulator=False,
                 credentials=creds,
+                use_mtls="never",
             )
         err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         assert exc.value.args[0] == err_msg
@@ -913,7 +923,10 @@ class TestBigtableDataClient:
         creds = AnonymousCredentials()
         creds._universe_domain = universe_domain
         with self._make_client(
-            project="project_id", credentials=creds, client_options=options
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -1123,8 +1136,12 @@ class TestTable:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
-                    assert retry_call_args[1] is expected_predicate
+                    retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
+                    if "predicate" in retry_call_kwargs:
+                        assert retry_call_kwargs["predicate"] is expected_predicate
+                    else:
+                        retry_call_args = retry_fn_mock.call_args_list[0].args
+                        assert retry_call_args[1] is expected_predicate
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",

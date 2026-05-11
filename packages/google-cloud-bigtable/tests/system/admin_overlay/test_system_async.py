@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
+from google.api_core import exceptions
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud import bigtable_admin_v2 as admin_v2
@@ -96,7 +97,10 @@ async def instances_to_delete(instance_admin_client):
         yield instances
     finally:
         for instance in instances:
-            await instance_admin_client.delete_instance(name=instance.name)
+            try:
+                await instance_admin_client.delete_instance(name=instance.name)
+            except exceptions.NotFound:
+                pass
 
 
 @CrossSync.convert
@@ -108,7 +112,10 @@ async def backups_to_delete(table_admin_client):
         yield backups
     finally:
         for backup in backups:
-            await table_admin_client.delete_backup(name=backup.name)
+            try:
+                await table_admin_client.delete_backup(name=backup.name)
+            except exceptions.NotFound:
+                pass
 
 
 @CrossSync.convert
@@ -159,9 +166,15 @@ async def create_instance(
             clusters=clusters,
         )
         operation = await instance_admin_client.create_instance(create_instance_request)
+
+        # add to cleanup list before waiting for result, in case of timeout
+        instance_name = instance_admin_client.instance_path(project_id, instance_id)
+        instances_to_delete.append(admin_v2.Instance(name=instance_name))
+
         instance = await operation.result()
 
-        instances_to_delete.append(instance)
+        # replace with full instance object
+        instances_to_delete[-1] = instance
 
     # Create a table within the instance
     create_table_request = admin_v2.CreateTableRequest(
@@ -246,8 +259,16 @@ async def create_backup(
         )
     )
 
+    # add to cleanup list before waiting for result, in case of timeout
+    backups_to_delete.append(
+        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
+    )
+
     backup = await operation.result()
-    backups_to_delete.append(backup)
+
+    # replace with full backup object
+    backups_to_delete[-1] = backup
+
     return backup
 
 
