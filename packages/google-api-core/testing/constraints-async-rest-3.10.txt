@@ -16,4 +16,4 @@ proto-plus==1.22.3
 # decorators which were deprecated since Python 3.8. When older versions of aiohttp
 # load, because they used @coroutine deep inside their internals, the warnings
 # bubble up and cause our nox session to fail.
-aiohttp==3.9.0
+aiohttp==3.13.4
