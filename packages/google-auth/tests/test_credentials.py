@@ -154,6 +154,18 @@ def test_before_request_with_regional_access_boundary():
     assert headers["x-allowed-locations"] == DUMMY_BOUNDARY
 
 
+def test_copy_regional_access_boundary_manager_preserves_type():
+    class CustomRefreshManager(object):
+        pass
+
+    creds = CredentialsImpl()
+    creds._rab_manager.refresh_manager = CustomRefreshManager()
+
+    new_creds = creds._make_copy()
+
+    assert isinstance(new_creds._rab_manager.refresh_manager, CustomRefreshManager)
+
+
 def test_before_request_metrics():
     credentials = CredentialsImplWithMetrics()
     request = "token"

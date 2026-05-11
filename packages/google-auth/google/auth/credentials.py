@@ -401,6 +401,8 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         # but share the immutable data reference to avoid unnecessary initial lookups.
         new_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         new_manager._data = self._rab_manager._data
+        # Preserve the type of refresh manager (sync or async)
+        new_manager.refresh_manager = self._rab_manager.refresh_manager.__class__()
         target._rab_manager = new_manager
 
     def _set_regional_access_boundary(self, seed):
