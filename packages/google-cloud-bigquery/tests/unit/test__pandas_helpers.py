@@ -551,7 +551,6 @@ def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     ],
 )
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_pandas_timestamp(module_under_test, bq_type, rows):
     rows = [pandas.Timestamp(row) for row in rows]
@@ -559,7 +558,8 @@ def test_bq_to_arrow_array_w_pandas_timestamp(module_under_test, bq_type, rows):
     bq_field = schema.SchemaField("field_name", bq_type)
     arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
     roundtrip = arrow_array.to_pandas()
-    assert series.equals(roundtrip)
+    series = series.astype(roundtrip.dtype)
+    pandas.testing.assert_series_equal(series, roundtrip)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

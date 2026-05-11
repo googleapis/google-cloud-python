@@ -160,7 +160,11 @@ class AIClassify(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     categories: tuple[str, ...]
+    examples: tuple[tuple[str, str], ...] | None
     connection_id: str | None
+    endpoint: str | None
+    optimization_mode: str | None
+    max_error_ratio: float | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.STRING_DTYPE
@@ -172,6 +176,8 @@ class AIScore(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
+    endpoint: str | None
+    max_error_ratio: float | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE

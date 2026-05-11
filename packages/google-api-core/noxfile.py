@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -34,8 +34,8 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -303,7 +303,7 @@ def default(
         (
             True,
             False,
-            ["3.9", "3.10", "3.11"],
+            ["3.10", "3.11"],
             4,
         ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
@@ -325,13 +325,13 @@ def unit(
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
 
-    # TODO: consider converting the following into a `match` statement once
-    # we drop Python 3.9 support.
-    if legacy_proto:
-        if legacy_proto == 4:
+    match legacy_proto:
+        case 4:
             # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
             session.install("protobuf>=4.25.8,<5.0.0")
-        else:
+        case None | False:
+            pass
+        case _:
             assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(

@@ -45,6 +45,18 @@ io = pytest.importorskip("IPython.utils.io")
 pandas = pytest.importorskip("pandas")
 
 
+@pytest.fixture()
+def use_local_magics_context(monkeypatch):
+    if magics is not None:
+        local_context = magics.Context()
+        local_context._project = "unit-test-project"
+        mock_credentials = mock.create_autospec(
+            google.auth.credentials.Credentials, instance=True
+        )
+        local_context._credentials = mock_credentials
+        monkeypatch.setattr(magics, "context", local_context)
+
+
 @pytest.fixture(scope="session")
 def ipython():
     config = tools.default_config()
@@ -523,7 +535,7 @@ def test_bigquery_magic_default_connection_user_agent(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_legacy_sql(monkeypatch):
+def test_bigquery_magic_with_legacy_sql(monkeypatch, use_local_magics_context):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -543,7 +555,9 @@ def test_bigquery_magic_with_legacy_sql(monkeypatch):
 
 @pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_bigquery_magic_with_result_saved_to_variable(ipython_ns_cleanup, monkeypatch):
+def test_bigquery_magic_with_result_saved_to_variable(
+    ipython_ns_cleanup, monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -577,7 +591,9 @@ def test_bigquery_magic_with_result_saved_to_variable(ipython_ns_cleanup, monkey
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_does_not_clear_display_in_verbose_mode(monkeypatch):
+def test_bigquery_magic_does_not_clear_display_in_verbose_mode(
+    monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -599,7 +615,9 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_clears_display_in_non_verbose_mode(monkeypatch):
+def test_bigquery_magic_clears_display_in_non_verbose_mode(
+    monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -624,7 +642,9 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode(monkeypatch):
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
-def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
+def test_bigquery_magic_with_bqstorage_from_argument(
+    monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -691,7 +711,9 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
-def test_bigquery_magic_with_rest_client_requested(monkeypatch):
+def test_bigquery_magic_with_rest_client_requested(
+    monkeypatch, use_local_magics_context
+):
     pandas = pytest.importorskip("pandas")
 
     ip = IPython.get_ipython()
@@ -1437,7 +1459,9 @@ def test_bigquery_magic_with_project(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_bigquery_api_endpoint(ipython_ns_cleanup, monkeypatch):
+def test_bigquery_magic_with_bigquery_api_endpoint(
+    ipython_ns_cleanup, monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -1460,7 +1484,9 @@ def test_bigquery_magic_with_bigquery_api_endpoint(ipython_ns_cleanup, monkeypat
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_bigquery_api_endpoint_context_dict(monkeypatch):
+def test_bigquery_magic_with_bigquery_api_endpoint_context_dict(
+    monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -1484,7 +1510,9 @@ def test_bigquery_magic_with_bigquery_api_endpoint_context_dict(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_bqstorage_api_endpoint(ipython_ns_cleanup, monkeypatch):
+def test_bigquery_magic_with_bqstorage_api_endpoint(
+    ipython_ns_cleanup, monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
@@ -1507,7 +1535,9 @@ def test_bigquery_magic_with_bqstorage_api_endpoint(ipython_ns_cleanup, monkeypa
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_bqstorage_api_endpoint_context_dict(monkeypatch):
+def test_bigquery_magic_with_bqstorage_api_endpoint_context_dict(
+    monkeypatch, use_local_magics_context
+):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)

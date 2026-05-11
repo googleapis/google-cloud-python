@@ -1743,7 +1743,8 @@ class DataFrame:
         )
         if query_job:
             self._set_internal_query_job(query_job)
-        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+        df.columns = self._block.column_labels
+        return df
 
     def to_pandas_batches(
         self,
@@ -1869,7 +1870,8 @@ class DataFrame:
                 raise ValueError(
                     "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
                 )
-        return maybe_result.set_axis(self._block.column_labels, axis=1, copy=False)
+        maybe_result.columns = self._block.column_labels
+        return maybe_result
 
     def nlargest(
         self,
@@ -2849,7 +2851,7 @@ class DataFrame:
         """Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition, axis=1)
 
             # When it's a plain Python function.
@@ -4683,7 +4685,7 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if not isinstance(func, bigframes.functions.Udf):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
@@ -4707,18 +4709,12 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(
-                func,
-                (
-                    bigframes.functions.BigqueryCallableRoutine,
-                    bigframes.functions.BigqueryCallableRowRoutine,
-                ),
-            ):
+            if not isinstance(func, bigframes.functions.Udf):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            if func.is_row_processor:
+            if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4847,7 +4843,7 @@ class DataFrame:
 
         # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_bigquery_function"):
+        if isinstance(func, bigframes.functions.Udf):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support BigFrames "

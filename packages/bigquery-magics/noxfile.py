@@ -41,10 +41,6 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
-    # Not supported, but included so that we can explicitly skip the session
-    # from here. Keep unsupported versions last so that they don't conflict with
-    # the prerelease_deps session.
-    "3.9",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -61,9 +57,6 @@ UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.9": [
-        "bqstorage",
-    ],
     "3.10": [
         "bqstorage",
     ],
@@ -96,9 +89,6 @@ SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.9": [
-        "bqstorage",
-    ],
     "3.10": [
         "bqstorage",
         "bigframes",
@@ -235,9 +225,6 @@ def install_unittest_dependencies(session, *constraints):
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
-    if session.python == "3.9":
-        session.skip("Python 3.9 is not supported.")
-
     # Install all test dependencies, then install this package in-place.
 
     constraints_path = str(

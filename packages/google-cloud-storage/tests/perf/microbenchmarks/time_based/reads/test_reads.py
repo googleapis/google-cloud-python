@@ -20,6 +20,7 @@ import os
 import random
 import time
 from typing import List, NamedTuple, Optional
+
 import pytest
 
 import tests.perf.microbenchmarks.time_based.reads.config as config

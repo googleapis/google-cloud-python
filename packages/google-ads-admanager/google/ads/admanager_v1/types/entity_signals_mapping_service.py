@@ -151,7 +151,7 @@ class UpdateEntitySignalsMappingRequest(proto.Message):
             EntitySignalsMapping to update. Format:
             ``networks/{network_code}/entitySignalsMappings/{entity_signals_mapping}``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = (
