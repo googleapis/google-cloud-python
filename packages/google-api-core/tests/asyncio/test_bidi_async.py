@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
+
 import asyncio
 
 from unittest import mock
@@ -32,15 +32,6 @@ except ImportError:  # pragma: NO COVER
 
 from google.api_core import bidi_async
 from google.api_core import exceptions
-
-# TODO: remove this when droppping support for "Python 3.10" and below.
-if sys.version_info < (3, 10):  # type: ignore[operator]
-
-    def aiter(obj):
-        return obj.__aiter__()
-
-    async def anext(obj):
-        return await obj.__anext__()
 
 
 @pytest.mark.asyncio
@@ -185,10 +176,6 @@ class TestAsyncBidiRpc:
         callback.assert_called_once_with(mock.sentinel.future)
 
     @pytest.mark.asyncio
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8),  # type: ignore[operator]
-        reason="Versions of Python below 3.8 don't provide support for assert_awaited_once",
-    )
     async def test_metadata(self):
         rpc, call = make_async_rpc()
         bidi_rpc = bidi_async.AsyncBidiRpc(rpc, metadata=mock.sentinel.A)

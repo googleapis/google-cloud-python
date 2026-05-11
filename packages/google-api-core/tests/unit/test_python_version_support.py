@@ -164,7 +164,7 @@ def test_all_tracked_versions_and_date_scenarios(
 
 def test_override_gapic_end_only():
     """Test behavior when only gapic_end is manually overridden."""
-    version_tuple = (3, 9)
+    version_tuple = (3, 10)
     original_info = PYTHON_VERSION_INFO[version_tuple]
     mock_py_version = VersionInfoMock(major=version_tuple[0], minor=version_tuple[1])
 
@@ -199,7 +199,7 @@ def test_override_gapic_end_only():
 
 def test_override_gapic_deprecation_only():
     """Test behavior when only gapic_deprecation is manually overridden."""
-    version_tuple = (3, 9)
+    version_tuple = (3, 10)
     original_info = PYTHON_VERSION_INFO[version_tuple]
     mock_py_version = VersionInfoMock(major=version_tuple[0], minor=version_tuple[1])
 
