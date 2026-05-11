@@ -11,4 +11,4 @@ google-auth==2.14.1
 requests==2.25.0
 grpcio==1.41.0
 grpcio-status==1.41.0
-proto-plus==1.22.3
+proto-plus==1.24.0
