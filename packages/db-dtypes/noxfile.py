@@ -498,24 +498,18 @@ def core_deps_from_source(session, protobuf_implementation):
     install_unittest_dependencies(session, "-c", constraints_path)
 
     core_dependencies_from_source = [
-        "googleapis-common-protos",
-        "google-api-core",
-        "google-auth",
-        "grpc-google-iam-v1",
-        "proto-plus",
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
-
-    # Batch the pip installation to avoid sequential overhead
-    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
-    session.install(*dep_paths, "--no-deps", "--ignore-installed")
-
     for dep in core_dependencies_from_source:
-        dep_path = str(deps_dir / dep)
-        print(f"Installed {dep} locally from {dep_path}")
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
     session.run(
         "py.test",
         "--quiet",
