@@ -57,23 +57,23 @@ def generate(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> country = bpd.Series(["Japan", "Canada"]) # doctest: +SKIP
-        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> country = bpd.Series(["Japan", "Canada"])
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only"))
         0    {'result': 'Tokyo', 'full_response': '{"cand...
         1    {'result': 'Ottawa', 'full_response': '{"can...
         dtype: struct<result: string, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")).struct.field("result") # doctest: +SKIP
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")).struct.field("result")
         0     Tokyo
         1    Ottawa
         Name: result, dtype: string
 
     You get structured output when the ``output_schema`` parameter is set:
 
-        >>> animals = bpd.Series(["Rabbit", "Spider"]) # doctest: +SKIP
-        >>> bbq.ai.generate(animals, output_schema={"number_of_legs": "INT64", "is_herbivore": "BOOL"}) # doctest: +SKIP
+        >>> animals = bpd.Series(["Rabbit", "Spider"])
+        >>> bbq.ai.generate(animals, output_schema={"number_of_legs": "INT64", "is_herbivore": "BOOL"})
         0    {'is_herbivore': True, 'number_of_legs': 4, 'f...
         1    {'is_herbivore': False, 'number_of_legs': 8, '...
         dtype: struct<is_herbivore: bool, number_of_legs: int64, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
@@ -151,19 +151,19 @@ def generate_bool(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
         >>> df = bpd.DataFrame({
         ...     "col_1": ["apple", "bear", "pear"],
         ...     "col_2": ["fruit", "animal", "animal"]
-        ... }) # doctest: +SKIP
-        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"])) # doctest: +SKIP
+        ... })
+        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"]))
         0    {'result': True, 'full_response': '{"candidate...
         1    {'result': True, 'full_response': '{"candidate...
         2    {'result': False, 'full_response': '{"candidat...
         dtype: struct<result: bool, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"])).struct.field("result") # doctest: +SKIP
+        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"])).struct.field("result")
         0     True
         1     True
         2    False
@@ -228,16 +228,16 @@ def generate_int(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"]) # doctest: +SKIP
-        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?")) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
+        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?"))
         0    {'result': 2, 'full_response': '{"candidates":...
         1    {'result': 4, 'full_response': '{"candidates":...
         2    {'result': 8, 'full_response': '{"candidates":...
         dtype: struct<result: int64, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?")).struct.field("result") # doctest: +SKIP
+        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?")).struct.field("result")
         0    2
         1    4
         2    8
@@ -302,16 +302,16 @@ def generate_double(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"]) # doctest: +SKIP
-        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?")) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
+        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?"))
         0    {'result': 2.0, 'full_response': '{"candidates...
         1    {'result': 4.0, 'full_response': '{"candidates...
         2    {'result': 8.0, 'full_response': '{"candidates...
         dtype: struct<result: double, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
-        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?")).struct.field("result") # doctest: +SKIP
+        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?")).struct.field("result")
         0    2.0
         1    4.0
         2    8.0
@@ -379,13 +379,13 @@ def generate_embedding(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> df = bpd.DataFrame({"content": ["apple", "bear", "pear"]}) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({"content": ["apple", "bear", "pear"]})
         >>> bbq.ai.generate_embedding(
         ...     "project.dataset.model_name",
         ...     df
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -482,13 +482,13 @@ def generate_text(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> df = bpd.DataFrame({"prompt": ["write a poem about apples"]}) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({"prompt": ["write a poem about apples"]})
         >>> bbq.ai.generate_text(
         ...     "project.dataset.model_name",
         ...     df
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -594,17 +594,17 @@ def generate_table(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
         >>> # The user is responsible for constructing a DataFrame that contains
         >>> # the necessary columns for the model's prompt. For example, a
         >>> # DataFrame with a 'prompt' column for text classification.
-        >>> df = bpd.DataFrame({'prompt': ["some text to classify"]}) # doctest: +SKIP
+        >>> df = bpd.DataFrame({'prompt': ["some text to classify"]})
         >>> result = bbq.ai.generate_table(
         ...     "project.dataset.model_name",
         ...     data=df,
         ...     output_schema="category STRING"
-        ... ) # doctest: +SKIP
+        ... )
 
     Args:
         model (ml_base.BaseEstimator or str):
@@ -705,13 +705,13 @@ def embed(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005")
         0    {'result': array([ 1.78243860e-03, -1.10658340...
 
-        >>> s = bpd.Series(['dog']) # doctest: +SKIP
-        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +SKIP
+        >>> s = bpd.Series(['dog'])
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005')
         0    {'result': array([ 1.78243860e-03, -1.10658340...
 
     Args:
@@ -784,16 +784,16 @@ def if_(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"]) # doctest: +SKIP
-        >>> bbq.ai.if_((us_state, " has a city called Springfield")) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"])
+        >>> bbq.ai.if_((us_state, " has a city called Springfield"))
         0     True
         1     True
         2    False
         dtype: boolean
 
-        >>> us_state[bbq.ai.if_((us_state, " has a city called Springfield"))] # doctest: +SKIP
+        >>> us_state[bbq.ai.if_((us_state, " has a city called Springfield"))]
         0    Massachusetts
         1         Illinois
         dtype: string
@@ -853,11 +853,11 @@ def classify(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> df = bpd.DataFrame({'creature': ['Cat', 'Salmon']}) # doctest: +SKIP
-        >>> df['type'] = bbq.ai.classify(df['creature'], ['Mammal', 'Fish']) # doctest: +SKIP
-        >>> df # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({'creature': ['Cat', 'Salmon']})
+        >>> df['type'] = bbq.ai.classify(df['creature'], ['Mammal', 'Fish'])
+        >>> df
           creature    type
         0      Cat  Mammal
         1   Salmon    Fish
@@ -926,10 +926,10 @@ def score(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"]) # doctest: +SKIP
-        >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
+        >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3"))
         0    2.0
         1    1.0
         2    3.0
@@ -983,10 +983,10 @@ def similarity(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> import bigframes.bigquery as bbq # doctest: +SKIP
-        >>> df = bpd.DataFrame({'word': ['happy', 'sad']}) # doctest: +SKIP
-        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005') # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({'word': ['happy', 'sad']})
+        >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005')
         0    0.916601
         1    0.660579
 
@@ -1062,19 +1062,19 @@ def forecast(
 
         Forecast using a pandas DataFrame:
 
-        >>> import pandas as pd # doctest: +SKIP
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
-        >>> df = pd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])}) # doctest: +SKIP
-        >>> bpd.options.display.progress_bar = None # doctest: +SKIP
-        >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
-        >>> type(forecasted_pandas_df) # doctest: +SKIP
+        >>> import pandas as pd
+        >>> import bigframes.pandas as bpd
+        >>> df = pd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
+        >>> bpd.options.display.progress_bar = None
+        >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2)
+        >>> type(forecasted_pandas_df)
         <class 'pandas.core.frame.DataFrame'>
 
         Forecast using a BigFrames DataFrame:
 
-        >>> bf_df = bpd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])}) # doctest: +SKIP
-        >>> forecasted_bf_df = bf_df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2) # doctest: +SKIP
-        >>> type(forecasted_bf_df) # doctest: +SKIP
+        >>> bf_df = bpd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
+        >>> forecasted_bf_df = bf_df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2)
+        >>> type(forecasted_bf_df)
         <class 'bigframes.dataframe.DataFrame'>
 
     Args:
