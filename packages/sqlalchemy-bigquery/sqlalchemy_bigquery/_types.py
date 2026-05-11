@@ -94,33 +94,34 @@ def _get_transitive_schema_fields(fields):
 
 
 def _get_sqla_column_type(field):
+    col_instance: sqlalchemy.types.TypeEngine
     try:
-        coltype = _type_map[field.field_type]
+        col_class = _type_map[field.field_type]
     except KeyError:
         sqlalchemy.util.warn(
             "Did not recognize type '%s' of column '%s'"
             % (field.field_type, field.name)
         )
-        coltype = sqlalchemy.types.NullType
+        col_instance = sqlalchemy.types.NullType()
     else:
         if field.field_type.endswith("NUMERIC"):
-            coltype = coltype(precision=field.precision, scale=field.scale)
+            col_instance = col_class(precision=field.precision, scale=field.scale)
         elif field.field_type == "STRING" or field.field_type == "BYTES":
-            coltype = coltype(field.max_length)
+            col_instance = col_class(field.max_length)
         elif field.field_type == "RECORD" or field.field_type == "STRUCT":
-            coltype = STRUCT(
+            col_instance = STRUCT(
                 *(
                     (subfield.name, _get_sqla_column_type(subfield))
                     for subfield in field.fields
                 )
             )
         else:
-            coltype = coltype()
+            col_instance = col_class()
 
     if field.mode == "REPEATED":
-        coltype = ARRAY(coltype)
+        col_instance = ARRAY(col_instance)
 
-    return coltype
+    return col_instance
 
 
 def get_columns(bq_schema):
