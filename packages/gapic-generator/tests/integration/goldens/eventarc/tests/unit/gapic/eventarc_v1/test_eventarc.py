@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15600,7 +15600,7 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_trigger_rest_unset_required_fields():
@@ -15768,7 +15768,7 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_triggers_rest_unset_required_fields():
@@ -16011,7 +16011,7 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_trigger_rest_unset_required_fields():
@@ -16276,7 +16276,7 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_trigger_rest_unset_required_fields():
@@ -16442,7 +16442,7 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_channel_rest_unset_required_fields():
@@ -16610,7 +16610,7 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_channels_rest_unset_required_fields():
@@ -16853,7 +16853,7 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_channel_rest_unset_required_fields():
@@ -17116,7 +17116,7 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_channel_rest_unset_required_fields():
@@ -17280,7 +17280,7 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_provider_rest_unset_required_fields():
@@ -17448,7 +17448,7 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_providers_rest_unset_required_fields():
@@ -17676,7 +17676,7 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_channel_connection_rest_unset_required_fields():
@@ -17844,7 +17844,7 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_channel_connections_rest_unset_required_fields():
@@ -18087,7 +18087,7 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_channel_connection_rest_unset_required_fields():
@@ -18256,7 +18256,7 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_channel_connection_rest_unset_required_fields():
@@ -18420,7 +18420,7 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_google_channel_config_rest_unset_required_fields():
@@ -18584,7 +18584,7 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_google_channel_config_rest_unset_required_fields():
@@ -18752,7 +18752,7 @@ def test_get_message_bus_rest_required_fields(request_type=eventarc.GetMessageBu
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_message_bus_rest_unset_required_fields():
@@ -18920,7 +18920,7 @@ def test_list_message_buses_rest_required_fields(request_type=eventarc.ListMessa
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_message_buses_rest_unset_required_fields():
@@ -19150,7 +19150,7 @@ def test_list_message_bus_enrollments_rest_required_fields(request_type=eventarc
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_message_bus_enrollments_rest_unset_required_fields():
@@ -19393,7 +19393,7 @@ def test_create_message_bus_rest_required_fields(request_type=eventarc.CreateMes
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_message_bus_rest_unset_required_fields():
@@ -19560,7 +19560,7 @@ def test_update_message_bus_rest_required_fields(request_type=eventarc.UpdateMes
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_message_bus_rest_unset_required_fields():
@@ -19729,7 +19729,7 @@ def test_delete_message_bus_rest_required_fields(request_type=eventarc.DeleteMes
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_message_bus_rest_unset_required_fields():
@@ -19895,7 +19895,7 @@ def test_get_enrollment_rest_required_fields(request_type=eventarc.GetEnrollment
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_enrollment_rest_unset_required_fields():
@@ -20063,7 +20063,7 @@ def test_list_enrollments_rest_required_fields(request_type=eventarc.ListEnrollm
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_enrollments_rest_unset_required_fields():
@@ -20306,7 +20306,7 @@ def test_create_enrollment_rest_required_fields(request_type=eventarc.CreateEnro
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_enrollment_rest_unset_required_fields():
@@ -20473,7 +20473,7 @@ def test_update_enrollment_rest_required_fields(request_type=eventarc.UpdateEnro
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_enrollment_rest_unset_required_fields():
@@ -20642,7 +20642,7 @@ def test_delete_enrollment_rest_required_fields(request_type=eventarc.DeleteEnro
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_enrollment_rest_unset_required_fields():
@@ -20808,7 +20808,7 @@ def test_get_pipeline_rest_required_fields(request_type=eventarc.GetPipelineRequ
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_pipeline_rest_unset_required_fields():
@@ -20976,7 +20976,7 @@ def test_list_pipelines_rest_required_fields(request_type=eventarc.ListPipelines
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_pipelines_rest_unset_required_fields():
@@ -21219,7 +21219,7 @@ def test_create_pipeline_rest_required_fields(request_type=eventarc.CreatePipeli
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_pipeline_rest_unset_required_fields():
@@ -21386,7 +21386,7 @@ def test_update_pipeline_rest_required_fields(request_type=eventarc.UpdatePipeli
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_pipeline_rest_unset_required_fields():
@@ -21555,7 +21555,7 @@ def test_delete_pipeline_rest_required_fields(request_type=eventarc.DeletePipeli
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_pipeline_rest_unset_required_fields():
@@ -21721,7 +21721,7 @@ def test_get_google_api_source_rest_required_fields(request_type=eventarc.GetGoo
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_google_api_source_rest_unset_required_fields():
@@ -21889,7 +21889,7 @@ def test_list_google_api_sources_rest_required_fields(request_type=eventarc.List
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_google_api_sources_rest_unset_required_fields():
@@ -22132,7 +22132,7 @@ def test_create_google_api_source_rest_required_fields(request_type=eventarc.Cre
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_google_api_source_rest_unset_required_fields():
@@ -22299,7 +22299,7 @@ def test_update_google_api_source_rest_required_fields(request_type=eventarc.Upd
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_google_api_source_rest_unset_required_fields():
@@ -22468,7 +22468,7 @@ def test_delete_google_api_source_rest_required_fields(request_type=eventarc.Del
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_google_api_source_rest_unset_required_fields():

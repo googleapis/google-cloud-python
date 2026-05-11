@@ -1206,22 +1206,21 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
             # Ensure that the uuid4 field is set according to AIP 4235
-            # and remove it so the expected/actual comparison succeeds.
-            # Otherwise, the actual will differ from the expected since
-            # this field was automatically populated.
-            found_field = None
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "{{ auto_populated_field|camel_case }}":
                     assert re.match(r"{{ get_uuid4_re() }}", value)
-                    found_field = i
                     break
-            if found_field is not None:
-                del req.call_args.kwargs['params'][found_field]
+            
+            # Include {{ auto_populated_field|camel_case }} within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "{{ auto_populated_field|camel_case }}"]
+            expected_params.append(
+                ("{{ auto_populated_field|camel_case }}", mock.ANY)
+            )
     {% endfor %}
     {% endif %}
     {% endwith %}
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_{{ method_name }}_rest_unset_required_fields():

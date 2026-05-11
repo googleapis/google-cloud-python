@@ -5,6 +5,168 @@
   "protoPackage": "google.cloud.chronicle.v1",
   "schema": "1.0",
   "services": {
+    "BigQueryExportService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BigQueryExportServiceClient",
+          "rpcs": {
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
+              ]
+            },
+            "ProvisionBigQueryExport": {
+              "methods": [
+                "provision_big_query_export"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BigQueryExportServiceAsyncClient",
+          "rpcs": {
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
+              ]
+            },
+            "ProvisionBigQueryExport": {
+              "methods": [
+                "provision_big_query_export"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BigQueryExportServiceClient",
+          "rpcs": {
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
+              ]
+            },
+            "ProvisionBigQueryExport": {
+              "methods": [
+                "provision_big_query_export"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DashboardChartService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DashboardChartServiceClient",
+          "rpcs": {
+            "BatchGetDashboardCharts": {
+              "methods": [
+                "batch_get_dashboard_charts"
+              ]
+            },
+            "GetDashboardChart": {
+              "methods": [
+                "get_dashboard_chart"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DashboardChartServiceAsyncClient",
+          "rpcs": {
+            "BatchGetDashboardCharts": {
+              "methods": [
+                "batch_get_dashboard_charts"
+              ]
+            },
+            "GetDashboardChart": {
+              "methods": [
+                "get_dashboard_chart"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DashboardChartServiceClient",
+          "rpcs": {
+            "BatchGetDashboardCharts": {
+              "methods": [
+                "batch_get_dashboard_charts"
+              ]
+            },
+            "GetDashboardChart": {
+              "methods": [
+                "get_dashboard_chart"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DashboardQueryService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DashboardQueryServiceClient",
+          "rpcs": {
+            "ExecuteDashboardQuery": {
+              "methods": [
+                "execute_dashboard_query"
+              ]
+            },
+            "GetDashboardQuery": {
+              "methods": [
+                "get_dashboard_query"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DashboardQueryServiceAsyncClient",
+          "rpcs": {
+            "ExecuteDashboardQuery": {
+              "methods": [
+                "execute_dashboard_query"
+              ]
+            },
+            "GetDashboardQuery": {
+              "methods": [
+                "get_dashboard_query"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DashboardQueryServiceClient",
+          "rpcs": {
+            "ExecuteDashboardQuery": {
+              "methods": [
+                "execute_dashboard_query"
+              ]
+            },
+            "GetDashboardQuery": {
+              "methods": [
+                "get_dashboard_query"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DataAccessControlService": {
       "clients": {
         "grpc": {
@@ -512,6 +674,70 @@
         }
       }
     },
+    "FeaturedContentNativeDashboardService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "FeaturedContentNativeDashboardServiceClient",
+          "rpcs": {
+            "GetFeaturedContentNativeDashboard": {
+              "methods": [
+                "get_featured_content_native_dashboard"
+              ]
+            },
+            "InstallFeaturedContentNativeDashboard": {
+              "methods": [
+                "install_featured_content_native_dashboard"
+              ]
+            },
+            "ListFeaturedContentNativeDashboards": {
+              "methods": [
+                "list_featured_content_native_dashboards"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "FeaturedContentNativeDashboardServiceAsyncClient",
+          "rpcs": {
+            "GetFeaturedContentNativeDashboard": {
+              "methods": [
+                "get_featured_content_native_dashboard"
+              ]
+            },
+            "InstallFeaturedContentNativeDashboard": {
+              "methods": [
+                "install_featured_content_native_dashboard"
+              ]
+            },
+            "ListFeaturedContentNativeDashboards": {
+              "methods": [
+                "list_featured_content_native_dashboards"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "FeaturedContentNativeDashboardServiceClient",
+          "rpcs": {
+            "GetFeaturedContentNativeDashboard": {
+              "methods": [
+                "get_featured_content_native_dashboard"
+              ]
+            },
+            "InstallFeaturedContentNativeDashboard": {
+              "methods": [
+                "install_featured_content_native_dashboard"
+              ]
+            },
+            "ListFeaturedContentNativeDashboards": {
+              "methods": [
+                "list_featured_content_native_dashboards"
+              ]
+            }
+          }
+        }
+      }
+    },
     "InstanceService": {
       "clients": {
         "grpc": {
@@ -540,6 +766,205 @@
             "GetInstance": {
               "methods": [
                 "get_instance"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NativeDashboardService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "NativeDashboardServiceClient",
+          "rpcs": {
+            "AddChart": {
+              "methods": [
+                "add_chart"
+              ]
+            },
+            "CreateNativeDashboard": {
+              "methods": [
+                "create_native_dashboard"
+              ]
+            },
+            "DeleteNativeDashboard": {
+              "methods": [
+                "delete_native_dashboard"
+              ]
+            },
+            "DuplicateChart": {
+              "methods": [
+                "duplicate_chart"
+              ]
+            },
+            "DuplicateNativeDashboard": {
+              "methods": [
+                "duplicate_native_dashboard"
+              ]
+            },
+            "EditChart": {
+              "methods": [
+                "edit_chart"
+              ]
+            },
+            "ExportNativeDashboards": {
+              "methods": [
+                "export_native_dashboards"
+              ]
+            },
+            "GetNativeDashboard": {
+              "methods": [
+                "get_native_dashboard"
+              ]
+            },
+            "ImportNativeDashboards": {
+              "methods": [
+                "import_native_dashboards"
+              ]
+            },
+            "ListNativeDashboards": {
+              "methods": [
+                "list_native_dashboards"
+              ]
+            },
+            "RemoveChart": {
+              "methods": [
+                "remove_chart"
+              ]
+            },
+            "UpdateNativeDashboard": {
+              "methods": [
+                "update_native_dashboard"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "NativeDashboardServiceAsyncClient",
+          "rpcs": {
+            "AddChart": {
+              "methods": [
+                "add_chart"
+              ]
+            },
+            "CreateNativeDashboard": {
+              "methods": [
+                "create_native_dashboard"
+              ]
+            },
+            "DeleteNativeDashboard": {
+              "methods": [
+                "delete_native_dashboard"
+              ]
+            },
+            "DuplicateChart": {
+              "methods": [
+                "duplicate_chart"
+              ]
+            },
+            "DuplicateNativeDashboard": {
+              "methods": [
+                "duplicate_native_dashboard"
+              ]
+            },
+            "EditChart": {
+              "methods": [
+                "edit_chart"
+              ]
+            },
+            "ExportNativeDashboards": {
+              "methods": [
+                "export_native_dashboards"
+              ]
+            },
+            "GetNativeDashboard": {
+              "methods": [
+                "get_native_dashboard"
+              ]
+            },
+            "ImportNativeDashboards": {
+              "methods": [
+                "import_native_dashboards"
+              ]
+            },
+            "ListNativeDashboards": {
+              "methods": [
+                "list_native_dashboards"
+              ]
+            },
+            "RemoveChart": {
+              "methods": [
+                "remove_chart"
+              ]
+            },
+            "UpdateNativeDashboard": {
+              "methods": [
+                "update_native_dashboard"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "NativeDashboardServiceClient",
+          "rpcs": {
+            "AddChart": {
+              "methods": [
+                "add_chart"
+              ]
+            },
+            "CreateNativeDashboard": {
+              "methods": [
+                "create_native_dashboard"
+              ]
+            },
+            "DeleteNativeDashboard": {
+              "methods": [
+                "delete_native_dashboard"
+              ]
+            },
+            "DuplicateChart": {
+              "methods": [
+                "duplicate_chart"
+              ]
+            },
+            "DuplicateNativeDashboard": {
+              "methods": [
+                "duplicate_native_dashboard"
+              ]
+            },
+            "EditChart": {
+              "methods": [
+                "edit_chart"
+              ]
+            },
+            "ExportNativeDashboards": {
+              "methods": [
+                "export_native_dashboards"
+              ]
+            },
+            "GetNativeDashboard": {
+              "methods": [
+                "get_native_dashboard"
+              ]
+            },
+            "ImportNativeDashboards": {
+              "methods": [
+                "import_native_dashboards"
+              ]
+            },
+            "ListNativeDashboards": {
+              "methods": [
+                "list_native_dashboards"
+              ]
+            },
+            "RemoveChart": {
+              "methods": [
+                "remove_chart"
+              ]
+            },
+            "UpdateNativeDashboard": {
+              "methods": [
+                "update_native_dashboard"
               ]
             }
           }

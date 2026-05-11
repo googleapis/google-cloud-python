@@ -45,8 +45,8 @@ class LineItem(proto.Message):
             Identifier. The resource name of the ``LineItem``. Format:
             ``networks/{network_code}/lineItems/{line_item_id}``
         order (str):
-            Output only. The ID of the Order to which the LineItem
-            belongs. This attribute is required. Format:
+            Required. Immutable. The ID of the Order to which the
+            LineItem belongs. Format:
             ``networks/{network_code}/orders/{order}``
 
             This field is a member of `oneof`_ ``_order``.

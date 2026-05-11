@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -9219,7 +9219,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_assets_rest_unset_required_fields():
@@ -9333,7 +9333,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_assets_rest_unset_required_fields():
@@ -9563,7 +9563,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_get_assets_history_rest_unset_required_fields():
@@ -9680,7 +9680,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_feed_rest_unset_required_fields():
@@ -9846,7 +9846,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_feed_rest_unset_required_fields():
@@ -10012,7 +10012,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_feeds_rest_unset_required_fields():
@@ -10174,7 +10174,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_feed_rest_unset_required_fields():
@@ -10337,7 +10337,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_feed_rest_unset_required_fields():
@@ -10503,7 +10503,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_all_resources_rest_unset_required_fields():
@@ -10737,7 +10737,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_all_iam_policies_rest_unset_required_fields():
@@ -10964,7 +10964,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_iam_policy_rest_unset_required_fields():
@@ -11073,7 +11073,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
@@ -11198,7 +11198,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_move_rest_unset_required_fields():
@@ -11311,7 +11311,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_assets_rest_unset_required_fields():
@@ -11437,7 +11437,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_saved_query_rest_unset_required_fields():
@@ -11607,7 +11607,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_saved_query_rest_unset_required_fields():
@@ -11775,7 +11775,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_saved_queries_rest_unset_required_fields():
@@ -12001,7 +12001,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_saved_query_rest_unset_required_fields():
@@ -12166,7 +12166,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_saved_query_rest_unset_required_fields():
@@ -12343,7 +12343,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_get_effective_iam_policies_rest_unset_required_fields():
@@ -12468,7 +12468,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_org_policies_rest_unset_required_fields():
@@ -12713,7 +12713,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
@@ -12958,7 +12958,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_org_policy_governed_assets_rest_unset_required_fields():

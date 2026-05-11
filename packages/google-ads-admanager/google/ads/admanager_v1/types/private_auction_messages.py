@@ -39,7 +39,7 @@ class PrivateAuction(proto.Message):
             Format:
             ``networks/{network_code}/privateAuctions/{private_auction_id}``
         private_auction_id (int):
-            Output only. ``PrivateAuction`` ID.
+            Output only. Deprecated: ``PrivateAuction`` ID.
 
             This field is a member of `oneof`_ ``_private_auction_id``.
         display_name (str):
