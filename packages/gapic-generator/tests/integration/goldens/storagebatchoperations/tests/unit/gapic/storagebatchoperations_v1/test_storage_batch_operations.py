@@ -3724,7 +3724,7 @@ def test_list_jobs_rest_required_fields(request_type=storage_batch_operations.Li
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_jobs_rest_unset_required_fields():
@@ -3952,7 +3952,7 @@ def test_get_job_rest_required_fields(request_type=storage_batch_operations.GetJ
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_job_rest_unset_required_fields():
@@ -4133,19 +4133,18 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
                 ),
             ]
             # Ensure that the uuid4 field is set according to AIP 4235
-            # and remove it so the expected/actual comparison succeeds.
-            # Otherwise, the actual will differ from the expected since
-            # this field was automatically populated.
-            found_field = None
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
                     assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
-                    found_field = i
                     break
-            if found_field is not None:
-                del req.call_args.kwargs['params'][found_field]
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(
+                ("requestId", mock.ANY)
+            )
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_job_rest_unset_required_fields():
@@ -4312,19 +4311,18 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
             expected_params = [
             ]
             # Ensure that the uuid4 field is set according to AIP 4235
-            # and remove it so the expected/actual comparison succeeds.
-            # Otherwise, the actual will differ from the expected since
-            # this field was automatically populated.
-            found_field = None
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
                     assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
-                    found_field = i
                     break
-            if found_field is not None:
-                del req.call_args.kwargs['params'][found_field]
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(
+                ("requestId", mock.ANY)
+            )
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_job_rest_unset_required_fields():
@@ -4489,19 +4487,18 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
             expected_params = [
             ]
             # Ensure that the uuid4 field is set according to AIP 4235
-            # and remove it so the expected/actual comparison succeeds.
-            # Otherwise, the actual will differ from the expected since
-            # this field was automatically populated.
-            found_field = None
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "requestId":
                     assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", value)
-                    found_field = i
                     break
-            if found_field is not None:
-                del req.call_args.kwargs['params'][found_field]
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(
+                ("requestId", mock.ANY)
+            )
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_job_rest_unset_required_fields():
@@ -4669,7 +4666,7 @@ def test_list_bucket_operations_rest_required_fields(request_type=storage_batch_
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_bucket_operations_rest_unset_required_fields():
@@ -4897,7 +4894,7 @@ def test_get_bucket_operation_rest_required_fields(request_type=storage_batch_op
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_bucket_operation_rest_unset_required_fields():
