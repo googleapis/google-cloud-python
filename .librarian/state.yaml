@@ -2812,6 +2812,7 @@ libraries:
         service_config: geminidataanalytics_v1beta.yaml
       - path: google/cloud/geminidataanalytics/v1alpha
         service_config: geminidataanalytics_v1alpha.yaml
+      - path: google/cloud/geminidataanalytics/v1
     source_roots:
       - packages/google-cloud-geminidataanalytics
     preserve_regex:

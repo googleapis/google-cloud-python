@@ -1153,10 +1153,11 @@ libraries:
   - name: google-cloud-geminidataanalytics
     version: 0.12.0
     apis:
+      - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
       - path: google/cloud/geminidataanalytics/v1alpha
     python:
-      default_version: v1alpha
+      default_version: v1
   - name: google-cloud-gke-backup
     version: 0.8.0
     apis:
