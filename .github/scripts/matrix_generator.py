@@ -11,7 +11,11 @@ MAMMOTH_OVERRIDES = {
     "google-cloud-bigquery": 9999,
     "google-cloud-storage": 9999,
     "google-cloud-aiplatform": 9999,
-    "pandas-gbq": 9999
+    "pandas-gbq": 9999,
+    "google-cloud-compute": 9999,
+    "google-cloud-compute-v1": 9999,
+    "google-cloud-compute-v1beta": 9999,
+    "google-cloud-discoveryengine": 9999
 }
 
 def calculate_package_weight(pkg_path: str) -> int:

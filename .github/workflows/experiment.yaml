@@ -31,7 +31,7 @@ jobs:
         id: generate-matrix
         env:
           CHANGED_DIRS: ${{ steps.changes.outputs.all_changed_files }}
-        run: python .github/scripts/matrix_generator.py --matrix-multiplier 6 --max-vms 40
+        run: python .github/scripts/matrix_generator.py --matrix-multiplier 6 --max-vms 10
 
   # ==========================================
   # 2. HORIZONTAL EXECUTION
