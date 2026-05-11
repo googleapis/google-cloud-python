@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.37.0...google-cloud-pubsub-v2.38.0) (2026-05-06)
+
 ## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.36.0...google-cloud-pubsub-v2.37.0) (2026-04-09)
 
 

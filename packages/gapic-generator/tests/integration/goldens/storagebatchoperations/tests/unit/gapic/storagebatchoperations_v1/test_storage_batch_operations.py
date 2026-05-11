@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -3800,7 +3800,7 @@ def test_list_jobs_rest_required_fields(request_type=storage_batch_operations.Li
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_jobs_rest_unset_required_fields():
@@ -4028,7 +4028,7 @@ def test_get_job_rest_required_fields(request_type=storage_batch_operations.GetJ
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_job_rest_unset_required_fields():
@@ -4221,7 +4221,7 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
             if found_field is not None:
                 del req.call_args.kwargs['params'][found_field]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_job_rest_unset_required_fields():
@@ -4400,7 +4400,7 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
             if found_field is not None:
                 del req.call_args.kwargs['params'][found_field]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_job_rest_unset_required_fields():
@@ -4577,7 +4577,7 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
             if found_field is not None:
                 del req.call_args.kwargs['params'][found_field]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_job_rest_unset_required_fields():
@@ -4745,7 +4745,7 @@ def test_list_bucket_operations_rest_required_fields(request_type=storage_batch_
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_bucket_operations_rest_unset_required_fields():
@@ -4973,7 +4973,7 @@ def test_get_bucket_operation_rest_required_fields(request_type=storage_batch_op
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_bucket_operation_rest_unset_required_fields():

@@ -32,6 +32,7 @@ from requests import __version__ as requests_version
 from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
 from google.cloud.spanner_v1.types import (
     commit_response,
+    location,
     result_set,
     spanner,
     transaction,
@@ -144,6 +145,14 @@ class SpannerRestInterceptor:
                 return request, metadata
 
             def post_execute_streaming_sql(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_cache_update(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_cache_update(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -590,6 +599,56 @@ class SpannerRestInterceptor:
         `post_execute_streaming_sql` interceptor. The (possibly modified) response returned by
         `post_execute_streaming_sql` will be passed to
         `post_execute_streaming_sql_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_cache_update(
+        self,
+        request: spanner.FetchCacheUpdateRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner.FetchCacheUpdateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_cache_update
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Spanner server.
+        """
+        return request, metadata
+
+    def post_fetch_cache_update(
+        self, response: rest_streaming.ResponseIterator
+    ) -> rest_streaming.ResponseIterator:
+        """Post-rpc interceptor for fetch_cache_update
+
+        DEPRECATED. Please use the `post_fetch_cache_update_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Spanner server but before
+        it is returned to user code. This `post_fetch_cache_update` interceptor runs
+        before the `post_fetch_cache_update_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_cache_update_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_cache_update
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_cache_update_with_metadata`
+        interceptor in new development instead of the `post_fetch_cache_update` interceptor.
+        When both interceptors are used, this `post_fetch_cache_update_with_metadata` interceptor runs after the
+        `post_fetch_cache_update` interceptor. The (possibly modified) response returned by
+        `post_fetch_cache_update` will be passed to
+        `post_fetch_cache_update_with_metadata`.
         """
         return response, metadata
 
@@ -2357,6 +2416,166 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 )
             return resp
 
+    class _FetchCacheUpdate(
+        _BaseSpannerRestTransport._BaseFetchCacheUpdate, SpannerRestStub
+    ):
+        def __hash__(self):
+            return hash("SpannerRestTransport.FetchCacheUpdate")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: spanner.FetchCacheUpdateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            r"""Call the fetch cache update method over HTTP.
+
+            Args:
+                request (~.spanner.FetchCacheUpdateRequest):
+                    The request object. The request for
+                [FetchCacheUpdate][google.spanner.v1.Spanner.FetchCacheUpdate].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.location.CacheUpdate:
+                    A ``CacheUpdate`` expresses a set of changes the client
+                should incorporate into its location cache. These
+                changes may or may not be newer than what the client has
+                in its cache, and should be discarded if necessary.
+                ``CacheUpdate``\ s can be obtained in response to
+                requests that included a ``RoutingHint`` field, but may
+                also be obtained by explicit location-fetching RPCs
+                which may be added in the future.
+
+            """
+
+            http_options = (
+                _BaseSpannerRestTransport._BaseFetchCacheUpdate._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_cache_update(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseSpannerRestTransport._BaseFetchCacheUpdate._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseSpannerRestTransport._BaseFetchCacheUpdate._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseSpannerRestTransport._BaseFetchCacheUpdate._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.FetchCacheUpdate",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "FetchCacheUpdate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SpannerRestTransport._FetchCacheUpdate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rest_streaming.ResponseIterator(response, location.CacheUpdate)
+
+            resp = self._interceptor.post_fetch_cache_update(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_cache_update_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.fetch_cache_update",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "FetchCacheUpdate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetSession(_BaseSpannerRestTransport._BaseGetSession, SpannerRestStub):
         def __hash__(self):
             return hash("SpannerRestTransport.GetSession")
@@ -3457,6 +3676,14 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExecuteStreamingSql(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_cache_update(
+        self,
+    ) -> Callable[[spanner.FetchCacheUpdateRequest], location.CacheUpdate]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchCacheUpdate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_session(self) -> Callable[[spanner.GetSessionRequest], spanner.Session]:

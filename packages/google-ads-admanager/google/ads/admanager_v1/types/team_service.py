@@ -81,6 +81,17 @@ class ListTeamsRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>accessType</code></li>
+              <li><code>allCompaniesAccess</code></li>
+              <li><code>allInventoryAccess</code></li>
+              <li><code>description</code></li>
+              <li><code>displayName</code></li>
+              <li><code>name</code></li>
+              <li><code>status</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -232,7 +243,7 @@ class UpdateTeamRequest(proto.Message):
             The ``Team``'s ``name`` is used to identify the ``Team`` to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     team: team_messages.Team = proto.Field(
