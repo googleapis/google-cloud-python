@@ -1130,7 +1130,8 @@ async def test_list_jobs_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.ListJobsRequest()        assert args[0] == request
+        request = storage_batch_operations.ListJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
@@ -1646,7 +1647,8 @@ async def test_get_job_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.GetJobRequest()        assert args[0] == request
+        request = storage_batch_operations.GetJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_batch_operations_types.Job)
@@ -1975,7 +1977,9 @@ async def test_create_job_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.CreateJobRequest()        request.request_id = "explicit value for autopopulate-able field"        assert args[0] == request
+        request = storage_batch_operations.CreateJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2307,7 +2311,9 @@ async def test_delete_job_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.DeleteJobRequest()        request.request_id = "explicit value for autopopulate-able field"        assert args[0] == request
+        request = storage_batch_operations.DeleteJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2619,7 +2625,9 @@ async def test_cancel_job_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.CancelJobRequest()        request.request_id = "explicit value for autopopulate-able field"        assert args[0] == request
+        request = storage_batch_operations.CancelJobRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_batch_operations.CancelJobResponse)
@@ -2936,7 +2944,8 @@ async def test_list_bucket_operations_async(request_type, transport: str = 'grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.ListBucketOperationsRequest()        assert args[0] == request
+        request = storage_batch_operations.ListBucketOperationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketOperationsAsyncPager)
@@ -3446,7 +3455,8 @@ async def test_get_bucket_operation_async(request_type, transport: str = 'grpc_a
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = storage_batch_operations.GetBucketOperationRequest()        assert args[0] == request
+        request = storage_batch_operations.GetBucketOperationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_batch_operations_types.BucketOperation)

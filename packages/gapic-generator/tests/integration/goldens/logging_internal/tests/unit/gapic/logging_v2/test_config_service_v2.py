@@ -1103,7 +1103,8 @@ async def test_list_buckets_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.ListBucketsRequest()        assert args[0] == request
+        request = logging_config.ListBucketsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsAsyncPager)
@@ -1624,7 +1625,8 @@ async def test_get_bucket_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetBucketRequest()        assert args[0] == request
+        request = logging_config.GetBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
@@ -1866,7 +1868,8 @@ async def test_create_bucket_async_async(request_type, transport: str = 'grpc_as
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateBucketRequest()        assert args[0] == request
+        request = logging_config.CreateBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2099,7 +2102,8 @@ async def test_update_bucket_async_async(request_type, transport: str = 'grpc_as
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateBucketRequest()        assert args[0] == request
+        request = logging_config.UpdateBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2345,7 +2349,8 @@ async def test_create_bucket_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateBucketRequest()        assert args[0] == request
+        request = logging_config.CreateBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
@@ -2596,7 +2601,8 @@ async def test_update_bucket_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateBucketRequest()        assert args[0] == request
+        request = logging_config.UpdateBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
@@ -2824,7 +2830,8 @@ async def test_delete_bucket_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.DeleteBucketRequest()        assert args[0] == request
+        request = logging_config.DeleteBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3045,7 +3052,8 @@ async def test_undelete_bucket_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UndeleteBucketRequest()        assert args[0] == request
+        request = logging_config.UndeleteBucketRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3273,7 +3281,8 @@ async def test__list_views_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.ListViewsRequest()        assert args[0] == request
+        request = logging_config.ListViewsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsAsyncPager)
@@ -3782,7 +3791,8 @@ async def test__get_view_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetViewRequest()        assert args[0] == request
+        request = logging_config.GetViewRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
@@ -4019,7 +4029,8 @@ async def test__create_view_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateViewRequest()        assert args[0] == request
+        request = logging_config.CreateViewRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
@@ -4254,7 +4265,8 @@ async def test__update_view_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateViewRequest()        assert args[0] == request
+        request = logging_config.UpdateViewRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
@@ -4478,7 +4490,8 @@ async def test__delete_view_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.DeleteViewRequest()        assert args[0] == request
+        request = logging_config.DeleteViewRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4706,7 +4719,8 @@ async def test__list_sinks_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.ListSinksRequest()        assert args[0] == request
+        request = logging_config.ListSinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksAsyncPager)
@@ -5230,7 +5244,8 @@ async def test__get_sink_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetSinkRequest()        assert args[0] == request
+        request = logging_config.GetSinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
@@ -5567,7 +5582,8 @@ async def test__create_sink_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateSinkRequest()        assert args[0] == request
+        request = logging_config.CreateSinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
@@ -5914,7 +5930,8 @@ async def test__update_sink_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateSinkRequest()        assert args[0] == request
+        request = logging_config.UpdateSinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
@@ -6245,7 +6262,8 @@ async def test__delete_sink_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.DeleteSinkRequest()        assert args[0] == request
+        request = logging_config.DeleteSinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6562,7 +6580,8 @@ async def test__create_link_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateLinkRequest()        assert args[0] == request
+        request = logging_config.CreateLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6899,7 +6918,8 @@ async def test__delete_link_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.DeleteLinkRequest()        assert args[0] == request
+        request = logging_config.DeleteLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7211,7 +7231,8 @@ async def test__list_links_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.ListLinksRequest()        assert args[0] == request
+        request = logging_config.ListLinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinksAsyncPager)
@@ -7720,7 +7741,8 @@ async def test__get_link_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetLinkRequest()        assert args[0] == request
+        request = logging_config.GetLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Link)
@@ -8033,7 +8055,8 @@ async def test__list_exclusions_async(request_type, transport: str = 'grpc_async
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.ListExclusionsRequest()        assert args[0] == request
+        request = logging_config.ListExclusionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsAsyncPager)
@@ -8545,7 +8568,8 @@ async def test__get_exclusion_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetExclusionRequest()        assert args[0] == request
+        request = logging_config.GetExclusionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
@@ -8866,7 +8890,8 @@ async def test__create_exclusion_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CreateExclusionRequest()        assert args[0] == request
+        request = logging_config.CreateExclusionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
@@ -9197,7 +9222,8 @@ async def test__update_exclusion_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateExclusionRequest()        assert args[0] == request
+        request = logging_config.UpdateExclusionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
@@ -9524,7 +9550,8 @@ async def test__delete_exclusion_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.DeleteExclusionRequest()        assert args[0] == request
+        request = logging_config.DeleteExclusionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9841,7 +9868,8 @@ async def test__get_cmek_settings_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetCmekSettingsRequest()        assert args[0] == request
+        request = logging_config.GetCmekSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
@@ -10080,7 +10108,8 @@ async def test__update_cmek_settings_async(request_type, transport: str = 'grpc_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateCmekSettingsRequest()        assert args[0] == request
+        request = logging_config.UpdateCmekSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
@@ -10322,7 +10351,8 @@ async def test__get_settings_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.GetSettingsRequest()        assert args[0] == request
+        request = logging_config.GetSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
@@ -10647,7 +10677,8 @@ async def test__update_settings_async(request_type, transport: str = 'grpc_async
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.UpdateSettingsRequest()        assert args[0] == request
+        request = logging_config.UpdateSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
@@ -10981,7 +11012,8 @@ async def test__copy_log_entries_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_config.CopyLogEntriesRequest()        assert args[0] == request
+        request = logging_config.CopyLogEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

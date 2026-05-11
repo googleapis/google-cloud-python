@@ -1103,7 +1103,8 @@ async def test__list_log_metrics_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_metrics.ListLogMetricsRequest()        assert args[0] == request
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
@@ -1624,7 +1625,8 @@ async def test__get_log_metric_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_metrics.GetLogMetricRequest()        assert args[0] == request
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1957,7 +1959,8 @@ async def test__create_log_metric_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_metrics.CreateLogMetricRequest()        assert args[0] == request
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -2300,7 +2303,8 @@ async def test__update_log_metric_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_metrics.UpdateLogMetricRequest()        assert args[0] == request
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -2620,7 +2624,8 @@ async def test__delete_log_metric_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging_metrics.DeleteLogMetricRequest()        assert args[0] == request
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

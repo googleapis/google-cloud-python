@@ -1112,7 +1112,8 @@ async def test_generate_access_token_async(request_type, transport: str = 'grpc_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = common.GenerateAccessTokenRequest()        assert args[0] == request
+        request = common.GenerateAccessTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
@@ -1449,7 +1450,8 @@ async def test_generate_id_token_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = common.GenerateIdTokenRequest()        assert args[0] == request
+        request = common.GenerateIdTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
@@ -1791,7 +1793,8 @@ async def test_sign_blob_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = common.SignBlobRequest()        assert args[0] == request
+        request = common.SignBlobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
@@ -2126,7 +2129,8 @@ async def test_sign_jwt_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = common.SignJwtRequest()        assert args[0] == request
+        request = common.SignJwtRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)

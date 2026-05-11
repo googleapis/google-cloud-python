@@ -329,9 +329,9 @@ async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyn
         assert next(args[0]) == request
         {% else %}
         request = {{ method.input.ident }}()
-        {%- for auto_populated_field in auto_populated_fields %}
+        {% for auto_populated_field in auto_populated_fields %}
         request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
-        {%- endfor %}
+        {% endfor %}
         assert args[0] == request
         {% endif %}
 

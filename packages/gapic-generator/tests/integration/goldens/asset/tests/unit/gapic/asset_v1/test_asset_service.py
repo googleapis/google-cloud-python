@@ -1129,7 +1129,8 @@ async def test_export_assets_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.ExportAssetsRequest()        assert args[0] == request
+        request = asset_service.ExportAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1357,7 +1358,8 @@ async def test_list_assets_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.ListAssetsRequest()        assert args[0] == request
+        request = asset_service.ListAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
@@ -1857,7 +1859,8 @@ async def test_batch_get_assets_history_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.BatchGetAssetsHistoryRequest()        assert args[0] == request
+        request = asset_service.BatchGetAssetsHistoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
@@ -2097,7 +2100,8 @@ async def test_create_feed_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.CreateFeedRequest()        assert args[0] == request
+        request = asset_service.CreateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -2422,7 +2426,8 @@ async def test_get_feed_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.GetFeedRequest()        assert args[0] == request
+        request = asset_service.GetFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -2732,7 +2737,8 @@ async def test_list_feeds_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.ListFeedsRequest()        assert args[0] == request
+        request = asset_service.ListFeedsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
@@ -3050,7 +3056,8 @@ async def test_update_feed_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.UpdateFeedRequest()        assert args[0] == request
+        request = asset_service.UpdateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -3358,7 +3365,8 @@ async def test_delete_feed_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.DeleteFeedRequest()        assert args[0] == request
+        request = asset_service.DeleteFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3672,7 +3680,8 @@ async def test_search_all_resources_async(request_type, transport: str = 'grpc_a
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.SearchAllResourcesRequest()        assert args[0] == request
+        request = asset_service.SearchAllResourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesAsyncPager)
@@ -4201,7 +4210,8 @@ async def test_search_all_iam_policies_async(request_type, transport: str = 'grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.SearchAllIamPoliciesRequest()        assert args[0] == request
+        request = asset_service.SearchAllIamPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesAsyncPager)
@@ -4714,7 +4724,8 @@ async def test_analyze_iam_policy_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeIamPolicyRequest()        assert args[0] == request
+        request = asset_service.AnalyzeIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
@@ -4948,7 +4959,8 @@ async def test_analyze_iam_policy_longrunning_async(request_type, transport: str
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeIamPolicyLongrunningRequest()        assert args[0] == request
+        request = asset_service.AnalyzeIamPolicyLongrunningRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5173,7 +5185,8 @@ async def test_analyze_move_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeMoveRequest()        assert args[0] == request
+        request = asset_service.AnalyzeMoveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
@@ -5408,7 +5421,8 @@ async def test_query_assets_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.QueryAssetsRequest()        assert args[0] == request
+        request = asset_service.QueryAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.QueryAssetsResponse)
@@ -5647,7 +5661,8 @@ async def test_create_saved_query_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.CreateSavedQueryRequest()        assert args[0] == request
+        request = asset_service.CreateSavedQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
@@ -5988,7 +6003,8 @@ async def test_get_saved_query_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.GetSavedQueryRequest()        assert args[0] == request
+        request = asset_service.GetSavedQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
@@ -6304,7 +6320,8 @@ async def test_list_saved_queries_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.ListSavedQueriesRequest()        assert args[0] == request
+        request = asset_service.ListSavedQueriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
@@ -6814,7 +6831,8 @@ async def test_update_saved_query_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.UpdateSavedQueryRequest()        assert args[0] == request
+        request = asset_service.UpdateSavedQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
@@ -7131,7 +7149,8 @@ async def test_delete_saved_query_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.DeleteSavedQueryRequest()        assert args[0] == request
+        request = asset_service.DeleteSavedQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7436,7 +7455,8 @@ async def test_batch_get_effective_iam_policies_async(request_type, transport: s
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.BatchGetEffectiveIamPoliciesRequest()        assert args[0] == request
+        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
@@ -7668,7 +7688,8 @@ async def test_analyze_org_policies_async(request_type, transport: str = 'grpc_a
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeOrgPoliciesRequest()        assert args[0] == request
+        request = asset_service.AnalyzeOrgPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
@@ -8197,7 +8218,8 @@ async def test_analyze_org_policy_governed_containers_async(request_type, transp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()        assert args[0] == request
+        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
@@ -8726,7 +8748,8 @@ async def test_analyze_org_policy_governed_assets_async(request_type, transport:
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()        assert args[0] == request
+        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)

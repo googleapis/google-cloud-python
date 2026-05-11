@@ -1135,7 +1135,8 @@ async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.ListInstancesRequest()        assert args[0] == request
+        request = cloud_redis.ListInstancesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
@@ -1717,7 +1718,8 @@ async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.GetInstanceRequest()        assert args[0] == request
+        request = cloud_redis.GetInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
@@ -2052,7 +2054,8 @@ async def test_get_instance_auth_string_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.GetInstanceAuthStringRequest()        assert args[0] == request
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
@@ -2370,7 +2373,8 @@ async def test_create_instance_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.CreateInstanceRequest()        assert args[0] == request
+        request = cloud_redis.CreateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2705,7 +2709,8 @@ async def test_update_instance_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.UpdateInstanceRequest()        assert args[0] == request
+        request = cloud_redis.UpdateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3034,7 +3039,8 @@ async def test_upgrade_instance_async(request_type, transport: str = 'grpc_async
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.UpgradeInstanceRequest()        assert args[0] == request
+        request = cloud_redis.UpgradeInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3361,7 +3367,8 @@ async def test_import_instance_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.ImportInstanceRequest()        assert args[0] == request
+        request = cloud_redis.ImportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3688,7 +3695,8 @@ async def test_export_instance_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.ExportInstanceRequest()        assert args[0] == request
+        request = cloud_redis.ExportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4015,7 +4023,8 @@ async def test_failover_instance_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.FailoverInstanceRequest()        assert args[0] == request
+        request = cloud_redis.FailoverInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4342,7 +4351,8 @@ async def test_delete_instance_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.DeleteInstanceRequest()        assert args[0] == request
+        request = cloud_redis.DeleteInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4659,7 +4669,8 @@ async def test_reschedule_maintenance_async(request_type, transport: str = 'grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = cloud_redis.RescheduleMaintenanceRequest()        assert args[0] == request
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

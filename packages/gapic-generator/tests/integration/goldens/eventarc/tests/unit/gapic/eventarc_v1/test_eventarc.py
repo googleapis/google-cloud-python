@@ -1161,7 +1161,8 @@ async def test_get_trigger_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetTriggerRequest()        assert args[0] == request
+        request = eventarc.GetTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
@@ -1485,7 +1486,8 @@ async def test_list_triggers_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListTriggersRequest()        assert args[0] == request
+        request = eventarc.ListTriggersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersAsyncPager)
@@ -1998,7 +2000,8 @@ async def test_create_trigger_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateTriggerRequest()        assert args[0] == request
+        request = eventarc.CreateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2333,7 +2336,8 @@ async def test_update_trigger_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateTriggerRequest()        assert args[0] == request
+        request = eventarc.UpdateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2672,7 +2676,8 @@ async def test_delete_trigger_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteTriggerRequest()        assert args[0] == request
+        request = eventarc.DeleteTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3011,7 +3016,8 @@ async def test_get_channel_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetChannelRequest()        assert args[0] == request
+        request = eventarc.GetChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
@@ -3333,7 +3339,8 @@ async def test_list_channels_async(request_type, transport: str = 'grpc_asyncio'
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListChannelsRequest()        assert args[0] == request
+        request = eventarc.ListChannelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsAsyncPager)
@@ -3846,7 +3853,8 @@ async def test_create_channel_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateChannelRequest()        assert args[0] == request
+        request = eventarc.CreateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4181,7 +4189,8 @@ async def test_update_channel_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateChannelRequest()        assert args[0] == request
+        request = eventarc.UpdateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4508,7 +4517,8 @@ async def test_delete_channel_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteChannelRequest()        assert args[0] == request
+        request = eventarc.DeleteChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4821,7 +4831,8 @@ async def test_get_provider_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetProviderRequest()        assert args[0] == request
+        request = eventarc.GetProviderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
@@ -5140,7 +5151,8 @@ async def test_list_providers_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListProvidersRequest()        assert args[0] == request
+        request = eventarc.ListProvidersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersAsyncPager)
@@ -5653,7 +5665,8 @@ async def test_get_channel_connection_async(request_type, transport: str = 'grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetChannelConnectionRequest()        assert args[0] == request
+        request = eventarc.GetChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
@@ -5970,7 +5983,8 @@ async def test_list_channel_connections_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListChannelConnectionsRequest()        assert args[0] == request
+        request = eventarc.ListChannelConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
@@ -6483,7 +6497,8 @@ async def test_create_channel_connection_async(request_type, transport: str = 'g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateChannelConnectionRequest()        assert args[0] == request
+        request = eventarc.CreateChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6820,7 +6835,8 @@ async def test_delete_channel_connection_async(request_type, transport: str = 'g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteChannelConnectionRequest()        assert args[0] == request
+        request = eventarc.DeleteChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7133,7 +7149,8 @@ async def test_get_google_channel_config_async(request_type, transport: str = 'g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetGoogleChannelConfigRequest()        assert args[0] == request
+        request = eventarc.GetGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
@@ -7444,7 +7461,8 @@ async def test_update_google_channel_config_async(request_type, transport: str =
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateGoogleChannelConfigRequest()        assert args[0] == request
+        request = eventarc.UpdateGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
@@ -7776,7 +7794,8 @@ async def test_get_message_bus_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetMessageBusRequest()        assert args[0] == request
+        request = eventarc.GetMessageBusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, message_bus.MessageBus)
@@ -8098,7 +8117,8 @@ async def test_list_message_buses_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListMessageBusesRequest()        assert args[0] == request
+        request = eventarc.ListMessageBusesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessageBusesAsyncPager)
@@ -8610,7 +8630,8 @@ async def test_list_message_bus_enrollments_async(request_type, transport: str =
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListMessageBusEnrollmentsRequest()        assert args[0] == request
+        request = eventarc.ListMessageBusEnrollmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessageBusEnrollmentsAsyncPager)
@@ -9124,7 +9145,8 @@ async def test_create_message_bus_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateMessageBusRequest()        assert args[0] == request
+        request = eventarc.CreateMessageBusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9459,7 +9481,8 @@ async def test_update_message_bus_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateMessageBusRequest()        assert args[0] == request
+        request = eventarc.UpdateMessageBusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9788,7 +9811,8 @@ async def test_delete_message_bus_async(request_type, transport: str = 'grpc_asy
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteMessageBusRequest()        assert args[0] == request
+        request = eventarc.DeleteMessageBusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10126,7 +10150,8 @@ async def test_get_enrollment_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetEnrollmentRequest()        assert args[0] == request
+        request = eventarc.GetEnrollmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, enrollment.Enrollment)
@@ -10450,7 +10475,8 @@ async def test_list_enrollments_async(request_type, transport: str = 'grpc_async
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListEnrollmentsRequest()        assert args[0] == request
+        request = eventarc.ListEnrollmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnrollmentsAsyncPager)
@@ -10963,7 +10989,8 @@ async def test_create_enrollment_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateEnrollmentRequest()        assert args[0] == request
+        request = eventarc.CreateEnrollmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11298,7 +11325,8 @@ async def test_update_enrollment_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateEnrollmentRequest()        assert args[0] == request
+        request = eventarc.UpdateEnrollmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11627,7 +11655,8 @@ async def test_delete_enrollment_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteEnrollmentRequest()        assert args[0] == request
+        request = eventarc.DeleteEnrollmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11962,7 +11991,8 @@ async def test_get_pipeline_async(request_type, transport: str = 'grpc_asyncio')
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetPipelineRequest()        assert args[0] == request
+        request = eventarc.GetPipelineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pipeline.Pipeline)
@@ -12285,7 +12315,8 @@ async def test_list_pipelines_async(request_type, transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListPipelinesRequest()        assert args[0] == request
+        request = eventarc.ListPipelinesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPipelinesAsyncPager)
@@ -12798,7 +12829,8 @@ async def test_create_pipeline_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreatePipelineRequest()        assert args[0] == request
+        request = eventarc.CreatePipelineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13133,7 +13165,8 @@ async def test_update_pipeline_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdatePipelineRequest()        assert args[0] == request
+        request = eventarc.UpdatePipelineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13462,7 +13495,8 @@ async def test_delete_pipeline_async(request_type, transport: str = 'grpc_asynci
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeletePipelineRequest()        assert args[0] == request
+        request = eventarc.DeletePipelineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13797,7 +13831,8 @@ async def test_get_google_api_source_async(request_type, transport: str = 'grpc_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.GetGoogleApiSourceRequest()        assert args[0] == request
+        request = eventarc.GetGoogleApiSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_api_source.GoogleApiSource)
@@ -14120,7 +14155,8 @@ async def test_list_google_api_sources_async(request_type, transport: str = 'grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.ListGoogleApiSourcesRequest()        assert args[0] == request
+        request = eventarc.ListGoogleApiSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGoogleApiSourcesAsyncPager)
@@ -14633,7 +14669,8 @@ async def test_create_google_api_source_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.CreateGoogleApiSourceRequest()        assert args[0] == request
+        request = eventarc.CreateGoogleApiSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14968,7 +15005,8 @@ async def test_update_google_api_source_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.UpdateGoogleApiSourceRequest()        assert args[0] == request
+        request = eventarc.UpdateGoogleApiSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -15297,7 +15335,8 @@ async def test_delete_google_api_source_async(request_type, transport: str = 'gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = eventarc.DeleteGoogleApiSourceRequest()        assert args[0] == request
+        request = eventarc.DeleteGoogleApiSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

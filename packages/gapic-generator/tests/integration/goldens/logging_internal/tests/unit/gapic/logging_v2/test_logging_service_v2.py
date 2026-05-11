@@ -1098,7 +1098,8 @@ async def test_delete_log_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging.DeleteLogRequest()        assert args[0] == request
+        request = logging.DeleteLogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1403,7 +1404,8 @@ async def test_write_log_entries_async(request_type, transport: str = 'grpc_asyn
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging.WriteLogEntriesRequest()        assert args[0] == request
+        request = logging.WriteLogEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging.WriteLogEntriesResponse)
@@ -1683,7 +1685,8 @@ async def test_list_log_entries_async(request_type, transport: str = 'grpc_async
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging.ListLogEntriesRequest()        assert args[0] == request
+        request = logging.ListLogEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesAsyncPager)
@@ -2139,7 +2142,8 @@ async def test_list_monitored_resource_descriptors_async(request_type, transport
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging.ListMonitoredResourceDescriptorsRequest()        assert args[0] == request
+        request = logging.ListMonitoredResourceDescriptorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsAsyncPager)
@@ -2498,7 +2502,8 @@ async def test_list_logs_async(request_type, transport: str = 'grpc_asyncio'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = logging.ListLogsRequest()        assert args[0] == request
+        request = logging.ListLogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogsAsyncPager)
