@@ -1055,9 +1055,10 @@ def test_get_trigger_non_empty_request_with_auto_populated_field():
         client.get_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetTriggerRequest(
+        request_msg = eventarc.GetTriggerRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_trigger_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1381,12 +1382,13 @@ def test_list_triggers_non_empty_request_with_auto_populated_field():
         client.list_triggers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListTriggersRequest(
+        request_msg = eventarc.ListTriggersRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_triggers_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1887,10 +1889,11 @@ def test_create_trigger_non_empty_request_with_auto_populated_field():
         client.create_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateTriggerRequest(
+        request_msg = eventarc.CreateTriggerRequest(
             parent='parent_value',
             trigger_id='trigger_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_trigger_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2224,8 +2227,9 @@ def test_update_trigger_non_empty_request_with_auto_populated_field():
         client.update_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateTriggerRequest(
+        request_msg = eventarc.UpdateTriggerRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_trigger_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2561,10 +2565,11 @@ def test_delete_trigger_non_empty_request_with_auto_populated_field():
         client.delete_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteTriggerRequest(
+        request_msg = eventarc.DeleteTriggerRequest(
             name='name_value',
             etag='etag_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_trigger_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2905,9 +2910,10 @@ def test_get_channel_non_empty_request_with_auto_populated_field():
         client.get_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelRequest(
+        request_msg = eventarc.GetChannelRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_channel_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3230,11 +3236,12 @@ def test_list_channels_non_empty_request_with_auto_populated_field():
         client.list_channels(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelsRequest(
+        request_msg = eventarc.ListChannelsRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
         )
+        assert args[0] == request_msg
 
 def test_list_channels_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3735,10 +3742,11 @@ def test_create_channel_non_empty_request_with_auto_populated_field():
         client.create_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelRequest(
+        request_msg = eventarc.CreateChannelRequest(
             parent='parent_value',
             channel_id='channel_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_channel_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4072,8 +4080,9 @@ def test_update_channel_non_empty_request_with_auto_populated_field():
         client.update_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateChannelRequest(
+        request_msg = eventarc.UpdateChannelRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_channel_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4398,9 +4407,10 @@ def test_delete_channel_non_empty_request_with_auto_populated_field():
         client.delete_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelRequest(
+        request_msg = eventarc.DeleteChannelRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_channel_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4720,9 +4730,10 @@ def test_get_provider_non_empty_request_with_auto_populated_field():
         client.get_provider(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetProviderRequest(
+        request_msg = eventarc.GetProviderRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_provider_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5036,12 +5047,13 @@ def test_list_providers_non_empty_request_with_auto_populated_field():
         client.list_providers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListProvidersRequest(
+        request_msg = eventarc.ListProvidersRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_providers_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5550,9 +5562,10 @@ def test_get_channel_connection_non_empty_request_with_auto_populated_field():
         client.get_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelConnectionRequest(
+        request_msg = eventarc.GetChannelConnectionRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_channel_connection_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5868,10 +5881,11 @@ def test_list_channel_connections_non_empty_request_with_auto_populated_field():
         client.list_channel_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelConnectionsRequest(
+        request_msg = eventarc.ListChannelConnectionsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_channel_connections_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6372,10 +6386,11 @@ def test_create_channel_connection_non_empty_request_with_auto_populated_field()
         client.create_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelConnectionRequest(
+        request_msg = eventarc.CreateChannelConnectionRequest(
             parent='parent_value',
             channel_connection_id='channel_connection_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_channel_connection_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6710,9 +6725,10 @@ def test_delete_channel_connection_non_empty_request_with_auto_populated_field()
         client.delete_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelConnectionRequest(
+        request_msg = eventarc.DeleteChannelConnectionRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_channel_connection_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7032,9 +7048,10 @@ def test_get_google_channel_config_non_empty_request_with_auto_populated_field()
         client.get_google_channel_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetGoogleChannelConfigRequest(
+        request_msg = eventarc.GetGoogleChannelConfigRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_google_channel_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7344,8 +7361,9 @@ def test_update_google_channel_config_non_empty_request_with_auto_populated_fiel
         client.update_google_channel_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateGoogleChannelConfigRequest(
+        request_msg = eventarc.UpdateGoogleChannelConfigRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_google_channel_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7672,9 +7690,10 @@ def test_get_message_bus_non_empty_request_with_auto_populated_field():
         client.get_message_bus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetMessageBusRequest(
+        request_msg = eventarc.GetMessageBusRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_message_bus_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7994,12 +8013,13 @@ def test_list_message_buses_non_empty_request_with_auto_populated_field():
         client.list_message_buses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListMessageBusesRequest(
+        request_msg = eventarc.ListMessageBusesRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_message_buses_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8507,10 +8527,11 @@ def test_list_message_bus_enrollments_non_empty_request_with_auto_populated_fiel
         client.list_message_bus_enrollments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListMessageBusEnrollmentsRequest(
+        request_msg = eventarc.ListMessageBusEnrollmentsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_message_bus_enrollments_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9013,10 +9034,11 @@ def test_create_message_bus_non_empty_request_with_auto_populated_field():
         client.create_message_bus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateMessageBusRequest(
+        request_msg = eventarc.CreateMessageBusRequest(
             parent='parent_value',
             message_bus_id='message_bus_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_message_bus_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9350,8 +9372,9 @@ def test_update_message_bus_non_empty_request_with_auto_populated_field():
         client.update_message_bus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateMessageBusRequest(
+        request_msg = eventarc.UpdateMessageBusRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_message_bus_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9677,10 +9700,11 @@ def test_delete_message_bus_non_empty_request_with_auto_populated_field():
         client.delete_message_bus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteMessageBusRequest(
+        request_msg = eventarc.DeleteMessageBusRequest(
             name='name_value',
             etag='etag_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_message_bus_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10020,9 +10044,10 @@ def test_get_enrollment_non_empty_request_with_auto_populated_field():
         client.get_enrollment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetEnrollmentRequest(
+        request_msg = eventarc.GetEnrollmentRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_enrollment_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10346,12 +10371,13 @@ def test_list_enrollments_non_empty_request_with_auto_populated_field():
         client.list_enrollments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListEnrollmentsRequest(
+        request_msg = eventarc.ListEnrollmentsRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_enrollments_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10852,10 +10878,11 @@ def test_create_enrollment_non_empty_request_with_auto_populated_field():
         client.create_enrollment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateEnrollmentRequest(
+        request_msg = eventarc.CreateEnrollmentRequest(
             parent='parent_value',
             enrollment_id='enrollment_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_enrollment_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11189,8 +11216,9 @@ def test_update_enrollment_non_empty_request_with_auto_populated_field():
         client.update_enrollment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateEnrollmentRequest(
+        request_msg = eventarc.UpdateEnrollmentRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_enrollment_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11516,10 +11544,11 @@ def test_delete_enrollment_non_empty_request_with_auto_populated_field():
         client.delete_enrollment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteEnrollmentRequest(
+        request_msg = eventarc.DeleteEnrollmentRequest(
             name='name_value',
             etag='etag_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_enrollment_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11857,9 +11886,10 @@ def test_get_pipeline_non_empty_request_with_auto_populated_field():
         client.get_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetPipelineRequest(
+        request_msg = eventarc.GetPipelineRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_pipeline_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -12181,12 +12211,13 @@ def test_list_pipelines_non_empty_request_with_auto_populated_field():
         client.list_pipelines(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListPipelinesRequest(
+        request_msg = eventarc.ListPipelinesRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_pipelines_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -12687,10 +12718,11 @@ def test_create_pipeline_non_empty_request_with_auto_populated_field():
         client.create_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreatePipelineRequest(
+        request_msg = eventarc.CreatePipelineRequest(
             parent='parent_value',
             pipeline_id='pipeline_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_pipeline_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13024,8 +13056,9 @@ def test_update_pipeline_non_empty_request_with_auto_populated_field():
         client.update_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdatePipelineRequest(
+        request_msg = eventarc.UpdatePipelineRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_pipeline_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13351,10 +13384,11 @@ def test_delete_pipeline_non_empty_request_with_auto_populated_field():
         client.delete_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeletePipelineRequest(
+        request_msg = eventarc.DeletePipelineRequest(
             name='name_value',
             etag='etag_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_pipeline_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13692,9 +13726,10 @@ def test_get_google_api_source_non_empty_request_with_auto_populated_field():
         client.get_google_api_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetGoogleApiSourceRequest(
+        request_msg = eventarc.GetGoogleApiSourceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_google_api_source_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14016,12 +14051,13 @@ def test_list_google_api_sources_non_empty_request_with_auto_populated_field():
         client.list_google_api_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListGoogleApiSourcesRequest(
+        request_msg = eventarc.ListGoogleApiSourcesRequest(
             parent='parent_value',
             page_token='page_token_value',
             order_by='order_by_value',
             filter='filter_value',
         )
+        assert args[0] == request_msg
 
 def test_list_google_api_sources_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14522,10 +14558,11 @@ def test_create_google_api_source_non_empty_request_with_auto_populated_field():
         client.create_google_api_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateGoogleApiSourceRequest(
+        request_msg = eventarc.CreateGoogleApiSourceRequest(
             parent='parent_value',
             google_api_source_id='google_api_source_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_google_api_source_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14859,8 +14896,9 @@ def test_update_google_api_source_non_empty_request_with_auto_populated_field():
         client.update_google_api_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateGoogleApiSourceRequest(
+        request_msg = eventarc.UpdateGoogleApiSourceRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_google_api_source_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -15186,10 +15224,11 @@ def test_delete_google_api_source_non_empty_request_with_auto_populated_field():
         client.delete_google_api_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteGoogleApiSourceRequest(
+        request_msg = eventarc.DeleteGoogleApiSourceRequest(
             name='name_value',
             etag='etag_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_google_api_source_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -22614,7 +22653,6 @@ def test_get_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -22637,7 +22675,6 @@ def test_list_triggers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -22660,7 +22697,6 @@ def test_create_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -22683,7 +22719,6 @@ def test_update_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -22706,7 +22741,6 @@ def test_delete_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -22729,7 +22763,6 @@ def test_get_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -22752,7 +22785,6 @@ def test_list_channels_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22775,7 +22807,6 @@ def test_create_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -22798,7 +22829,6 @@ def test_update_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -22821,7 +22851,6 @@ def test_delete_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -22844,7 +22873,6 @@ def test_get_provider_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetProviderRequest()
-
         assert args[0] == request_msg
 
 
@@ -22867,7 +22895,6 @@ def test_list_providers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListProvidersRequest()
-
         assert args[0] == request_msg
 
 
@@ -22890,7 +22917,6 @@ def test_get_channel_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22913,7 +22939,6 @@ def test_list_channel_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22936,7 +22961,6 @@ def test_create_channel_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22959,7 +22983,6 @@ def test_delete_channel_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22982,7 +23005,6 @@ def test_get_google_channel_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -23005,7 +23027,6 @@ def test_update_google_channel_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -23028,7 +23049,6 @@ def test_get_message_bus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23051,7 +23071,6 @@ def test_list_message_buses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23074,7 +23093,6 @@ def test_list_message_bus_enrollments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23097,7 +23115,6 @@ def test_create_message_bus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23120,7 +23137,6 @@ def test_update_message_bus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23143,7 +23159,6 @@ def test_delete_message_bus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23166,7 +23181,6 @@ def test_get_enrollment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23189,7 +23203,6 @@ def test_list_enrollments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23212,7 +23225,6 @@ def test_create_enrollment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23235,7 +23247,6 @@ def test_update_enrollment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23258,7 +23269,6 @@ def test_delete_enrollment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23281,7 +23291,6 @@ def test_get_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -23304,7 +23313,6 @@ def test_list_pipelines_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23327,7 +23335,6 @@ def test_create_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -23350,7 +23357,6 @@ def test_update_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -23373,7 +23379,6 @@ def test_delete_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeletePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -23396,7 +23401,6 @@ def test_get_google_api_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23419,7 +23423,6 @@ def test_list_google_api_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListGoogleApiSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23442,7 +23445,6 @@ def test_create_google_api_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23465,7 +23467,6 @@ def test_update_google_api_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23488,7 +23489,6 @@ def test_delete_google_api_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23536,7 +23536,6 @@ async def test_get_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -23564,7 +23563,6 @@ async def test_list_triggers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23591,7 +23589,6 @@ async def test_create_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -23618,7 +23615,6 @@ async def test_update_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -23645,7 +23641,6 @@ async def test_delete_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -23678,7 +23673,6 @@ async def test_get_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -23706,7 +23700,6 @@ async def test_list_channels_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23733,7 +23726,6 @@ async def test_create_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -23760,7 +23752,6 @@ async def test_update_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -23787,7 +23778,6 @@ async def test_delete_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -23815,7 +23805,6 @@ async def test_get_provider_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetProviderRequest()
-
         assert args[0] == request_msg
 
 
@@ -23843,7 +23832,6 @@ async def test_list_providers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListProvidersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23873,7 +23861,6 @@ async def test_get_channel_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23901,7 +23888,6 @@ async def test_list_channel_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23928,7 +23914,6 @@ async def test_create_channel_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23955,7 +23940,6 @@ async def test_delete_channel_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23983,7 +23967,6 @@ async def test_get_google_channel_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24011,7 +23994,6 @@ async def test_update_google_channel_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24042,7 +24024,6 @@ async def test_get_message_bus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -24070,7 +24051,6 @@ async def test_list_message_buses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24099,7 +24079,6 @@ async def test_list_message_bus_enrollments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24126,7 +24105,6 @@ async def test_create_message_bus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -24153,7 +24131,6 @@ async def test_update_message_bus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -24180,7 +24157,6 @@ async def test_delete_message_bus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -24213,7 +24189,6 @@ async def test_get_enrollment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24241,7 +24216,6 @@ async def test_list_enrollments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24268,7 +24242,6 @@ async def test_create_enrollment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24295,7 +24268,6 @@ async def test_update_enrollment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24322,7 +24294,6 @@ async def test_delete_enrollment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24354,7 +24325,6 @@ async def test_get_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -24382,7 +24352,6 @@ async def test_list_pipelines_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24409,7 +24378,6 @@ async def test_create_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -24436,7 +24404,6 @@ async def test_update_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -24463,7 +24430,6 @@ async def test_delete_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeletePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -24495,7 +24461,6 @@ async def test_get_google_api_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24523,7 +24488,6 @@ async def test_list_google_api_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListGoogleApiSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24550,7 +24514,6 @@ async def test_create_google_api_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24577,7 +24540,6 @@ async def test_update_google_api_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24604,7 +24566,6 @@ async def test_delete_google_api_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -30144,7 +30105,6 @@ def test_get_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -30166,7 +30126,6 @@ def test_list_triggers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -30188,7 +30147,6 @@ def test_create_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -30210,7 +30168,6 @@ def test_update_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -30232,7 +30189,6 @@ def test_delete_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -30254,7 +30210,6 @@ def test_get_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -30276,7 +30231,6 @@ def test_list_channels_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30298,7 +30252,6 @@ def test_create_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -30320,7 +30273,6 @@ def test_update_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -30342,7 +30294,6 @@ def test_delete_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -30364,7 +30315,6 @@ def test_get_provider_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetProviderRequest()
-
         assert args[0] == request_msg
 
 
@@ -30386,7 +30336,6 @@ def test_list_providers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListProvidersRequest()
-
         assert args[0] == request_msg
 
 
@@ -30408,7 +30357,6 @@ def test_get_channel_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -30430,7 +30378,6 @@ def test_list_channel_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30452,7 +30399,6 @@ def test_create_channel_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -30474,7 +30420,6 @@ def test_delete_channel_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -30496,7 +30441,6 @@ def test_get_google_channel_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -30518,7 +30462,6 @@ def test_update_google_channel_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -30540,7 +30483,6 @@ def test_get_message_bus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -30562,7 +30504,6 @@ def test_list_message_buses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30584,7 +30525,6 @@ def test_list_message_bus_enrollments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListMessageBusEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30606,7 +30546,6 @@ def test_create_message_bus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -30628,7 +30567,6 @@ def test_update_message_bus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -30650,7 +30588,6 @@ def test_delete_message_bus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteMessageBusRequest()
-
         assert args[0] == request_msg
 
 
@@ -30672,7 +30609,6 @@ def test_get_enrollment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -30694,7 +30630,6 @@ def test_list_enrollments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListEnrollmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30716,7 +30651,6 @@ def test_create_enrollment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -30738,7 +30672,6 @@ def test_update_enrollment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -30760,7 +30693,6 @@ def test_delete_enrollment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteEnrollmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -30782,7 +30714,6 @@ def test_get_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -30804,7 +30735,6 @@ def test_list_pipelines_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30826,7 +30756,6 @@ def test_create_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -30848,7 +30777,6 @@ def test_update_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdatePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -30870,7 +30798,6 @@ def test_delete_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeletePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -30892,7 +30819,6 @@ def test_get_google_api_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -30914,7 +30840,6 @@ def test_list_google_api_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListGoogleApiSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30936,7 +30861,6 @@ def test_create_google_api_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -30958,7 +30882,6 @@ def test_update_google_api_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -30980,7 +30903,6 @@ def test_delete_google_api_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteGoogleApiSourceRequest()
-
         assert args[0] == request_msg
 
 

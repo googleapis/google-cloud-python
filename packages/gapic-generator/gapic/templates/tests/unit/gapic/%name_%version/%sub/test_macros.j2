@@ -148,20 +148,20 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
 {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-{% if method_settings is not none %}
-{% for auto_populated_field in method_settings.auto_populated_fields %}
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
-{% endfor %}
-{% endif %}{# if method_settings is not none #}
-{% endwith %}{# method_settings #}
-        assert args[0] == {{ method.input.ident }}(
+        request_msg = {{ method.input.ident }}(
         {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
             {{ field.name }}={{ field.mock_value }},
         {% endfor %}
         )
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
+        request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
+        assert args[0] == request_msg
 {% endif %}
 
 def test_{{ method_name }}_use_cached_wrapped_rpc():
@@ -1572,21 +1572,20 @@ def test_{{ method_name }}_rest_no_http_options():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, {% if routing_param %}kw{% else %}_{% endif %} = call.mock_calls[0]
+        {% if request_dict %}
+        request_msg = {{ method.input.ident }}(**{{ request_dict }})
+        {% else %}
+        request_msg = {{ method.input.ident }}()
+        {% endif %}{# request_dict #}
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
         assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
+        request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
         {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
         {% endif %}{# if method_settings is not none #}
         {% endwith %}{# method_settings #}
-        {% if request_dict %}
-        request_msg = {{ method.input.ident }}(**{{ request_dict }})
-        {% else %}
-        request_msg = {{ method.input.ident }}()
-        {% endif %}{# request_dict #}      
         assert args[0] == request_msg
 
         {% if routing_param %}

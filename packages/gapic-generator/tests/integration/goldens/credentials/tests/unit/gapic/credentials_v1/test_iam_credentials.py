@@ -1012,9 +1012,10 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest(
+        request_msg = common.GenerateAccessTokenRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_generate_access_token_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1348,10 +1349,11 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
         client.generate_id_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest(
+        request_msg = common.GenerateIdTokenRequest(
             name='name_value',
             audience='audience_value',
         )
+        assert args[0] == request_msg
 
 def test_generate_id_token_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1690,9 +1692,10 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
         client.sign_blob(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest(
+        request_msg = common.SignBlobRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_sign_blob_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2024,10 +2027,11 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
         client.sign_jwt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest(
+        request_msg = common.SignJwtRequest(
             name='name_value',
             payload='payload_value',
         )
+        assert args[0] == request_msg
 
 def test_sign_jwt_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3123,7 +3127,6 @@ def test_generate_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3146,7 +3149,6 @@ def test_generate_id_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3169,7 +3171,6 @@ def test_sign_blob_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3192,7 +3193,6 @@ def test_sign_jwt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 
@@ -3234,7 +3234,6 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3261,7 +3260,6 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3289,7 +3287,6 @@ async def test_sign_blob_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3317,7 +3314,6 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 
@@ -3781,7 +3777,6 @@ def test_generate_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3803,7 +3798,6 @@ def test_generate_id_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3825,7 +3819,6 @@ def test_sign_blob_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3847,7 +3840,6 @@ def test_sign_jwt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 

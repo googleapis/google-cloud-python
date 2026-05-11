@@ -1002,10 +1002,11 @@ def test_list_log_metrics_non_empty_request_with_auto_populated_field():
         client.list_log_metrics(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest(
+        request_msg = logging_metrics.ListLogMetricsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_log_metrics_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1518,9 +1519,10 @@ def test_get_log_metric_non_empty_request_with_auto_populated_field():
         client.get_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest(
+        request_msg = logging_metrics.GetLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1851,9 +1853,10 @@ def test_create_log_metric_non_empty_request_with_auto_populated_field():
         client.create_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest(
+        request_msg = logging_metrics.CreateLogMetricRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_create_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2194,9 +2197,10 @@ def test_update_log_metric_non_empty_request_with_auto_populated_field():
         client.update_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest(
+        request_msg = logging_metrics.UpdateLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2522,9 +2526,10 @@ def test_delete_log_metric_non_empty_request_with_auto_populated_field():
         client.delete_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest(
+        request_msg = logging_metrics.DeleteLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2890,7 +2895,6 @@ def test_list_log_metrics_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2913,7 +2917,6 @@ def test_get_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2936,7 +2939,6 @@ def test_create_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2959,7 +2961,6 @@ def test_update_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2982,7 +2983,6 @@ def test_delete_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3024,7 +3024,6 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3057,7 +3056,6 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3090,7 +3088,6 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3123,7 +3120,6 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3148,7 +3144,6 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
-
         assert args[0] == request_msg
 
 

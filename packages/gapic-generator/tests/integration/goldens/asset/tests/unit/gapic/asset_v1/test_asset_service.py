@@ -1019,9 +1019,10 @@ def test_export_assets_non_empty_request_with_auto_populated_field():
         client.export_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ExportAssetsRequest(
+        request_msg = asset_service.ExportAssetsRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_export_assets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1256,10 +1257,11 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         client.list_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListAssetsRequest(
+        request_msg = asset_service.ListAssetsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_assets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1758,9 +1760,10 @@ def test_batch_get_assets_history_non_empty_request_with_auto_populated_field():
         client.batch_get_assets_history(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.BatchGetAssetsHistoryRequest(
+        request_msg = asset_service.BatchGetAssetsHistoryRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_batch_get_assets_history_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1992,10 +1995,11 @@ def test_create_feed_non_empty_request_with_auto_populated_field():
         client.create_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateFeedRequest(
+        request_msg = asset_service.CreateFeedRequest(
             parent='parent_value',
             feed_id='feed_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_feed_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2318,9 +2322,10 @@ def test_get_feed_non_empty_request_with_auto_populated_field():
         client.get_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetFeedRequest(
+        request_msg = asset_service.GetFeedRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_feed_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2633,9 +2638,10 @@ def test_list_feeds_non_empty_request_with_auto_populated_field():
         client.list_feeds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListFeedsRequest(
+        request_msg = asset_service.ListFeedsRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_list_feeds_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2947,8 +2953,9 @@ def test_update_feed_non_empty_request_with_auto_populated_field():
         client.update_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateFeedRequest(
+        request_msg = asset_service.UpdateFeedRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_feed_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3260,9 +3267,10 @@ def test_delete_feed_non_empty_request_with_auto_populated_field():
         client.delete_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteFeedRequest(
+        request_msg = asset_service.DeleteFeedRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_feed_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3569,12 +3577,13 @@ def test_search_all_resources_non_empty_request_with_auto_populated_field():
         client.search_all_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.SearchAllResourcesRequest(
+        request_msg = asset_service.SearchAllResourcesRequest(
             scope='scope_value',
             query='query_value',
             page_token='page_token_value',
             order_by='order_by_value',
         )
+        assert args[0] == request_msg
 
 def test_search_all_resources_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4098,12 +4107,13 @@ def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
         client.search_all_iam_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.SearchAllIamPoliciesRequest(
+        request_msg = asset_service.SearchAllIamPoliciesRequest(
             scope='scope_value',
             query='query_value',
             page_token='page_token_value',
             order_by='order_by_value',
         )
+        assert args[0] == request_msg
 
 def test_search_all_iam_policies_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4614,9 +4624,10 @@ def test_analyze_iam_policy_non_empty_request_with_auto_populated_field():
         client.analyze_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeIamPolicyRequest(
+        request_msg = asset_service.AnalyzeIamPolicyRequest(
             saved_analysis_query='saved_analysis_query_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_iam_policy_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4838,9 +4849,10 @@ def test_analyze_iam_policy_longrunning_non_empty_request_with_auto_populated_fi
         client.analyze_iam_policy_longrunning(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest(
+        request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest(
             saved_analysis_query='saved_analysis_query_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5073,10 +5085,11 @@ def test_analyze_move_non_empty_request_with_auto_populated_field():
         client.analyze_move(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeMoveRequest(
+        request_msg = asset_service.AnalyzeMoveRequest(
             resource='resource_value',
             destination_parent='destination_parent_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_move_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5304,12 +5317,13 @@ def test_query_assets_non_empty_request_with_auto_populated_field():
         client.query_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.QueryAssetsRequest(
+        request_msg = asset_service.QueryAssetsRequest(
             parent='parent_value',
             statement='statement_value',
             job_reference='job_reference_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_query_assets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5543,10 +5557,11 @@ def test_create_saved_query_non_empty_request_with_auto_populated_field():
         client.create_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateSavedQueryRequest(
+        request_msg = asset_service.CreateSavedQueryRequest(
             parent='parent_value',
             saved_query_id='saved_query_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_saved_query_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5885,9 +5900,10 @@ def test_get_saved_query_non_empty_request_with_auto_populated_field():
         client.get_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetSavedQueryRequest(
+        request_msg = asset_service.GetSavedQueryRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_saved_query_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6202,11 +6218,12 @@ def test_list_saved_queries_non_empty_request_with_auto_populated_field():
         client.list_saved_queries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListSavedQueriesRequest(
+        request_msg = asset_service.ListSavedQueriesRequest(
             parent='parent_value',
             filter='filter_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_saved_queries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6712,8 +6729,9 @@ def test_update_saved_query_non_empty_request_with_auto_populated_field():
         client.update_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateSavedQueryRequest(
+        request_msg = asset_service.UpdateSavedQueryRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_saved_query_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7033,9 +7051,10 @@ def test_delete_saved_query_non_empty_request_with_auto_populated_field():
         client.delete_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteSavedQueryRequest(
+        request_msg = asset_service.DeleteSavedQueryRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_saved_query_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7337,9 +7356,10 @@ def test_batch_get_effective_iam_policies_non_empty_request_with_auto_populated_
         client.batch_get_effective_iam_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest(
+        request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest(
             scope='scope_value',
         )
+        assert args[0] == request_msg
 
 def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7565,12 +7585,13 @@ def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
         client.analyze_org_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest(
+        request_msg = asset_service.AnalyzeOrgPoliciesRequest(
             scope='scope_value',
             constraint='constraint_value',
             filter='filter_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_org_policies_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8094,12 +8115,13 @@ def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_popu
         client.analyze_org_policy_governed_containers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
+        request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
             scope='scope_value',
             constraint='constraint_value',
             filter='filter_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8623,12 +8645,13 @@ def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populate
         client.analyze_org_policy_governed_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
+        request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
             scope='scope_value',
             constraint='constraint_value',
             filter='filter_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13186,7 +13209,6 @@ def test_export_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13209,7 +13231,6 @@ def test_list_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13232,7 +13253,6 @@ def test_batch_get_assets_history_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13255,7 +13275,6 @@ def test_create_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13278,7 +13297,6 @@ def test_get_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13301,7 +13319,6 @@ def test_list_feeds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13324,7 +13341,6 @@ def test_update_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13347,7 +13363,6 @@ def test_delete_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13370,7 +13385,6 @@ def test_search_all_resources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13393,7 +13407,6 @@ def test_search_all_iam_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13416,7 +13429,6 @@ def test_analyze_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13439,7 +13451,6 @@ def test_analyze_iam_policy_longrunning_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -13462,7 +13473,6 @@ def test_analyze_move_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -13485,7 +13495,6 @@ def test_query_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13508,7 +13517,6 @@ def test_create_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13531,7 +13539,6 @@ def test_get_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13554,7 +13561,6 @@ def test_list_saved_queries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13577,7 +13583,6 @@ def test_update_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13600,7 +13605,6 @@ def test_delete_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13623,7 +13627,6 @@ def test_batch_get_effective_iam_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13646,7 +13649,6 @@ def test_analyze_org_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13669,7 +13671,6 @@ def test_analyze_org_policy_governed_containers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13692,7 +13693,6 @@ def test_analyze_org_policy_governed_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13734,7 +13734,6 @@ async def test_export_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13761,7 +13760,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13787,7 +13785,6 @@ async def test_batch_get_assets_history_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -13818,7 +13815,6 @@ async def test_create_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13849,7 +13845,6 @@ async def test_get_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13875,7 +13870,6 @@ async def test_list_feeds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13906,7 +13900,6 @@ async def test_update_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13931,7 +13924,6 @@ async def test_delete_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -13958,7 +13950,6 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13985,7 +13976,6 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14012,7 +14002,6 @@ async def test_analyze_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14039,7 +14028,6 @@ async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -14065,7 +14053,6 @@ async def test_analyze_move_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -14093,7 +14080,6 @@ async def test_query_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14123,7 +14109,6 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14153,7 +14138,6 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14180,7 +14164,6 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14210,7 +14193,6 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14235,7 +14217,6 @@ async def test_delete_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14261,7 +14242,6 @@ async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14288,7 +14268,6 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14315,7 +14294,6 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -14342,7 +14320,6 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16991,7 +16968,6 @@ def test_export_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17013,7 +16989,6 @@ def test_list_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17035,7 +17010,6 @@ def test_batch_get_assets_history_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -17057,7 +17031,6 @@ def test_create_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -17079,7 +17052,6 @@ def test_get_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -17101,7 +17073,6 @@ def test_list_feeds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17123,7 +17094,6 @@ def test_update_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -17145,7 +17115,6 @@ def test_delete_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -17167,7 +17136,6 @@ def test_search_all_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17189,7 +17157,6 @@ def test_search_all_iam_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17211,7 +17178,6 @@ def test_analyze_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17233,7 +17199,6 @@ def test_analyze_iam_policy_longrunning_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -17255,7 +17220,6 @@ def test_analyze_move_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -17277,7 +17241,6 @@ def test_query_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17299,7 +17262,6 @@ def test_create_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -17321,7 +17283,6 @@ def test_get_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -17343,7 +17304,6 @@ def test_list_saved_queries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17365,7 +17325,6 @@ def test_update_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -17387,7 +17346,6 @@ def test_delete_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -17409,7 +17367,6 @@ def test_batch_get_effective_iam_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17431,7 +17388,6 @@ def test_analyze_org_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17453,7 +17409,6 @@ def test_analyze_org_policy_governed_containers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17475,7 +17430,6 @@ def test_analyze_org_policy_governed_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 
