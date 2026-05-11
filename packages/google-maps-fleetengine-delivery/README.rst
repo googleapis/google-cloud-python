@@ -3,7 +3,10 @@ Python Client for Last Mile Fleet Solution Delivery
 
 |preview| |pypi| |versions|
 
-`Last Mile Fleet Solution Delivery`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
+`Last Mile Fleet Solution Delivery`_: Enables Fleet Engine for access to the On Demand Rides and Deliveries and
+Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in
+the Cloud Logging Services is subject to the Google Maps Platform Terms of
+Service located at https://cloud.google.com/maps-platform/terms.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

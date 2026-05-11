@@ -3,7 +3,7 @@ Python Client for Area120 Tables
 
 |preview| |pypi| |versions|
 
-`Area120 Tables`_: provides programmatic methods to the Area 120 Tables API.
+`Area120 Tables`_: Area 120 Tables is a collaborative database program developed out of Google's Area 120 incubator.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

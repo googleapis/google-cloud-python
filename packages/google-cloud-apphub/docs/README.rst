@@ -3,7 +3,7 @@ Python Client for App Hub
 
 |preview| |pypi| |versions|
 
-`App Hub`_: null 
+`App Hub`_: App Hub acts as the foundational data model and central registry for your applications on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

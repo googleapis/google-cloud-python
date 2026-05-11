@@ -38,7 +38,7 @@ class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
     def with_quota_project(self, quota_project_id):
         raise NotImplementedError()
 
-    def _build_regional_access_boundary_lookup_url(self):
+    def _build_regional_access_boundary_lookup_url(self, request=None):
         # Using self.token here to make the URL dynamic for testing purposes
         return "http://mock.url/lookup_for_{}".format(self.token)
 
@@ -107,7 +107,7 @@ def test_before_request():
     headers = {}
 
     # First call should call refresh, setting the token.
-    credentials.before_request(request, "http://example.com", "GET", headers)
+    credentials.before_request(request, "GET", "http://example.com", headers)
     assert credentials.valid
     assert credentials.token == "refreshed-token"
     assert headers["authorization"] == "Bearer refreshed-token"
@@ -117,7 +117,7 @@ def test_before_request():
     headers = {}
 
     # Second call shouldn't call refresh.
-    credentials.before_request(request, "http://example.com", "GET", headers)
+    credentials.before_request(request, "GET", "http://example.com", headers)
     assert credentials.valid
     assert credentials.token == "refreshed-token"
     assert headers["authorization"] == "Bearer refreshed-token"
@@ -137,7 +137,7 @@ def test_before_request_with_regional_access_boundary():
     headers = {}
 
     # First call should call refresh, setting the token.
-    creds.before_request(request, "http://example.com", "GET", headers)
+    creds.before_request(request, "GET", "http://example.com", headers)
     assert creds.valid
     assert creds.token == "refreshed-token"
     assert headers["authorization"] == "Bearer refreshed-token"
@@ -147,7 +147,7 @@ def test_before_request_with_regional_access_boundary():
     headers = {}
 
     # Second call shouldn't call refresh.
-    creds.before_request(request, "http://example.com", "GET", headers)
+    creds.before_request(request, "GET", "http://example.com", headers)
     assert creds.valid
     assert creds.token == "refreshed-token"
     assert headers["authorization"] == "Bearer refreshed-token"
@@ -159,7 +159,7 @@ def test_before_request_metrics():
     request = "token"
     headers = {}
 
-    credentials.before_request(request, "http://example.com", "GET", headers)
+    credentials.before_request(request, "GET", "http://example.com", headers)
     assert headers["x-goog-api-client"] == "foo"
 
 
@@ -282,7 +282,7 @@ def test_nonblocking_refresh_fresh_credentials():
     assert c.token_state == credentials.TokenState.FRESH
 
     c.with_non_blocking_refresh()
-    c.before_request(request, "http://example.com", "GET", {})
+    c.before_request(request, "GET", "http://example.com", {})
 
 
 def test_nonblocking_refresh_invalid_credentials():
@@ -294,7 +294,7 @@ def test_nonblocking_refresh_invalid_credentials():
 
     assert c.token_state == credentials.TokenState.INVALID
 
-    c.before_request(request, "http://example.com", "GET", headers)
+    c.before_request(request, "GET", "http://example.com", headers)
     assert c.token_state == credentials.TokenState.FRESH
     assert c.valid
     assert c.token == "refreshed-token"
@@ -310,7 +310,7 @@ def test_nonblocking_refresh_stale_credentials():
     headers = {}
 
     # Invalid credentials MUST require a blocking refresh.
-    c.before_request(request, "http://example.com", "GET", headers)
+    c.before_request(request, "GET", "http://example.com", headers)
     assert c.token_state == credentials.TokenState.FRESH
     assert not c._refresh_worker._worker
 
@@ -322,7 +322,7 @@ def test_nonblocking_refresh_stale_credentials():
 
     # STALE credentials SHOULD spawn a non-blocking worker
     assert c.token_state == credentials.TokenState.STALE
-    c.before_request(request, "http://example.com", "GET", headers)
+    c.before_request(request, "GET", "http://example.com", headers)
     assert c._refresh_worker._worker is not None
 
     assert c.token_state == credentials.TokenState.FRESH
@@ -340,7 +340,7 @@ def test_nonblocking_refresh_failed_credentials():
     headers = {}
 
     # Invalid credentials MUST require a blocking refresh.
-    c.before_request(request, "http://example.com", "GET", headers)
+    c.before_request(request, "GET", "http://example.com", headers)
     assert c.token_state == credentials.TokenState.FRESH
     assert not c._refresh_worker._worker
 
@@ -354,7 +354,7 @@ def test_nonblocking_refresh_failed_credentials():
     assert c.token_state == credentials.TokenState.STALE
     c._refresh_worker._worker = mock.MagicMock()
     c._refresh_worker._worker._error_info = "Some Error"
-    c.before_request(request, "http://example.com", "GET", headers)
+    c.before_request(request, "GET", "http://example.com", headers)
     assert c._refresh_worker._worker is not None
 
     assert c.token_state == credentials.TokenState.FRESH
@@ -373,7 +373,7 @@ def test_token_state_no_expiry():
     c.expiry = None
     assert c.token_state == credentials.TokenState.FRESH
 
-    c.before_request(request, "http://example.com", "GET", {})
+    c.before_request(request, "GET", "http://example.com", {})
 
 
 def test_credentials_with_trust_boundary_bridge():
@@ -389,3 +389,38 @@ def test_credentials_with_trust_boundary_bridge():
     # Verify that calling the new method delegates to the old method
     with pytest.warns(DeprecationWarning):
         assert creds._build_regional_access_boundary_lookup_url() == "http://legacy.url"
+
+
+def test_before_request_triggers_rab_refresh():
+    with mock.patch(
+        "google.auth._regional_access_boundary_utils."
+        "is_regional_access_boundary_enabled",
+        return_value=True,
+    ):
+        with mock.patch(
+            "google.oauth2._client._lookup_regional_access_boundary"
+        ) as lookup:
+            lookup.return_value = {"encodedLocations": "0xA30"}
+
+            creds = CredentialsImpl()
+            creds = creds._set_blocking_regional_access_boundary_lookup()
+
+            request = mock.Mock()
+            headers = {}
+
+            # Initial state: no token
+            assert creds.token is None
+
+            # before_request should trigger token refresh and THEN RAB refresh.
+            # We verify this by checking that the RAB lookup was called with
+            # the URL containing the refreshed token.
+            creds.before_request(request, "GET", "http://example.com", headers)
+
+            assert creds.token == "refreshed-token"
+            assert headers["authorization"] == "Bearer refreshed-token"
+            assert headers["x-allowed-locations"] == "0xA30"
+
+            # Verify lookup was called with the refreshed token's URL
+            lookup.assert_called_once()
+            args, kwargs = lookup.call_args
+            assert args[1] == "http://mock.url/lookup_for_refreshed-token"

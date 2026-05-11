@@ -3,7 +3,9 @@ Python Client for Model Armor
 
 |preview| |pypi| |versions|
 
-`Model Armor`_: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
+`Model Armor`_: Model Armor helps you protect against risks like prompt injection, harmful
+content, and data leakage in generative AI applications by letting you
+define policies that filter user prompts and model responses.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

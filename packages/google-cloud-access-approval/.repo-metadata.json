@@ -1,5 +1,5 @@
 {
-    "api_description": "enables controlling access to your organization's data by Google personnel.",
+    "api_description": "An API for controlling access to data by Google personnel.",
     "api_id": "accessapproval.googleapis.com",
     "api_shortname": "accessapproval",
     "client_documentation": "https://cloud.google.com/python/docs/reference/accessapproval/latest",

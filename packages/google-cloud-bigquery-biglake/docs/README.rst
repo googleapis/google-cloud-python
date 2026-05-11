@@ -3,7 +3,9 @@ Python Client for BigLake
 
 |preview| |pypi| |versions|
 
-`BigLake`_: BigLake API
+`BigLake`_: The BigLake API provides access to BigLake Metastore, a serverless, fully
+managed, and highly available metastore for open-source data that can be
+used for querying Apache Iceberg tables in BigQuery.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -17,14 +17,20 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import MemorystoreTransport
+from .grpc import MemorystoreGrpcTransport
+from .grpc_asyncio import MemorystoreGrpcAsyncIOTransport
 from .rest import MemorystoreRestInterceptor, MemorystoreRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[MemorystoreTransport]]
+_transport_registry["grpc"] = MemorystoreGrpcTransport
+_transport_registry["grpc_asyncio"] = MemorystoreGrpcAsyncIOTransport
 _transport_registry["rest"] = MemorystoreRestTransport
 
 __all__ = (
     "MemorystoreTransport",
+    "MemorystoreGrpcTransport",
+    "MemorystoreGrpcAsyncIOTransport",
     "MemorystoreRestTransport",
     "MemorystoreRestInterceptor",
 )

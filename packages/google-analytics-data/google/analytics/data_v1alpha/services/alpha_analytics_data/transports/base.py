@@ -43,9 +43,6 @@ class AlphaAnalyticsDataTransport(abc.ABC):
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/analytics",
         "https://www.googleapis.com/auth/analytics.readonly",
-        "https://www.googleapis.com/auth/drive",
-        "https://www.googleapis.com/auth/drive.file",
-        "https://www.googleapis.com/auth/spreadsheets",
     )
 
     DEFAULT_HOST: str = "analyticsdata.googleapis.com"
@@ -164,11 +161,6 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.sheet_export_audience_list: gapic_v1.method.wrap_method(
-                self.sheet_export_audience_list,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_audience_list: gapic_v1.method.wrap_method(
                 self.get_audience_list,
                 default_timeout=None,
@@ -219,6 +211,16 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.run_report: gapic_v1.method.wrap_method(
+                self.run_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata: gapic_v1.method.wrap_method(
+                self.get_metadata,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -264,18 +266,6 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.QueryAudienceListResponse,
             Awaitable[analytics_data_api.QueryAudienceListResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def sheet_export_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.SheetExportAudienceListRequest],
-        Union[
-            analytics_data_api.SheetExportAudienceListResponse,
-            Awaitable[analytics_data_api.SheetExportAudienceListResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -390,6 +380,27 @@ class AlphaAnalyticsDataTransport(abc.ABC):
             analytics_data_api.ListReportTasksResponse,
             Awaitable[analytics_data_api.ListReportTasksResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_report(
+        self,
+    ) -> Callable[
+        [analytics_data_api.RunReportRequest],
+        Union[
+            analytics_data_api.RunReportResponse,
+            Awaitable[analytics_data_api.RunReportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_metadata(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetMetadataRequest],
+        Union[analytics_data_api.Metadata, Awaitable[analytics_data_api.Metadata]],
     ]:
         raise NotImplementedError()
 

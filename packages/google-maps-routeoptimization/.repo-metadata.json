@@ -1,5 +1,5 @@
 {
-    "api_description": "The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.",
+    "api_description": "The Route Optimization API assigns tasks and routes to a vehicle fleet,\noptimizing against the objectives and constraints that you supply for your\ntransportation goals.",
     "api_id": "routeoptimization.googleapis.com",
     "api_shortname": "routeoptimization",
     "client_documentation": "https://googleapis.dev/python/google-maps-routeoptimization/latest",

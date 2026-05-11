@@ -232,6 +232,11 @@ class SnapshotsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.update_kms_key: gapic_v1.method.wrap_method(
+                self.update_kms_key,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -325,6 +330,15 @@ class SnapshotsTransport(abc.ABC):
         Union[
             compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_kms_key(
+        self,
+    ) -> Callable[
+        [compute.UpdateKmsKeySnapshotRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

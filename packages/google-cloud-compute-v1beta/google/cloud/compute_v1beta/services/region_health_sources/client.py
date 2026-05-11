@@ -1280,6 +1280,146 @@ class RegionHealthSourcesClient(metaclass=RegionHealthSourcesClientMeta):
         # Done; return the response.
         return response
 
+    def get_health(
+        self,
+        request: Optional[
+            Union[compute.GetHealthRegionHealthSourceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        health_source: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> compute.HealthSourceHealth:
+        r"""Gets the most recent health check results for this
+        regional HealthSource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1beta
+
+            def sample_get_health():
+                # Create a client
+                client = compute_v1beta.RegionHealthSourcesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1beta.GetHealthRegionHealthSourceRequest(
+                    health_source="health_source_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get_health(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1beta.types.GetHealthRegionHealthSourceRequest, dict]):
+                The request object. A request message for
+                RegionHealthSources.GetHealth. See the
+                method description for details.
+            project (str):
+                Name of the project scoping this
+                request.
+
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            health_source (str):
+                Name of the HealthSource resource to
+                get health for.
+
+                This corresponds to the ``health_source`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.compute_v1beta.types.HealthSourceHealth:
+                Response message for
+                RegionHealthSources.GetHealth
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [project, region, health_source]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.GetHealthRegionHealthSourceRequest):
+            request = compute.GetHealthRegionHealthSourceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if health_source is not None:
+                request.health_source = health_source
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_health]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("health_source", request.health_source),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def insert_unary(
         self,
         request: Optional[Union[compute.InsertRegionHealthSourceRequest, dict]] = None,

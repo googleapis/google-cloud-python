@@ -1,5 +1,5 @@
 {
-    "api_description": "The Storage Insights inventory report feature helps you manage your object storage at scale.",
+    "api_description": "Provides insights capability on Google Cloud Storage",
     "api_id": "storageinsights.googleapis.com",
     "api_shortname": "storageinsights",
     "client_documentation": "https://cloud.google.com/python/docs/reference/storageinsights/latest",

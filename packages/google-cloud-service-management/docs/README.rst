@@ -3,7 +3,9 @@ Python Client for Service Management
 
 |stable| |pypi| |versions|
 
-`Service Management`_: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
+`Service Management`_: Google Service Management allows service producers to publish their
+services on Google Cloud Platform so that they can be discovered and used
+by service consumers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

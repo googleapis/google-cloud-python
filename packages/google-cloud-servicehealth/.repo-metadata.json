@@ -1,5 +1,5 @@
 {
-    "api_description": "Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.",
+    "api_description": "Personalized Service Health helps you gain visibility into disruptive\nevents impacting Google Cloud products.",
     "api_id": "servicehealth.googleapis.com",
     "api_shortname": "servicehealth",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-servicehealth/latest",

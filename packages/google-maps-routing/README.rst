@@ -3,7 +3,7 @@ Python Client for Routes
 
 |preview| |pypi| |versions|
 
-`Routes`_: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
+`Routes`_: routes.googleapis.com API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

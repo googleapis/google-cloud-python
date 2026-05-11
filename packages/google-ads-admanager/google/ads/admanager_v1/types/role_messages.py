@@ -39,7 +39,7 @@ class Role(proto.Message):
             Identifier. The resource name of the ``Role``. Format:
             ``networks/{network_code}/roles/{role_id}``
         role_id (int):
-            Output only. ``Role`` ID.
+            Output only. Deprecated: ``Role`` ID.
 
             This field is a member of `oneof`_ ``_role_id``.
         display_name (str):

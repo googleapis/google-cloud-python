@@ -1,5 +1,5 @@
 {
-    "api_description": "ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.",
+    "api_description": "ConfigDelivery service manages the deployment of kubernetes configuration\nto a fleet of kubernetes clusters.",
     "api_id": "configdelivery.googleapis.com",
     "api_shortname": "configdelivery",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-configdelivery/latest",

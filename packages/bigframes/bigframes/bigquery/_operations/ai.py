@@ -23,7 +23,7 @@ from typing import Any, Dict, Iterable, List, Literal, Mapping, Optional, Tuple,
 
 import pandas as pd
 
-from bigframes import clients, dataframe, dtypes, series, session
+from bigframes import dataframe, dtypes, series, session
 from bigframes import pandas as bpd
 from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
@@ -817,6 +817,9 @@ def if_(
     prompt: PROMPT_TYPE,
     *,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
@@ -838,13 +841,6 @@ def if_(
         1         Illinois
         dtype: string
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -852,6 +848,19 @@ def if_(
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
+            best cost to quality tradeoff for the task.
+        optimization_mode (Literal["minimize_cost", "maximize_quality"]):
+            Specifies the optimization strategy to use. Supported values are:
+            * "minimize_cost" (default): uses a local, distilled model to process the majority of rows, reducing latency and cost.
+            * "maximize_quality": always uses the remote LLM for inference.
+        max_error_ratio (float):
+            A float value between 0.0 and 1.0 that contains the maximum acceptable ratio of row-level inference failures to
+            rows processed on this function. If this value is exceeded, then the query fails. The default value is 1.0.
+            This argument isn't supported when `optimization_mode` is set to "minimize_cost".
 
     Returns:
         bigframes.series.Series: A new series of bools.
@@ -863,6 +872,9 @@ def if_(
     operator = ai_ops.AIIf(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
+        endpoint=endpoint,
+        optimization_mode=optimization_mode,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -873,7 +885,11 @@ def classify(
     input: PROMPT_TYPE,
     categories: tuple[str, ...] | list[str],
     *,
+    examples: list[tuple[str, str]] | None = None,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Classifies a given input into one of the specified categories. It will always return one of the provided categories best fit the prompt input.
@@ -891,22 +907,30 @@ def classify(
         <BLANKLINE>
         [2 rows x 2 columns]
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         input (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the input to send to the model. The Series can be BigFrames Series
             or pandas Series.
         categories (tuple[str, ...] | list[str]):
             Categories to classify the input into.
+        examples (list[tuple[str, str]], optional):
+            An array that contains representative examples of input strings and the output category
+            that you expect. You can provide examples to help the model understand your
+            intended threshold for a condition with nuanced or subjective logic. We recommend providing at most 5 examples.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            A STRING value that specifies the Vertex AI endpoint to use for the model. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically
+            identifies and uses the full endpoint of the model.
+        optimization_mode (Literal["minimize_cost", "maximize_quality"], optional):
+            A STRING value that specifies the optimization strategy to use. Supported values are ``minimize_cost``
+            and ``maximize_quality``.
+        max_error_ratio (float, optional):
+            A value between ``0.0`` and ``1.0`` that contains the maximum acceptable ratio of row-level
+            inference failures to rows processed on this function. The default value is 1.0.
+            This argument isn't supported when ``optimization_mode`` is set to ``minimize_cost``.
 
     Returns:
         bigframes.series.Series: A new series of strings.
@@ -915,10 +939,16 @@ def classify(
     prompt_context, series_list = _separate_context_and_series(input)
     assert len(series_list) > 0
 
+    example_tuples = tuple(examples) if examples is not None else None
+
     operator = ai_ops.AIClassify(
         prompt_context=tuple(prompt_context),
         categories=tuple(categories),
+        examples=example_tuples,
         connection_id=connection_id,
+        endpoint=endpoint,
+        optimization_mode=optimization_mode,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -929,6 +959,8 @@ def score(
     prompt: PROMPT_TYPE,
     *,
     connection_id: str | None = None,
+    endpoint: str | None = None,
+    max_error_ratio: float | None = None,
 ) -> series.Series:
     """
     Computes a score based on rubrics described in natural language. It will return a double value.
@@ -946,13 +978,6 @@ def score(
         2    3.0
         dtype: Float64
 
-    .. note::
-
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -960,6 +985,14 @@ def score(
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
             If not provided, the query uses your end-user credential.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an endpoint value, BigQuery ML dynamically chooses a model
+            based on your query to have the best cost to quality tradeoff for the task.
+        max_error_ratio (float, optional):
+            A value between `0.0` and `1.0` that contains the maximum acceptable ratio of row-level inference failures to
+            rows processed on this function. If this value is exceeded, then the query fails.
 
     Returns:
         bigframes.series.Series: A new series of double (float) values.
@@ -971,6 +1004,8 @@ def score(
     operator = ai_ops.AIScore(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
+        endpoint=endpoint,
+        max_error_ratio=max_error_ratio,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -1230,14 +1265,6 @@ def _convert_series(
         # Support multimodel
         return result.blob.read_url()
     return result
-
-
-def _resolve_connection_id(series: series.Series, connection_id: str | None):
-    return clients.get_canonical_bq_connection_id(
-        connection_id or series._session.bq_connection,
-        series._session._project,
-        series._session._location,
-    )
 
 
 def _to_dataframe(

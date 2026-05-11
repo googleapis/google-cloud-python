@@ -3,7 +3,8 @@ Python Client for Cloud Memorystore for Memcached
 
 |stable| |pypi| |versions|
 
-`Cloud Memorystore for Memcached`_: is a fully-managed in-memory data store service for Memcache.
+`Cloud Memorystore for Memcached`_: Google Cloud Memorystore for Memcached API is used for creating and
+managing Memcached instances in GCP.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

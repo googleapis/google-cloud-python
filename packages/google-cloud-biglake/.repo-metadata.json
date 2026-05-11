@@ -1,5 +1,5 @@
 {
-    "api_description": "The BigLake API provides access to BigLake Metastore, a serverless, fully managed, and highly available metastore for open-source data that can be used for querying Apache Iceberg tables in BigQuery.",
+    "api_description": "The BigLake API provides access to BigLake Metastore, a serverless, fully\nmanaged, and highly available metastore for open-source data that can be\nused for querying Apache Iceberg tables in BigQuery.",
     "api_id": "biglake.googleapis.com",
     "api_shortname": "biglake",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-biglake/latest",

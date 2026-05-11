@@ -3,7 +3,7 @@ Python Client for Confidential Computing
 
 |preview| |pypi| |versions|
 
-`Confidential Computing`_: Protect data in-use with Confidential VMs, Confidential GKE, Confidential Dataproc, and Confidential Space.
+`Confidential Computing`_: Attestation verifier for Confidential Space.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

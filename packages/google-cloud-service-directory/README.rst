@@ -3,7 +3,8 @@ Python Client for Service Directory
 
 |stable| |pypi| |versions|
 
-`Service Directory`_: Allows the registration and lookup of services.
+`Service Directory`_: Service Directory is a platform for discovering, publishing, and connecting
+services.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

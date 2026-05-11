@@ -1,5 +1,5 @@
 {
-    "api_description": "Secure, low-cost services for transferring data from cloud or on-premises sources.",
+    "api_description": "Transfers data from external data sources to a Google Cloud Storage bucket\nor between Google Cloud Storage buckets.",
     "api_id": "storagetransfer.googleapis.com",
     "api_shortname": "storagetransfer",
     "client_documentation": "https://cloud.google.com/python/docs/reference/storagetransfer/latest",

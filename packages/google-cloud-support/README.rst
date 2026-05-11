@@ -3,7 +3,8 @@ Python Client for Google Cloud Support
 
 |preview| |pypi| |versions|
 
-`Google Cloud Support`_: Manages Google Cloud technical support cases for Customer Care support offerings.
+`Google Cloud Support`_: Manages Google Cloud technical support cases for Customer Care support
+offerings.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

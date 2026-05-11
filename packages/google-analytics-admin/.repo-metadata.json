@@ -1,5 +1,5 @@
 {
-    "api_description": "allows you to manage Google Analytics accounts and properties.",
+    "api_description": "Manage properties in Google Analytics.  Warning: Creating multiple Customer\nApplications, Accounts, or Projects to simulate or act as a single\nCustomer Application, Account, or Project (respectively) or to circumvent\nService-specific usage limits or quotas is a direct violation of Google\nCloud Platform Terms of Service as well as Google APIs Terms of Service.\nThese actions can result in immediate termination of your GCP project(s)\nwithout any warning.",
     "api_id": "analyticsadmin.googleapis.com",
     "api_shortname": "analyticsadmin",
     "client_documentation": "https://googleapis.dev/python/analyticsadmin/latest",

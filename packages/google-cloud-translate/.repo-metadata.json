@@ -1,5 +1,5 @@
 {
-    "api_description": "can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.",
+    "api_description": "Integrates text translation into your website or application.",
     "api_id": "translate.googleapis.com",
     "api_shortname": "translate",
     "client_documentation": "https://cloud.google.com/python/docs/reference/translate/latest",

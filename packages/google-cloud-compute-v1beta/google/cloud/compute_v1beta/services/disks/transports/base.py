@@ -282,6 +282,11 @@ class DisksTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.update_kms_key: gapic_v1.method.wrap_method(
+                self.update_kms_key,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -460,6 +465,15 @@ class DisksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.UpdateDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_kms_key(
+        self,
+    ) -> Callable[
+        [compute.UpdateKmsKeyDiskRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

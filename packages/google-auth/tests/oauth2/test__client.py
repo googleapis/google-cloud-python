@@ -654,7 +654,9 @@ def test_lookup_regional_access_boundary():
     assert response["encodedLocations"] == "0x80080000000000"
     assert response["locations"] == ["us-central1", "us-east1"]
 
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 
 def test_lookup_regional_access_boundary_error():
@@ -672,7 +674,9 @@ def test_lookup_regional_access_boundary_error():
     )
     assert result is None
 
-    mock_request.assert_called_with(method="GET", url=url, headers=headers)
+    mock_request.assert_called_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 
 @pytest.mark.parametrize(
@@ -697,7 +701,9 @@ def test_lookup_regional_access_boundary_non_retryable_error(status_code):
     )
     assert result is None
     # Non-retryable errors should only be called once.
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 
 def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error():
@@ -777,5 +783,51 @@ def test_lookup_regional_access_boundary_with_headers():
     )
 
     mock_request.assert_called_once_with(
-        method="GET", url="http://example.com", headers=headers
+        method="GET", url="http://example.com", headers=headers, timeout=None
+    )
+
+
+def test_lookup_regional_access_boundary_blocking():
+    response_data = {
+        "locations": ["us-central1"],
+        "encodedLocations": "0xABC",
+    }
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    response = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, fail_fast=True
+    )
+
+    assert response["encodedLocations"] == "0xABC"
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
+    )
+
+
+def test_lookup_regional_access_boundary_blocking_error():
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.INTERNAL_SERVER_ERROR
+    mock_response.data = "this is an error message"
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    # Even if the error is retryable, fail_fast=True should prevent retries.
+    result = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, fail_fast=True
+    )
+    assert result is None
+
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
     )

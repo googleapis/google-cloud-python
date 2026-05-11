@@ -1,5 +1,5 @@
 {
-    "api_description": "Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.",
+    "api_description": "Provides insights about your customers and their Assured Workloads based on\nyour Sovereign Controls by Partners offering.",
     "api_id": "cloudcontrolspartner.googleapis.com",
     "api_shortname": "cloudcontrolspartner",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-cloudcontrolspartner/latest",

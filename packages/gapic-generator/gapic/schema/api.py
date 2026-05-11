@@ -101,6 +101,7 @@ class Proto:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     def __getattr__(self, name: str):
         return getattr(self.file_pb2, name)
@@ -159,7 +160,7 @@ class Proto:
     def resource_messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return the file level resources of the proto."""
         file_resource_messages = (
-            (res.type, wrappers.CommonResource.build(res).message_type)
+            (res.type, wrappers.CommonResource.build(res, aliases=self.resource_name_aliases).message_type)
             for res in self.file_pb2.options.Extensions[
                 resource_pb2.resource_definition
             ]
@@ -1214,6 +1215,7 @@ class _ProtoBuilder:
             meta=metadata.Metadata(
                 address=self.address,
             ),
+            resource_name_aliases=self.opts.resource_name_aliases,
         )
 
         # If this is not a file being generated, we do not need to

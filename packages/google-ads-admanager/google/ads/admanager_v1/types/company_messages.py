@@ -31,91 +31,108 @@ __protobuf__ = proto.module(
 
 
 class Company(proto.Message):
-    r"""The ``Company`` resource.
+    r"""The [Company][google.ads.admanager.v1.Company] resource.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
-            Identifier. The resource name of the ``Company``. Format:
+            Identifier. The resource name of the
+            [Company][google.ads.admanager.v1.Company]. Format:
             ``networks/{network_code}/companies/{company_id}``
         company_id (int):
-            Output only. ``Company`` ID.
+            Output only. Deprecated:
+            [Company][google.ads.admanager.v1.Company] ID.
 
             This field is a member of `oneof`_ ``_company_id``.
         display_name (str):
-            Required. The display name of the ``Company``.
+            Required. The display name of the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 127 characters.
 
             This field is a member of `oneof`_ ``_display_name``.
         type_ (google.ads.admanager_v1.types.CompanyTypeEnum.CompanyType):
-            Required. The type of the ``Company``.
+            Required. The type of the
+            [Company][google.ads.admanager.v1.Company].
 
             This field is a member of `oneof`_ ``_type``.
         address (str):
-            Optional. The address for the ``Company``.
+            Optional. The address for the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 1024 characters.
 
             This field is a member of `oneof`_ ``_address``.
         email (str):
-            Optional. The email for the ``Company``.
+            Optional. The email for the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 128 characters.
 
             This field is a member of `oneof`_ ``_email``.
         fax (str):
-            Optional. The fax number for the ``Company``.
+            Optional. The fax number for the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 63 characters.
 
             This field is a member of `oneof`_ ``_fax``.
         phone (str):
-            Optional. The phone number for the ``Company``.
+            Optional. The phone number for the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 63 characters.
 
             This field is a member of `oneof`_ ``_phone``.
         external_id (str):
-            Optional. The external ID for the ``Company``.
+            Optional. The external ID for the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 255 characters.
 
             This field is a member of `oneof`_ ``_external_id``.
         comment (str):
-            Optional. Comments about the ``Company``.
+            Optional. Comments about the
+            [Company][google.ads.admanager.v1.Company].
 
             This value has a maximum length of 1024 characters.
 
             This field is a member of `oneof`_ ``_comment``.
         credit_status (google.ads.admanager_v1.types.CompanyCreditStatusEnum.CompanyCreditStatus):
-            Optional. The credit status of the ``Company``.
+            Optional. The credit status of the
+            [Company][google.ads.admanager.v1.Company].
 
-            This attribute defaults to ``ACTIVE`` if basic settings are
-            enabled and ``ON_HOLD`` if advance settings are enabled.
+            This attribute defaults to [CompanyCreditStatus.ACTIVE][] if
+            basic settings are enabled and
+            [CompanyCreditStatus.ON_HOLD][] if advance settings are
+            enabled.
 
             This field is a member of `oneof`_ ``_credit_status``.
         applied_labels (MutableSequence[google.ads.admanager_v1.types.AppliedLabel]):
             Optional. The labels that are directly applied to the
-            ``Company``.
+            [Company][google.ads.admanager.v1.Company].
         primary_contact (str):
-            Optional. The resource names of primary Contact of the
-            ``Company``. Format:
+            Optional. The resource names of primary
+            [Contact][google.ads.admanager.v1.Contact] of the
+            [Company][google.ads.admanager.v1.Company]. Format:
             "networks/{network_code}/contacts/{contact_id}".
 
             This field is a member of `oneof`_ ``_primary_contact``.
         applied_teams (MutableSequence[str]):
             Optional. The resource names of Teams that are directly
-            associated with the ``Company``. Format:
+            associated with the
+            [Company][google.ads.admanager.v1.Company]. Format:
             "networks/{network_code}/teams/{team_id}".
         third_party_company_id (int):
             Optional. The ID of the Google-recognized canonicalized form
-            of the ``Company``.
+            of the [Company][google.ads.admanager.v1.Company].
 
             This field is a member of `oneof`_ ``_third_party_company_id``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the ``Company`` was last modified.
+            Output only. The time the
+            [Company][google.ads.admanager.v1.Company] was last
+            modified.
 
             This field is a member of `oneof`_ ``_update_time``.
     """

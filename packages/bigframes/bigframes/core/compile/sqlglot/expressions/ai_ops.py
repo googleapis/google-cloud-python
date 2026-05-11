@@ -139,9 +139,25 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
                     expression=sge.JSON(this=sge.Literal.string(value)),
                 )
             )
+        elif field == "optimization_mode":
+            args.append(
+                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
+            )
+        elif field == "max_error_ratio":
+            args.append(sge.Kwarg(this=field, expression=sge.Literal.number(value)))
         elif field == "request_type":
             args.append(
                 sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
+            )
+        elif field == "examples":
+            example_expressions = [
+                sge.Tuple(
+                    expressions=[sge.Literal.string(key), sge.Literal.string(val)]
+                )
+                for key, val in value
+            ]
+            args.append(
+                sge.Kwarg(this=field, expression=sge.array(*example_expressions))
             )
         else:
             args.append(

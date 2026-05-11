@@ -3,7 +3,7 @@ Python Client for Common Operation Metadata type
 
 |stable| |pypi| |versions|
 
-`Common Operation Metadata type`_: This package contains generated Python types for google.cloud.common
+`Common Operation Metadata type`_: Provides common protobuf definitions for APIs.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

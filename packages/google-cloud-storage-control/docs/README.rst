@@ -3,7 +3,13 @@ Python Client for Storage Control
 
 |stable| |pypi| |versions|
 
-`Storage Control`_: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
+`Storage Control`_: The Storage Control API lets you perform metadata-specific, control plane,
+and long-running operations.
+
+The Storage Control API creates one space to perform metadata-specific,
+control plane, and long-running operations apart from the Storage API.
+Separating these operations from the Storage API improves API
+standardization and lets you run faster releases.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

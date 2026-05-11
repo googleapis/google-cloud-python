@@ -1,5 +1,5 @@
 {
-    "api_description": "Manage BigQuery connections to external data sources.",
+    "api_description": "Allows users to manage BigQuery connections to external data sources.",
     "api_id": "bigqueryconnection.googleapis.com",
     "api_shortname": "bigqueryconnection",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigqueryconnection/latest",

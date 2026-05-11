@@ -29,7 +29,7 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .services.memorystore import MemorystoreClient
+from .services.memorystore import MemorystoreAsyncClient, MemorystoreClient
 from .types.memorystore import (
     AutomatedBackupConfig,
     Backup,
@@ -168,6 +168,7 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "MemorystoreAsyncClient",
     "AutomatedBackupConfig",
     "Backup",
     "BackupCollection",

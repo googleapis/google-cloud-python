@@ -1,5 +1,4 @@
 {
-    "api_description": "allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.",
     "api_id": "apigeeregistry.googleapis.com",
     "api_shortname": "apigeeregistry",
     "client_documentation": "https://cloud.google.com/python/docs/reference/apigeeregistry/latest",

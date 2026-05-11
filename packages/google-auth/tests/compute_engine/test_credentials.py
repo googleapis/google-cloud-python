@@ -451,6 +451,14 @@ class TestCredentials(object):
         kwargs = mock_metadata_get.call_args[1]
         assert "bindCertificateFingerprint" not in kwargs.get("params", {})
 
+    def test_set_blocking_regional_access_boundary_lookup(self):
+        creds = self.credentials
+        assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
+
+        new_creds = creds._set_blocking_regional_access_boundary_lookup()
+        assert creds._rab_manager._use_blocking_regional_access_boundary_lookup
+        assert new_creds is creds
+
 
 class TestIDTokenCredentials(object):
     credentials = None

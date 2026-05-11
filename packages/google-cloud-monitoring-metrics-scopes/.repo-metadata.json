@@ -1,5 +1,5 @@
 {
-    "api_description": "Manages your Cloud Monitoring data and configurations.",
+    "api_description": "Manages your Cloud Monitoring data and configurations. Most projects must\nbe associated with a Workspace, with a few exceptions as noted on the\nindividual method pages. The table entries below are presented in\nalphabetical order, not in order of common use. For explanations of the\nconcepts found in the table entries, read the [Cloud Monitoring\ndocumentation](https://cloud.google.com/monitoring/docs).",
     "api_id": "monitoring.googleapis.com",
     "api_shortname": "monitoring",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-monitoring-metrics-scopes/latest",

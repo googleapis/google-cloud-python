@@ -12,16 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.11.0
+version: v0.12.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 4ad1b6750926701f94ae8a88525395fd17b42cfe
-    sha256: 4a54e2829977dea29fb0dde856b182a009873c9f1296e4df3ccb35c62511137b
-release:
-  ignored_changes:
-    - .repo-metadata.json
-    - docs/README.rst
+    commit: 392c8aa259daf4570073220faa9e842cf1e2e173
+    sha256: 2b3be6d9749cdf2a337f2c76aa08857096671ebd4b17007d09ee3752b7b10fe9
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -55,52 +51,45 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
+    skip_release: true
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
-    version: 0.14.0
+    version: 0.15.0
     python:
       library_type: INTEGRATION
   - name: db-dtypes
-    version: 1.5.1
-    description_override: Pandas extension data types for data from SQL systems such as BigQuery.
+    version: 1.6.0
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
-    version: 4.0.3
+    version: 5.0.0
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.30.14
+    version: 1.31.0
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: gcp-sphinx-docfx-yaml
-    version: 3.2.5
+    version: 3.3.0
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-ads-admanager
     version: 0.9.0
     apis:
       - path: google/ads/admanager/v1
-    description_override: Manage your Ad Manager inventory, run reports and more.
     python:
       default_version: v1
   - name: google-ads-datamanager
     version: 0.8.0
     apis:
       - path: google/ads/datamanager/v1
-    description_override: |-
-      A unified ingestion API for data partners, agencies and advertisers to
-      connect first-party data across Google advertising products.
     python:
       default_version: v1
   - name: google-ads-marketingplatform-admin
     version: 0.5.0
     apis:
       - path: google/marketingplatform/admin/v1alpha
-    description_override: The Google Marketing Platform Admin API allows for programmatic access to the Google Marketing Platform configuration data. You can use the Google Marketing Platform Admin API to manage links between your Google Marketing Platform organization and Google Analytics accounts, and to set the service level of your GA4 properties.
     python:
       opt_args_by_api:
         google/marketingplatform/admin/v1alpha:
@@ -115,16 +104,14 @@ libraries:
       - path: google/ai/generativelanguage/v1beta2
       - path: google/ai/generativelanguage/v1beta
       - path: google/ai/generativelanguage/v1alpha
-    description_override: The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
     python:
       metadata_name_override: generativelanguage
       default_version: v1beta
   - name: google-analytics-admin
-    version: 0.28.0
+    version: 0.29.0
     apis:
       - path: google/analytics/admin/v1beta
       - path: google/analytics/admin/v1alpha
-    description_override: allows you to manage Google Analytics accounts and properties.
     python:
       opt_args_by_api:
         google/analytics/admin/v1alpha:
@@ -132,11 +119,10 @@ libraries:
       metadata_name_override: analyticsadmin
       default_version: v1alpha
   - name: google-analytics-data
-    version: 0.21.0
+    version: 0.22.0
     apis:
       - path: google/analytics/data/v1beta
       - path: google/analytics/data/v1alpha
-    description_override: provides programmatic methods to access report data in Google Analytics App+Web properties.
     python:
       metadata_name_override: analyticsdata
       default_version: v1beta
@@ -144,18 +130,16 @@ libraries:
     version: 2.30.3
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: google-apps-card
     version: 0.6.0
     apis:
       - path: google/apps/card/v1
-    description_override: Google Apps Card Protos
     keep:
       - tests/unit/gapic/card_v1/test_card.py
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.8.0
+    version: 0.9.0
     apis:
       - path: google/chat/v1
     python:
@@ -170,7 +154,6 @@ libraries:
     apis:
       - path: google/apps/events/subscriptions/v1
       - path: google/apps/events/subscriptions/v1beta
-    description_override: The Google Workspace Events API lets you subscribe to events and manage change notifications across Google Workspace applications.
     python:
       default_version: v1
   - name: google-apps-meet
@@ -178,11 +161,10 @@ libraries:
     apis:
       - path: google/apps/meet/v2
       - path: google/apps/meet/v2beta
-    description_override: Create and manage meetings in Google Meet.
     python:
       default_version: v2
   - name: google-apps-script-type
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/apps/script/type
       - path: google/apps/script/type/gmail
@@ -234,34 +216,30 @@ libraries:
     version: 0.14.0
     apis:
       - path: google/area120/tables/v1alpha1
-    description_override: provides programmatic methods to the Area 120 Tables API.
     python:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.49.2
+    version: 2.52.0
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-auth-httplib2
-    version: 0.3.1
+    version: 0.4.0
     python:
       library_type: AUTH
   - name: google-auth-oauthlib
-    version: 1.3.1
+    version: 1.4.0
     python:
       library_type: AUTH
-      skip_readme_copy: true
   - name: google-cloud-access-approval
     version: 1.19.0
     apis:
       - path: google/cloud/accessapproval/v1
-    description_override: enables controlling access to your organization's data by Google personnel.
     python:
       metadata_name_override: accessapproval
       default_version: v1
   - name: google-cloud-access-context-manager
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/identity/accesscontextmanager/v1
       - path: google/identity/accesscontextmanager/type
@@ -276,7 +254,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/advisorynotifications/v1
-    description_override: Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.
     python:
       metadata_name_override: advisorynotifications
       default_version: v1
@@ -295,7 +272,6 @@ libraries:
       - path: google/cloud/alloydb/connectors/v1
       - path: google/cloud/alloydb/connectors/v1beta
       - path: google/cloud/alloydb/connectors/v1alpha
-    description_override: provides enterprise-grade performance and availability while maintaining 100% compatibility with open-source PostgreSQL.
     keep:
       - tests/unit/gapic/connectors_v1/test_connectors.py
     python:
@@ -315,7 +291,6 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/cloud/apigateway/v1
-    description_override: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
     python:
       metadata_name_override: apigateway
       default_version: v1
@@ -334,7 +309,6 @@ libraries:
     version: 1.15.0
     apis:
       - path: google/cloud/apigeeconnect/v1
-    description_override: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
     python:
       metadata_name_override: apigeeconnect
       default_version: v1
@@ -342,7 +316,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/apigeeregistry/v1
-    description_override: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
     python:
       opt_args_by_api:
         google/cloud/apigeeregistry/v1:
@@ -353,7 +326,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/apihub/v1
-    description_override: API hub lets you consolidate and organize information about all of the APIs of interest to your organization. API hub lets you capture critical information about APIs that allows developers to discover and evaluate them easily and leverage the work of other teams wherever possible. API platform teams can use API hub to have visibility into and manage their portfolio of APIs.
     python:
       default_version: v1
   - name: google-cloud-apiregistry
@@ -366,7 +338,6 @@ libraries:
     version: 1.17.0
     apis:
       - path: google/appengine/v1
-    description_override: allows you to manage your App Engine applications.
     python:
       opt_args_by_api:
         google/appengine/v1:
@@ -392,17 +363,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/apphub/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-appoptimize
     version: 0.1.0
     apis:
       - path: google/cloud/appoptimize/v1beta
-    description_override: |-
-      The App Optimize API provides developers and platform teams with tools to
-      monitor, analyze, and improve the performance and cost-efficiency of their
-      cloud applications.
     python:
       default_version: v1beta
   - name: google-cloud-artifact-registry
@@ -410,7 +376,6 @@ libraries:
     apis:
       - path: google/devtools/artifactregistry/v1
       - path: google/devtools/artifactregistry/v1beta2
-    description_override: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
     python:
       opt_args_by_api:
         google/devtools/artifactregistry/v1:
@@ -426,7 +391,6 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
-    description_override: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -438,7 +402,6 @@ libraries:
     apis:
       - path: google/cloud/assuredworkloads/v1
       - path: google/cloud/assuredworkloads/v1beta1
-    description_override: allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government.
     python:
       metadata_name_override: assuredworkloads
       default_version: v1
@@ -464,7 +427,6 @@ libraries:
     apis:
       - path: google/cloud/automl/v1
       - path: google/cloud/automl/v1beta1
-    description_override: '**AutoML API Python Client is now available in Vertex AI. Please visit** `Vertex SDK for Python <https://github.com/googleapis/python-aiplatform>`_ **for the new Python Vertex AI client.** Vertex AI is our next generation AI Platform, with many new features that are unavailable in the current platform. `Migrate your resources to Vertex AI <https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai>`_ to get the latest machine learning features, simplify end-to-end journeys, and productionize models with MLOps. The `Cloud AutoML API <https://cloud.google.com/automl>`_ is a suite of machine learning products that enables developers with limited machine learning expertise to train high-quality models specific to their business needs, by leveraging Google''s state-of-the-art transfer learning, and Neural Architecture Search technology.'
     keep:
       - docs/automl_v1beta1/tables.rst
       - google/cloud/automl_v1beta1/services/tables/__init__.py
@@ -478,7 +440,6 @@ libraries:
     version: 0.9.0
     apis:
       - path: google/cloud/backupdr/v1
-    description_override: Backup and DR Service ensures that your data is managed, protected, and accessible using both hybrid and cloud-based backup/recovery appliances that are managed using the Backup and DR management console.
     python:
       metadata_name_override: backupdr
       default_version: v1
@@ -486,7 +447,6 @@ libraries:
     version: 1.13.0
     apis:
       - path: google/cloud/baremetalsolution/v2
-    description_override: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
     python:
       opt_args_by_api:
         google/cloud/baremetalsolution/v2:
@@ -505,7 +465,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appconnections/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappconnections
       default_version: v1
@@ -513,7 +472,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appconnectors/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappconnectors
       default_version: v1
@@ -521,7 +479,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/appgateways/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpappgateways
       default_version: v1
@@ -529,7 +486,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/clientconnectorservices/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpclientconnectorservices
       default_version: v1
@@ -537,7 +493,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/cloud/beyondcorp/clientgateways/v1
-    description_override: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
     python:
       metadata_name_override: beyondcorpclientgateways
       default_version: v1
@@ -545,25 +500,16 @@ libraries:
     version: 0.3.0
     apis:
       - path: google/cloud/biglake/v1
-    description_override: The BigLake API provides access to BigLake Metastore, a serverless, fully managed, and highly available metastore for open-source data that can be used for querying Apache Iceberg tables in BigQuery.
     python:
       default_version: v1
   - name: google-cloud-biglake-hive
-    version: 0.1.0
+    version: 0.2.0
     apis:
       - path: google/cloud/biglake/hive/v1beta
-    description_override: |-
-      The BigLake API provides access to BigLake Metastore, a serverless, fully
-      managed, and highly available metastore for open-source data that can be
-      used for querying Apache Iceberg tables in BigQuery.
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.41.0
-    description_override: |-
-      is a fully managed, NoOps, low cost data analytics service.
-      Data can be streamed into BigQuery at millions of rows per second to enable real-time analysis.
-      With BigQuery you can easily deploy Petabyte-scale Databases.
     skip_generate: true
     python:
       library_type: GAPIC_COMBO
@@ -573,7 +519,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/cloud/bigquery/analyticshub/v1
-    description_override: Analytics Hub is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost. Curate a library of internal and external assets, including unique datasets like Google Trends, backed by the power of BigQuery.
     python:
       metadata_name_override: analyticshub
       default_version: v1
@@ -582,7 +527,6 @@ libraries:
     apis:
       - path: google/cloud/bigquery/biglake/v1
       - path: google/cloud/bigquery/biglake/v1alpha1
-    description_override: BigLake API
     python:
       metadata_name_override: biglake
       default_version: v1
@@ -590,7 +534,6 @@ libraries:
     version: 1.21.0
     apis:
       - path: google/cloud/bigquery/connection/v1
-    description_override: Manage BigQuery connections to external data sources.
     python:
       metadata_name_override: bigqueryconnection
       default_version: v1
@@ -598,7 +541,6 @@ libraries:
     version: 0.8.0
     apis:
       - path: google/cloud/bigquery/dataexchange/v1beta1
-    description_override: is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.
     python:
       opt_args_by_api:
         google/cloud/bigquery/dataexchange/v1beta1:
@@ -612,7 +554,6 @@ libraries:
       - path: google/cloud/bigquery/datapolicies/v1
       - path: google/cloud/bigquery/datapolicies/v2beta1
       - path: google/cloud/bigquery/datapolicies/v1beta1
-    description_override: Allows users to manage BigQuery data policies.
     python:
       metadata_name_override: bigquerydatapolicy
       default_version: v1
@@ -620,7 +561,6 @@ libraries:
     version: 3.22.0
     apis:
       - path: google/cloud/bigquery/datatransfer/v1
-    description_override: allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.
     python:
       metadata_name_override: bigquerydatatransfer
       default_version: v1
@@ -643,15 +583,14 @@ libraries:
       metadata_name_override: bigquerymigration
       default_version: v2
   - name: google-cloud-bigquery-reservation
-    version: 1.23.0
+    version: 1.24.0
     apis:
       - path: google/cloud/bigquery/reservation/v1
-    description_override: Modify BigQuery flat-rate reservations.
     python:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -665,15 +604,12 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.36.0
+    version: 2.38.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
-    description_override: |-
-      is Google's NoSQL Big Data database service. It's the
-      same database that powers many core Google services, including Search,
-      Analytics, Maps, and Gmail.
     skip_generate: true
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -690,7 +626,6 @@ libraries:
     version: 1.19.0
     apis:
       - path: google/cloud/billing/v1
-    description_override: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
     python:
       metadata_name_override: cloudbilling
       default_version: v1
@@ -699,7 +634,6 @@ libraries:
     apis:
       - path: google/cloud/billing/budgets/v1
       - path: google/cloud/billing/budgets/v1beta1
-    description_override: The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan.
     python:
       opt_args_by_api:
         google/cloud/billing/budgets/v1:
@@ -715,7 +649,6 @@ libraries:
     apis:
       - path: google/cloud/binaryauthorization/v1
       - path: google/cloud/binaryauthorization/v1beta1
-    description_override: ' is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware'
     python:
       metadata_name_override: binaryauthorization
       default_version: v1
@@ -724,7 +657,6 @@ libraries:
     apis:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
-    description_override: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
     python:
       opt_args_by_api:
         google/devtools/cloudbuild/v1:
@@ -737,14 +669,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/capacityplanner/v1beta
-    description_override: Provides programmatic access to Capacity Planner features.
     python:
       default_version: v1beta
   - name: google-cloud-certificate-manager
     version: 1.13.0
     apis:
       - path: google/cloud/certificatemanager/v1
-    description_override: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
     python:
       opt_args_by_api:
         google/cloud/certificatemanager/v1:
@@ -752,7 +682,7 @@ libraries:
       metadata_name_override: certificatemanager
       default_version: v1
   - name: google-cloud-ces
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
@@ -762,15 +692,13 @@ libraries:
     version: 1.27.0
     apis:
       - path: google/cloud/channel/v1
-    description_override: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
     python:
       metadata_name_override: cloudchannel
       default_version: v1
   - name: google-cloud-chronicle
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/chronicle/v1
-    description_override: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
     python:
       default_version: v1
   - name: google-cloud-cloudcontrolspartner
@@ -778,14 +706,12 @@ libraries:
     apis:
       - path: google/cloud/cloudcontrolspartner/v1
       - path: google/cloud/cloudcontrolspartner/v1beta
-    description_override: Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.
     python:
       default_version: v1
   - name: google-cloud-cloudsecuritycompliance
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-commerce-consumer-procurement
@@ -793,7 +719,6 @@ libraries:
     apis:
       - path: google/cloud/commerce/consumer/procurement/v1
       - path: google/cloud/commerce/consumer/procurement/v1alpha1
-    description_override: Cloud Commerce Consumer Procurement API
     python:
       metadata_name_override: procurement
       default_version: v1
@@ -801,7 +726,6 @@ libraries:
     version: 1.9.0
     apis:
       - path: google/cloud/common
-    description_override: This package contains generated Python types for google.cloud.common
     keep:
       - tests/unit/gapic/common/test_common.py
     python:
@@ -812,31 +736,27 @@ libraries:
     version: 1.47.0
     apis:
       - path: google/cloud/compute/v1
-    description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/compute/v1beta
-    description_override: delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations.
     python:
-      issue_tracker_override: https://issuetracker.google.com/issues/new?component=187134&template=0
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
     version: 0.9.0
     apis:
       - path: google/cloud/confidentialcomputing/v1
-    description_override: Protect data in-use with Confidential VMs, Confidential GKE, Confidential Dataproc, and Confidential Space.
     python:
       metadata_name_override: confidentialcomputing
       default_version: v1
   - name: google-cloud-config
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/config/v1
-    description_override: Infrastructure Manager API
     python:
       metadata_name_override: config
       default_version: v1
@@ -846,7 +766,6 @@ libraries:
       - path: google/cloud/configdelivery/v1
       - path: google/cloud/configdelivery/v1beta
       - path: google/cloud/configdelivery/v1alpha
-    description_override: ConfigDelivery service manages the deployment of kubernetes configuration to a fleet of kubernetes clusters.
     python:
       default_version: v1alpha
   - name: google-cloud-contact-center-insights
@@ -895,7 +814,7 @@ libraries:
       metadata_name_override: contentwarehouse
       default_version: v1
   - name: google-cloud-core
-    version: 2.5.1
+    version: 2.6.0
     python:
       library_type: CORE
   - name: google-cloud-data-fusion
@@ -916,7 +835,7 @@ libraries:
       metadata_name_override: dataqna
       default_version: v1alpha
   - name: google-cloud-databasecenter
-    version: 0.7.0
+    version: 0.8.0
     apis:
       - path: google/cloud/databasecenter/v1beta
     python:
@@ -933,11 +852,12 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/datacatalog/lineage/v1
+    skip_generate: true
     python:
       metadata_name_override: lineage
       default_version: v1
   - name: google-cloud-datacatalog-lineage-configmanagement
-    version: 0.1.0
+    version: 0.2.0
     apis:
       - path: google/cloud/datacatalog/lineage/configmanagement/v1
     python:
@@ -969,7 +889,7 @@ libraries:
       metadata_name_override: datalabeling
       default_version: v1beta1
   - name: google-cloud-dataplex
-    version: 2.18.0
+    version: 2.19.0
     apis:
       - path: google/cloud/dataplex/v1
     python:
@@ -1057,7 +977,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.18.0
+    version: 0.19.0
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1083,7 +1003,7 @@ libraries:
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
-    version: 0.36.1
+    version: 0.37.0
     python:
       library_type: REST
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559772
@@ -1097,7 +1017,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.15.2
+    version: 0.16.0
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
@@ -1201,6 +1121,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1232,10 +1153,11 @@ libraries:
   - name: google-cloud-geminidataanalytics
     version: 0.12.0
     apis:
+      - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
       - path: google/cloud/geminidataanalytics/v1alpha
     python:
-      default_version: v1alpha
+      default_version: v1
   - name: google-cloud-gke-backup
     version: 0.8.0
     apis:
@@ -1262,7 +1184,7 @@ libraries:
       metadata_name_override: connectgateway
       default_version: v1
   - name: google-cloud-gke-hub
-    version: 1.23.0
+    version: 1.24.0
     apis:
       - path: google/cloud/gkehub/v1
       - path: google/cloud/gkehub/v1beta1
@@ -1311,7 +1233,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-iam
-    version: 2.22.0
+    version: 2.23.0
     apis:
       - path: google/iam/v3
       - path: google/iam/v2
@@ -1376,7 +1298,7 @@ libraries:
       metadata_name_override: ids
       default_version: v1
   - name: google-cloud-kms
-    version: 3.12.0
+    version: 3.13.0
     apis:
       - path: google/cloud/kms/v1
     python:
@@ -1476,39 +1398,34 @@ libraries:
     apis:
       - path: google/cloud/memcache/v1
       - path: google/cloud/memcache/v1beta2
-    description_override: is a fully-managed in-memory data store service for Memcache.
     python:
       metadata_name_override: memcache
       default_version: v1
   - name: google-cloud-memorystore
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
-    description_override: Memorystore for Valkey is a fully managed Valkey Cluster service for Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Valkey service without the burden of managing complex Valkey deployments.
     python:
       default_version: v1
   - name: google-cloud-migrationcenter
     version: 0.4.0
     apis:
       - path: google/cloud/migrationcenter/v1
-    description_override: A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.
     python:
       metadata_name_override: migrationcenter
       default_version: v1
   - name: google-cloud-modelarmor
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
-    description_override: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
     python:
       default_version: v1
   - name: google-cloud-monitoring
     version: 2.30.0
     apis:
       - path: google/monitoring/v3
-    description_override: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1521,7 +1438,6 @@ libraries:
     version: 2.21.0
     apis:
       - path: google/monitoring/dashboard/v1
-    description_override: are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration.
     keep:
       - tests/unit/gapic/dashboard_v1/__init__.py
       - tests/unit/gapic/dashboard_v1/test_dashboards_service.py
@@ -1536,7 +1452,6 @@ libraries:
     version: 1.12.0
     apis:
       - path: google/monitoring/metricsscope/v1
-    description_override: Manages your Cloud Monitoring data and configurations.
     python:
       opt_args_by_api:
         google/monitoring/metricsscope/v1:
@@ -1544,16 +1459,14 @@ libraries:
           - python-gapic-namespace=google.cloud
       default_version: v1
   - name: google-cloud-ndb
-    version: 2.4.2
+    version: 2.5.0
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
-      skip_readme_copy: true
   - name: google-cloud-netapp
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/netapp/v1
-    description_override: NetApp API
     python:
       metadata_name_override: netapp
       default_version: v1
@@ -1563,15 +1476,13 @@ libraries:
       - path: google/cloud/networkconnectivity/v1
       - path: google/cloud/networkconnectivity/v1beta
       - path: google/cloud/networkconnectivity/v1alpha1
-    description_override: The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.
     python:
       metadata_name_override: networkconnectivity
       default_version: v1
   - name: google-cloud-network-management
-    version: 1.34.0
+    version: 1.35.0
     apis:
       - path: google/cloud/networkmanagement/v1
-    description_override: provides a collection of network performance monitoring and diagnostic capabilities.
     python:
       opt_args_by_api:
         google/cloud/networkmanagement/v1:
@@ -1610,7 +1521,6 @@ libraries:
       - path: google/cloud/notebooks/v2
       - path: google/cloud/notebooks/v1
       - path: google/cloud/notebooks/v1beta1
-    description_override: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
     python:
       metadata_name_override: notebooks
       default_version: v1
@@ -1618,7 +1528,6 @@ libraries:
     version: 1.14.0
     apis:
       - path: google/cloud/optimization/v1
-    description_override: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
     python:
       metadata_name_override: optimization
       default_version: v1
@@ -1626,15 +1535,13 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/cloud/oracledatabase/v1
-    description_override: The Oracle Database@Google Cloud API provides a set of APIs to manage Oracle database services, such as Exadata and Autonomous Databases.
     python:
       default_version: v1
   - name: google-cloud-orchestration-airflow
-    version: 1.20.0
+    version: 1.21.0
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
       - path: google/cloud/orchestration/airflow/service/v1beta1
-    description_override: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
     python:
       opt_args_by_api:
         google/cloud/orchestration/airflow/service/v1:
@@ -1650,7 +1557,6 @@ libraries:
     apis:
       - path: google/cloud/orgpolicy/v2
       - path: google/cloud/orgpolicy/v1
-    description_override: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
     python:
       proto_only_apis:
         - google/cloud/orgpolicy/v1
@@ -1661,12 +1567,11 @@ libraries:
     apis:
       - path: google/cloud/osconfig/v1
       - path: google/cloud/osconfig/v1alpha
-    description_override: provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances.
     python:
       metadata_name_override: osconfig
       default_version: v1
   - name: google-cloud-os-login
-    version: 2.20.0
+    version: 2.21.0
     apis:
       - path: google/cloud/oslogin/v1
     keep:
@@ -1682,21 +1587,18 @@ libraries:
     apis:
       - path: google/cloud/parallelstore/v1
       - path: google/cloud/parallelstore/v1beta
-    description_override: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
     python:
       default_version: v1beta
   - name: google-cloud-parametermanager
     version: 0.4.0
     apis:
       - path: google/cloud/parametermanager/v1
-    description_override: '(Public Preview) Parameter Manager is a single source of truth to store, access and manage the lifecycle of your workload parameters. Parameter Manager aims to make management of sensitive application parameters effortless for customers without diminishing focus on security. '
     python:
       default_version: v1
   - name: google-cloud-phishing-protection
     version: 1.17.0
     apis:
       - path: google/cloud/phishingprotection/v1beta1
-    description_override: helps prevent users from accessing phishing sites by identifying various signals associated with malicious content, including the use of your brand assets, classifying malicious content that uses your brand and reporting the unsafe URLs to Google Safe Browsing. Once a site is propagated to Safe Browsing, users will see warnings across more than 4 billion devices.
     python:
       metadata_name_override: phishingprotection
       default_version: v1beta1
@@ -1704,7 +1606,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/policytroubleshooter/v1
-    description_override: makes it easier to understand why a user has access to a resource or doesn't have permission to call an API. Given an email, resource, and permission, Policy Troubleshooter examines all Identity and Access Management (IAM) policies that apply to the resource. It then reveals whether the member's roles include the permission on that resource and, if so, which policies bind the member to those roles.
     python:
       metadata_name_override: policytroubleshooter
       default_version: v1
@@ -1719,7 +1620,7 @@ libraries:
       metadata_name_override: policysimulator
       default_version: v1
   - name: google-cloud-policytroubleshooter-iam
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
     python:
@@ -1754,7 +1655,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.37.0
+    version: 2.38.0
     apis:
       - path: google/pubsub/v1
     python:
@@ -1816,7 +1717,7 @@ libraries:
       metadata_name_override: redis
       default_version: v1
   - name: google-cloud-redis-cluster
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/redis/cluster/v1
       - path: google/cloud/redis/cluster/v1beta1
@@ -1846,13 +1747,13 @@ libraries:
       metadata_name_override: run
       default_version: v2
   - name: google-cloud-runtimeconfig
-    version: 0.36.1
+    version: 0.37.0
     python:
       library_type: GAPIC_MANUAL
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559663
       metadata_name_override: runtimeconfig
   - name: google-cloud-saasplatform-saasservicemgmt
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
     python:
@@ -1866,7 +1767,7 @@ libraries:
       metadata_name_override: cloudscheduler
       default_version: v1
   - name: google-cloud-secret-manager
-    version: 2.27.0
+    version: 2.28.0
     apis:
       - path: google/cloud/secretmanager/v1
       - path: google/cloud/secretmanager/v1beta2
@@ -1907,7 +1808,6 @@ libraries:
       - path: google/cloud/securitycenter/v1
       - path: google/cloud/securitycenter/v1p1beta1
       - path: google/cloud/securitycenter/v1beta1
-    description_override: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
     python:
       metadata_name_override: securitycenter
       default_version: v1
@@ -1922,7 +1822,6 @@ libraries:
     apis:
       - path: google/api/servicecontrol/v2
       - path: google/api/servicecontrol/v1
-    description_override: ' is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.'
     python:
       opt_args_by_api:
         google/api/servicecontrol/v1:
@@ -1936,7 +1835,6 @@ libraries:
     apis:
       - path: google/cloud/servicedirectory/v1
       - path: google/cloud/servicedirectory/v1beta1
-    description_override: Allows the registration and lookup of services.
     python:
       metadata_name_override: servicedirectory
       default_version: v1
@@ -1944,7 +1842,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/api/servicemanagement/v1
-    description_override: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
     python:
       opt_args_by_api:
         google/api/servicemanagement/v1:
@@ -1955,7 +1852,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/api/serviceusage/v1
-    description_override: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
     python:
       opt_args_by_api:
         google/api/serviceusage/v1:
@@ -1967,14 +1863,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/cloud/servicehealth/v1
-    description_override: Personalized Service Health helps you gain visibility into disruptive events impacting Google Cloud products.
     python:
       default_version: v1
   - name: google-cloud-shell
     version: 1.15.0
     apis:
       - path: google/cloud/shell/v1
-    description_override: is an interactive shell environment for Google Cloud that makes it easy for you to learn and experiment with Google Cloud and manage your projects and resources from your web browser.
     python:
       metadata_name_override: cloudshell
       default_version: v1
@@ -1993,12 +1887,11 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.65.0
+    version: 3.66.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
       - path: google/spanner/admin/database/v1
-    description_override: "is the world's first fully managed relational database service \nto offer both strong consistency and horizontal scalability for \nmission-critical online transaction processing (OLTP) applications. With Cloud \nSpanner you enjoy all the traditional benefits of a relational database; but \nunlike any other relational database service, Cloud Spanner scales horizontally \nto hundreds or thousands of servers to handle the biggest transactional \nworkloads."
     keep:
       - docs/spanner_v1/batch.rst
       - docs/spanner_v1/client.rst
@@ -2026,12 +1919,11 @@ libraries:
       metadata_name_override: spanner
       default_version: v1
   - name: google-cloud-speech
-    version: 2.38.0
+    version: 2.39.0
     apis:
       - path: google/cloud/speech/v2
       - path: google/cloud/speech/v1
       - path: google/cloud/speech/v1p1beta1
-    description_override: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: speech
@@ -2040,21 +1932,19 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
-    description_override: 'is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.'
+    skip_release: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:
         google/storage/v2:
           - python-gapic-namespace=google.cloud
           - python-gapic-name=_storage
-      issue_tracker_override: https://issuetracker.google.com/savedsearches/559782
       metadata_name_override: storage
       default_version: v2
   - name: google-cloud-storage-control
     version: 1.11.0
     apis:
       - path: google/storage/control/v2
-    description_override: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
     python:
       opt_args_by_api:
         google/storage/control/v2:
@@ -2065,7 +1955,6 @@ libraries:
     version: 1.20.0
     apis:
       - path: google/storagetransfer/v1
-    description_override: Secure, low-cost services for transferring data from cloud or on-premises sources.
     python:
       opt_args_by_api:
         google/storagetransfer/v1:
@@ -2074,17 +1963,15 @@ libraries:
       metadata_name_override: storagetransfer
       default_version: v1
   - name: google-cloud-storagebatchoperations
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/storagebatchoperations/v1
-    description_override: 'null '
     python:
       default_version: v1
   - name: google-cloud-storageinsights
     version: 0.4.0
     apis:
       - path: google/cloud/storageinsights/v1
-    description_override: The Storage Insights inventory report feature helps you manage your object storage at scale.
     python:
       metadata_name_override: storageinsights
       default_version: v1
@@ -2093,7 +1980,6 @@ libraries:
     apis:
       - path: google/cloud/support/v2
       - path: google/cloud/support/v2beta
-    description_override: Manages Google Cloud technical support cases for Customer Care support offerings.
     python:
       metadata_name_override: support
       default_version: v2
@@ -2102,7 +1988,6 @@ libraries:
     apis:
       - path: google/cloud/talent/v4
       - path: google/cloud/talent/v4beta1
-    description_override: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
     python:
       metadata_name_override: talent
       default_version: v4
@@ -2112,7 +1997,6 @@ libraries:
       - path: google/cloud/tasks/v2
       - path: google/cloud/tasks/v2beta3
       - path: google/cloud/tasks/v2beta2
-    description_override: a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.
     python:
       metadata_name_override: cloudtasks
       default_version: v2
@@ -2121,11 +2005,10 @@ libraries:
     apis:
       - path: google/cloud/telcoautomation/v1
       - path: google/cloud/telcoautomation/v1alpha1
-    description_override: APIs to automate 5G deployment and management of cloud infrastructure and network functions.
     python:
       default_version: v1
   - name: google-cloud-testutils
-    version: 1.7.1
+    version: 1.8.0
     python:
       library_type: OTHER
       metadata_name_override: google-cloud-test-utils
@@ -2134,7 +2017,6 @@ libraries:
     apis:
       - path: google/cloud/texttospeech/v1
       - path: google/cloud/texttospeech/v1beta1
-    description_override: enables easy integration of Google text recognition technologies into developer applications. Send text and receive synthesized audio output from the Cloud Text-to-Speech API service.
     python:
       metadata_name_override: texttospeech
       default_version: v1
@@ -2144,7 +2026,6 @@ libraries:
       - path: google/cloud/tpu/v2
       - path: google/cloud/tpu/v1
       - path: google/cloud/tpu/v2alpha1
-    description_override: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.
     python:
       metadata_name_override: tpu
       default_version: v1
@@ -2153,7 +2034,6 @@ libraries:
     apis:
       - path: google/devtools/cloudtrace/v2
       - path: google/devtools/cloudtrace/v1
-    description_override: is a distributed tracing system that collects latency data from your applications and displays it in the Google Cloud Platform Console. You can track how requests propagate through your application and receive detailed near real-time performance insights.
     python:
       opt_args_by_api:
         google/devtools/cloudtrace/v1:
@@ -2169,7 +2049,6 @@ libraries:
     apis:
       - path: google/cloud/translate/v3
       - path: google/cloud/translate/v3beta1
-    description_override: can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: translate
@@ -2179,23 +2058,12 @@ libraries:
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta
-    description_override: |-
-      The Vector Search API provides a fully-managed, highly performant, and
-      scalable vector database designed to power next-generation search,
-      recommendation, and generative AI applications. It allows you to store,
-      index, and query your data and its corresponding vector embeddings through
-      a simple, intuitive interface. With Vector Search, you can define custom
-      schemas for your data, insert objects with associated metadata,
-      automatically generate embeddings from your data, and perform fast
-      approximate nearest neighbor (ANN) searches to find semantically similar
-      items at scale.
     python:
       default_version: v1
   - name: google-cloud-video-live-stream
     version: 1.16.0
     apis:
       - path: google/cloud/video/livestream/v1
-    description_override: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
     python:
       opt_args_by_api:
         google/cloud/video/livestream/v1:
@@ -2207,7 +2075,6 @@ libraries:
     version: 0.11.0
     apis:
       - path: google/cloud/video/stitcher/v1
-    description_override: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
     python:
       opt_args_by_api:
         google/cloud/video/stitcher/v1:
@@ -2219,7 +2086,6 @@ libraries:
     version: 1.20.0
     apis:
       - path: google/cloud/video/transcoder/v1
-    description_override: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
     python:
       opt_args_by_api:
         google/cloud/video/transcoder/v1:
@@ -2235,19 +2101,17 @@ libraries:
       - path: google/cloud/videointelligence/v1p2beta1
       - path: google/cloud/videointelligence/v1p1beta1
       - path: google/cloud/videointelligence/v1beta2
-    description_override: makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame.
     python:
       metadata_name_override: videointelligence
       default_version: v1
   - name: google-cloud-vision
-    version: 3.13.0
+    version: 3.14.0
     apis:
       - path: google/cloud/vision/v1
       - path: google/cloud/vision/v1p4beta1
       - path: google/cloud/vision/v1p3beta1
       - path: google/cloud/vision/v1p2beta1
       - path: google/cloud/vision/v1p1beta1
-    description_override: allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: vision
@@ -2257,14 +2121,12 @@ libraries:
     apis:
       - path: google/cloud/visionai/v1
       - path: google/cloud/visionai/v1alpha1
-    description_override: Easily build and deploy Vertex AI Vision applications using a single platform.
     python:
       default_version: v1
   - name: google-cloud-vm-migration
     version: 1.16.0
     apis:
       - path: google/cloud/vmmigration/v1
-    description_override: ' for Compute Engine migrates VMs from your on-premises data center into Compute Engine.'
     python:
       metadata_name_override: vmmigration
       default_version: v1
@@ -2279,7 +2141,6 @@ libraries:
     version: 1.16.0
     apis:
       - path: google/cloud/vpcaccess/v1
-    description_override: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
     python:
       metadata_name_override: vpcaccess
       default_version: v1
@@ -2288,7 +2149,6 @@ libraries:
     apis:
       - path: google/cloud/webrisk/v1
       - path: google/cloud/webrisk/v1beta1
-    description_override: is a Google Cloud service that lets client applications check URLs against Google's constantly updated lists of unsafe web resources. Unsafe web resources include social engineering sites—such as phishing and deceptive sites—and sites that host malware or unwanted software. With the Web Risk API, you can quickly identify known bad sites, warn users before they click infected links, and prevent users from posting links to known infected pages from your site. The Web Risk API includes data on more than a million unsafe URLs and stays up to date by examining billions of URLs each day.
     python:
       metadata_name_override: webrisk
       default_version: v1
@@ -2298,18 +2158,16 @@ libraries:
       - path: google/cloud/websecurityscanner/v1
       - path: google/cloud/websecurityscanner/v1beta
       - path: google/cloud/websecurityscanner/v1alpha
-    description_override: identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.
     python:
       metadata_name_override: websecurityscanner
       default_version: v1
   - name: google-cloud-workflows
-    version: 1.21.0
+    version: 1.22.0
     apis:
       - path: google/cloud/workflows/v1
       - path: google/cloud/workflows/executions/v1
       - path: google/cloud/workflows/executions/v1beta
       - path: google/cloud/workflows/v1beta
-    description_override: Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
     python:
       opt_args_by_api:
         google/cloud/workflows/executions/v1:
@@ -2324,10 +2182,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/cloud/workloadmanager/v1
-    description_override: |-
-      Workload Manager is a service that provides tooling for enterprise
-      workloads to automate the deployment and validation of your workloads
-      against best practices and recommendations.
     python:
       default_version: v1
   - name: google-cloud-workstations
@@ -2340,10 +2194,9 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_generate: true
+    skip_release: true
     python:
       library_type: OTHER
-      skip_readme_copy: true
   - name: google-geo-type
     version: 0.6.0
     apis:
@@ -2358,7 +2211,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/maps/addressvalidation/v1
-    description_override: Address Validation lets you validate and correct address inputs with Places data powered by Google Maps Platform.
     python:
       opt_args_by_api:
         google/maps/addressvalidation/v1:
@@ -2369,14 +2221,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/maps/areainsights/v1
-    description_override: 'Places Insights API. '
     python:
       default_version: v1
   - name: google-maps-fleetengine
     version: 0.5.0
     apis:
       - path: google/maps/fleetengine/v1
-    description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
     python:
       opt_args_by_api:
         google/maps/fleetengine/v1:
@@ -2387,7 +2237,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/maps/fleetengine/delivery/v1
-    description_override: Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.
     python:
       opt_args_by_api:
         google/maps/fleetengine/delivery/v1:
@@ -2398,10 +2247,6 @@ libraries:
     version: 0.2.0
     apis:
       - path: google/maps/geocode/v4
-    description_override: |-
-      Convert addresses into geographic coordinates (geocoding), which you can
-      use     to place markers or position the map. This API also allows you to
-      convert     geographic coordinates into an address (reverse geocoding).
     python:
       opt_args_by_api:
         google/maps/geocode/v4:
@@ -2411,7 +2256,6 @@ libraries:
     version: 0.7.0
     apis:
       - path: google/maps/mapsplatformdatasets/v1
-    description_override: Maps Platform Datasets API
     python:
       metadata_name_override: mapsplatformdatasets
       default_version: v1
@@ -2419,14 +2263,12 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/maps/navconnect/v1
-    description_override: Navigation Connect API.
     python:
       default_version: v1
   - name: google-maps-places
     version: 0.8.0
     apis:
       - path: google/maps/places/v1
-    description_override: The Places API allows developers to access a variety of search and retrieval endpoints for a Place.
     python:
       opt_args_by_api:
         google/maps/places/v1:
@@ -2438,14 +2280,12 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/maps/routeoptimization/v1
-    description_override: The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
     python:
       default_version: v1
   - name: google-maps-routing
     version: 0.10.0
     apis:
       - path: google/maps/routing/v2
-    description_override: Help your users find the ideal way to get from A to Z with comprehensive data and real-time traffic.
     python:
       opt_args_by_api:
         google/maps/routing/v2:
@@ -2456,11 +2296,10 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/maps/solar/v1
-    description_override: The Google Maps Platform Solar API is a service focused on helping accelerate solar and energy system installations.
     python:
       default_version: v1
   - name: google-resumable-media
-    version: 2.8.2
+    version: 2.9.0
     python:
       library_type: CORE
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-resumable-media/latest
@@ -2468,7 +2307,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/shopping/css/v1
-    description_override: Programmatically manage your Comparison Shopping Service (CSS) account data at scale.
     python:
       opt_args_by_api:
         google/shopping/css/v1:
@@ -2479,7 +2317,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/accounts/v1
       - path: google/shopping/merchant/accounts/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/accounts/v1:
@@ -2492,7 +2329,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/conversions/v1
       - path: google/shopping/merchant/conversions/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1
   - name: google-shopping-merchant-datasources
@@ -2500,7 +2336,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/datasources/v1
       - path: google/shopping/merchant/datasources/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/datasources/v1:
@@ -2509,11 +2344,10 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-inventories
-    version: 1.3.0
+    version: 1.4.0
     apis:
       - path: google/shopping/merchant/inventories/v1
       - path: google/shopping/merchant/inventories/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/inventories/v1:
@@ -2526,7 +2360,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/issueresolution/v1
       - path: google/shopping/merchant/issueresolution/v1beta
-    description_override: 'Programmatically manage your Merchant Center Accounts. '
     python:
       opt_args_by_api:
         google/shopping/merchant/issueresolution/v1:
@@ -2539,7 +2372,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/lfp/v1
       - path: google/shopping/merchant/lfp/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/lfp/v1:
@@ -2552,7 +2384,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/notifications/v1
       - path: google/shopping/merchant/notifications/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/notifications/v1beta:
@@ -2563,7 +2394,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/ordertracking/v1
       - path: google/shopping/merchant/ordertracking/v1beta
-    description_override: 'Programmatically manage your Merchant Center Accounts. '
     python:
       opt_args_by_api:
         google/shopping/merchant/ordertracking/v1:
@@ -2572,11 +2402,10 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-products
-    version: 1.5.0
+    version: 1.6.0
     apis:
       - path: google/shopping/merchant/products/v1
       - path: google/shopping/merchant/products/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/products/v1:
@@ -2588,7 +2417,6 @@ libraries:
     version: 0.4.0
     apis:
       - path: google/shopping/merchant/productstudio/v1alpha
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1alpha
   - name: google-shopping-merchant-promotions
@@ -2596,7 +2424,6 @@ libraries:
     apis:
       - path: google/shopping/merchant/promotions/v1
       - path: google/shopping/merchant/promotions/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       opt_args_by_api:
         google/shopping/merchant/promotions/v1:
@@ -2609,16 +2436,14 @@ libraries:
     apis:
       - path: google/shopping/merchant/quota/v1
       - path: google/shopping/merchant/quota/v1beta
-    description_override: Programmatically manage your Merchant Center accounts.
     python:
       default_version: v1
   - name: google-shopping-merchant-reports
-    version: 1.3.0
+    version: 1.4.0
     apis:
       - path: google/shopping/merchant/reports/v1
       - path: google/shopping/merchant/reports/v1beta
       - path: google/shopping/merchant/reports/v1alpha
-    description_override: Programmatically manage your Merchant Center accounts
     python:
       opt_args_by_api:
         google/shopping/merchant/reports/v1:
@@ -2632,7 +2457,6 @@ libraries:
     version: 0.5.0
     apis:
       - path: google/shopping/merchant/reviews/v1beta
-    description_override: Programmatically manage your Merchant Center Accounts
     python:
       opt_args_by_api:
         google/shopping/merchant/reviews/v1beta:
@@ -2647,7 +2471,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.74.0
+    version: 1.75.0
     apis:
       - path: google/api
       - path: google/cloud
@@ -2672,7 +2496,6 @@ libraries:
     version: 1.22.0
     apis:
       - path: grafeas/v1
-    description_override: An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2691,20 +2514,18 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
+    skip_release: true
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true
   - name: proto-plus
-    version: 1.27.2
+    version: 1.28.0
     python:
       library_type: CORE
-      skip_readme_copy: true
   - name: sqlalchemy-bigquery
-    version: 1.16.0
+    version: 1.17.0
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
-    version: 1.17.3
+    version: 1.18.0
     python:
       library_type: INTEGRATION
-      skip_readme_copy: true

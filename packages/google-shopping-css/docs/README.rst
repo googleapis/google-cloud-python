@@ -3,7 +3,8 @@ Python Client for CSS
 
 |preview| |pypi| |versions|
 
-`CSS`_: Programmatically manage your Comparison Shopping Service (CSS) account data at scale.
+`CSS`_: Programmatically manage your Comparison Shopping Service (CSS) account data
+at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

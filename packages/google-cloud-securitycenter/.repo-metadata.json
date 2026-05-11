@@ -1,5 +1,5 @@
 {
-    "api_description": "makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.",
+    "api_description": "Security Command Center API provides access to temporal views of assets and\nfindings within an organization.",
     "api_id": "securitycenter.googleapis.com",
     "api_shortname": "securitycenter",
     "client_documentation": "https://cloud.google.com/python/docs/reference/securitycenter/latest",

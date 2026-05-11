@@ -3,7 +3,9 @@ Python Client for Cloud Channel
 
 |stable| |pypi| |versions|
 
-`Cloud Channel`_: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
+`Cloud Channel`_: The Cloud Channel API enables Google Cloud partners to have a single
+unified resale platform and APIs across all of Google Cloud including GCP,
+Workspace, Maps and Chrome.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

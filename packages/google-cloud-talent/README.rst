@@ -3,7 +3,8 @@ Python Client for Cloud Talent Solution
 
 |stable| |pypi| |versions|
 
-`Cloud Talent Solution`_: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
+`Cloud Talent Solution`_: Cloud Talent Solution provides the capability to create, read, update, and
+delete job postings, as well as search jobs based on keywords and filters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

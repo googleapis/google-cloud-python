@@ -125,6 +125,12 @@ class NodeType(proto.Enum):
             Redis highmem xlarge node_type.
         REDIS_STANDARD_SMALL (4):
             Redis standard small node_type.
+        REDIS_HIGHCPU_MEDIUM (7):
+            Redis highcpu medium node_type.
+        REDIS_STANDARD_LARGE (8):
+            Redis standard large node_type.
+        REDIS_HIGHMEM_2XLARGE (9):
+            Redis highmem 2xlarge node_type.
     """
 
     NODE_TYPE_UNSPECIFIED = 0
@@ -132,6 +138,9 @@ class NodeType(proto.Enum):
     REDIS_HIGHMEM_MEDIUM = 2
     REDIS_HIGHMEM_XLARGE = 3
     REDIS_STANDARD_SMALL = 4
+    REDIS_HIGHCPU_MEDIUM = 7
+    REDIS_STANDARD_LARGE = 8
+    REDIS_HIGHMEM_2XLARGE = 9
 
 
 class TransitEncryptionMode(proto.Enum):

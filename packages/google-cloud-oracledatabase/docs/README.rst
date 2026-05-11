@@ -3,7 +3,8 @@ Python Client for Oracle Database@Google Cloud
 
 |preview| |pypi| |versions|
 
-`Oracle Database@Google Cloud`_: The Oracle Database@Google Cloud API provides a set of APIs to manage Oracle database services, such as Exadata and Autonomous Databases.
+`Oracle Database@Google Cloud`_: The Oracle Database@Google Cloud API provides a set of APIs to manage
+Oracle database services, such as Exadata and Autonomous Databases.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

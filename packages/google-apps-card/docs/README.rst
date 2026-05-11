@@ -3,7 +3,7 @@ Python Client for Google Apps Card
 
 |preview| |pypi| |versions|
 
-`Google Apps Card`_: Google Apps Card Protos
+`Google Apps Card`_: Card interface displayed in a Google Chat message or Google Workspace Add-on.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

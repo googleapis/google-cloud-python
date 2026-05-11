@@ -1,5 +1,5 @@
 {
-    "api_description": "provides programmatic methods to the Area 120 Tables API.",
+    "api_description": "Area 120 Tables is a collaborative database program developed out of Google's Area 120 incubator.",
     "api_id": "area120tables.googleapis.com",
     "api_shortname": "area120tables",
     "client_documentation": "https://googleapis.dev/python/area120tables/latest",

@@ -3,7 +3,12 @@ Python Client for Cloud Monitoring
 
 |stable| |pypi| |versions|
 
-`Cloud Monitoring`_: Manages your Cloud Monitoring data and configurations.
+`Cloud Monitoring`_: Manages your Cloud Monitoring data and configurations. Most projects must
+be associated with a Workspace, with a few exceptions as noted on the
+individual method pages. The table entries below are presented in
+alphabetical order, not in order of common use. For explanations of the
+concepts found in the table entries, read the [Cloud Monitoring
+documentation](https://cloud.google.com/monitoring/docs).
 
 - `Client Library Documentation`_
 - `Product Documentation`_

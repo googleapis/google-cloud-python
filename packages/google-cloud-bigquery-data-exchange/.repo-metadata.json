@@ -1,5 +1,5 @@
 {
-    "api_description": "is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.",
+    "api_description": "Exchange data and analytics assets securely and efficiently.",
     "api_id": "analyticshub.googleapis.com",
     "api_shortname": "analyticshub",
     "client_documentation": "https://cloud.google.com/python/docs/reference/analyticshub/latest",

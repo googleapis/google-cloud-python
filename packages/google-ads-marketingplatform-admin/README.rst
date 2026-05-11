@@ -3,7 +3,11 @@ Python Client for Google Marketing Platform Admin
 
 |preview| |pypi| |versions|
 
-`Google Marketing Platform Admin`_: The Google Marketing Platform Admin API allows for programmatic access to the Google Marketing Platform configuration data. You can use the Google Marketing Platform Admin API to manage links between your Google Marketing Platform organization and Google Analytics accounts, and to set the service level of your GA4 properties.
+`Google Marketing Platform Admin`_: The Google Marketing Platform Admin API allows for programmatic access to
+the Google Marketing Platform configuration data. You can use the Google
+Marketing Platform Admin API to manage links between your Google Marketing
+Platform organization and Google Analytics accounts, and to set the
+service level of your GA4 properties.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

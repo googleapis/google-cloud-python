@@ -1,5 +1,5 @@
 {
-    "api_description": "a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.",
+    "api_description": "Manages the execution of large numbers of distributed requests.",
     "api_id": "cloudtasks.googleapis.com",
     "api_shortname": "cloudtasks",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudtasks/latest",

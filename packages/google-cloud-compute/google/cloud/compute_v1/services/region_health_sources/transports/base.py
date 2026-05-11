@@ -182,6 +182,21 @@ class RegionHealthSourcesTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_health: gapic_v1.method.wrap_method(
+                self.get_health,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=600.0,
@@ -250,6 +265,15 @@ class RegionHealthSourcesTransport(abc.ABC):
     ) -> Callable[
         [compute.GetRegionHealthSourceRequest],
         Union[compute.HealthSource, Awaitable[compute.HealthSource]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_health(
+        self,
+    ) -> Callable[
+        [compute.GetHealthRegionHealthSourceRequest],
+        Union[compute.HealthSourceHealth, Awaitable[compute.HealthSourceHealth]],
     ]:
         raise NotImplementedError()
 

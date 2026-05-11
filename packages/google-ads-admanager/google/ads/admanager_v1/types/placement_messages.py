@@ -40,7 +40,7 @@ class Placement(proto.Message):
             Identifier. The resource name of the ``Placement``. Format:
             ``networks/{network_code}/placements/{placement_id}``
         placement_id (int):
-            Output only. ``Placement`` ID.
+            Output only. Deprecated: ``Placement`` ID.
         display_name (str):
             Required. The display name of the placement.
             This attribute has a maximum length of 255

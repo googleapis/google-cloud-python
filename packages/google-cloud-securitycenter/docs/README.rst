@@ -3,7 +3,8 @@ Python Client for Security Command Center
 
 |stable| |pypi| |versions|
 
-`Security Command Center`_: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
+`Security Command Center`_: Security Command Center API provides access to temporal views of assets and
+findings within an organization.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -3,7 +3,7 @@ Python Client for Cloud Speech-to-Text
 
 |stable| |pypi| |versions|
 
-`Cloud Speech-to-Text`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
+`Cloud Speech-to-Text`_: Converts audio to text by applying powerful neural network models.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

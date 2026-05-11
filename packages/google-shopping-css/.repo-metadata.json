@@ -1,5 +1,5 @@
 {
-    "api_description": "Programmatically manage your Comparison Shopping Service (CSS) account data at scale.",
+    "api_description": "Programmatically manage your Comparison Shopping Service (CSS) account data\nat scale.",
     "api_id": "css.googleapis.com",
     "api_shortname": "css",
     "client_documentation": "https://googleapis.dev/python/google-shopping-css/latest",

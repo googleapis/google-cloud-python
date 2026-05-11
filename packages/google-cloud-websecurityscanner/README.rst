@@ -3,7 +3,7 @@ Python Client for Web Security Scanner
 
 |stable| |pypi| |versions|
 
-`Web Security Scanner`_: identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.
+`Web Security Scanner`_: Scans your Compute and App Engine apps for common web vulnerabilities.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

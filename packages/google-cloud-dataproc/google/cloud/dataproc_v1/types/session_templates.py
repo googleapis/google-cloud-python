@@ -184,8 +184,8 @@ class SessionTemplate(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the session
-            template.
+            Required. Identifier. The resource name of
+            the session template.
         description (str):
             Optional. Brief description of the template.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -196,7 +196,7 @@ class SessionTemplate(proto.Message):
 
             This field is a member of `oneof`_ ``session_config``.
         spark_connect_session (google.cloud.dataproc_v1.types.SparkConnectConfig):
-            Optional. Spark Connect session config.
+            Optional. Spark connect session config.
 
             This field is a member of `oneof`_ ``session_config``.
         creator (str):

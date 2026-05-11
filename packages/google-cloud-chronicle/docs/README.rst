@@ -3,7 +3,9 @@ Python Client for Chronicle
 
 |preview| |pypi| |versions|
 
-`Chronicle`_: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
+`Chronicle`_: The Google Cloud Security Operations API (Chronicle API) provides endpoints
+that help analysts investigate and mitigate security threats throughout
+their lifecycle.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 {
-    "api_description": "allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.",
+    "api_description": "Schedule queries or transfer external data from SaaS applications to Google\nBigQuery on a regular basis.",
     "api_id": "bigquerydatatransfer.googleapis.com",
     "api_shortname": "bigquerydatatransfer",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerydatatransfer/latest",

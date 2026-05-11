@@ -47,7 +47,7 @@ class PrivateAuctionDeal(proto.Message):
             Format:
             ``networks/{network_code}/privateAuctionDeals/{private_auction_deal_id}``
         private_auction_deal_id (int):
-            Output only. ``PrivateAuctionDeal`` ID.
+            Output only. Deprecated: ``PrivateAuctionDeal`` ID.
 
             This field is a member of `oneof`_ ``_private_auction_deal_id``.
         private_auction_id (int):

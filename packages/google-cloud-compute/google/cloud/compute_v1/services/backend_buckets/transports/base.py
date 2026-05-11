@@ -152,6 +152,21 @@ class BackendBucketsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.aggregated_list: gapic_v1.method.wrap_method(
+                self.aggregated_list,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=600.0,
@@ -212,6 +227,21 @@ class BackendBucketsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.list_usable: gapic_v1.method.wrap_method(
+                self.list_usable,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
                 default_timeout=600.0,
@@ -254,6 +284,18 @@ class BackendBucketsTransport(abc.ABC):
     ) -> Callable[
         [compute.AddSignedUrlKeyBackendBucketRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListBackendBucketsRequest],
+        Union[
+            compute.BackendBucketAggregatedList,
+            Awaitable[compute.BackendBucketAggregatedList],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -308,6 +350,17 @@ class BackendBucketsTransport(abc.ABC):
     ) -> Callable[
         [compute.ListBackendBucketsRequest],
         Union[compute.BackendBucketList, Awaitable[compute.BackendBucketList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_usable(
+        self,
+    ) -> Callable[
+        [compute.ListUsableBackendBucketsRequest],
+        Union[
+            compute.BackendBucketListUsable, Awaitable[compute.BackendBucketListUsable]
+        ],
     ]:
         raise NotImplementedError()
 

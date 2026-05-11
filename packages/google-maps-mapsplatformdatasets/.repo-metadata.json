@@ -1,5 +1,5 @@
 {
-    "api_description": "Maps Platform Datasets API",
+    "api_description": "mapsplatformdatasets.googleapis.com API.",
     "api_id": "mapsplatformdatasets.googleapis.com",
     "api_shortname": "mapsplatformdatasets",
     "client_documentation": "https://googleapis.dev/python/mapsplatformdatasets/latest",

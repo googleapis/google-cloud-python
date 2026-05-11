@@ -66,6 +66,7 @@ RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
 
 # Download/extract pandoc
 # Pandoc is required by gapic-generator-python for parsing documentation
+# version-scanner: ignore-next-line
 ENV PANDOC_VERSION=3.8.2
 RUN mkdir pandoc-binary
 RUN wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz

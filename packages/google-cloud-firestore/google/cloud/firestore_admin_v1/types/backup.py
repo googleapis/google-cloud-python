@@ -40,6 +40,12 @@ class Backup(proto.Message):
 
             Format is
             ``projects/{project}/locations/{location}/backups/{backup}``.
+
+            The location in the name will be the Standard Managed
+            Multi-Region (SMMR) location (e.g. ``us``) if the backup was
+            created with an SMMR location, or the Google Managed
+            Multi-Region (GMMR) location (e.g. ``nam5``) if the backup
+            was created with a GMMR location.
         database (str):
             Output only. Name of the Firestore database that the backup
             is from.

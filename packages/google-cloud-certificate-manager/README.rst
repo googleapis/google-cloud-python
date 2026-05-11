@@ -3,7 +3,7 @@ Python Client for Certificate Manager
 
 |stable| |pypi| |versions|
 
-`Certificate Manager`_: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
+`Certificate Manager`_: Certificate Manager simplifies the acquisition, deployment, and management of Transport Layer Security (TLS) certificates.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

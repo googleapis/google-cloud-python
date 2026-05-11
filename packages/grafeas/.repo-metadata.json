@@ -1,5 +1,5 @@
 {
-    "api_description": "An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.",
+    "api_description": "An implementation of the Grafeas API, which stores, and enables querying and\nretrieval of critical metadata about all of your software artifacts.",
     "api_id": "containeranalysis.googleapis.com",
     "api_shortname": "containeranalysis",
     "client_documentation": "https://googleapis.dev/python/grafeas/latest",

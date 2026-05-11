@@ -3,7 +3,7 @@ Python Client for Infrastructure Manager
 
 |preview| |pypi| |versions|
 
-`Infrastructure Manager`_: Infrastructure Manager API
+`Infrastructure Manager`_: Creates and manages Google Cloud Platform resources and infrastructure.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
