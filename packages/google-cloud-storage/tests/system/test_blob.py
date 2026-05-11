@@ -853,6 +853,26 @@ def test_blob_compose_new_blob(shared_bucket, blobs_to_delete):
     assert destination.download_as_bytes() == payload_1 + payload_2
 
 
+def test_blob_compose_delete_source_objects(shared_bucket, blobs_to_delete):
+    payload_1 = b"AAA\n"
+    source_1 = shared_bucket.blob("source-1-delete")
+    source_1.upload_from_string(payload_1)
+    blobs_to_delete.append(source_1)
+
+    payload_2 = b"BBB\n"
+    source_2 = shared_bucket.blob("source-2-delete")
+    source_2.upload_from_string(payload_2)
+    blobs_to_delete.append(source_2)
+
+    destination = shared_bucket.blob("destination-delete")
+    destination.compose([source_1, source_2], delete_source_objects=True)
+    blobs_to_delete.append(destination)
+
+    assert destination.download_as_bytes() == payload_1 + payload_2
+    assert not source_1.exists()
+    assert not source_2.exists()
+
+
 def test_blob_compose_new_blob_wo_content_type(shared_bucket, blobs_to_delete):
     payload_1 = b"AAA\n"
     source_1 = shared_bucket.blob("source-1")
