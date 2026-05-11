@@ -1,10 +1,10 @@
 import os
 import json
 import argparse
-from typing import List, Dict, Tuple
+from typing import List, Dict
 
 # ---------------------------------------------------------
-# THE VIP LIST: Known mammoths that must bypass the queue
+# THE VIP LIST: These will get their own dedicated isolated VMs
 # ---------------------------------------------------------
 MAMMOTH_OVERRIDES = {
     "google-cloud-spanner": 9999,
@@ -15,16 +15,11 @@ MAMMOTH_OVERRIDES = {
 }
 
 def calculate_package_weight(pkg_path: str) -> int:
-    """
-    Determines computational weight. Mammoths get massive artificial weights 
-    to guarantee they are processed first.
-    """
     pkg_name = os.path.basename(os.path.normpath(pkg_path))
     if pkg_name in MAMMOTH_OVERRIDES:
         return MAMMOTH_OVERRIDES[pkg_name]
 
     base_weight = 1
-    
     meta_path = os.path.join(pkg_path, ".repo-metadata.json")
     if os.path.isfile(meta_path):
         try:
@@ -34,7 +29,6 @@ def calculate_package_weight(pkg_path: str) -> int:
         except Exception:
             pass 
             
-    # Fallback for standard packages: roughly estimate by test file count
     test_dir = os.path.join(pkg_path, "tests")
     if os.path.isdir(test_dir):
         for root, _, files in os.walk(test_dir):
@@ -48,8 +42,6 @@ def create_balanced_buckets(packages: List[str], max_buckets: int) -> List[Dict]
         return []
         
     pkg_weights = [(pkg, calculate_package_weight(pkg)) for pkg in valid_pkgs]
-    
-    # Sort heaviest to lightest. Mammoths (9999) will always be at the front.
     pkg_weights.sort(key=lambda x: x[1], reverse=True)
     
     num_buckets = min(len(valid_pkgs), max_buckets)
@@ -60,7 +52,25 @@ def create_balanced_buckets(packages: List[str], max_buckets: int) -> List[Dict]
         lightest["packages"].append(pkg)
         lightest["total_weight"] += weight
         
-    return [{"id": b["id"], "packages": " ".join(b["packages"])} for b in buckets if b["packages"]]
+    # Build the final output payload
+    final_output = []
+    for b in buckets:
+        if not b["packages"]:
+            continue
+            
+        # Clean UI labels for isolated VIPs
+        first_pkg_name = os.path.basename(os.path.normpath(b["packages"][0]))
+        if first_pkg_name in MAMMOTH_OVERRIDES:
+            ui_label = first_pkg_name.replace("google-cloud-", "")
+        else:
+            ui_label = f"Bucket {b['id']}"
+            
+        final_output.append({
+            "id": ui_label, 
+            "packages": " ".join(b["packages"])
+        })
+        
+    return final_output
 
 def main():
     parser = argparse.ArgumentParser()

@@ -46,8 +46,8 @@ jobs:
       matrix:
         chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
         python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-        
-    name: Unit (Py ${{ matrix.python }})
+
+    name: Unit (Py ${{ matrix.python }} - ${{ matrix.chunk.id }})
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -71,7 +71,7 @@ jobs:
           
           FAILED=0
           
-          for pkg in ${{ matrix.chunk }}; do
+          for pkg in ${{ matrix.chunk.packages }}; do
             echo "=========================================================="
             echo "🚀 TESTING: $pkg (Python ${{ matrix.python }})"
             echo "=========================================================="
