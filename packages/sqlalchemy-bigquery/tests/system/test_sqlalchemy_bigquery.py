@@ -487,7 +487,10 @@ def test_compiled_query_literal_binds(
     q = query(table)
     compiled = q.compile(engine, compile_kwargs={"literal_binds": True})
     with engine.connect() as conn:
-        result = conn.execute(sqlalchemy.text(str(compiled))).fetchall()
+        if hasattr(conn, "exec_driver_sql"):
+            result = conn.exec_driver_sql(str(compiled)).fetchall()
+        else:
+            result = conn.execute(compiled).fetchall()
         assert len(result) > 0
 
     q = query(table_using_test_dataset)
@@ -495,7 +498,10 @@ def test_compiled_query_literal_binds(
         engine_using_test_dataset, compile_kwargs={"literal_binds": True}
     )
     with engine_using_test_dataset.connect() as conn:
-        result = conn.execute(sqlalchemy.text(str(compiled))).fetchall()
+        if hasattr(conn, "exec_driver_sql"):
+            result = conn.exec_driver_sql(str(compiled)).fetchall()
+        else:
+            result = conn.execute(compiled).fetchall()
         assert len(result) > 0
 
 
