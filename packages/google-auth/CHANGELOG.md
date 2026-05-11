@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.52.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.51.0...google-auth-v2.52.0) (2026-05-07)
+
+
+### Features
+
+* make _CLOUD_RESOURCE_MANAGER URL universe-domain-aware (#16546) ([e938028bf17026cf0157fc7e8ce600fd96ca0955](https://github.com/googleapis/google-cloud-python/commit/e938028bf17026cf0157fc7e8ce600fd96ca0955))
+* implement in-place Regional Access Boundary configuration and add public RAB getters (#16987) ([df07fceb9e61f76e70a0954c3d59a52fbb31688d](https://github.com/googleapis/google-cloud-python/commit/df07fceb9e61f76e70a0954c3d59a52fbb31688d))
+
+## [2.51.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.50.0...google-auth-v2.51.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.8 and 3.9 (#16946) ([dcbdd3b40eef6e4fee66b6b486daea056c3384db](https://github.com/googleapis/google-cloud-python/commit/dcbdd3b40eef6e4fee66b6b486daea056c3384db))
+
 ## [2.49.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.1...google-auth-v2.49.2) (2026-04-09)
 
 

@@ -40,7 +40,7 @@ class Order(proto.Message):
             Identifier. The resource name of the ``Order``. Format:
             ``networks/{network_code}/orders/{order_id}``
         order_id (int):
-            Output only. Order ID.
+            Output only. Deprecated: Order ID.
 
             This field is a member of `oneof`_ ``_order_id``.
         display_name (str):
@@ -132,8 +132,7 @@ class Order(proto.Message):
             This field is a member of `oneof`_ ``_archived``.
         last_modified_by_app (str):
             Output only. The application which modified
-            this order. This attribute is assigned by
-            Google.
+            this order.
 
             This field is a member of `oneof`_ ``_last_modified_by_app``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):

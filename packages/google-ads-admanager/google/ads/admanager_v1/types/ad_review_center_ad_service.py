@@ -43,7 +43,27 @@ __protobuf__ = proto.module(
 class SearchAdReviewCenterAdsRequest(proto.Message):
     r"""Request object for ``SearchAdReviewCenterAds`` method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        status (google.ads.admanager_v1.types.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus):
+            Optional. Only return ads with the given
+            status.
+
+            This field is a member of `oneof`_ ``ad_review_status``.
+        manual_review_status (google.ads.admanager_v1.types.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus):
+            Optional. Only return ads with the given
+            manual review status. Only available for
+            networks with Manual Creative Review enabled.
+            For more information, see
+            https://support.google.com/admanager/answer/2586531#manual-creative-review.
+
+            This field is a member of `oneof`_ ``ad_review_status``.
         parent (str):
             Required. The parent, which owns this collection of
             AdReviewCenterAds. Format:
@@ -73,9 +93,6 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
             page of AdReviewCenterAds. This is the value
             returned from a previous Search request, or
             empty.
-        status (google.ads.admanager_v1.types.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus):
-            Optional. Only return ads with the given
-            status.
         ad_review_center_ad_id (MutableSequence[str]):
             Optional. Only return ads with the given
             AdReviewCenterAd IDs. If provided, no other
@@ -86,7 +103,8 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
             served within the given date range (inclusive).
             The  date range must be within the last 30 days.
             If not provided, the date range will be the last
-            30 days.
+            30 days. This filter does not apply to the
+            PENDING manual review status.
         search_text (MutableSequence[str]):
             Optional. If provided, restrict the search to
             AdReviewCenterAds associated with the text (including any
@@ -96,13 +114,24 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
             contain both "car" and "blue", but not an ad that only
             contains "car".
         buyer_account_id (MutableSequence[int]):
-            Optional. If provided, restrict the search to
-            creatives belonging to one of the given Adx
-            buyer account IDs. Only applicable to RTB
-            creatives. Adx buyer account IDs can be found
-            via the ProgrammaticBuyerService.
+            Optional. If provided, restrict the search to creatives
+            belonging to one of the given Adx buyer account IDs. Only
+            applicable to RTB creatives. Adx buyer account IDs can be
+            found using the ``ProgrammaticBuyerService``.
     """
 
+    status: ad_review_center_ad_enums.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus = proto.Field(
+        proto.ENUM,
+        number=4,
+        oneof="ad_review_status",
+        enum=ad_review_center_ad_enums.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus,
+    )
+    manual_review_status: ad_review_center_ad_enums.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus = proto.Field(
+        proto.ENUM,
+        number=9,
+        oneof="ad_review_status",
+        enum=ad_review_center_ad_enums.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus,
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -114,11 +143,6 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    status: ad_review_center_ad_enums.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus = proto.Field(
-        proto.ENUM,
-        number=4,
-        enum=ad_review_center_ad_enums.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus,
     )
     ad_review_center_ad_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

@@ -240,7 +240,7 @@ class UpdateReportRequest(proto.Message):
         report (google.ads.admanager_v1.types.Report):
             Required. The ``Report`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     report: report_messages.Report = proto.Field(
