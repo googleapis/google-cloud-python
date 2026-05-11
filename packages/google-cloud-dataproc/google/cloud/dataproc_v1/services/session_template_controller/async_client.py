@@ -84,6 +84,10 @@ class SessionTemplateControllerAsyncClient:
     )
     _DEFAULT_UNIVERSE = SessionTemplateControllerClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(SessionTemplateControllerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(
+        SessionTemplateControllerClient.parse_crypto_key_path
+    )
     service_path = staticmethod(SessionTemplateControllerClient.service_path)
     parse_service_path = staticmethod(
         SessionTemplateControllerClient.parse_service_path

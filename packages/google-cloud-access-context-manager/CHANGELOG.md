@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-access-context-manager/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.4.0...google-cloud-access-context-manager-v0.5.0) (2026-05-06)
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.3.0...google-cloud-access-context-manager-v0.4.0) (2026-03-26)
 
 

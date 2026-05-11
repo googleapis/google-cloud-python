@@ -262,7 +262,7 @@ class Session(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the session.
+            Identifier. The resource name of the session.
         uuid (str):
             Output only. A session UUID (Unique Universal
             Identifier). The service generates this value
@@ -275,7 +275,7 @@ class Session(proto.Message):
 
             This field is a member of `oneof`_ ``session_config``.
         spark_connect_session (google.cloud.dataproc_v1.types.SparkConnectConfig):
-            Optional. Spark Connect session config.
+            Optional. Spark connect session config.
 
             This field is a member of `oneof`_ ``session_config``.
         runtime_info (google.cloud.dataproc_v1.types.RuntimeInfo):
@@ -500,7 +500,7 @@ class JupyterConfig(proto.Message):
 
 
 class SparkConnectConfig(proto.Message):
-    r"""Spark Connect configuration for an interactive session."""
+    r"""Spark connect configuration for an interactive session."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
