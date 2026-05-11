@@ -127,14 +127,11 @@ class BigQuerySentEvent(ExecutionRunning):
     location: str | None = None
     job_id: str | None = None
     request_id: str | None = None
-    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QuerySentEvent,
-        progress_bar: Literal["default", "auto", "notebook", "terminal"]
-        | None = _DEFAULT,
     ):
         return cls(
             query=event.query,
@@ -142,7 +139,6 @@ class BigQuerySentEvent(ExecutionRunning):
             location=event.location,
             job_id=event.job_id,
             request_id=event.request_id,
-            progress_bar=progress_bar,
         )
 
 
@@ -155,14 +151,11 @@ class BigQueryRetryEvent(ExecutionRunning):
     location: str | None = None
     job_id: str | None = None
     request_id: str | None = None
-    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryRetryEvent,
-        progress_bar: Literal["default", "auto", "notebook", "terminal"]
-        | None = _DEFAULT,
     ):
         return cls(
             query=event.query,
@@ -170,7 +163,6 @@ class BigQueryRetryEvent(ExecutionRunning):
             location=event.location,
             job_id=event.job_id,
             request_id=event.request_id,
-            progress_bar=progress_bar,
         )
 
 
@@ -187,14 +179,11 @@ class BigQueryReceivedEvent(ExecutionRunning):
     created: datetime.datetime | None = None
     started: datetime.datetime | None = None
     ended: datetime.datetime | None = None
-    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryReceivedEvent,
-        progress_bar: Literal["default", "auto", "notebook", "terminal"]
-        | None = _DEFAULT,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -206,7 +195,6 @@ class BigQueryReceivedEvent(ExecutionRunning):
             created=event.created,
             started=event.started,
             ended=event.ended,
-            progress_bar=progress_bar,
         )
 
 
@@ -225,14 +213,11 @@ class BigQueryFinishedEvent(ExecutionRunning):
     created: datetime.datetime | None = None
     started: datetime.datetime | None = None
     ended: datetime.datetime | None = None
-    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = _DEFAULT
 
     @classmethod
     def from_bqclient(
         cls,
         event: google.cloud.bigquery._job_helpers.QueryFinishedEvent,
-        progress_bar: Literal["default", "auto", "notebook", "terminal"]
-        | None = _DEFAULT,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -246,7 +231,6 @@ class BigQueryFinishedEvent(ExecutionRunning):
             created=event.created,
             started=event.started,
             ended=event.ended,
-            progress_bar=progress_bar,
         )
 
 

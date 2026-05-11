@@ -245,10 +245,6 @@ def add_and_trim_labels(job_config, session=None):
 
 
 def create_bq_event_callback(publisher):
-    import bigframes._config
-
-    progress_bar = bigframes._config.options.display.progress_bar
-
     event_map = {
         google.cloud.bigquery._job_helpers.QueryFinishedEvent: bigframes.core.events.BigQueryFinishedEvent,
         google.cloud.bigquery._job_helpers.QueryReceivedEvent: bigframes.core.events.BigQueryReceivedEvent,
@@ -260,7 +256,7 @@ def create_bq_event_callback(publisher):
         bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
         for bq_type, bf_type in event_map.items():
             if isinstance(event, bq_type):
-                bf_event = bf_type.from_bqclient(event, progress_bar=progress_bar)  # type: ignore
+                bf_event = bf_type.from_bqclient(event)  # type: ignore
                 break
         publisher.publish(bf_event)
 
