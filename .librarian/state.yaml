@@ -5511,6 +5511,22 @@ libraries:
       - packages/google-maps-geocode/README.rst
       - packages/google-maps-geocode/docs/
     tag_format: '{id}-v{version}'
+  - id: google-maps-mapmanagement
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/maps/mapmanagement/v2beta
+    source_roots:
+      - packages/google-maps-mapmanagement
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-maps-mapmanagement/.repo-metadata.json
+      - packages/google-maps-mapmanagement/noxfile.py
+      - packages/google-maps-mapmanagement/tests/
+      - packages/google-maps-mapmanagement/README.rst
+      - packages/google-maps-mapmanagement/docs/
+    tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
     version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
