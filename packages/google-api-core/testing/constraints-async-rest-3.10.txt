@@ -6,10 +6,10 @@
 # e.g., if pyproject.toml has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
 googleapis-common-protos==1.63.2
-protobuf==4.25.8
+protobuf==5.29.6
 google-auth==2.14.1
 requests==2.33.0
 grpcio==1.41.0
 grpcio-status==1.41.0
-proto-plus==1.22.3
+proto-plus==1.24.0
 aiohttp==3.13.4
