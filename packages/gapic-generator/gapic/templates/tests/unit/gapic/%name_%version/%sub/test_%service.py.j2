@@ -424,6 +424,13 @@ def test__setup_request_id():
         def __contains__(self, key):
             return hasattr(self, key)
 
+    class MockProtoRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def HasField(self, key):
+            return hasattr(self, key)
+
     # Test with proto3 optional field not in request
     request = MockRequest()
     {{ service.client_name }}._setup_request_id(request, "request_id", True)
@@ -444,6 +451,27 @@ def test__setup_request_id():
     {{ service.client_name }}._setup_request_id(request, "request_id", False)
     assert request.request_id == "already_set"
 
+    # Test with proto3 optional field not in request (MockProtoRequest)
+    request = MockProtoRequest()
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
+    # Test with proto3 optional field already in request (MockProtoRequest)
+    request = MockProtoRequest(request_id="already_set")
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with ValueError
+    class MockValueErrorRequest:
+        def HasField(self, key):
+            raise ValueError("Mismatched field")
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    request = MockValueErrorRequest()
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
     # Test with dict and proto3 optional field not in request
     request = {}
     {{ service.client_name }}._setup_request_id(request, "request_id", True)
@@ -463,8 +491,8 @@ def test__setup_request_id():
     request = {"request_id": "already_set"}
     {{ service.client_name }}._setup_request_id(request, "request_id", False)
     assert request["request_id"] == "already_set"
-{% endif %}
 
+{% endif %}
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
