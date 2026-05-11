@@ -14,10 +14,9 @@
 
 from __future__ import annotations
 
-import logging
-from typing import Callable, Optional, Protocol, runtime_checkable, TYPE_CHECKING
-
 import dataclasses
+import logging
+from typing import TYPE_CHECKING, Callable, Optional, Protocol, runtime_checkable
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -28,8 +27,8 @@ from bigframes.functions import function_typing, udf_def
 
 if TYPE_CHECKING:
     import bigframes.core.col
-    from bigframes.session import Session
     import bigframes.series
+    from bigframes.session import Session
 
 logger = logging.getLogger(__name__)
 
@@ -163,7 +162,8 @@ class Udf(Protocol):
     """
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf: ...
+    def udf_def(self) -> udf_def.BigqueryUdf:
+        ...
 
 
 class BigqueryCallableRoutine:
@@ -192,8 +192,8 @@ class BigqueryCallableRoutine:
         if self._local_fun:
             return self._local_fun(*args, **kwargs)
         # avoid circular imports
-        from bigframes.core.compile.sqlglot import sql as sg_sql
         import bigframes.session._io.bigquery as bf_io_bigquery
+        from bigframes.core.compile.sqlglot import sql as sg_sql
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"

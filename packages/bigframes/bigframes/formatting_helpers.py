@@ -71,7 +71,10 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
     if query_job is None:
         return "No job information available"
     if query_job.dry_run:
-        return f"Computation deferred. Computation will process {get_formatted_bytes(query_job.total_bytes_processed)}"
+        return (
+            f"Computation deferred. Computation will process "
+            f"{get_formatted_bytes(query_job.total_bytes_processed)}"
+        )
     res = "Query Job Info"
     for key, value in query_job_prop_pairs.items():
         job_val = getattr(query_job, value)
@@ -105,11 +108,15 @@ def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
     if query_job is None:
         return "No job information available"
     if query_job.dry_run:
-        return f"Computation deferred. Computation will process {get_formatted_bytes(query_job.total_bytes_processed)}"
+        return (
+            f"Computation deferred. Computation will process "
+            f"{get_formatted_bytes(query_job.total_bytes_processed)}"
+        )
 
     # We can reuse the plaintext repr for now or make a nicer table.
-    # For deferred mode consistency, let's just wrap the text in a pre block or similar,
-    # but the request implies we want a distinct HTML representation if possible.
+    # For deferred mode consistency, let's just wrap the text in a pre
+    # block or similar, but the request implies we want a distinct HTML
+    # representation if possible.
     # However, existing repr_query_job returns a simple string.
     # Let's format it as a simple table or list.
 
@@ -123,7 +130,10 @@ def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
                     location=query_job.location,
                     job_id=query_job.job_id,
                 )
-                res += f'<li>Job: <a target="_blank" href="{url}">{query_job.job_id}</a></li>'
+                res += (
+                    f'<li>Job: <a target="_blank" href="{url}">'
+                    f"{query_job.job_id}</a></li>"
+                )
             elif key == "Slot Time":
                 res += f"<li>{key}: {get_formatted_time(job_val)}</li>"
             elif key == "Bytes Processed":
@@ -138,7 +148,7 @@ current_display_id: Optional[str] = None
 
 
 def progress_callback(
-    envelope: bigframes.core.events.EventEnvelope,
+    envelope: Any,
 ):
     """Displays a progress bar while the query is running"""
     global current_display_id
@@ -147,13 +157,19 @@ def progress_callback(
         import bigframes._config
         import bigframes.core.events
     except ImportError:
-        # Since this gets called from __del__, skip if the import fails to avoid
+        # Since this gets called from __del__, skip if the import fails
+        # to avoid
         # ImportError: sys.meta_path is None, Python is likely shutting down.
         # This will allow cleanup to continue.
         return
 
-    event = envelope.event
-    progress_bar = envelope.progress_bar
+    if isinstance(envelope, bigframes.core.events.EventEnvelope):
+        event = envelope.event
+        progress_bar = envelope.progress_bar
+    else:
+        event = envelope
+        progress_bar = bigframes.core.events._DEFAULT
+
     if progress_bar == bigframes.core.events._DEFAULT:
         progress_bar = bigframes._config.options.display.progress_bar
 
@@ -235,7 +251,8 @@ def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
             job.result()
             job.reload()
             display.update_display(
-                display.HTML(get_base_job_loading_html(job)), display_id=display_id
+                display.HTML(get_base_job_loading_html(job)),
+                display_id=display_id,
             )
         elif progress_bar == "terminal":
             inital_loading_bar = get_base_job_loading_string(job)
@@ -289,7 +306,10 @@ def render_job_link_html(
         job_id=job_id,
     )
     if job_url:
-        job_link = f' [<a target="_blank" href="{job_url}">Job {project_id}:{location}.{job_id} details</a>]'
+        job_link = (
+            f' [<a target="_blank" href="{job_url}">'
+            f"Job {project_id}:{location}.{job_id} details</a>]"
+        )
     else:
         job_link = ""
     return job_link
@@ -326,7 +346,10 @@ def get_job_url(
     """
     if project_id is None or location is None or job_id is None:
         return None
-    return f"""https://console.cloud.google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
+    return (
+        f"https://console.cloud.google.com/bigquery?project={project_id}"
+        f"&j=bq:{location}:{job_id}&page=queryresults"
+    )
 
 
 def render_bqquery_sent_event_html(
@@ -351,7 +374,10 @@ def render_bqquery_sent_event_html(
         job_id=event.job_id,
         request_id=event.request_id,
     )
-    query_text_details = f"<details><summary>SQL</summary><pre>{html.escape(event.query)}</pre></details>"
+    query_text_details = (
+        f"<details><summary>SQL</summary><pre>"
+        f"{html.escape(event.query)}</pre></details>"
+    )
 
     return f"""
     Query started{query_id}.{job_link}{query_text_details}
@@ -400,7 +426,10 @@ def render_bqquery_retry_event_html(
         job_id=event.job_id,
         request_id=event.request_id,
     )
-    query_text_details = f"<details><summary>SQL</summary><pre>{html.escape(event.query)}</pre></details>"
+    query_text_details = (
+        f"<details><summary>SQL</summary><pre>"
+        f"{html.escape(event.query)}</pre></details>"
+    )
 
     return f"""
     Retrying query{query_id}.{job_link}{query_text_details}
@@ -446,7 +475,10 @@ def render_bqquery_received_event_html(
     query_plan_details = ""
     if event.query_plan:
         plan_str = "\n".join([str(entry) for entry in event.query_plan])
-        query_plan_details = f"<details><summary>Query Plan</summary><pre>{html.escape(plan_str)}</pre></details>"
+        query_plan_details = (
+            f"<details><summary>Query Plan</summary><pre>"
+            f"{html.escape(plan_str)}</pre></details>"
+        )
 
     return f"""
     Query{query_id} is {event.state}.{job_link}{query_plan_details}
@@ -509,7 +541,9 @@ def render_bqquery_finished_event_plaintext(
 
     bytes_str = ""
     if event.total_bytes_processed is not None:
-        bytes_str = f" {humanize.naturalsize(event.total_bytes_processed)} processed."
+        bytes_str = (
+            f" {humanize.naturalsize(event.total_bytes_processed)} processed."
+        )
 
     slot_time_str = ""
     if event.slot_millis is not None:
@@ -575,7 +609,9 @@ def get_formatted_time(val):
         Duration string
     """
     try:
-        return humanize.naturaldelta(datetime.timedelta(milliseconds=float(val)))
+        return humanize.naturaldelta(
+            datetime.timedelta(milliseconds=float(val))
+        )
     except Exception:
         return val
 
@@ -594,7 +630,10 @@ def get_formatted_bytes(val):
 
 
 def get_bytes_processed_string(val: Any):
-    """Try to get bytes processed string. Return empty if passed non int value"""
+    """Try to get bytes processed string.
+
+    Return empty if passed non int value.
+    """
     bytes_processed_string = ""
     if isinstance(val, int):
         bytes_processed_string = f"""{get_formatted_bytes(val)} processed. """
