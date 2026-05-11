@@ -124,6 +124,10 @@ This example demonstrates a few features:
 - The `parent` field is a string representation of a resource name. The library provides helper methods
   on the client to construct these paths, ensuring you don't need to concern yourself
   with the underlying resource name format.
+  ```python
+  # produces the string `projects/your-project-id-here/locations/global`
+  parent = client.location_path(project_id, location_id)
+  ```
 
 The Google Cloud Libraries always expose methods accepting an API request object directly,
 but they also support passing keyword arguments directly to the method for convenience:
@@ -184,7 +188,6 @@ print()
 for translation in response.translations:
     print(f"Detected language: {translation.detected_language_code}")
     print(f"Translated text: {translation.translated_text}")
-    print()
 ```
 
 This is just a simple example, which hasn't touched on features like pagination
