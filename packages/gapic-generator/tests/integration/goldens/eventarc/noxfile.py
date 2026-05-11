@@ -602,7 +602,7 @@ def core_deps_from_source(session, protobuf_implementation):
     for dep in core_dependencies_from_source:
         dep_path = str(deps_dir / dep)
         session.install(dep_path, "--no-deps", "--ignore-installed")
-        print(f"Installed {pkg} locally from {dep_path}")
+        print(f"Installed {dep} locally from {dep_path}")
 
     session.run(
         "py.test",
