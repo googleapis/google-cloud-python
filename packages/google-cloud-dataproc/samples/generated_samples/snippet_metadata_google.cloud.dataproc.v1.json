@@ -4629,12 +4629,12 @@
       "regionTag": "dataproc_v1_generated_SessionController_CreateSession_async",
       "segments": [
         {
-          "end": 60,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -4644,18 +4644,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 53,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4717,12 +4717,12 @@
       "regionTag": "dataproc_v1_generated_SessionController_CreateSession_sync",
       "segments": [
         {
-          "end": 60,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -4732,18 +4732,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 53,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],

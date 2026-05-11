@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
         "AdReviewCenterAdStatusEnum",
+        "ManualAdReviewCenterAdStatusEnum",
     },
 )
 
@@ -53,6 +54,42 @@ class AdReviewCenterAdStatusEnum(proto.Message):
         ALLOWED = 1
         BLOCKED = 2
         UNREVIEWED = 3
+
+
+class ManualAdReviewCenterAdStatusEnum(proto.Message):
+    r"""Wrapper message for
+    [ManualAdReviewCenterAdStatus][google.ads.admanager.v1.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus]
+
+    """
+
+    class ManualAdReviewCenterAdStatus(proto.Enum):
+        r"""Specifies the manual review status of a AdReviewCenterAd.
+
+        Values:
+            MANUAL_AD_REVIEW_CENTER_AD_STATUS_UNSPECIFIED (0):
+                Not specified value.
+            ALLOWED (1):
+                This ad has been explicitly allowed to serve.
+            BLOCKED (2):
+                This ad has been explicitly blocked from
+                serving.
+            ARCHIVED (3):
+                This ad is implicitly blocked and has been
+                reviewed.
+            PENDING (4):
+                This ad is implicitly blocked and has not
+                been reviewed.
+            SERVING (5):
+                This ad is allowed to serve by default and
+                has not been reviewed.
+        """
+
+        MANUAL_AD_REVIEW_CENTER_AD_STATUS_UNSPECIFIED = 0
+        ALLOWED = 1
+        BLOCKED = 2
+        ARCHIVED = 3
+        PENDING = 4
+        SERVING = 5
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

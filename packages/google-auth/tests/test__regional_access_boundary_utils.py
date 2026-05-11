@@ -224,23 +224,47 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         creds._rab_manager.apply_headers(headers)
         assert headers == {}
 
-    def test_with_blocking_regional_access_boundary_lookup(self):
+    def test_set_blocking_regional_access_boundary_lookup(self):
         creds = CredentialsImpl()
         assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
 
-        new_creds = creds._with_blocking_regional_access_boundary_lookup()
-        assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup
+        new_creds = creds._set_blocking_regional_access_boundary_lookup()
+        assert new_creds is creds
+        assert creds._rab_manager._use_blocking_regional_access_boundary_lookup
 
-    def test_with_regional_access_boundary(self):
+    def test_set_regional_access_boundary(self):
         creds = CredentialsImpl()
         seed = {
             "encodedLocations": "0xABC",
             "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
         }
-        new_creds = creds._with_regional_access_boundary(seed)
-        assert new_creds._rab_manager._data.encoded_locations == "0xABC"
-        assert new_creds._rab_manager._data.expiry == seed["expiry"]
-        assert new_creds._rab_manager._data.cooldown_expiry is None
+        new_creds = creds._set_regional_access_boundary(seed)
+        assert new_creds is creds
+        assert creds._rab_manager._data.encoded_locations == "0xABC"
+        assert creds._rab_manager._data.expiry == seed["expiry"]
+        assert creds._rab_manager._data.cooldown_expiry is None
+
+    def test_regional_access_boundary_getter(self):
+        creds = CredentialsImpl()
+        assert creds.regional_access_boundary is None
+
+        seed = {
+            "encodedLocations": "0xABC",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+        creds._set_regional_access_boundary(seed)
+        assert creds.regional_access_boundary == "0xABC"
+
+    def test_regional_access_boundary_expiry_getter(self):
+        creds = CredentialsImpl()
+        assert creds.regional_access_boundary_expiry is None
+
+        seed = {
+            "encodedLocations": "0xABC",
+            "expiry": _helpers.utcnow() + datetime.timedelta(hours=1),
+        }
+        creds._set_regional_access_boundary(seed)
+        assert creds.regional_access_boundary_expiry == seed["expiry"]
 
     def test_copy_regional_access_boundary_state(self):
         source_creds = CredentialsImpl()

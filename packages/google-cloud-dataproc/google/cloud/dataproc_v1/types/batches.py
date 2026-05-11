@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "SparkBatch",
         "SparkRBatch",
         "SparkSqlBatch",
+        "PySparkNotebookBatch",
     },
 )
 
@@ -56,11 +57,10 @@ class CreateBatchRequest(proto.Message):
             ``/[a-z][0-9]-/``.
         request_id (str):
             Optional. A unique ID used to identify the request. If the
-            service receives two
-            `CreateBatchRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateBatchRequest>`__\ s
-            with the same request_id, the second request is ignored and
-            the Operation that corresponds to the first Batch created
-            and stored in the backend is returned.
+            service receives two ``CreateBatchRequests`` with the same
+            ``request_id``, the second request is ignored and the
+            operation that corresponds to the first Batch created and
+            stored in the backend is returned.
 
             Recommendation: Set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
@@ -130,13 +130,16 @@ class ListBatchesRequest(proto.Message):
             various fields in each batch resource. Filters are case
             sensitive, and may contain multiple clauses combined with
             logical operators (AND/OR). Supported fields are
-            ``batch_id``, ``batch_uuid``, ``state``, and
-            ``create_time``.
+            ``batch_id``, ``batch_uuid``, ``state``, ``create_time``,
+            and ``labels``.
 
             e.g.
             ``state = RUNNING and create_time < "2023-01-01T00:00:00Z"``
             filters for batches in state RUNNING that were created
-            before 2023-01-01
+            before 2023-01-01.
+            ``state = RUNNING and labels.environment=production``
+            filters for batches in state in a RUNNING state that have a
+            production environment label.
 
             See https://google.aip.dev/assets/misc/ebnf-filtering.txt
             for a detailed description of the filter syntax and a list
@@ -178,7 +181,8 @@ class ListBatchesResponse(proto.Message):
 
     Attributes:
         batches (MutableSequence[google.cloud.dataproc_v1.types.Batch]):
-            The batches from the specified collection.
+            Output only. The batches from the specified
+            collection.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -259,6 +263,10 @@ class Batch(proto.Message):
             This field is a member of `oneof`_ ``batch_config``.
         spark_sql_batch (google.cloud.dataproc_v1.types.SparkSqlBatch):
             Optional. SparkSql batch config.
+
+            This field is a member of `oneof`_ ``batch_config``.
+        pyspark_notebook_batch (google.cloud.dataproc_v1.types.PySparkNotebookBatch):
+            Optional. PySpark notebook batch config.
 
             This field is a member of `oneof`_ ``batch_config``.
         runtime_info (google.cloud.dataproc_v1.types.RuntimeInfo):
@@ -392,6 +400,12 @@ class Batch(proto.Message):
         number=7,
         oneof="batch_config",
         message="SparkSqlBatch",
+    )
+    pyspark_notebook_batch: "PySparkNotebookBatch" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        oneof="batch_config",
+        message="PySparkNotebookBatch",
     )
     runtime_info: shared.RuntimeInfo = proto.Field(
         proto.MESSAGE,
@@ -637,6 +651,59 @@ class SparkSqlBatch(proto.Message):
     jar_file_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class PySparkNotebookBatch(proto.Message):
+    r"""A configuration for running a PySpark Notebook batch
+    workload.
+
+    Attributes:
+        notebook_file_uri (str):
+            Required. The HCFS URI of the notebook file
+            to execute.
+        params (MutableMapping[str, str]):
+            Optional. The parameters to pass to the
+            notebook.
+        python_file_uris (MutableSequence[str]):
+            Optional. HCFS URIs of Python files to pass
+            to the PySpark framework.
+        jar_file_uris (MutableSequence[str]):
+            Optional. HCFS URIs of jar files to be added
+            to the Spark CLASSPATH.
+        file_uris (MutableSequence[str]):
+            Optional. HCFS URIs of files to be placed in
+            the working directory of each executor
+        archive_uris (MutableSequence[str]):
+            Optional. HCFS URIs of archives to be extracted into the
+            working directory of each executor. Supported file types:
+            ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
+    """
+
+    notebook_file_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    params: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    python_file_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    file_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    archive_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
 
 

@@ -44,7 +44,7 @@ def main():
         "google-cloud-datastore >= 2.16.0, != 2.20.2, < 3.0.0",
         "protobuf >= 4.25.8, < 8.0.0",
         "pymemcache >= 2.1.0, < 5.0.0",
-        "pytz >= 2018.3",
+        "pytz >= 2022.1",
         "redis >= 3.0.0, < 8.0.0",
     ]
 
@@ -68,7 +68,6 @@ def main():
             "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
@@ -81,7 +80,7 @@ def main():
         packages=packages,
         install_requires=dependencies,
         extras_require={},
-        python_requires=">=3.9",
+        python_requires=">=3.10",
         include_package_data=False,
         zip_safe=False,
     )

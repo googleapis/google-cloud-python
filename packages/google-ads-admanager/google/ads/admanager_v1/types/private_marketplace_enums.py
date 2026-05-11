@@ -49,6 +49,8 @@ class PrivateMarketplaceDealStatusEnum(proto.Message):
                 The deal is paused by the seller.
             BUYER_PAUSED (5):
                 The deal is paused by the buyer.
+            COMPLETED (6):
+                The deal is past its end date.
         """
 
         PRIVATE_MARKETPLACE_DEAL_STATUS_UNSPECIFIED = 0
@@ -57,6 +59,7 @@ class PrivateMarketplaceDealStatusEnum(proto.Message):
         CANCELED = 3
         SELLER_PAUSED = 4
         BUYER_PAUSED = 5
+        COMPLETED = 6
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

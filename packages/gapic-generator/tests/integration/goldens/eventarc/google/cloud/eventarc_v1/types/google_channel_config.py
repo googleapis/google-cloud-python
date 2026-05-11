@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,9 @@ class GoogleChannelConfig(proto.Message):
             Required. The resource name of the config. Must be in the
             format of,
             ``projects/{project}/locations/{location}/googleChannelConfig``.
+            In API responses, the config name always includes the
+            projectID, regardless of whether the projectID or
+            projectNumber was provided.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         crypto_key_name (str):
@@ -50,6 +53,8 @@ class GoogleChannelConfig(proto.Message):
 
             It must match the pattern
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        labels (MutableMapping[str, str]):
+            Optional. Resource labels.
     """
 
     name: str = proto.Field(
@@ -64,6 +69,11 @@ class GoogleChannelConfig(proto.Message):
     crypto_key_name: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
     )
 
 

@@ -39,12 +39,8 @@ def sample_create_session():
     client = dataproc_v1.SessionControllerClient()
 
     # Initialize request argument(s)
-    session = dataproc_v1.Session()
-    session.name = "name_value"
-
     request = dataproc_v1.CreateSessionRequest(
         parent="parent_value",
-        session=session,
         session_id="session_id_value",
     )
 

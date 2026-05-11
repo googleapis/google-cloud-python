@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2979,7 +2979,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -3207,7 +3207,7 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -3388,7 +3388,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
                 ),
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -3555,7 +3555,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -3722,7 +3722,7 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
