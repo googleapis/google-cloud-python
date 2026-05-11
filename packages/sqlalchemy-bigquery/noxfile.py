@@ -607,39 +607,67 @@ def prerelease_deps(session, protobuf_implementation):
     session.install(*constraints_deps)
 
     prerel_deps = [
-        "protobuf",
-        "sqlalchemy",
-        # dependency of grpc
-        "six",
-        "grpc-google-iam-v1",
         "googleapis-common-protos",
-        "grpcio",
-        "grpcio-status",
         "google-api-core",
         "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
+        "grpcio-status",
+        "protobuf",
         "proto-plus",
-        "google-cloud-testutils",
-        # dependencies of google-cloud-testutils"
-        "click",
     ]
 
-    for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--upgrade", dep)
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
 
-    # Remaining dependencies
-    other_deps = [
-        "requests",
-    ]
-    session.install(*other_deps)
+    # Extract the base package name, safely ignoring version bounds and spaces
+    # (e.g., "grpcio>=1.75.1" becomes "grpcio")
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) 
+        for dep in prerel_deps
+    }
 
-    session.run("python", "-m", "pip", "freeze")
+    # Dynamically sort local packages vs PyPI dependencies
+    local_paths = []
+    pypi_deps = []
+    
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
 
-    # Print out prerelease package versions
-    session.run(
-        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
-    )
-    session.run("python", "-c", "import grpc; print(grpc.__version__)")
-    session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
+    # Batch pip installations for maximum speed
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+
+    # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status`
+    # to the dictionary below once this bug is fixed.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
+    # `googleapis-common-protos` and `grpc-google-iam-v1` to the dictionary below
+    # once this bug is fixed.
+    package_namespaces = {
+        "google-api-core": "google.api_core",
+        "google-auth": "google.auth",
+        "grpcio": "grpc",
+        "protobuf": "google.protobuf",
+        "proto-plus": "proto",
+    }
+
+    # Reuse the parsed names for logging and version verification
+    for dep, pkg_name in parsed_deps.items():
+        print(f"Installed {dep}")
+        version_namespace = package_namespaces.get(pkg_name)
+
+        if version_namespace:
+            session.run(
+                "python",
+                "-c",
+                f"import {version_namespace}; print({version_namespace}.__version__)",
+            )
 
     session.run(
         "py.test",
@@ -714,18 +742,24 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install("-e", install_target, "-c", constraints_path)
 
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
 
-    tests_path = os.path.join("tests", "unit")
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+
+    for dep in core_dependencies_from_source:
+        dep_path = str(deps_dir / dep)
+        print(f"Installed {dep} locally from {dep_path}")
     session.run(
         "py.test",
         "--quiet",
