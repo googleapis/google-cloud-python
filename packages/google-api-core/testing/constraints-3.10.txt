@@ -7,8 +7,8 @@
 # Then this file should have foo==1.14.0
 googleapis-common-protos==1.63.2
 protobuf==4.25.8
-google-auth==2.35.0
-requests==2.33.0
-grpcio==1.80.0
-grpcio-status==1.33.2
+google-auth==2.14.1
+requests==2.25.0
+grpcio==1.41.0
+grpcio-status==1.41.0
 proto-plus==1.22.3

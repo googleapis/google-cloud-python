@@ -47,8 +47,8 @@ dependencies = [
   "protobuf >= 4.25.8, < 8.0.0",
   "proto-plus >= 1.22.3, < 2.0.0",
   "proto-plus >= 1.25.0, < 2.0.0; python_version >= '3.13'",
-  "google-auth >= 2.35.0, < 3.0.0",
-  "requests >= 2.33.0",
+  "google-auth >= 2.14.1, < 3.0.0",
+  "requests >= 2.24.0",
 ]
 dynamic = ["version"]
 
@@ -58,12 +58,12 @@ Documentation = "https://googleapis.dev/python/google-api-core/latest/"
 Repository = "https://github.com/googleapis/google-cloud-python"
 
 [project.optional-dependencies]
-async_rest = ["google-auth[aiohttp] >= 2.35.0, < 3.0.0", "aiohttp >= 3.9.0"]
+async_rest = ["google-auth[aiohttp] >= 2.14.1, < 3.0.0", "aiohttp >= 3.9.0"]
 grpc = [
-  "grpcio >= 1.80.0",
+  "grpcio >= 1.41.0",
   "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11'",
   "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-  "grpcio-status >= 1.33.2, < 2.0.0",
+  "grpcio-status >= 1.41.0, < 2.0.0",
   "grpcio-status >= 1.49.1, < 2.0.0; python_version >= '3.11'",
   "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
 ]
