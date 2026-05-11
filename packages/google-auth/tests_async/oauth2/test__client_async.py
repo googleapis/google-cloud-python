@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
 import asyncio
+import datetime
 import http.client as http_client
 import json
 from unittest import mock

@@ -302,8 +302,6 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert unpickled.refresh_manager._worker is None
 
     def test_unpickle_old_credentials_without_rab(self):
-        import pickle
-
         creds = CredentialsImpl()
         old_state = creds.__dict__.copy()
         if "_rab_manager" in old_state:
