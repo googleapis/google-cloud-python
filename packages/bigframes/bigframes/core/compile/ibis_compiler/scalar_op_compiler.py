@@ -94,6 +94,14 @@ class ExpressionCompiler:
         ]
         return self.compile_row_op(expression.op, inputs)
 
+    @compile_expression.register
+    def _(
+        self,
+        expression: ex.Omitted,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        return bigframes_vendored.ibis.omitted()
+
     def compile_row_op(
         self, op: ops.RowOp, inputs: typing.Sequence[ibis_types.Value]
     ) -> ibis_types.Value:

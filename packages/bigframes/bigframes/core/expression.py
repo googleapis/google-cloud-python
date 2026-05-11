@@ -363,6 +363,55 @@ class ResolvedDerefOp(DerefOp):
     def output_type(self) -> dtypes.ExpressionType:
         return self.dtype
 
+@dataclasses.dataclass(frozen=True)
+class Omitted(Expression):
+    """Represents an omitted optional arg used calling a function."""
+    @property
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
+        return ()
+
+    @property
+    def is_const(self) -> bool:
+        return True
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
+
+    @property
+    def is_resolved(self):
+        return True # vacuously
+
+    @property
+    def output_type(self) -> dtypes.ExpressionType:
+        return None
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> UnboundVariableExpression:
+        return self
+
+    def bind_variables(
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> Expression:
+        return self
+
+    @property
+    def is_bijective(self) -> bool:
+        return True
+
+    @property
+    def is_identity(self) -> bool:
+        return True
+
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self
+
+
 
 @dataclasses.dataclass(frozen=True)
 class OpExpression(Expression):

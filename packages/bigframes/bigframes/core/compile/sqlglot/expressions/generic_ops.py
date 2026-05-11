@@ -20,6 +20,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.operations.googlesql import CallingConvention
 from bigframes.core.compile.sqlglot import sql, sqlglot_types
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -80,6 +81,35 @@ def _(expr: TypedExpr) -> sge.Expression:
     if expr.dtype == dtypes.BOOL_DTYPE:
         return sge.Not(this=sge.paren(expr.expr))
     return sge.BitwiseNot(this=sge.paren(expr.expr))
+
+
+@register_nary_op(ops.GoogleSqlScalarOp, pass_op=True)
+def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
+    arg_templates = []
+    if op.calling_convention == CallingConvention.FUNCTION:
+        for i, operand in enumerate(operands):
+            if i < len(op.args):
+                arg_spec = op.args[i]
+            else:
+                assert op.args[-1].is_vararg, f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+                arg_spec = op.args[-1]
+            if operand.is_omitted:
+                assert arg_spec.optional, f"Argument omitted, but not optional"
+                continue
+            elif arg_spec.arg_name:
+                arg_templates.append(f"{arg_spec.arg_name} => {operand.expr.sql(dialect='bigquery')}")
+            else:
+                arg_templates.append(operand.expr.sql(dialect='bigquery'))
+        args_template = ", ".join(arg_templates)
+        return sg.parse_one(f"{op.sql_name}({args_template})", dialect="bigquery")
+    elif op.calling_convention == CallingConvention.PREFIX:
+        assert len(operands) == 1, "prefix op expects exactly 1 arg"
+        return sg.parse_one(f"{op.sql_name} {operands[0].expr.sql(dialect='bigquery')}", dialect="bigquery")
+    elif op.calling_convention == CallingConvention.INFIX:
+        assert len(operands) == 2, 'infix op expects exactly 2 args'
+        return sg.parse_one(f"{operands[0].expr.sql(dialect='bigquery')} {op.sql_name} {operands[1].expr.sql(dialect='bigquery')}", dialect="bigquery")
+
+    raise NotImplementedError(f"Calling convention {op.calling_convention} not supported for {op}")
 
 
 @register_nary_op(ops.SqlScalarOp, pass_op=True)

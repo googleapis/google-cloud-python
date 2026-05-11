@@ -231,6 +231,7 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
+from bigframes.operations.googlesql import GoogleSqlScalarOp
 
 __all__ = [
     # Base ops
@@ -446,4 +447,6 @@ __all__ = [
     "ToArrayOp",
     "ArrayReduceOp",
     "ArrayMapOp",
+    # GoogleSql
+    "GoogleSqlScalarOp",
 ]
