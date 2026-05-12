@@ -103,9 +103,9 @@ class Event:
 @dataclasses.dataclass(frozen=True)
 class EventEnvelope:
     event: Event
-    progress_bar: (
-        Literal["default", "auto", "notebook", "terminal"] | None
-    ) = None  # noqa: E501
+    progress_bar: Literal[
+        "default", "auto", "notebook", "terminal"
+    ] | None = None  # noqa: E501
 
 
 @dataclasses.dataclass(frozen=True)
@@ -190,9 +190,9 @@ class BigQueryReceivedEvent(ExecutionRunning):
     job_id: str | None = None
     statement_type: str | None = None
     state: str | None = None
-    query_plan: (
-        list[google.cloud.bigquery.job.query.QueryPlanEntry] | None
-    ) = None  # noqa: E501
+    query_plan: list[
+        google.cloud.bigquery.job.query.QueryPlanEntry
+    ] | None = None  # noqa: E501
     created: datetime.datetime | None = None
     started: datetime.datetime | None = None
     ended: datetime.datetime | None = None
