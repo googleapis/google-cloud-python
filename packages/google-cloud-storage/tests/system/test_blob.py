@@ -554,6 +554,38 @@ def test_blob_patch_metadata(
     assert blob.metadata == {"foo": "Foo"}
 
 
+def test_blob_contexts_crud(
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+    service_account,
+):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    filename = file_data["logo"]["path"]
+    blob_name = os.path.basename(filename)
+
+    blob = shared_bucket.blob(blob_name)
+    blob.upload_from_filename(filename)
+    blobs_to_delete.append(blob)
+
+    custom = {"foo": ObjectCustomContextPayload(value="bar")}
+    blob.contexts = ObjectContexts(blob, custom=custom)
+    blob.patch()
+    blob.reload()
+    assert "foo" in blob.contexts.custom
+    assert blob.contexts.custom["foo"].value == "bar"
+    assert blob.contexts.custom["foo"].create_time is not None
+    assert blob.contexts.custom["foo"].update_time is not None
+
+    # Ensure that context keys can be deleted by setting equal to None.
+    new_custom = {"foo": None}
+    blob.contexts = ObjectContexts(blob, custom=new_custom)
+    blob.patch()
+    blob.reload()
+    assert "foo" not in blob.contexts.custom
+
+
 def test_blob_direct_write_and_read_into_file(
     shared_bucket,
     blobs_to_delete,

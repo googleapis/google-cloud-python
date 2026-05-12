@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 from google.cloud import _storage_v2
@@ -109,36 +108,3 @@ def blob_to_proto(blob):
         resource_params["contexts"] = _storage_v2.ObjectContexts(custom=custom_contexts)
 
     return _storage_v2.Object(**resource_params)
-
-
-def get_update_mask(blob, changes):
-    """Generates a FieldMask for gRPC update operations."""
-    # Map REST property names to GCS V2 Object proto field names.
-    property_to_proto_field = {
-        "cacheControl": "cache_control",
-        "contentDisposition": "content_disposition",
-        "contentEncoding": "content_encoding",
-        "contentLanguage": "content_language",
-        "contentType": "content_type",
-        "metadata": "metadata",
-        "eventBasedHold": "event_based_hold",
-        "temporaryHold": "temporary_hold",
-        "kmsKeyName": "kms_key",
-        "customTime": "custom_time",
-        "retention": "retention",
-    }
-    paths = []
-    for change in changes:
-        if change == "contexts":
-            contexts = getattr(blob, "contexts", None)
-            if not (contexts and contexts.custom):
-                paths.append("contexts.custom")
-            else:
-                for key in contexts.custom:
-                    paths.append(f"contexts.custom.{key}")
-        else:
-            proto_field = property_to_proto_field.get(change)
-            if proto_field:
-                paths.append(proto_field)
-
-    return field_mask_pb2.FieldMask(paths=paths)
