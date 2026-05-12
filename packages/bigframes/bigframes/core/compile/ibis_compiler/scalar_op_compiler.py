@@ -297,7 +297,7 @@ def isfinite(arg):
 def googlesql_scalar_op_impl(
     *operands: ibis_types.Value, op: ops.GoogleSqlScalarOp, output_type
 ):
-    final_operands = []
+    final_operands: list[ibis_types.Value] = []
     arg_templates = []
     for i, operand in enumerate(operands):
         if i < len(op.args):

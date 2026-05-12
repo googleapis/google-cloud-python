@@ -93,7 +93,7 @@ class ExpressionCompiler:
         inputs = tuple(
             TypedExpr(self.compile_expression(sub_expr), sub_expr.output_type)
             if not isinstance(sub_expr, ex.OmittedArg)
-            else TypedExpr(sge.Null, None, is_omitted=True)
+            else TypedExpr(sge.Null(), None, is_omitted=True)
             for sub_expr in expr.inputs
         )
         return self.compile_row_op(expr.op, inputs)

@@ -392,7 +392,7 @@ class OmittedArg(Expression):
         self,
         bindings: Mapping[ids.ColumnId, Expression],
         allow_partial_bindings: bool = False,
-    ) -> UnboundVariableExpression:
+    ) -> OmittedArg:
         return self
 
     def bind_variables(

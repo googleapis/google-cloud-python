@@ -84,7 +84,7 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_nary_op(ops.GoogleSqlScalarOp, pass_op=True)
 def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
-    args = []
+    args: list[sge.Expression] = []
     for i, operand in enumerate(operands):
         if i < len(op.args):
             arg_spec = op.args[i]
