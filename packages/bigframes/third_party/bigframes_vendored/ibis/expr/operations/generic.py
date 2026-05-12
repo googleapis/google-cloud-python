@@ -190,9 +190,7 @@ class Impure(Value):
 
 @public
 class Omitted(Value):
-    @property
-    def omitted(self) -> bool:
-        return True
+    pass
 
 
 @public

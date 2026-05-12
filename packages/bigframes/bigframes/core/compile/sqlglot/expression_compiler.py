@@ -92,7 +92,7 @@ class ExpressionCompiler:
     def _(self, expr: ex.OpExpression) -> sge.Expression:
         inputs = tuple(
             TypedExpr(self.compile_expression(sub_expr), sub_expr.output_type)
-            if not isinstance(sub_expr, ex.Omitted)
+            if not isinstance(sub_expr, ex.OmittedArg)
             else TypedExpr(sge.Null, None, is_omitted=True)
             for sub_expr in expr.inputs
         )

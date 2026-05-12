@@ -20,7 +20,6 @@ import bigframes_vendored.sqlglot.expressions as sge
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes import dtypes
 from bigframes import operations as ops
-from bigframes.operations.googlesql import CallingConvention
 from bigframes.core.compile.sqlglot import sql, sqlglot_types
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -90,18 +89,19 @@ def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
         if i < len(op.args):
             arg_spec = op.args[i]
         else:
-            assert op.args[-1].is_vararg, f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+            assert op.args[-1].is_vararg, (
+                f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+            )
             arg_spec = op.args[-1]
         if operand.is_omitted:
             assert arg_spec.optional, f"Argument omitted, but not optional"
             continue
         elif arg_spec.arg_name:
-            args.append(
-                sge.Kwarg(this=arg_spec.arg_name, expression=operand.expr)
-            )
+            args.append(sge.Kwarg(this=arg_spec.arg_name, expression=operand.expr))
         else:
             args.append(operand.expr)
     return sg.func(op.sql_name, *args)
+
 
 @register_nary_op(ops.SqlScalarOp, pass_op=True)
 def _(*operands: TypedExpr, op: ops.SqlScalarOp) -> sge.Expression:

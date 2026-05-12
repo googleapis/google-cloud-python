@@ -35,7 +35,6 @@ from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.ibis_compiler.scalar_op_compiler import (
     scalar_op_compiler,  # TODO(tswast): avoid import of variables
 )
-from bigframes.operations.googlesql import CallingConvention
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
 _NAN = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.nan))
@@ -1889,41 +1888,6 @@ def case_when_op(*cases_and_outputs: ibis_types.Value) -> ibis_types.Value:
     for predicate, output in zip(cases_and_outputs[::2], result_values):
         case_val = case_val.when(predicate, output)
     return case_val.end()  # type: ignore
-
-
-@scalar_op_compiler.register_nary_op(ops.GoogleSqlScalarOp, pass_op=True)
-def googlesql_scalar_op_impl(*operands: ibis_types.Value, op: ops.GoogleSqlScalarOp):
-    final_operands = []
-    arg_templates = []
-    for i, operand in enumerate(operands):
-        if i < len(op.args):
-            arg_spec = op.args[i]
-        else:
-            assert op.args[-1].is_vararg, (
-                f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
-            )
-            arg_spec = op.args[-1]
-        if operand.op().omitted:
-            assert arg_spec.optional, f"Argument omitted, but not optional"
-            continue
-
-        target_idx = len(final_operands)
-        final_operands.append(operand)
-        if arg_spec.arg_name:
-            arg_templates.append(f"{arg_spec.arg_name} => {{{target_idx}}}")
-        else:
-            arg_templates.append(f"{{{target_idx}}}")
-    args_template = ", ".join(arg_templates)
-    sql_template = f"{op.sql_name}({args_template})"
-    return ibis_generic.SqlScalar(
-        sql_template,
-        values=tuple(
-            typing.cast(ibis_generic.Value, expr.op()) for expr in final_operands
-        ),
-        output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
-            op.output_type()
-        ),
-    ).to_expr()
 
 
 @scalar_op_compiler.register_nary_op(ops.SqlScalarOp, pass_op=True)
