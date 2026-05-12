@@ -281,7 +281,9 @@ def load_csv_from_file(
         finally:
             chunk_buffer.close()
 
-    return load_csv(dataframe, write_disposition, chunksize, list(bq_schema), load_chunk)
+    return load_csv(
+        dataframe, write_disposition, chunksize, list(bq_schema), load_chunk
+    )
 
 
 def load_chunks(
