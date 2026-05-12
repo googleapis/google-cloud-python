@@ -30,6 +30,21 @@ _BLOB_ATTR_TO_PROTO_FIELD = {
     "event_based_hold": "event_based_hold",
 }
 
+# Map REST property names to GCS V2 Object proto field names.
+_PROPERTY_TO_PROTO_FIELD = {
+    "cacheControl": "cache_control",
+    "contentDisposition": "content_disposition",
+    "contentEncoding": "content_encoding",
+    "contentLanguage": "content_language",
+    "contentType": "content_type",
+    "metadata": "metadata",
+    "eventBasedHold": "event_based_hold",
+    "temporaryHold": "temporary_hold",
+    "kmsKeyName": "kms_key",
+    "customTime": "custom_time",
+    "retention": "retention",
+}
+
 
 def blob_to_proto(blob):
     """Converts a Blob instance to a GCS V2 Object proto message."""
@@ -120,25 +135,28 @@ def proto_to_blob(proto, blob):
         # Assuming bucket name is the last part of the resource name
         blob._properties["bucket"] = proto.bucket.split("/")[-1]
 
-    for attr_name, proto_field in _BLOB_ATTR_TO_PROTO_FIELD.items():
-        value = getattr(proto, proto_field, None)
-        if value:
-            blob._properties[attr_name] = value
-
-    if "custom_time" in proto:
-        blob._properties["customTime"] = _datetime_to_rfc3339(proto.custom_time)
+    for rest_prop, proto_field in _PROPERTY_TO_PROTO_FIELD.items():
+        if proto_field in proto:
+            value = getattr(proto, proto_field)
+            if proto_field == "metadata":
+                blob._properties[rest_prop] = dict(value)
+            elif proto_field == "custom_time":
+                blob._properties[rest_prop] = _datetime_to_rfc3339(value)
+            elif proto_field == "retention":
+                retention = {"mode": _storage_v2.Object.Retention.Mode.Name(value.mode)}
+                if "retain_until_time" in value:
+                    retention["retainUntilTime"] = _datetime_to_rfc3339(
+                        value.retain_until_time
+                    )
+                blob._properties[rest_prop] = retention
+            else:
+                blob._properties[rest_prop] = value
 
     if proto.acl:
         acl_entries = []
         for entry in proto.acl:
             acl_entries.append({"role": entry.role, "entity": entry.entity})
         blob._properties["acl"] = acl_entries
-
-    if "retention" in proto:
-        retention = {"mode": _storage_v2.Object.Retention.Mode.Name(proto.retention.mode)}
-        if "retain_until_time" in proto.retention:
-            retention["retainUntilTime"] = _datetime_to_rfc3339(proto.retention.retain_until_time)
-        blob._properties["retention"] = retention
 
     if "contexts" in proto:
         custom = {}
@@ -160,18 +178,14 @@ def get_update_mask(blob, changes):
     for change in changes:
         if change == "contexts":
             contexts = getattr(blob, "contexts", None)
-            if contexts is None or not contexts.custom:
+            if not (contexts and contexts.custom):
                 paths.append("contexts.custom")
             else:
                 for key in contexts.custom:
                     paths.append(f"contexts.custom.{key}")
         else:
-            proto_field = _BLOB_ATTR_TO_PROTO_FIELD.get(change)
+            proto_field = _PROPERTY_TO_PROTO_FIELD.get(change)
             if proto_field:
                 paths.append(proto_field)
-            elif change == "customTime":
-                paths.append("custom_time")
-            elif change == "retention":
-                paths.append("retention")
 
     return field_mask_pb2.FieldMask(paths=paths)
