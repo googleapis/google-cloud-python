@@ -115,10 +115,8 @@ from bigframes.operations.geo_ops import (
     GeoStLengthOp,
     GeoStRegionStatsOp,
     GeoStSimplifyOp,
-    geo_area_op,
     geo_st_astext_op,
     geo_st_boundary_op,
-    geo_st_centroid_op,
     geo_st_convexhull_op,
     geo_st_difference_op,
     geo_st_geogfromtext_op,
@@ -414,9 +412,7 @@ __all__ = [
     "euclidean_distance_op",
     "manhattan_distance_op",
     # Geo ops
-    "geo_area_op",
     "geo_st_boundary_op",
-    "geo_st_centroid_op",
     "geo_st_convexhull_op",
     "geo_st_difference_op",
     "geo_st_astext_op",
@@ -430,7 +426,6 @@ __all__ = [
     "GeoStDistanceOp",
     "GeoStLengthOp",
     "GeoStRegionStatsOp",
-    "GeoStSimplifyOp",
     # AI ops
     "AIClassify",
     "AIGenerate",
