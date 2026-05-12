@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import ClassVar, Literal, Tuple
+from typing import ClassVar, Tuple
 
 import pandas as pd
 import pyarrow as pa
@@ -31,7 +31,7 @@ class AIGenerate(base_ops.NaryOp):
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None = None
     endpoint: str | None = None
-    request_type: Literal["DEDICATED", "SHARED", "UNSPECIFIED"] | None = None
+    request_type: str | None = None
     model_params: str | None = None
     output_schema: str | None = None
 
@@ -59,7 +59,7 @@ class AIGenerateBool(base_ops.NaryOp):
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None = None
     endpoint: str | None = None
-    request_type: Literal["DEDICATED", "SHARED", "UNSPECIFIED"] | None = None
+    request_type: str | None = None
     model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
@@ -81,7 +81,7 @@ class AIGenerateInt(base_ops.NaryOp):
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None = None
     endpoint: str | None = None
-    request_type: Literal["DEDICATED", "SHARED", "UNSPECIFIED"] | None = None
+    request_type: str | None = None
     model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
@@ -103,7 +103,7 @@ class AIGenerateDouble(base_ops.NaryOp):
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None = None
     endpoint: str | None = None
-    request_type: Literal["DEDICATED", "SHARED", "UNSPECIFIED"] | None = None
+    request_type: str | None = None
     model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
