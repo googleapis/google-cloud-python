@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 import typing
-from typing import Any, Dict, Optional, Sequence
 import warnings
+from typing import Any, Dict, Optional, Sequence
 
 import google.cloud.bigquery
 import google.cloud.bigquery.table
@@ -34,7 +34,8 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
     See: http://pandas.pydata.org/pandas-docs/dev/missing_data.html
     #missing-data-casting-rules-and-indexing
     """
-    import db_dtypes
+    # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+    import db_dtypes  # type: ignore[import-untyped]
 
     # If you update this mapping, also update the table at
     # `docs/reading.rst`.
@@ -79,7 +80,8 @@ def _finalize_dtypes(
     1970. See:
     https://github.com/googleapis/python-bigquery-pandas/issues/365
     """
-    import db_dtypes
+    # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+    import db_dtypes  # type: ignore[import-untyped]
     import pandas.api.types
 
     # If you update this mapping, also update the table at

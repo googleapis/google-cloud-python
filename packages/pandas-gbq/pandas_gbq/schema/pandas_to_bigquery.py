@@ -4,13 +4,14 @@
 
 import collections.abc
 import datetime
-from typing import Any, Optional, Tuple
 import warnings
+from typing import Any, Optional, Tuple
 
-import db_dtypes
-from google.cloud.bigquery import schema
+# db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+import db_dtypes  # type: ignore[import-untyped]
 import pandas
 import pyarrow
+from google.cloud.bigquery import schema
 
 import pandas_gbq.core.pandas
 import pandas_gbq.schema.bigquery

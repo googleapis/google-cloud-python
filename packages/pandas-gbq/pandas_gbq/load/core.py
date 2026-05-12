@@ -8,15 +8,16 @@ import decimal
 import io
 from typing import Any, Callable, Dict, List, Optional
 
-import db_dtypes
-from google.cloud import bigquery
+# db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+import db_dtypes  # type: ignore[import-untyped]
 import pandas
 import pyarrow.lib
+from google.cloud import bigquery
 
-from pandas_gbq import exceptions
 import pandas_gbq.schema
 import pandas_gbq.schema.bigquery
 import pandas_gbq.schema.pandas_to_bigquery
+from pandas_gbq import exceptions
 
 
 def encode_chunk(dataframe):

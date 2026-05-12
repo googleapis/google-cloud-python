@@ -3,32 +3,36 @@
 # license that can be found in the LICENSE file.
 
 import copy
-from datetime import datetime
 import logging
 import re
 import typing
 import warnings
+from datetime import datetime
 
 import pandas
 
-from pandas_gbq.contexts import Context  # noqa - backward compatible export
-from pandas_gbq.contexts import context
-from pandas_gbq.exceptions import (  # noqa - backward compatible export
+import pandas_gbq.schema
+import pandas_gbq.schema.pandas_to_bigquery
+from pandas_gbq.contexts import (  # noqa: F401
+    Context,  # noqa: F401 - imported solely to support a backwards compatible export
+    context,
+)
+from pandas_gbq.exceptions import (  # noqa: F401 - imported solely to support a backwards compatible export
     DatasetCreationError,
     GenericGBQException,
     InvalidColumnOrder,
     InvalidIndexColumn,
+    InvalidPageToken,  # noqa: F401 - imported solely to support a backwards compatible export
+    InvalidSchema,  # noqa: F401 - imported solely to support a backwards compatible export
     NotFoundException,
+    QueryTimeout,  # noqa: F401 - imported solely to support a backwards compatible export
     TableCreationError,
 )
-from pandas_gbq.exceptions import InvalidPageToken  # noqa - backward compatible export
-from pandas_gbq.exceptions import InvalidSchema  # noqa - backward compatible export
-from pandas_gbq.exceptions import QueryTimeout  # noqa - backward compatible export
 from pandas_gbq.features import FEATURES
-from pandas_gbq.gbq_connector import GbqConnector  # noqa - backward compatible export
-from pandas_gbq.gbq_connector import _get_client  # noqa - backward compatible export
-import pandas_gbq.schema
-import pandas_gbq.schema.pandas_to_bigquery
+from pandas_gbq.gbq_connector import (
+    GbqConnector,  # noqa: F401 - imported solely to support a backwards compatible export
+    _get_client,  # noqa: F401 - imported solely to support a backwards compatible export
+)
 
 logger = logging.getLogger(__name__)
 
@@ -40,17 +44,23 @@ def _test_google_api_imports():
         raise ImportError("pandas-gbq requires db-dtypes") from ex
 
     try:
-        import db_dtypes  # noqa
+        # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+        # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        import db_dtypes  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires db-dtypes") from ex
 
     try:
-        import pydata_google_auth  # noqa
+        # pydata-google-auth does not have type hints nor stubs that mypy uses for type checking.
+        # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        import pydata_google_auth  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires pydata-google-auth") from ex
 
     try:
-        from google_auth_oauthlib.flow import InstalledAppFlow  # noqa
+        # google-auth-oauthlib does not have type hints nor stubs that mypy uses for type checking.
+        # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        from google_auth_oauthlib.flow import InstalledAppFlow  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires google-auth-oauthlib") from ex
 
@@ -686,7 +696,7 @@ def generate_bq_schema(df, default_type="STRING"):
     """
     # deprecation TimeSeries, #11121
     warnings.warn(
-        "generate_bq_schema is deprecated and will be removed in " "a future version",
+        "generate_bq_schema is deprecated and will be removed in a future version",
         FutureWarning,
         stacklevel=2,
     )
@@ -927,9 +937,7 @@ class _Dataset(GbqConnector):
         from google.cloud.bigquery import Dataset
 
         if self.exists(dataset_id):
-            raise DatasetCreationError(
-                "Dataset {0} already " "exists".format(dataset_id)
-            )
+            raise DatasetCreationError("Dataset {0} already exists".format(dataset_id))
 
         dataset = Dataset(self._dataset_ref(dataset_id))
 
