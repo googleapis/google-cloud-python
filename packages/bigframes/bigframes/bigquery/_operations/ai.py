@@ -1205,7 +1205,7 @@ def _convert_series(
     result = convert.to_bf_series(s, default_index=None, session=session)
 
     if result.dtype == dtypes.OBJ_REF_DTYPE:
-        # Support multimodel
+        # Support multimodal
         return result.blob.read_url()
     return result
 
