@@ -103,7 +103,7 @@ class ExpressionCompiler:
     @compile_expression.register
     def _(
         self,
-        expression: ex.Omitted,
+        expression: ex.OmittedArg,
         bindings: typing.Dict[str, ibis_types.Value],
     ) -> ibis_types.Value:
         return bigframes_vendored.ibis.omitted()

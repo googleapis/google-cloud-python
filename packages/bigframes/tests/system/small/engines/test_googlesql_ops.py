@@ -28,7 +28,9 @@ polars = pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-def test_engines_googlesql_st_area(scalars_array_value: array_value.ArrayValue, bq_engine, sqlglot_engine):
+def test_engines_googlesql_st_area(
+    scalars_array_value: array_value.ArrayValue, bq_engine, sqlglot_engine
+):
     expr = gsql_ops.ST_AREA.as_expr("geography_col")
 
     arr, _ = scalars_array_value.compute_values([expr])

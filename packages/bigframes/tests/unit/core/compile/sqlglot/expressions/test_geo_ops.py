@@ -21,7 +21,6 @@ from bigframes.testing import utils
 pytest.importorskip("pytest_snapshot")
 
 
-
 def test_geo_st_astext(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "geography_col"
     bf_df = scalar_types_df[[col_name]]

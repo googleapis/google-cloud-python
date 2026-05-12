@@ -43,13 +43,16 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
     with bigframes.core.global_session._GlobalSessionContext(session):
         yield session
 
+
 @pytest.fixture(scope="session")
 def pyarrow_engine():
     return local_scan_executor.LocalScanExecutor()
 
+
 @pytest.fixture(scope="session")
 def polars_engine():
     return polars_executor.PolarsExecutor()
+
 
 @pytest.fixture(scope="session")
 def bq_engine(bigquery_client):
@@ -58,6 +61,7 @@ def bq_engine(bigquery_client):
         bigquery_client, compiler="ibis", publisher=publisher
     )
 
+
 @pytest.fixture(scope="session")
 def sqlglot_engine(bigquery_client):
     publisher = events.Publisher()
@@ -65,8 +69,11 @@ def sqlglot_engine(bigquery_client):
         bigquery_client, compiler="sqlglot", publisher=publisher
     )
 
+
 @pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
-def engine(request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine) -> semi_executor.SemiExecutor:
+def engine(
+    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine
+) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return pyarrow_engine
     if request.param == "polars":
