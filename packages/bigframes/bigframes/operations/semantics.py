@@ -397,7 +397,7 @@ class Semantics:
                 bigframes.dataframe.DataFrame,
                 model.predict(
                     df,
-                    prompt=self._make_multimodel_prompt(
+                    prompt=self._make_multimodal_prompt(
                         df, columns, user_instruction, output_instruction
                     ),
                     temperature=0.0,
@@ -518,7 +518,7 @@ class Semantics:
                 bigframes.series.Series,
                 model.predict(
                     df,
-                    prompt=self._make_multimodel_prompt(
+                    prompt=self._make_multimodal_prompt(
                         df, columns, user_instruction, output_instruction
                     ),
                     temperature=0.0,
@@ -1094,7 +1094,7 @@ class Semantics:
         return result_df
 
     @staticmethod
-    def _make_multimodel_prompt(
+    def _make_multimodal_prompt(
         prompt_df, columns, user_instruction: str, output_instruction: str
     ):
         prompt = [f"{output_instruction}\n{user_instruction}\nContext: "]
