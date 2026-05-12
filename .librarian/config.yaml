@@ -3,7 +3,7 @@
 
 # Release-only mode prevents legacylibrarian from generating any packages.
 # legacylibrarian is only used for releasing; librarian is used for generation.
-release_only_mode: true
+release_only_mode: false
 
 global_files_allowlist:
   # Allow the container to read and write the root `CHANGELOG.md`
@@ -41,4 +41,3 @@ libraries:
   # Disable automatic releases until system tests are sped up or reorganized.
   - id: "google-cloud-firestore"
     release_blocked: true
-
