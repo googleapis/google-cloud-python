@@ -5,6 +5,7 @@
 import itertools
 
 import pandas
+import typing
 
 
 def list_columns_and_indexes(dataframe, index=True):
@@ -22,8 +23,7 @@ def list_columns_and_indexes(dataframe, index=True):
         if isinstance(dataframe.index, pandas.MultiIndex):
             for name in dataframe.index.names:
                 if name and name not in column_names:
-                    assert isinstance(name, (str, int))
-                    values = dataframe.index.get_level_values(name)
+                    values = dataframe.index.get_level_values(typing.cast(typing.Union[str, int], name))
                     columns_and_indexes.append((name, values.dtype))
         else:
             if dataframe.index.name and dataframe.index.name not in column_names:

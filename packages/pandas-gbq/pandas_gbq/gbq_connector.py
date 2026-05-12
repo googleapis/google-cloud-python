@@ -205,7 +205,8 @@ class GbqConnector:
         ].get("timeoutMs")
 
         if timeout_ms:
-            assert isinstance(timeout_ms, (str, int, float))
+            if not isinstance(timeout_ms, (str, int, float)):
+                raise TypeError(f"Expected str, int or float, got {type(timeout_ms)}")
             timeout_ms = int(timeout_ms)
             # Having too small a timeout_ms results in individual
             # API calls timing out before they can finish.
@@ -222,7 +223,7 @@ class GbqConnector:
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
-        assert isinstance(job_config, bigquery.QueryJobConfig)
+        job_config = typing.cast(bigquery.QueryJobConfig, job_config)
         job_config.dry_run = dry_run
 
         if FEATURES.bigquery_has_query_and_wait:
