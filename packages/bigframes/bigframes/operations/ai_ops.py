@@ -15,8 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-import typing
-from typing import Literal, Tuple
+from typing import ClassVar, Literal, Tuple
 
 import pandas as pd
 import pyarrow as pa
@@ -27,7 +26,7 @@ from bigframes.operations import base_ops, output_schemas
 
 @dataclasses.dataclass(frozen=True)
 class AIGenerate(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_generate"
+    name: ClassVar[str] = "ai_generate"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -55,7 +54,7 @@ class AIGenerate(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIGenerateBool(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_generate_bool"
+    name: ClassVar[str] = "ai_generate_bool"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -77,7 +76,7 @@ class AIGenerateBool(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIGenerateInt(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_generate_int"
+    name: ClassVar[str] = "ai_generate_int"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -99,7 +98,7 @@ class AIGenerateInt(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIGenerateDouble(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_generate_double"
+    name: ClassVar[str] = "ai_generate_double"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -121,7 +120,7 @@ class AIGenerateDouble(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIEmbed(base_ops.UnaryOp):
-    name: typing.ClassVar[str] = "ai_embed"
+    name: ClassVar[str] = "ai_embed"
 
     endpoint: str | None
     model: str | None
@@ -143,7 +142,7 @@ class AIEmbed(base_ops.UnaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIIf(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_if"
+    name: ClassVar[str] = "ai_if"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -157,7 +156,7 @@ class AIIf(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIClassify(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_classify"
+    name: ClassVar[str] = "ai_classify"
 
     prompt_context: Tuple[str | None, ...]
     categories: tuple[str, ...]
@@ -173,7 +172,7 @@ class AIClassify(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AIScore(base_ops.NaryOp):
-    name: typing.ClassVar[str] = "ai_score"
+    name: ClassVar[str] = "ai_score"
 
     prompt_context: Tuple[str | None, ...]
     connection_id: str | None
@@ -186,7 +185,7 @@ class AIScore(base_ops.NaryOp):
 
 @dataclasses.dataclass(frozen=True)
 class AISimilarity(base_ops.BinaryOp):
-    name: typing.ClassVar[str] = "ai_similarity"
+    name: ClassVar[str] = "ai_similarity"
 
     endpoint: str | None
     model: str | None
