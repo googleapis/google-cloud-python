@@ -622,13 +622,6 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-<<<<<<< HEAD
-    # Natively adapt the overwrite flag based on the active resolver
-    force_overwrite_flag = "--reinstall" if os.environ.get("NOX_DEFAULT_VENV_BACKEND") == "uv" else "--ignore-installed"
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", force_overwrite_flag)
-        print(f"Installed {dep}")
-=======
     deps_dir = CURRENT_DIRECTORY.parent
     while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
         deps_dir = deps_dir.parent
@@ -638,7 +631,6 @@ def core_deps_from_source(session, protobuf_implementation):
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
     print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
->>>>>>> main
 
     session.run(
         "py.test",
