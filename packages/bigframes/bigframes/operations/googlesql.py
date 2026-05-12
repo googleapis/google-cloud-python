@@ -15,36 +15,36 @@
 
 from __future__ import annotations
 
+import dataclasses
 import typing
+from enum import Enum, auto
 from typing import Callable, Iterable
 
-from enum import Enum, auto
-
-from bigframes import dtypes
 import bigframes.operations as ops
 import bigframes.operations.type as op_typing
-
-import dataclasses
+from bigframes import dtypes
 
 
 class CallingConvention(Enum):
-    FUNCTION = auto()    # standard: name(arg1, arg2)
-    INFIX = auto()       # operator: arg1 name arg2 (e.g., +)
-    PREFIX = auto()      # operator: name arg1 (e.g., NOT)
-    SPECIAL = auto()     # Custom compilation template (e.g., CAST, EXTRACT)
+    FUNCTION = auto()  # standard: name(arg1, arg2)
+    INFIX = auto()  # operator: arg1 name arg2 (e.g., +)
+    PREFIX = auto()  # operator: name arg1 (e.g., NOT)
+    SPECIAL = auto()  # Custom compilation template (e.g., CAST, EXTRACT)
+
 
 @dataclasses.dataclass(frozen=True)
 class ArgSpec:
-    arg_name: Optional[str] = None
+    arg_name: str | None = None
     optional: bool = False
     is_vararg: bool = False
     const_only: bool = False
 
+
 @dataclasses.dataclass(frozen=True)
 class OpSignature:
     # Detailed specs for each parameter. This is particularly relevant for ren
-    arg_specs: Sequence[ArgSpec]
-    resolve_return_type: TypeResolver
+    arg_specs: typing.Sequence[ArgSpec]
+    resolve_return_type: typing.Any
     has_varargs: bool = False
 
 
@@ -55,16 +55,15 @@ class GoogleSqlScalarOp(ops.NaryOp):
     name: typing.ClassVar[str] = "googlesql_scalar"
 
     # syntax
-    sql_name: str # for function `sql_name`(a, b), for infix a `sql_name`` b, for prefix `sql_name` a
-    args: tuple[ArgSpec]
+    sql_name: str  # for function `sql_name`(a, b), for infix a `sql_name`` b, for prefix `sql_name` a
+    args: tuple[ArgSpec, ...]
     # typing
-    signature: Callable[[Iterable[dtypes.ExpressionType]], dtypes.ExpressionType]
+    signature: typing.Callable[..., dtypes.ExpressionType]
     # syntax again
     calling_convention: CallingConvention = CallingConvention.FUNCTION
 
     # semantics
     is_deterministic: bool = True
-
 
     @property
     def deterministic(self) -> bool:
@@ -74,19 +73,28 @@ class GoogleSqlScalarOp(ops.NaryOp):
         return self.signature(*input_types)
 
 
-RAND = GoogleSqlScalarOp("RAND", args=(), is_deterministic=False, signature=lambda:dtypes.FLOAT_DTYPE)
+RAND = GoogleSqlScalarOp(
+    "RAND", args=(), is_deterministic=False, signature=lambda: dtypes.FLOAT_DTYPE
+)
 
-def _check_geo_input(t: dtypes.ExpressionType, out: dtypes.ExpressionType) -> dtypes.ExpressionType:
+
+def _check_geo_input(
+    t: dtypes.ExpressionType, out: dtypes.ExpressionType
+) -> dtypes.ExpressionType:
     if t is not None and not dtypes.is_geo_like(t):
         raise TypeError(f"Type {t} is not supported. Type must be geo-like")
     return out
 
-def _check_simplify_inputs(geo: dtypes.ExpressionType, tol: dtypes.ExpressionType) -> dtypes.ExpressionType:
+
+def _check_simplify_inputs(
+    geo: dtypes.ExpressionType, tol: dtypes.ExpressionType
+) -> dtypes.ExpressionType:
     if geo is not None and not dtypes.is_geo_like(geo):
         raise TypeError(f"Type {geo} is not supported. Type must be geo-like")
     if tol is not None and not dtypes.is_numeric(tol):
         raise TypeError(f"Type {tol} is not supported. Type must be numeric")
     return dtypes.GEO_DTYPE
+
 
 ST_AREA = GoogleSqlScalarOp(
     "ST_AREA",

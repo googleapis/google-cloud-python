@@ -31,11 +31,11 @@ from bigframes_vendored import ibis
 import bigframes.core.compile.ibis_compiler.default_ordering
 import bigframes.core.compile.ibis_types
 import bigframes.operations as ops
-from bigframes.operations.googlesql import CallingConvention
 from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.ibis_compiler.scalar_op_compiler import (
     scalar_op_compiler,  # TODO(tswast): avoid import of variables
 )
+from bigframes.operations.googlesql import CallingConvention
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
 _NAN = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.nan))
@@ -1893,36 +1893,64 @@ def case_when_op(*cases_and_outputs: ibis_types.Value) -> ibis_types.Value:
 
 @scalar_op_compiler.register_nary_op(ops.GoogleSqlScalarOp, pass_op=True)
 def googlesql_scalar_op_impl(*operands: ibis_types.Value, op: ops.GoogleSqlScalarOp):
+    final_operands = []
     arg_templates = []
     if op.calling_convention == CallingConvention.FUNCTION:
         for i, operand in enumerate(operands):
             if i < len(op.args):
                 arg_spec = op.args[i]
             else:
-                assert op.args[-1].is_vararg, f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+                assert op.args[-1].is_vararg, (
+                    f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+                )
                 arg_spec = op.args[-1]
-            if operand.omitted:
+            if operand.op().omitted:
                 assert arg_spec.optional, f"Argument omitted, but not optional"
                 continue
-            elif arg_spec.arg_name:
-                arg_templates.add(f"{arg_spec.arg_name} => {{{i}}}")
+
+            target_idx = len(final_operands)
+            final_operands.append(operand)
+            if arg_spec.arg_name:
+                arg_templates.append(f"{arg_spec.arg_name} => {{{target_idx}}}")
             else:
-                arg_templates.add(f"{{{i}}}")
+                arg_templates.append(f"{{{target_idx}}}")
         args_template = ", ".join(arg_templates)
-        return f"{op.sql_name}({args_template})"
+        sql_template = f"{op.sql_name}({args_template})"
+        return ibis_generic.SqlScalar(
+            sql_template,
+            values=tuple(
+                typing.cast(ibis_generic.Value, expr.op()) for expr in final_operands
+            ),
+            output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+                op.output_type()
+            ),
+        ).to_expr()
     elif op.calling_convention == CallingConvention.PREFIX:
         assert len(operands) == 1, "prefix op expects exactly 1 arg"
-        return f"{op.sql_name} {{0}}"
+        return ibis_generic.SqlScalar(
+            f"{op.sql_name} {{0}}",
+            values=tuple(
+                typing.cast(ibis_generic.Value, expr.op()) for expr in operands
+            ),
+            output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+                op.output_type()
+            ),
+        ).to_expr()
     elif op.calling_convention == CallingConvention.INFIX:
-        assert len(operands) == 2, 'infix op expects exactly 2 args'
-        return f"{{0}} {op.sql_name} {{1}}"
-    return ibis_generic.SqlScalar(
-        op.sql_template,
-        values=tuple(typing.cast(ibis_generic.Value, expr.op()) for expr in operands if not expr.omitted),
-        output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
-            op.output_type()
-        ),
-    ).to_expr()
+        assert len(operands) == 2, "infix op expects exactly 2 args"
+        return ibis_generic.SqlScalar(
+            f"{{0}} {op.sql_name} {{1}}",
+            values=tuple(
+                typing.cast(ibis_generic.Value, expr.op()) for expr in operands
+            ),
+            output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+                op.output_type()
+            ),
+        ).to_expr()
+    raise NotImplementedError(
+        f"Calling convention {op.calling_convention} not supported for {op}"
+    )
+
 
 @scalar_op_compiler.register_nary_op(ops.SqlScalarOp, pass_op=True)
 def sql_scalar_op_impl(*operands: ibis_types.Value, op: ops.SqlScalarOp):

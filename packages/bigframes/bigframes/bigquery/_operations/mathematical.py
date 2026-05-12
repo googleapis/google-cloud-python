@@ -48,7 +48,9 @@ def rand() -> bigframes.core.col.Expression:
             :func:`~bigframes.pandas.DataFrame.assign` and other methods.  See
             :func:`bigframes.pandas.col`.
     """
-    return bigframes.core.col.Expression(bigframes.core.expression.OpExpression(googlesql.RAND, ()))
+    return bigframes.core.col.Expression(
+        bigframes.core.expression.OpExpression(googlesql.RAND, ())
+    )
 
 
 def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:

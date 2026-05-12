@@ -37,6 +37,7 @@ class TypeSignature(abc.ABC):
     def __call__(self, *args, **kwargs):
         return self.as_method(*args, **kwargs)
 
+
 class UnaryTypeSignature(TypeSignature):
     @abc.abstractmethod
     def output_type(self, input_type: ExpressionType) -> ExpressionType: ...

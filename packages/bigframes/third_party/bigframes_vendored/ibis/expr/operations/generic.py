@@ -187,10 +187,11 @@ class Constant(Scalar, Singleton):
 class Impure(Value):
     pass
 
+
 @public
 class Omitted(Value):
     @property
-    def ommitted(bool):
+    def omitted(self) -> bool:
         return True
 
 

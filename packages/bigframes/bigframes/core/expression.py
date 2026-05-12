@@ -363,9 +363,11 @@ class ResolvedDerefOp(DerefOp):
     def output_type(self) -> dtypes.ExpressionType:
         return self.dtype
 
+
 @dataclasses.dataclass(frozen=True)
 class Omitted(Expression):
     """Represents an omitted optional arg used calling a function."""
+
     @property
     def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return ()
@@ -380,7 +382,7 @@ class Omitted(Expression):
 
     @property
     def is_resolved(self):
-        return True # vacuously
+        return True  # vacuously
 
     @property
     def output_type(self) -> dtypes.ExpressionType:
@@ -410,7 +412,6 @@ class Omitted(Expression):
 
     def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
         return self
-
 
 
 @dataclasses.dataclass(frozen=True)
