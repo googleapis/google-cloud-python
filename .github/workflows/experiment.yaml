@@ -1,4 +1,4 @@
-name: CI Unit
+name: CI Timeout Stress Test (Core Deps)
 on:
   pull_request:
     branches: [ main, preview ]
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # Required to avoid 'no merge base' errors
+          fetch-depth: 2
 
       - name: Detect Changed Packages
         id: changes
@@ -33,72 +33,13 @@ jobs:
         id: generate-matrix
         env:
           CHANGED_DIRS: ${{ steps.changes.outputs.all_changed_files }}
-        # Multiplier 8 = (6 standard Pythons + 1 Prerelease + 1 Core Deps)
-        run: python .github/scripts/matrix_generator.py --matrix-multiplier 8 --max-vms 20
-
-
-  # ==========================================
-  # 2. STANDARD UNIT TESTS
-  # ==========================================
-  unit-tests:
-    needs: discover
-    if: ${{ needs.discover.outputs.buckets != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 60
-      matrix:
-        chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
-        python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-
-    name: Unit (Py ${{ matrix.python }} - ${{ matrix.chunk.id }})
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-          
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: ${{ matrix.python }}
-          enable-cache: true
-
-      - name: Optimize Core Dependencies
-        run: git config --global url."${GITHUB_WORKSPACE}".insteadOf "https://github.com/googleapis/google-cloud-python"
-
-      - name: Execute Chunk
-        run: |
-          # The Engine: uv handles virtualenvs, nox delegates to uv
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          
-          # The Fix: Forces uv to install `pip` in the venv so legacy `pip freeze` commands don't crash
-          export UV_VENV_SEED=1 
-          
-          # Speed optimization: Pre-compile python bytecode
-          export UV_COMPILE_BYTECODE=1
-          
-          FAILED=0
-          
-          for pkg in ${{ matrix.chunk.packages }}; do
-            echo "=========================================================="
-            echo "🚀 TESTING: $pkg (Python ${{ matrix.python }})"
-            echo "=========================================================="
-            cd "$pkg"
-            
-            if uvx --with 'nox[uv]' nox -l | grep -q "unit-${{ matrix.python }}"; then
-              uvx --with 'nox[uv]' nox -s "unit-${{ matrix.python }}" || FAILED=1
-            else
-              echo "⏭️ Session 'unit-${{ matrix.python }}' not defined for $pkg. Safely skipping."
-            fi
-            
-            cd "$GITHUB_WORKSPACE"
-          done
-          exit $FAILED
-
+        # We use a multiplier of 1 because we are only running a single Python version
+        run: python .github/scripts/gha_matrix_balancer.py --matrix-multiplier 1 --max-vms 20
 
   # ==========================================
-  # 3. PRERELEASE TESTS (Py 3.14)
+  # 2. CORE DEPS TEST (Py 3.14)
   # ==========================================
-  unit-prerelease:
+  test-core-deps:
     needs: discover
     if: ${{ needs.discover.outputs.buckets != '[]' }}
     runs-on: ubuntu-latest
@@ -108,40 +49,33 @@ jobs:
       matrix:
         chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
 
-    name: Prerelease (Py 3.14 - ${{ matrix.chunk.id }})
+    name: core-deps (${{ matrix.chunk.id }})
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
           
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-          enable-cache: true
 
-      - name: Optimize Core Dependencies
-        run: git config --global url."${GITHUB_WORKSPACE}".insteadOf "https://github.com/googleapis/google-cloud-python"
+      - name: Install standard Nox
+        run: python -m pip install nox
 
       - name: Execute Chunk
         run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1 
-          export UV_COMPILE_BYTECODE=1
           FAILED=0
-          
-          # Use the exact session name Nox expects
-          SESSION="prerelease_deps-3.14"
+          SESSION="core_deps_from_source-3.14"
           
           for pkg in ${{ matrix.chunk.packages }}; do
             echo "=========================================================="
-            echo "🚀 TESTING PRERELEASE: $pkg (Python 3.14)"
+            echo "🚀 TESTING CORE DEPS: $pkg"
             echo "=========================================================="
             cd "$pkg"
             
-            # NO_COLOR=1 prevents ANSI codes from breaking the regex
-            # ^\s*(\*|-) ensures we only match the actual session name column
-            if NO_COLOR=1 uvx --with 'nox[uv]' nox -l | grep -qE "^\s*(\*|-)\s+${SESSION}\b"; then
-              uvx --with 'nox[uv]' nox -s "${SESSION}" || FAILED=1
+            # NO_COLOR=1 and anchored regex prevents the docstring bug
+            if NO_COLOR=1 python -m nox -l | grep -qE "^\s*(\*|-)\s+${SESSION}\b"; then
+              python -m nox -s "${SESSION}" || FAILED=1
             else
               echo "⏭️ Session '${SESSION}' not defined for $pkg. Safely skipping."
             fi
@@ -149,71 +83,3 @@ jobs:
             cd "$GITHUB_WORKSPACE"
           done
           exit $FAILED
-
-
-  # ==========================================
-  # 4. CORE DEPS FROM SOURCE (Py 3.14)
-  # ==========================================
-  unit-core-deps-from-source:
-    needs: discover
-    if: ${{ needs.discover.outputs.buckets != '[]' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 60
-      matrix:
-        chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
-
-    name: Core Deps (Py 3.14 - ${{ matrix.chunk.id }})
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-          
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14"
-          enable-cache: true
-
-      - name: Optimize Core Dependencies
-        run: git config --global url."${GITHUB_WORKSPACE}".insteadOf "https://github.com/googleapis/google-cloud-python"
-
-      - name: Execute Chunk
-        run: |
-          export NOX_DEFAULT_VENV_BACKEND=uv
-          export UV_VENV_SEED=1 
-          export UV_COMPILE_BYTECODE=1
-          FAILED=0
-          
-          for pkg in ${{ matrix.chunk.packages }}; do
-            echo "=========================================================="
-            echo "🚀 TESTING CORE DEPS: $pkg (Python 3.14)"
-            echo "=========================================================="
-            cd "$pkg"
-            
-            if uvx --with 'nox[uv]' nox -l | grep -q "core_deps_from_source-3.14"; then
-              uvx --with 'nox[uv]' nox -s "core_deps_from_source-3.14" || FAILED=1
-            else
-              echo "⏭️ Session 'core_deps_from_source-3.14' not defined for $pkg. Safely skipping."
-            fi
-            
-            cd "$GITHUB_WORKSPACE"
-          done
-          exit $FAILED
-
-
-  # ==========================================
-  # 5. GATEKEEPER
-  # ==========================================
-  presubmit-passed:
-    if: always() 
-    needs: [discover, unit-tests, unit-prerelease, unit-core-deps-from-source]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Evaluate Pipeline Status
-        run: |
-          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
-            echo "::error::One or more required CI jobs failed or were cancelled."
-            exit 1
-          fi
-          echo "All dynamically generated CI jobs completed successfully."
