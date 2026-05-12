@@ -134,3 +134,80 @@ def test_blob_to_proto_retention():
     assert int(proto.retention.retain_until_time.timestamp()) == int(
         retain_until_time.timestamp()
     )
+
+def test_blob_to_proto_contexts():
+    blob = mock.Mock(spec=["name", "bucket", "contexts", "custom_time", "acl", "retention"])
+    blob.name = "blob-name"
+    blob.bucket.name = "bucket-name"
+
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+    create_time = datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+    payload = ObjectCustomContextPayload(value="val", create_time=create_time)
+    blob.contexts = ObjectContexts(blob, custom={"key": payload})
+
+    blob.custom_time = None
+    blob.acl = None
+    blob.retention = None
+    for attr in _grpc_conversions._BLOB_ATTR_TO_PROTO_FIELD:
+        setattr(blob, attr, None)
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+
+    assert "key" in proto.contexts.custom
+    assert proto.contexts.custom["key"].value == "val"
+    assert int(proto.contexts.custom["key"].create_time.timestamp()) == int(
+        create_time.timestamp()
+    )
+
+
+def test_proto_to_blob_contexts():
+    from google.cloud.storage.blob import Blob
+    bucket = mock.Mock()
+    blob = Blob("blob-name", bucket=bucket)
+
+    from google.protobuf import timestamp_pb2
+    create_time = datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+    create_time_proto = timestamp_pb2.Timestamp()
+    create_time_proto.FromDatetime(create_time)
+
+    proto = _storage_v2.Object(
+        name="blob-name",
+        contexts=_storage_v2.ObjectContexts(
+            custom={
+                "key": _storage_v2.ObjectCustomContextPayload(
+                    value="val", create_time=create_time_proto
+                )
+            }
+        )
+    )
+
+    _grpc_conversions.proto_to_blob(proto, blob)
+
+    assert "contexts" in blob._properties
+    assert "key" in blob._properties["contexts"]["custom"]
+    assert blob._properties["contexts"]["custom"]["key"]["value"] == "val"
+    assert blob.contexts.custom["key"].create_time == create_time
+
+
+def test_get_update_mask_contexts():
+    blob = mock.Mock(spec=["contexts"])
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    # Partial updates
+    blob.contexts = ObjectContexts(blob, custom={"k1": ObjectCustomContextPayload(value="v1"), "k2": ObjectCustomContextPayload(value="v2")})
+    mask = _grpc_conversions.get_update_mask(blob, ["contexts"])
+    assert "contexts.custom.k1" in mask.paths
+    assert "contexts.custom.k2" in mask.paths
+    assert len(mask.paths) == 2
+
+    # Clear all
+    blob.contexts = None
+    mask = _grpc_conversions.get_update_mask(blob, ["contexts"])
+    assert "contexts.custom" in mask.paths
+    assert len(mask.paths) == 1
+
+    # Mixed
+    mask = _grpc_conversions.get_update_mask(blob, ["contexts", "metadata", "customTime"])
+    assert "contexts.custom" in mask.paths
+    assert "metadata" in mask.paths
+    assert "custom_time" in mask.paths

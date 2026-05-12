@@ -105,6 +105,7 @@ _WRITABLE_FIELDS = (
     "name",
     "retention",
     "storageClass",
+    "contexts",
 )
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
@@ -5009,6 +5010,29 @@ class Blob(_PropertyMixin):
         return Retention.from_api_repr(info, self)
 
     @property
+    def contexts(self):
+        """Retrieve the contexts for this object.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: an instance for managing the object's contexts.
+        """
+        info = self._properties.get("contexts", {})
+        return ObjectContexts.from_api_repr(info, self)
+
+    @contexts.setter
+    def contexts(self, value):
+        """Update the contexts for this object.
+
+        :type value: :class:`ObjectContexts` or dict or None
+        :param value: the new contexts for the object.
+        """
+        if value is None:
+            self._properties["contexts"] = None
+        else:
+            self._properties["contexts"] = value
+        self._patch_property("contexts", value)
+
+    @property
     def soft_delete_time(self):
         """If this object has been soft-deleted, returns the time at which it became soft-deleted.
 
@@ -5300,3 +5324,122 @@ class Retention(dict):
         retention_expiration_time = self.get("retentionExpirationTime")
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
+
+class ObjectCustomContextPayload(dict):
+    """Payload for a custom context.
+
+    :type value: str or ``NoneType``
+    :param value: (Optional) The value of the custom context.
+
+    :type create_time: :class:`datetime.datetime` or ``NoneType``
+    :param create_time: (Optional) Creation time of the custom context.
+
+    :type update_time: :class:`datetime.datetime` or ``NoneType``
+    :param update_time: (Optional) Last update time of the custom context.
+    """
+
+    def __init__(self, value=None, create_time=None, update_time=None):
+        data = {"value": value}
+        if create_time is not None:
+            data["createTime"] = _datetime_to_rfc3339(create_time)
+        if update_time is not None:
+            data["updateTime"] = _datetime_to_rfc3339(update_time)
+        super(ObjectCustomContextPayload, self).__init__(data)
+
+    @property
+    def value(self):
+        """The value of the custom context.
+
+        :rtype: str or ``NoneType``
+        :returns: The value of the custom context.
+        """
+        return self.get("value")
+
+    @value.setter
+    def value(self, value):
+        self["value"] = value
+
+    @property
+    def create_time(self):
+        """Creation time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        create_time = self.get("createTime")
+        if create_time is not None:
+            return _rfc3339_nanos_to_datetime(create_time)
+
+    @property
+    def update_time(self):
+        """Last update time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        update_time = self.get("updateTime")
+        if update_time is not None:
+            return _rfc3339_nanos_to_datetime(update_time)
+
+
+class ObjectContexts(dict):
+    """Container for an object's contexts.
+
+    :type blob: :class:`Blob`
+    :param blob: blob for which these contexts apply to.
+
+    :type custom: dict or ``NoneType``
+    :param custom: (Optional) Custom contexts mapping.
+    """
+
+    def __init__(self, blob, custom=None):
+        data = {}
+        if custom is not None:
+            data["custom"] = custom
+        super(ObjectContexts, self).__init__(data)
+        self._blob = blob
+
+    @classmethod
+    def from_api_repr(cls, resource, blob):
+        """Factory: construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :type blob: :class:`Blob`
+        :param blob: Blob for which these contexts apply to.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: ObjectContexts instance created from resource.
+        """
+        custom = {}
+        for key, payload_resource in resource.get("custom", {}).items():
+            payload = ObjectCustomContextPayload()
+            payload.update(payload_resource)
+            custom[key] = payload
+        return cls(blob, custom=custom)
+
+    @property
+    def blob(self):
+        """Blob for which these contexts apply to.
+
+        :rtype: :class:`Blob`
+        :returns: the instance's blob.
+        """
+        return self._blob
+
+    @property
+    def custom(self):
+        """Custom contexts mapping.
+
+        :rtype: dict
+        :returns: Mapping of keys to :class:`ObjectCustomContextPayload` instances.
+        """
+        if "custom" not in self:
+            self["custom"] = {}
+        return self["custom"]
+
+    @custom.setter
+    def custom(self, value):
+        self["custom"] = value
+        self.blob._patch_property("contexts", self)

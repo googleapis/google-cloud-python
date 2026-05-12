@@ -1423,6 +1423,7 @@ class Bucket(_PropertyMixin):
         include_folders_as_prefixes=None,
         soft_deleted=None,
         page_size=None,
+        filter_=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1516,6 +1517,10 @@ class Bucket(_PropertyMixin):
             Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
             https://cloud.google.com/storage/docs/soft-delete
 
+        :type filter_: str
+        :param filter_:
+            (Optional) Filter string used to filter objects.
+
         :type page_size: int
         :param page_size:
             (Optional) Maximum number of blobs to return in each page.
@@ -1545,6 +1550,7 @@ class Bucket(_PropertyMixin):
                 match_glob=match_glob,
                 include_folders_as_prefixes=include_folders_as_prefixes,
                 soft_deleted=soft_deleted,
+                filter_=filter_,
             )
 
     def list_notifications(

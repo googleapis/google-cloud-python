@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 from google.cloud import _storage_v2
@@ -87,4 +88,90 @@ def blob_to_proto(blob):
             retain_until_time=retain_until_time_proto,
         )
 
+    contexts = getattr(blob, "contexts", None)
+    if contexts:
+        custom_contexts = {}
+        for key, payload in contexts.custom.items():
+            payload_params = {"value": payload.value}
+            if payload.create_time is not None:
+                create_time_proto = timestamp_pb2.Timestamp()
+                create_time_proto.FromDatetime(payload.create_time)
+                payload_params["create_time"] = create_time_proto
+            if payload.update_time is not None:
+                update_time_proto = timestamp_pb2.Timestamp()
+                update_time_proto.FromDatetime(payload.update_time)
+                payload_params["update_time"] = update_time_proto
+
+            custom_contexts[key] = _storage_v2.ObjectCustomContextPayload(
+                **payload_params
+            )
+
+        resource_params["contexts"] = _storage_v2.ObjectContexts(custom=custom_contexts)
+
     return _storage_v2.Object(**resource_params)
+
+
+def proto_to_blob(proto, blob):
+    """Updates a Blob instance from a GCS V2 Object proto message."""
+    from google.cloud._helpers import _datetime_to_rfc3339
+
+    blob._properties["name"] = proto.name
+    if proto.bucket:
+        # Assuming bucket name is the last part of the resource name
+        blob._properties["bucket"] = proto.bucket.split("/")[-1]
+
+    for attr_name, proto_field in _BLOB_ATTR_TO_PROTO_FIELD.items():
+        value = getattr(proto, proto_field, None)
+        if value:
+            blob._properties[attr_name] = value
+
+    if "custom_time" in proto:
+        blob._properties["customTime"] = _datetime_to_rfc3339(proto.custom_time)
+
+    if proto.acl:
+        acl_entries = []
+        for entry in proto.acl:
+            acl_entries.append({"role": entry.role, "entity": entry.entity})
+        blob._properties["acl"] = acl_entries
+
+    if "retention" in proto:
+        retention = {"mode": _storage_v2.Object.Retention.Mode.Name(proto.retention.mode)}
+        if "retain_until_time" in proto.retention:
+            retention["retainUntilTime"] = _datetime_to_rfc3339(proto.retention.retain_until_time)
+        blob._properties["retention"] = retention
+
+    if "contexts" in proto:
+        custom = {}
+        for key, payload_proto in proto.contexts.custom.items():
+            payload = {"value": payload_proto.value}
+            if "create_time" in payload_proto:
+                payload["createTime"] = _datetime_to_rfc3339(payload_proto.create_time)
+            if "update_time" in payload_proto:
+                payload["updateTime"] = _datetime_to_rfc3339(payload_proto.update_time)
+            custom[key] = payload
+        blob._properties["contexts"] = {"custom": custom}
+
+    return blob
+
+
+def get_update_mask(blob, changes):
+    """Generates a FieldMask for gRPC update operations."""
+    paths = []
+    for change in changes:
+        if change == "contexts":
+            contexts = getattr(blob, "contexts", None)
+            if contexts is None or not contexts.custom:
+                paths.append("contexts.custom")
+            else:
+                for key in contexts.custom:
+                    paths.append(f"contexts.custom.{key}")
+        else:
+            proto_field = _BLOB_ATTR_TO_PROTO_FIELD.get(change)
+            if proto_field:
+                paths.append(proto_field)
+            elif change == "customTime":
+                paths.append("custom_time")
+            elif change == "retention":
+                paths.append("retention")
+
+    return field_mask_pb2.FieldMask(paths=paths)
