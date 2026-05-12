@@ -22,7 +22,6 @@ import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
-import bigframes.core.rewrite.schema_binding as schema_binding
 
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
@@ -31,6 +30,7 @@ import bigframes.core.compile.explode
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 import bigframes.core.rewrite as rewrites
+import bigframes.core.rewrite.schema_binding as schema_binding
 from bigframes import dtypes, operations
 from bigframes.core import bq_data, expression, pyarrow_utils
 from bigframes.core.logging import data_types as data_type_logger
@@ -62,7 +62,9 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
         encoded_type_refs = data_type_logger.encode_type_refs(result_node)
         # Have to bind schema as the final step before compilation.
         # Probably, should defer even further
-        result_node = typing.cast(nodes.ResultNode, schema_binding.bind_schema_to_tree(result_node))
+        result_node = typing.cast(
+            nodes.ResultNode, schema_binding.bind_schema_to_tree(result_node)
+        )
         sql = compile_result_node(result_node)
         return configs.CompileResult(
             sql,
@@ -78,7 +80,9 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
     encoded_type_refs = data_type_logger.encode_type_refs(result_node)
     # Have to bind schema as the final step before compilation.
     # Probably, should defer even further
-    result_node = typing.cast(nodes.ResultNode, schema_binding.bind_schema_to_tree(result_node))
+    result_node = typing.cast(
+        nodes.ResultNode, schema_binding.bind_schema_to_tree(result_node)
+    )
     sql = compile_result_node(result_node)
     # Return the ordering iff no extra columns are needed to define the row order
     if ordering is not None:
