@@ -113,10 +113,34 @@ def prerelease_deps(session, implementation):
         "googleapis-common-protos",
     ]
 
-    for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--upgrade", dep)
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Extract the base package name, safely ignoring version bounds and spaces
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) 
+        for dep in prerel_deps
+    }
+
+    # Dynamically sort local packages vs PyPI dependencies
+    local_paths = []
+    pypi_deps = []
+    
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
+
+    # Batch pip installations for maximum speed
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--upgrade")
 
     session.install("--pre", "--upgrade", "protobuf")
+    
     # Print out prerelease package versions
     session.run(
         "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
@@ -164,19 +188,27 @@ def core_deps_from_source(session, implementation):
     # Install the package without dependencies
     session.install("-e", ".", "--no-deps")
 
+    # Dynamically locate the monorepo packages/ directory
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
     # added to the list below so that it is installed from source, rather than PyPI
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-api-core",
         # dependency of google-api-core
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "googleapis-common-protos",
     ]
 
+    # Batch install the local directories to eliminate pip network overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+        print(f"Installed {dep} locally from {deps_dir / dep}")
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15115): Install protobuf from source at HEAD
     session.install("--pre", "--upgrade", "protobuf")
